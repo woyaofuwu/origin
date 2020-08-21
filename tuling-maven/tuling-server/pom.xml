@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>tuling</groupId>
+        <artifactId>tuling-maven</artifactId>
+        <version>1.0.SNAPSHOT</version>
+    </parent>
+
+    <packaging>war</packaging>
+    <artifactId>tuling-server</artifactId>
+
+    <dependencies>
+        <!--  不会打包进去 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--  不会打包进去 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--  会打包进去 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.35</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!--  会打包进去吗？-->
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>${java.version}</version>
+            <optional>true</optional>
+            <scope>system</scope>
+            <systemPath>${java.home}/../lib/tools.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>tuling</groupId>
+            <artifactId>luban</artifactId>
+            <version>1.0</version>
+            <optional>true</optional>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/luban.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>tuling</groupId>
+            <artifactId>tuling-client</artifactId>
+            <version>1.0.SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.0.4.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib
+                            </outputDirectory>
+                            <includeScope>system</includeScope>
+                            <excludeGroupIds>com.sun</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
