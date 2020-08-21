@@ -1,0 +1,1 @@
+update tf_f_user_imei  set serial_number=:SERIAL_NUMBER where user_id=TO_NUMBER(:USER_ID) and end_date>sysdate

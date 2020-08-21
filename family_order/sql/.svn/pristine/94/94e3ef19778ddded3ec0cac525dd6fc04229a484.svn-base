@@ -1,0 +1,1 @@
+select t.*  from tf_f_user_discnt t where t.user_id=:USER_ID and t.discnt_code<>:DISCNT_CODE and sysdate < t.end_date

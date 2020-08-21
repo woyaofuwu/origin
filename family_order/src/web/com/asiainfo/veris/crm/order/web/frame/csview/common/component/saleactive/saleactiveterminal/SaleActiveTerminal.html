@@ -1,0 +1,259 @@
+<!--<div class="l_left" style="width:27%;">-->
+<div class="c_box">
+	<div class="c_tab">
+		<div class="fn">
+			<button type="button" onclick="saleactive.showHotSale();"><i class="e_ico-show"></i><span>显示热门活动</span></button>
+		</div>
+		<div class="tab">
+			<ul>
+				<li class="on" id="listTitle" onclick="saleactive.openChoicePage();"><a href="#nogo">选择营销活动</a></li>
+				<li id="detailTitle" style="display:none;" onclick="saleactive.openDetailPage();"><a href="#nogo"><span jwcid="@Insert" id="detailTitleName" value=""/></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div id="listContent">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-2 c_form-label-6">
+			<ul class="ul">
+			    <li class="li">
+					<span class="label">前3月平均消费：</span>
+		            <span class="e_input"><span>
+		            <input  jwcid="@Any" type="text"  name="MONTH_FEE" id="MONTH_FEE"
+		            			value="ognl:info.MONTH_FEE"
+								desc="前3月的平均消费"
+                    			readOnly="true"
+	                			/>
+		            </span></span>
+				</li>
+				<li class="li">
+					<span class="label">前3月平均流量：</span>
+		            <span class="e_input"><span>
+		            <input  jwcid="@Any" type="text" name="MONTH_GPRS" id="MONTH_GPRS"
+		            			value="ognl:info.MONTH_GPRS"
+								desc="前3月的平均流量"
+                    			readOnly="true"
+	                			/>
+		            </span></span>
+				</li>
+				<li class="li">
+		            <span class="label">步骤选择：</span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="CONTRACT_STEP" id="CONTRACT_STEP"
+									source="ognl:page.pageutil.getStaticList('SALEACTIVE_STEP')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:info.CONTRACT_STEP"
+		                			addDefault="false"
+		                			onchange="saleactive.checkContractType(this)"
+									desc="步骤选择"
+                        			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                        />
+	                </span></span></span>
+		        </li>
+		        <li class="li">
+		            <span class="label"><span class="e_required">活动类型：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="SALE_CAMPN_TYPE" id="SALE_CAMPN_TYPE"
+									source="ognl:page.pageutil.getStaticList('TERMINAL_SALEACTIVETYPE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:info.SALE_CAMPN_TYPE"
+		                			addDefault="false"
+		                			nullable="no"
+	                				onchange="saleactive.queryProductByType(this);"
+                           			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                        />
+	                </span></span></span>
+		        </li>
+			</ul>
+		</div>
+				
+		<div class="c_form c_form-col-4 c_form-label-6" id="StepByPhonePart">
+			<ul class="ul">
+				<li class="li">
+		            <span class="label"><span class="e_required">起始价格：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="CONTRACT_PRICE_RANGE_START" id="CONTRACT_PRICE_RANGE_START"
+									source="ognl:page.pageutil.getStaticList('SALEACTIVE_PRICE_RANGE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:info.CONTRACT_PRICE_RANGE_START"
+									desc="起始价格"
+                        			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                        />
+	                </span></span></span>
+		        </li>
+		        <li class="li">
+		            <span class="label"><span class="e_required">最高价格：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="CONTRACT_PRICE_RANGE_END" id="CONTRACT_PRICE_RANGE_END"
+									source="ognl:page.pageutil.getStaticList('SALEACTIVE_PRICE_RANGE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:info.CONTRACT_PRICE_RANGE_END"
+									desc="起始价格"
+                        			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                        />
+	                </span></span></span>
+		        </li>
+				<li class="li">
+		            <span class="label"><span class="e_required">终端厂商：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="TERMINAL_SRC_CODE" id="TERMINAL_SRC_CODE"
+									source="ognl:page.pageutil.getStaticList('TERMINAL_SRC_CODE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:info.TERMINAL_SRC_CODE"
+		                			onchange="checkFor(this)"
+									desc="终端厂商"
+                        			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                        />
+	                </span></span></span>
+		        </li>
+		        <li class="li">
+		            <span class="label"></span>
+					<span class="inputArea"><span><span>
+					     <button type="button" class="e_button-form" onclick="saleactive.checkStepByPhoneInfo();"><span>校验查询</span></button>
+	                </span></span></span>
+		        </li>
+			</ul>
+		</div>
+	    <div class="c_form c_form-col-2 c_form-label-6" >
+		    <ul class="ul">
+		    	<li class="li" id="TerminalPart">
+					<span class="label">终端型号：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="TERMINAL_SEARCH" id="TERMINAL_SEARCH"
+								source="ognl:products"
+								textField="GOODS_EXPLAIN" valueField="DEVICE_MODE_CODE"
+	                			value="ognl:info.TERMINAL_SEARCH"
+	                			onchange="saleactive.checkTerminalSearch(this)"
+								desc="终端型号"
+                    			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                    />
+	                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">营销方案：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="SALE_PRODUCT_ID" id="SALE_PRODUCT_ID"
+								source="ognl:products"
+								textField="PRODUCT_NAME" valueField="PRODUCT_ID"
+	                			value="ognl:info.PRODUCT_ID"
+	                			onchange="saleactive.getTerminalByID()"
+								desc="营销方案"
+                    			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                    />
+	                </span></span></span>
+				</li>
+				<li class="li" id="TerminalPart1" style="display:none">
+					<span class="label">终端型号：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="TERMINAL_SEARCH1" id="TERMINAL_SEARCH1"
+								source="ognl:products"
+								textField="GOODS_EXPLAIN" valueField="DEVICE_MODE_CODE"
+	                			value="ognl:info.TERMINAL_SEARCH1"
+	                			onchange=""
+								desc="终端型号"
+                    			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                    />
+	                </span></span></span>
+				</li>
+				<li class="li" id="saleStaffId" style="display:none;">
+					<span class="label"><span class="e_required">促销员工：</span></span>
+		            <span class="e_input"><span><!-- ognl:info.SALE_STAFF_ID -->
+		            <input jwcid="@TextField" name="SALE_STAFF_ID" id="SALE_STAFF_ID"
+		            			value=""
+                    			onkeyup="this.value=this.value.toUpperCase()"
+								desc="促销员工"
+                    			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+	                			/>
+		            </span></span>
+				</li>
+				<li class="li" id="imeiQuery" style="display:none;">
+					<span class="label"><span class="e_required">终端串码：</span></span>
+		            <span class="e_input"><span><!-- ognl:info.NEW_IMEI -->
+		            <input jwcid="@TextField" name="NEW_IMEI" id="NEW_IMEI"
+		            			value=""
+                    			enterAction="saleactive.queryPackages()"
+								desc="终端串码"
+                    			disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+	                			/>
+		            </span></span>
+				</li>
+			</ul>
+			<ul class="ul" id="GoodsInfoPart" style="display:none">
+		         <li class="li">
+			       <span class="label">终端信息：</span>
+			       <span class="text" id="GOODS_INFO"></span>
+		        </li>
+		    </ul>
+			<div class="submitPlace"></div>
+			<div class="submit"><button type="button" class="e_button-form" onclick="saleactive.queryPackages();"><i class="e_ico-search"></i><span>查询</span></button></div>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 分栏 开始 -->
+		<div class="l_col l_col-2" id="CommAndHotPart">
+			<!-- 第 1 栏 开始 -->
+			<div class="l_li1">
+				<!-- 标题 开始 -->
+				<div class="c_title c_title-2">
+					<div class="text">常用活动</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 列表 开始 -->
+				<div class="c_list c_list-table c_list-col-1 c_table-row-10 l_padding">
+					<ul>
+						<li jwcid="@Foreach" source="ognl:commonSaleList" value="ognl:commonSale" index="ognl:rowIndex" element="li" title="ognl:commonSale.PACKAGE_NAME">
+							<a href="#nogo" jwcid="@Any" package="ognl:commonSale.PACKAGE" class="text" onclick="saleactive.queryPackage(this);"><span><span jwcid="@Insert" value="ognl:commonSale.PACKAGE_NAME"></span></span></a>
+						</li>
+					</ul>
+				</div>
+				<!-- 列表 结束 -->
+			</div>
+			<!-- 第 1 栏 结束 -->
+			<!-- 第 2 栏 开始 -->
+			<div class="l_li2">
+				<!-- 标题 开始 -->
+				<div class="c_title c_title-2">
+					<div class="text">热门活动</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 列表 开始 -->
+				<div class="c_list c_list-table c_list-col-1 c_table-row-10 l_padding">
+					<ul>
+						<li jwcid="@Foreach" source="ognl:hotSaleList" value="ognl:hotSale" index="ognl:rowIndex" element="li" title="ognl:hotSale.PACKAGE_NAME">
+							<a href="#nogo" jwcid="@Any" package="ognl:hotSale.PACKAGE" class="text" onclick="saleactive.queryPackage(this);"><span><span jwcid="@Insert" value="ognl:hotSale.PACKAGE_NAME"></span></span></a>
+						</li>
+					</ul>
+				</div>
+				<!-- 列表 结束 -->
+			</div>
+			<!-- 第 2 栏 结束 -->
+		</div>
+		<div id="saleactiveListPart" style="display:none;">
+			<div jwcid="saleactiveList@SaleActiveList" element="div" eparchyCodeCompId="ognl:eparchyCodeCompId"/>
+		</div>
+		<!-- 分栏 结束 -->
+	</div>
+	<div id="detailContent" style="display:none;">
+        <div jwcid="saleactiveModule@SaleActiveModule"
+        	element="div"
+            packageId="ognl:info.PACKAGE_ID"
+        	productId="ognl:info.PRODUCT_ID"
+        	eparchyCodeCompId="ognl:eparchyCodeCompId"/>
+	</div>
+</div>
+<input jwcid="@Hidden" name="SALEACTIVE_COMPONENT_ID" id="SALEACTIVE_COMPONENT_ID" value="ognl:id"/>
+<input jwcid="@Hidden" name="SALEACTIVE_USER_ID" id="SALEACTIVE_USER_ID" value="ognl:info.USER_ID"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEED_CHECK" id="SALEACTIVE_NEED_CHECK" value="ognl:needCheck"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEED_USER_ID" id="SALEACTIVE_NEED_USER_ID" value="ognl:needUserId"/>
+<input jwcid="@Hidden" name="SALEACTIVE_EPARCHY_CODE_COMPID" id="SALEACTIVE_EPARCHY_CODE_COMPID" value="ognl:eparchyCodeCompId"  style="display:none"/>
+<input jwcid="@Hidden" name="SALEACTIVE_ACCT_DAY" id="SALEACTIVE_ACCT_DAY" value="ognl:info.ACCT_DAY"/>
+<input jwcid="@Hidden" name="SALEACTIVE_FIRST_DATE" id="SALEACTIVE_FIRST_DATE" value="ognl:info.FIRST_DATE"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEXT_ACCT_DAY" id="SALEACTIVE_NEXT_ACCT_DAY" value="ognl:info.NEXT_ACCT_DAY"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEXT_FIRST_DATE" id="SALEACTIVE_NEXT_FIRST_DATE" value="ognl:info.NEXT_FIRST_DATE"/>
+<input jwcid="@Hidden" name="AFTER_CHOICEPACKAGE_EVENT" id="AFTER_CHOICEPACKAGE_EVENT" value="ognl:afterChoicePackageEvent"/>
+
+<div jwcid="saleElementAttr@ElementAttr" element="div"
+	confirmHandler="saleactiveModule.confirmAttr(this.getAttribute('itemIndex'));" 
+></div>
+<div jwcid="saleElementDate@ElementDateChoice" element="div"
+	confirmHandler="saleactiveModule.confirmDateChoice(this.getAttribute('itemIndex'))"
+></div>

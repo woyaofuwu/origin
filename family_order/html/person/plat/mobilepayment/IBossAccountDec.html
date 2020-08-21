@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="JavaScript" src="person/plat/mobilepayment/scripts/ibossaccountdec.js"></script>
+<title>跨省手机支付充值冲正</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">跨省手机支付充值冲正</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="condPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">异地手机号码：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" 
+										    datatype="mbphone" nullable="no"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="queryAccountPay()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<div jwcid="tableInfoPart@Part">
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10">
+		<div class="fctTop e_clear">
+			<span class="fctLeft">提示：充值冲正不能隔日操作！ </span>
+    	</div>
+    	<div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>用户ID</th>
+					<th>交易流水号</th>
+					<th>充值金额(元)</th>
+					<th>充值时间</th>
+					<th>返销标志</th>
+					<th>受理员工</th>
+					<th>受理部门</th>
+					<th>冲正员工</th>
+					<th>冲正部门</th>
+					<th>冲正时间</th>
+				</tr>
+			</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+	                    <td>
+                           <div jwcid="@Conditional" condition="ognl:info.CANCEL_TAG == 0" >
+                               <input id="TRANSACTIONS" name="TRANSACTIONS" value = "ognl:info.BOSS_SEQ+',' + info.RECV_FEE+','+info.CHARGE_ID" jwcid="@Radio"/>
+                           </div>
+                        </td>
+						<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BOSS_SEQ" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RECV_FEE/100" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.RECV_TIME)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',info.CANCEL_TAG)" raw="true"/></td> 
+						<td>
+	                 		<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.RECV_STAFF_ID)" raw="false"/>
+            			</td>
+            			<td>
+             				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.RECV_DEPART_ID)" raw="false"/>
+            			</td>   
+                        <td>
+            				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.CANCEL_STAFF_ID)" raw="false"/>
+            			</td>
+            			<td>
+             				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.CANCEL_DEPART_ID)" raw="false"/>
+            			</td>
+                        <td>
+                       		<span jwcid="@Insert" value="ognl:info.CANCEL_TIME == null ? '':formatDate('yyyy-MM-dd HH:mm:ss',info.CANCEL_TIME)" raw="true" />
+                        </td>
+					</tr>
+			</tbody>
+		
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="IBossAccountDecNav" id="IBossAccountDecNav" cond="condPart" part="tableInfoPart" listener="queryAccountPay" pageSize=10 count="ognl:count"></div>	
+	<!-- 翻页 结束 -->
+	</div>
+
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" cancelRule="true" area="condPart,tableInfoPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div>
+</body>
+</html>

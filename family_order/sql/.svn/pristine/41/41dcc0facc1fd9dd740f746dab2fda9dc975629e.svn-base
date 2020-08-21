@@ -1,0 +1,5 @@
+UPDATE TS_A_TRADE_INFORMAL
+   SET UPDATE_STAFF_ID = :UPDATE_STAFF_ID,
+       UPDATE_TIME = to_date(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss'),
+       AUDIT_TAG = :AUDIT_TAG
+ WHERE TRADE_ID = to_number(:TRADE_ID)

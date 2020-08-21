@@ -1,0 +1,1 @@
+update TF_B_ORDER t set t.app_type='300' where order_id=:ORDER_ID

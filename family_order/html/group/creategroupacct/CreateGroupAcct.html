@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团账户查询</title>
+<script jwcid="@Script" src="scripts/group/creategrpacct/creategrpacct.js"></script>
+<script jwcid="@Script" src="scripts/group/message/message.js"></script> 
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">账户查询</div>		
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" id="queryForm">		
+	    <ul class="ul"> 
+			<li class="li"><span jwcid="@saleserv:SelectGroup" isTTGrp="ognl:isTTGrp" afterErrorAction="selectGroupErrorAfterAction();" selectGroupListener="getGroupBaseInfo" afterAction="insertGroupCustInfo(data);displaybtnCreate();" refreshPart="acctArea"/><li>
+		</ul>	                                                                                      
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 集团客户 开始 -->
+	<div jwcid="GroupInfoPart@Part" element="div">
+		 <input type="text" hasTitle="false" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo"/>
+	</div>
+	<!-- 集团客户信息 结束 -->
+	
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">账户列表</div>
+		<div  class="fn" id="topBtnForm" >
+		     
+	         <button type="button" id="bcreateTop" onclick="createAcct();" style="display:none"><i class="e_ico-add"></i><span>新增</span></button>		     
+	         
+	         <span jwcid="@Conditional" condition='ognl:condition.FLAG =="true"'>
+	              <button type="button" id="bcreateTop1" onclick="createAcct();"><i class="e_ico-add"></i><span>新增</span></button>		     
+	         </span>
+		     <button  type="button" onclick="refresh();" class="l_ml"><i class="e_ico-refresh"></i><span>刷新</span></button>
+		    <span jwcid="@Conditional" condition="getParameter('POP_DIALOG')=='true'">
+		         <button type="button" onclick="setReturnValue('','')"  style="display:none"><i class="e_ico-back"></i><span>返回</span></button>
+		    </span>			
+		</div>
+	</div>
+    <!-- 标题 结束 -->	
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+	  <div jwcid="acctArea@Part" optimize="true">	    
+		<table id='acctInfos'>
+			<thead>
+				<tr>
+				    <th>序号</th>
+					<th>账户标识</th>
+					<th>账户名称</th>
+					<th>产品名称</th>
+					<th>集团产品编码</th>
+					<th>账户类型</th>
+					<th>账户开户时间</th>
+					<th>归属地市</th>
+					<th>账户生效日期</th>
+					<th>账户失效日期</th>
+				</tr>
+			</thead>
+			<tbody>
+                 <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr"  index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+                     onclick=" for(i=0;i<this.parentNode.children.length;i++){this.parentNode.children[i].className='';} this.className='on';acctInfo($(this).attr('acct_id'),$(this).attr('grpSn'));" acct_id="ognl:info.ACCT_ID" grpSn="ognl:info.SERIAL_NUMBER">
+					<td><span jwcid="@Insert" value="ognl:(rowIndex + 1 )" raw="false"/></td>
+					<td> 
+						<span jwcid="@Insert" value="ognl:info.ACCT_ID"/>
+					</td>
+				    <td>
+				    	<!-- 
+				    	<a jwcid="@Redirect" value="ognl:info.PAY_NAME"  source="ognl:info" columns="ACCT_ID" class="e_strong3"  subsys="custMgr"
+						 onclick="redirectTo('accountview.Account360View', 'queryInfos', parameters, 'contentframe')"/>
+						  -->
+						 <span jwcid="@Insert" value="ognl:info.PAY_NAME"/>
+					</td>
+				    <td>
+				    	<span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"/>
+				     </td>
+				     <td>
+				    	<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/>  
+				     </td>				     
+				    <td>
+				    	<span jwcid="@Insert" value="ognl:info.PAY_MODE_NAME" raw="true"/>
+				     </td>
+				     <td>
+				    	<span jwcid="@Insert" value="ognl:info.OPEN_DATE"/>
+				     </td>
+				     <td>
+				     	<span jwcid="@Insert" value="ognl:info.EPARCHY_NAME"/>
+				     </td>
+				     <td>
+				    	<span jwcid="@Insert" value="ognl:info.START_CYCLE_ID"/>
+				     </td>
+				     <td>
+				     	<span jwcid="@Insert" value="ognl:info.END_CYCLE_ID"/>
+				     </td>
+				</tr>
+			</tbody>
+		</table>
+	  </div>
+	</div></div>
+	<!-- 表格 结束 -->
+	
+    <!-- 编辑区域 开始 -->	
+	<div jwcid="createArea@Part" optimize="true">
+		
+	 	<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<span class="text">账户信息</span>			
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!--表单区域开始-->
+		<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+				<span id="AcctInfo">
+					<li class="li">
+						<span class="label">账户标识：</span>
+						<span class="e_input"><span><input type="text" id="acctInfo_ACCT_ID" name="acctInfo_ACCT_ID" jwcid="@TextField" value="ognl:condition.ACCT_ID" desc="账户编码"
+								     	   disabled="true"/></span></span>
+					</li>
+					<li class="li">
+						<span class="label">开户时间：</span>
+						<span class="e_input"><span><input type="text" name="acctInfo_OPEN_DATE" jwcid="@TextField" value="ognl:condition.OPEN_DATE" desc="账户编码"
+								     	   disabled="true"/></span></span>
+					</li>
+					<li class="li">
+						<span class="label">归属地州：</span>
+						<span class="e_select"><span><span><select  name="acctInfo_EPARCHY_CODE" jwcid="@Select"
+									    source="ognl:pageutil.getStaticList('AREA_CODE')"
+									    textField="DATA_NAME" valueField="DATA_ID" 
+									    value="ognl:condition.EPARCHY_CODE" disabled="true" desc="帐户类别"/></span></span></span>					
+					</li>
+				</span>		 
+				<li class="li">
+					<span class="label"><span class="e_required">账户名称：</span></span>
+					<span class="e_input"><span>
+						<input type="text" 
+						       name="acctInfo_PAY_NAME" 
+						       jwcid="@TextField" 
+						       value="ognl:condition.PAY_NAME" 
+						       defalt_value ="ognl:condition.PAY_NAME" nullable="no" desc="账户名称"
+						       onchange="if($(this).val() != $(this).attr('defalt_value')){$('#acctInfo_PAY_NAME_ISCHANGED').val('true');} else {$('#acctInfo_PAY_NAME_ISCHANGED').val('false');}"
+						       />
+						<input jwcid="@TextField" 
+							id="acctInfo_PAY_NAME_ISCHANGED" 
+							type="text"
+							name="acctInfo_PAY_NAME_ISCHANGED" 
+							value="false" style="display:none"
+							/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">帐户类别：</span>
+					<span class="e_select"><span><span><select name="acctInfo_PAY_MODE_CODE" id = "acctInfo_PAY_MODE_CODE" jwcid="@Select"
+								    source="ognl:pageutil.getStaticList('TD_S_PAYMODE')"
+								    textField="DATA_NAME" valueField="DATA_ID" 
+								    value="ognl:condition.PAY_MODE_CODE" nullable="no" onchange="checkPaymode(0)" addDefault="false" desc="帐户类别"/></span></span></span>
+				</li>
+				<li class="li">
+					<span class="label" >托收合同号：</span>
+					<span class="e_input"><span><input name="acctInfo_CONTRACT_ID" jwcid="@TextField" value="ognl:consign.CONTRACT_ID"
+							    	type="text" datatype="text" maxsize="30" disabled="true" desc="合同号"/></span></span>
+				</li>
+				<!--铁通账户管理才显示-->
+				<span jwcid="@Conditional" condition='ognl:isTTGrp =="true"'>
+	              	<li class="li">
+					<span class="label">客户化账单方式：</span>
+					<span class="e_select"><span><span><select name="acctInfo_RSRV_STR3" jwcid="@Select"
+								    source="ognl:pageutil.getStaticList('ACCOUNT_BILLPAPER_TYPE')"
+								    textField="DATA_NAME" valueField="DATA_ID" 
+								    value="ognl:condition.RSRV_STR3" desc="客户化账单方式"/></span></span></span>
+					</li>     
+	         	</span>	         	
+			 <li class="li">
+					<span class="label" id = "QrySuperBankOne" >上级银行：</span>
+					<span class="label" id = "QrySuperBankTwo" style="display:none" ><span class="e_required">上级银行：</span></span>
+						<!-- <span class="e_select"><span><span>
+						<div id="PartsuperBankCode">
+						
+						<select name="acctInfo_SUPER_BANK_CODE" jwcid="@Select"
+									source="ognl:pageutil.getList((isTTGrp == 'true'?'TD_S_SUPERBANK_CTT':'TD_S_SUPERBANK'),'SUPER_BANK_CODE','SUPER_BANK')" valueField="SUPER_BANK_CODE"  textField="SUPER_BANK"
+									value="ognl:consign.SUPER_BANK_CODE" desc="上级银行" disabled="true" onchange="ajaxGetBankCode()"/>
+						
+						</div>
+						</span></span></span> -->
+						
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="acctInfo_SUPER_BANK_CODE" id="acctInfo_SUPER_BANK_CODE" value ='ognl:consign.SUPER_BANK_CODE'
+														 source="ognl:pageutil.getList('TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')"
+														textField="SUPER_BANK" valueField="SUPER_BANK_CODE" titleField="SUPER_BANK" disabled="true"  desc="上级银行"   nullable="no" onchange="checkSuperBank()"/>
+						</span></span></span>
+				</li>
+				  <li class="li">
+					<span class="label" id = "QryBankOne" >银行名称：</span>
+					<span class="label" id = "QryBankTwo" style="display:none" ><span class="e_required">银行名称：</span></span>
+					<span class="e_elements">
+						<button type="button" class="e_button-right" id="bankFld" disabled="true" onclick="if(checkBank() == false) return false;javascript:popupPage('group.creategroupacct.ViewBankPage','queryBank','&multi=true&comminfo_SUPERBANK_CODE=' +$('#acctInfo_SUPER_BANK_CODE').val(),'银行名称列表',400,300,'acctInfo_BANK_CODE')">						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" source="ognl:bankList" valueField="BANK_CODE" textField="BANK_INFO" value="ognl:consign.BANK_CODE" text="ognl:consign.BANK" name="acctInfo_BANK_CODE" id="acctInfo_BANK_CODE" desc="银行名称"/>						</span></span>
+					</span>	
+					
+					
+				</li>
+				<li class="li">
+					<span class="label" id = "QryBankAcctOne" >银行账号：</span>
+					<span class="label" id = "QryBankAcctTwo" style="display:none" ><span class="e_required">银行账号：</span></span>
+					<span class="e_input"><span><input type="text" name="acctInfo_BANK_ACCT_NO" jwcid="@TextField" value="ognl:consign.BANK_ACCT_NO" disabled="true" desc="银行帐号"/></span></span>
+				</li>
+           		<li class="li">
+					<span class="label">联系电话：</span>
+					<span class="e_elements">
+				    	 <button type="button" class="e_button-right" onclick="$.popupPageExternal('group.creategroupacct.QueryPerson',null,null,null,680,480,'acctInfo_CONTACT_PHONE')"><i class="e_ico-check"></i><span></span></button>
+	                	<span class="e_input e_input-left"><span><input jwcid="@Popup"  name="acctInfo_CONTACT_PHONE" text="ognl:consign.CONTACT_PHONE" value="ognl:consign.CONTACT_PHONE" readOnly="false"/></span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label">账户联系人：</span>
+					<span class="e_input"><span><input type="text" name="acctInfo_CONTACT" jwcid="@TextField" value="ognl:consign.CONTACT" disabled="true" desc="联系人姓名"/></span></span>
+					<input type="text" name="acctInfo_CONTACT_UID" jwcid="@TextField" value="ognl:consign.RSRV_STR9" disabled="true" desc="联系人userId"  style="display:none"/>
+				</li>
+				<li class="li">
+					<span class="label">托收定额：</span>
+					<span class="e_input"><span><input type="text" name="acctInfo_CONSIGN_AMOUNT" jwcid="@TextField" value="ognl:consign.RSRV_STR2/100" desc="托收定额" disabled="true"/></span></span>
+				</li>
+				<li class="li">
+					<span class="label">是否同步集团总部：</span>
+					<input type="checkbox" id="acctInfo_CHECK" name="acctInfo_CHECK" onclick="changeSmsFlag();" jwcid="@Checkbox" value="0"/>
+				</li>			
+				<br />
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+			    <button class="e_button-form" type="button" id="bcreate" onclick="return submitAcct('1');" style="display:none"><i class="e_ico-ok"></i><span>确定</span></button>				
+				<button class="e_button-form" type="button" id="bupdate" onclick="return submitAcct('2');" style="display:none"><i class="e_ico-ok"></i><span>修改</span></button>
+			    <button class="e_button-form" type="button" id="bdelete" onclick="return submitAcct('3');" style="display:none"><i class="e_ico-delete"></i><span>删除</span></button>
+			    <button class="e_button-form" type="button" id="back" onclick="return canleAction();" style="display:none"><i class="e_ico-cancel" ></i><span>取消</span></button>		  
+			</div>
+		</div>
+
+	<!--表单区域结束-->	
+
+	<!--隐藏区域开始-->
+	<div>
+		   <input type="text" id="GrpSn" name="GrpSn" jwcid="@TextField" value="" style="display:none"/>
+		   <input type="text" name="acctInfo_INST_ID" jwcid="@TextField" value="ognl:consign.INST_ID" style="display:none"/>
+           <input type="text" name="acctInfo_OLDBANK_CODE" jwcid="@TextField" value="ognl:consign.BANK_CODE" style="display:none"/>
+		   <input type="text" name="acctInfo_OLDBANK_ACCT_NO" jwcid="@TextField" value="ognl:consign.BANK_ACCT_NO" style="display:none"/>
+		   <input type="text" name="acctInfo_OLDSTART_CYCLE_ID" jwcid="@TextField" value="ognl:consign.START_CYCLE_ID"  style="display:none"/>
+		   <input type="text" name="acctInfo_OLDEND_CYCLE_ID" jwcid="@TextField" value="ognl:consign.END_CYCLE_ID" style="display:none"/>
+		   <input type="text" name="acctInfo_OLDPAY_MODE_CODE" jwcid="@TextField" value="ognl:consign.PAY_MODE_CODE" style="display:none"/>
+		   <input type="text" name="acctInfo_OLDSUPER_BANK_CODE" jwcid="@TextField" value="ognl:consign.SUPER_BANK_CODE" style="display:none"/>
+		   <input type="text" name="acctInfo_OLDPAY_NAME" jwcid="@TextField" value="ognl:consign.BANK_ACCT_NAME" style="display:none"/>
+		   <input type="text" name="GROUP_MGR_CUST_NAME" jwcid="@TextField" value="ognl:consign.GROUP_MGR_CUST_NAME" style="display:none"/>		   
+		   <input type="text" name="GROUP_MGR_SN" jwcid="@TextField" value="ognl:consign.GROUP_MGR_SN" style="display:none"/>
+		   <input jwcid="@Any" name="CUST_ID_HIDE" id="CUST_ID_HIDE" value="0" style="display:none"/>
+		   <input type="hidden" jwcid="@Any" name="acctInfo_DELETETAG" id="acctInfo_DELETETAG" value="0" style="display:none"/>
+		   <textarea jwcid="@TextArea" id="pam_NOTIN_GROUP_ID" name="pam_NOTIN_GROUP_ID" value="ognl:groupInfo.GROUP_ID" style="display:none"></textarea>
+		   <input jwcid="@Any" name="GROUP_ACCT_DEL" id="GROUP_ACCT_DEL" value="ognl:condition.GROUP_ACCT_DEL_CLASS_PRV" style="display:none"/>
+		   
+		   <input type="hidden" jwcid="@Any" name="acctInfo_isTTGrp" id="acctInfo_isTTGrp" value="ognl:isTTGrp" style="display:none"/>
+		   <input type="hidden" jwcid="@Any" name="acctInfo_GROUPCUSTCODE" id="acctInfo_GROUPCUSTCODE" value="" style="display:none"/>
+		   
+		   
+		   
+    </div>
+	<!--隐藏区域结束-->
+		
+  </div>   
+<!-- 编辑区域 结束 -->   
+ 			   <input type="hidden" jwcid="@Any" name="GROUP_PRODUCT_ID" id="GROUP_PRODUCT_ID" value="ognl:productId" style="display:none"/>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script type="text/javascript"> 
+$(document).ready(function() {
+	var groupId = $("#pam_NOTIN_GROUP_ID").val();
+	$("#GROUP_ID_NAME").val(groupId);
+});
+</script>
+</body>
+</html>

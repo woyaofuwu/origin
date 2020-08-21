@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>减免费用情况查询</title>
+<script jwcid="@Script" src="person/sundryquery/deratefee/scripts/deratefee.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">减免费用情况查询</div>
+	</div>
+	<!-- 条件区开始 -->
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+	        <li class="li">
+				<span class="label"><span class="e_required">业务类型：</span></span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_TRADE_TYPE"  id="cond_TRADE_TYPE" 
+						source="ognl:tradeTypeList" textField="PARA_CODE1" valueField="PARAM_CODE"
+						value="ognl:condition.cond_TRADE_TYPE" desc="业务类型"  nullable="no" />
+					</span></span></span>
+			</li>
+	        <li class="li">
+				<span class="label"><span class="e_required">起始日期：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" desc="起始日期"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">终止日期：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" value="ognl:condition.cond_END_DATE" 
+						minName="cond_START_DATE" desc="终止日期" afterAction="chgEndDateSynStartDate(this,'cond_START_DATE')"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">受理业务区：</span></span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_AREA_CODE"  id="cond_AREA_CODE" 
+						source="ognl:arList" textField="AREA_NAME" valueField="AREA_CODE"
+						value="ognl:condition.cond_AREA_CODE" desc="受理业务区"  nullable="no" />
+					</span></span></span>
+			</li> 
+			<li class="li">
+				<span class="label">起始工号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_START_STAFFID" id="cond_START_STAFFID" value="ognl:condition.cond_START_STAFFID" 
+						 onblur="completeEndStaffId(this, 'cond_END_STAFFID');"
+						 onKeyUp="synStaffIdOnkeyup(this, 'cond_END_STAFFID');"
+						 desc="起始工号"  maxLength="8" equsize="8" nullable="yes" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">终止工号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_END_STAFFID" id="cond_END_STAFFID" value="ognl:condition.cond_END_STAFFID" 
+						 onKeyUp="inputCtrlForStaff(this)" desc="终止工号"  maxLength="8" equsize="8" nullable="yes" />
+				</span></span>
+			</li>
+	    </ul>
+        <div class="submitPlace"></div>
+		<div class="submit" id="USER_SUBMIT">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryDerateFee();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form"  onclick="resetWeb()"><i class="e_ico-search"></i><span>重 置</span></button>
+		</div>
+	</div>
+	<!-- 条件区结束 -->
+	
+	
+	
+	 <div class="c_title c_title-2">
+		 <div class="text">查询结果</div>
+		 <div class="fn">
+			      <span jwcid="@Export" name="exportFilePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100973"
+					  config="export/sundryquery/other/DerateFeeList.xml" fileName="减免费用信息" cond=QueryCondPart/>
+					<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+						<i class="e_ico-print"></i><span>打印</span>
+				    </button>
+     	</div>
+	</div>
+	 	   
+	<!-- 表格区开始-->
+	<div id="QueryListPart" jwcid="QueryListPart@Part" optimize="true">
+	  
+			 <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+				<table jwcid="@Table" name="printTable" id="printTable">
+					<thead>
+					<tr>
+						<th>手机号码</th>
+						<th>业务类型</th>
+						<th>原费用(单位：元)</th>
+						<th>减免费用(单位：元)</th>
+						<th onclick="Wade.dom.sortTable('sortedTable',4,'string')">完工时间</th>
+						<th onclick="Wade.dom.sortTable('sortedTable',5,'string')">受理员工</th>
+						<th onclick="Wade.dom.sortTable('sortedTable',6,'string')">受理部门</th>
+                        <th>备注</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE1"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE3"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE4"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE5"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE6"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE7"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE8"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE9"/></td>
+					</tr>                                               
+					</tbody>
+				</table>
+			</div>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryDerateFee" pageSize="10" count="ognl:count"></div>		
+			<!-- 翻页 结束 -->
+		
+	  </div>
+	  <!-- 表格区结束 -->
+  </div>
+    <!-- 区域结束 -->
+  </div></div>
+ </body>
+</html>

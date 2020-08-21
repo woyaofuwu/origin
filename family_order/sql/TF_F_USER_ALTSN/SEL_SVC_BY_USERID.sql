@@ -1,0 +1,30 @@
+SELECT A.PARTITION_ID,
+       to_char(A.USER_ID) USER_ID,
+       A.SERVICE_ID,
+       A.MAIN_TAG,
+       to_char(A.START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+       to_char(A.END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+       A.UPDATE_TIME,
+       A.UPDATE_STAFF_ID,
+       A.UPDATE_DEPART_ID,
+       A.REMARK,
+       A.RSRV_NUM1,
+       A.RSRV_NUM2,
+       A.RSRV_NUM3,
+       A.RSRV_NUM4,
+       A.RSRV_NUM5,
+       A.RSRV_STR1,
+       A.RSRV_STR2,
+       A.RSRV_STR3,
+       A.RSRV_STR4,
+       A.RSRV_STR5,
+       A.RSRV_DATE1,
+       A.RSRV_DATE2,
+       A.RSRV_DATE3,
+       A.RSRV_TAG1,
+       A.RSRV_TAG2,
+       A.RSRV_TAG3
+  FROM tf_f_user_svc A
+ WHERE user_id = TO_NUMBER(:USER_ID)
+   AND partition_id = MOD(TO_NUMBER(:USER_ID), 10000)
+   And Sysdate Between A.START_DATE And A.End_Date

@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>自助终端资料管理</title>
+<script language="JavaScript" src="person/selfhelp/scripts/terminalmanage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">自助终端资料管理</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			<span class="label">分公司：</span>
+			<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE" source="ognl:cityInfo"
+					textField="AREA_NAME" valueField="AREA_CODE" titleField="AREA_NAME" value="ognl:condition.CITY_CODE" desc="分公司" nullable="yes"/>
+			</span></span></span>
+		    </li>
+		    <li class="li">
+				<span class="label">渠道编码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_DEPART_CODE" 
+						id="cond_DEPART_CODE" value="ognl:condition.DEPART_CODE" desc="渠道编码"/>
+				</span></span>
+			</li>
+		    <li class="li">
+				<span class="label">自助终端工号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_DEVICE_STAFF_ID" 
+						id="cond_DEVICE_STAFF_ID" value="ognl:condition.DEVICE_STAFF_ID" desc="自助终端工号"/>
+				</span></span>
+		    </li>
+		    <li class="li">
+				<span class="label">设备状态：</span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_REMOVE_TAG" id="cond_REMOVE_TAG" source="ognl:pageutil.getStaticList('SELF_HELP_STATUS')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.REMOVE_TAG" desc="设备状态" nullable="yes"/>
+				</span></span></span>
+		    </li>
+		    <li class="li">
+				<span class="label">是否欠费：</span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_OWE_TAG" id="cond_OWE_TAG" source="ognl:pageutil.getStaticList('SELF_HELP_YES_NO')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.OWE_TAG" desc="是否欠费" nullable="yes"/>
+				</span></span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="queryTerminals()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">查询结果</div>
+		<div class="fn">
+			 <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="1500"  beforeAction="" 
+				action="" config="export/other/TerminalQuery.xml" fileName="自助终端信息" cond=QueryCondPart/>
+		</div>
+		<div class="fn"><button type="button" class="e_button"  onclick="delTerminal()"><i class="e_ico-delete"></i><span>删除</span></button></div>
+		<div class="fn"><button type="button" class="e_button"  onclick="addTerminal()"><i class="e_ico-add"></i><span>新增</span></button></div>
+	</div>
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-15">
+	<div class="c_table ">
+		<table jwcid="@Table" name="TerminalInfoTable" id="TerminalInfoTable" scroll="true">
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="check_ctrl" name="check_ctrl" onclick="checkedAll('terminalList',checked);"/></th>
+					<th>分公司</th>
+                    <th>渠道编码</th>
+                    <th>自助终端工号</th>
+                    <th>设备资产编码</th>
+                    <th>设备资产标识</th>
+                    <th>设备投放时间</th>
+                    <th>投放网点</th>
+                    <th>安装模式</th>
+                    <th>已租时长</th>
+                    <th>最后销账月份</th>
+                    <th>已缴纳金额</th>
+                    <th>未缴纳金额</th>
+                    <th>预存款</th>
+                    <th col="REMOVE_TAG">设备状态</th>
+                    <th>设备归属</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="terminalInfos" id="terminalInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">								
+				    <td>
+						<input type="checkbox" id="checkid" name="terminalList" jwcid="@Any" value="ognl:info.DEVICE_ID"/>
+				    </td>
+				    <td><span jwcid="@Insert" value="ognl:info.CITY_CODE"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.DEPART_CODE"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.DEVICE_STAFF_ID"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.DEVICE_NUMBER"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.DEVICE_ID"/></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.OPEN_DATE)"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.OPEN_ADDRESS"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SELF_HELP_OPEN_MODE', info.OPEN_MODE)"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.RENT_MONTHS"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.LAST_ACCT_MONTH"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.FEE/100"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.BALANCE/100"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.RECV_FEE/100"/></td>
+                    <td><span jwcid="@Insert" value='ognl:!"0".equals(info.REMOVE_TAG)?"注销":"正常"'/></td>
+                    <td><span jwcid="@Insert" value='ognl:"01".equals(info.BELONG_TO)?"移动购置":"02".equals(info.BELONG_TO)?"渠道自购":""'/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryTerminals" pageSize="20" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+
+<!-- 处理表单 开始 -->
+<div class="c_form c_form-col-3" id="DealInfoPart" jwcid="DealInfoPart@Part" style="display:none;">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">分公司：</span></span>
+			<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE" source="ognl:cityInfo"
+					textField="AREA_NAME" valueField="AREA_CODE" titleField="AREA_NAME" value="ognl:condition.CITY_CODE" desc="分公司" nullable="no"/>
+			</span></span></span>
+	    </li>
+	    <li class="li">
+			<span class="label"><span class="e_required">渠道编码：</span></span>
+			<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_DEPART_CODE" 
+					id="cond_DEPART_CODE" value="ognl:condition.DEPART_CODE" desc="渠道编码" maxLength="8" nullable="no"/>
+			</span></span>
+		</li>
+	    <li class="li">
+			<span class="label"><span class="e_required">自助终端工号：</span></span>
+			<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_DEVICE_STAFF_ID" 
+					id="cond_DEVICE_STAFF_ID" value="ognl:condition.DEVICE_STAFF_ID" desc="自助终端工号" maxLength="8" nullable="no"/>
+			</span></span>
+	    </li>
+	    <li class="li">
+			<span class="label"><span class="e_required">设备投放时间：</span></span>
+			<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" 
+				name="cond_OPEN_DATE" id="cond_OPEN_DATE" value="ognl:condition.OPEN_DATE" nullable="no" desc="设备投放时间" /> 
+			</span></span>
+	    </li>
+	    <li class="li">
+			<span class="label"><span class="e_required">设备归属：</span></span>
+			<span class="e_select"><span><span>
+			<select jwcid="@Select" name="cond_BELONG_TO" id="cond_BELONG_TO" source="ognl:pageutil.getStaticList('BELONG_TO')"
+				textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.BELONG_TO" desc="设备归属" nullable="no"/>
+			</span></span></span>
+	    </li>
+	    <li class="li">
+			<span class="label"><span class="e_required">设备资产编码：</span></span>
+			<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_DEVICE_NUMBER" 
+					id="cond_DEVICE_NUMBER" value="ognl:condition.DEVICE_NUMBER" desc="设备资产编码" nullable="no"/>
+			</span></span>
+	    </li>
+	    <li class="li">
+			<span class="label"><span class="e_required">投放网点：</span></span>
+			<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_OPEN_ADDRESS" 
+					id="cond_OPEN_ADDRESS" value="ognl:condition.OPEN_ADDRESS" desc="投放网点" nullable="no"/>
+			</span></span>
+	    </li>
+	    <li class="li">
+			<span class="label"><span class="e_required">安装模式：</span></span>
+			<span class="e_select"><span><span>
+			<select jwcid="@Select" name="cond_OPEN_MODE" id="cond_OPEN_MODE" source="ognl:pageutil.getStaticList('SELF_HELP_OPEN_MODE')"
+				textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.OPEN_MODE" desc="安装模式" nullable="no"/>
+			</span></span></span>
+	    </li>
+	</ul>
+	<div class="submitPlace"></div>
+	<div class="c_submit">
+		<button type="button" class="e_button-form" onclick="saveTerminal()"><i class="e_ico-ok"></i><span>保存</span></button>
+		<button type="button" class="e_button-form" onclick="reset()"><i class="e_ico-refresh"></i><span>重置</span></button>
+	</div>
+</div>
+<!-- 处理表单 结束 -->
+
+</body>
+</html>

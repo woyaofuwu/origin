@@ -1,0 +1,6 @@
+UPDATE td_s_commpara
+   SET end_date=sysdate  
+ WHERE subsys_code=:SUBSYS_CODE
+   AND param_attr=:PARAM_ATTR
+   AND param_code=:PARAM_CODE
+   AND eparchy_code='ZZZZ'

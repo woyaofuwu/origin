@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_specialepay(partition_id,user_id,user_id_a,acct_id,acct_id_b,payitem_code,start_cycle_id,end_cycle_id,bind_type,limit_type,limit,complement_tag,rsrv_str1,rsrv_str2,rsrv_str3,update_staff_id,update_depart_id,update_time)
+ VALUES(MOD(to_number(:USER_ID),10000),TO_NUMBER(:USER_ID),TO_NUMBER(:USER_ID_A),TO_NUMBER(:ACCT_ID),TO_NUMBER(:ACCT_ID_B),:PAYITEM_CODE,:START_CYCLE_ID,:END_CYCLE_ID,:BIND_TYPE,:LIMIT_TYPE,TO_NUMBER(:LIMIT),:COMPLEMENT_TAG,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'))

@@ -1,0 +1,609 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>修改集团属性</title>
+<script jwcid="@Script" type="text/javascript"
+	src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript"
+	src="scripts/iorder/igroup/common/grpbusipage.js"></script>
+<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+<script jwcid="@Script" type="text/javascript"
+	src="iorder/igroup/esop/groupattrchange/script/groupattrchange.js"></script>
+</head>
+<body jwcid="@Body" >
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="c_scroll" jwcid="QryAllPart@Part" >
+		<div class="l_padding">
+			<!-- 隐藏域 开始 -->
+			<input jwcid="@Hidden" id="BPM_TEMLET_ID"
+						name="BPM_TEMLET_ID" value="BPM_TEMLET_ID" />
+			<input jwcid="@Hidden" name="GROUP_IDA" value="ognl:info.GROUP_IDA"  desc="原集团GROUP_ID" />
+			<input jwcid="@Hidden" name="GROUP_IDB" value="ognl:info.GROUP_IDB"  desc="归属集团GROUP_ID" />
+			<input jwcid="@Hidden" name="IS_READONLY" value="ognl:info.readonly"  desc="" />
+			<input jwcid="@Hidden" name="IBSYSID" value="ognl:info.IBSYSID"  desc="" />
+			<div style="display:none" id="APPLY_ACCT_INFO"><span jwcid="@Insert" value="ognl:info.ACCT_INFO" desc="开通时所填账户信息"/></div>
+			<input jwcid="@Hidden" name="CONTRACT_ID" value="ognl:info.CONTRACT_ID"  desc="" />
+			<input jwcid="@Hidden" name="BUSIFORM_ID" value="ognl:info.BUSIFORM_ID"  desc="" />
+			<!-- 隐藏域 结束 -->
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">客户信息（原归属方）</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_space-c"></div>
+			<!-- 参数 开始 -->
+			<div jwcid="groupAOldBasePart@Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">客户名称</div>
+						<div class="value">
+							<input jwcid="@Insert" type="text" readonly="readnoly"
+								value="ognl:info.CUST_NAME" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">客户编码</div>
+						<div class="value">
+							<input jwcid="@Insert" type="text" readonly="readnoly"
+								value="ognl:info.GROUP_ID" />
+							<input jwcid="@Hidden" name="GROUP_ID_A" value="ognl:info.GROUP_ID"/>
+						</div>
+					</li>
+					<li class="link" ontap="showPopup('qrygroup','qryGroupA',true)">
+						<div class="label">其他客户信息</div>
+						<div class="value">
+							<input type="text" readonly="readnoly" />
+						</div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<!-- 客户信息 开始 -->
+			<div jwcid="GrpCustPart@Part" >
+		    	<div jwcid="@ecserv:GrpCustInfo" groupInfo="ognl:groupInfo" readonly="ognl:info.readonly"/>
+		    </div>
+			<!-- 客户信息 结束 -->
+			<div class="c_space"></div>
+			<div class="c_title">
+				<div class="text">选择商品</div>
+			</div>
+			<div jwcid="offerPart@Part" id="offerPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">变更前产品编码</div>
+						<div class="value">
+							<input jwcid="@Select" name="pattr_PRODUCT_ID" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('EOP_PRODUCT_CHANGE_MULTI')" textField="DATA_NAME" valueField="DATA_ID" 
+							value="ognl:info.PRODUCT_ID" nullable="no" desc="变更产品编码" disabled="ognl:info.readonly"/>
+						</div>
+					</li>
+					
+					
+						<li ontap="addItem();" class="link required" onclick="addItem();">
+							<div class="label">选择产品</div>
+							<div class="value"><span class="e_mix">
+								<input jwcid="@Hidden" name="cond_OFFER_NAME" id="cond_OFFER_NAME" value="ognl:offer.OFFER_NAME"/>
+								<input jwcid="@TextField" name="cond_OFFER_ID" id="cond_OFFER_ID" value="ognl:info.OFFER_CODE"/>
+								<span class="e_ico-check"></span>
+							</span></div>
+						</li>
+				
+					<!-- <div jwcid="@Conditional" condition="ognl:info.readonly == 'true'">
+						<li class="required">
+							<div class="label">产品名称</div>
+							<div class="value">
+								<input jwcid="@TextField" name="cond_OFFER_NAME" id="cond_OFFER_NAME" value="ognl:info.OFFER_NAME" disabled="disabled"/>
+							</div>
+						</li>
+					</div> -->
+					<li class="link required" id="DATALINE_OPER">
+						<div class="label">产品服务</div>
+						<div class="value">
+							<span jwcid="@Segment" name="DATALINE_OPER_TYPE" textField="DATA_NAME" valueField="DATA_ID" 
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('DATALINE_OPER_TYPE')" value="ognl:info.NE_OPER_TYPE" 
+							onchange="operTypeOnChange();" disabled="ognl:info.readonly"></span>
+						</div>
+					</li>
+				</ul>
+				<div jwcid="grpserial@Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1"> 
+					<ul>
+						<li class="link required" style="" id="DATALINE_PRODUCT_ID_B">
+							<div class="label">变更后产品编码</div>
+							<div class="value">
+								<input jwcid="@Select" name="pattr_PRODUCT_ID_B" id="" source="ognl:groupInfo.DATALINE_PRODUCT_ID_B_LIST" 
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:groupInfo.PRODUCT_ID_B!=null?groupInfo.PRODUCT_ID_B:info.PRODUCT_ID" 
+								nullable="yes" desc="变更后产品编码"  disabled="ognl:info.readonly" onchange="updateForProductIdB()"/>
+							</div>
+						</li>
+						 <li class="link required" style="display:none" id="DATALINE_SERIAL_NUMBER">
+							<div class="label">过户后归属方服务号码</div>
+							<div class="value">
+								<input jwcid="@Select" name="pattr_GRP_SERIAL_NUMBER_B" id="pattr_GRP_SERIAL_NUMBER_B" source="ognl:groupInfo.DATALINE_SERIAL_NUMBER_LIST" 
+								textField="SERIAL_NUMBER" valueField="SERIAL_NUMBER" value="ognl:groupInfo.DATALINE_SERIAL_NUMBER" 
+								nullable="yes" desc="归属集团产品服务号码"  disabled="ognl:info.readonly"/>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 合同信息 开始 -->
+			<div jwcid="ContractInfoPart@Part" id="CONTRACT_INFO" name="CONTRACT_INFO">
+				<div jwcid="@ecserv:ContractInfo"  contractInfo=""  info ="ognl:info" />
+			</div>
+			<!-- 合同信息 结束 -->
+			<div class="c_title">
+				<div class="text">专线详细信息</div>
+			</div>
+			<!-- 表格 开始 -->
+			<div class="l_queryResult">
+				<div class="c_table" jwcid="QryResultPart@Part" element="div">
+					<table name="myTable" id="myTable" class="c_table c_table-checkbox"
+						jwcid="@Table">
+						<thead>
+							<tr>
+								<th col="TRADE_ID_SUB">
+								<th class="e_center"><input type="checkbox" id="checkbox"
+									name="checkbox" ontap="checkedAll('TRADES', this.checked)"
+									class="e_checkbox" checked="ognl:info.readonly" jwcid="@Any"/></th>
+								</th>
+								<th class="e_center" col="SERIAL_NUMBER_B">成员服务号码</th>
+								<th class="e_center" col="PRODUCTNO">专线实例号</th>
+								<th class="e_center" col="START_DATE">生效时间</th>
+								<th class="e_center" col="END_DATE">结束时间</th>
+								<!-- <th class="e_center" col="DATALINR_TITLE">专线主题</th> -->
+								<th class="e_center" col="USER_ID_B">成员用户编码</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:offers" value="ognl:offer"
+								index="ognl:rowIndex" element="tr">
+								<td>
+								<td class="e_center"><input type="checkbox" id="TRADES"
+									name="TRADES" jwcid="@Any" checked="ognl:info.readonly"/></td>
+								</td>
+								<td class="e_center"><span jwcid="@Insert"
+									value="ognl:offer.SERIAL_NUMBER_B" /></td>
+								<td class="e_center"><span jwcid="@Insert"
+									value="ognl:offer.PRODUCTNO" /></td>
+								<td class="e_center"><span jwcid="@Insert"
+									value="ognl:offer.START_DATE" /></td>
+								<td class="e_center"><span jwcid="@Insert"
+									value="ognl:offer.END_DATE" /></td>
+								<!-- <td class="e_center"><span jwcid="@Insert"
+									value="ognl:offer.TITLE" /></td> -->
+								<td class="e_center"><span jwcid="@Insert"
+									value="ognl:offer.USER_ID_B" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+			</div>
+
+			<div class="c_space-c"></div>
+			<!-- 表单 开始 -->
+			<!-- <div class="c_space"></div> -->
+			
+			<!-- 订单级信息 开始 -->
+			<div jwcid="@ecserv:OrderInfo" info ="ognl:info" disabled="ognl:info.readonly"/> 
+			<!-- 订单级信息 结束 -->
+			<!-- 公共信息 开始 -->
+			<div class="c_title">
+				<div class="text">公共信息</div>
+			</div>
+			<div jwcid="commonPart@Part" id="commonPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">业务范围</div>
+						<div class="value">
+							<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+							value="ognl:info.BIZRANGE==null?'本地市':info.BIZRANGE" nullable="no" desc="业务范围" disabled="ognl:info.readonly"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">资管系统受理建设单位</div>
+						<div class="value">
+							<input jwcid="@Select" name="pattr_BUILDINGSECTION" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BUILDING_SECTION')" textField="DATA_NAME" valueField="DATA_ID" 
+							value="ognl:info.BUILDINGSECTION" nullable="no" desc="资管系统受理建设单位" disabled="ognl:info.readonly"/>
+						</div>
+					</li>
+					<!-- <li class="link required">
+						<div class="label">产品服务号码</div>
+						<div class="value">
+							<input jwcid="@Select" name="pattr_SERIAL_NUMBER" source="ognl:info.DATALINE_SERIAL_NUMBER_LIST" 
+							textField="SERIAL_NUMBER" valueField="SERIAL_NUMBER" value="ognl:info.DATALINE_SERIAL_NUMBER" 
+							nullable="no" desc="产品服务号码" />
+						</div>
+					</li> -->
+					<input jwcid="@Hidden" name="pattr_USER_ID_A" value="ognl:info.USER_ID_A" desc="原集团userId" />
+				</ul>
+			</div>
+			<!-- 公共信息 结束 -->
+			<!-- 账户操作 开始 -->
+			<!-- <div jwcid="@ecserv:AcctDeal"  confCrmInfo="ognl:AcctDeal"  info ="ognl:info" /> -->
+			<div>
+			<!-- 标题 开始 -->
+			<div id="acctDealInfoGroupChange">
+				<div class="c_title">
+					<div class="text">账户信息</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div jwcid="ConfCrmInfoPart@Part" id="ConfCrmInfoPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+						<ul>
+						<li class="link">
+							<div class="label">账户操作</div>
+							<div class="value">
+								<span jwcid="@Segment" id="cond_ACCT_DEAL" name="cond_ACCT_DEAL" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IF_CHOOSE_ACCTCRM')" value="ognl:info.ACCT_DEAL"
+													textField="DATA_NAME" valueField="DATA_ID"  onchange="acctDealChangeGroupAttr(this);"></span>
+							</div>
+						</li>
+						<li id="i_acctSelPart" style="display:" class="link required" ontap="showAcctAddPopupGroupAttr(this);">
+							<div class="label">新增账户</div>
+							<div class="value">
+							</div>
+							<div class="more"></div>
+						</li>
+						<li id="i_acctCombPart" style="display:none" class="link required" ontap="showAcctCombPopupGroupAttr(this);">
+							<div class="label">已有账户</div>
+							<div class="value">
+							</div>
+							<div class="more"></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 表单 结束 -->
+			</div>
+			<!-- 账户操作结束 结束 -->
+			<div class="c_title">
+				<div class="text">附件信息</div>
+			</div>
+			<div class="c_space-c"></div>
+			<div class="c_list c_list-border c_list-line">
+				<ul>
+					<li id="ATTRCHGFILEINFO" class="link required">
+						<div class="label">过户依据</div>
+						<div class="value" placeholder="过户双方线路迁移签字盖章">
+							<input name="ATTR_CHG_FILE" jwcid="@SimpleUpload" title="附件上传"
+								ftpCode="eosdata"  filePath="EOP/other"
+								value="ognl:info.CONTRACT_FILE_ID"  nullable="no"/> 
+							<input jwcid="@Hidden" name="C_FILE_LIST_ATTR"  value="ognl:info.CONTRACT_FILE_LIST" desc="合同附件ID"/>
+							<span style="display:none" id="C_FILE_LIST_ATTACH">
+								<span jwcid="@Insert"  value="ognl:info.C_FILE_LIST_ATTACH">
+								</span>
+							</span>
+							
+						</div>
+					</li>
+					<li  class="link required merge-3">
+						<div class="label">业务协议</div>
+						<div class="value"><span class="e_mix" tip="迁出方原协议和迁入方现协议">
+							<input jwcid="@TextField" name="ATTACH_FILE_NAME" value="ognl:info.ATTACH_FILE_NAME" ontap="showPopup('upfilegroup','upbusifile',true)" readonly="true" nullable="no" desc="业务协议"/>
+							<input jwcid="@Hidden" name="ATTACH_FILE_ID" value="ognl:info.ATTACH_FILE_ID"/>
+							<span style="display:none" id="ATTACH_FILE_LIST" ><span jwcid="@Insert" value = "ognl:info.ATTACH_FILE_LIST"></span></span>
+							<span class="e_ico-upload" ontap="showPopup('upfilegroup','upbusifile',true);"></span>
+						</span></div>
+						<!-- <div class="label">业务协议</div>
+						<div class="value">
+							<input  title="选择" ontap="showPopup('upfilegroup','upbusifile',true)" class="e_ico-check" style="height:3.57em"/> 
+						</div> -->
+					</li>
+
+				</ul>
+			</div>
+			<!-- <div class="c_title" >
+				<div class="text required">上传业务协议</div>
+				<div class="fn">
+					<ul>
+						<li ontap="showPopup('upfilegroup','upbusifile',true)"><span
+							class="e_ico-check" style="height:3.57em"></span><span>选择</span>
+						</li>
+					</ul>
+				</div>
+			</div> -->
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy"
+					ontap="window.reloadNav();">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green"
+					ontap="submitChangeApply();">提交</button>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="mypop" class="c_popup c_popup-fixed">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="chooseOfferItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">已订购产品</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<div class="c_list c_list-form" jwcid="OfferListPart@Part">
+							<input jwcid="@Hidden" name="MEB_OFFER_CODE" id="MEB_OFFER_CODE" value="ognl:info.MEB_OFFER_CODE" disabled="disabled"/>
+							<input jwcid="@Hidden" name="MEB_OFFER_NAME" id="MEB_OFFER_NAME" value="ognl:info.MEB_OFFER_NAME" disabled="disabled"/>
+							<input jwcid="@Hidden" name="MEB_OFFER_ID" id="MEB_OFFER_ID" value="ognl:info.MEB_OFFER_ID" disabled="disabled"/>
+							<input jwcid="@Hidden" name="OFFER_CODE" id="OFFER_CODE" value="ognl:info.OFFER_CODE" disabled="disabled"/>
+							<input jwcid="@Hidden" name="OFFER_NAME" id="OFFER_NAME" value="ognl:info.OFFER_NAME" disabled="disabled"/>
+							<input jwcid="@Hidden" name="OFFER_ID" id="OFFER_ID" value="ognl:info.OFFER_ID" disabled="disabled"/>
+							<ul jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+								element="ul">
+								<li id="ognl:'cata_'+info.OFFER_INS_ID">
+									<div class="main">
+										<div class="title">
+											<span jwcid="@Insert" name="OFFER_NAME"
+												value="ognl:info.OFFER_NAME" /> <span jwcid="@Hidden"
+												name="OFFER_INS_ID" value="ognl:info.OFFER_INS_ID" />
+										</div>
+
+										<div jwcid="@Conditional"
+											condition="ognl:info.SERIAL_NUMBER != null && info.SERIAL_NUMBER != ''">
+											<div class="content">
+												服务号码：<span jwcid="@Insert" name="SERIAL_NUMBER"
+													value="ognl:info.SERIAL_NUMBER" />
+											</div>
+										</div>
+										<div jwcid="@Conditional"
+											condition="ognl:info.GROUP_ID != null && info.GROUP_ID != ''">
+											<div class="sub">
+												<div clss="main">
+													<div class="title"></div>
+													<div class="content">
+														集团名称：<span jwcid="@Insert" name="GROUP_NAME"
+															value="ognl:info.GROUP_NAME" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="side">
+										<button jwcid="@Any"
+											class="e_button-s e_button-r e_button-blue"
+											SERIAL_NUMBER="ognl:info.SERIAL_NUMBER"
+											GROUP_NAME="ognl:info.GROUP_NAME" USER_ID="ognl:info.USER_ID"
+											PRODUCT_ID="ognl:info.PRODUCT_ID" PRODUCT_NAME = "ognl:info.OFFER_NAME"
+											ontap="chooseOfferInfo(this);">
+											<span class="e_ico-change"></span> <span>选择</span>
+										</button>
+										<input style="display: none" jwcid="@Hidden"
+											id="cond_SACCESS_NUM" name="cond_ACCESS_NUM"
+											value="ognl:info.ACCESS_NUM" />
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="c_space"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 弹窗 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qrymygroup"
+		class="c_popup c_popup-fixed c_popup-half">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="qryGroupB">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">归属集团信息</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<!-- 客户信息 开始 -->
+						<div jwcid="groupBasePart@Part" id="groupBasePart"
+							class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+							<ul>
+								<li class="link required" style="width: 100%">
+									<div class="label">集团编码</div>
+									<div class="value">
+										<span class="e_mix"> <input jwcid="@TextField"
+											name="cond_GROUP_IDB" id="cond_GROUP_IDB"
+											value="ognl:groupInfo.GROUP_ID" desc="集团编码" nullable="no" />
+											<button class="e_button-blue" ontap="queryGroupInfoB();">
+												<span class="e_ico-check"></span> <span>查询</span>
+											</button>
+										</span>
+									</div> <!-- 隐藏域 开始 --> <input style="display: none" jwcid="@Hidden"
+									id="cond_USER_ID_B" name="cond_USER_ID_B" value="" /> <!-- 隐藏域 结束 -->
+								</li>
+							</ul>
+							<ul>
+								<li class="link required" style="width: 50%">
+									<div class="label">客户名称</div>
+									<div class="value">
+										<input jwcid="@TextField" name="cond_CUST_NAME"
+											value="ognl:groupInfo.CUST_NAME" disabled="true" />
+									</div>
+								</li>
+								<li style="width: 50%"><span class="label">客户地址：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:groupInfo.GROUP_ADDR"></span></span></li>
+							</ul>
+							<ul>
+								<li style="width: 50%"><span class="label">客户联系电话：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:groupInfo.GROUP_CONTACT_PHONE"></span></span></li>
+								<li style="width: 50%"><span class="label">客户邮编：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:groupInfo.POST_CODE"></span></span></li>
+							</ul>
+							<ul>
+								<li style="width: 50%"><span class="label">客户服务等级：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTGROUP_SERV_LEVEL', groupInfo.SERV_LEVEL)"></span></span>
+								</li>
+								<li style="width: 50%"><span class="label">客户所属地州：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:groupInfo.EPARCHY_NAME"></span></span></li>
+
+
+							</ul>
+							<ul>
+								<li style="width: 50%"><span class="label">客户所属市县：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:groupInfo.CITY_NAME"></span></span></li>
+								<li style="width: 50%"><span class="label">集团客户行业：</span> <span
+									class="value"><span jwcid="@Insert"
+										value="ognl:groupInfo.CALLING_TYPE_NAME"></span></span></li>
+							</ul>
+						</div>
+						<!-- 客户信息 结束 -->
+						<div class="c_space"></div>
+					</div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue"
+							ontap="hidePopup(this)">返回上页</button>
+					</div>
+					<!-- 提交 结束 -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 弹窗 结束 -->
+
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="upfilegroup"
+		class="c_popup c_popup-fixed c_popup-half">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="upbusifile">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">业务协议</div>
+				</div>
+				
+
+						<div name="fileupload" jwcid="@Upload" title="附件上传"
+							fileSize="20"
+							fileLimit="10"
+							ftpCode="eosdata" filePath="EOP/other"
+							fileData="ognl:info.BUSI_FILE_ID"></div>
+							
+
+						
+					</div>
+				
+			</div>
+		</div>
+	
+	<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup" class="c_popup" mask="false">	
+<!-- ===========================================第一层弹出 开始============================================ -->
+	<div class="c_popupGroup">
+		
+		<!-- 账户新建开始 -->				
+		<div jwcid="accountPopupItemGroupAttr@ecserv:EnterpriseAcctMgr" 
+			callback="accountPopupItemCallbackGroupAttr" isCommit="false" isClear="false"></div>
+		<!-- 账户新建结束 -->
+		
+		<!-- 账户合并 开始 -->
+		<div class="c_popupItem" id="chooseEcAccount">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup('popup')">选择账户</div>
+			</div>
+			<div jwcid="@Scroller" name="acctScroll" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-col-1 c_list-line" jwcid="ecAccountListPart@Part">
+					<ul id="ecAccountUL">
+						<li class="link" jwcid="@Foreach" source="ognl:ecAccountList" value="ognl:ecAccount" element="li" id="ognl:ecAccount.ACCT_ID" ontap="selectAccountGroupAttr(this);">
+							<div class="main">
+								<div class="title">
+									<span jwcid="@Insert" name="ACCT_NAME" value="ognl:ecAccount.PAY_NAME" />
+								</div>
+								<div class="content">
+									账户编码：<span jwcid="@Insert" name="ACCT_ID" value="ognl:ecAccount.ACCT_ID" />	<br/>
+									账户类型：<span jwcid="@Insert" name="PAY_MODE_NAME" value="ognl:ecAccount.PAY_MODE_NAME" />
+									生效时间：<span jwcid="@Insert" name="PAY_MODE_NAME" value="ognl:ecAccount.OPEN_DATE" />		
+								</div>
+							</div>									
+						</li>								
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 账户合并 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qrygroup"
+		class="c_popup c_popup-fixed c_popup-half">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="qryGroupA">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">其他客户信息</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<!-- 客户信息 开始 -->
+						<div jwcid="groupABasePart@Part" id="groupABasePart"
+							class="c_param c_param-border c_param-label-6">
+							<ul>
+								<li><span class="label">客户级别：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.CLASS_ID"></span></span></li>
+								<li><span class="label">客户联系人：</span> <span class="value">海南</span>
+								</li>
+								<li><span class="label">客户联系电话：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.GROUP_CONTACT_PHONE"></span></span>
+								</li>
+								<li><span class="label">客户邮编：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.POST_CODE"></span></span></li>
+								<li><span class="label">客户邮箱：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.EMAIL"></span></span></li>
+								<li><span class="label">客户服务等级：</span> <span class="value"><span
+										jwcid="@Insert"
+										value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTGROUP_SERV_LEVEL', info.SERV_LEVEL)"></span></span>
+								</li>
+							</ul>
+						</div>
+						<!-- 集团客户基本信息 结束 -->
+						<!-- 集团客户附加信息 开始 -->
+						<div class="c_param c_param-border c_param-label-6">
+							<ul>
+								<li><span class="label">客户所属地州：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.EPARCHY_NAME"></span></span></li>
+								<li><span class="label">客户所属市县：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.CITY_NAME"></span></span></li>
+								<li><span class="label">集团客户行业：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.CALLING_TYPE_NAME"></span></span></li>
+							</ul>
+						</div>
+						<!-- 集团客户附加信息 结束 -->
+						<!-- 集团客户经理信息 开始 -->
+						<div class="c_param c_param-border c_param-label-6">
+							<ul>
+								<li><span class="label">客户经理：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.CUST_MANAGER_NAME"></span></span>
+								</li>
+								<li><span class="label">客户经理工号：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID"></span></span>
+								</li>
+								<li><span class="label">客户经理电话：</span> <span class="value"><span
+										jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></span></li>
+							</ul>
+						</div>
+						<!-- 客户信息 结束 -->
+						<div class="c_space"></div>
+					</div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue"
+							ontap="hidePopup(this)">返回上页</button>
+					</div>
+					<!-- 提交 结束 -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 弹窗 结束 -->
+</body>
+</html>

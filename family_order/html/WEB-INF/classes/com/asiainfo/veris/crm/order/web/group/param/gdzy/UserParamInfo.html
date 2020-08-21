@@ -1,0 +1,121 @@
+<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">费项信息</div>
+		</div>
+<!-- 标题 结束 -->
+<!-- 区域 开始 -->
+<div>
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-5"><div class="c_table">
+		<table jwcid="BroadbandTable@Table" name="BroadbandTable" rowClick="tableRowClick" >
+			<thead>
+				<tr>
+					<th col="pam_NOTIN_TAG" style="display:none">TAG</th>
+					<th col="pam_NOTIN_OPER_TAG" style="display:none">标示</th>
+					
+					<th col="pam_NOTIN_PROJECT_NAME" >项目名称</th>
+					<th col="pam_NOTIN_FEE_NAME_V"  >收费名称</th>
+					<th col="pam_NOTIN_FEE_NAME" style="display:none">收费名称</th>
+					<th col="pam_NOTIN_FEE_COST" >收费金额(元)</th>
+					<th col="pam_NOTIN_FEE_END_DATE" >收费截止时间</th>
+					<th col="pam_NOTIN_REMARK" >备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:info.GDZY_INFO" value="ognl:element" index="ognl:rowIndex" element="tr" >
+						<td style="display:none">0</td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:element.pam_NOTIN_OPER_TAG" raw="true"/></td>
+						
+					    <td><span jwcid="@Insert" value="ognl:element.pam_NOTIN_PROJECT_NAME" raw="true"/></td>
+					    <td><span jwcid="@Insert" value="ognl:element.pam_NOTIN_FEE_NAME_V" raw="true"/></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:element.pam_NOTIN_FEE_NAME" raw="true"/></td>
+					    <td><span jwcid="@Insert" value="ognl:element.pam_NOTIN_FEE_COST" raw="true"/></td>
+					    <td><span jwcid="@Insert" value="ognl:element.pam_NOTIN_FEE_END_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:element.pam_NOTIN_REMARK" raw="true"/></td>
+				 </tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-20" jwcid="broadbandPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">项目名称：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+					<input name="pam_NOTIN_PROJECT_NAME"   id="pam_NOTIN_PROJECT_NAME" value="" maxlength="100" jwcid="@TextField"   desc="项目名称"  />
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">收费名称：</span></span>
+				<span class="e_elements">
+					<span class="e_select"><span>
+						<select  id="pam_NOTIN_FEE_NAME" name="pam_NOTIN_FEE_NAME" jwcid="@Select"
+									    source="ognl:info.FEENAME_INFO"
+									    textField="DATA_NAME" valueField="DATA_ID" 
+									    value="ognl:info.NOTIN_FEE_NAM" desc="收费名称" onchange="changeFeeName();"/>
+						<input type="hidden" jwcid="@Any" id="pam_NOTIN_FEE_NAME_V" name="pam_NOTIN_FEE_NAME_V" />									    
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">收费金额(元)：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+					<input name="pam_NOTIN_FEE_COST"   id="pam_NOTIN_FEE_COST" value="0"  jwcid="@TextField"   desc="收费金额(元)"  />
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="spanFeeDate" class="e_required">收费截止时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+					<input type="text"  jwcid="pam_NOTIN_FEE_END_DATE@DateField" name="pam_NOTIN_FEE_END_DATE"  
+						value="ognl:info.pam_NOTIN_FEE_END_DATE" desc="收费截止时间" datatype="date" format="yyyy-MM-dd" class="e_input"/>
+					<!--  
+					<input name="pam_NOTIN_FEE_END_DATE"   id="pam_NOTIN_FEE_END_DATE" value="0"  jwcid="@TextField"   desc="收费金额(元)"  />
+					-->
+					</span></span>
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span>备注：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+					<input name="pam_NOTIN_REMARK"   id="pam_NOTIN_REMARK" value="" jwcid="@TextField"   desc="备注"  />
+					<input type="hidden" jwcid="@Any" id="pam_NOTIN_OPER_TAG" name="pam_NOTIN_OPER_TAG" />
+					</span></span>
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span style="color:red">提示:</span></span>
+				<span class="e_elements">
+					<span class="text" style="color:red" >月租费,功能费,增值功能费:按月收取.当月订购,当月生效;当月修改,当月生效;收费截止日期当月正常收费.其他一次性费用:一次性收取,立即生效.<span>
+					</span></span>
+				</span>
+			</li>
+			
+			<textarea jwcid="@TextArea" id="pam_NOTIN_AttrGdzy" name="pam_NOTIN_AttrGdzy" value="" style="display:none"></textarea>
+			<textarea jwcid="@TextArea" id="pam_NOTIN_OLD_AttrGdzy" name="pam_NOTIN_OLD_AttrGdzy"  value="ognl:info.NOTIN_OLD_AttrGdzy"   style="display:none"   />
+			<input jwcid="@TextField"  id="pam_NOTIN_METHOD_NAME" name="pam_NOTIN_METHOD_NAME"  value="ognl:info.NOTIN_METHOD_NAME"  style="display:none"   />
+			<input jwcid="pam_NOTIN_CURRENT_DATE@DateField" name="pam_NOTIN_CURRENT_DATE" value="ognl:info.pam_NOTIN_CURRENT_DATE"  datatype="date" format="yyyy-MM-dd" style="display:none"/>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+	<!-- 表单 结束 -->
+
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button class="e_button-page" id="addBtn" name="addBtn"  type="button"  onclick=" return createData()" ><i class="e_ico-add"></i><span>新增</span></button>
+		<button class="e_button-page" id="delBtn" name="delBtn" type="button"  onclick=" return deleteData()" ><i class="e_ico-delete"></i><span>删除</span></button>
+		<button class="e_button-page" type="button" onclick=" return updateData()" ><i class="e_ico-edit"></i><span>修改</span></button>
+		<button class="e_button-page" type="button" onclick=" return cleanData()" ><i class="e_ico-edit"></i><span>清除</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	</div>
+	<!-- 区域 结束 -->

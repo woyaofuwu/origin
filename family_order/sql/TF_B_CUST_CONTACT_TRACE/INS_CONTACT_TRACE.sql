@@ -1,0 +1,2 @@
+INSERT INTO tf_b_cust_contact_trace(cust_contact_id,accept_month,trade_id,exec_time,trace_type_code,trace_route)
+ VALUES(TO_NUMBER(:CUST_CONTACT_ID),:ACCEPT_MONTH,TO_NUMBER(nvl(:TRADE_ID,f_sys_getseqid('9999','SEQ_CUSTCONTACT_ID'))),TO_DATE(:EXEC_TIME,'YYYY-MM-DD HH24:MI:SS'),:TRACE_TYPE_CODE,:TRACE_ROUTE)

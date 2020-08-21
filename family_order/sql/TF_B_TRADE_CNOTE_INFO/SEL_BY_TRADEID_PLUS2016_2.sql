@@ -1,0 +1,5 @@
+   SELECT CU.PSPT_ID ID_CARD
+             FROM TF_F_CUSTOMER CU
+            WHERE CU.PARTITION_ID = MOD(:CUST_ID, 10000)
+              AND CU.CUST_ID = :CUST_ID
+              AND CU.REMOVE_TAG = '0'

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团电子发票历史查询</title>
+<script jwcid="@Script" language="JavaScript" src="scripts/group/creategrpacct/grpeinvoicehistory.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+    <!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 认证 开始   
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="431"  tradeAction="queryEInvoiceTrade(data)" element="div"></div>
+        认证 结束 -->
+        
+	<!-- 查询区域 -->
+	<div class="c_form" jwcid="queryPart@Part">
+	<ul class="ul">
+	<li class="li ">
+		<span class="label">集团客户ID：</span>
+		<span class="e_input "><span><input jwcid="@TextField" name="cond_GROUP_ID" id="cond_GROUP_ID" type="text"
+		value="ognl:info.cond_GROUP_ID"  nullable="no"  desc="集团编码"/> </span> </span>
+	</li>
+	<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span><input datatype="date" format="yyyy-MM-dd" jwcid="@DateField" name="cond_START_DATE" value="ognl:info.cond_START_DATE"  desc="开始时间"/></span></span>
+	</li>
+	<li class="li ">
+	            <span class="label">结束时间：</span>
+				<span class="e_input"><span><input datatype="date" format="yyyy-MM-dd" jwcid="@DateField" name="cond_END_DATE" value="ognl:info.cond_END_DATE"  desc="结束时间"/></span></span>		
+	</li>
+	<li class="li">
+				<span class="label">发票状态：</span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" 
+					name="cond_PRINT_FLAG" 
+					id="cond_PRINT_FLAG" 
+					textField="DATA_NAME" 
+					valueField="DATA_ID" 
+					source="ognl:pageutil.getStaticList('ELE_POST_STATUS')" 
+					addDefault="true" 
+					value="ognl:info.cond_PRINT_FLAG"
+					defaultText="--所有分类--"></select>
+				</span></span></span>
+	</li> 		
+	</ul>
+	
+	 <div class="queryPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" type="button" onclick="queryByGroupId();"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+	</div>	
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+	<div jwcid="RefreshTable@Part" >
+	<!-- 表格 开始 -->
+		<table id="printTable">
+			<thead>
+				<tr>
+					<th>操作</th>
+					<th>客户ID</th>
+					<th>业务名称</th>
+					<th>业务流水号</th>
+					<th>状态</th>
+					<th>受理时间</th>
+					<th>受理员工</th>				
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td class="e_center"><input type="radio" name="REPRINT_TRADE" jwcid="@Any" value="ognl:info.TRADE_ID" onclick="getInvoiceData(this);"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="true"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.CUST_ID" raw="true"/></td>						
+					<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)" raw="true"/></td>									
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.PRINT_FLAG == 0?'正常发票':'冲红发票'" raw="true"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.IN_DATE" raw="true"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID', 'STAFF_NAME', info.TRADE_STAFF_ID)"/></td>			
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.PRINT_ID"/></td>	
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	</div>
+	</div>
+	
+
+<!-- 区域 结束 -->
+
+</div>
+<div class="c_submit">
+     <a disabled="true" name="EINVOICE_DETAIL" id="EINVOICE_DETAIL"  onclick="toTicketDetil();" class="e_button e_button-page e_button-page-ok" ><span>发票详情</span></a>   
+    <a disabled="true" name="TO_CREDIT" id="TO_CREDIT" class="e_button e_button-page e_button-page-ok" onclick="toCredit();"><span>发票冲红</span></a>
+</div>
+ <input id="seleced_print_id" type="hidden" name="seleced_print_id" style="display:none"/>
+ <input id="seleced_acct_id" type="hidden" name="seleced_acct_id" style="display:none"/>
+ <input id="seleced_cust_id" type="hidden" name="seleced_cust_id" style="display:none"/>
+ <input id="seleced_trade_id" type="hidden" name="seleced_trade_id" style="display:none"/>
+ <input id="seleced_print_flag" type="hidden" name="seleced_print_flag" style="display:none"/>
+ <input id="seleced_user_id" type="hidden" name="seleced_user_id" style="display:none"/>
+<!-- 提交 结束 -->
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+SELECT to_char(b.USER_ID_A) USER_ID_A, b.SERIAL_NUMBER_A, to_char(b.USER_ID_B) USER_ID_B, b.SERIAL_NUMBER_B, b.RELATION_TYPE_CODE, b.ROLE_TYPE_CODE, b.ROLE_CODE_A, b.ROLE_CODE_B, b.ORDERNO, b.SHORT_CODE, to_char(b.INST_ID) INST_ID, to_char(b.START_DATE,'yyyy-mm-dd hh24:mi:ss') START_DATE, to_char(b.END_DATE,'yyyy-mm-dd hh24:mi:ss') END_DATE, to_char(b.UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME, b.UPDATE_STAFF_ID, b.UPDATE_DEPART_ID, b.REMARK, b.RSRV_NUM1, b.RSRV_NUM2, b.RSRV_NUM3, to_char(b.RSRV_NUM4) RSRV_NUM4, to_char(b.RSRV_NUM5) RSRV_NUM5, b.RSRV_STR1, b.RSRV_STR2, b.RSRV_STR3, b.RSRV_STR4, b.RSRV_STR5, to_char(b.RSRV_DATE1,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1, to_char(b.RSRV_DATE2,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2, to_char(b.RSRV_DATE3,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE3, b.RSRV_TAG1, b.RSRV_TAG2, b.RSRV_TAG3
+ FROM TF_F_RELATION_UU b
+    WHERE b.user_id_a = :USER_ID_A
+      AND b.relation_type_code = :RELATION_TYPE_CODE
+      AND SYSDATE BETWEEN b.start_date AND b.end_date
+      AND EXISTS (SELECT 1 FROM TF_F_USER a WHERE a.USER_ID = b.user_id_b and a.partition_id=b.partition_id AND a.cust_id = :CUST_ID AND a.remove_tag = '0')

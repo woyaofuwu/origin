@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>校园卡基站信息查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/schoolcellinfo/scripts/QuerySchoolCellInfo.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取校园卡基站信息无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">校园卡基站信息查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+					    <li class="li" id="AREA_CODE">
+							<span class="label"><span class="e_required">校园卡名称：</span></span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_DISCNT_CODE"  id="cond_DISCNT_CODE" 
+									source="ognl:schoolCards" textField="DISCNT_NAME" valueField="DISCNT_CODE"
+									value="ognl:condition.cond_DISCNT_CODE" desc="校园卡名称"  nullable="no" />
+								</span></span></span>
+						</li>
+						<li class="li"><span class="label">小区编码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_LAC" id="cond_LAC"
+									value="ognl:condition.cond_LAC" desc="小区编码" maxsize="8" nullable="yes" /></span></span>
+						</li>
+						
+                        <li class="li"><span class="label">基站编码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_CELL_ID" id="cond_CELL_ID"
+									value="ognl:condition.cond_CELL_ID" desc="基站编码" maxsize="8" nullable="yes" /></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return querySchoolCellInfo(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100967"
+								  config="export/sundryquery/other/QuerySchoolCellInfo.xml" fileName="校园卡基站信息" cond=QueryCondPart/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	     <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">校园卡名称</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">基站小区名称</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">基站小区编码</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">基站编码</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.LAC_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.LAC"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CELL_ID"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navtnew" id="navtnew" cond="QueryCondPart" part="QueryListPart" listener="querySchoolCellInfo" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/sundryquery/usertradescore/scripts/usertradescore.js" ></script>
+<script language="JavaScript">
+   $(document).ready(function(){
+		queryDetailItem();//明细项信息
+		snInfo();//转预存号码信息
+   });
+</script>
+</head>
+<body jwcid="@Body">
+<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">明细项信息</div>
+				</div>
+				<!-- 标题 结束 -->
+
+				<div id="queryPart" style="display:none;">
+					<input jwcid="@TextField" name="TRADE_ID" value="ognl:tradeInfo.TRADE_ID"/>
+					<input jwcid="@TextField" name="SERIAL_NUMBER" value="ognl:tradeInfo.SERIAL_NUMBER"/>
+				</div>
+				<!-- 表格 开始 -->
+				<div jwcid="detailInfoPart@Part">
+				<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th>业务流水</th>
+								<th>用户标识</th>
+								<th>兑换物品名称</th>
+								<th>积分类型</th>
+								<th>变化积分</th>
+								<th>价值(元)</th>
+								<th>个数</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:items" value="ognl:info" element="tr" index="ognl:rowIndex">
+								<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.GOODS_NAME" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_SCORETYPE','SCORE_TYPE_CODE', 'SCORE_TYPE_NAME', info.SCORE_TYPE_CODE)" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.SCORE_CHANGED" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:formatDecimal ('0.00',info.VALUE_CHANGED == null ? 0.00 : info.VALUE_CHANGED/100)" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.ACTION_COUNT" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+						    </tr>      
+						</tbody>
+					</table>
+				</div></div>
+				<div jwcid="@NavBar"  name="detailInfo" id="detailInfo" listener="queryDetailItem" pageSize="10" cond="queryPart" part="detailInfoPart" count="ognl:itemsCount"/>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">转预存号码信息</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="NumberPart@Part">
+				<div class="c_scroll c_scroll-table-5"><div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th>业务流水</th>
+								<th>收益号码</th>
+								<th>预转存方式</th>
+								<th>金额(元)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:sNs" value="ognl:info" element="tr" index="ognl:rowIndex">
+								<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.FEE_MODE" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:formatDecimal ('0.00',info.FEE/100)" raw="true"/></td>
+							</tr>   
+						</tbody>
+					</table>
+				</div></div>
+				<div jwcid="@NavBar"  name="snInfo" id="snInfo" listener="querySnInfo" pageSize="5" cond="queryPart" part="NumberPart" count="ognl:sNsCount"/>
+				</div>
+				<!-- 表格 结束 -->
+</body>
+</html>

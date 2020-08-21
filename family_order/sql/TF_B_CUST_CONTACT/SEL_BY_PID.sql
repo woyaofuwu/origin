@@ -1,0 +1,4 @@
+SELECT accept_month,to_char(cust_contact_id) cust_contact_id,to_char(cust_id) cust_id,cust_name,pspt_type_code,pspt_id,in_mode_code,serial_number,to_char(user_id) user_id,product_id,staff_id,depart_id,to_char(start_time,'yyyy-mm-dd hh24:mi:ss') start_time,to_char(finish_time,'yyyy-mm-dd hh24:mi:ss') finish_time,contact_desc,city_code,eparchy_code,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,remark,language_code,access_code,contact_mode,to_char(parent_contact_id) parent_contact_id,sub_in_mode_code,media_type_code,callcenter,device_id,usereparchycode,vip_class,brand,cust_state,contact,contact_phone,post_address,post_code,email,fax_nbx,contact_type_code 
+  FROM tf_b_cust_contact
+ WHERE pspt_type_code=:PSPT_TYPE_CODE
+   AND pspt_id=:PSPT_ID

@@ -1,0 +1,18 @@
+SELECT INST_ID,
+       ACCEPT_MONTH,
+       IBSYSID,
+       BUSI_STATE,
+       PRODUCT_NO,
+       RECORD_NUM,
+       SERIALNO,
+       TRADE_ID,
+       DEAL_TYPE,
+       CREATE_DATE,
+       REMARK,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3
+  FROM TF_B_EOP_EOMS_STATE T
+ WHERE 1 = 1
+   AND T.PRODUCT_NO = :PRODUCT_NO
+   AND T.SERIALNO = :SERIALNO

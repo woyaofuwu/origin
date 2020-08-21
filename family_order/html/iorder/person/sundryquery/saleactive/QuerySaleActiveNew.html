@@ -1,0 +1,364 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>营销活动综合查询</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/sundryquery/saleactive/scripts/QuerySaleActiveNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">营销活动综合查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 查询模版 开始 -->
+	<div jwcid="QueryPart@Part" class="l_query">
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left" jwcid="ExportPart@Part">
+					<div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						<span jwcid="@Export" name="exportFile" ftpCode="personserv"
+							fileTypes="{'.xls':'.xlsx'}" taskId="101992"
+							configFile="export/sundryquery/QuerySaleActList.xml"
+							fileName="营销活动信息" cond=QueryCondPart />
+					</div>
+					<div jwcid="@Conditional" condition="ognl:infos.size <= 0">
+						<div class="text">营销活动综合查询</div>
+					</div>
+				</div>
+				<div class="right">
+					<span class="label">服务号码：</span>
+					<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" desc="服务号码" datatype="mbphone" onenterAction="querySaleActive();" nullable="no"/>
+					<span class="e_label"><input type="checkbox" id="ALL_FLAG" name="ALL_FLAG" value="true"/><span>查询所有用户营销活动</span></span>
+					<span class="e_space e_space-2"></span>
+					<button class="e_button-blue" id="query_BTN" name="query_BTN" ontap="querySaleActive();"><span class="e_ico-search"></span><span>查询</span></button>
+					<span class="e_space"></span>
+					<input jwcid="@Hidden" type="text" id="QRY_TYPE" name="QRY_TYPE" value="ognl:qryType"/>
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+		<div jwcid="QueryResultPart@Part">
+			<div jwcid="QueryListPart@Part" class="l_queryResult">
+				<!-- 表格 开始 -->
+				<table name="SaleActiveTable" class="c_table c_table-hover" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>
+							<th>活动名称</th>
+							<th col="PACKAGE_ID">营销包编码</th>
+							<th>营销包名称</th>
+							<th>活动开始时间</th>
+							<th>活动结束时间</th>
+							<div element="div" jwcid="@Conditional" condition="ognl:qryType == 1">
+							<th>约定在网开始时间</th>
+							<th>约定在网结束时间</th>
+							</div>
+							<th>受理时间</th>
+							<th>IMEI</th>
+							<th>预存话费(元)</th>
+							<th>捆绑手机款(元)</th>
+							<th>押金(元)</th>
+							<!--<th>活动类型</th>-->
+							<th col="RELATION_TRADE_ID">关联流水号</th>
+							<th col="INST_ID" style="display:none">营销活动实例ID</th>
+							<th>合约期（月）</th>
+							<th>受理员工工号</th>
+							<th>受理员工</th>
+							<th>更新时间</th>
+							<th>更新员工</th>
+							<th>更新部门</th>
+							<th>备注</th>
+							<th>手机的裸机价</th>
+							<th>活动优惠价</th>
+							<th col="USER_ID" style="display:none">用户编码</th>
+							<th col="SERIAL_NUMBER" style="display:none">用户号码</th>	
+							<th>用户星级</th>
+							<th>活动总预存款金额</th>
+							<th>当前剩余预存款金额</th>
+							<th>活动总赠送款金额</th>
+							<th>当前剩余赠送款金额</th>
+							<th>是否信用购机</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+							<td data-title="活动名称" class="key"><a jwcid="@Any"
+								href="javascript:void(0);" packageId="ognl:info.PACKAGE_ID"
+								userId="ognl:info.USER_ID" serialNumber="ognl:info.SERIAL_NUMBER"
+								relationTradeId="ognl:info.RELATION_TRADE_ID"
+								instId="ognl:info.INST_ID"
+								ontap="showDetail(this);showPopup('UI-popup','UI-details',true);">
+									<span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" /> </a>
+							</td>
+							<td data-title="营销包编码"><span jwcid="@Insert" value="ognl:info.PACKAGE_ID"/></td>
+		              		<td data-title="营销包名称"><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME"/></td>
+		              		<td data-title="活动开始时间"><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+		              		<td data-title="活动结束时间"><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+		              		<div element="div" jwcid="@Conditional" condition="ognl:qryType == 1">
+		              		<td data-title="约定在网开始时间"><span jwcid="@Insert" value="ognl:info.RSRV_DATE1"/></td>
+		              		<td data-title="约定在网结束时间"><span jwcid="@Insert" value="ognl:info.RSRV_DATE2"/></td>
+		              		</div>
+		              		<td data-title="受理时间"><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)"/></td>
+		              		<td data-title="IMEI"><span jwcid="@Insert" value="ognl:info.RSRV_STR23"/></td>
+		              		<td data-title="预存话费(元)"><span jwcid="@Insert" value="ognl:info.ADVANCE_PAY"/></td>
+		              		<td data-title="捆绑手机款(元)"><span jwcid="@Insert" value="ognl:info.OPER_FEE"/></td>
+		              		<td data-title="押金(元)"><span jwcid="@Insert" value="ognl:info.FOREGIFT"/></td>
+		              		<!--<td><span jwcid="@Insert" value="ognl:info.ACTIVE_TYPE"/></td>-->
+		              		<td data-title="关联流水号"><span jwcid="@Insert" value="ognl:info.RELATION_TRADE_ID"/></td> 
+		              		<td data-title="营销活动实例ID" style="display:none"><span jwcid="@Insert" value="ognl:info.INST_ID"/></td> 
+		              		<td data-title="合约期（月）"><span jwcid="@Insert" value="ognl:info.MONTHS"/></td> 
+		              		<td data-title="受理员工工号"><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID"/></td> 
+		              		<td data-title="受理员工"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.TRADE_STAFF_ID)"/></td> 
+		              		<td data-title="更新时间"><span jwcid="@Insert" value="ognl:info.UPDATE_TIME"/></td> 
+		              		<td data-title="更新员工"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.UPDATE_STAFF_ID)"/></td> 
+		              		<td data-title="更新部门"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.UPDATE_DEPART_ID)"/></td> 
+		              		<td data-title="备注"><span jwcid="@Insert" value="ognl:info.REMARK"/></td> 
+		              		<td data-title="手机的裸机价"><span jwcid="@Insert" value="ognl:info.DEVICE_PRICE"/></td> 
+		              		<td data-title="活动优惠价"><span jwcid="@Insert" value="ognl:info.SALE_PRICE"/></td>
+		              		<td data-title="用户编码" style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID"/></td> 
+		              		<td data-title="用户号码" style="display:none"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td> 
+		              		<td data-title="用户星级"><span jwcid="@Insert" value="ognl:info.CREDIT_CLASS"/></td>
+		              		<td data-title="活动总预存款金额"><span jwcid="@Insert" value="ognl:info.ALL_DEPOSIT"/></td>
+		              		<td data-title="当前剩余预存款金额"><span jwcid="@Insert" value="ognl:info.REST_DEPOSIT"/></td>
+		              		<td data-title="活动总赠送款金额"><span jwcid="@Insert" value="ognl:info.ALL_GIFT_FEE"/></td>
+		              		<td data-title="当前剩余赠送款金额"><span jwcid="@Insert" value="ognl:info.REST_GIFT_FEE"/></td>
+		              		<td data-title="是否信用购机"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('IS_CREDIT_PURCHASES', info.IS_CREDIT_PURCHASES)"/></td>
+						</tr>
+					</tbody>
+					<!-- 表格 结束 -->
+				</table>
+			</div>
+			<div class="l_queryPage">
+				<!-- 分页 开始 -->
+				<div jwcid="@NavBar" name="nav" id="nav" cond="QueryCondPart" part="QueryResultPart" listener="querySaleActive" pageSize="10" count="ognl:count"></div>
+				<!-- 分页 结束 -->
+			</div>
+		</div>
+	</div>
+	<!-- 查询模版 结束 -->			
+	<!-- 弹窗 开始 -->
+	<div id="UI-popup" name="UI-popup" jwcid="@Popup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="UI-search">
+				<div class="c_header">
+					<div class="back" ontap="backPopup('UI-popup');">查询条件</div>
+				</div>
+				<div class="l_padding">
+					<!-- 表单 开始 -->
+					<div class="c_list c_list-s c_list-border c_list-line">
+						<ul>
+							<li class="required">
+								<div class="label">服务号码</div>
+								<div class="value"><input type="text"/></div>
+							</li>
+							<input type="checkbox" class="e_checkbox" id="ALL_FLAG" name="ALL_FLAG" value="true"/><span>查询所有用户营销活动</span>
+						</ul>
+					</div>
+					<!-- 表单 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-l e_button-r e_button-blue" ontap="showData('queryMsg','queryLoading'); backPopup('UI-popup');">确定</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			
+			<div class="c_popupItem" id="UI-details">
+				<div class="c_header">
+					<div class="back" ontap="backPopup('UI-popup');">营销活动详情</div>
+				</div>
+				<div jwcid="SaleActiveDetailPart@Part">
+					<div class="l_padding l_padding-u c_box">
+						<li class="link">
+							<div class="value">
+								<div class="c_space"></div>
+								<select name="pwdInfo_PASSWD_TYPE" id="pwdInfo_PASSWD_TYPE"
+									jwcid="@Segment" onchange="changeDetailShow(this.value);"
+									source="ognl:pageutil.getStaticList('SALEACTIVE_DETAIL_KIND')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID"
+									value="1" nullable="no"/>
+							</div>
+						</li>
+					</div>
+					<div name="myScroller" jwcid="@Scroller" vScrollbar="true" bounce="true" class="c_scroll c_scroll-float c_scroll-header c_scroll-search l_padding-side">
+						<div class="c_space-2"></div>
+						<div id="detail1">
+							<div class="c_list c_list-s c_list-border c_list-line c_list-space">
+								<ul jwcid="@Foreach" source="ognl:discnts" value="ognl:discnt" element="ul">
+									<li>
+										<div class="main">
+											<div class="content">
+												<!-- 参数 开始 -->
+												<div class="c_param c_param-label-auto c_param-col-1">
+													<ul>
+														<li class="li">
+															<span class="label">营销包编码：</span>
+															<span class="text" jwcid="@Insert" value="ognl:discnt.PACKAGE_ID" desc="营销包编码"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">优惠编码：</span>
+															<span class="text" jwcid="@Insert" value="ognl:discnt.DISCNT_CODE" desc="优惠编码"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">优惠名称：</span>
+															<span class="text" jwcid="@Insert" value="ognl:discnt.DISCNT_NAME" desc="优惠名称"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">开始时间：</span>
+															<span class="text" jwcid="@Insert" value="ognl:discnt.START_DATE" desc="开始时间"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">结束时间：</span>
+															<span class="text" jwcid="@Insert" value="ognl:discnt.END_DATE" desc="结束时间"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">备注：</span>
+															<span class="text" jwcid="@Insert" value="ognl:discnt.REMARK" desc="备注"/>
+														</li>
+													</ul>
+												</div>
+												<!-- 参数 结束 -->
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						
+						<div id="detail2" style="display:none;">
+							<div class="c_list c_list-s c_list-border c_list-line c_list-space">
+								<ul jwcid="@Foreach" source="ognl:goods" value="ognl:good" element="ul">
+									<li>
+										<div class="main">
+											<div class="content">
+												<!-- 参数 开始 -->
+												<div class="c_param c_param-label-auto c_param-col-1">
+													<ul>
+														<li class="li">
+															<span class="label">营销包编码：</span>
+															<span class="text" jwcid="@Insert" value="ognl:good.PACKAGE_ID" desc="营销包编码"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">实物名称：</span>
+															<span class="text" jwcid="@Insert" value="ognl:good.GOODS_NAME" desc="实物名称"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">实物数量：</span>
+															<span class="text" jwcid="@Insert" value="ognl:good.GOODS_NUM" desc="实物数量"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">实物状态：</span>
+															<span class="text" jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALEGOODSSTATE',good.GOODS_STATE)" desc="实物状态"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">实物类型：</span>
+															<span class="text" jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_TYPE', 'RES_TYPE_ID', 'RES_TYPE_NAME', good.RES_TYPE_CODE)" desc="实物类型"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">实物编号：</span>
+															<span class="text" jwcid="@Insert" value="ognl:good.RES_CODE" desc="实物编号"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">赠送标志：</span>
+															<span class="text" jwcid="@Insert" value="ognl:good.RSRV_TAG1" desc="赠送标志"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">备注：</span>
+															<span class="text" jwcid="@Insert" value="ognl:good.REMARK" desc="备注"/>
+														</li>
+													</ul>
+												</div>
+												<!-- 参数 结束 -->
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						
+						<div id="detail3" style="display:none;">
+							<div class="c_list c_list-s c_list-border c_list-line c_list-space">
+								<ul jwcid="@Foreach" source="ognl:deposits" value="ognl:deposit" element="ul">
+									<li>
+										<div class="main">
+											<div class="content">
+												<!-- 参数 开始 -->
+												<div class="c_param c_param-label-auto c_param-col-1">
+													<ul>
+														<li class="li">
+															<span class="label">营销包编码：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.PACKAGE_ID" desc="营销包编码"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">每月返还话费额(元)：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.LIMIT_MONEY/100" desc="每月返还话费额(元)"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">开始时间：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.START_CYCLE_ID" desc="开始时间"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">结束时间：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.END_CYCLE_ID" desc="结束时间"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">需返还月数：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.MONTHS" desc="需返还月数"/>
+														</li>
+														<span class="e_space"></span>
+														<li class="li">
+															<span class="label">返还状态：</span>
+															<span class="text" jwcid="@Insert" value="ognl:pageutil.getStaticValue('PURCHASE_USER_TYPE',deposit.X_USETAG)" desc="返还状态"/>
+														</li>
+														<li class="li">
+															<span class="label">返还结果：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.RESULT_INFO" desc="返还结果"/>
+														</li>
+														<li class="li">
+															<span class="label">是否机卡绑定：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.LAST_SMS_FLAG" desc="是否机卡绑定"/>
+														</li>
+														<li class="li">
+															<span class="label">IMEI信息：</span>
+															<span class="text" jwcid="@Insert" value="ognl:deposit.IMEI_INFO" desc="IMEI信息"/>
+														</li>
+													</ul>
+												</div>
+												<!-- 参数 结束 -->
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 弹窗 结束 -->
+</body>
+</html>

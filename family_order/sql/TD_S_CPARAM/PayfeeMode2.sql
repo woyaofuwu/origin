@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'PayfeeMode2' KEY, Pay_Fee_Mode_Code VALUE1,-1 VALUE2,Pay_Fee_Mode VRESULT
+  FROM TD_A_PAYFEEMODE
+ WHERE 'PayfeeMode2'=:KEY

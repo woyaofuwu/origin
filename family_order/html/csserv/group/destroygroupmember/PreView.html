@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div id="previewInfoPart">
+<div class="c_box">
+	<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:grpCustInfo"/>
+</div>
+<div class="c_box">
+	<span jwcid="@saleserv:MemberUserInfo" userInfo="ognl:mebUserInfo"/>
+</div>
+<div jwcid="@Conditional" condition='ognl:info.PRODUCT_ID == "10009150"'>
+	<div jwcid="@saleserv:ProductElementView" model="ognl:useElementinfos" headText="用户元素信息"  showHeads="产品名,包名,类型,编码,名称,学生姓名" showFields="PRODUCT_NAME,PACKAGE_NAME,ELEMENT_TYPE_NAME,ELEMENT_ID,ELEMENT_NAME,NAME">
+	</div>
+</div>
+<div jwcid="@Conditional" condition='ognl:info.PRODUCT_ID != "10009150"'>
+	<div jwcid="@saleserv:ProductElementView" model="ognl:useElementinfos" headText="用户元素信息"  showHeads="产品名,包名,类型,编码,名称" showFields="PRODUCT_NAME,PACKAGE_NAME,ELEMENT_TYPE_NAME,ELEMENT_ID,ELEMENT_NAME">
+	</div>
+</div>
+<div class="c_box">
+
+	<div jwcid="@Conditional" condition="ognl:info.IFJOIN !='false'">
+		<div class="c_form" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span jwcid="@Insert" value="ognl:info.TITLENAME" raw="true"/></span>
+					<span class="text" >
+						<input type="checkbox" class="e_checkbox" name="parm_JOIN_IN_CHECK" id="parm_JOIN_IN_CHECK" jwcid="@Checkbox"  disabled="ognl:info.IFDISABLED" onclick="if($(this).attr('checked')== true){$('#parm_JOIN_IN').val('1')}else{$('#parm_JOIN_IN').val('0')}"/>
+						<input jwcid="@Any" id="parm_JOIN_IN" name="parm_JOIN_IN" value="0" style="display:none;" encode="false" />
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-5">
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label"><span class="e_required">备注：</span></span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+					<textarea
+						jwcid="@TextArea" 
+						name="parm_REMARK" 
+						id="parm_REMARK"
+						type="text"
+						value="ognl:pamRemark"
+						desc="备注"
+						nullable="no"
+						raw="true" style="height:36px;"></textarea>
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+			
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+
+</div>
+
+<div class="c_box" jwcid="@Conditional" condition='ognl:info.MEB_FILE_SHOW != null && info.MEB_FILE_SHOW == "true"'>
+	<div class="c_title">
+		<div class="text">附件信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">				
+				<span class="label"><span>附件上传：</span></span>
+				<div jwcid="MebFilePart@Part">
+				<span class="e_elements">
+					<input jwcid="@Upload"
+							name="MEB_FILE_LIST"
+							id="MEB_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/mebattach"
+							fileSize="20"
+							fileTypes="*.*"
+						/>
+					</span>
+			    </div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="c_box" jwcid="@Conditional" condition="ognl:info.MEB_VOUCHER_FILE_SHOW!=null && info.MEB_VOUCHER_FILE_SHOW == 'true'">
+	<div class="c_title">
+		<div class="text">凭证信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">				
+				<span class="label"><span class="e_required">凭证上传：</span></span>
+				<div jwcid="VoucherFilePart@Part">
+					<span class="e_elements">
+					<input jwcid="@Upload"
+							name="MEB_VOUCHER_FILE_LIST"
+							id="MEB_VOUCHER_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/mebattach"
+							fileSize="20"
+							fileTypes="*.*"
+                    		desc="凭证信息" 
+                    		nullable="no"
+						/>
+					</span>
+			    </div>
+			</li>
+            <li class="li">
+                <span class="label"><span class="e_required">稽核人员：</span></span> 
+                <span class="e_elements">
+					<button type="button" class="e_button-right"
+						onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+						<i class="e_ico-check"></i><span></span>
+					</button> 
+                    <span class="e_input e_input-left"><span> <input
+							type="text" jwcid="@TextField"
+							name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+							value=""
+							text="" nullable="no"
+							readonly="true"/>
+					</span></span>
+				</span>
+            </li>
+		</ul>
+	</div>
+</div>
+
+
+<!-- 区域 结束 -->
+<input type="button" id="bsubmit" value="下一步" class="e_button" style="display:none" /> 
+</div>
+<input jwcid="@Any" name="MEB_FILE_SHOW" id="MEB_FILE_SHOW" value="ognl:info.MEB_FILE_SHOW" style="display:none"/>
+</div></div>
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#bsubmit").bind("click", function() {
+	    if(!$.validate.verifyAll("previewInfoPart")){
+			return false;
+		}
+		if($("#MEB_VOUCHER_FILE_LIST")&&$("#MEB_VOUCHER_FILE_LIST").val() == ""){
+			alert("请上传凭证信息！");
+			return false;
+		}
+    	if($("#AUDIT_STAFF_ID")&&$("#AUDIT_STAFF_ID").val() == ""){
+			alert("请选择稽核人员！");
+			return false;
+		}
+    	return true;
+	});
+});
+</script>
+</html>

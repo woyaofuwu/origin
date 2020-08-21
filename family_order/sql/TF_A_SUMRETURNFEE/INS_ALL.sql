@@ -1,0 +1,2 @@
+INSERT INTO tf_a_sumreturnfee(user_id,acyc_id,integrate_item_code,bill_id,cash_return_fee,adjust_return_fee,cash_encourage_fee,adjust_encourage_fee,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,eparchy_code)
+ VALUES(TO_NUMBER(:USER_ID),:ACYC_ID,:INTEGRATE_ITEM_CODE,TO_NUMBER(:BILL_ID),TO_NUMBER(:CASH_RETURN_FEE),TO_NUMBER(:ADJUST_RETURN_FEE),TO_NUMBER(:CASH_ENCOURAGE_FEE),TO_NUMBER(:ADJUST_ENCOURAGE_FEE),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:EPARCHY_CODE)

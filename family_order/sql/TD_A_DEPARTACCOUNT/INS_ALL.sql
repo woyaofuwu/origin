@@ -1,0 +1,2 @@
+INSERT INTO td_a_departaccount(depart_id,depart_code,bank_code,bank,bank_acct_no,pay_name,assure_no,para_code1,trade_staff_id)
+ VALUES(:DEPART_ID,:DEPART_CODE,:BANK_CODE,:BANK,:BANK_ACCT_NO,:PAY_NAME,:ASSURE_NO,:PARA_CODE1,:TRADE_STAFF_ID)

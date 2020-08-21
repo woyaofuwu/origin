@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_spanopen(trade_id,booking_id,base_line,dead_line,oper_type,reason)
+ VALUES(TO_NUMBER(:TRADE_ID),:BOOKING_ID,TO_DATE(:BASE_LINE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:DEAD_LINE,'YYYY-MM-DD HH24:MI:SS'),:OPER_TYPE,:REASON)

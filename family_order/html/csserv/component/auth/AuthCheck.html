@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>身份校验</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/common/des/des.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/auth/AuthCheck.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" id="authCheckForm">
+	<div class="c_form c_form-label-5 c_form-col-2" id="TYPEDIV"> 
+		<ul class="ul">
+			<li class="li">
+				 <span class="e_required">补换卡分类：</span>
+				 <div class="c_fn">
+					     <ul>
+							 <li><label><input	jwcid="@Radio"	
+							          name="SELECT_TYPE" id="CHAN_CARD" value="1"   onclick="$.authCheck.checkRadio()"
+							           checked="true"/>换卡</label></li>
+							 <li><label><input	jwcid="@Radio"	
+							          name="SELECT_TYPE" id="REMA_CARD" value="0"  onclick="$.authCheck.checkRadio()" 
+							           checked="false" disabled="true"/>补卡</label></li>
+						 </ul>
+				 </div>
+			 </li>	
+		</ul>
+	</div>
+	
+	<div class="c_form c_form-label-5 c_form-col-2">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">验证方式：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_CHECK_MODE" source="ognl:checkMode"  textField="value" valueField="key" desc="验证方式" onChange="$.authCheck.setAuthCheckArea()"/>
+				</span></span></span>
+			</li>
+			<li class="li" id="PsptScanPart">
+				<span class="label">&nbsp;</span>
+				<button class="e_button" id="PsptScanBtn" onclick="getMsgByEForm('cond_PSPT_ID','E_NAME','cond_SEX_ID',null,null,'E_ADDRESS',null,null);"><span>获取二代身份证信息</span></button>
+			</li>
+		</ul>
+		<input  jwcid="@Any"  type="hidden" id="TRADE_TYPE_CODE" name="TRADE_TYPE_CODE" value="ognl:info.TRADE_TYPE_CODE" desc="TRADE_TYPE_CODE"/>
+		<input  jwcid="@Any"  type="hidden" id="HIGH_PRIV" name="HIGH_PRIV" value="ognl:info.HIGH_PRIV" desc="HIGH_PRIV"/>
+		<input  jwcid="@Any"  type="hidden" id="E_NAME" name="E_NAME" value="" desc="E_NAME"/>
+		<input  jwcid="@Any"  type="hidden" id="E_ADDRESS" name="E_ADDRESS" value="" desc="E_ADDRESS"/>
+		<input  jwcid="@Any"  type="hidden" id="REMOTECARD_RIGHT" name="REMOTECARD_RIGHT" value="ognl:info.REMOTECARD_RIGHT" desc="REMOTECARD_RIGHT"/>
+		<input  jwcid="@Any"  type="hidden" id="FRONTBASE64" name="FRONTBASE64" value="" desc="FRONTBASE64"/>
+		
+	 </div>
+
+	<div class="c_form c_form-label-5 c_form-col-2">
+		<ul class="ul">
+			<li class="li" name="checkMode0">
+				<span class="label">证件类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')" selected="ognl:getParameter('PSPT_TYPE_CODE')" textField="DATA_NAME" valueField="DATA_ID" onChange="$.authCheck.checkId()" desc="证件类型"/>
+				</span></span></span>
+			</li>
+			<li class="li" name="checkMode0">
+				<span class="label">证件号码：</span>
+				<span class="e_input"><span><input type="text" id="cond_PSPT_ID" name="cond_PSPT_ID" value="" desc="证件号码" datatype="pspt" nullable="no"/></span></span>
+			</li>
+			<li class="li" id="checkMode2">
+				<span class="label">SIM卡号(或白卡号)：</span>
+				<span class="e_input"><span><input type="text" id="cond_SIM_NO" name="cond_SIM_NO" value=""/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">服务号码：</span>
+				<span class="e_input"><span><input jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:getParameter('SERIAL_NUMBER')" disabled="true"/></span></span>
+			</li>
+			<li class="li" id="checkMode1">
+				<span class="label">服务密码：</span>
+				<span class="e_elements">
+					<button class="e_button-right" id="IMG_cond_USER_PASSWD" name="IMG_cond_USER_PASSWD" title="密码小键盘输入" onclick="return $.authCheck.inputPassWD(this);"><span>小键盘</span></button>
+					<span class="e_input e_input-left"><span><input type="password" id="cond_USER_PASSWD" name="cond_USER_PASSWD" value="" datatype="pinteger" desc="服务密码" maxLength="6" equalsize="6"/></span></span>
+				</span>
+			</li>
+			<li class="li" id="checkMode3">
+				<span class="label">验证码：</span>
+				<span class="e_elements">
+					<button class="e_button-right" id="SendVerifyCodeBtn" name="SendVerifyCodeBtn" title="验证码"><span>发送验证码</span></button>
+					<span class="e_input e_input-left"><span><input type="text" id="cond_VERIFY_CODE" name="cond_VERIFY_CODE" value="" datatype="pinteger" desc="验证码" maxLength="6" equalsize="6"/></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="c_submit">
+		<input jwcid="@Hidden" name="USER_CHECK" value="ognl:getParameter('USER_CHECK','false')" />
+		<input jwcid="@Hidden" name="DISABLED_AUTH" value="ognl:getParameter('DISABLED_AUTH','')" />
+		<input jwcid="@Hidden" name="HANDLER" value="ognl:getParameter('HANDLER','POP_AUTH_PARAMS')" />
+		<div jwcid="@Conditional" condition="ognl:getVisit().getInModeCode() == 1">
+		<button id="IvrBtn" class="e_button-page" onClick="$.authCheck.chkIvrPasswd();"><i class="e_ico-select"></i><span>IVR用户密码校验</span></button>
+		</div>
+		<button id="auth_ok_btn" name="auth_ok_btn" class="e_button-page-ok" onClick="$.authCheck.submitAuthCheck()"><i></i><span>确定</span></button>
+		<button class="e_button-page-cancel" onClick="$.authCheck.cancelAuthCheck();"><i></i><span>取消</span></button>
+	</div>
+	<object id="LittleKey" classid="CLSID:11AF41BD-EFFF-462C-94A5-EDC27B737FC0" codebase="/tools/LittleKey.cab"></object>
+</div>
+</body>
+</html>

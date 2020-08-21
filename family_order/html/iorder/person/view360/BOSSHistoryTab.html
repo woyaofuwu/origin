@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>一级BOSS业务办理记录查询</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/view360/scripts/bosshistorytab.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">一级BOSS业务办理记录查询</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div jwcid="QueryPart@Part" class="l_query">
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<!-- 查询区域 开始 -->
+			<div class="c_fn">
+				<div class="right">
+				
+				<span class="label">起始日期：</span>
+				<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" readonly="true" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" dropDown="true" desc="起始时间" />
+				<span class="e_space e_space-2"></span>
+				<span class="label">终止日期：</span>
+				<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" readonly="true" value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" dropDown="true" desc="终止时间" />
+                <span class="e_space e_space-2"></span>              
+					<span class="label">服务号码：</span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+						value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" onenterAction="queryBOSSInfo();"
+						datatype="mbphone" maxsize="11" nullable="no" />
+					<span class="e_space e_space-2"></span>
+					<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="queryBOSSInfo();"> <span class="e_ico-search"></span><span>查询</span></button>
+					<span class="e_space"></span>
+				</div>
+			</div>
+			<!-- 查询区域  结束 -->
+		</div>
+		<div jwcid="QueryListPart@Part">
+			<div jwcid="QueryResultPart@Part" class="l_queryResult">
+				<!-- 提示 开始 -->
+				<div class="c_tip c_tip-red" name="prompting" id="prompting" style="display: none">提示：获取用户业务信息无数据！</div>
+				<!-- 提示 结束 -->
+				<!-- 表格 开始 -->
+				<table name="printTable" id="printTable" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>
+							<th>受理时间</th>
+							<th>业务类型</th>
+							<th>返销标志</th>
+							<th>受理部门</th>
+							<th>受理工号</th>
+							<th>流水号</th>
+							<th>订单号</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td data-title="受理时间"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)" /></td>
+							<td data-title="业务类型"><span jwcid="@Insert" value="ognl:info.TRADE_TYPE" /></td>
+							<td data-title="返销标志"><span jwcid="@Insert" value="ognl:info.CANCEL_TAG " /></td>
+							<td data-title="受理部门"><span jwcid="@Insert" value="ognl:'[' + info.TRADE_DEPART_CODE + '] ' + info.TRADE_DEPART_NAME" /></td>
+							<td data-title="受理工号"><span jwcid="@Insert" value="ognl:'[' + info.TRADE_STAFF_ID + '] ' + info.TRADE_STAFF_NAME" /></td>
+							<td data-title="流水号"><span jwcid="@Insert" value="ognl:info.TRADE_ID " /></td>
+							<td data-title="订单号"><span jwcid="@Insert" value="ognl:info.ORDER_ID" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 表格 结束 -->
+			</div>
+			<div class="l_queryPage">
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart"
+					part="QueryListPart" listener="queryBOSSInfo" pageSize="10"
+					count="ognl:count"></div>
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+		<!-- 区域 结束 -->
+	</div>
+</body>
+</html>

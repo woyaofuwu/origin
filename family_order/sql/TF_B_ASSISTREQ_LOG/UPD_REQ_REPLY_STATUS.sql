@@ -1,0 +1,9 @@
+ UPDATE TF_B_ASSISTREQ_LOG
+    SET ASSISTREQ_STATUS   = :ASSISTREQ_STATUS,
+        ASSISTREQ_RSLT     = :ASSISTREQ_RSLT,
+        REMARK             = :REMARK,
+        REPLY_DEPT         = :REPLY_DEPT,
+        REPLY_PHONE        = :REPLY_PHONE,
+        REPLY_STAFF        = :REPLY_STAFF,
+        REPLY_TIME         = TO_DATE(:REPLY_TIME, 'yyyy-mm-dd hh24:mi:ss')
+  WHERE INDICTSEQ = :INDICTSEQ

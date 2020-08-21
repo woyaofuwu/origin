@@ -1,0 +1,2 @@
+INSERT INTO td_m_spservice(sp_id,sp_svc_id,biz_type,biz_desc,biz_type_code,access_model,price,billing_type,biz_status,prov_addr,prov_port,usage_desc,intro_url,foregift_code,foregift,remark,update_staff_id,update_depart_id,update_time)
+ VALUES(:SP_ID,:SP_SVC_ID,:BIZ_TYPE,:BIZ_DESC,:BIZ_TYPE_CODE,:ACCESS_MODEL,TO_NUMBER(:PRICE),:BILLING_TYPE,:BIZ_STATUS,:PROV_ADDR,:PROV_PORT,:USAGE_DESC,:INTRO_URL,:FOREGIFT_CODE,TO_NUMBER(:FOREGIFT),:REMARK,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

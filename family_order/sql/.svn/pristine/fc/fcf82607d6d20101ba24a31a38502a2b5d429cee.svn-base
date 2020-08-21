@@ -1,0 +1,2 @@
+INSERT INTO td_a_blackdepartcoop(depart_id,depart_code,class_level,state,start_date,end_date,rsrv_tag1,rsrv_tag2,rsrv_str1,rsrv_str2)
+ VALUES(:DEPART_ID,:DEPART_CODE,:CLASS_LEVEL,:STATE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:RSRV_TAG1,:RSRV_TAG2,:RSRV_STR1,:RSRV_STR2)

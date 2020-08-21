@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>EOMS公告</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/eoms/script/newbulletin.js"></script>
+</head>
+<body jwcid="@Body">		
+<div class="l_query">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('popup','qryConditionPopupItem', true);">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div class="l_queryResult" jwcid="qryPart@Part">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" id="quickOpenLineAddrTable" name="quickOpenLineAddrTable">
+				<thead>
+					<tr>        
+						<th col="IBSYSID">业务流水号</th>
+						<th col="OPPERSON">发起方</th>
+						<th col="OPCORP">操作人</th>
+						<th col="OPDEPART">操作人单位</th>
+						<th col="OPCONTACT">所属部门 联系电话</th>
+						<th col="INSERT_TIME">发送时间</th>
+						<th col="REPLY_STATE">回复状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td>
+							<a jwcid="@Redirect" ibsysid="ognl:info.IBSYSID" subIbsysid="ognl:info.SUB_IBSYSID" groupSeq="ognl:info.GROUP_SEQ"  recordNum = "ognl:info.RECORD_NUM" onclick="queryBulletinInfo(this);">
+				    		<span jwcid="@Insert" value="ognl:info.IBSYSID" raw="true"/>
+				    		</a>
+				    	</td>
+						<td><span jwcid="@Insert" value="ognl:info.OPPERSON" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPCORP" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPDEPART" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPCONTACT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.INSERT_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REPLY_STATE" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div jwcid="@Popup" name="popup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryConditionPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">查询</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="CondPart@Part" class="l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+							<li class="link required">
+								<div class="label">开始时间：</div>
+								<div class="value"><input jwcid="@DateField" name="cond_BEGIN_DATE" value="ognl:condition.cond_BEGIN_DATE" format="yyyy-MM-dd HH:mm:ss" dropDown="true"  desc="开始时间" /></div>
+							</li>
+							<li class="link required">
+								<div class="label">结束时间：</div>
+								<div class="value"><input jwcid="@DateField" name="cond_END_DATE" value="ognl:condition.cond_END_DATE" format="yyyy-MM-dd HH:mm:ss" dropDown="true" desc="结束时间" /></div>
+							</li>
+							<li class="link">
+								<div class="label">回复状态：</div>
+								<div class="value">
+								<input jwcid="@Select" name="cond_REPLY_STATE" source="ognl:getPageUtil().getList('TD_B_EWE_CONFIG', 'PARAMVALUE', 'PARAMNAME', 'CONFIGNAME', 'REPLY_STATE')" textField="PARAMNAME" valueField="PARAMVALUE"
+                  					value="ognl:condition.cond_REPLY_STATE"  nullable="no" desc="是否需要回复"/>	
+							</li>
+						</ul>
+					</div>
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="queryInfos(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div jwcid="@Popup" name="bulletinPopup" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryBulletinItem" name = "qryBulletinItem"  jwcid="@Part">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">公告</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+					<ul>
+						<li class="link required">
+							<div class="label">主题</div>
+							<div class="value">
+								<input jwcid="@TextField" name="TITLE" value="ognl:newInfo.TITLE" nullable="no" desc="主题" disabled="ognl:newInfo.DISABLED"/>
+							</div>
+						</li>
+						<li class="link required">
+							<div class="label">紧急程度</div>
+							<div class="value">
+								<select jwcid="@Select" id="URGENTDEGREE" name="URGENTDEGREE" desc="业务属性" nullable="no"
+									source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('URGENCY_LEVEL')"
+									value="ognl:newInfo.URGENTDEGREE" valueField="DATA_ID" textField="DATA_NAME"  disabled="ognl:newInfo.DISABLED"/>	
+							</div>
+						</li>
+						<li class="link required">
+							<div class="label">有效期</div>
+							<div class="value">
+								<input jwcid="@TextField" name="AVAILTIME" value="ognl:newInfo.AVAILTIME" format="yyyy-MM-dd HH:mm:ss" desc="有效期" nullable="no" disabled="ognl:newInfo.DISABLED"/>
+							</div>
+						</li>
+						<li class="link required">
+							<div class="label">是否需要回复</div>
+							<div class="value">
+								<input jwcid="@Select" name="ISNEEDREPLOY" source="ognl:getPageUtil().getList('TD_B_EWE_CONFIG', 'PARAMVALUE', 'PARAMNAME', 'CONFIGNAME', 'EOMSYesOrNoList')" textField="PARAMNAME" valueField="PARAMVALUE"
+                  					value="ognl:newInfo.ISNEEDREPLOY"  nullable="no" desc="是否需要回复" disabled="ognl:newInfo.DISABLED"/>	
+							</div>
+						</li>
+						<!--  
+						<li class="link required">
+							<span class="label"><span>附件上传：</span></span>
+							<span class="e_elements">
+								<input jwcid="@Upload"
+										name="FILE_LIST"
+										id="FILE_LIST"
+										ftpSite="groupserv"
+										filePath="upload/esopnewbulletin"
+										fileSize="20"
+										fileTypes="*.*"
+									/>
+							</span>
+						</li>
+						-->
+					</ul>
+					<ul>
+						<li class="li col-3"><span class="label"><span class="e_required">公告内容：</span></span> 
+						<span class="e_textarea">
+						       <span class="e_textareaTop"><span></span></span>
+						       <span class="e_textareaContent"><textarea type="text" jwcid="@TextArea" id="NOTICEDESC" name="NOTICEDESC" 
+									value="ognl:newInfo.NOTICEDESC" nullable="no" rows="4"
+									maxsize="1000" style="height:50px;" desc="公告内容" disabled="ognl:newInfo.DISABLED"/> </span>
+						       <span class="e_textareaBottom"><span></span></span>
+						</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>

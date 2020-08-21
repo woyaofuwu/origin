@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>黑名单管理</title>
+<script language="JavaScript"
+	src="person/blackusermanager/scripts/manageblackuser.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" jwcid="allPart@Part"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">资料查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="3914" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+		<div jwcid="UCAViewPart@Part">
+				<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		</div> 
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">黑名单管理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="listTablePart@Part">
+				<table jwcid="@Table" id="ListTable" name="ListTable" rowClick="tableRowClick" >
+					<thead>
+						<tr>
+							<th col="BLACK_TYPE" style="display: none">类型编码</th>
+							<th col="BLACK_TYPE_NAME">类型名称</th>
+							<th col="BLACK_SERIAL_NUMBER">手机号码</th>
+							<th col="REMARK">备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"	element="tr" index="ognl:rowIndex"	class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td style="display: none"><span jwcid="@Insert"	value="ognl:info.BLACK_TYPE" raw="true" /></td>
+							<td><span jwcid="@Insert" value='ognl:"6".equals(info.BLACK_TYPE)?"全部黑名单":"单个黑名单"'	raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.BLACK_SERIAL_NUMBER"	raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7"  jwcid="EditPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">黑名单选择：</span>	</span>
+					<span class="e_select"><span><span>
+							<select name="BLACK_TYPE" id="BLACK_TYPE" onchange="black_Type_Change()";>
+									<option value="0">单个黑名单	</option>
+									<option value="6">全部黑名单	</option>
+								  </select> 
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">成员号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="BLACK_SERIAL_NUMBER" name="BLACK_SERIAL_NUMBER" value="" nullable="no" desc="拒接号码"/>
+					</span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span>备注：</span></span>
+					<span class="e_input"> <span> 
+							<input jwcid="@TextField" name="REMARK"	id="REMARK" value="" desc="备注" /> 
+					</span> </span>
+				</li>
+			</ul>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreate" name="bcreate" disabled="true" onclick="return addItem();"><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="bdelete" name="bdelete" disabled="true" onclick="return delItem()"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitTrade()" area="AuthPart"  isReset="true" element="div"/>
+</div>
+</div>
+</div>
+</body>
+</html>

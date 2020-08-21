@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/plattask/plattask.js"></script>
+</head>
+<body jwcid=@Body><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" style="height:20px">
+</div>
+<div class="c_box" jwcid="MustInfoPart@Part">
+   
+    <div class="c_form c_form-col-2 c_form-label-6" jwcid="QueryCondPart@Part">
+        <ul class="ul">
+	        <li class="li">
+	        	<div jwcid="SelectListA@Part">
+				<span class="label"><span class="e_required">业务类型：</span></span>
+					<span class="e_select"><span><span>
+		            	<select jwcid="@Select" name="BIZ_TYPE_CODE" id="BIZ_TYPE_CODE"
+						source="ognl:page.pageutil.getStaticList('BAT_BIZ_TYPE_CODE')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		    			value="ognl:info.BIZ_TYPE_CODE"
+						desc="操作类型"
+		    			nullable="no" onchange="initPlatTask();clearValue();"
+			            />
+			        </span></span></span>
+	            </div>
+			</li>
+			<li class="li">
+	        	<div jwcid="SelectListE@Part">
+				<span class="label"><span class="e_required">开始时间：</span></span>
+	  			<span class="e_input e_input-right"><span>
+	  			<input jwcid="@DateField"
+								name="START_DATE"
+								id="START_DATE"
+								format="yyyy-MM-dd"
+								maxName=""
+								readonly="true"
+								desc="起始时间"
+								min="ognl:pageutil.getSysDate()"
+								value="ognl:pageutil.getSysDate()"
+								nullable="no"
+							/></span></span>
+				</div>
+			</li>
+        </ul>
+        <ul class="ul">
+         <li class="li">
+				<div jwcid="SelectListB@Part">
+				<span class="label"><span class="e_required">企业代码：</span></span>
+				<span class="e_elements">
+						<button type="button" class="e_button-right" id="spCodeButton" onclick="javascript:popupPage('bat.battaskquery.PopuCommon','initPlatQryPopup','&IS_POP=BATTASK_PLAT&PPP='+$(BIZ_TYPE_CODE).attr('value') ,'批量平台业务查询',700,430,'SP_CODE')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="ognl:info.SP_CODE" 
+						text="ognl:info.SP_CODE" 
+						name="SP_CODE" id="SP_CODE" 
+						afterAction="clearValue1()"
+						desc="企业代码" nullable="no"/>
+						</span></span>
+				</span>
+				</div>
+			</li>
+	        <li class="li">
+	        	<div jwcid="SelectListC@Part">
+				<span class="label"><span class="e_required">服务代码：</span></span>
+				<span class="e_elements">
+						<button type="button" class="e_button-right" id="bizCodeButton" onclick="javascript:popupPage('bat.battaskquery.PopServiceQry','initPlatQryPopup','&IS_POP=BATTASK_PLAT&BIZ_TYPE_CODE=' + $(BIZ_TYPE_CODE).attr('value') + '&SP_CODE=' + $(SP_CODE).attr('value'),'批量平台业务查询',700,430,'BIZ_CODE')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="ognl:info.BIZ_CODE" 
+						text="ognl:info.BIZ_CODE" 
+						name="BIZ_CODE" id="BIZ_CODE" 
+						afterAction="clearValue2(),queryOperInfo($(SP_CODE).attr('value'),$(BIZ_CODE).attr('value'),$(BIZ_TYPE_CODE).attr('value'))"
+						desc="服务代码" nullable="no"/>
+						</span></span>
+				</span>
+	            </div>
+			</li>
+        </ul>
+        <ul class="ul">
+	        <li class="li">
+				<div jwcid="SelectListD@Part">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+					<span class="e_select"><span><span>
+		            	<select jwcid="@Select" name="OPER_CODE" id="OPER_CODE"
+						source="ognl:operations"
+						textField="OPER_TYPE" valueField="OPER_CODE" titleField="OPER_TYPE"
+		    			value="ognl:info.OPER_CODE"
+						desc="操作类型"
+		    			nullable="no" disabled="false"
+			            />
+			        </span></span></span>
+				</div>
+			</li>
+			<li class="li">
+				<div jwcid="SelectListF@Part">
+				<span class="label"><span>备注：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="REMARK" name="REMARK" value="ognl:info.REMARK"  rows="1" maxsize="50" desc="备注"/></span></span>
+				</div>
+			</li>
+        </ul>
+        
+        <ul class="ul">
+	        <li jwcid="@Any" class="li" id="USERLEVEL" style='ognl:(info.BIZ_TYPE_CODE=="19")?"display:block":"display:none"'>
+	        	<div jwcid="SelectListG@Part">
+				<span class="label"><span>会员级别：</span></span>
+	  				<span class="e_select"><span><span>
+		            	<select jwcid="@Select" name="INFO_VALUE" id="INFO_VALUE"
+						source="ognl:page.pageutil.getStaticList('LEAGUER_LEVEL')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		    			value="ognl:info.INFO_VALUE"
+						desc="会员级别"
+		    			nullable="yes" disabled="false"
+			            />
+			        </span></span></span>
+	  			</div>
+			</li>
+        </ul>
+        <input jwcid="@Hidden" name="COMP_ID"  id="COMP_ID" value="ognl:info.COMP_ID"/>
+	</div>
+</div>
+<div class="c_box" style="height:60px">
+ 
+</div>
+<div class="c_submit">
+	<button id="sbmt_btn" type="button" class="e_button-page-ok" onclick="returnAllValue()" afterAction="" ><i></i><span>确定</span></button>
+</div>
+</div></div></body>
+</html>

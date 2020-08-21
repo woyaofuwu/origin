@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT si_product_id,si_product_name,si_biz_mode,is_si_prod,to_char(reg_date,'yyyy-mm-dd hh24:mi:ss') reg_date,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date,fee_code,fee_type,to_char(func_fee) func_fee,to_char(comu_fee) comu_fee,si_id,rsrv_str1,rsrv_str2,rsrv_str3,to_char(rsrv_num1) rsrv_num1,to_char(rsrv_num2) rsrv_num2,to_char(rsrv_num3) rsrv_num3,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3,tag_set,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time 
+  FROM td_b_si_product
+ WHERE si_product_id=:SI_PRODUCT_ID

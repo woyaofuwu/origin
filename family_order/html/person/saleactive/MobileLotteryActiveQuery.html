@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手机缴费通缴费有奖活动抽奖查询</title>
+<script language="JavaScript" src="person/saleactive/scripts/lottery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">手机缴费通缴费有奖活动抽奖查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+		    
+		    <li class="li">
+				<span class="label"><span class="e_required">账期：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" format="yyyyMM" name="cond_MONTH" id="cond_MONTH" value="ognl:condition.cond_MONTH" datatype="date" desc="开始时间"/></span></span>
+			</li>
+		
+			<li class="li">
+			<span class="label">服务号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER"
+											id="cond_SERIAL_NUMBER"
+											value="ognl:condition.cond_SERIAL_NUMBER" nullable="no"
+											desc="服务号码：" /> </span></span>
+		    </li>
+		    
+		    <li class="li">
+			<span class="label">获奖情况：</span>
+					<span class="e_select"><span><span>
+				  <select name="cond_PRIZE_TYPE_CODE" jwcid="cond_PRIZE_TYPE_CODE@Select"
+									source="ognl:pageutil.getStaticList('MOBILE_LOTTERY_PRIZE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="" desc="获奖情况"
+									addDefault="yes"/>
+				</span></span></span>				
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryLotteryInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		<!--	<button type="button" class="e_button-form"  onclick="resetCondition()"><i class="e_ico-search"></i><span>重 置</span></button>
+			<button type="button" class="e_button-form"  onclick="closeNavFrameByLocation()"><i class="e_ico-search"></i><span>取 消</span></button>-->
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table ">
+		<table jwcid="@Table" name="FcardTable" id="FcardTable" scroll="true">
+			<thead>
+				<tr>
+					<th>账期</th>
+                    <th>用户号码</th>
+                    <th>抽奖时间</th>
+                    <th>获奖情况</th>
+                    <th>奖品领取标识</th>
+                    <th>领取时间</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="orderInfos" id="orderInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">								
+					    <td><span jwcid="@Insert" value="ognl:info.MONTH" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" raw="false"></span></td>
+                 		<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_LOTTERY_PRIZE',info.PRIZE_TYPE_CODE)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_LOTTERY_FLAG',info.EXEC_FLAG)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.EXEC_TIME)" raw="false"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryLotteryInfo" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

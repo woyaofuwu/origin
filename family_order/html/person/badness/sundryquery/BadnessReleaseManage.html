@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>解除黑名单</title>
+<script language="JavaScript" src="person/badness/sundryquery/scripts/badnessreleasemanage.js"></script>
+</head>
+<body  jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">名单查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7"  jwcid="QueryCondPart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">加黑号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_REPORT_SERIAL_NUMBER" id="cond_REPORT_SERIAL_NUMBER"
+				  			   	desc="加黑号码"	value="ognl:editInfo.REPORT_SERIAL_NUMBER"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">加黑来源：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_RECV_IN_TYPE" id="cond_RECV_IN_TYPE" 
+						source="ognl:pageutil.getStaticList('HLR_BLACK_SOURCE')" desc="加黑来源"
+						value="ognl:editInfo.cond_RECV_IN_TYPE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+					<span class="label">加黑开始时间：</span>
+					<span class="e_elements">
+						<span class="e_input e_input-left"><span>
+							<input type="text" jwcid="@DateField" name="cond_REPORT_START_TIME" id="cond_REPORT_START_TIME"  value="ognl:editInfo.cond_REPORT_START_TIME" desc="加黑开始时间"/>
+						</span></span>
+					</span>
+			</li>
+			<li class="li">
+					<span class="label">加黑截止时间：</span>
+					<span class="e_elements">
+						<span class="e_input e_input-left"><span>
+							<input type="text" jwcid="@DateField" name="cond_REPORT_END_TIME" id="cond_REPORT_END_TIME"  value="ognl:editInfo.cond_REPORT_END_TIME" desc="加黑截止时间"/>
+						</span></span>
+					</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" id="bquery" name="bquery"  onclick="return queryBadnessReleaseInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-10">
+		<div class="c_table">
+			<table jwcid="@Table" name="QueryListTable">
+				<thead>
+					<tr>
+						<th col="CHECK_ID"><input type="checkbox" id="badness_ctrl" name="badness_ctrl" onclick="checkedAll('inforecvid', checked)"/></th>
+						<th>全网唯一编码</th>
+						<th col="SERIAL_NUMBER">加黑号码</th>
+						<th>加黑原因</th>
+						<th>加黑来源</th>
+						<th>处理方式</th>
+						<th>处理补充说明</th>
+						<th>平台处理时间</th>
+						<th>黑名单生效时间</th>
+						<th>黑名单失效时间</th>
+						<th col="SOURCE_DATA" style="display:none">加黑来源</th>
+						<th col="HANDLING_STATE" style="display:none">处理方式</th>
+					</tr>
+				</thead>
+				<tbody  jwcid="@Any" name="BadnessReleaseValues" id="BadnessReleaseValues">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><input type="checkbox" name="inforecvid" id="inforecvid" jwcid="@Any" value="ognl:info.INDICT_SEQ"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.INDICT_SEQ" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HLR_BLACK_ADD_RESULT', info.ADD_RESULT)"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HLR_BLACK_SOURCE', info.SOURCE_DATA)"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HLR_RELEASE_HANDING', info.HANDLING_STATE)"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_CONTENT"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.HANDLING_TIME)"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.START_DATE)"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.END_DATE)"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.SOURCE_DATA"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.HANDLING_STATE"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<div jwcid="@NavBar" name="QueryInfoNav" id="QueryInfoNav" cond="QueryCondPart" part="QueryListPart" listener="queryBadnessReleaseInfo" pageSize="10" count="ognl:count"></div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-1 c_form-label-7" jwcid="SubPart@Part" element="div">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label"><span class="e_required">解黑原因：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="DEAL_RAMARK" id="DEAL_RAMARK" 
+						source="ognl:pageutil.getStaticList('HLR_RELEASE_REASON')" desc="解黑原因" nullable="no"
+						value="ognl:editInfo.DEAL_RAMARK" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li> 
+			<li class="li">
+				<span class="label">解黑原因说明：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+					<textarea type="text" jwcid="@TextArea" id="DEAL_REMARK_MAKEUP" name="DEAL_REMARK_MAKEUP" value="ognl:editInfo.DEAL_REMARK_MAKEUP"   rows="8" maxsize="2000"  	desc="解黑原因说明" />
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="dealBadnessReleaseInfo()" isReset="false" print="false" area="" element="div"/>
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnetfeereg/cttfeereg/scripts/cttfeereg.js" ></script>
+<script jwcid="@Script"  src="person/np/npapplycancel/scripts/busiTable.js" ></script>
+
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<form jwcid="@Form" id="Form0">
+	<input type="text" jwcid="@TextField" id="LOG_ID" name="LOG_ID" value="ognl:feeRegInfo.LOG_ID" style="display:none"/>    
+    <!--表格 start -->
+    <div jwcid="RefreshTable@Part">
+    	<div class="l_col">
+    		<div class="l_left" style="width:30%;">
+    			<div class="c_box">
+			    		<div class="c_title">
+							<div class="text">银行上缴款登记表</div>
+						</div>
+			    		<div class="c_table">
+								<table jwcid="@Table" name="feeTable" >
+									<thead>
+										<tr>
+											<th col="FEE_TYPE" >上缴款类别</th>
+											<th style="display:none" col='FEE_TYPE_CODE'>上缴款类别编码</th>
+											<th col="FEE_MONEY" >上缴金额(单位:元)</th>
+											<th style="display:none" col='MODI_FLAG'>修改标识</th>										
+										</tr>
+									</thead>
+									<tbody>
+											<tr jwcid="@Foreach" source="ognl:feeRegs" value="ognl:feeReg" element="tr" index="ognl:index">
+											<td><span jwcid="@Insert" value="ognl:feeReg.FEE_TYPE" raw="false"/></td>
+											<td style="display:none">
+												<input type="text" jwcid="@Any" value="ognl:feeReg.FEE_TYPE_CODE" id="feeTypeCodes" name="feeTypeCodes"/>
+											</td>
+											<td>
+												<span class="e_input"><span><input type="text" jwcid="@Any" oldFeeMoney="ognl:feeReg.FEE_MONEY"
+													value="ognl:formatDecimal ('0.00',feeReg.FEE_MONEY/100.0)"
+													feeType="ognl:feeReg.FEE_TYPE" feeTypeCode="ognl:feeReg.FEE_TYPE_CODE" min="0" max="999999999" datatype="numeric"
+													id="feeMoneys" name="feeMoneys" desc="费用金额"  onBlur="calTotalFee(this);"/></span></span>
+											</td>
+											<td style="display:none">
+												<input type="text" jwcid="@Any" value="ognl:feeReg.MODI_FLAG" id="modiFlags" name="modiFlags"/>
+											</td>
+										</tr>
+										<tr>
+											<td>合计</td>
+											<td>
+												<span class="e_input"><span><input type="text" jwcid="@Any" id="feeTotle" name="feeTotle"
+													value="ognl:formatDecimal ('0.00',feeRegInfo.FEE_TOTLE/100.0)"
+													 desc="合计费用" disabled="true"/></span></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+						</div>
+	    			</div>
+    			</div>
+    			<div class="l_auto">
+    				<div class="c_box">
+	    				<div class="c_title">
+							<div class="text">登记员信息</div>
+						</div>
+	    				<div class="c_form c_form-col-2 c_form-label-5" >
+							<ul class="ul">
+								<li class="li">
+									<span class="label"><span class="e_required">登记部门：</span></span>
+									<span class="e_input"><span><input type="text" jwcid="@TextField" name="REG_DEPART_ID" id="REG_DEPART_ID" value="ognl:feeRegInfo.REG_DEPART_ID" desc="登记部门" disabled="true" /></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">登记员工：</span></span>
+									<span class="e_input"><span><input type="text" jwcid="@TextField" name="REG_STAFF_ID" id="REG_STAFF_ID" value="ognl:feeRegInfo.REG_STAFF_ID" desc="登记员工" disabled="true" /></span></span>
+								</li>
+								<li class="li">
+										<span class="label"><span class="e_required">登记时间：</span></span>
+										<span class="inputArea"><span class="e_input"><span>
+											 <input type="text" jwcid="@DateField" name="REG_DATE" id="REG_DATE" value="ognl:feeRegInfo.REG_DATE" desc="登记时间" format="yyyy-MM-dd HH:mm:ss"
+													disabled="true" />
+										</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">缴款方式：</span></span>
+											<span class="e_select"><span><span>
+							 				<select jwcid="@Select" name="RSRV_TAG1" id="RSRV_TAG1" value="ognl:feeRegInfo.RSRV_TAG1"  nullable="no"     
+										textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('BANKFEE_PAYTYPE')"  desc="缴款方式"/>
+								</span></span></span>						
+								</li>
+								<li class="li">
+										<span class="label"><span class="e_required"><span id="superBank">上级银行：</span></span></span>
+										<span class="e_select"><span><span>
+											<select jwcid="@Select" name="RSRV_STR1" id="RSRV_STR1" value ='ognl:feeRegInfo.RSRV_STR1'
+																			 source="ognl:pageutil.getList('TD_S_SUPERBANK_CTT','SUPER_BANK_CODE','SUPER_BANK')"
+																			textField="SUPER_BANK" valueField="SUPER_BANK_CODE" titleField="SUPER_BANK" disabled="false"  desc="上级银行"   nullable="no" onchange="checkSuperBank()"/>
+										</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required"><span id="brand">银行名称：</span></span></span>
+									<span class="e_elements">
+										<button type="button" class="e_button-right" id="bankFld" disabled="false" onclick="if(checkBank() == false) return false;javascript:popupPage('broadband.cttnet.cttnetmodifyacctinfo.CttViewBankPage','queryBank','&multi=true&comminfo_SUPERBANK_CODE=' +$('#RSRV_STR1').val()+'&SERIAL_NUMBER='+$('#AUTH_SERIAL_NUMBER').val(),'银行名称列表',400,300,'acctinfo_BANK_CODE')">
+										<i class="e_ico-check"></i><span></span></button>
+										<span class="e_input e_input-left"><span>
+										<input type="text" jwcid="@Popup"  readOnly="true" value="ognl:feeRegInfo.RSRV_STR2" text="ognl:feeRegInfo.BANK" name="acctinfo_BANK_CODE" id="acctinfo_BANK_CODE" desc="银行名称"/>
+										</span></span>
+									</span>	
+								</li>
+								<li class="li col-2">
+								<span class="label">备注：</span>
+										<span class="e_textarea">
+											<span class="e_textareaTop"><span></span></span>
+											<span class="e_textareaContent"><textarea jwcid="@TextArea" name="REMARK" id="REMARK" value="ognl:feeRegInfo.REMARK" desc="备注" style="height:60px;"></textarea></span>
+											<span class="e_textareaBottom"><span></span></span>
+										</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+    			</div>
+    		</div>
+  	</div>
+	<div class="c_box">
+		<div class="c_submit">
+				<button jwcid="@Any" class="e_button-page-ok" type="button" style='ognl:("0".equals(feeRegInfo.STATE) && "-1".equals(feeRegInfo.LOG_ID)) ? "display:" : "display:none"'
+	    							onclick="if(!saveBankFeeRegM())return false;"><i class="e_ico-save"></i><span>补录</span></button>
+				<button jwcid="@Any" class="e_button-page" type="button" style='ognl:("1".equals(feeRegInfo.STATE)) ? "display:" : "display:none"'
+ 							onclick="if(!saveBankFeeRegM())return false;"><i class="e_ico-edit"></i><span>修改</span></button>
+				<button jwcid="@Any" class="e_button-page"  type="button" style='ognl:("1".equals(feeRegInfo.STATE) || "-1".equals(feeRegInfo.LOG_ID)) ? "display:" : "display:none"'
+					onclick="reset()"><i class="e_ico-reset"></i><span>重置</span></button>
+		</div>
+	</div>
+	</form>
+</div></div>
+</body>
+</html>

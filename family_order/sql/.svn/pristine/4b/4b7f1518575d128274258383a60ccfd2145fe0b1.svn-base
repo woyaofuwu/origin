@@ -1,0 +1,23 @@
+select PRINT_ID,
+       TRADE_ID,
+       SERIAL_NUMBER,
+       ACCT_ID,
+       TRADE_STAFF_ID,
+       TRADE_DEPART_ID,
+       TRADE_CITY_CODE,
+       TRADE_EPARCHY_CODE,
+       TOTAL_FEE,
+       PRINT_FLAG,
+       ASSEMB_FLAG,
+       EPARCHY_CODE,
+       POST_TAG,
+       ORDER_ID,
+       RSRV_INFO1,
+       ACCEPT_MONTH,
+       RSRV_INFO2,
+       RSRV_INFO3,
+       RSRV_INFO4,
+       RSRV_INFO5
+  FROM TF_B_PRINTPDF_LOG
+  WHERE TRADE_ID = TO_NUMBER(:TRADE_ID)
+    AND PRINT_FLAG = '0'

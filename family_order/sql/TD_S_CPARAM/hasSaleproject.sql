@@ -1,0 +1,1 @@
+SELECT COUNT(1) recordcount  FROM tf_f_user_saleproject a WHERE a.user_id = TO_NUMBER(:USER_ID) AND A.END_DATE>SYSDATE AND PARTITION_ID=MOD(TO_NUMBER(:USER_ID),10000) and exists (select 1 from td_s_commpara b where b.param_attr='9994' and b.param_code='1' and a.sale_project_id=b.para_code1)

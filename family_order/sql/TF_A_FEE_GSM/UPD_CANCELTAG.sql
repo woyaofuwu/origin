@@ -1,0 +1,4 @@
+UPDATE TF_A_FEE_GSM
+   SET RSRV_TAG1 = '1'
+ where log_id=TO_NUMBER(:LOG_ID)
+   AND RSRV_TAG1='0'

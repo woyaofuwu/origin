@@ -1,0 +1,16 @@
+SELECT TRANSACTIONID,
+       IDVALUE,
+       CARD_NO,
+       CARD_MONEY,
+       to_char(CARD_EXPIREDDATE,'yyyymmdd') ACTIVE_DAYS,
+       CARD_STATE  CARD_STATEFLAG,
+       CARD_TYPE,
+	   CARD_PASSWORD,
+	   to_char(SETTLE_DATE,'yyyymmdd') SETTLE_DATE,
+	   to_char(ACTION_TIME,'yyyymmddhh24miss') ACTION_TIME
+  FROM TI_B_ELECTCARD_SELLANDCANCEL
+     WHERE CHANGE_TYPE = '0'
+	  AND RSRV_STR1 =:RSRV_STR1 
+	  
+	  
+	  

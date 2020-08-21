@@ -1,0 +1,5 @@
+delete td_o_blackuser_suspicion
+where INIT_SERINUM
+=:INIT_SERINUM
+and called_serinum=:CALLED_SERINUM
+and COLLECT_FILENAME=:COLLECT_FILENAME

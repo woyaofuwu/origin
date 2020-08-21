@@ -1,0 +1,1 @@
+update tf_f_user t set t.user_state_codeset=:X_USETAG where t.user_id=:USER_ID

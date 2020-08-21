@@ -1,0 +1,31 @@
+SELECT A.USER_ID,
+       A.PACKAGE_ID, 
+       A.PACKAGE_NAME, 
+       A.Months,
+       A.Rsrv_Date1,
+       A.Rsrv_Date2,
+       TO_CHAR(A.ACCEPT_DATE, 'yyyy-mm-dd hh24:mi:ss') ACCEPT_DATE, 
+       B.RES_CODE, 
+       B.DEVICE_MODEL, 
+       B.GOODS_NAME, 
+       B.GOODS_STATE,
+       TO_CHAR(B.UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME, 
+       B.UPDATE_STAFF_ID,
+       B.REMARK
+  FROM TF_F_USER_SALE_ACTIVE A, TF_F_USER_SALE_GOODS B
+ WHERE A.USER_ID = B.USER_ID
+   AND A.RELATION_TRADE_ID = B.RELATION_TRADE_ID
+   AND A.USER_ID = TO_NUMBER(:USER_ID)
+   AND A.PARTITION_ID = MOD(A.USER_ID, 10000)
+   AND B.USER_ID = TO_NUMBER(:USER_ID)
+   AND B.PARTITION_ID = MOD(A.USER_ID, 10000)
+   AND LENGTH(B.RES_CODE) > 5
+   AND A.CAMPN_TYPE = 'YX03'
+   AND B.GOODS_STATE = '0'
+      AND (:BEGIN_DATE is null or
+       B.ACCEPT_DATE >= to_date(:BEGIN_DATE, 'YYYY-MM-DD HH24:MI:SS'))
+   AND (:END_DATE is null or
+       B.ACCEPT_DATE <= to_date(:END_DATE, 'YYYY-MM-DD HH24:MI:SS'))
+   AND (:PACKAGE_ID is null or A.PACKAGE_ID LIKE '%' || :PACKAGE_ID || '%')
+   AND (:PACKAGE_NAME is null or
+       A.PACKAGE_NAME LIKE '%' || :PACKAGE_NAME || '%')

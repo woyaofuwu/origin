@@ -1,0 +1,24 @@
+SELECT INDICT_SEQ,
+       MSINDN,
+       EVENT,
+       URL,
+       MALWARE_ID,
+       MALWARE_NAME,
+       CONTROL_URL,
+       TYPE,
+       CATEGORY,
+       PLATFORM,
+       SUMMARY,
+       DETAILS,
+       --TO_CHAR('DATE', 'YYYY-MM-DD HH24:MI:SS') as HAPPEN_DATE,
+       PROVINCE,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5
+  FROM TF_F_BADSOFTWARE_USER
+ WHERE 1 = 1
+   AND MSINDN = :MSINDN
+   AND TYPE = :TYPE
+   AND CATEGORY = :CATEGORY

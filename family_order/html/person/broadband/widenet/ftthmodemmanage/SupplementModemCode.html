@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>光猫串号补录</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/broadband/widenet/ftthmodemmanage/script/SupplementModemCode.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2 e_hide-x">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">光猫串号补录</span>
+        
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="displaySwitch(this,'UCAViewPart')"><i
+				class="e_ico-unfold"></i><span>展示客户基本信息</span>
+			</a>
+		</div>
+    </div>
+   
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="6136" disabledAuth="true" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part" style="display:none">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+
+<!-- FTTH光猫串号补录开始 -->
+<div class="c_box" id="SupplementModemCode">
+	<div class="c_title">
+        <span class="text">FTTH光猫信息</span>
+    </div>
+	<div jwcid="FTTHModemPart@Part" id="FTTHModemPart">
+    <div class="c_scroll c_scroll-x c_scroll-table-15">
+		<div class="c_table">
+			<table jwcid="@Table" id="FTTHModemTable"
+			   name="FTTHModemTable">
+      			<thead>
+		  			<tr>
+		  			    <th width='30px' col="INST_ID"><input type="checkbox" onclick="checkedOther('monitorids');" /></th>
+		  			    <th col="USER_ID">用户标识</th>
+						<th col="MODERM_ID">光猫串号</th>
+						<th col="MODERM_TYPE">光猫型号</th>
+						<th col="MODERM_STATUS">光猫状态</th>
+						<th col="APPLY_TYPE">申领模式</th>
+						<th col="DEPOSIT">押金金额</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+						<th col="SUPPLEMENT_MODEM_ID" >补录光猫串号</th>
+						<th col="SUPPLEMENT_MODEM_TYPE" class="e_hideX">补录光猫型号</th>
+						<th col="">光猫串号录入</th>
+						<th col="SUPPLEMENT_TYPE" class="e_hideX">补录方式</th>
+					</tr>
+				</thead>
+				<tbody id = "tbdoyHide">
+					<!-- 循环显示表格列，并设置行间隔颜色 -->
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" >
+						<td class="e_center"><input jwcid="@Checkbox" id="monitorids" name="monitorids" SUBSCRIBE_ID="ognl:info.SUBSCRIBE_ID" IBSYSID="ognl:info.IBSYSID" value="ognl:info.INST_ID" /></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_MODEM_STATUS',info.RSRV_TAG2)"" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_MODEM_STYLE',info.RSRV_TAG1)" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR2/100" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.SUPPLEMENT_MODEM_ID" raw="false"/></td>
+						<td class="e_center e_hideX"><span jwcid="@Insert" value="ognl:info.SUPPLEMENT_MODEM_TYPE" raw="false"/></td>	
+						<td class="e_center"><button str1 = "ognl:info.RSRV_STR1" str2 = "ognl:info.RSRV_TAG2" class="e_button-center e_button-form" jwcid="@Any"  onclick="checkSUPPLEMENTModemId(this);"><i class="e_ico-bottom" /><span>光猫串号录入</span></button></td>	
+						<td class="e_center e_hideX"><span jwcid="@Insert" value="ognl:info.SUPPLEMENT_TYPE" raw="false"/></td>
+					</tr>
+				</tbody> 
+			</table>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- FTTH光猫串号补录结束 -->
+	<div id="checkModempopup" style="display:none" >
+		<div class="c_form c_form-col-1 c_form-label-4 e_hide-x" jwcid="checkModemPart@Part">
+		    <ul class="ul">
+		    	<li class="li" id="oldModermId">
+					<span class="label"><span class="">老终端编号：</span></span>
+					<span class="e_elements" style="width:210px;">
+						<span class="e_input e_input-left"><span>
+							<input type="text" jwcid="@TextField" name="cond_OLD_MODEM_ID" id="cond_OLD_MODEM_ID" value="" desc="光猫串号" disabled="true"/>
+						</span></span>
+					</span>		
+				</li>
+				<li class="li">
+					<span class="label"><span class="">终端编号：</span></span>
+					<span class="e_elements" id="RES_ID_INPUT">
+						<button id='CHECK' name="CHECK" class="e_button-center e_button-form" onclick="checkModemId();"><i class="e_ico-bottom"></i><span>校验</span></button>
+							<span class="e_input e_input-left"><span>
+								<input jwcid="@TextField" name="check_MODEMID" id="check_MODEMID" value="ognl:info.check_MODEMID"
+										desc="终端编号"/>
+							</span></span>
+					</span>		
+				</li>
+		    </ul>
+    	</div>
+	</div>
+
+<!-- FTTH商务光猫串号补录开始 -->
+<div class="c_box" id="SupplementBusiModemCode" style="display:none">
+	<div class="c_title">
+        <span class="text">FTTH商务光猫信息</span>
+    </div>
+    <div class="c_form c_form-col-3 c_form-label-6" jwcid="KDNumberPart@Part">
+    	 <ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span>宽带号码：</span></span>
+				<span class="e_elements">
+					<button class="e_button-center e_button-form" id="queryBtn" name="queryBtn" onclick="return queryBusiModermInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" name="cond_KD_NUMBER" id="cond_KD_NUMBER" value="ognl:info.KD_NUMBER" desc="宽带号码"/>
+					</span></span>
+				</span>
+			</li>
+	    </ul>
+    </div>
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-5" jwcid="busiModemPart@Part" id="busiModemPart">
+			<table jwcid="@Table" id="busiModemTable" name="busiModemTable">
+				<thead>
+					<tr>
+						<th width='30px' col="INST_ID"><input type="checkbox" onclick="checkedOther('monitorids');" /></th>
+						<th col="USER_ID">用户标识</th>
+						<th col="KD_NUMBER">宽带号码</th>
+						<th col="MODERM_STATUS">光猫状态</th>
+						<th col="MODERM_ID">光猫串号</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+						<th col="SUPPLEMENT_MODEM_ID">补录光猫串号</th>
+						<th col="SUPPLEMENT_MODEM_TYPE" class="e_hideX">补录光猫型号</th>
+						<th col="">光猫串号录入</th>
+						<th col="SUPPLEMENT_TYPE" class="e_hideX">补录方式</th>
+					</tr>
+				</thead>
+				<tbody id='fmymembers'>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr"> 
+						<td class="e_center"><input jwcid="@Checkbox" id="monitorids" name="monitorids" value="ognl:info.INST_ID" /></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_MODEM_STATUS',info.RSRV_TAG2)"" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.SUPPLEMENT_MODEM_ID" raw="false"/></td>
+						<td class="e_center e_hideX"><span jwcid="@Insert" value="ognl:info.SUPPLEMENT_MODEM_TYPE" raw="false"/></td>	
+						<td class="e_center"><button str1 = "ognl:info.RSRV_STR1" str2 = "ognl:info.RSRV_TAG2" class="e_button-center e_button-form" jwcid="@Any"  onclick="checkSUPPLEMENTModemId(this);"><i class="e_ico-bottom" /><span>光猫串号录入</span></button></td>	
+						<td class="e_center e_hideX"><span jwcid="@Insert" value="ognl:info.SUPPLEMENT_TYPE" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+	</div>
+</div>
+<!-- FTTH商务光猫串号补录结束 -->
+<!-- 提交 开始 -->
+<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart" element="div"/>	
+<!-- 提交 结束 -->
+</div></div></body>
+</html>

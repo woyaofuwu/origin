@@ -1,0 +1,1 @@
+select SERIAL_NUMBER_B,START_DATE,END_DATE from tf_f_relation_uu where SERIAL_NUMBER_A = (select SERIAL_NUMBER_A from tf_f_relation_uu where SERIAL_NUMBER_B = :SERIAL_NUMBER_B and RELATION_TYPE_CODE = :RELATION_TYPE_CODE) and SERIAL_NUMBER_B != :SERIAL_NUMBER_B and sysdate between START_DATE and END_DATE

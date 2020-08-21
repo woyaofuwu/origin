@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="UTF-8"/>
+	<meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+	<script language="javascript" src="scripts/iorder/icsserv/component/print/PrintMgr.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/batprintinvoice/scripts/batprintinvoice.js"></script>
+	<title>电子单据打印</title>
+</head>
+
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav()">电子单据打印</div>
+</div>
+<!-- 标题栏 结束 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header" name="scroller1" jwcid="@Scroller" checkDOMChanges="true" >
+	<div class="l_padding l_padding-phone-1">
+	<div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border" jwcid="SearchCondPart@Part" element="div">
+		<div id="tipInfo" class="c_tip">请输入号码或时间查询，要求【开始、结束】日期时间段不能超过31天,如果查询不到数据，请点击【生成补打电子工单数据】按钮重新查询。（注：生成补打数据时间跨度不能超过1天）</div>
+		<div class="c_form c_form-label-5 c_form-col-5 c_form-phone-col-1">
+			<ul class="ul">
+				<li class="link">
+					<div class="label">查询条件</div>
+					<div class="value">
+								<span jwcid="@Select" name="SEARCH_TYPE" id="SEARCH_TYPE"
+									  source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PRINT_E_DOCUMENT_QUERY_MODE')"
+									  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+									  value="1" nullable="no"
+									  addDefault="false"
+									  optionWidth="10"
+									  optionAlign="right"
+									  desc="查询条件"   onchange="changeQueryCond()"></span>
+					</div>
+				</li>
+				<li id="SnPart" class="link required" >
+					<div class="label">服务号码</div>
+					<div class="value">
+						<input jwcid="@TextField"  name="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER"
+							   desc="服务号码" class="e_input" type="text" nullable="no"/>
+					</div>
+				</li>
+
+				<li class="link required" id="TradePart" style="display:none">
+					<div class="label">订单编号：</div>
+					<div class="value">
+						<input jwcid="@TextField" name="TRADE_ID" value="ognl:info.TRADE_ID" desc="订单编号" type="text"/>
+					</div>
+				</li>
+				<li id="BatchPart" class="link required" style="display:none">
+					<div class="label">批次号：</div>
+					<div class="value">
+						<input jwcid="@TextField" name="BATCH_ID" value="ognl:cond.BATCH_ID"
+							 desc="批次号" class="e_input" type="text"/>
+					</div>
+				</li>
+				<li class="link required" id = "StaffId">
+					<div class="label">员工工号：</div>
+					<div class="value">
+						<input jwcid="@TextField" name="STAFF_ID" value="ognl:cond.STAFF_ID" desc="员工工号"
+							class="e_input" type="text" maxlength="8" onkeyup="inputCtrlForStaff()" />
+					</div>
+				</li>
+				<li class="link required" id = "StartDate">
+					<div class="label">开始时间：</div>
+					<div class="value">
+					<input type="text" jwcid="@DateField" name="START_DATE" value="ognl:cond.START_DATE" datatype="date" dropDown="true" desc="开始时间" maxName="END_DATE" format="yyyy-MM-dd" nullable="no"/>
+					</div>
+				</li>
+				<li class="link required" id = "EndDate">
+					<div class="label">结束时间：</div>
+					<div class="value">
+					<input type="text" jwcid="@DateField" name="END_DATE" value="ognl:cond.END_DATE" datatype="date" dropDown="true" desc="结束时间" format="yyyy-MM-dd" minName="START_DATE" nullable="no"/>
+					</div>
+				</li>
+				<li class="li" id="NoPhoneWidePart">
+					<span class="value"><label class="l_ml"><input jwcid="@Checkbox" class="e_checkbox" type="checkbox" id="NO_PHONE_WIDEUSER_FLAG" name="NO_PHONE_WIDEUSER_FLAG" value="true"/><span>无手机宽带号码</span></label></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit e_right">
+				<input jwcid="@Hidden" name="PRINT_TRADE_ID" value="" />
+				<input jwcid="@Hidden" name="TRADE_EPARCHY_CODE" value="ognl:getTradeEparchyCode()" />
+				<button type="button" name="queryBtn" class="e_button-blue" onclick="chkSearchForm()"><i class="e_ico-search"></i><span>查询</span></button>
+				<button type="button" name="makeBtn" class="e_button-blue" onclick="makeEdocInfo()"><i class="e_ico-search"></i><span>生成补打电子工单数据</span></button>
+				<button type="reset" name="resetBtn" class="e_button-blue"  onclick="resetInput()"><i class="e_ico-reset"></i><span>重置</span></button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid="SearchResultPart@Part" element="div">
+		<div class="c_title">
+			<div class="text">查询信息</div>
+			<div class="fn">
+				<input jwcid="@Hidden" name="CUR_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" />
+				<div style="display:none;"><span jwcid="SubmitPart@icsserv:CSSubmit" isRender="false" element="span"/></div>
+				<button type="button" name="printBtn" class="e_button" onclick="printEdocInfo()"><i class="e_ico-print"></i><span>打印</span></button>
+				<div jwcid="@Conditional" condition="ognl:infos.size>0">
+					<span jwcid="@Export" name="exportFile" ftpCode="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="8898"
+						 taskId="8898" configFile="export/batprintinvoice/BatPrintInvoice.xml" fileName="电子工单补打" beforeAction="checkExport" cond="SearchCondPart" />
+				</div>
+			</div>
+		</div>
+
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table  c_table-row-10">
+			<table id="printTable" name="printTable" class="c_table c_table-border c_table-lite c_table-min-8" jwcid="@Table">
+      			<thead>
+		  			<tr>
+		  				<th>选择</th>		  				
+		  				<th>业务流水号</th>
+						<th>业务类型</th>
+						<th>受理员工工号</th>
+						<th>受理员工</th>
+						<th>受理部门编码</th>
+						<th>受理部门</th>
+						<th>受理时间</th>
+						<th>业务受理方式</th>
+						<th>业务受理串1</th>
+						<th>业务受理串2</th>	
+						<th>业务受理串3</th>
+						<th>业务受理串4</th>
+						<th>业务受理串5</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td ><input name="TRADE_ID" jwcid="@Any" type="radio" value="ognl:info.TRADE_ID"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE" raw="true"/></td>									
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME"/></td>			
+						<td><span jwcid="@Insert" value="ognl:info.DEPART_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEPART_NAME"/></td>			
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.BRAND)" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.VIP_CLASS" raw="true"/></td>				
+						<td><span jwcid="@Insert" value="ognl:info.RECEIPT_INFO1" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RECEIPT_INFO2" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RECEIPT_INFO3" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RECEIPT_INFO4" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RECEIPT_INFO5" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="SearchCondPart" part="SearchResultPart" 
+	      listener="queryPrintInfo" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+	</div>
+</div>
+	<!-- 隐藏区域开始 -->
+	<div jwcid="hiddenPart@Part">
+	    <div style="display: none">
+	        <object id="MakeBillActiveX" classid="clsid:5144a5b7-b206-4e79-8ee2-9df3973d6527">
+	        </object>
+	    </div>
+	</div>
+	<!-- 隐藏区域结束 -->
+
+</body>
+</html>

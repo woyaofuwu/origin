@@ -1,0 +1,6 @@
+SELECT COUNT(DISTINCT T.USER_ID) VCOUNT
+  FROM TL_B_WECHAT_SCORE T
+ WHERE T.ACTIVITY_ID IN (SELECT A.PARAM_CODE
+                           FROM TD_S_COMMPARA A
+                          WHERE A.PARAM_ATTR = '534'
+                            AND A.PARA_CODE10 = :PARA_CODE10)

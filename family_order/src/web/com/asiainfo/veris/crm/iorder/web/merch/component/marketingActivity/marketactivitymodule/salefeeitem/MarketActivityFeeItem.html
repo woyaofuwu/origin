@@ -1,0 +1,126 @@
+<div jwcid="@Dialog"  name="saleFeeItemPanel" id="saleFeeItemPanel" class="c_dialog e_center" style="display:none" title='ognl:"1".equals(cond.IS_FEE)?"商品费用明细":"附加属性信息"'>
+<div class="l_padding">
+		<div jwcid="@Conditional" condition='ognl:"1".equals(cond.IS_FEE)'>
+				<div jwcid="SaleFeeItem@Part" element="div">
+				<div class="c_scroll"><div class="c_table c_table-even c_table-line c_table-row-5">
+					<table jwcid="@Table" id="SaleFeeItemTab" name="SaleFeeItemTab" >
+						<thead>
+							<tr>
+								<th col="PROCESS_TAG_NAME">类型</th>
+								<th col="SALE_MANAGER">类型</th>
+								<th col="CREDIT_VALUE">金额</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:feeList" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td class="wrap">
+									<span jwcid="@Insert" value="ognl:info.FEE_MODE_NAME" />
+								</td>
+								<td class="wrap">
+									<span jwcid="@Insert" value="ognl:info.FEE_TYPE_CODE_NAME" />
+								</td>
+								<td class="wrap">
+									<div jwcid="@Conditional" condition='ognl:"0".equals(info.ATTR_TYPE_CODE)'>
+										<span class="e_input"><span>
+												<input
+												jwcid="@TextField" 
+												name="ognl:info.ATTR_CODE" 
+				                         		id="ognl:info.ATTR_CODE"
+				                             	attrCode = "ognl:info.ATTR_CODE"
+				                             	type="text"
+												value="ognl:info.ATTR_INIT_VALUE"
+												depositType="ognl:info.DEPOSIT_TYPE"
+												feeMode="ognl:info.FEE_MODE"
+												feeTypeCode="ognl:info.FEE_TYPE_CODE"
+												payMode="ognl:info.PAY_MODE"
+												elementId = "ognl:info.ELEMENT_ID"
+												elementTypeCode="ognl:info.ELEMENT_TYPE_CODE"
+				                         		nullable='ognl:"0".equals(info.ATTR_CAN_NULL)?"no":"yes"'
+				                         		disabled="ognl:((info.IS_DISABLED == 1)?'true':'false')"
+				                         		desc="ognl:info.ATTR_LABLE"
+				                         		onchange="marketActivityFeeItem.onchangeCheck(this);"
+				                         		/>
+				                         	</span></span>
+				                       </div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+			</div>
+		</div>
+		<div jwcid="@Conditional" condition='ognl:"1".equals(cond.IS_ATTR)'>
+			<div jwcid="SaleAttrItem@Part" element="div">
+				<div class="c_scroll"><div class="c_table c_table-row-">
+					<table jwcid="@Table" id="SaleFeeItemTab" name="SaleFeeItemTab">
+						<thead>
+							<tr>
+								<th col="PROCESS_TAG_NAME">商品名称</th>
+								<th col="SALE_MANAGER">属性名称</th>
+								<th col="CREDIT_VALUE">属性信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:attrList" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td class="wrap">
+									<span jwcid="@Insert" value="ognl:info.OFFER_NAME" />
+								</td>
+								<td class="wrap">
+									<span jwcid="@Insert" value="ognl:info.ATTR_LABLE" />
+								</td>
+								<td class="wrap">
+									<div jwcid="@Conditional" condition='ognl:"0".equals(info.ATTR_TYPE_CODE)'>
+										<span class="e_input"><span>
+											<input
+											jwcid="@TextField" 
+											name="ognl:info.ATTR_CODE" 
+			                         		id="ognl:info.ATTR_CODE"
+			                             	attrCode = "ognl:info.ATTR_CODE"
+			                             	type="text"
+											value="ognl:info.ATTR_INIT_VALUE"
+											datatype="ognl:info.ATTR_VALUE_TYPE"
+			                         		nullable='ognl:"0".equals(info.ATTR_CAN_NULL)?"no":"yes"'
+			                         		disabled="ognl:((info.IS_EDIT==null || info.IS_EDIT == 1)?'false':'true')"
+			                         		minsize = 'ognl: (info.ATTR_VALUE_MIN ==null || "".equals(info.ATTR_VALUE_MIN))?"0":info.ATTR_VALUE_MIN'
+			                         		maxsize = 'ognl: (info.ATTR_VALUE_MAX ==null || "".equals(info.ATTR_VALUE_MAX))?"999":info.ATTR_VALUE_MAX'
+			                         		rsrvStr1 = 'ognl:info.RSRV_TAG'
+			                         		desc="ognl:info.ATTR_LABLE"
+			                         		onchange="marketActivityFeeItem.onchangeCheck(this);"/>
+			                         	</span></span>
+									</div>
+									
+									<div jwcid="@Conditional" condition='ognl:"1".equals(info.ATTR_TYPE_CODE)||"3".equals(info.ATTR_TYPE_CODE)'>
+										<span class="e_select"><span><span>
+											<select jwcid="@Select"
+				                            	name="ognl:info.ATTR_CODE" 
+				                         		id="ognl:info.ATTR_CODE"
+			                                	attrCode = "ognl:info.ATTR_CODE"
+												source="ognl:info.PARAMS"
+												textField="ATTR_FIELD_NAME" valueField="ATTR_FIELD_CODE" titleField="ATTR_FIELD_NAME"
+					                			value="ognl:info.ATTR_INIT_VALUE"
+					                			onchange="ognl:info.SELFFUNC"
+					                			nullable='ognl:"0".equals(info.ATTR_CAN_NULL)?"no":"yes"'
+					                			disabled="ognl:((info.IS_EDIT==null || info.IS_EDIT == 1)?'false':'true')"
+												rsrvStr1 = 'ognl:info.RSRV_TAG'
+												desc="ognl:info.ATTR_LABLE"
+												/>
+										</span></span></span>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+			</div>
+		</div>
+	<div class="c_space"></div>
+	<div class="c_submit c_submit-center c_submit-full">
+		<button type="button" class="e_button-r e_button-l e_button-green" onclick="marketActivityFeeItem.confirmAttr()">确定</button>
+		<button type="button" class="e_button-r e_button-l e_button-navy"  onclick="marketActivityFeeItem.hideAttrByInitValue()">取消</button>
+    </div>
+    <div class="c_space-2"></div>
+</div>
+</div>
+<!-- 表格 结束 -->
+<input jwcid="@TextField" name="ITEM_INDEX" id="ITEM_INDEX" value="ognl:itemIndex" style="display:none"/>
+<input jwcid="@TextField" name="SALEDEPOSIT_EPARCHY_CODE" id="SALEDEPOSIT_EPARCHY_CODE" value="ognl:eparchyCode" style="display:none"/>

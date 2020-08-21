@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>电信诈骗黑名单维护</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/userinfobreak/scripts/UserInfoBreak.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">电信诈骗黑名单维护</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-advance');"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<!-- 表单 开始 -->
+	<div class="c_scroll">
+		<div class="l_padding" jwcid="UserinfoBreakPart@Part" id="UserinfoBreakPart">
+			<div class="c_space-c" ></div>
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-5 c_form-col-3 c_form-phone-col-1">
+				<!-- tab 开始 -->
+					<div class="c_tab c_tab-box" name="myTab" jwcid="@Tabset">
+						
+						<div title="数据查询" class="content" >
+							<div style="background-color:#FFFFFF" class="c_form c_form-label-5 c_form-col-3 c_form-phone-col-1 c_form-submit">
+								<ul>
+									<li>
+										<div class="label">证件号码：</div>
+										<div class="value">
+										<input jwcid="@TextField" name="PSTP_ID" id="PSTP_ID" value="ognl:info.PSTP_ID" desc="证件号码" datatype="numeric" />
+										</div>
+									</li>
+									<li>
+										<div class="label">证件姓名：</div>
+										<div class="value">
+										<input jwcid="@TextField" name="CUST_NAME" id="CUST_NAME" value="ognl:info.CUST_NAME" desc="证件名字" datatype="numeric" />
+										</div>
+									</li>
+									<li>
+										<div class="label">开始日期：</div>
+										<div class="value">
+										<input jwcid="@DateField" name="START_DATE" id="START_DATE" readonly="true" value="ognl:info.START_DATE" desc="开始日期" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+										</div>
+									</li>
+									<li>
+										<div class="label">结束日期：</div>
+										<div class="value">
+										<input jwcid="@DateField" name="END_DATE" id="END_DATE" readonly="true" value="ognl:info.END_DATE" desc="结束日期" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+										</div>
+									</li>
+								</ul>
+								<div class="submit">
+									<div class="value">
+										<button class="e_button-blue" id="queryBtn" name="queryBtn" ontap="qryUserData()">
+										<span class="e_ico-search"></span>
+										<span>查询</span>
+										</button>
+										<button class="e_button-blue" id="addQueryBtn" name="addQueryBtn" ontap="openBlind()">
+										<span class="e_ico-add"></span>
+										<span>新增</span>
+										</button>
+										<button class="e_button-blue" id="delBlackUser" name="delBlackUser" ontap="delBlackUser()">
+										<span class="e_ico-delete"></span>
+										<span>删除</span>
+										</button>
+										</div>
+								</div>
+							</div>
+							
+							<!-- tab 开始 -->
+							<div jwcid="UserInfoPart@Part" id="UserInfoPart">
+								<table jwcid="@Table" id="UserInfoTable" name="UserInfoTable" class="c_table c_table-lite c_table-border c_table-row-5" style="height:450px" useScroller="true">
+									<thead>
+										<tr>
+											<th col="CHECK" class="e_center" style="width: 66px; height: 42px;">
+											<input type="checkbox" ontap="checkedAll('monitorInfoCheckBox', checked)"></th>
+											<th col="CUST_NAME"  style="width: 250px; height: 42px;">证件姓名</th>
+											<th col="PSPT_TYPE_CODE" style="width: 250px; height: 42px;">证件类型</th>
+											<th col="PSTP_ID"  style="width: 250px; height: 42px;">证件号码</th>
+											<th col="START_DATE"  style="width: 250px; height: 42px;">加入日期</th>
+										</tr>
+									</thead>
+									<tbody id="UserBreakTBody">
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+											<td class="e_center">
+												<input jwcid="@Checkbox" name="monitorInfoCheckBox" id="monitorInfoCheckBox" value="ognl:info.PSTP_ID" />
+											</td>
+											<td data-title="证件姓名" class="e_center">
+												<span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false" />
+											</td>
+											<td data-title="证件类型" class="e_center">
+												<span jwcid="@Insert" value="ognl:info.PSPT_TYPE_CODE" raw="false" />
+											</td>
+											<td data-title="证件号码"   class="e_center">
+												<span jwcid="@Insert" value="ognl:info.PSTP_ID" raw="false" />
+											</td>
+											<td data-title="加入日期"  class="e_center">
+												<span jwcid="@Insert" value="ognl:info.START_DATE" raw="false" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- tab 结束 -->
+						</div>
+						<!-- 批量导入 -->
+						<div title="数据导入" class="content">
+						<div style="background-color:#FFFFFF" class="c_form c_form-label-5 c_form-col-3 c_form-phone-col-1 c_form-submit">
+							<span class="e_elements">
+								<input
+		                              jwcid="@SimpleUpload"
+		                              name="FILE_ID"
+		                              ftpCode="personserv"
+		                              filePath=""
+		                              fileTypes=".xls;.xlsx"/>
+								<button
+		                              type="button"
+		                              class="e_button-blue"
+		                              name="IMPORT_BTN"
+		                              id="IMPORT_BTN"
+		                              ontap="importUserInfo()"
+		                              cond="UserinfoBreakPart"><span class="e_ico-import"></span>信息录入</button> 
+							</span>
+							<span class="e_tip">黑名单模板下载：<a href="attach?action=downloadweb&amp;filePath=template%2Fbat%2FUSERINFOBREAK.xls&amp;">黑名单导入模板.xls</a></span>
+						</div>
+						</div>
+					</div>
+				<!-- tab 结束 -->
+				</div>
+				<!-- 表单 结束 -->
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,3 @@
+SELECT 'CallingType' KEY,CALLING_TYPE_CODE VALUE1,'-1' VALUE2,CALLING_TYPE VRESULT
+   FROM td_s_callingtype
+WHERE SYSDATE BETWEEN start_date AND end_date AND 'CallingType'=:KEY

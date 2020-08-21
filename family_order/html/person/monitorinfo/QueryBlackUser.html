@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>不良信息黑名单查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/monitorinfo/scripts/queryblackuser.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		没有符合条件的数据!
+	</div>
+</div>
+
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+		<div class="text">不良信息黑名单查询</div>
+	</div>
+	
+	<div jwcid="QueryCondPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="HeadQueryPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询方式：</span></span>
+					<span class="e_select"><span><span>
+               		<select jwcid="@Select" name="QUERY_TYPE" id="QUERY_TYPE"
+							source="ognl:pageutil.getStaticList('REDMEMBER_QUERYTYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="QUERY_TYPE"
+                			value="1"
+                			onchange="changeQueryType()"
+							desc="查询方式"
+                			nullable="no"
+                       />
+                	</span></span></span>
+				</li>
+				<li class="li">
+					<div class="c_fn l_ml">
+						<ul>
+							<li><label for="valid"><input id="valid" name="radio" type="radio" value="1" class="e_radio" />有效</label></li>
+							<li><label for="all"><input id="all" name="radio" type="radio" value="0" class="e_radio" checked="true" />全部</label></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="NormalQueryPart@Part" style="display:''">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">服务号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" id="SERIAL_NUMBER" name="SERIAL_NUMBER" datatype="mbphone" nullable="no"
+							desc="服务号码"	value="ognl:editInfo.SERIAL_NUMBER" />
+					</span></span>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="TimeQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">开始时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" id="START_DATE" name="START_DATE"  
+							desc="开始时间"	value="ognl:editInfo.START_DATE" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" id="END_DATE" name="END_DATE"  
+							desc="结束时间"	value="ognl:editInfo.END_DATE" />
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<div class="c_submit">
+		<div class="right">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryBlackUsers()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div jwcid="MonitorInfoPart@Part" id="MonitorInfoPart" element="div">
+	<div class="c_title">
+        <span class="text">黑名单信息</span>
+        	<div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92105"
+						  config="export/monitorinfo/BlackUserList.xml" fileName="黑名单信息列表" beforeAction="exportBeforeAction"
+						 cond="QueryCondPart" params="ognl:'TEST_PARAM=5&&STAFF_ID=' + getVisit().getStaffId()"/>
+			</div>
+    </div>
+    <!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10" >
+		<div class="c_table">
+			<table jwcid="@Table" id="monitorInfoTable" name="monitorInfoTable">
+			<thead>
+				<tr>
+					<th col="SERIAL_NUMBER">服务号码</th>
+					<th col="USER_ID">用户标识</th>
+					<th col="BEGIN_DATE">开始时间</th>
+					<th col="END_DATE">结束时间</th>
+					<th col="EXEC_DATE">操作时间</th>
+					<th col="PROCESS_TAG">操作类型</th>
+				</tr>
+			</thead>
+			<tbody id="MonitorInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.USER_ID"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.BEGIN_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.END_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.EXEC_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="queryNav"  cond="QueryCondPart" part="MonitorInfoPart" listener="queryBlackUsers" pageSize="10" count="ognl:count"></div>	
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

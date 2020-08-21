@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<title>携入审核</title>
+		<link href="../../../base.css" rel="stylesheet" type="text/css" />
+		<script language="javascript" type="text/javascript" src="js/jcl.js"></script>
+		<script language="JavaScript" src="person/np/npcheck/script/npcheck.js"></script>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量审核</div>
+	</div>
+	<div class="c_form c_form-col-mix" jwcid="SubmitCondPart@Part">
+		<ul class="ul c_form-col-3">
+				<li class="li">
+					<span class="label"><span class="e_required">上传文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST" id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+								
+				<li class="li">
+					<span class="label">模版下载：</span>
+					<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=NpCheckImp.xls&filePath=template/bat/NpCheckImp.xls')">[点击下载]</a></span>
+				</li>
+				
+				<li class="li">
+				
+				</li>
+			</ul>
+    </div>
+    <div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return importBatData()" id="importKey" ><i class="e_ico-import"></i><span>批量审核</span></button>
+	</div>
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryPart@Part">
+	<ul class="ul">
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="手机号码"/></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">状态：</span>
+				<span class="e_select"><span><span>
+					 <select  jwcid="@Select" name="cond_STATE" id="cond_STATE" 
+								 source="ognl:pageutil.getStaticList('NPCHECK_STATE')"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								 value="ognl:cond.STATE" desc="状态"/>
+				</span></span></span>
+			</li>
+
+			<li class="li">
+				<span class="label">开始日期：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_ACT_START" id="cond_ACT_START" value="" maxName="ACT_END" desc="开始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束日期：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_ACT_END" id="cond_ACT_END" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', cond.ACT_END)" minName="ACT_START" desc="结束时间"/></span></span>
+			</li>
+	</ul>
+	<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return queryImportData()"><i class="e_ico-search"></i><span>查询</span></button>
+			<button class="e_button-form"  onclick="onTradeSubmit(this,'custs');"><i class="e_ico-edit"></i><span>审核通过</span></button>
+			
+			<!-- 
+			<button class="e_button-form"  onclick="deleteData();"><i class="e_ico-delete"></i><span>删除</span></button>
+			 -->
+		</div>
+	</div>
+	
+	   <div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+			<div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileType ="{'.xls':'.xls','.xlsx':'.xlsx'}" serviceName="99332"
+				config="export/sundryquery/NpCheckExp.xml" fileName="NpCheckExport" 
+				cond="QueryPart" />
+			</div>		
+		</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="ImportDataPart@Part">
+	<div class="c_table c_table-row-10">
+		<table  jwcid="@Table"  id="DeptTable" >
+			<thead>
+				<tr>
+					<th col="rowIndex">选择</th>
+					<th col="serialNumber">手机号码</th>
+					<th col="acceptDate">申请时间</th>
+					<th col="state">状态</th>
+					<th col="rsrvStr1">受理工号</th>
+					<th col="rsrvStr2">部门名称</th>
+					<th col="rsrvStr3">更新时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" >
+					<td class="e_center"><input type="checkbox" name="custs" index="ognl:rowIndex"  jwcid="@Checkbox"  value="ognl:info.SERIAL_NUMBER" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('NPCHECK_STATE', info.STATE)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3 == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.RSRV_STR3)" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+				<div jwcid="@NavBar"  name="pagin" id="pagin" listener="queryImportData" pageSize="10" cond="QueryPart" part="ImportDataPart" count="ognl:count"/>
+		<!-- 翻页 结束 -->
+		</div>
+</div>
+			</div>
+		</div>
+	</body>
+</html>

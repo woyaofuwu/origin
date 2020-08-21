@@ -1,0 +1,229 @@
+<!-- 标题 结束 -->
+<div class="c_title c_title-2">
+	<div class="text">总机信息</div>
+</div>
+<!-- 标题 结束 -->
+
+<div class="c_form c_form-label-8 c_form-col-3">
+	<ul class="ul">
+		<li class="li">
+			<span class="label">VPMN编码：</span>				
+			<span jwcid="@Conditional" condition='ognl:info.METHOD == "CtrUs"'>   
+			    <span class="e_select"><span><span>
+			    	<select jwcid="@Select" name="pam_VPN_NO" id="pam_VPN_NO" source="ognl:info.VPN_INFOS" valueField="VPN_NO" textField="VPN_NO" desc="VPMN编码"/>
+				</span></span></span>
+			</span>	               		
+           	<span jwcid="@Conditional" condition='ognl:info.METHOD == "ChgUs"'>
+         			<span class="e_input"><span>
+         				 <input type="text" jwcid="@TextField" id="pam_VPN_NO" name="pam_VPN_NO" value="ognl:getAttrItemValue('VPN_NO','ATTR_VALUE')"
+							nullable="no" disabled ="true" desc="VPMN编码"/>
+				</span></span>
+           	</span>                    			            			
+           </li>
+       </ul>
+</div>
+
+<!--编辑区域 开始-->
+<div jwcid="partSuperTelInfo@Part">
+	<div class="c_form c_form-label-8 c_form-col-3">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">总机号码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" onclick="validateSuperTeleInfo()"><i class="e_ico-check"></i><span>验证</span></button>
+					<span class="e_input e_input-left"><span>
+						<input type="text" id="pam_EXCHANGETELE_SN" name="pam_EXCHANGETELE_SN" jwcid="@TextField"  
+							enterAction="validateSuperTeleInfo()" value="ognl:info.CUST_INFO.EXCHANGETELE_SN" nullable="yes" datatype="numeric" desc="总机号码"/>
+					</span></span>
+				</span>						
+			</li>				
+			<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="EXCHANGETELE_SN" name="EXCHANGETELE_SN" value="ognl:info.CUST_INFO.SERIAL_NUMBER" desc="服务号码" disabled="true" nullable="yes"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户名称：</span></span>
+				<span class="e_input"><span>
+				  	<input jwcid="@TextField" id="E_CUST_NAME" name="E_CUST_NAME" value="ognl:info.CUST_INFO.CUST_NAME" desc="客户名称" disabled="true" nullable="yes"/>					
+			     	<input jwcid="@TextField" type="text"  id="E_CUST_ID" name="E_CUST_ID" style="display:none" value="ognl:info.CUST_INFO.CUST_ID" desc="客户标识"  disabled="true" />
+			     	<input jwcid="@TextField" type="text"  id="E_USER_ID" name="E_USER_ID" style="display:none" value="ognl:info.CUST_INFO.USER_ID" desc="用户标识" disabled="true"/>
+	            </span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">归属地州：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="E_EPARCHY_CODE" name="E_EPARCHY_CODE" value="ognl:info.CUST_INFO.EPARCHY_CODE" nullable="yes" disabled="true" style="display:none" desc="归属地州"/>
+					<input jwcid="@TextField" id="E_EPARCHY_NAME" name="E_EPARCHY_NAME" value="ognl:info.CUST_INFO.EPARCHY_NAME" nullable="yes" disabled="true" desc="归属地州"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">等待队列数：</span></span>
+				<span class="e_input"><span>
+					<input type="text"  jwcid="@TextField"  name="MAXWAITINGLENGTH" id="MAXWAITINGLENGTH"
+			       		   value="ognl:info.CUST_INFO.MAXWAITINGLENGTH"  
+			       		   datatype="numeric" maxsize="100" minsize="1" nullable="yes" desc="等待队列数"/>
+			    </span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">呼叫种类：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="CALLCENTERTYPE" name="CALLCENTERTYPE" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IMS_CALLCENTERTYPE')"
+						value="ognl:info.CUST_INFO.PLAT_SYNC_STATE" valueField="DATA_ID" textField="DATA_NAME"
+                        desc="呼叫种类" nullable="yes" onChange="setCallCenterTypeName();"/>	
+					<input type="text" jwcid="@Any" id="callCenterTypeName" name="callCenterTypeName" desc="呼叫种类名称" style="display:none"/>									
+				</span></span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">呼群用户显号码：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="CALLCENTERSHOW" id="CALLCENTERSHOW" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IMS_CALLCENTERSHOW')"
+						value="ognl:info.CUST_INFO.PLAT_SYNC_STATE" valueField="DATA_ID" textField="DATA_NAME"
+						desc="呼群用户显号码" nullable="yes" onChange="setCallCenterShowName();"/>		
+					<input type="text" jwcid="@Any" id="callCenterShowName" name="callCenterShowName"  desc="呼群用户显号码" style="display:none"/>					   
+				</span></span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">话务员注册码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="CORP_REGCODE" id="CORP_REGCODE"
+			      		value="ognl:info.CUST_INFO.CORP_REGCODE" desc="话务员注册码" nullable="yes" datatype="numeric" />
+			    </span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">话务员注销码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="CORP_DEREGCODE" name="CORP_DEREGCODE" 
+			       		value="ognl:info.CUST_INFO.CORP_DEREGCODE" nullable="yes" desc="话务员注销码" datatype="numeric"/>
+			    </span></span>
+			</li>						  
+		</ul>
+        
+		<div class="submitPlace"></div>
+		<div class="submit">				
+		    <button class="e_button-form" id="setDefNum" name="setDefNum" value="设置呼出显示总机号"  onclick="setDefaultNumber();">
+		    	<i class="e_ico-config"></i><span>设置呼出显示总机号</span>
+		    </button>
+    		<button class="e_button-form" id="zyht_bcreate" name="zyht_bcreate" value="新增" onclick="return addSuperTel();">
+    			<i class="e_ico-add"></i><span>新增</span>
+    		</button>
+			<button class="e_button-form"  id="zyht_update" name="zyht_update" value="修改"  onclick="return updateSuperTel();">
+				<i class="e_ico-edit"></i><span>修改</span>
+			</button>
+			<button class="e_button-form"  id="zyht_bdelete" name="zyht_bdelete" value="删除" onclick="return delSuperTel();">
+				<i class="e_ico-delete"></i><span>删除</span>
+			</button>
+		</div>
+	</div>
+</div>
+
+<!--隐藏区域开始-->
+<input type="hidden" id="OLD_EXCHANGETELE_SN" name="OLD_EXCHANGETELE_SN" value="ognl:info.CUST_INFO.SERIAL_NUMBER"/>
+<textarea jwcid="@TextArea" id="pam_SUPERNUMBER" name="pam_SUPERNUMBER" desc="总机号码列表" value="ognl:info.CONDITION.pam_SUPERNUMBER" style="display:none"/>			
+<!--隐藏区域结束-->
+
+<!--编辑区域结束--> 
+
+<!--表格 开始-->
+<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-3">
+	<table jwcid="@Table" id="ZyhtTable" name="ZyhtTable" rowClick="tableRowClick" rowDBClick="tableRowDBClick">
+		<thead>
+			<tr>
+				<th col="X_TAG" style="display:none">TAG</th>
+		  	    <th col="EXCHANGETELE_SN">总机号码</th>
+			    <th col="E_CUST_NAME">客户名称</th>
+			    <th col="E_CUST_ID" style="display:none">客户标识</th>
+			    <th col="E_USER_ID" style="display:none">用户标识</th>				 
+			    <th col="E_EPARCHY_CODE" style="display:none">归属地州</th>
+			    <th col="E_EPARCHY_NAME">归属地州</th>						  
+			    <th col="MAXWAITINGLENGTH">等待队列数</th>
+			    <th col="CALLCENTERTYPE" style="display:none">呼叫种类</th>
+			    <th col="callCenterTypeName">呼叫种类</th>
+			    <th col="CALLCENTERSHOW" style="display:none">话务员呼叫群内用户显示号码</th>
+			    <th col="callCenterShowName">话务员呼叫群内用户显示号码</th>
+			    <th col="CORP_REGCODE">话务员注册码</th>
+			    <th col="CORP_DEREGCODE">话务员注销码</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:info.SUPER_INFOS" value="ognl:element" index="ognl:rowIndex" element="tr">
+		    	<td style="display:none"></td>
+			    <td>
+			    	<span jwcid="@Insert" value="ognl:element.EXCHANGETELE_SN" raw="true"/>
+			    </td> 
+			    <td>
+			   		<span jwcid="@Insert" value="ognl:element.E_CUST_NAME" raw="true"/>
+			   	</td> 
+			    <td style="display:none">
+			   		<span jwcid="@Insert" value="ognl:element.E_CUST_ID" raw="true"/>
+			   	</td> 
+			    <td style="display:none">
+			    	<span jwcid="@Insert" value="ognl:element.E_USER_ID" raw="true"/>
+			    </td> 
+			    <td style="display:none">
+			    	<span jwcid="@Insert" value="ognl:element.E_EPARCHY_CODE" raw="true"/>
+			    </td> 
+			    <td>
+			        <span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',element.E_EPARCHY_CODE)"/>
+			    </td> 
+			    <td>
+			    	<span jwcid="@Insert" value="ognl:element.MAXWAITINGLENGTH" raw="true"/>
+			    </td> 
+			    <td style="display:none">
+			    	<span jwcid="@Insert" value="ognl:element.CALLCENTERTYPE" raw="true"/>
+			    </td> 
+			    <td>
+			    	<span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('IMS_CALLCENTERTYPE',element.CALLCENTERTYPE)" raw="true"/>
+			    </td> 
+			    <td style="display:none">
+			    	<span jwcid="@Insert" value="ognl:element.CALLCENTERSHOW" raw="true"/>
+			    </td>
+			    <td>
+			    	<span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('IMS_CALLCENTERSHOW',element.CALLCENTERSHOW)" raw="true"/>
+			    </td> 						 
+			    <td>
+			    	<span jwcid="@Insert" value="ognl:element.CORP_REGCODE" raw="true"/>
+			    </td> 
+			    <td>
+			    	<span jwcid="@Insert" value="ognl:element.CORP_DEREGCODE" raw="true"/>
+			    </td> 
+		  	</tr>
+		</tbody>
+	</table>
+</div></div>
+<!--表格 结束-->
+
+<!-- 标题 结束 -->
+  	<div class="c_title c_title-2">
+	<div class="text">参数信息</div>
+</div>
+<!-- 标题 结束 -->
+
+<!-- 表单 开始 -->
+<div class="c_form c_form-label-8 c_form-col-3">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">呼出显示总机号：</span></span>						
+			<span class="e_input"><span>
+				<input type="text" id="pam_EC_DEFAULT_NUMBER" name="pam_EC_DEFAULT_NUMBER" 
+				   jwcid="@TextField" value="ognl:getAttrItemValue('EC_DEFAULT_NUMBER','ATTR_VALUE')" 
+				   datatype="numeric" nullable="no" readOnly="true" desc="呼出显示总机号"/>
+			</span></span>
+		</li>
+		<li class="li">
+			<span class="label"><span class="e_required">呼出号显方式：</span></span>
+			<span class="e_select"><span><span>
+		       <select jwcid="@Select" id="pam_VISION_NUMBER"  name="pam_VISION_NUMBER"  
+					source="ognl:getAttrItemSource('VISION_NUMBER')"
+			        valueField="ATTR_FIELD_CODE" textField="ATTR_FIELD_NAME" value="ognl:getAttrItemValue('VISION_NUMBER','ATTR_VALUE')" nullable="no" desc="呼出号显方式"/>			
+			</span></span></span>
+		</li>				
+	</ul>
+</div>
+<!-- 表单 结束 -->
+
+<textarea jwcid="@TextArea" name="VPN_INFOS" id="VPN_INFOS" value="ognl:info.VPN_INFOS" style="display:none"></textarea>
+	

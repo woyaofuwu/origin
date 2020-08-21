@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<title>客户经理业务办理登记界面</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/custmanager/custmgrTJNum.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+	
+	<div class="c_title">
+		<div class="text">客户经理查询</div>
+	</div>
+	
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required" >客户经理工号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="cond_MANAGER_STAFF_ID@TextField" id="cond_MANAGER_STAFF_ID" name="cond_MANAGER_STAFF_ID" type="text" 
+					       value="ognl:condition.MANAGER_STAFF_ID" nullable="no" maxsize="30" desc="客户经理工号"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">录入起始日期：</span>
+				<span class="e_input"><span>
+					<input jwcid="@DateField" name="cond_IN_DATE_START" id="cond_IN_DATE_START" nullable="no" value="ognl:condition.IN_DATE_START" desc="起始时间"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">录入终止日期：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_IN_DATE_END" id="cond_IN_DATE_END" nullable="no" value="ognl:condition.IN_DATE_END" desc="起始时间"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">营销活动方案：</span>
+				<span class="e_select"><span><span>
+					<!--  input jwcid="@Select" name="ACTIVE_ID" value="ognl:condition.ACTIVE_ID" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TRADE_SUBSCRIBE_STATE')" textField="DATA_NAME" valueField="DATA_ID" desc="营销活动方案"/-->
+					<select jwcid="@Select" id="cond_ACTIVE_ID" name="cond_ACTIVE_ID" source="ognl:activities" valueField="PRODUCT_ID" textField="PRODUCT_NAME" value="ognl:condition.ACTIVE_ID" desc="营销活动方案" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">推荐号码：</span>
+				<span class="e_input"><span>
+					<input jwcid="cond_TJNUMBER@TextField" name="cond_TJNUMBER" type="text" value="ognl:condition.TJNUMBER" nullable="no" maxsize="30" desc="推荐号码"/>
+				</span></span>
+			</li>
+		</ul>
+		 <div class="submitPlace"></div>
+		         <div class="submit" >
+			         <button type="button" class="e_button-form" name="bquery" onclick="return checkStaffNo();"><i class="e_ico-search"></i><span>查询</span></button>
+			         <button type="button" class="e_button-form" onclick="return reset1();"><i class="e_ico-reset"></i><span>重置</span></button>
+		         </div>
+	</div>
+	
+	<div jwcid="ResultDataPart@Part">
+      <!-- 标题 开始 -->
+	  <div class="c_title ">
+		<div class="text">客户经理登记列表</div>
+		<div class="fn" id="topBtnForm">
+	        <button type="button" id="bcreateTop" onclick="$.popupPageExternal('group.custmanager.AddCustMgrTJNum&listener=init', null, null,'新增客户经理信息',820,650)" ><i class="e_ico-add"></i><span>新增</span></button>
+		    <span jwcid="@Export"
+				name="exportFile" 
+				serviceName="9008" 
+				config="import/bat/group/CustManagerTJNums.xml"
+				fileName="客户经理登记业务导出"
+				cond="queryForm"
+				ftpSite="groupserv"
+				beforeAction=""
+				action=""></span>		
+		</div>
+	</div>
+    <!-- 标题 结束 -->
+    <!-- 表单开始 -->
+     <div jwcid="CustManagerArea@Part" optimize="true">
+    <div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+        
+            <table>
+            <thead>
+				<tr>
+				    <th>客户经理工号</th>
+					<th>客户经理姓名</th>
+					<th>推荐号码</th>
+					<th>营销活动方案</th>
+					<th>录入方式</th>
+					<th>备注</th>
+					<th>录入时间</th>
+					<th>录入员工</th>
+				</tr>
+			</thead>
+			<tbody>
+			      <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> 
+			          <td>
+						 <span jwcid="@Insert" value="ognl:info.MANGER_STAFF_ID" />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.MANGER_NAME" />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.TJNUMBER" />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.ACTIVE_NAME" />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.IN_MODE eq 0 ? 'BOSS' : 'SMS'"  />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.REMARK" />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.IN_DATE" />
+					  </td>
+					  <td>
+						 <span jwcid="@Insert" value="ognl:info.IN_STAFF_ID" />
+					  </td>
+			      </tr>
+			</tbody>
+            </table>
+        </div></div>
+        <!-- 翻页（替换为页面组件） 开始 -->
+	    <span jwcid="@NavBar" name="PageNav" id="PageNav" cond="queryForm" part="CustManagerArea" listener="queryCustMgrTJNums" count="ognl:infosCount" />
+	    <!-- 翻页 结束 -->
+    </div>
+    <!-- 表单结束 -->
+
+
+</div>
+	
+</div>
+   
+</div></div>
+</body>
+</html>

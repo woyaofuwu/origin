@@ -1,0 +1,13 @@
+UPDATE tf_f_user_mbmp_sub
+
+   SET            end_date=TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+
+biz_state_code=:BIZ_STATE_CODE,remark=:REMARK,update_staff_id=:UPDATE_STAFF_ID,update_depart_id=:UPDATE_DEPART_ID,update_time=sysdate  
+
+ WHERE user_id=TO_NUMBER(:USER_ID)
+
+   AND biz_type_code=:BIZ_TYPE_CODE
+
+   AND org_domain=:ORG_DOMAIN
+
+   AND end_date>sysdate

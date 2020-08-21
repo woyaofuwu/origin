@@ -1,0 +1,390 @@
+<!DOCTYPE HTML>
+<html class="s_noside" size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" src="merch/merchorder/scripts/merchorder.js"></script>
+<script jwcid="@Script" src="merch/merchorder/scripts/suggest.js"></script>
+<script jwcid="@Script" src="merch/merchorder/scripts/changeoffer.js"></script>
+<script jwcid="@Script" src="merch/merchorder/scripts/zg.js"></script>
+<!-- 
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/merch/offerlist/merchdefine.js"></script>
+ -->
+
+<script src="merch/merchorder/scripts/es5-shim.min.js"></script>
+<script src="merch/merchorder/scripts/es5-sham.min.js"></script>
+<script src="merch/merchorder/scripts/json3.min.js"></script>
+<script jwcid="@Script" src="merch/merchorder/scripts/template-web.js"></script>
+
+<title>商品订购</title>
+
+</head>
+<body jwcid="@Body">
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">商品订购</div>
+	</div>
+	<div class="c_scroll c_scroll-float c_scroll-phone-header" id="PAGE_CONTENT">
+	<div class="l_padding">
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@merch:MerchAuth" element="div" authType="00" tradeTypeCode="110" ruleActionFlag="0" tradeAction="refreshPartAfterAuth(data)">
+	</div>
+	<!-- 认证 结束 -->
+	
+    <div class="c_space"></div>
+	<div class="c_line"></div>
+	<div class="c_line"></div>
+	<div name="tabset1" jwcid="@Tabset" class="c_tab  c_tab-slide-6" slidable="false">
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN451')" element="div" 
+			title="热门商品" class="content" componentId='hotoffer' initFn='refresh' searchAfterAction='afterSearchRefreshOfferList'>
+			<div jwcid="hotoffer@merch:Offer" element="div" type="HT" afterAction="orderAction" calcDate=true attr="true"></div>
+		</div>
+		
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN251')" element="div"
+			title="套餐" class="content" componentId='product' initFn='refresh' searchAfterAction='afterSearchRefreshOfferList'>
+			<div jwcid="product@merch:Offer" element="div" type="P1" afterAction="orderAction"  labelsTpl="LabelsTpl" offersTpl="OffersTpl"></div>
+		</div>
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN251')" element="div" 
+			title="功能" class="content" componentId='service' initFn='refresh' searchAfterAction='afterSearchRefreshOfferList'>
+			<div jwcid="service@merch:Offer" element="div" type="SZ" afterAction="orderAction" openPage=false attr="true"  labelsTpl="LabelsTpl" offersTpl="OffersTpl" ></div>
+		</div>
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN251')" element="div" 
+			title="资费" class="content" componentId='discnt' initFn='refresh' searchAfterAction='afterSearchRefreshOfferList'>
+			<div jwcid="discnt@merch:Offer" element="div" type="D1" afterAction="orderAction"  openPage=false  calcDate=true attr="true"  labelsTpl="LabelsTpl" offersTpl="OffersTpl"></div>
+		</div>
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN331')" element="div"
+			title="营销活动" class="content" componentId='saleActiveFilter' initFn='chgAuthParam'>
+			<div jwcid="saleActiveFilter@merch:SaleActiveFilter" needCheck="true" needUserId="true" eparchyCodeCompId="custinfo_EPARCHY_CODE" element="div" ></div>
+		</div>
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN451')" element="div" 
+			title="平台服务" class="content" componentId='platservice' initFn='refresh' searchAfterAction='afterSearchRefreshOfferList'>
+			<div jwcid="platservice@merch:Offer" element="div" type="PZ" afterAction="orderAction" openPage=false calcDate=true attr="true"  labelsTpl="LabelsTpl" offersTpl="OffersTpl" ></div>
+		</div>
+				
+		<!-- 
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'ICRM_SPDG_PLATSVC')" element="div"
+			title="Demo" class="content" componentId='demo' initFn='initData' searchAfterAction='afterSearchRefreshOfferList' style="height:40em">
+			<iframe name="tabFrame" jwcid="@Frame" page="merch.MerchChangeProduct" params="&aa=11" />
+		</div>
+		 -->
+		<div jwcid="@Conditional" condition="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.priv.StaffPrivUtil@isFuncDataPriv(getVisit().getStaffId(), 'crmN251')" element="div" 
+			title="我的商品" class="content" componentId='changeoffer' initFn='renderMyOfferList' >
+			<!-- 
+			<iframe name="myOfferFrame" jwcid="@Frame" page="merch.MyOfferFrame" params="&aa=11" />
+			<input jwcid="@Any" name="SYS_DATE" id="SYS_DATE"  value="ognl:pageutil.getSysTime()"/>
+			<div id="myProduct">
+				<div class="c_title">
+					<div class="text">基础商品</div>
+				</div>
+				<div class="c_list c_list-border c_list-line">			
+					<ul id="mainUl">
+						<li>
+							<div class="main">
+								<div class="title" name="productName" id="productName"></div>
+								<div title="" class="content content-row-2" name="productDesc" id="productDesc"></div>
+								<div class="content" id="productTime" name="productTime"></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			 -->
+		 	<div jwcid="myProduct@merch:UserProduct" element="div" ></div>
+		 	
+		 	<div jwcid="myOfferList@merch:SelectedElements" 
+				renderCallSvc="CS.SelectedElementSVC.getUserElements"
+				callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg"
+				tradeTypeCode="110" element="div" attrComponent="elementAttr" timeComponent="modifyTime"
+				scrollId ="PAGE_CONTENT"></div>
+				
+			<div jwcid="myPlatsvc@merch:UserPlatSvcsList"
+	             element="div"
+	             eparchyCodeComponentId="USER_EPARCHY_CODE"></div>
+             
+			<div class="c_space"></div>
+			
+			<div class="c_space"></div>
+			<div class="c_submit c_submit e_center">
+				<!-- <button ontap="changeoffer.cancelOffers('1');" class="e_button-l e_button-r e_button-green">立即取消</button> -->
+				<button ontap="changeoffer.cancelOffers('2');" class="e_button-l e_button-r e_button-red">加入购物车</button>
+			</div>
+			
+		</div>
+		
+		<div class="fn">
+			<span class="e_mix e_mix-search" id="suggest">
+				<input type="text" placeholder="请输入并搜索" autocomplete="off">
+				<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+			</span>
+		</div>
+	</div>
+	
+	<div class="c_space" ></div>
+	<div class="c_list c_list-line c_list-col-1 c_list-border c_list-phone-col-1">
+	    <ul>
+	        <li class="link"><div class="label">备注：</div>
+		<div class="value"><input jwcid="@TextField" name="REMARK"	id="REMARK" type="text" value="" nullable="yes" desc="备注"/></div></li>
+	    </ul>
+	</div>
+	
+	<div class="c_space" ></div>
+	
+	<div jwcid="MerchSubmitPart@merch:MerchSubmit"    isShoppingCart="true" style="display:none" affirmAction="affirmAction(type);"
+		refreshPart="" element="div" isReset="true" isRender="true" class="c_submit c_submit-full"  isPayShopping="true" ></div>
+	
+	<div class="c_space" ></div>
+	<!-- 移固宽隐藏域开始 -->
+	<input jwcid="@Hidden" name="STAFF_EPARCHY_CODE" id="STAFF_EPARCHY_CODE" value="ognl:getTradeEparchyCode()"/>
+	<input jwcid="@Hidden" name="STAFF_CITY_CODE" id="STAFF_CITY_CODE" value="ognl:getVisit().getCityCode()"/>
+	<!-- 
+	<input jwcid="@Hidden" name="USER_EPARCHY_CODE" value=""/>
+	<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" value=""/>
+    <input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" value=""/>
+    -->
+	</div>
+	</div>
+	<div jwcid="modifyTime@merch:ModifyOrderOfferTime" element="div"  ></div>
+	
+	<div jwcid="offerAttr@merch:OfferAttr" element="div" ></div>
+	<div jwcid="elementAttr@merch:ElementAttr" element="div" bindedComponent="myOfferList" scrollId ="PAGE_CONTENT"></div>	
+	<!-- 
+	<div jwcid="elementAttr@imerch:ElementAttr" element="div"></div>
+	 -->
+	
+	<!-- 移固宽隐藏域开始 -->
+		<!-- 	
+	<div class="l_bottom" id="showCartBtn" style="width:200px">
+		<div class="c_submit e_right">
+			<button id="submitOrderButton" onclick="openShopCartPage();" class="e_button-m e_button-r e_button-green e_button-width-m">
+				<span class="e_strong e_size-l">去 结 算</span>
+			</button>
+		</div>
+	</div>
+	-->
+	<div class="l_bottom" >
+		<div class="c_submit e_center">
+			<button class="e_button-l e_button-r e_button-green e_button-width-l" id="submitOrderButton" ontap="openShopCartPage();">
+				<span class="e_strong e_size-xxl">去 结 算</span>
+			</button>
+		</div>
+	</div>
+	
+	<!-- 营销活动专用，但是放到组件里面样式有问题。只能挪出来  杰森斯坦杜 ---->
+	<div jwcid="@Popup" name="mypop1">
+		<div class="c_popupGroup">
+			<div class="c_popupItem c_popupItem-show" id="UI-search">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup('mypop1','UI-search')">检索条件</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_tip c_tip-green">营销包的模糊搜索，在输入关键字后需敲回车按钮</div>
+						<div class="l_padding">
+							<div class="c_list c_list-form">
+								<ul class="ul">
+							<li id="IsiPhone6Part" style="display: none;">
+								<div class="c_tip">提示：请先输入IMEI，再选择营销方案。只有IMEI校验通过，才可办理免预存活动包。</div>
+							</li>
+							<li id="iPhone6IMEIPart" style="display: none;">
+								<div class="label">IMEI</div>
+								<div class="value">
+									<input jwcid="@TextField" name="IPHONE6_IMEI" desc="IPHONE6串码"
+										onkeydown="if(window.event.keyCode==13){saleActiveFilter.queryPackages();} "
+										disabled="ognl:'true'.equals(info.NEED_DISABLED)" />
+								</div>
+							</li>
+							<li id="SaleStaffIdPart" style="display: none;">
+								<div class="label">促销员工</div>
+								<div class="value">
+									<input jwcid="@TextField" name="SALE_STAFF_ID" desc="促销员工"
+										value="ognl:getVisit().getStaffId()"
+										disabled="ognl:'true'.equals(info.NEED_DISABLED)" />
+								</div>
+							</li>
+							<li id="GiftCodePart" style="display: none;">
+								<div class="label">礼品码</div>
+								<div class="value">
+									<input jwcid="@TextField" name="GIFT_CODE" desc="礼品码"
+										onkeydown="if(window.event.keyCode==13){saleActiveFilter.queryPackages();} "
+										disabled="ognl:'true'.equals(info.NEED_DISABLED)" />
+								</div>
+							</li>
+
+							<li class="link" id="imeiQuery" style="display:none">
+					                    <div class="label">终端串码</div>
+					                    <div class="value">
+					                    	<input jwcid="@TextField" name="NEW_IMEI" id="NEW_IMEI" value="" onkeydown="if(window.event.keyCode==13){saleActiveFilter.queryPackages();} " desc="终端串码" />
+					                    </div>
+					                </li>
+					                 <li class="link">
+					                    <div class="label">营销包</div>
+					                    <div class="value">
+					                        <input jwcid="@TextField" name="SEARCH_CONTENT" id="SEARCH_CONTENT" value="ognl:info.SEARCH_CONTENT" desc="营销包"  onkeydown="if(window.event.keyCode==13){saleActiveFilter.queryPackages();} " />
+					                    </div>
+					                </li> 
+								</ul>
+							</div>
+							<div class="c_space"></div>
+							<div class="submit  c_submit-full">
+								<button class="e_button-r e_button-l e_button-blue" type="button" id="bquery" name="bquery" onclick="saleActiveFilter.queryPackages();" >查询</button>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+	
+		<!-- 测试热门啊啊 -->
+	<div jwcid="@Popup" name="mypopHot">
+		<div class="c_popupGroup">
+			<div class="c_popupItem c_popupItem-show" id="hot-search">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup('mypopHot','hot-search')">热门营销活动检索条件</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_tip c_tip-green">营销包的模糊搜索，在输入关键字后需敲回车按钮</div>
+					<div class="l_padding">
+						<div class="c_list c_list-form">
+							<ul class="ul">
+								<li id="SaleStaffIdPartHot" style="display: none;">
+									<div class="label">促销员工</div>
+									<div class="value">
+										<input jwcid="@TextField" name="SALE_STAFF_ID_HOT" desc="促销员工"
+											value="ognl:getVisit().getStaffId()"
+											disabled="ognl:'true'.equals(info.NEED_DISABLED)" />
+									</div>
+								</li>
+
+								<li class="link" id="imeiQueryHot">
+									<div class="label">终端串码</div>
+									<div class="value">
+										<input jwcid="@TextField" name="NEW_IMEI_HOT"
+											id="NEW_IMEI_HOT" value=""
+											onkeydown="if(window.event.keyCode==13){saleActiveFilter.queryHotPackages();} "
+											desc="终端串码" />
+									</div>
+								</li>
+								<li class="link">
+									<div class="label">营销包</div>
+									<div class="value">
+										<input jwcid="@TextField" name="SEARCH_CONTENT_HOT"
+											id="SEARCH_CONTENT_HOT" value="ognl:info.SEARCH_CONTENT"
+											desc="营销包"
+											onkeydown="if(window.event.keyCode==13){saleActiveFilter.queryHotPackages();} " />
+									</div>
+								</li>
+							</ul>
+							<input jwcid="@Hidden" name="HOT_PRODUCT_ID" /> <input
+								jwcid="@Hidden" name="HOT_CAMPN_TYPE" />
+
+						</div>
+						<div class="c_space"></div>
+						<div class="submit  c_submit-full">
+							<button class="e_button-r e_button-l e_button-blue" type="button"
+								id="bquery_hot" name="bquery_hot"
+								onclick="saleActiveFilter.queryHotPackages();">查询</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 测试热门啊啊 -->
+	
+	
+	
+</body>
+<script type="text/javascript">
+$(document).ready(init);
+</script>
+</html>
+
+<script id="OffersTpl" type="text/html">
+<%for(i=0;i<offers.length;i++){%>
+	{{set offer = offers.get(i); 
+		offerCode = offer.get("OFFER_CODE");
+		offerName = offer.get("OFFER_NAME");
+		offerType = offer.get("OFFER_TYPE");
+		offerDesc = offer.get("DESCRIPTION");
+		orderMode = offer.get("ORDER_MODE");
+		stateName = offer.get("STATE_NAME", "");
+		tagValue = offer.get("TAG_VALUE", "");
+		disabled = offer.get("DISABLED") == "true";
+		bookingDatePriv = offer.get("BOOKING_DATE_PRIV") == "TRUE";
+	}}
+
+	<li idx="{{i}}" title="{{offerDesc}}" class="{{disabled?"gray":"link"}}" id="{{'PELI_'+offerType+'_'+offerCode}}">
+		<div class="content">
+			<div class="main" {{isOpenPage && !disabled ? "handle = openPage" : '' }} >
+				<div class="title">{{"["+offerCode+"]"+offerName}}</div>
+				<div class="content content-2">
+					{{ offerDesc && offerDesc.length == 0 ? offerName : offerDesc }}
+				
+					{{ if isCalcDate && offer.containsKey("START_DATE") }}
+					<div class="text">
+						<% var startDate = offer.get("START_DATE").substring(0, 10)%>
+						<span name="{{offerCode+'_'+offerType+'_START_DATE'}}" > {{startDate}}</span>
+						<span class="e_gray">～</span>
+						<% var endDate = offer.get("END_DATE").substring(0, 10)%>
+						<span name="{{offerCode+'_'+offerType+'_END_DATE'}}" >{{endDate}}</span>
+
+						{{ if (offer.get("CHOICE_START_DATE") == "true" || offer.get("SELF_END_DATE") == "true"|| offer.get("FLIP_END_DATE") == "true" || bookingDatePriv)&& !disabled && offer.get("OFFER_TYPE")!="Z"}}
+						<a href="#nogo" idx="{{i}}" class="e_ico-edit" handle="modifyTime"></a>
+						{{/if}}
+
+						{{ if  !disabled && offer.get("OFFER_TYPE")=="Z" && (offer.get("ORG_DOMAIN")=="DSMP"||offer.get("ORG_DOMAIN")=="MRBT"||offer.get("ORG_DOMAIN")=="MEBP")}}
+						<a href="#nogo" idx="{{i}}" class="e_ico-edit" handle="modifyPlatTime"></a>
+						{{/if}}
+
+					</div>
+					{{/if}}
+				</div>
+			</div>
+
+			{{ if !disabled  }}
+			{{ if isShowAddShoppingCart && offer.get("DISABLED_ADD_SHOPPING_CART") != "true"  }}
+			<div class="fn" handle="addToShoppingCart"><span class="e_ico-cart"></span></div>
+			{{/if}}
+			{{/if}}
+			
+			{{ if stateName }}
+			<div class="statu statu-right statu-blue">{{stateName}}</div>
+			{{/if}}
+
+			{{ if disabled && !(offer.get("TAG_VALUE") == "USED" || offer.get("TAG_VALUE") == "ORDER") }}
+				<div class="statu statu-right statu-gray">不能订购</div>
+			{{/if}}
+
+
+		</div>
+	</li>
+<% } %>
+</script>
+<script id="LabelsTpl" type="text/html">
+<%for(i=0;i<tags.length;i++){%>
+
+<%  var tag = tags.get(i); 
+	var tagId = tag.get("TAG_ID");
+	var tagName = tag.get("TAG_NAME");
+	var tagValues = tag.get("TAG_VALUE_LIST");
+	var selectedTag = $imports.getSelectTag(tagId) %>
+
+	<li>
+		<div class="more"><button class="e_button-s e_button-r" handle="foldLabels" >更多</button></div>
+		<div class="label">{{ tagName }} </div>
+		<div class="option option-fold">
+			<ul tagId="{{ tagId }}" labelName="{{ tagName }}">
+				{{ if tagValues }}
+					<%for(j=0;j<tagValues.length;j++){%>
+						{{set tv = tagValues.get(j);
+							tvId = tv.get("TAG_VALUE_ID");
+							tvName = tv.get("TAG_VALUE_NAME");
+							clazz = (selectedTag != null && selectedTag.get("TAG_VALUE_ID") == tvId) ? 'on' : '';
+						}}
+					<li handle="switchLabel" tvId="{{tvId }}" class="{{ clazz }}" >{{ tvName }}</li>
+					<%}%>
+				{{/if}}
+			</ul>
+		</div>
+	</li>
+<% } %>
+</script>

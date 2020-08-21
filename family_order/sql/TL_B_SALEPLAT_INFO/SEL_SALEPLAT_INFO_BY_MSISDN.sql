@@ -1,0 +1,1 @@
+select * from  TL_B_SALEPLAT_INFO t where t.MSISDN= :MSISDN

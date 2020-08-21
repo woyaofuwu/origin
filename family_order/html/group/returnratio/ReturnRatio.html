@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/returnratio/Returnration.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 分页标签开始 -->
+<div class="c_tab c_tab-3">
+	<ul>
+		<li id="ratioAddId" name="ratioAddId"  class="on"><a href="#nogo" onclick="refresAdd();">返还比例新增</a></li>
+		<li id="ratioChDelId" name="ratioChDelId"   ><a href="#nogo" onclick="refresEditDel()">返还比例查询修改删除</a></li>
+	</ul>
+</div>
+<!-- 分页标签 结束 -->
+<div><ul></ul></div>
+
+<!-- 返还比例新增 开始 -->
+<div class="c_box" jwcid="queryFrom@Part">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" refreshPart="TradeListPart,BackPart,GroupInfoPart" selectGroupListener="getGroupBaseInfo" />
+			</li>
+  		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div jwcid="GroupInfoPart@Part">
+		<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:info"/>
+	</div>
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">工单信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3" jwcid="TradeListPart@Part">
+		<ul class="ul">
+				<li class="li col-3">
+				<span class="label"><span class="e_required">集团产品选择：</span></span>
+				  <span class="e_selec">
+					<select jwcid="@Select" name="USER_ID" id="USER_ID" desc="集团产品选择"
+        	                source="ognl:infos"	textField="PRODUCT_NAME" valueField="USER_ID" 
+					        value="ognl:condition.USER_ID" />
+				</span>
+			</li>
+		</ul>		
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="BackPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required" >返还比例：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="RETURN_RATION@TextField" name="RETURN_RATION" type="text" value="ognl:info.RETURN_RATION" nullable="no" maxsize="16" desc="返还比例"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">活动生效月份：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@DateField" value="ognl:info.START_ACTIVE_DATE" name="START_ACTIVE_DATE" id="START_ACTIVE_DATE" nullable="no" format="yyyyMM"  desc="活动生效月份" datatype="date" readOnly="true"  minName="START_ACTIVE_DATE" maxName="END_ACTIVE_DATE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">活动结束月份：</span></span>
+				<span class="e_input">
+					<span class="e_input e_input-left">
+						<input jwcid="@DateField" value="ognl:info.END_ACTIVE_DATE" name="END_ACTIVE_DATE" id="END_ACTIVE_DATE" nullable="no" format="yyyyMM"  desc="活动结束月份" datatype="date"readOnly="true"  minName="START_ACTIVE_DATE" maxName="END_ACTIVE_DATE"/>
+					</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">活动审批编号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="ACTIVE_APPROVE_CODE@TextField" name="ACTIVE_APPROVE_CODE" type="text" value="ognl:info.ACTIVE_APPROVE_CODE" nullable="no" maxsize="50" desc="活动审批编号"/>
+				</span></span> 
+			</li>
+			<input type="hidden" id="OPERATION" name="OPERATION"  value="0" />
+		</ul>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<!--  
+	<div class="c_submit">
+		<div jwcid="SubmitPart@saleserv:CSSubmit" area="GroupInfoPart,TradeListPart,BackPart,AuditInfoPart" 
+			listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" 
+			isGrp="true" disabledBtn="false" element="div"/>
+	</div> -->
+	<!-- 提交 结束 -->
+	
+</div>
+<!-- 返还比例新增 结束 -->
+
+<!-- 返还比例修改删除 开始-->
+<div class="c_box" jwcid="addForm@Part" style="display:none;">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">返还比例信息查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form  c_form-col-3 c_form-label-7" jwcid="AddDelPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">业务区：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="cond_CITY_CODE@Select" name="cond_CITY_CODE" source="ognl:cityList" 
+					value="ognl:condition.CITY_CODE" valueField="AREA_CODE" 
+					textField="AREA_NAME" nullable="yes" desc="分公司"></select>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">集团编码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_QRY_GROUP_ID@TextField" name="cond_QRY_GROUP_ID" 
+					value="ognl:condition.QRY_GROUP_ID" desc="集团编码"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">产品编码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER"
+					 value="ognl:condition.SERIAL_NUMBER" desc="产品编码"/>
+				</span></span>
+			</li>
+			
+			<!-- 
+			<li class="li">
+				<span class="label">开始工号段：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_START_STAFF_ID@TextField" name="cond_START_STAFF_ID" 
+					value="ognl:condition.START_STAFF_ID" datatype="text" maxsize="8"
+					maxName="cond_END_STAFF_ID" desc="开始工号段"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束工号段：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_END_STAFF_ID@TextField" name="cond_END_STAFF_ID" 
+					value="ognl:condition.END_STAFF_ID" datatype="text" maxsize="8"
+					minName="cond_START_STAFF_ID" desc="结束工号段"/>
+				</span></span>
+			</li>
+			 -->
+			 
+			<li class="li">
+				<span class="label">操作开始时间：</span>
+				<span class="e_input"><span>
+					<input datatype="date" format="yyyy-MM-dd" jwcid="@DateField" name="cond_START_DATE" 
+					value="ognl:condition.START_DATE" desc="操作开始时间"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">操作结束时间：</span>
+				<span class="e_input"><span>
+					<input datatype="date" format="yyyy-MM-dd" jwcid="@DateField" name="cond_END_DATE" 
+					value="ognl:condition.END_DATE" desc="操作结束时间"/>
+				</span></span>
+			</li>
+  		</ul>
+  		
+  		<div class="submit">
+			<button class="e_button-form" onclick="return queryRatioList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+
+	<!-- 数据显示区域开始 -->
+	<div jwcid="ratioPart@Part" element="div">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table jwcid="@Table" name="ratioTable"  rowClick="tableRatioClick"  scroll="true">
+				<thead>
+					<tr>
+						<th col="CHOICE_TAG">业务区</th>
+						<th col="EUSER_ID">用户标识</th>
+						<th col="SERIAL_NUMBER">产品编码</th>
+						<th col="RSRV_STR2">返还比例</th>
+						<th col="RSRV_STR3">活动生效月份</th>
+						<th col="RSRV_STR4">活动结束月份</th>
+						<th col="RSRV_STR5">活动审批工单编号</th>
+						<th col="UPDATE_STAFF_ID">操作工号</th>
+						<th col="STAFF_NAME">操作姓名</th>
+						<th col="UPDATE_TIME">操作时间</th>
+						<th col="INST_ID" style="display:block">实例号</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:ratioList" value="ognl:ratio" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert"  value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',ratio.CITY_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.RSRV_STR2" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.RSRV_STR3" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.RSRV_STR4" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.RSRV_STR5" raw="false"/></td>
+						<td><span jwcid="@Insert"  value="ognl:ratio.UPDATE_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',ratio.UPDATE_STAFF_ID)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ratio.UPDATE_TIME" raw="false"/></td>
+						<td style="display:block"><span jwcid="@Insert" value="ognl:ratio.INST_ID" raw="false"/></td>
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<div jwcid="@NavBar" id="ratioNavBar"  name="ratioNavBar"  cond="addForm" 
+			 part="ratioPart"  listener="queryRatioOtherInfo"  pageSize="12"  count="ognl:ratioCount">
+		</div>
+	</div>
+	<!-- 数据显示区域结束 -->
+	
+</div>
+<!-- 返还比例修改删除 结束-->
+
+<!-- 返还比例修改删除 开始-->
+<div class="c_box" jwcid="editForm@Part" style="display:none;">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">返还比例资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="EditPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required" >返还比例：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="ERETURN_RATION@TextField" value="" name="ERETURN_RATION" type="text" 
+						nullable="no" maxsize="16" desc="返还比例"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">活动生效月份：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@DateField" value="" name="ESTART_ACTIVE_DATE" id="ESTART_ACTIVE_DATE" 
+						nullable="no" format="yyyyMM"  desc="活动生效月份" datatype="date" readOnly="true" 
+						 minName="ESTART_ACTIVE_DATE" maxName="EEND_ACTIVE_DATE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">活动结束月份：</span></span>
+				<span class="e_input">
+					<span class="e_input e_input-left">
+						<input jwcid="@DateField" value="" name="EEND_ACTIVE_DATE" id="EEND_ACTIVE_DATE" 
+							nullable="no" format="yyyyMM"  desc="活动结束月份" datatype="date"readOnly="true"  
+							minName="ESTART_ACTIVE_DATE" maxName="EEND_ACTIVE_DATE"/>
+					</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">活动审批编号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="EACTIVE_APPROVE_CODE@TextField" value="" name="EACTIVE_APPROVE_CODE" 
+						type="text" nullable="no" maxsize="50" desc="活动审批编号"/>
+				</span></span> 
+			</li>
+			<li class="li" style="display:none;">
+				<span class="label"><span class="e_required">用户标识：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="EUSER_ID@TextField" value="" name="EUSER_ID" type="text" nullable="no" desc="用户标识"/>
+				</span></span> 
+			</li>
+			<li class="li" style="display:none;">
+				<span class="label"><span class="e_required">实例号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="INST_ID@TextField" value="" name="INST_ID" type="text" nullable="no" desc="实例号"/>
+				</span></span> 
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 提交 -->
+	<!--  
+	<div class="c_submit">
+		<button type="button" id="btchange" name="btchange" onclick="addReturnRatio('2')">
+			<i class="e_ico-change"></i><span>修改</span>
+		</button>
+		<button type="button" id="btdelete" name="btdelete" onclick="addReturnRatio('1')">
+			<i class="e_ico-delete"></i><span>删除</span>
+		</button>
+	</div> -->
+		
+</div>
+
+<div class="c_box" jwcid="AuditInfoPart@Part">
+	<!-- 凭证信息开始  -->
+	<div class="c_box" jwcid="@Conditional" condition='ognl:condition.AUDIT_INFO_SHOW != null && condition.AUDIT_INFO_SHOW == "true"'>
+		<div class="c_title">
+			<div class="text">凭证信息</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li col-3">				
+					<span class="label"><span class="e_required">凭证上传：</span></span>
+					<div jwcid="VoucherFilePart@Part">
+						<span class="e_elements">
+						<input jwcid="@Upload"
+								name="VOUCHER_FILE_LIST"
+								id="VOUCHER_FILE_LIST"
+								ftpSite="groupserv"
+								filePath="upload/mebattach"
+								fileSize="20"
+								fileTypes="*.*"
+	                       		desc="凭证信息" 
+	                       		nullable="no"
+							/>
+						</span>
+				    </div>
+				</li>
+	               <li class="li">
+	                <span class="label"><span class="e_required">稽核人员：</span></span> 
+	                <span class="e_elements">
+						<button type="button" class="e_button-right"
+							onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+							<i class="e_ico-check"></i><span></span>
+						</button> 
+	                    <span class="e_input e_input-left"><span> <input
+								type="text" jwcid="@TextField"
+								name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+								value=""
+								text="" nullable="no"
+								readonly="true"/>
+						</span></span>
+					</span>
+	            </li>
+			</ul>
+		</div>
+	</div>
+	<!-- 凭证信息结束  -->
+</div>
+
+<!-- 提交域 开始 -->
+<div class="c_box" jwcid="submitPartForm1@Part">
+	<div class="c_submit">
+		<div jwcid="SubmitPart@saleserv:CSSubmit" area="GroupInfoPart,TradeListPart,BackPart,AuditInfoPart" 
+			listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" 
+			isGrp="true" disabledBtn="false" element="div"/>
+	</div>
+</div>
+
+<div class="c_box" jwcid="submitPartForm2@Part" style="display:none;">
+	<div class="c_submit">
+		<button type="button" id="btchange" name="btchange" onclick="addReturnRatio('2')">
+			<i class="e_ico-change"></i><span>修改</span>
+		</button>
+		<button type="button" id="btdelete" name="btdelete" onclick="addReturnRatio('1')">
+			<i class="e_ico-delete"></i><span>删除</span>
+		</button>
+	</div>
+</div>
+<!-- 提交域 结束 -->
+
+
+	<!-- 隐藏区域 开始 -->
+    <div jwcid="hiddenPart@Part">
+	    <input type="hidden" jwcid="cond_ENABLE_FLAG@TextField" name="cond_ENABLE_FLAG"  value="ognl:condition.ENABLE_FLAG" />
+    </div>
+	<!-- 隐藏区域 结束 -->
+	
+</div></div>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+
+</body>

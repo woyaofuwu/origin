@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="JavaScript" src="person/plat/mobilepayment/scripts/ibossaccountpay.js"></script>
+<title>跨省手机支付帐户充值</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">路由信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3 c_form-text" jwcid="routePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">路由类型：</span></span>
+				<span class="e_select"><span><span><select jwcid="@Select" name="cond_ROUTE" id="cond_ROUTE"
+							source="ognl:pageutil.getStaticList('ROUTERTYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_ROUTE"
+							desc="路由类型" nullable="no" disabled="false"/
+							addDefault = "false"></span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" datatype="mbphone"  nullable="no"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>省代码：</span></span>
+				<span class="e_select"><span><span><select jwcid="@Select" name="cond_PROVINCE_CODE" id="cond_PROVINCE_CODE"
+							source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_PROVINCE_CODE"
+							desc="省代码"   disabled="ognl:(condition.cond_ROUTE == '01')?'true':'false'"/>
+				</span></span></span>
+			</li>
+		</ul>
+		
+	</div>
+	
+		<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户鉴权条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-8 c_form-col-3 c_form-text" jwcid="custInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">客户标识类型：</span></span>
+				<span class="e_select"><span><span>
+							<select jwcid="@Select" name="cond_IDTYPE" source="ognl:pageutil.getStaticList('USER_IDTYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" 
+							 value="ognl:condition.cond_IDTYPE"
+							 nullable = "no" onchange="changeIDValue()" desc="客户标志类型" class="e_select"/>
+			</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户标识号码：</span></span>
+				<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="cond_IDVALUE" value="ognl:condition.cond_IDVALUE"
+							 nullable = "no" desc="客户标志号码"   onblur = "changeMobileNumValue()"/>
+		
+			</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">校验方式：</span></span>
+				<span class="e_select"><span><span>
+				<select id="cond_VERIFY_TYPE" name="cond_VERIFY_TYPE" onChange="checkVerify()" desc="校验方式" class="e_select">
+												<option value="0">证件校验</option>
+												<option value="1">密码校验</option>
+											</select></span></span></span>
+			</li>
+			<li class="li" id="cardTypeSpan">
+				<span class="label">证件类型：</span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_IDCARDTYPE" id="cond_IDCARDTYPE"
+							source="ognl:pageutil.getStaticList('MOBILEPAY_PSPT_TYPE_CODE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_IDCARDTYPE"
+							desc="证件类型" nullable="no" disabled="false"/>
+				</span></span></span>
+			</li>
+			<li class="li" id="cardNumSpan">
+				<span class="label">证件号码：</span>
+				<span class = "e_input"><span> <input type="text" jwcid="cond_IDCARDNUM@TextField" name="cond_IDCARDNUM" value="ognl:condition.cond_IDCARDNUM" hidden = "true" desc="证件号码"   /></span></span>
+			</li>
+			<li class ="li" id="passwordSpan" style="display:none">
+			   <span class="label">客服密码：</span>
+						<span class ="e_input"><span>
+							<input type="password" jwcid="@Any" id="cond_USER_PASSWD" name="cond_USER_PASSWD" value="ognl:condition.cond_USER_PASSWD"  desc="客服密码"  class="e_input"/>
+					 </span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="iBossAccountPayAuthCheck()"><i class="e_ico-search"></i><span>用户鉴权</span></button>
+		</div>
+	
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-10 c_form-col-2" jwcid="AcceptPart@Part">
+		<ul class="ul">
+			<!-- <li class="li">
+				<span class="label"><span class="e_required">最大可充值金额（元）：</span></span>
+				<span class="e_elements">
+					<span class="e_label e_label-right"><span>元</span></span>
+					<span class="e_input e_input-left"><span><input type="text" jwcid="@TextField" id="cond_RSP_MAX_CASH" name="cond_RSP_MAX_CASH" value="ognl:condition.cond_RSP_MAX_CASH" disabled="true"/></span></span>
+				</span>
+			</li> -->
+			<li class="li">
+				<span class="label"><span class="e_required">充值金额（元）：</span></span>
+				<span class="e_elements">
+					<span class="e_label e_label-right"><span>元</span></span>
+					<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@TextField" id="cond_AMOUNT" name="cond_AMOUNT"
+						 datatype="numeric"  value="ognl:condition.cond_AMOUNT"  desc="充值金额" nullable="no" />
+					</span></span>
+				</span>
+			</li>
+		</ul>
+			<input type="hidden" jwcid="@TextField" id="cond_IsCheckPass" name="cond_IsCheckPass" value="ognl:condition.cond_IsCheckPass" style="display:none"/>
+		<input type="hidden" jwcid="@TextField" id="cond_PassNumber" name="cond_PassNumber" value="ognl:condition.cond_PassNumber" style="display:none"/>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="iBossAccountPayCheck()"  listener="onTradeSubmit"
+	cancelRule="false" disabledBtn="true" area="routePart,custInfoPart,AcceptPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div>
+
+</body>
+</html>

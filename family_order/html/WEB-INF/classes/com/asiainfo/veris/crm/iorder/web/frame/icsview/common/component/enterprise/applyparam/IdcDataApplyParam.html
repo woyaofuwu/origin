@@ -1,0 +1,795 @@
+<div jwcid="@Conditional" condition="ognl:templetId != 'EDIRECTLINECHECKIDC' && templetId != 'EDIRECTLINECHANGECHECKIDC' && templetId != 'EDIRECTLINECANCELIDC' ">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">关联业务订单号</div>
+	</div>
+	<div jwcid="IdcLineInfo@Part" id="IdcLineInfo" class="c_list c_list-line c_list-border c_list-col-1 c_list-phone-col-1" style="">
+		<ul>
+			<li >
+	             <div class="label">关联业务订单号</div>
+	             <div class="value">
+					<input jwcid="@Select" style="width:40em;" name="IDC_RelIbsysid" source="ognl:lineIdcInfo.IDCLINELIST" textField="IDCLINELIST_TEXT" valueField="IDCLINELIST_VAL"
+					addDefault="true" value="ognl:attrInfo.IDC_RelIbsysid" onchange="selectRelIbsysidForIdc(this)"  desc="关联政企订单工单号"/>                     
+	             </div>
+	        </li>
+        </ul>
+	</div>
+</div>
+
+<div class="c_title">
+	<div class="text">总订单信息</div>
+</div>
+<div jwcid="IdcOrderNumInfo@Part" id="IdcOrderNumInfo" class="c_list c_list-line c_list-border c_list-col-1 c_list-phone-col-2" style="">
+	<ul>
+        <li class="link required">
+	   		<div class="label">填写该笔是否为总订单第一笔订单</div>
+	        	<div class="value">
+	           	<input jwcid="@Select" id="ORDER_OrderNumFlag" name="ORDER_OrderNumFlag" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+	             	value="" nullable="no"  desc="是否第一笔订单" onchange="selectOrderNumFlag(this)" />
+	        	</div>
+	   	</li>
+	   	<li class="link required" id="ORDER_ChooseOpenType_Li"  ontap="showPopup('popup13', 'operTypeItem', true);queryIdcOperType();" style="display: none">
+			<div class="label">选择总订单关联的所有产品类型</div>
+			<div class="value">
+			<input jwcid="@TextField" id="ORDER_ChooseOpenType" name="ORDER_ChooseOpenType" value="ognl:attrInfo.ORDER_ChooseOpenType" 
+		                        nullable="no" desc="总订单关联的所有产品类型" readonly="readonly" />
+			</div>
+			<div class="more"></div>
+		</li>
+		<li class="link required" id="ORDER_ChooseFirstIbsysid_Li" style="display: none">
+             <div class="label">关联总订单第一笔订单</div>
+             <div class="value">
+				<input jwcid="@Select" style="width:40em;" name="ORDER_ChooseFirstIbsysid" source="ognl:lineIdcInfo.IDCFIRSTIBSYSIDLIST" textField="IDCFIRSTIBSYSIDLIST_TEXT" valueField="IDCFIRSTIBSYSIDLIST_VAL"
+				addDefault="true" value="ognl:attrInfo.ORDER_ChooseFirstIbsysid"   desc="关联总订单第一笔订单" onchange="checkOrderNumFlagForIdc()" />                     
+             </div>
+        </li>
+        <li style="display: none">
+			<div class="label">是否最后一笔订单</div>
+             <div class="value">
+                 <input jwcid="@TextField" id="ORDER_LastIbsysidFlag" name="ORDER_LastIbsysidFlag" value="" 
+                        nullable="no" desc="是否最后一笔订单:1是0否"/>
+             </div>
+		</li>
+		<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHANGEIDC' || templetId == 'EDIRECTLINECANCELIDC' ">
+			<li style="display: none">
+				<div class="label">USER_ID</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_USER_ID" name="IDC_USER_ID" value="ognl:attrInfo.IDC_USER_ID" 
+	                        nullable="no" desc="USER_ID"/>
+	             </div>
+			</li>
+		</div>
+    </ul>
+</div>
+
+<div jwcid="IdcDataApplyParamPart@Part" id="IdcDataApplyParamPart">
+
+
+<!-- <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEOPENIDC' || templetId == 'EDIRECTLINECHANGEIDC' || templetId == 'EDIRECTLINECANCELIDC'">
+ -->	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户其他信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="IdcCustomerInfoPart@Part" id="IdcCustomerInfoPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+		<ul>
+			<li class="link required">
+	             <div class="label">单位所属分类</div>
+	             <div class="value">
+	                 <input jwcid="@Select" id="CUST_unitType" name="CUST_unitType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('UNIT_CLASSIFICATION')" textField="DATA_NAME" valueField="DATA_ID" 
+	                  oldvalue="ognl:grpExtInfo.CUST_unitType" value="ognl:grpExtInfo.CUST_unitType"  nullable="no"  desc="单位所属分类"  onchange="selectUnitType()" />
+	             </div>
+	        </li>
+	        <li class="link required" style="display: none" id="CUST_manageLicenceNum_Li" >
+	             <div class="label">经营许可证编号</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="CUST_manageLicenceNum" name="CUST_manageLicenceNum" oldvalue="ognl:grpExtInfo.CUST_manageLicenceNum" value="ognl:grpExtInfo.CUST_manageLicenceNum" 
+	                        nullable="yes" desc="经营许可证编号" />
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">单位性质</div>
+	             <div class="value">
+	                 <input jwcid="@Select" id="CUST_unitNature" name="CUST_unitNature" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('UNIT_NATURE')" textField="DATA_NAME" valueField="DATA_ID" 
+	                  oldvalue="ognl:grpExtInfo.CUST_unitNature" value="ognl:grpExtInfo.CUST_unitNature" nullable="no"  desc="单位性质"/>
+	             </div>
+	        </li>
+	        <li >
+	             <div class="label">单位行政级别</div>
+	             <div class="value">
+	                 <input jwcid="@Select" id="CUST_unitLevel" name="CUST_unitLevel" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('UNIT_LEVEL')" textField="DATA_NAME" valueField="DATA_ID" 
+	                  oldvalue="ognl:grpExtInfo.CUST_unitLevel" value="ognl:grpExtInfo.CUST_unitLevel" nullable="yes"  desc="单位行政级别"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">联系人姓名（客户侧）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="CUST_contactsName" name="CUST_contactsName" oldvalue="ognl:grpExtInfo.CUST_contactsName" value="ognl:grpExtInfo.CUST_contactsName" 
+	                        nullable="no" desc="联系人姓名（客户侧）"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">联系人固定电话（客户侧）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="CUST_contactsNumber" name="CUST_contactsNumber" oldvalue="ognl:grpExtInfo.CUST_contactsNumber" value="ognl:grpExtInfo.CUST_contactsNumber" 
+	                        nullable="no" desc="联系人固定电话（客户侧）"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">联系人移动电话（客户侧）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="CUST_contactsPhoneNumber" name="CUST_contactsPhoneNumber" oldvalue="ognl:grpExtInfo.CUST_contactsPhoneNumber" value="ognl:grpExtInfo.CUST_contactsPhoneNumber" 
+	                        nullable="no" desc="联系人移动电话（客户侧）"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">联系人Email地址（客户侧）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="CUST_contactsEmail" name="CUST_contactsEmail" oldvalue="ognl:grpExtInfo.CUST_contactsEmail" value="ognl:grpExtInfo.CUST_contactsEmail" 
+	                        nullable="no" desc="联系人Email地址（客户侧）"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">联系人证件类型（客户侧）</div>
+	             <div class="value">
+	                 <input jwcid="@Select" id="CUST_PsptType" name="CUST_PsptType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_PSPTTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	                  oldvalue="ognl:grpExtInfo.CUST_PsptType" value="ognl:grpExtInfo.CUST_PsptType" nullable="no"  desc="联系人证件类型（客户侧）"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">联系人证件号码（客户侧）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="CUST_PsptNum" name="CUST_PsptNum" oldvalue="ognl:grpExtInfo.CUST_PsptNum" value="ognl:grpExtInfo.CUST_PsptNum" 
+	                        nullable="no" desc="联系人证件号码（客户侧）"/>
+	             </div>
+	        </li>
+		</ul>
+	</div>	
+<!-- </div> -->
+
+<div jwcid="@Conditional" condition="ognl:productID=='7041' ">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">产品信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="IdcProductInfo7041Part@Part" id="IdcProductInfo7041Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+		<ul>
+			<li class="link required">
+	             <div class="label">产品编码</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_SERIAL_NUMBER" name="IDC_SERIAL_NUMBER" value="ognl:attrInfo.IDC_SERIAL_NUMBER" 
+	                        nullable="no" desc="产品编码" readonly="readonly" />
+	             </div>
+	        </li>
+	        <li class="link required">
+	    		<div class="label">端口类型</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7041_PortType" name="IDC_7041_PortType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_PORTTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7041_PortType" nullable="no"  desc="端口类型"/>
+	         	</div>
+	    	</li>
+	    	<li class="link required">
+	    		<div class="label">带宽种类</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7041_BandwidthType" name="IDC_7041_BandwidthType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_BANDWIDTHTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7041_BandwidthType" nullable="no"  desc="带宽种类"/>
+	         	</div>
+	    	</li>
+	    	<li class="link required">
+	             <div class="label">带宽条数</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7041_BandwidthNum" name="IDC_7041_BandwidthNum" value="ognl:attrInfo.IDC_7041_BandwidthNum" 
+	                        nullable="no" desc="带宽条数"/>
+	             </div>
+	        </li>
+	        <li >
+	             <div class="label">流量限制（Mbps）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7041_FlowConfined" name="IDC_7041_FlowConfined" value="ognl:attrInfo.IDC_7041_FlowConfined" 
+	                         desc="流量限制（Mbps）"/>
+	             </div>
+	        </li>
+	        <li class="">
+	             <div class="label">备注</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_Remark" name="IDC_Remark" value="ognl:attrInfo.IDC_Remark" 
+	                        desc="备注"/>
+	             </div>
+	        </li>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHECKIDC' || templetId == 'EDIRECTLINECHANGECHECKIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否测试</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Test" name="IDC_Test" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Test" nullable="no"  desc="是否测试"/>
+		         	</div>
+		    	</li>
+		        <li class="">
+		             <div class="label">测试描述</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_TestRemark" name="IDC_TestRemark" value="ognl:attrInfo.IDC_TestRemark" 
+		                        nullable="yes" desc="测试描述"/>
+		             </div>
+		        </li>
+		        
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEPREEMPTIONIDC' || templetId == 'EDIRECTLINECHANGEIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已勘察</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Prospecting" name="IDC_Prospecting" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Prospecting==1?'1':'0'" nullable="no"  desc="是否已勘察" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li >
+		             <div class="label">资源勘察实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ProspectingCase" name="IDC_ProspectingCase" value="ognl:attrInfo.IDC_Prospecting==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ProspectingCase" 
+		                        nullable="yes" desc="资源勘察实例" readonly="readonly" />
+		             </div>
+		        </li>
+		        <li class="link required">
+					<div class="label">期望预占到期时间</div>
+					<div class="value">
+						<input  name="IDC_PreemptionEpireTime" id="IDC_PreemptionEpireTime" nullable="no" jwcid="@DateField" dropDown="true" value="ognl:attrInfo.IDC_PreemptionEpireTime" format="yyyyMMddHHmmss" desc="期望预占到期时间"/>
+					</div>
+				</li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEOPENIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已预占</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Preemption" name="IDC_Preemption" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Preemption==1?'1':'0'" nullable="no"  desc="是否已预占" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li class="link required">
+		    		<div class="label">是否释放该预占单下的所有资源</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_ReleaseResource" name="IDC_ReleaseResource" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_ReleaseResource" nullable="no"  desc="是否释放该预占单下的所有资源" />
+		         	</div>
+		    	</li>
+		    	<li>
+		             <div class="label">资源预占实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ResourceCase" name="IDC_ResourceCase" value="ognl:attrInfo.IDC_Preemption==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ResourceCase" 
+		                        nullable="yes" desc="资源预占实例"   readonly="readonly"/>
+		             </div>
+		        </li>
+	        </div>
+	        <li class="link required">
+	    		<div class="label">端口种类</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7041_PortKind" name="IDC_7041_PortKind" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_PORTKIND')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7041_PortKind" nullable="no"  desc="端口种类"/>
+	         	</div>
+	    	</li>
+	    	<li class="">
+	    		<div class="label">免费资源订购类型</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7041_FreeResourceType" name="IDC_7041_FreeResourceType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_FREERESOURCETYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7041_FreeResourceType" desc="免费资源订购类型"/>
+	         	</div>
+	    	</li>
+	    	<li class="">
+	             <div class="label">免费资源订购时长（月）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7041_FreeResourceMonth" name="IDC_7041_FreeResourceMonth" value="ognl:attrInfo.IDC_7041_FreeResourceMonth" 
+	                        desc="免费资源订购时长（月）"/>
+	             </div>
+	        </li>
+	        
+			<li class="">
+	             <div class="label">上浮比例</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7041_FloatProportion" name="IDC_7041_FloatProportion" value="ognl:attrInfo.IDC_7041_FloatProportion" 
+	                         desc="上浮比例"/>
+	             </div>
+	        </li>
+	        <li class="">
+	             <div class="label">保底比例</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7041_FloorsProportion" name="IDC_7041_FloorsProportion" value="ognl:attrInfo.IDC_7041_FloorsProportion" 
+	                        desc="保底比例"/>
+	             </div>
+	        </li>
+	        
+        </ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:productID=='7043' ">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">产品信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="IdcProductInfo7043Part@Part" id="IdcProductInfo7043Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+		<ul>
+			<li class="link required">
+	             <div class="label">产品编码</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_SERIAL_NUMBER" name="IDC_SERIAL_NUMBER" value="ognl:attrInfo.IDC_SERIAL_NUMBER" 
+	                        nullable="no" desc="产品编码" readonly="readonly" />
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">设备总额定功率（KW）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7043_DeviceCurrent" name="IDC_7043_DeviceCurrent" value="ognl:attrInfo.IDC_7043_DeviceCurrent" 
+	                        nullable="no" desc="设备总额定功率"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">总U位数量</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7043_CameraStandU" name="IDC_7043_CameraStandU" value="ognl:attrInfo.IDC_7043_CameraStandU" 
+	                        nullable="no" desc="总U位数量"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">设备数量</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7043_DeviceNum" name="IDC_7043_DeviceNum" value="ognl:attrInfo.IDC_7043_DeviceNum" 
+	                        nullable="no" desc="设备数量"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">设备总U数</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7043_DeviceUNum" name="IDC_7043_DeviceUNum" value="ognl:attrInfo.IDC_7043_DeviceUNum" 
+	                        nullable="no" desc="设备总U数"/>
+	             </div>
+	        </li>
+	        <li class="">
+	             <div class="label">备注</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_Remark" name="IDC_Remark" value="ognl:attrInfo.IDC_Remark" 
+	                        desc="备注"/>
+	             </div>
+	        </li>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHECKIDC' || templetId == 'EDIRECTLINECHANGECHECKIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否测试</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Test" name="IDC_Test" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Test" nullable="no"  desc="是否测试"/>
+		         	</div>
+		    	</li>
+		        <li class="">
+		             <div class="label">测试描述</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_TestRemark" name="IDC_TestRemark" value="ognl:attrInfo.IDC_TestRemark" 
+		                        nullable="yes" desc="测试描述"/>
+		             </div>
+		        </li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEPREEMPTIONIDC' || templetId == 'EDIRECTLINECHANGEIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已勘察</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Prospecting" name="IDC_Prospecting" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Prospecting==1?'1':'0'" nullable="no"  desc="是否已勘察" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li >
+		             <div class="label">资源勘察实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ProspectingCase" name="IDC_ProspectingCase" value="ognl:attrInfo.IDC_Prospecting==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ProspectingCase" 
+		                        nullable="yes" desc="资源勘察实例" readonly="readonly" />
+		             </div>
+		        </li>
+		        <li class="link required">
+					<div class="label">期望预占到期时间</div>
+					<div class="value">
+						<input  name="IDC_PreemptionEpireTime" id="IDC_PreemptionEpireTime" nullable="no" jwcid="@DateField" dropDown="true" value="ognl:attrInfo.IDC_PreemptionEpireTime" format="yyyyMMddHHmmss" desc="期望预占到期时间"/>
+					</div>
+				</li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEOPENIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已预占</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Preemption" name="IDC_Preemption" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Preemption==1?'1':'0'" nullable="no"  desc="是否已预占" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li class="link required">
+		    		<div class="label">是否释放该预占单下的所有资源</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_ReleaseResource" name="IDC_ReleaseResource" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_ReleaseResource" nullable="no"  desc="是否释放该预占单下的所有资源" />
+		         	</div>
+		    	</li>
+		    	<li>
+		             <div class="label">资源预占实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ResourceCase" name="IDC_ResourceCase" value="ognl:attrInfo.IDC_Preemption==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ResourceCase" 
+		                        nullable="yes" desc="资源预占实例"   readonly="readonly"/>
+		             </div>
+		        </li>
+		        
+	        </div>
+
+	    	<li class="">
+	    		<div class="label">免费资源订购类型</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7043_FreeResourceType" name="IDC_7043_FreeResourceType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_FREERESOURCETYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7043_FreeResourceType" desc="免费资源订购类型"/>
+	         	</div>
+	    	</li>
+	    	<li class="">
+	             <div class="label">免费资源订购时长（月）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7043_FreeResourceMonth" name="IDC_7043_FreeResourceMonth" value="ognl:attrInfo.IDC_7043_FreeResourceMonth" 
+	                        desc="免费资源订购时长（月）"/>
+	             </div>
+	        </li>
+        </ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:productID=='7044' ">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">产品信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="IdcProductInfo7044Part@Part" id="IdcProductInfo7044Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+		<ul>
+			<li class="link required">
+	             <div class="label">产品编码</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_SERIAL_NUMBER" name="IDC_SERIAL_NUMBER" value="ognl:attrInfo.IDC_SERIAL_NUMBER" 
+	                        nullable="no" desc="产品编码" readonly="readonly" />
+	             </div>
+	        </li>
+	        <li class="link required">
+	    		<div class="label">IP性质</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7044_IPNature" name="IDC_7044_IPNature" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7044_IPNATURE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7044_IPNature" nullable="no"  desc="IP性质"/>
+	         	</div>
+	    	</li>
+	    	<li class="link required">
+	    		<div class="label">IP类型</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7044_IPType" name="IDC_7044_IPType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7044_IPTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7044_IPType" nullable="no"  desc="IP类型"/>
+	         	</div>
+	    	</li>
+	       
+	        <li class="link required">
+	             <div class="label">IP数量</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7044_IPNum" name="IDC_7044_IPNum" value="ognl:attrInfo.IDC_7044_IPNum" 
+	                        nullable="no" desc="IP数量"/>
+	             </div>
+	        </li>
+	        <li class="">
+	             <div class="label">备注</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_Remark" name="IDC_Remark" value="ognl:attrInfo.IDC_Remark" 
+	                        desc="备注"/>
+	             </div>
+	        </li>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHECKIDC' || templetId == 'EDIRECTLINECHANGECHECKIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否测试</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Test" name="IDC_Test" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Test" nullable="no"  desc="是否测试"/>
+		         	</div>
+		    	</li>
+		        <li class="">
+		             <div class="label">测试描述</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_TestRemark" name="IDC_TestRemark" value="ognl:attrInfo.IDC_TestRemark" 
+		                        nullable="yes" desc="测试描述"/>
+		             </div>
+		        </li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEPREEMPTIONIDC' || templetId == 'EDIRECTLINECHANGEIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已勘察</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Prospecting" name="IDC_Prospecting" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Prospecting==1?'1':'0'" nullable="no"  desc="是否已勘察" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li >
+		             <div class="label">资源勘察实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ProspectingCase" name="IDC_ProspectingCase" value="ognl:attrInfo.IDC_Prospecting==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ProspectingCase" 
+		                        nullable="yes" desc="资源勘察实例" readonly="readonly" />
+		             </div>
+		        </li>
+		        <li class="link required">
+					<div class="label">期望预占到期时间</div>
+					<div class="value">
+						<input  name="IDC_PreemptionEpireTime" id="IDC_PreemptionEpireTime" nullable="no" jwcid="@DateField" dropDown="true" value="ognl:attrInfo.IDC_PreemptionEpireTime" format="yyyyMMddHHmmss" desc="期望预占到期时间"/>
+					</div>
+				</li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEOPENIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已预占</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Preemption" name="IDC_Preemption" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Preemption==1?'1':'0'" nullable="no"  desc="是否已预占" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li class="link required">
+		    		<div class="label">是否释放该预占单下的所有资源</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_ReleaseResource" name="IDC_ReleaseResource" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_ReleaseResource" nullable="no"  desc="是否释放该预占单下的所有资源" />
+		         	</div>
+		    	</li>
+		    	<li>
+		             <div class="label">资源预占实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ResourceCase" name="IDC_ResourceCase" value="ognl:attrInfo.IDC_Preemption==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ResourceCase" 
+		                        nullable="yes" desc="资源预占实例"   readonly="readonly"/>
+		             </div>
+		        </li>
+		        
+	        </div>
+
+	    	<li class="">
+	    		<div class="label">免费资源订购类型</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7044_FreeResourceType" name="IDC_7044_FreeResourceType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_FREERESOURCETYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7044_FreeResourceType" desc="免费资源订购类型"/>
+	         	</div>
+	    	</li>
+	    	<li class="">
+	             <div class="label">免费资源订购时长（月）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7044_FreeResourceMonth" name="IDC_7044_FreeResourceMonth" value="ognl:attrInfo.IDC_7044_FreeResourceMonth" 
+	                        desc="免费资源订购时长（月）"/>
+	             </div>
+	        </li>
+        </ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:productID=='7042' ">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">产品信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="IdcProductInfo7042Part@Part" id="IdcProductInfo7042Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+		<ul>
+			<li class="link required">
+	             <div class="label">产品编码</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_SERIAL_NUMBER" name="IDC_SERIAL_NUMBER" value="ognl:attrInfo.IDC_SERIAL_NUMBER" 
+	                        nullable="no" desc="产品编码" readonly="readonly" />
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">机柜尺寸（mm*mm*mm）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7042_CabinetDimensions" name="IDC_7042_CabinetDimensions" value="ognl:attrInfo.IDC_7042_CabinetDimensions==null?'2200*600*1200':attrInfo.IDC_7042_CabinetDimensions" 
+	                        nullable="no" desc="机柜尺寸"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">机柜总U位</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7042_CabinetU" name="IDC_7042_CabinetU" value="ognl:attrInfo.IDC_7042_CabinetU" 
+	                        nullable="no" desc="机柜总U位"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">机柜额定功率（KW）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7042_CabinetCurrent" name="IDC_7042_CabinetCurrent" value="ognl:attrInfo.IDC_7042_CabinetCurrent" 
+	                        nullable="no" desc="机柜额定功率"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	    		<div class="label">是否机电分离</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7042_IsEleSeparatio" name="IDC_7042_IsEleSeparatio" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7042_IsEleSeparatio" nullable="no"  desc="是否机电分离"/>
+	         	</div>
+	    	</li>
+	    	<li class="link required">
+	             <div class="label">机柜数量</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7042_CabinetNum" name="IDC_7042_CabinetNum" value="ognl:attrInfo.IDC_7042_CabinetNum" 
+	                        nullable="no" desc="机柜数量"/>
+	             </div>
+	        </li>
+	        <li class="">
+	             <div class="label">备注</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_Remark" name="IDC_Remark" value="ognl:attrInfo.IDC_Remark" 
+	                        desc="备注"/>
+	             </div>
+	        </li>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHECKIDC' || templetId == 'EDIRECTLINECHANGECHECKIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否测试</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Test" name="IDC_Test" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Test" nullable="no"  desc="是否测试"/>
+		         	</div>
+		    	</li>
+		        <li class="">
+		             <div class="label">测试描述</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_TestRemark" name="IDC_TestRemark" value="ognl:attrInfo.IDC_TestRemark" 
+		                        nullable="yes" desc="测试描述"/>
+		             </div>
+		        </li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEPREEMPTIONIDC' || templetId == 'EDIRECTLINECHANGEIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已勘察</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Prospecting" name="IDC_Prospecting" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Prospecting==1?'1':'0'" nullable="no"  desc="是否已勘察" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li >
+		             <div class="label">资源勘察实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ProspectingCase" name="IDC_ProspectingCase" value="ognl:attrInfo.IDC_Prospecting==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ProspectingCase" 
+		                        nullable="yes" desc="资源勘察实例" readonly="readonly" />
+		             </div>
+		        </li>
+		        <li class="link required">
+					<div class="label">期望预占到期时间</div>
+					<div class="value">
+						<input  name="IDC_PreemptionEpireTime" id="IDC_PreemptionEpireTime" nullable="no" jwcid="@DateField" dropDown="true" value="ognl:attrInfo.IDC_PreemptionEpireTime" format="yyyyMMddHHmmss" desc="期望预占到期时间"/>
+					</div>
+				</li>
+	        </div>
+	        <div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEOPENIDC' ">
+		        <li class="link required">
+		    		<div class="label">是否已预占</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_Preemption" name="IDC_Preemption" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_Preemption==1?'1':'0'" nullable="no"  desc="是否已预占" disabled="disabled" />
+		         	</div>
+		    	</li>
+		    	<li class="link required">
+		    		<div class="label">是否释放该预占单下的所有资源</div>
+		         	<div class="value">
+		            	<input jwcid="@Select" id="IDC_ReleaseResource" name="IDC_ReleaseResource" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('YesOrNo')" textField="DATA_NAME" valueField="DATA_ID" 
+		              	value="ognl:attrInfo.IDC_ReleaseResource" nullable="no"  desc="是否释放该预占单下的所有资源" />
+		         	</div>
+		    	</li>
+		    	<li>
+		             <div class="label">资源预占实例</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="IDC_ResourceCase" name="IDC_ResourceCase" value="ognl:attrInfo.IDC_Preemption==1?attrInfo.IDC_SERIAL_NUMBER:attrInfo.IDC_ResourceCase" 
+		                        nullable="yes" desc="资源预占实例"   readonly="readonly"/>
+		             </div>
+		        </li>
+		        
+	        </div>
+
+	    	<li class="">
+	    		<div class="label">免费资源订购类型</div>
+	         	<div class="value">
+	            	<input jwcid="@Select" id="IDC_7042_FreeResourceType" name="IDC_7042_FreeResourceType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_7041_FREERESOURCETYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_7042_FreeResourceType" desc="免费资源订购类型"/>
+	         	</div>
+	    	</li>
+	    	<li class="">
+	             <div class="label">免费资源订购时长（月）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_7042_FreeResourceMonth" name="IDC_7042_FreeResourceMonth" value="ognl:attrInfo.IDC_7042_FreeResourceMonth" 
+	                        desc="免费资源订购时长（月）"/>
+	             </div>
+	        </li>
+        </ul>
+	</div>
+</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEOPENIDC' || templetId == 'EDIRECTLINECHANGEIDC' || templetId == 'EDIRECTLINECANCELIDC' ">
+	<div class="c_title">
+		<div class="text">费用参数</div>
+	</div>
+	<div jwcid="IdcProductInfoPricePart@Part" id="IdcProductInfoPricePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+		<ul>
+	    	<li class="link required">
+	    		<div class="label">套餐费类型</div>
+	         	<div class="value">
+	         		<input jwcid="@Select" id="IDC_ProductType" name="IDC_ProductType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticListByParent('IDC_PRODUCTTYPE',productID)" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_ProductType" nullable="no"  desc="套餐费类型" oldvalue="ognl:attrInfo.IDC_ProductType"/>
+	            	<!-- <input jwcid="@Select" id="IDC_ProductType" name="IDC_ProductType" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IDC_PRODUCTTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+	              	value="ognl:attrInfo.IDC_ProductType" nullable="no"  desc="套餐费类型"/> -->
+	         	</div>
+	    	</li>
+	    	<li class="link required">
+	             <div class="label">单价（元）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_Price" name="IDC_Price" value="ognl:attrInfo.IDC_Price" 
+	                        nullable="no" desc="单价（元）" oldvalue="ognl:attrInfo.IDC_Price"/>
+	             </div>
+	        </li>
+	        <li class="link required">
+	             <div class="label">折扣（%）</div>
+	             <div class="value">
+	                 <input jwcid="@TextField" id="IDC_Discount" name="IDC_Discount" value="ognl:attrInfo.IDC_Discount" 
+	                        nullable="no" desc="折扣" oldvalue="ognl:attrInfo.IDC_Discount"/>
+	             </div>
+	        </li>
+        </ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHANGEIDC' && productID=='7041'">
+	<div class="c_title">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="IDCDATALIST_TAGS" name="IDCDATALIST_TAGS" ontap="checkAllIdcParam(this);" class="e_checkbox" checked="checked"/>全选</li>
+				<li ontap="deleteIdcParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="IDCDATALIST_PARAM">
+			<li jwcid="@Foreach" source="ognl:attrInfoList" value="ognl:attrInfo" index="ognl:rowIndex"  element="li" id="ognl:'IDCDATALIST_'+rowIndex+'_LI'">
+				<div class="fn">
+					<input  jwcid="@Checkbox" type="checkbox" name="IDCDATALIST_TAG"  value="ognl:attrInfo.RSRV_NUM1" id="ognl:'IDCDATALIST_'+rowIndex"  checked="checked" />
+				</div>
+				<div class="main" jwcid="@Any" id="ognl:rowIndex+'new'">
+					<div class="title"><span jwcid="@Insert" value="ognl:attrInfo.IDC_7041_EquipmentName" /></div>
+					<div class="content e_hide-phone">
+						<!-- 参数 开始 -->
+						<div name='scrollerDataChange' jwcid='@Scroller' class='c_scroll' style='height:3em'>
+						
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul>
+								<li style="display: none">
+									<span class="label">设备名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_EquipmentName" id="ognl:rowIndex+'IDC_7041_EquipmentName'" desc="设备名称" name="IDC_7041_EquipmentName" oldvalue="ognl:attrInfo.IDC_7041_EquipmentName"/></span>
+								</li>
+								<li>
+									<span class="label">ip地址：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_IpAddress" id="ognl:rowIndex+'IDC_7041_IpAddress'" desc="ip地址" name="IDC_7041_IpAddress" oldvalue="ognl:attrInfo.IDC_7041_IpAddress"/></span>
+								</li>
+								<li>
+									<span class="label">端口号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_PortNumber" id="ognl:rowIndex+'IDC_7041_PortNumber'" desc="端口号" name="IDC_7041_PortNumber" oldvalue="ognl:attrInfo.IDC_7041_PortNumber"/></span>
+								</li>
+								<li>
+									<span class="label">生效时间：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_TakeEffectTime" id="ognl:rowIndex+'IDC_7041_TakeEffectTime'" desc="生效时间" name="IDC_7041_TakeEffectTime" oldvalue="ognl:attrInfo.IDC_7041_TakeEffectTime"/></span>
+								</li>
+								<li>
+									<span class="label">免费月份1：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_FreeTime1" id="ognl:rowIndex+'IDC_7041_FreeTime1'" desc="免费月份1" name="IDC_7041_FreeTime1" oldvalue="ognl:attrInfo.IDC_7041_FreeTime1"/></span>
+								</li>
+								<li>
+									<span class="label">免费月份2：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_FreeTime2" id="ognl:rowIndex+'IDC_7041_FreeTime2'" desc="免费月份2" name="IDC_7041_FreeTime2" oldvalue="ognl:attrInfo.IDC_7041_FreeTime2"/></span>
+								</li>
+								<li>
+									<span class="label">免费月份3：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:attrInfo.IDC_7041_FreeTime3" id="ognl:rowIndex+'IDC_7041_FreeTime3'" desc="免费月份3" name="IDC_7041_FreeTime3" oldvalue="ognl:attrInfo.IDC_7041_FreeTime3"/></span>
+								</li>
+								
+							</ul>
+						</div>
+						</div>
+						<!-- 参数 结束 -->
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<input type="hidden" id="DATALINE_MAX_INDEX" value="0" desc="记录当前专线的最大数量，每新增一条该数量加1"/>
+<script type="text/javascript">
+$(function(){
+	initPageParam();
+});
+</script>

@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+SELECT 'ResCommpara3435' KEY, eparchy_code VALUE1, PARA_CODE1 VALUE2, PARA_CODE2 VALUE3, PARA_NAME VRESULT
+  FROM td_m_res_commpara
+ WHERE 'ResCommpara3435' = :KEY
+   AND PARA_ATTR < 1000

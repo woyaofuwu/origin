@@ -1,0 +1,2 @@
+INSERT INTO tf_f_group_acnt2srnum(account_id,user_id_a,user_id,product_id,start_acyc_id,end_acyc_id,update_depart_id,update_staff_id,update_time)
+ VALUES(TO_NUMBER(:ACCOUNT_ID),TO_NUMBER(:USER_ID_A),TO_NUMBER(:USER_ID),:PRODUCT_ID,:START_ACYC_ID,:END_ACYC_ID,:UPDATE_DEPART_ID,:UPDATE_STAFF_ID,SYSDATE)

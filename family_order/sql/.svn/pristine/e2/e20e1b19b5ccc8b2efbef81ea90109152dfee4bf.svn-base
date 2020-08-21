@@ -1,0 +1,4 @@
+SELECT serial_number,to_char(user_id) user_id,to_char(acct_id) acct_id,pay_name,acyc_id,bcyc_id,recv_acyc_id,eparchy_code,city_code,city_name,bank_code,bank,bank_acct_no,to_char(bill_id) bill_id,to_char(intffee01) intffee01,to_char(intffee02) intffee02,to_char(intffee03) intffee03,to_char(intffee04) intffee04,to_char(intffee05) intffee05,to_char(intffee06) intffee06,to_char(intffee07) intffee07,to_char(intffee08) intffee08,to_char(intffee09) intffee09,to_char(intffee10) intffee10,to_char(intffee11) intffee11,to_char(intffee12) intffee12,to_char(intffee13) intffee13,to_char(intffee14) intffee14,to_char(intffee15) intffee15,to_char(intffee16) intffee16,to_char(intffee17) intffee17,to_char(intffee18) intffee18,rsrv_info1,rsrv_info2,rsrv_inf03,rsrv_info4 
+  FROM tf_a_splitconsignlog
+ WHERE recv_acyc_id=:RECV_ACYC_ID
+   AND eparchy_code=:EPARCHY_CODE AND ROWNUM<=1

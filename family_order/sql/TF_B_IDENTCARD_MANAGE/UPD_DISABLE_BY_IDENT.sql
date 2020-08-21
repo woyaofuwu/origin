@@ -1,0 +1,1 @@
+update TF_B_IDENTCARD_MANAGE set end_date = sysdate where IDENT_CODE = :IDENT_CODE and end_date > sysdate

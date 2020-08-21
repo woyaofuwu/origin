@@ -1,0 +1,4 @@
+UPDATE tf_f_cust_person
+   SET sex=:SEX,birthday=TO_DATE(:BIRTHDAY, 'YYYY-MM-DD HH24:MI:SS'),nationality_code=:NATIONALITY_CODE,local_native_code=:LOCAL_NATIVE_CODE,population=:POPULATION,language_code=:LANGUAGE_CODE,folk_code=:FOLK_CODE,phone=:PHONE,post_code=:POST_CODE,post_address=:POST_ADDRESS,fax_nbr=:FAX_NBR,email=:EMAIL,contact=:CONTACT,contact_phone=:CONTACT_PHONE,home_address=:HOME_ADDRESS,work_name=:WORK_NAME,work_depart=:WORK_DEPART,job=:JOB,job_type_code=:JOB_TYPE_CODE,educate_degree_code=:EDUCATE_DEGREE_CODE,religion_code=:RELIGION_CODE,revenue_level_code=:REVENUE_LEVEL_CODE,marriage=:MARRIAGE,character_type_code=:CHARACTER_TYPE_CODE,contact_type_code=:CONTACT_TYPE_CODE
+ WHERE cust_id = TO_NUMBER(:CUST_ID)
+   AND partition_id = MOD(TO_NUMBER(:CUST_ID),10000)

@@ -1,0 +1,555 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无手机宽带开户</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/person/broadband/nophonewidenet/createwideuser/scripts/nophonewideusercreate.js"></script>
+	<script jwcid="@Script" src="scripts/iorder/icsserv/component/offer/offerdefine.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/fee/FeeMgr.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script>
+	    window.onload = function() {
+	        $.nophonewideusercreate.initPage();
+	    };
+	    // 页面关闭时调用释放资源流程
+	    window.onunload = function() {
+			var wideNetAcctId = $("#SERIAL_NUMBER").val();
+			if (!wideNetAcctId) {
+			    return true;
+			}
+			$.ajax.submit(null, 'releaseWideNetAcct', '&WIDENET_ACCT_ID=' + wideNetAcctId, null);
+	    }
+	</script>
+</head>
+<body jwcid="@Body">
+<!-- 隐藏区域 开始 -->
+<div jwcid="hiddenPart@Part">
+    <input jwcid="@Hidden" name="TRADE_TYPE_CODE" value="ognl:info.TRADE_TYPE_CODE"/>
+    <input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" value=""/>
+    <input jwcid="@Hidden" name="REAL_NAME" value="1" desc="实名制选择标记"/>
+    <input jwcid="@Hidden" name="REALNAME_LIMIT_CHECK_RESULT" value="false" desc="实名制验证标记"/>
+    <input jwcid="@Hidden" name="OLD_SERIAL_NUMBER" value="" desc="原号码"/>
+    <input jwcid="@Hidden" name="OLD_SIM_CARD_NO" value="" desc="原SIM卡号"/>
+    <input jwcid="@Hidden" name="CHECK_PSPT_CODE" value="" desc="证件校验通过标志"/>
+    <input jwcid="@Hidden" name="ACTIVE_TAG" value="0" desc="激活标记"/>
+    <input jwcid="@Hidden" name="INFO_TAG" value="0" desc="是否为网上选号"/>
+	<input jwcid="@Hidden" name="INPUT_PERMISSION" value="ognl:qryRight.INPUT_PERMISSION" desc="是否具有手动输入证件号码权限"/>
+	<input jwcid="@Hidden" name="IS_PORTRAIT_DISCRIMINATION" id="IS_PORTRAIT_DISCRIMINATION" value="false" desc="人像比对标记"/>
+	<input jwcid="@Hidden" name="INPUT_SIM_TAG" value="ognl:qryRight.INPUT_SIM_TAG" desc="是否需要sim卡号"/>
+	<input jwcid="@Hidden" name="PRECODE_TAG" value="" desc="预配卡标志"/>
+</div>
+<div jwcid="CheckSerialNumberHidePart@Part">
+    <input jwcid="@Hidden" name="B_SAME_EPARCHY_CODE" value="ognl:editInfo.B_SAME_EPARCHY_CODE" desc="是否异地办理:0-非异地1-异地"/>
+    <input jwcid="@Hidden" name="B_DIFF_TRADE" value="ognl:editInfo.B_DIFF_TRADE" desc="是否登记省中心台帐:0-登记1-不登记"/>
+    <input jwcid="@Hidden" name="CHECK_RESULT_CODE" value="-1" desc="号码和SIM卡校验通过标志"/>
+    <input jwcid="@Hidden" name="PRE_CODE_TAG" value="ognl:editInfo.PRE_CODE_TAG" desc="预配标记"/>
+    <input jwcid="@Hidden" name="EXISTS_MULTE_PRODUCT" value="ognl:editInfo.EXISTS_MULTE_PRODUCT" desc="147号码存在特定产品(多个)"/>
+    <input jwcid="@Hidden" name="EPARCHY_CODE" value="ognl:editInfo.EPARCHY_CODE" desc="开户号码地州"/>
+    <input jwcid="@Hidden" name="EXISTS_BIND_BRAND" value="ognl:editInfo.EXISTS_BIND_BRAND" desc="只能为全球通品牌"/>
+    <input jwcid="@Hidden" name="EXISTS_MULTE_PRODUCT" value="ognl:editInfo.EXISTS_MULTE_PRODUCT" desc="全球通的产品中不能为两个产品"/>
+</div>
+<div jwcid="CheckSimCardNoHidePart@Part">
+    <input jwcid="@Hidden" name="RES_KIND_NAME" value="ognl:editInfo.RES_KIND_NAME" desc="卡类型名称"/>
+    <input jwcid="@Hidden" name="RES_KIND_CODE" value="ognl:editInfo.RES_KIND_CODE" desc="卡类型编码"/>
+    <input jwcid="@Hidden" name="IMSI" value="ognl:editInfo.IMSI"/>
+    <input jwcid="@Hidden" name="KI" value="ognl:editInfo.KI"/>
+    <input jwcid="@Hidden" name="OPC_CODE" value="ognl:editInfo.OPC_CODE"/>
+    <input jwcid="@Hidden" name="OPC_VALUE" value="ognl:editInfo.OPC_VALUE" />
+    <input jwcid="@Hidden" name="SIM_FEE_TAG" value="ognl:editInfo.SIM_FEE_TAG"/>
+    <input jwcid="@Hidden" name="SIM_CARD_SALE_MONEY" value="ognl:editInfo.SIM_CARD_SALE_MONEY"/>
+    <input jwcid="@Hidden" name="MAIN_RSRV_STR8" value="ognl:editInfo.MAIN_RSRV_STR8" desc="主台账预留字段需要"/>
+    <input jwcid="@Hidden" name="NEW_AGENT_SALE_TAG" value="ognl:editInfo.NEW_AGENT_SALE_TAG" desc="主台账预留字段需要"/>
+    <input jwcid="@Hidden" name="FLAG_4G" value="ognl:editInfo.FLAG_4G" desc="4G"/>
+    <input jwcid="@Hidden" name="SIM_TYPE_CODE" value="ognl:editInfo.SIM_TYPE_CODE" desc="卡类型"/>
+    <input jwcid="@Hidden" name="CAPACITY_TYPE_CODE" value="ognl:editInfo.CAPACITY_TYPE_CODE" desc="卡容量"/>
+    <input jwcid="@Hidden" name="EMPTY_CARD_ID" value="ognl:editInfo.EMPTY_CARD_ID" desc="白卡ID"/>
+    <input jwcid="@Hidden" name="CARD_KIND_CODE" value="ognl:editInfo.CARD_KIND_CODE" desc="SIM的小类编码"/>
+    <input jwcid="@Hidden" name="RES_TYPE_CODE" value="ognl:editInfo.RES_TYPE_CODE" desc="SIM的编码"/>
+    <input jwcid="@Hidden" name="CARD_PASSWD" value="ognl:editInfo.CARD_PASSWD" desc="初始化密码"/>
+    <input jwcid="@Hidden" name="PASSCODE" value="ognl:editInfo.PASSCODE" desc="密码因子"/>
+    <input jwcid="@Hidden" name="DEFAULT_PWD_FLAG" value="0" desc="是否使用初始密码"/>
+    <input jwcid="@Hidden" name="RES_FLAG_4G"  value="ognl:editInfo.RSRV_STR5" desc="资料返回的2、3、4G标识"/>
+</div>
+<!-- 隐藏区域 结束 -->
+<!--身份识别系统-->
+<span id="PsptControlOCX" style="display:none;"></span>
+<!--读写卡系统-->
+<object name="RpsClient" classid="CLSID:B2ED220B-F358-4A48-A724-937545220D89"
+        width="1" height="1" VIEWASTEXT></object>
+<object classid="clsid:8FEEA6DC-31F9-42A7-B42E-EB2EACE5FD57" id="downocx2"
+        name="downocx2" CODEBASE="./GMCCRpsOcx.ocx#version=1,0,0,1"
+        style="display:none"></object>
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back">无手机宽带开户</div>
+</div>
+<!-- 标题栏 结束 -->
+<div class="c_scroll c_scroll-float c_scroll-phone c_scroll-phone-float c_scroll-phone-header">
+	<div class="l_padding">
+		<div jwcid="BaseInfoPart@Part">
+			<!-- 表单 开始 -->
+			<div class="c_space"></div>
+			<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">宽带账号</div>
+						<div class="value">
+							<span class="e_group">
+								<span class="e_groupRight">
+									<button type="button" id="SN_SELECT_BTN" class="e_button-green" ontap="getValidWideNetAccountId();">
+										<span class="e_ico-search"></span><span>选号</span>
+									</button>
+									<button type="button" id="SN_CHECK_BTN" class="e_button-blue" ontap="checkOldSNPwd();">
+										<span class="e_ico-check"></span><span>校验</span>
+									</button>
+									<span id="SN_SUCCESS_LABEL" class="e_label e_green" style="display: none; width: 3em;"><span class="e_ico-ok"></span></span>
+									<span id="SN_ERROR_LABEL" class="e_label e_red" style="display: none; width: 3em;"><span class="e_ico-error"></span></span>
+								</span>
+								<span class="e_groupMain">
+									<input name="SERIAL_NUMBER" jwcid="@TextField"
+										   value="ognl:info.SERIAL_NUMBER"
+										   datatype="mbphone" maxLength="11"
+										   nullable="no" desc="宽带账号" readonly="readonly"/>
+								</span>
+							</span>
+						</div>
+					</li>
+					
+				<li class="required merge-2"  jwcid="@Any"  style="ognl:isNeed ? '' : 'display:none'"> 
+                    <div class="label">SIM卡号</div>
+                    <div class="value">
+                        <span class="e_mix">
+                            <input name="SIM_CARD_NO" jwcid="@TextField"
+                                   value="ognl:editInfo.SIM_CARD_NO"
+                                   onenterAction="checkSimCardNo()"
+                                   onblur="checkSimCardNo()"
+                                   onkeydown="resetSIMCheck()"
+                                   nullable="no" desc="SIM卡号"/>
+                            <div jwcid="@icsserv:WriteCard" mode="1" 
+                                 tradeTypeCode="10" isRender="true"
+                                 readBeforeAction="beforeReadCard()"
+                                 readAfterAction="beforeCheckSimCardNo(data)"
+                                 writeAfterAction="afterWriteCard(data)"></div>
+                            <button type="button" id="SIM_CHECK_BTN"
+                                    class="e_button-blue" ontap="checkSimCardNo()">
+                                <span class="e_ico-check"></span><span>校验</span></button>
+                            <span id="SIM_SUCCESS_LABEL" class="e_label e_green"
+                                  style="display: none; width: 3em;"><span class="e_ico-ok"></span></span>
+                            <span id="SIM_ERROR_LABEL" class="e_label e_red"
+                                  style="display: none; width: 3em;"><span class="e_ico-error"></span></span>
+                        </span>
+                    </div>
+                </li>
+					
+                    <li>
+                        <div class="label">两城两宽</div>
+                        <div class="value">
+                            <div name="TWO_CITY_SWITCH" jwcid="@Switch"
+                                 value="0" onValue="1" offValue="0" onText="是"
+                                 offText="否" onchange="$.nophonewideusercreate.twoCitySwitchAction(this);"></div>
+                        </div>
+                    </li>
+                    <li id="BJ_SERIAL_NUMBER_LI" class="link required" style="display: none;">
+                        <div class="label">北京移动号码</div>
+                        <div class="value">
+                            <input name="BJ_SERIAL_NUMBER" jwcid="@TextField"
+                                   datatype="mbphone" maxlength="11"
+                                   nullable="yes" desc="北京移动号码"
+                                   onblur="$.nophonewideusercreate.checkBJSerialNumber();"/></div>
+                        <input jwcid="@Hidden" name="NET_WIDE"/>
+                    </li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+		</div>
+
+		<div jwcid="CustInfoFieldPart@icsserv:CustInfoField" isRealName="true"
+             hideUserTypeCode="true" hideEmail="true" blackTradeType="680" element="div"
+             requiredField="PSPT_TYPE_CODE,PSPT_ID,CUST_NAME,PSPT_ADDR,PHONE"></div>
+        <div jwcid="@icsserv:AcctInfoField"></div>
+		<div jwcid="PasswdPart@Part">
+			<div jwcid="PasswordSetPart@icsserv:PasswordSet"
+                 beforeAction="PasswdbeforeAction()"
+                 afterAction="PasswdafterAction(data)" element="div" col="3"></div>
+			<input jwcid="@Password" name="USER_PASSWD" class="e_hide"
+                   value="ognl:info.USER_PASSWD" readonly="true" desc="用户密码" nullable="no"/>
+		</div>
+
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">宽带信息</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<!-- 提示 开始 -->
+		<div class="c_box">
+			<div class="c_tip c_tip-red">根据信息安全管理工作要求，要求录入的报装地址要精准到门牌号和房号</div>
+		</div>
+		<!-- 提示 结束 -->
+		<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border" jwcid="widePart@Part">
+			<ul>
+				<li class="link required merge-3">
+					<div class="label">标准地址</div>
+					<div class="value">
+						<!--  <span class="e_mix" ontap="popupPage('安装地址选择','res.popup.AddressQryNew','init','&TREE_TYPE=0','iorder','c_popup c_popup-full',$.nophonewideusercreate.afterSetDetailAddress,null);" >-->
+						<span class="e_mix">
+							<input jwcid="@TextField" name="STAND_ADDRESS"
+                                   value="ognl:info.STAND_ADDRESS" nullable="no" desc="标准地址"
+                                   afterAction="$.nophonewideusercreate.afterSetDetailAddress()"/>
+							<!--<span class="e_ico-check"></span>-->
+							
+							<button class="e_button-green"  id="tree_address_select" type="button" ontap="popupPage('安装地址选择','res.popup.AddressQryNew','init','&TREE_TYPE=0','iorder','c_popup c_popup-full',$.nophonewideusercreate.afterSetDetailAddress,null);">
+					         	<span class="e_ico-search"></span><span>标准地址查询</span></button>
+					       	<button class="e_button-blue"  id="gis_address_select" type="button" ontap="popupPage('地图选址','broadband.widenet.createwideuser.WideCreateGisAddr','init','&openTag=new','iorder','c_popup c_popup-full',$.nophonewideusercreate.afterSetDetailAddress,null);">
+					               <span class="e_ico-search"></span><span>地图选址</span></button> 
+               
+							<input jwcid="@Hidden" name="STAND_ADDRESS_CODE" value="ognl:info.STAND_ADDRESS_CODE" desc="标准地址CODE"/>
+							<input jwcid="@Hidden" name="DEVICE_ID" value="ognl:info.DEVICE_ID" nullable="no" desc="设备ID"/>
+							<input jwcid="@Hidden" name="OPEN_TYPE" value="ognl:info.OPEN_TYPE" nullable="yes" desc="宽带开户类型"/>
+							<input jwcid="@TextField" id="BANDWIDTH" name="BANDWIDTH" value="ognl:info.BANDWIDTH"  style="display:none" nullable="yes" desc="支持带宽"/>							
+						</span>
+					</div>
+				</li>
+				<li class="link required merge-2">
+					<div class="label">报装地址</div>
+					<div class="value">
+						<input jwcid="@TextField" name="DETAIL_ADDRESS"
+                               value="ognl:info.DETAIL_ADDRESS"
+                               nullable="no" desc="详细地址"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">楼层和房号</div>
+					<div class="value">
+						<input jwcid="@TextField" name="FLOOR_AND_ROOM_NUM"
+                               value="ognl:info.DETAIL_ADDRESS"
+                               nullable="no" desc="楼层和房号"/>
+                        <!-- 楼层和房号标识 -->
+						<input jwcid="@Hidden" name="FLOOR_AND_ROOM_NUM_FLAG" value="0"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">联系人电话</div>
+					<div class="value">
+						<input jwcid="@TextField" name="WIDE_CONTACT_PHONE"
+                               value="ognl:info.WIDE_CONTACT_PHONE1"
+                               onfocus="$.nophonewideusercreate.setContactInfo();"
+                               nullable="no" maxlength="15" datatype="numeric" desc="联系人电话"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">联系人</div>
+					<div class="value">
+						<input jwcid="@TextField" name="WIDE_CONTACT"
+                               value="ognl:info.WIDE_CONTACT" nullable="no" desc="联系人"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">联系电话</div>
+					<div class="value">
+						<input jwcid="@TextField" name="WIDE_PHONE"
+                               value="ognl:info.WIDE_PHONE" nullable="no"
+                               maxlength="15" datatype="numeric" desc="联系电话"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">开户方式</div>
+					<div class="value">
+						<span jwcid="@Select" name="HGS_WIDE" nullable="no"
+                              textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                              source="ognl:pageutil.getStaticList('HGS_WIDE')"
+                              desc="是否海工商宽带开户"></span>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">地区</div>
+					<div class="value">
+						<span jwcid="@Select" name="AREA_CODE"
+                              value="ognl:visit.getCityCode()" nullable="no"
+                              textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                              source="ognl:pageutil.getStaticList('COP_AREA_CODE')"
+                              disabled="true" desc="地区"></span>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">预约施工时间</div>
+					<div class="value">
+						<input jwcid="@DateField" name="SUGGEST_DATE"
+                               value="ognl:info.SUGGEST_DATE" min="ognl:info.MIN"
+                               format="yyyy-MM-dd HH:mm:ss" desc="预约受理时间"
+                               time="true" dropDown="true"
+							   onafterAction="$.nophonewideusercreate.afterSelSuggestDate(this);"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单结束 -->
+
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">宽带产品</div>
+			<div class="fn">
+				<ul>
+					<li onclick="displayOfferList(this,'chooseoffers')"><span class="e_ico-unfold"></span>显示服务/优惠</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+
+		<!-- 参数列表 开始 -->
+		<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border"  jwcid="wideProductPart@Part">
+			<ul>
+				<li class="link required" id="WideProductType">
+					<div class="label">宽带产品类型</div>
+					<div class="value">
+						<span jwcid="@Select" name="WIDE_PRODUCT_TYPE" id="WIDE_PRODUCT_TYPE"
+                              value="ognl:info.WIDE_PRODUCT_TYPE" nullable="no"
+                              textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                              source="ognl:pageutil.getStaticList('WIDE_PRODUCT_TYPE')"
+                              onchange="$.nophonewideusercreate.changeWideProductType();"
+                              desc="宽带产品类型" disabled="true"></span>
+					</div>
+				</li>
+				<li class="link" jwcid="productType@Part" element="li">
+					<div class="label">宽带产品</div>
+					<div class="value">
+						<span jwcid="@Select" name="WIDE_PRODUCT_ID" id="WIDE_PRODUCT_ID"
+                              source="ognl:productList" textField="PRODUCT_NAME"
+                              valueField="PRODUCT_ID" value="ognl:info.PRODUCT_ID"
+                              desc="当前产品" onchange="$.nophonewideusercreate.changeProduct();"></span>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">是否一机多宽统付</div>
+					<div class="value">
+						 <div jwcid="@Switch" name="IS_ONESN_MANYWIDE" id="IS_ONESN_MANYWIDE" value="0"	onText="是" offText="否"
+							onValue="1" offValue="0" desc="是否一机多宽统付" onchange="$.nophonewideusercreate.changeIsOneSnManyWide();"/>
+					</div>
+				</li>
+				
+				<li class="link required" id="li_PAY_SERIAL_NUMBER" style="display:none">
+					<div class="label">统付主号码</div>
+					<div class="value">
+						<input jwcid="@TextField" name="PAY_SERIAL_NUMBER" id="PAY_SERIAL_NUMBER" 
+						disabled="true" value="" desc="统付主号码"
+						onchange="$.nophonewideusercreate.changePaySerialNumber();"/>
+						<input jwcid="@Hidden" name="TT_USER_ID" id="TT_USER_ID" value=""/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+
+		<!-- 优惠服务 开始 -->
+		<div id="chooseoffers" style="display:none">
+			<div class="c_space-c"></div>
+				<div class="l_col l_col-space l_col-phone-popup">
+					<div class="l_colItem l_colItem-popup">
+						<div jwcid="OfferListPart@icsserv:OfferList"
+							 element="div"
+							 showSearchTag="false"
+							 categoryId="100000000114,88888888"></div>
+                   	</div>       
+                    <div class="l_colItem e_hide-x" id="selectedDiv">
+                    	<div class="c_title">
+						    <div class="text">
+						        <span class="e_hide-phone">已选区</span>
+						        <span class="e_show-phone">服务 / 优惠</span>
+						    </div>
+						    <div class="fn">
+						        <ul>
+						            <li id="openDefaultOp" ontap="selectedElements.changeDefaultOp(this,'1');"><span class="e_ico-show"></span>显示必选项</li>
+						            <li id="hideDefaultOp" ontap="selectedElements.changeDefaultOp(this,'2');" style="display:none;"><span class="e_ico-hide"></span>隐藏必选项</li>
+						            <!--  <li class="e_show-phone" ontap="$('#colItemPopup').addClass('l_colItem-show');"><span class="e_ico-check"></span>选择</li>-->
+						            <li class="e_show-phone" ontap="$('#OfferListPart').parent().addClass('l_colItem-show');"><span class="e_ico-check"></span>选择</li>
+						        
+						        </ul>
+						    </div>
+						</div>
+                    	<div jwcid="selectedElements@icsserv:SelectedElements"
+							 renderCallSvc="CS.SelectedElementSVC.getWidenetUserOpenElements"
+							 callAddElementSvc="CS.SelectedElementSVC.dealWidenetSelectedElementsForChg"
+							 afterRenderAction="$.nophonewideusercreate.afterRenderSelectedElements(data);"
+							 basicStartDateControlId="NEW_PRODUCT_START_DATE"
+							 tradeTypeCode="ognl:info.TRADE_TYPE_CODE"
+							 isShowDate="false"
+							 element="div"></div>
+                    </div>
+             	</div>
+		</div>
+		<!-- 分栏 结束 -->
+
+		<div jwcid="elementAttr@icsserv:ElementAttr" element="div"></div>
+		<!-- 提交 开始 -->
+
+        <div class="c_title">
+            <div class="text">魔百和产品</div>
+        </div>
+        <div class="c_list c_list-col-3 c_list_phone-col-1 c_list-s c_list-line c_list-border">
+            <ul>
+                <li class="link" ontap="showPopup('topSetBoxPopup', 'topSetBoxItem',true);">
+                    <div class="main">魔百和产品办理</div>
+                    <div class="more"></div>
+                </li>
+            </ul>
+        </div>
+        
+
+		<!-- 区域 开始 -->
+		<div jwcid="modemPart@Part">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">光猫资料</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">MODEM方式</div>
+						<div class="value">
+							<span jwcid="@Select" name="MODEM_STYLE"
+                                  source="ognl:wideModemStyleList"
+                                  textField="DATA_NAME" valueField="DATA_ID"
+                                  value="ognl:info.MODE_STYLE" desc="MODEM方式"
+                                  onchange="$.nophonewideusercreate.setModemNumeric();"></span>
+						</div>
+					</li>
+					
+					<li class="link required" id="modemFeePart" Style="display:none">
+						<div class="label">宽带调测费</div>
+						<div class="value">
+							<span jwcid="@Select" name="WIDE_MODE_FEE" id="WIDE_MODE_FEE"
+                                  source="ognl:pageutil.getStaticList('WIDE_MODES_FEE')"
+                                  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                                  value="" desc="调测费"
+                                  onchange="$.nophonewideusercreate.setModemFee();"></span>
+						</div>
+					</li>
+					
+					<li class="link" Style="display:none">
+						<div class="label">光猫冻结预存款</div>
+						<div class="value">
+							<input jwcid="@TextField" name="MODEM_DEPOSIT"
+                                   value="ognl:info.MODEM_DEPOSIT"
+                                   disabled="true" desc="光猫押金金额"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单结束 -->
+		</div>
+		<!-- 区域 结束 -->
+		    <!-- 费用组件 开始 -->
+            <div id="FEE_PLACEHOLDER"></div>
+            <div jwcid="@icsserv:IFee"></div>
+            <!-- 费用组件 结束-->
+		<div class="c_space"></div>
+		<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit"
+             beforeAction="$.nophonewideusercreate.onSubmit()" isReset="true"
+             area="BaseInfoPart,CustInfoPart,AcctInfoPart,PasswdPart,WideProductType,productType,widePart,modemPart,hiddenPart,CustInfoMorePart,topSetBoxPart,CheckSerialNumberHidePart,CheckSimCardNoHidePart"
+             element="div"></div>
+		<!-- 提交 结束 -->
+	</div>
+</div>
+
+<div name="custInfoPopup" jwcid="@Popup"
+     class="c_popup c_popup-half c_popup-half-hasBg">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" popupId="custInfoPopup" element="div"
+             showEmailAddress="true" jwcid="CustInfoFieldMorePart@icsserv:CustInfoFieldMore"></div>
+    </div>
+</div>
+<div name="topSetBoxPopup" jwcid="@Popup"
+     class="c_popup c_popup-half c_popup-half-hasBg">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" id="topSetBoxItem">
+            <div class="c_header">
+                <div class="back" ontap="hidePopup(this);">魔百和产品办理</div>
+            </div>
+            <div jwcid="topSetBoxPart@Part"
+                 class="c_scroll c_scroll-float c_scroll-header">
+                <div class="l_padding">
+                    <div class="c_list c_list-s c_list-line c_list-border">
+                        <ul>
+                            <li class="link required">
+                                <div class="label">无手机魔百和产品</div>
+                                <div class="value">
+                                    <span jwcid="@Select" name="TOP_SET_BOX_PRODUCT_ID"
+                                          source="ognl:topSetBoxProducts"
+                                          textField="PRODUCT_NAME" valueField="PRODUCT_ID"
+                                          value="ognl:info.PRODUCT_ID" nullable="no"
+                                          onchange="queryTopSetBoxPackages()"
+                                          addDefault="true" desc="无手机魔百和产品"></span>
+                                </div>
+                            </li>
+                            <li class="link required" jwcid="bPackagePart@Part"
+                                element="li">
+                                <div class="label">必选基础包</div>
+                                <div class="value">
+                                    <span jwcid="@Select" name="BASE_PACKAGES"
+                                          source="ognl:basePackages"
+                                          textField="SERVICE_NAME" valueField="SERVICE_ID"
+                                          value="ognl:resInfo.SERVICE_ID"
+                                          addDefault="true" desc="必选基础优惠包" nullable="no"></span>
+                                </div>
+                            </li>
+                            <li class="link" jwcid="oPackagePart@Part"
+                                element="li">
+                                <div class="label">可选优惠包</div>
+                                <div class="value">
+                                    <span jwcid="@Select" name="OPTION_PACKAGES"
+                                          source="ognl:optionPackages"
+                                          textField="SERVICE_NAME" valueField="SERVICE_ID"
+                                          value="ognl:resInfo.SERVICE_ID"
+                                          addDefault="true" desc="可选优惠包"></span>
+                                </div>
+                            </li>
+                            <li class="link" Style="display:none">
+                                <div class="label">终端押金(元)</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="TOP_SET_BOX_DEPOSIT" value="ognl:info.TOP_SET_BOX_DEPOSIT" disabled="true"/>
+                                    <input jwcid="@Hidden" name="HIDDEN_TOP_SET_BOX_DEPOSIT" value="ognl:info.HIDDEN_TOP_SET_BOX_DEPOSIT"/>
+                                </div>
+                            </li>
+							<li class="link" id="BOXFeePart">
+								<div class="label">魔百和调测费</div>
+								<div class="value">
+									<span jwcid="@Select" name="BOX_MODE_FEE"
+										id="BOX_MODE_FEE"
+										source="ognl:pageutil.getStaticList('BOX_MODES_FEE')"
+										textField="DATA_NAME" valueField="DATA_ID"
+										titleField="DATA_NAME" value="" desc="调测费"
+										onchange="queryTopSetBoxFee();"></span>
+								</div>
+							</li>
+							<li class="link">
+                                <div class="label">受理时长</div>
+                                <div class="value">
+                                    <span jwcid="@Select" name="TOP_SET_BOX_TIME"
+                                          source="ognl:pageutil.getStaticList('TOP_SET_BOX_TIME')"
+                                          textField="DATA_NAME" valueField="DATA_ID"
+                                          value="DATA_ID" desc="受理时长"  addDefault="false"
+                                          onchange="settopsetboxfee()"></span>
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">时长费用(元)</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="TOP_SET_BOX_FEE" value="" disabled="true"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="c_space"></div>
+                    <div class="c_submit c_submit-full">
+                        <button type="button" class="e_button-r e_button-l e_button-blue"
+                                ontap="hidePopup(this);">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

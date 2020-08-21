@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: ReserveTradeArchive.html,v 1.1 2009/12/16 20:29:05 wangmo Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>缴费有福活动办理</title>
+<script jwcid="@Script" language="JavaScript" src="person/returnactive/scripts/returnactivenew.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">客户查询</span>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="428" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	
+	<div class="c_title">
+        <span class="text">办理次数</span>
+    </div>
+	
+	<div class="c_form"  jwcid="doModePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">办理方式：</span></span>
+					<span class="e_select"><span><span>	
+					<select name="DO_MODE" id="DO_MODE" jwcid="DO_MODE@Select"
+									source="ognl:pageutil.getStaticList('RETURN_ACTIVE_MODE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="" desc="办理方式"
+									addDefault="false"
+									onchange="onChangeMode(this);"/>	
+				</span></span></span>
+			</li>
+			<!--<li class="li" id="ZZ_MODE">
+				<span class="label"><span class="e_required">可领卡数量：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="HAVE_NUM" 
+						id="HAVE_NUM" value="ognl:commInfo.HAVE_NUM" desc=""/>
+				</span></span>
+			</li>-->
+			
+			<li class="li" id="YC_MODE">
+				<span class="label"><span class="e_required">领卡数量：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="ACCEPT_NUM_YC" 
+						id="ACCEPT_NUM_YC" value="ognl:commInfo.ACCEPT_NUM_YC" onblur="doAdvancePayFee($('#ACCEPT_NUM_YC'));" disabled="true" desc=""/>
+				</span></span>
+			</li>
+			<li class="li" id="YC_BTN">
+				<button class="e_button-form l_ml" type="button" onclick="doAdvancePayFee($('#ACCEPT_NUM_YC'));"><i class="e_ico-ok"></i><span>预存</span></button>
+			</li>	
+			<li class="li" style="display:none;" id="PAY_MODE">
+				<span class="label"><span class="e_required">缴费领卡数量：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="HAVE_NUM_PAY" 
+						id="HAVE_NUM_PAY" value="ognl:commInfo.HAVE_NUM_PAY" disabled="true" readonly="true" desc=""/>
+				</span></span>
+			</li>
+			<li class="li" style="display:none;" id="SCORE_MODE">
+				<span class="label"><span class="e_required">积分领卡数量：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="HAVE_NUM_SCORE" 
+						id="HAVE_NUM_SCORE" value="ognl:commInfo.HAVE_NUM_SCORE"  disabled="true" readonly="true" desc=""/>
+				</span></span>
+			</li>
+			<li class="li" style="display:none;" id="JOIN_MODE">
+				<span class="label"><span class="e_required">入网领卡数量：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="HAVE_NUM_JOIN" 
+						id="HAVE_NUM_JOIN" value="ognl:commInfo.HAVE_NUM_JOIN"  disabled="true" readonly="true" desc=""/>
+				</span></span>
+			</li>
+			
+		</ul>
+	</div>
+	
+	<!-- 流量王领卡信息开始 -->
+	<div jwcid="FlowActivePart@Part" id="FlowActivePart" style="display:none;">
+		<div class="c_title">
+	        <span class="text">流量王领卡活动列表</span>
+	    </div>
+	    <div class="c_form c_form-col-3">
+	    	<ul jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="ul">
+	    		<li><label><!--<input jwcid="@Checkbox" type="checkbox" id="CHECK_GGCARD_ACTIVE" name="CHECK_GGCARD_ACTIVE" onclick="onclickCheckBox(this)"
+						value="ognl:info" />--><span jwcid="@Insert" value="ognl:info.PARAM_NAME"/></label></li>
+	    	</ul>
+	    	<ul>
+	    		<li class="e_center"><label class="e_red">可领卡总数为：
+	    		<span jwcid="@Insert"  value="ognl:commInfo.HAVE_NUM_FLOW"/>张</label></li>
+	    		<input jwcid="@Any" id="HAVE_NUM_FLOW" name="HAVE_NUM_FLOW" type="hidden" value="ognl:commInfo.HAVE_NUM_FLOW" />
+	    	</ul>
+	    </div>
+    </div>
+	
+	<!-- 流量王领卡信息结束-->
+	
+	<!-- 表格开始 -->
+	<div class="c_title">
+		<span class="text">刮刮卡领卡列表</span>
+	</div>
+	<div class="" jwcid="GGCardPart@Part" id="GGCardPart">
+	<div class="c_scroll c_table c_scroll-table-5">
+		<table jwcid="@Table" id="GGCardTable" name="GGCardTable">
+      	<thead>
+		  	<tr>
+		  		<!--<th col="INST_ID"></th>-->
+				<th col="col_GGCARD_NO">刮刮卡序列号</th>
+				<th col="col_REMARK">备注</th>
+			</tr>
+		</thead>
+		<tbody id="GGCardTable_Body">
+			<!--<tr jwcid="@Foreach" source="ognl:GGCardInfos" value="ognl:GGCardInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+					value="ognl:viceInfo.INST_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:GGCardInfo.GGCARD_NO"/></td>
+				<td><span jwcid="@Insert" value="ognl:GGCardInfo.REMARK"/></td>	
+			</tr>-->
+			<tr jwcid="@Foreach" source="ognl:returnActives" value="ognl:returnActive" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				<!--<td><input jwcid="@Checkbox" type="checkbox" id="cardCheckBox" name="cardCheckBox"
+					value="ognl:returnActive.INST_ID"/></td>	-->	
+				<td><span jwcid="@Insert" value="ognl:returnActive.START_CARD" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:returnActive.REMARK" raw="false"/></td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-8">
+		<ul class="ul">
+			<!--<li class="li"  style="display:none;">
+				<span class="label"><span class="">未领取卡总数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="ROW_COUNT" 
+						id="ROW_COUNT" value="ognl:commInfo.HAVE_NUM" desc="" disabled="true"/>
+				</span></span>
+			</li>-->
+			
+			<li class="li">
+				<span class="label"><span class="">未领取卡总数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="HIDDEN_HAVE_NUM" 
+						id="HIDDEN_HAVE_NUM" value="ognl:commInfo.HIDDEN_HAVE_NUM" desc="" disabled="true"/>
+				</span></span>
+			</li>
+		</ul>	
+		<ul class="ul">	
+			<li class="li">
+				<span class="label"><span class="">起始卡号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="START_CARD" onkeyup="startCardKeyUp()"
+						id="START_CARD" value="" desc=""/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">截止卡号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="END_CARD" 
+						id="END_CARD" value="" desc=""/>
+				</span></span>
+			</li>
+			<li class="li col-2">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="REMARK" 
+						id="REMARK" value="" desc=""/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" id="addGGCard" name="bquery" onclick="addGGCard()"><i class="e_ico-add" ></i><span>新增</span></button>
+			<button type="button" class="e_button-form" id="delGGCard" name="bquery" onclick="delGGCard()"><i class="e_ico-delete" ></i><span>删除</span></button>
+		</div>
+	</div>
+	
+	<!-- 表格结束 -->
+</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart" element="div"/>	
+<!--受理信息结束-->
+</div></div></body>
+</html>

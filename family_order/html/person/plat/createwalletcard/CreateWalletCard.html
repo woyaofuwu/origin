@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: ChangeProduct.html,v 1.3 2013/04/08 13:53:09 jinnian Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="JavaScript" src="person/plat/scripts/createwalletcard.js"></script>
+<title>电子钱包开卡</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 --> 
+		<div jwcid="AuthPart@csserv:Auth"  tradeTypeCode="610" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3 c_form-text" jwcid="custInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.CUST_NAME"></span>
+				<input type="text" jwcid="@TextField" id="custInfo_CUST_NAME" name="custInfo_CUST_NAME" value="ognl:custInfo.CUST_NAME" style="display:none"/>
+			</li>
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.PSPT_ID"></span>
+				<input type="text" jwcid="@TextField" id="custInfo_PSPT_ID" name="custInfo_PSPT_ID" value="ognl:custInfo.PSPT_ID" style="display:none"/>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfo.PSPT_TYPE_CODE)"></span>
+				<input type="text" jwcid="@TextField" id="custInfo_PSPT_TYPE_CODE" name="custInfo_PSPT_TYPE_CODE" value="ognl:custInfo.PSPT_TYPE_CODE" style="display:none"/>
+				<input type="text" jwcid="@TextField" id="custInfo_PSPT_TYPE_CODE_NAME" name="custInfo_PSPT_TYPE_CODE_NAME" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfo.PSPT_TYPE_CODE)" style="display:none"/>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.PSPT_ADDR"></span>
+				<input type="text" jwcid="@TextField" id="custInfo_PSPT_ADDR" name="custInfo_PSPT_ADDR" value="ognl:custInfo.PSPT_ADDR" style="display:none"/>
+			</li>
+			<li class="li">
+				<span class="label">BOSS流水号：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.BOSS_ID"></span>
+				<input type="text" jwcid="@TextField" id="custInfo_BOSS_ID" name="custInfo_BOSS_ID" value="ognl:custInfo.BOSS_ID" style="display:none"/>
+			</li>
+			<li class="li">
+				<span class="label">证件有效期：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.PSPT_END_DATE"></span>
+				<input type="text" jwcid="@TextField" id="custInfo_UPDATE_STAFF_ID" name="custInfo_UPDATE_STAFF_ID" value="ognl:custInfo.UPDATE_STAFF_ID" style="display:none"/>
+			    <input type="text" jwcid="@TextField" id="custInfo_CONTACT_PHONE" name="custInfo_CONTACT_PHONE" value="ognl:custInfo.CONTACT_PHONE" style="display:none"/>	
+			</li>
+		
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+	<div class="c_title">
+		<div class="c_fn c_fn-narrow e_center"><button type="button" id="otherinfo_CHECK_REALNAME" name="otherinfo_CHECK_REALNAME" onclick="return checkRealName();"><i class="e_ico-check"></i><span>提交实名验证</span></button></div>
+	</div>
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="checkrealname@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">实名验证显示结果</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-1 c_form-text">
+		<div class="pic"><img src="ognl:info.URL" jwcid="listframe@Any" id="listframe"/></div>
+		<div class="content">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">返回消息：</span>
+					<span class="text">
+						<select jwcid="@Select" name="custInfo_RSP_CODE" id="custInfo_RSP_CODE" 
+								source="ognl:pageutil.getStaticList('CHECK_RSPCODE')" 
+								textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:info.custInfo_RSP_CODE" 
+								desc="返回消息"  disabled="true" nullable="no"/>
+						<input type="text" jwcid="@TextField" id="custInfo_RSP_CODE_NAME" name="custInfo_RSP_CODE_NAME" value="ognl:pageutil.getStaticValue('CHECK_RSPCODE',info.custInfo_RSP_CODE)"
+                                desc="返回消息" style="display:none"/>	
+				</span>
+				</li>
+				<li class="li">
+					<span class="label">签发机关：</span>
+					<span class="text" jwcid="@Insert" value="ognl:info.custInfo_IDCARD_DEPARTMENT"> </span>
+					<input type="text" jwcid="@TextField" id="custInfo_IDCARD_DEPARTMENT" name="custInfo_IDCARD_DEPARTMENT" value="ognl:info.custInfo_IDCARD_DEPARTMENT"
+                                   desc="签发机关" style="display:none"/>
+                    <input type="text" id="printContext" jwcid="@TextField" name="printContext" value="ognl:info.URL" style="display:none" desc="相片"/>
+				</li>
+			</ul>
+		</div>
+		
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 功能 开始 -->
+	<div class="c_fn c_fn-narrow e_center">
+		<ul>
+			<li><button type="button" id="CHECK_FAIL" name="CHECK_FAIL" disabled="true" onclick="if(!checkRealNameFail()) return false;"><i class="e_ico-cancel"></i><span>认证失败</span></button></li>
+			<li><button type="button" id="CHECK_SUCCEED" name="CHECK_SUCCEED" disabled="true"  onclick="checkRealNameSuccess(); return false;"><i class="e_ico-ok"></i><span>认证成功</span></button></li>
+			<li><button type="button" id="print" name="print" disabled="true"  onclick="printContext();"><i class="e_ico-print"></i><span>打印认证结果</span></button></li>
+		</ul>
+	</div>
+	<!-- 功能 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">授权申请</div>
+		
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="acceptPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">申请授权：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="custInfo_AUTHORIZATION_TYPE" id="custInfo_AUTHORIZATION_TYPE" 
+							source="ognl:pageutil.getStaticList('AUTHORIZATION_TYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:info.AUTHORIZATION_TYPE" 
+							desc="授权类型"  disabled="false" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">实名验证通过：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="custInfo_CHACK_TAG" id="custInfo_CHACK_TAG" 
+							source="ognl:pageutil.getStaticList('CHACK_TAG')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:info.CHACK_TAG" 
+							desc="实名验证通过标志"  disabled="false" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">宣传年收入：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" id="custInfo_YEAR_INCOME" name="custInfo_YEAR_INCOME" value="ognl:info.YEAR_INCOME" maxsize="100" maxLength="100" disabled="false"
+                                    desc="宣传年收入"/></span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+    <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" isReset="true" area="AuthPart,acceptPart,checkrealname,custInfoPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+</div></div>
+</body>
+</html>

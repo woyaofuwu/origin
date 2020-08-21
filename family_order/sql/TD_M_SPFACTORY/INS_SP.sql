@@ -1,0 +1,1 @@
+INSERT INTO td_m_spfactory  (sp_id,sp_svc_id,sp_name,sp_name_en,sp_short_name,sp_status,sp_desc,cs_tel,cs_url,remark,update_staff_id,update_depart_id,update_time) values (:SP_ID,:SP_SVC_ID,:SP_NAME,:SP_NAME_EN,:SP_SHORT_NAME,:SP_STATUS,:SP_DESC,:CS_TEL,:CS_URL,:REMARK,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

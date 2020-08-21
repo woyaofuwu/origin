@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttpresentdiscnt/scripts/cttpresentdiscnt.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">赠送优惠登记(铁通)</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">宽带账号：</span>
+					<span class="e_input"><span>		
+					<input type="text" jwcid="@TextField" name="ACCT_ID" id="ACCT_ID" value="ognl:cond.ACCT_ID" desc="宽带账号" disabled="false" /></span>
+					</span>
+			</li>
+			<li class="li">
+					<span class="label">赠送号码：</span>
+					<span class="e_input"><span>		
+					<input type="text" jwcid="@TextField" name="PRESENT_SERIAL_NUMBER" id="PRESENT_SERIAL_NUMBER" value="ognl:cond.PRESENT_SERIAL_NUMBER" desc="赠送号码" disabled="false" /></span>
+					</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">开始日期：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="START_DATE" id="START_DATE" value="ognl:cond.START_DATE" desc="登记日期(起始)"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束日期：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="END_DATE" id="END_DATE" value="ognl:cond.END_DATE" desc="登记日期(终止)"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return queryPresentInfos()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="ResultDataPart@Part">
+	
+		<div class="c_title c_title-2">
+			<div class="text">优惠列表</div>
+			<div class="fn">
+				    <div jwcid="@Conditional" condition="ognl:Infos.size>0">
+					    <span jwcid="@Export"
+												name="exportFile" 
+											serviceName="19098" 
+											config="export/presentdiscnt/PresentDiscnt.xml"
+											fileName="铁通返还优惠赠送"
+											cond="QueryPart"
+											ftpSite="personserv"
+											beforeAction=""
+											action=""
+											fileType="{'.xls':'.xls'}"
+						></span>
+					</div>
+					<button id="btnAdd" class="e_button" onclick="openNav('新增赠送信息','broadband.cttnet.cttpresentdiscnt.CttAddPresentDiscnt','','')" >
+					<i class="e_ico-add"></i><span>登记</span></button>
+						<!-- <a jwcid="@Redirect" value="登记" class="e_ico-add"
+							onclick="openNav('新增赠送信息','broadband.cttnet.cttpresentdiscnt.CttAddPresentDiscnt','','')"/> -->
+			</div>
+		</div>
+			
+		<div class="c_scroll c_scroll-x">
+			<div class="c_table c_table-row-10">
+				<table>
+					<thead>
+						<tr>
+								<th style="text-align:center;width:35px;"  rowspan="1">序号</th>
+									<th style="width:300px">优惠</th>
+									<th style="width:150px;">宽带账号</th>
+									<th style="width:150px;">赠送号码</th>
+									<th style="width:100px;">赠送金额</th>
+									<th style="width:100px;" datatype="date" >赠送日期</th>
+									<th>备1注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >	
+							<td><span jwcid="@Insert" value="ognl:rowIndex"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRESENT_SERIAL_NUMBER" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRESENT_MONEY/100" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRESENT_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="pageinfo" id="pageinfo" listener="queryPresentInfos" pageSize="10" cond="QueryPart" part="ResultDataPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+</div></div>
+</body>
+</html>

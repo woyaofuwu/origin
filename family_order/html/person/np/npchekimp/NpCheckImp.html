@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<title>数据导入</title>
+		<link href="../../../base.css" rel="stylesheet" type="text/css" />
+		<script language="javascript" type="text/javascript" src="js/jcl.js"></script>
+		<script language="JavaScript" src="person/np/npchekimp/script/npcheckimp.js"></script>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">数据查询</div>
+	</div>
+	<div class="c_form c_form-col-4 c_form-label-7" jwcid="QueryPart@Part">
+	<ul class="ul">
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="手机号码"/></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">状态：</span>
+				<span class="e_select"><span><span>
+					 <select  jwcid="@Select" name="cond_STATE" id="cond_STATE" 
+								 source="ognl:pageutil.getStaticList('NPCHECK_STATE')"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								 value="ognl:cond.STATE" desc="状态"/>
+				</span></span></span>
+			</li>
+
+			<li class="li">
+				<span class="label">开始日期：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_ACT_START" id="cond_ACT_START" value="" maxName="ACT_END" desc="开始时间"/></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">结束日期：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_ACT_END" id="cond_ACT_END" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', cond.ACT_END)" minName="ACT_START" desc="结束时间"/></span></span>
+			</li>
+	</ul>
+	<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return queryImportData()"><i class="e_ico-search"></i><span>查询</span></button>
+			<button class="e_button-form"  onclick="modifyData();"><i class="e_ico-edit"></i><span>新增</span></button>
+			<!-- 
+			<button class="e_button-form"  onclick="deleteData();"><i class="e_ico-delete"></i><span>删除</span></button>
+			 -->
+		</div>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="ImportDataPart@Part" optimize="true">
+	<div class="c_table c_table-row-10">
+		<table  jwcid="@Table"  id="DeptTable" >
+			<thead>
+				<tr>
+					<th col="serialNumber">手机号码</th>
+					<th col="acceptDate">申请时间</th>
+					<th col="state">状态</th>
+					<th col="rsrvStr1">受理工号</th>
+					<th col="rsrvStr2">部门名称</th>
+					<th col="rsrvStr3">更新时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('NPCHECK_STATE', info.STATE)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3 == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.RSRV_STR3)" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+				<div jwcid="@NavBar"  name="pagin" id="pagin" listener="queryImportData" pageSize="10" cond="QueryPart" part="ImportDataPart" count="ognl:count"/>
+		<!-- 翻页 结束 -->
+		</div>
+</div>
+			</div>
+		</div>
+	</body>
+</html>

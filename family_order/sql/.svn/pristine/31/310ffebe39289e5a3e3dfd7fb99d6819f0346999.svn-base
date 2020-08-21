@@ -1,0 +1,3 @@
+select *
+  from TF_B_PRE_TRADE
+  where SERIAL_NUMBER =:SERIAL_NUMBER and TRADE_TYPE_CODE =799 and PRE_INVALID_TIME > sysdate

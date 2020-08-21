@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" type="text/javascript" src="scripts/person/bat/bathintmessagechg/elementpopupqry.js"></script>
+</head>
+<body jwcid=@Body>
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box"  jwcid="TipInfoPart@Part">
+	<div class="c_tip">
+		<span jwcid="@Insert" value="ognl:tipInfo" raw="true"/>
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">优惠查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="QueryCondPart@Part" class="c_form c_form-col-3 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_QUERY_TYPE" name="cond_QUERY_TYPE" source="ognl:pageutil.getStaticList('BATHINTMESSAGE_QUERYTYPE')" 
+					valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.DATA_ID"
+					titleField="DATA_NAME" 
+					onchange="" nullable="no" desc="查询方式" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="ELEMENT_ID" name="ELEMENT_ID" value="ognl:condition.ELEMENT_ID" nullable="no" rows="1" maxsize="50" desc="优惠编码"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="ELEMENT_NAME" name="ELEMENT_NAME" value="ognl:condition.ELEMENT_NAME" nullable="no" rows="1" maxsize="50" desc="优惠名称"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="queryElements()"><i class="e_ico-search"></i><span>执行查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" rowDBClick="tableRowDBClick">
+			<thead>
+				<tr>
+					<th col="ELEMENT_ID">编码</th>
+					<th col="ELEMENT_NAME">名称</th>
+					<th col="ELEMENT_TYPE" style="display:none">名称</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:taskInfos" value="ognl:taskInfo" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:taskInfo.ELEMENT_ID" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.ELEMENT_NAME" raw="true"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:taskInfo.ELEMENT_TYPE" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="QueryCondPart" part="QueryListPart" listener="queryElements" pageSize="10" count="ognl:batchTaskListCount"></div>
+	</div>
+	
+	<!-- 表格 结束 -->
+</div>
+
+</div></div></body>
+</html>

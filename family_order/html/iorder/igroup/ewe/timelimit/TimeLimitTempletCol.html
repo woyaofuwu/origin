@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>时限控制配置</title>
+		<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/ewe/mxClient.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/ewe/timelimit/script/timeLimitTempletCol.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="l_edit">
+	<div class="c_scroll c_scroll-float c_scroll-header">
+	<div class="c_space"></div>			
+	<div class="c_title">
+		<div class="text">时限控制配置</div>
+	</div>
+	<div class="c_box c_box-border">
+		<div class="l_padding">
+			<div class="l_col l_col-line c_box e_hide-phone" style="width:100%;height:350px;overflow:auto;">
+				<div class="l_colItem">
+					<div jwcid="EosPart@Part" class="c_list c_list-form">
+						<div id="graphContainer"
+							style="position:relative;background:url('frame/skin/base/img/flow/grid.gif');">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">流程信息</div>
+		</div>
+		<!-- 标题 结束 -->
+		<div class="c_list c_list-line c_list-col-2 c_list-border" jwcid="chartItem@Part">
+			<ul class="ul">
+				<li class="required link">
+					<div class="label">流程名（中文名）</div>
+					<div class="value">
+						<input type="text" name ="TEMPLET_NAME" jwcid="@TextField" value="ognl:condition.TEMPLET_NAME" desc="流程名（中文名）" nullable="no"/>
+					</div>
+				</li>
+				<li class="required link">
+					<div class="label">流程名ID（英文名）</div>
+					<div class="value">
+						<span class="e_mix">
+						<input type="text" name ="BPM_TEMPLET_ID" jwcid="@TextField" value="ognl:condition.BPM_TEMPLET_ID" desc="流程名（英文名）" nullable="no"/>
+						<button class="e_button-blue" ontap="queryInfo(this);">
+							<span class="e_ico-check"></span>
+							<span>查询</span>
+						</button>
+					</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+</div>	
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="taskPopup">
+		<div class="c_popupGroup">
+			<!-- 节点任务关系信息 开始 -->
+			<div class="c_popupItem" id="popupTaskItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupRelaItem',true);">节点任务配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 节点任务配置 开始 -->
+					<div class="c_list c_list-line c_list-col-1 c_list-border">
+						<ul>
+							<li>
+								<div class="label">RELA_ID</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="RELA_ID" value="" disabled="disabled"/></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">任务名称</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_NAME" value="" /></div>
+								</div>
+							</li>
+							<li class="link required">
+								<div class="label">任务类型</div>
+								<div class="value">
+									<div class="value">
+										<select jwcid="@Select" name="TASK_TYPE" source="ognl:pageutil.getStaticList('ESOP_TASK_TYPE')" 
+								 			textField="DATA_NAME" valueField="DATA_ID" nullable="no" desc="任务类型"/>
+								 </div>
+								</div>
+							</li>
+							<li class="link required">
+								<div class="label">TASK_ID</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_ID" value="" /></div>
+								</div>
+							</li>
+							<li class="link required">
+								<div class="label">优先级</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_PRIORITY" value="0" /></div>
+								</div>
+							</li>
+							<li class="link required">
+								<div class="label">CONDITION_ID</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_CONDITION_ID" value="508000000000" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">节点任务描述</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_DESC" value="" /></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- 节点任务配置 结束 -->
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="submitTaskInfos(this)">提交</button>
+					</div>
+					<!-- 提交 结束 -->
+				</div>
+			</div>
+			<!-- 节点任务关系信息 结束 -->
+			</div>
+		</div>
+		<!-- 超时规则配置信息 结束 -->
+	<!-- 弹窗 结束 -->
+	
+	<div jwcid="hiddenItem@Part">
+		<input style="display: none" jwcid="@Hidden" id="EXCLUDE_INFOS" name="EXCLUDE_INFOS" value="" />
+		<input style="display: none" jwcid="@Hidden" id="TASK_INFOS" name="TASK_INFOS" value="" />
+		<input style="display: none" jwcid="@Hidden" id="RELA_INFOS" name="RELA_INFOS" value="" />
+		<textarea jwcid="@TextArea" name="CHART_INFO" id="CHART_INFO" value="ognl:condition.CHART_INFO" style="display:none"></textarea>
+		<input style="display: none" jwcid="@Hidden" id="XML_INFO" name="XML_INFO" value="" />
+	</div>
+</body>
+</html>

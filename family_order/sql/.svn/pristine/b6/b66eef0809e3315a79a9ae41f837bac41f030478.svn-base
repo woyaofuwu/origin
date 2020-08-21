@@ -1,0 +1,5 @@
+UPDATE TF_F_USER_OLDSCORE 
+   SET UPDATE_TIME=SYSDATE,
+       REMARK = -old_score_value,
+       OLD_SCORE_VALUE = 0
+ WHERE user_id=TO_NUMBER(:USER_ID)

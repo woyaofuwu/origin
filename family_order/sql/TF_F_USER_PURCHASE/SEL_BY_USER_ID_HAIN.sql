@@ -1,0 +1,12 @@
+(SELECT to_char(user_id) user_id,serial_number,purchase_attr,purchase_desc,purchase_mode,purchase_info,to_char(trade_id) trade_id,to_char(rpay_mpfee) rpay_mpfee,feeitem_code,to_char(rpay_foregift) rpay_foregift,foregift_code,to_char(rpay_deposit) rpay_deposit,rpay_deposit_code,to_char(left_deposit) left_deposit,to_char(mrtn_fee) mrtn_fee,rtn_type,rtn_months,left_months,to_char(gpay_deposit) gpay_deposit,gpay_deposit_code,to_char(left_gdeposit) left_gdeposit,to_char(mgift_fee) mgift_fee,gift_type,gtotal_months,gleft_months,to_char(month_fee) month_fee,ntotal_months,nleft_months,device_type,imei,assure_no,discnt_code,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,process_tag,staff_id,depart_id,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date,to_char(finish_date,'yyyy-mm-dd hh24:mi:ss') finish_date,remark 
+  FROM tf_f_user_purchase
+ WHERE serial_number=:SERIAL_NUMBER
+ AND user_id =:USER_ID
+ AND end_date > SYSDATE)    
+UNION ALL    
+(SELECT to_char(user_id) user_id, serial_number, '' purchase_attr, ( select param_name from td_s_commpara where PARAM_ATTR = 49 and PARAM_CODE = rsrv_str2 and rownum = 1 ) purchase_desc, '' purchase_mode, process_info purchase_info, rsrv_str8 trade_id, to_char(to_number(rsrv_str5)*rsrv_num2 + rsrv_num3)  rpay_mpfee, 0 feeitem_code, '' rpay_foregift, 0 foregift_code, to_char(rsrv_num3) rpay_deposit, 0 rpay_deposit_code, '' left_deposit, to_char(rsrv_num2) mrtn_fee, '' rtn_type,  to_number(rsrv_str5) rtn_months, to_number(rsrv_str5)-to_number(rsrv_str6) left_months,'' gpay_deposit, 0 gpay_deposit_code, '' left_gdeposit, '' mgift_fee, '' gift_type, 0 gtotal_months, 0 gleft_months, '' month_fee, 0 ntotal_months, 0 nleft_months, '' device_type, '' imei, '' assure_no, 0 discnt_code, rsrv_str1, rsrv_str2, rsrv_str3, rsrv_str4, rsrv_str5, rsrv_str6, rsrv_str7, rsrv_str8, rsrv_str9, rsrv_str10, decode( process_tag, '0', '0', '1', '3', '' )process_tag, staff_id, depart_id, to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date, to_char( add_months( start_date, to_number(rsrv_str5) ), 'yyyy-mm-dd hh24:mi:ss' ) end_date,'' finish_date, remark
+FROM tf_f_user_otherserv                 
+WHERE serial_number=:SERIAL_NUMBER
+    AND user_id =:USER_ID  
+    AND service_mode = 'A5'
+    AND end_date > SYSDATE)

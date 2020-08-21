@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../../base.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="person/sundryquery/userinfo/scripts/querynetchooseuser.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+   <div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" name="title" id="title">
+		<div class="text">网上选号开户用户查询</div>
+	</div>
+
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7" jwcid="QueryCondPart@Part">
+
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">开户时间：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="cond_NETCHOOSE_OPEN_DAY" id="cond_NETCHOOSE_OPEN_DAY" format="yyyy-MM-dd" desc="操作日期" nullable="no"/></span></span>
+			</li>
+
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="query();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+	
+	<div jwcid="ResultDataPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10">
+		<div class="c_title">
+			<div class="text">查询结果</div>
+			<div class="fn">
+			      <div class="button" jwcid="@Conditional" condition="ognl:listInfos.size > 0">
+			      	<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100888"
+						  config="export/sundryquery/userinfos/QueryNetChooseUser.xml" fileName="QueryNetChooseUser" cond=QueryCondPart/>
+				  </div>
+				  <button class="l_ml" type="button" onclick="$.printArea('print_Table','网上选号开户用户查询','60%')">
+						<i class="e_ico-print"></i><span>打印</span>
+				</button> 
+			</div>
+		</div>
+	
+		<div class="c_table c_table-row-10" >
+			<div  jwcid="print_Table@Part" optimize="true">
+			<div class="c_table">
+			<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+				<thead>
+					<tr>
+						<th>开户号码</th>
+						<th>客户姓名</th>
+						<th>号码归属地</th>
+						<th>开户营业厅</th>						
+						<th>开户工号</th>
+						<th>开户时间</th>
+						<th>办理套餐</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:listInfos" value="ognl:listInfo" index="ognl:rowIndex" element="tr">
+						<td><span jwcid="@Insert" value="ognl:listInfo.SERIAL_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.CUST_NAME" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE', 'AREA_NAME', listInfo.CITY_CODE)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID', 'DEPART_NAME', listInfo.OPEN_DEPART_ID)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID', 'STAFF_NAME', listInfo.OPEN_STAFF_ID)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',listInfo.OPEN_DATE)" raw="true" /></td>
+						<!-- <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_PRODUCT','PRODUCT_ID', 'PRODUCT_NAME', listInfo.PRODUCT_ID)" raw="true" /></td> -->
+						<td><span jwcid="@Insert" value="ognl:listInfo.PRODUCT_NAME" raw="true" /></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+			</div>
+		</div>
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="page" id="page" cond="QueryCondPart"  part="ResultDataPart" listener="queryNetChooseUserInfo" pageSize="10" count="ognl:ListCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	
+
+
+</div></div></body>
+</html>

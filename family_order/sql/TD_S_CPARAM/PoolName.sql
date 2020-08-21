@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'PoolName' KEY,  eparchy_code VALUE1, POOL_CODE VALUE2, POOL_NAME VRESULT
+  FROM td_m_pool
+ WHERE 'PoolName' = :KEY

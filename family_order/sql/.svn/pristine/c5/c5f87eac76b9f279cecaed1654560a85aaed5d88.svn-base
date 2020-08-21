@@ -1,0 +1,1 @@
+SELECT TRADE_ID,RSRV_STR1,RSRV_STR2 FROM tf_b_trade WHERE trade_staff_id = :TRADE_STAFF_ID AND serial_number = :SERIAL_NUMBER AND trade_type_code = :TRADE_TYPE_CODE AND order_id = :ORDER_ID

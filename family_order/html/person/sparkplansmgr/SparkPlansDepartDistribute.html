@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: CustContactMgr.html,v 1.5 2013/04/22 07:09:17 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>礼包办理量调拨查询界面</title>
+<script jwcid="@Script"  src="person/sparkplansmgr/scripts/sparkplansmgr.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div jwcid="myTips@Tips" content="如需打印确认单，请在提交前打印" showLink="false" showClose="false"/>
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_title">
+			<div class="text">浏览区</div>
+			<div class="fn" >
+				<div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+				  	<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="101993"
+					  config="export/sparkplansmgr/SparkPlansDepartDistribute.xml" fileName="办理量调拨查询信息" cond="QueryCondPart"/>
+					<button class="l_ml" type="button" onclick="$.printArea('print_Table','办理调拨量信息打印','60%')">
+										<i class="e_ico-print"></i><span>打印</span>
+					</button> 
+				</div>
+		 	</div>
+		</div>
+		<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table c_table-row-10">
+			<div  jwcid="print_Table@Part" optimize="true">
+				<table jwcid="@Table" id="SparkPlansTable" rowClick="selectRow">
+					<thead>
+						<tr>
+							<th col="CITY_NAME">分公司</th>
+							<th col="DEPART_NAME">网点名称</th>
+							<th col="STAFF_ID">工号</th>
+							<th col="PRODUCT_NAME">产品名称</th>
+							<th col="PACKAGE_NAME">礼包名称</th>
+							<th col="WARNNING_VALUE_D">分配量</th>
+							<th col="WARNNING_VALUE_U">已办理量</th>
+							<th col="SURPLUS_VALUE">剩余量</th>
+							<th col="RES_KIND_CODE" style="display:none">分类</th>
+							<th col="CITY_CODE" style="display:none">分公司编码</th>
+							<th col="DEPART_ID" style="display:none">部门编码</th>
+						</tr>
+					</thead>
+					<tbody>
+		              	<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+		              		<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEPART_ID)"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:info.STAFF_ID"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:info.WARNNING_VALUE_D"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:info.WARNNING_VALUE_U"/></td>
+		              		<td><span jwcid="@Insert" value="ognl:info.SURPLUS_VALUE"/></td>
+		              		<td style="display:none"><span jwcid="@Insert" value="ognl:info.RES_KIND_CODE"/></td>
+		              		<td style="display:none"><span jwcid="@Insert" value="ognl:info.CITY_CODE"/></td>
+		              		<td style="display:none"><span jwcid="@Insert" value="ognl:info.DEPART_ID"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div></div>
+		
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="nav" id="nav" cond="QueryCondPart" part="QueryListPart" listener="querysparkPlans" pageSize="200" count="ognl:count"></div>
+	</div>
+	<div class="l_col">
+		<!-- 查询区 -->
+		<div class="l_left"  style="width:25%;">
+			<div class="c_title">
+				<div class="text">查询区</div>
+			</div>
+			<div jwcid="QueryCondPart@Part" element="div" class="c_form c_form-label-5 c_form-col-1">
+				<ul class="ul">
+					<li class="li">
+					    <span class="label"><span class="e_required">起始工号：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="STAFF_ID_S" id="STAFF_ID_S" value=""  onkeyup="this.value=this.value.toUpperCase()"
+							desc="起始工号" nullable="no" onFocus="autoCopyNum('STAFF_ID_S','STAFF_ID_E');"/>
+						</span></span>
+					</li>
+					<li class="li">
+					    <span class="label"><span class="e_required">终止工号：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="STAFF_ID_E" id="STAFF_ID_E" value=""  onkeyup="this.value=this.value.toUpperCase()"
+							desc="终止工号" nullable="no" onFocus="autoCopyNum('STAFF_ID_S','STAFF_ID_E');"/>
+						</span></span>
+					</li>
+				</ul>
+			</div>
+			<div class="c_submit">
+				<button jwcid="@Any" name="query_BTN" id="query_BTN" class="e_button-form" onclick="return querysparkPlans();"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+		<!-- 编辑区-->
+		<div class="l_auto">
+			<div jwcid="EditPart@Part" element="div">
+				<div jwcid="mytab@Tabset" switchAction="myTabSwitchAction(ptitle,title)" >
+					<div jwcid="@TabsetContent" title="礼品调拨">
+						<div element="div" class="c_form c_form-label-7 c_form-col-2">
+							<ul class="ul">
+								<!-- 
+								<li class="li">
+								    <span class="label">分公司：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_CITY_CODE" id="range_CITY_CODE" value="" 
+										desc="起始工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">网点名称：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_DEPART_ID" id="range_DEPART_ID" value="" 
+										desc="终止工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">工号：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_STAFF_ID" id="range_STAFF_ID" value="" 
+										desc="起始工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">产品名称：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_PRODUCT_NAME" id="range_PRODUCT_NAME" value="" 
+										desc="终止工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">礼包名称：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_PACKAGE_NAME" id="range_PACKAGE_NAME" value="" 
+										desc="起始工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">分配量：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_WARNNING_VALUE_D" id="range_WARNNING_VALUE_D" value="" 
+										desc="终止工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">已办理量：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_WARNNING_VALUE_U" id="range_WARNNING_VALUE_U" value="" 
+										desc="起始工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								<li class="li">
+								    <span class="label">剩余量：</span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_SURPLUS_VALUE" id="range_SURPLUS_VALUE" value="" 
+										desc="终止工号" nullable="no" readonly="true"/>
+									</span></span>
+								</li>
+								-->
+								<li class="li">
+								    <span class="label"><span class="e_required">领用员工工号：</span></span>
+									<span class="e_elements">
+										<input jwcid="@Popup" readOnly="true" value="" 
+											text=""  
+											name="range_STAFF_ID_F"
+											showButton="true" popupPage="sparkplansmgr.StaffSelect" title="员工查询" 
+											listener="queryStaffs"
+											width="700" height="420"  showFlush="true" />
+									</span> 
+
+								</li>
+								<li class="li">
+								    <span class="label"><span class="e_required">调出数量：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="range_NUMBER" id="range_NUMBER" value="" 
+										desc="终止工号" nullable="no"/>
+									</span></span>
+								</li>
+							</ul>
+							<div class="c_submit">
+								<button jwcid="@Any" name="submit" id="submit" class="e_button-form" onclick="return assignSparkPlans();"><i class="e_ico-search"></i><span>提交</span></button>
+								<button type="button" class="l_ml" 
+									onclick="popupPrint()">
+									<i class="e_ico-print"></i><span>打印确认单</span>
+							    </button>
+							</div>
+						</div>
+					</div>
+					<div jwcid="@TabsetContent" title="批量调拨">
+						<div element="div" class="c_form c_form-label-11 c_form-col-1">
+							<ul class="ul">
+								<li class="li">
+									<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+									<span class="text">
+										<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+										href="ognl:encodeUrl('attach?action=downloadweb&realName=礼包调拨批量导入模板.xls&filePath=template/person/sparkplansmgr/SparkPlansAssignImport.xls')">
+											<span jwcid="@Insert" value="[点击下载]"></span>
+										</a>
+									</span>
+								</li>
+								<li class="li" >
+									<span class="label"><span class="e_required">导入文件：</span></span>
+									<span class="text">
+									<input jwcid="@SimpleUpload" name="ASSIGN_FILE_ID" ftpSite="personserv" filePath="" fileSize="20" fileTypes="*.xls;*.xlsx" />
+									</span>
+								</li>
+							</ul>
+							<div class="c_submit">
+								<button jwcid="@Any" name="submit" id="submit" class="e_button-form" onclick="return importAssignInfo();"><i class="e_ico-search"></i><span>提交</span></button>
+							</div>
+						</div>
+					</div>
+					<div jwcid="@TabsetContent" title="批量回收">
+						<div element="div" class="c_form c_form-label-11 c_form-col-1">
+							<ul class="ul">
+								<li class="li">
+									<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+									<span class="text">
+										<a jwcid="@Any" id="B_TEMPLATE_DATA_XLS" name="B_TEMPLATE_DATA_XLS" 
+										href="ognl:encodeUrl('attach?action=downloadweb&realName=礼包回收批量导入模板.xls&filePath=template/person/sparkplansmgr/SparkPlansBackImport.xls')">
+											<span jwcid="@Insert" value="[点击下载]"></span>
+										</a>
+									</span>
+								</li>
+								<li class="li" >
+									<span class="label"><span class="e_required">导入文件：</span></span>
+									<span class="text">
+									<input jwcid="@SimpleUpload" name="BACK_FILE_ID" ftpSite="personserv" filePath="" fileSize="20" fileTypes="*.xls;*.xlsx" />
+									</span>
+								</li>
+							</ul>
+							<div class="c_submit">
+								<button jwcid="@Any" name="submit" id="submit" class="e_button-form" onclick="return importBack();"><i class="e_ico-search"></i><span>提交</span></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div></div>
+</body>
+</html>

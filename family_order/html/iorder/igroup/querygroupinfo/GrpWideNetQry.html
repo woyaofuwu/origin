@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head"> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>	
+<script jwcid="@Script" type="text/javascript" src="iorder/igroup/querygroupinfo/script/GrpWideNetQry.js"></script>
+<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<div name="scroller1" jwcid="@Scroller" vScrollbar="true" bounce="true">
+		<div class="l_padding">
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-border c_form-auto c_form-padding" jwcid="QueryFormPart@Part">
+				<ul>
+					<li>
+						<div class="label">集团产品编码：  </div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER"  nullable="no" desc="集团产品编码"  />
+						</div>
+					</li>
+					<li>
+							<div class="label">是否完工：  </div>
+							<div class="value">
+								<!-- <div jwcid="@Switch" name="cond_FINISHTAG" id="cond_FINISHTAG"
+									value="0"  onValue="1" onText="是" offValue="0" offText="否"/> -->
+								<span jwcid="@Switch" name="cond_FINISHTAG" value="0" onValue="1" onText="是" offValue="0" offText="否" />
+							</div>
+					</li>
+					<li>
+						<div class="value">
+							<button class="e_button-blue" onclick="query();"><span class="e_ico-search"></span><span>查询</span></button>
+							<!-- <button type="e_button-blue" onclick="query();" class="e_ico-search" >查询</button> -->
+						</div>
+					</li>
+					<li>
+							<div class="fn">
+								<button type="button" jwcid="@Export" name="exportFile"
+										cond="QueryFormPart" taskId="20190507068"
+										configFile="export/grpwidenetqry/GrpWideNetExport.xml"
+										ftpCode="order" fileName="集团成员商务宽带信息导出.xls">
+										<span class="e_ico-export" /><span>导出</span>
+								</button>	
+							</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 表格 开始 -->
+			<div class="l_queryResult" element="div">
+			<div class="c_table c_table-even" jwcid="refreshtable@Part">
+				<table jwcid="@Table" name="myTable" id="myTable" scroll="true">
+					<thead>	
+						<tr>
+							<th class="e_center">集团客户编码</th>
+							<th class="e_center">集团名称</th>
+							<th class="e_center">集团产品编码</th>
+							<th class="e_center">产品名称</th>
+							<th class="e_center">成员号码</th>
+							<th class="e_center">施工地址</th>
+							<th class="e_center">加入时间</th>
+							<th class="e_center">是否完工</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+							<td class="wrap"><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+							<td class="wrap"><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td> 
+							<td class="wrap"><span jwcid="@Insert" value="ognl:info.STAND_ADDRESS" raw="false"/></td>
+                        	<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.START_DATE)" raw="false" /></td> 
+                        	<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FINISH_TAG', info.FINISHTAG)" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 分页 开始 -->
+				<div class="c_space-c"></div>
+				<div class="c_page c_page-border">
+					<!-- 分页组件 -->
+	            	<div jwcid="@NavBar"
+	                 name="pageNav"
+	                 id="pageNav" 
+	                 cond="QueryFormPart"
+	                 count="ognl:infoCount"
+	                 listener="queryInfos"
+	                 part="refreshtable"
+	                 pageSize="20"></div>
+				</div>
+				<!-- 分页 结束 -->
+			</div>	
+			</div>
+			<!-- 表格 结束 -->
+			
+			</div>
+	</div>
+	<!-- 滚动 结束 -->
+	
+	<script>
+		Wade.setRatio();
+	</script>
+
+</body>
+</html>

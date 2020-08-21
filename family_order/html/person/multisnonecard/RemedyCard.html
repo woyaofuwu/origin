@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>国漫一卡多号补办卡</title>	
+<script  jwcid="@Script" language="JavaScript" src="person/multisnonecard/scripts/remedycard.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper" jwcid="MultiSNOneCardALLPart@Part"><div class="m_wrapper2"></div>
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="376"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	
+	<!-- 隐藏区域  开始 -->
+	<div jwcid="MultiSNOneCardHiddenPart@Part">
+	<input jwcid="@Any" id="DEPUTY_COUNT" name="DEPUTY_COUNT" type="hidden" value="ognl:commInfo.DEPUTY_COUNT" />
+    <input jwcid="@Any" id="DEPUTY_SN"    name="DEPUTY_SN"    type="hidden" value="ognl:commInfo.DEPUTY_SN" />
+    <input jwcid="@Any" id="CUR_STATE"    name="CUR_STATE"    type="hidden" value="ognl:commInfo.CUR_STATE" />
+    <input jwcid="@Any" id="PREPAY_TAG"   name="PREPAY_TAG"   type="hidden" value="ognl:commInfo.PREPAY_TAG" />
+    
+     <input jwcid="@Any" id="USER_EPARCHY_CODE" name="USER_EPARCHY_CODE" type="hidden" value="ognl:commInfo.USER_EPARCHY_CODE"/>
+    
+    <input id="OPER_TYPE" name="OPER_TYPE" type="hidden" />
+    <input id="SVC_TYPE" name="SVC_TYPE" type="hidden" />
+    <textarea jwcid="@TextArea"  id="DEPUTY_INFOS"   name="DEPUTY_INFOS"   type="hidden" value="ognl:commInfo.DEPUTY_INFOS"  style="display:none"/>
+    <textarea jwcid="@TextArea"  id="NET_INFOS"   name="NET_INFOS"   type="hidden" value="ognl:commInfo.NET_INFOS"   style="display:none"/>
+    </div>
+	<!-- 隐藏区域   结束 -->
+	<div class="c_box" >	
+	<!-- 客户信息 开始 -->
+		<div  id="custpage" name="custpage">
+		    <!-- 三户展示组件 开始 -->
+			<div jwcid="UCAViewPart@Part">
+				<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+				<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+			</div>
+			<!-- 三户展示组件 结束 -->
+		</div>
+	</div>
+	<!-- 客户信息 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="MultiSNOneCardPart2@Part">
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+                <span class="e_select"><span><span>
+						<select jwcid="@Select" name="OPERATION_TYPE" id="OPERATION_TYPE"
+								source="ognl:commInfo.OPERTYPE_INFOS"
+							valueField="PARA_CODE1"  textField="PARA_CODE2"
+							value="ognl:info.PARA_CODE1"
+							desc="操作类型"  nullable="no" onchange="resetvalue(this);" disabled="true"/>
+				</span></span></span>
+			</li>
+			<li class="li" >
+			    <div id="cardlist">
+				<span class="label">副号码列表：</span>
+                <span class="e_select"><span><span>
+						<select jwcid="@Select" name="DEPUTY_LIST" id="DEPUTY_LIST"
+								source="ognl:commInfo.DEPUTY_INFOS"
+								valueField="RSRV_STR1"  textField="RSRV_STR1"
+							    value="ognl:info.RSRV_STR1"
+							    addDefault ="true"
+							desc="副号码列表"  nullable="no" onchange="changeDeputy(this);" disabled="true"/>
+							
+							
+				</span></span></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" style="display:none;" id ="part3">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">换号的新客户信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="MultiSNOneCardPart3@Part">
+	<!-- 表单 开始 -->
+	<div class="label">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">换号的新号码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="SERIAL_NUMBER_O" name="SERIAL_NUMBER_O" datatype="mbphone"   value="ognl:condition.cond_SERIAL_NUMBER" 
+					     	desc="手机号码" nullable = "no" enterAction="queryInfo()" />
+					</span>
+					</span>
+				<button type="button" class="e_button-form"  onclick="return checkNumber()" ><i class="e_ico-search"></i><span>查询</span></button>
+			</li>
+			</ul>
+			</div>
+	<div class="c_form c_form-label-7 c_form-col-2" jwcid="userInfoPart_newSim@Part" >
+		<ul class="ul">		
+			<li class="li col-2">
+				<span class="label">客户名称：</span> 
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" disabled="true" value="ognl:ocust_info.CUST_NAME" desc="客户名称"/>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" disabled="true"
+							value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',ocust_info.PSPT_TYPE_CODE)"></span>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" disabled="true"
+							value="ognl:ocust_info.PSPT_ADDR"></span>
+			</li> 
+		<li class="li">
+				<span class="label">产品名称：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+												value="ognl:ouser_info.PRODUCT_NAME" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">当前品牌：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:ouser_info.BRAND_NAME" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">开户时间：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:ouser_info.OPEN_DATE" ></span> 
+			</li> 
+			<li class="li">
+				<span class="label">用户状态：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:ouser_info.STATE_NAME" ></span>
+			</li>
+		
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit"  area="MultiSNOneCardALLPart"  listener="onTradeSubmit" element="div"/>
+	<!-- 提交 结束 -->
+</div></div></body>
+</html>

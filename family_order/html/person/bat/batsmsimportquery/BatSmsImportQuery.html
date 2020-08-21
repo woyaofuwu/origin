@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>批量短信导入查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/bat/batsmsimportquery/scripts/batsmsimportquery.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting"></div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">批量短信导入查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+			
+                        <li class="li"><span class="label">业务区：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERVICE_AREA" id="cond_SERVICE_AREA"
+									value="ognl:condition.cond_SERVICE_AREA" desc="业务区" autoComplete="Off" /></span></span>
+						</li>
+						   <li class="li"><span class="label">项目：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_PROJECT_NAME" id="cond_PROJECT_NAME"
+									value="ognl:condition.cond_PROJECT_NAME" desc="项目" autoComplete="Off" /></span></span>
+						</li>
+						   <li class="li"><span class="label">短信内容：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_NOTICE_CONTENT" id="cond_NOTICE_CONTENT"
+									value="ognl:condition.cond_NOTICE_CONTENT" desc="短信内容" autoComplete="Off" /></span></span>
+						</li>
+					<li class="li">
+				<span class="label"><span class="e_required">客户号码：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+									value="ognl:condition.cond_SERIAL_NUMBER" desc="客户号码" autoComplete="Off" /></span></span>
+				</span>
+			</li>
+						<!--jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"  -->			
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit" >
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form" type="button"  onclick="getBatSmsImportQuery();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				
+
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+	
+		  	     </div>	  
+
+		  	     
+		  	    <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>接收号码</th>
+							<th>发送号码</th>
+							<th>短信内容</th>
+							<th>备注内容</th>
+							<th>处理状态</th>
+							<th>插入時間</th>
+							<th>业务区</th>
+							<th>项目名称</th>
+							<th>员工工号</th>
+							<th>员工姓名</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SEND_OBJECT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.NOTICE_CONTENT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEAL_STATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.INSERT_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_AREA" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PROJECT_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="true"/></td>
+						<!-- <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info10086.PARA_CODE11)" raw="true"/></td> -->
+						
+						</tr>                                               
+						</tbody>
+					</table>
+
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="batSmsImportQuery" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+select t.*  from  TF_B_TRADE_BAT_TASK t where t.BATCH_TASK_ID=:BATCH_TASK_ID and t.accept_month=to_number(:ACCEPT_MONTH)

@@ -1,0 +1,108 @@
+<!-- 标题 开始 -->
+<div class="c_title">
+	<div class="text" name="cond_CUSTINFO_TAG" id="cond_CUSTINFO_TAG">客户信息</div>
+</div>
+<!-- 标题 结束 -->
+<!-- 表单 开始 -->
+<div jwcid="@Part" id="groupBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+	<ul>
+		<li class="link required">
+			<div class="label">集团客户编号</div>
+			<div class="value">
+				<input jwcid="@TextField" name="cond_GROUP_ID_INPUT" value="ognl:groupInfo.GROUP_ID" onkeydown="queryGroupInfo(this, event);" nullable="no" desc="集团客户编号" readonly="ognl:readonly"/>
+				<input jwcid="@Hidden" name="cond_CUST_ID" value="ognl:groupInfo.CUST_ID"/>
+				<input jwcid="@Hidden" name="cond_GROUP_ID" value="ognl:groupInfo.GROUP_ID"/>
+				<input jwcid="@Hidden" name="cond_CUSTOMNO" value="ognl:groupInfo.GROUP_ID"/>
+			</div>
+		</li>
+		<li class="link required">
+			<div class="label">集团客户名称</div>
+			<div class="value"><input jwcid="@TextField" name="cond_CUSTOMNAME" value="ognl:groupInfo.CUST_NAME" disabled="true" desc="集团客户名称"/></div>
+			<input jwcid="@Hidden" name="cond_CUST_NAME" value="ognl:groupInfo.CUST_NAME"/>
+		</li>
+		<li class="link required">
+             <div class="label">集团级别</div>
+             <div class="value"><input jwcid="@TextField" name="cond_CUSTOMLEVEL" value="ognl:groupInfo.CLASS_ID" readonly="readonly" nullable="no" desc="集团级别"/></div>
+        </li>
+		<li class="link required">
+			<div class="label">客户服务等级</div>
+			<div class="value">
+				<input jwcid="@TextField" name="cond_SERVICELEVEL" value="ognl:groupInfo.SERV_LEVEL" disabled="true" nullable="no" desc="客户服务等级" />
+			</div>
+		</li>
+		<li class="link">
+             <div class="label">集团客户行业</div>
+             <div class="value">
+                 <input jwcid="@Select" name="cond_CUSTOMTRADE" source="ognl:getPageUtil().getList('TD_S_CALLINGTYPE','CALLING_TYPE_CODE','CALLING_TYPE')" textField="CALLING_TYPE" valueField="CALLING_TYPE_CODE"
+                 value="ognl:info.CUSTOMTRADE == null ? groupInfo.CALLING_TYPE_CODE : info.CUSTOMTRADE" disabled="ognl:info.CUSTOMTRADE != null || groupInfo.CALLING_TYPE_CODE != null" desc="集团客户行业"/>
+             </div>
+        </li>
+		<li class="link required">
+             <div class="label">所属省份</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_PROVINCENAME" value="ognl:info.PROVINCENAME==null?'海南':info.PROVINCENAME" readonly="readonly" desc="所属省份"/>
+             </div>
+        </li>
+        <li class="link required">
+             <div class="label">所属地市</div>
+             <div class="value">
+                 <input jwcid="@Select" name="cond_CITYNAME" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AREA_CODE_NEW')" textField="DATA_ID" valueField="DATA_ID" 
+                  value="ognl:info.CITYNAME==null?groupInfo.CITY_NAME:info.CITYNAME" nullable="no" onchange="changeAreaByCity();" desc="所属地市"/>
+             </div>
+        </li>
+        <li class="link required">
+             <div class="label">所属区县</div>
+             <div class="value">
+                 <input jwcid="@Select" name="cond_COUNTYNAME" source="ognl:groupInfo.AREAS" textField="DATA_NAME" valueField="DATA_ID" 
+                  value="ognl:info.COUNTYNAME==null?groupInfo.DATA_ID:info.COUNTYNAME"  nullable="no" desc="所属区县"/>
+                 <input jwcid="@Any" type="hidden" name="hid_COUNTYNAME" id="hid_COUNTYNAME" value="ognl:info.COUNTYNAME"/>
+             </div>
+        </li>
+        <li class="link required">
+             <div class="label">集团客户业务联系人</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_CUSTOMCONTACT" value="ognl:info.CUSTOMCONTACT == null?groupInfo.RSRV_STR2:info.CUSTOMCONTACT" 
+                        nullable="no" desc="集团客户业务联系人"/>
+             </div>
+        </li>
+        <li class="link required merge-2">
+             <div class="label">集团客户联系电话（集团测评人）</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_CUSTOMCONTACTPHONE" value="ognl:info.CUSTOMCONTACTPHONE == null?groupInfo.GROUP_CONTACT_PHONE:info.CUSTOMCONTACTPHONE" 
+                        nullable="no" desc="集团客户联系电话（集团测评人）"/>
+             </div>
+        </li>
+        <li class="link">
+             <div class="label">集团客户联系人邮箱</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_CUSTOMCONTRACTEMAIL" value="ognl:info.CUSTOMCONTRACTEMAIL == null?groupInfo.EMAI:info.CUSTOMCONTRACTEMAIL" desc="集团客户联系人邮箱"/>
+             </div>
+        </li>
+        <li class="link required">
+             <div class="label">客户经理联系人</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_ACCOUNTMANAGERNAME" value="ognl:info.ACCOUNTMANAGERNAME == null?custMgrInfo.CUST_MANAGER_NAME:info.ACCOUNTMANAGERNAME" 
+                        nullable="no" desc="客户经理联系人"/>
+             </div>
+        </li>
+        <li class="link required">
+             <div class="label">客户经理联系电话</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_ACCOUNTMANAGERPHONE" value="ognl:info.ACCOUNTMANAGERPHONE == null?custMgrInfo.SERIAL_NUMBER:info.ACCOUNTMANAGERPHONE" 
+                        nullable="no" desc="客户经理联系电话"/>
+             </div>
+        </li>
+        <li class="link">
+             <div class="label">客户经理联系邮箱</div>
+             <div class="value">
+                 <input jwcid="@TextField" name="cond_ACCOUNTMANAGERMAIL" value="ognl:custMgrInfo.EMAIL == null?custMgrInfo.SERIAL_NUMBER+'@139.com':custMgrInfo.EMAIL" 
+                        nullable="no" desc="客户经理联系邮箱"/>
+             </div>
+        </li>
+        <li class="link required merge-3">
+			<div class="label">集团客户地址</div>
+			<div class="value"><input jwcid="@TextField" name="cond_CUSTOMADD" value="ognl:info.CUSTOMADD == null?groupInfo.GROUP_ADDR:info.CUSTOMADD" readonly="true" desc="集团客户地址"/></div>
+		</li>
+	</ul>
+</div>
+<!-- 表单 结束 -->

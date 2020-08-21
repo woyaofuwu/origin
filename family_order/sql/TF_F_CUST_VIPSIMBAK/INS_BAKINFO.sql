@@ -1,0 +1,2 @@
+INSERT INTO tf_f_cust_vipsimbak(vip_id,sim_card_no,sim_type_code,imsi,send_date,start_date,act_tag,client_info1,client_info2,client_info3,client_info4,update_time,update_staff_id,update_depart_id,remark)
+ VALUES(:VIP_ID,:SIM_CARD_NO,:SIM_TYPE_CODE,:IMSI,TO_DATE(:SEND_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),:ACT_TAG,:CLIENT_INFO1,:CLIENT_INFO2,:CLIENT_INFO3,:CLIENT_INFO4,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK)

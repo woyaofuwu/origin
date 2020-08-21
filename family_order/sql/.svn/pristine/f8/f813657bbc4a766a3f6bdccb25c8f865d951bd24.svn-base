@@ -1,0 +1,1 @@
+select black_user_class_code paracode,black_user_class_name paraname from td_b_blackuserclass where (:TRADE_EPARCHY_CODE IS NULL OR :TRADE_EPARCHY_CODE IS NOT NULL)

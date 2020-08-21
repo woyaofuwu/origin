@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>信息查询</title>					
+<script language="JavaScript" src="scripts/saleserv.js"></script>		   
+<script jwcid="@Script" language="JavaScript" src="person/onecardncodes/scripts/queryrelationuu.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		<span class ="e_red"  name ="tipss" id="tipss"></span>
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text"><a jwcid="@Insert" value="一卡双号查询" raw="false"/></div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="label" jwcid="relatinfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" datatype="mbphone"
+				  		desc="服务号码"	 value="ognl:editInfo.SERIAL_NUMBER"/>
+				</span>
+				</span>
+				<span>
+			<button class="e_button-form" id="query" name="query" onclick="return queryRelationUUInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+			</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+
+	
+	<!-- 表格 开始 -->
+	<div jwcid="relatinoTablePart@Part">
+	<div class="c_scroll c_scroll-x">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="realtTable" id="relatTable" scroll="true">
+			<thead>
+				<tr>
+					<span jwcid="@Conditional" condition='ognl:"".equals(page.getParameter("IS_EMPTY_ID",""))'>
+					<th class="li" colspan="3"><span>关系信息</span></th>
+					</span>
+					<span jwcid="@Conditional" condition='ognl:!"".equals(page.getParameter("IS_EMPTY_ID",""))'>
+					<th class="li" colspan="4"><span>关系信息</span></th>
+					</span>
+					<th class="li" colspan="5"><span>用户信息</span></th>
+					<th class="li" colspan="1"><span>客户信息</span></th>
+					<th class="li" colspan="2"><span>用户状态</span></th>
+				</tr>
+			    <tr>
+					<th><span>号码</span></th>
+					<th><span>号码说明</span></th>
+					<th><span>SIM卡号</span></th>
+					<span jwcid="@Conditional" condition='ognl:!"".equals(page.getParameter("IS_EMPTY_ID",""))'>
+					<th><span>白卡号</span></th>
+					</span>
+					<th><span>品牌</span></th>
+					<th><span>产品</span></th>
+					<th><span>积分</span></th>
+					<th><span>开户时间</span></th>
+					<th><span>业务区</span></th>									
+					<th><span>客户名称</span></th>									
+					<th><span>当前状态</span></th>
+					<th><span>最后停机时间</span></th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="relationuuTableInfos" id="relationuuTableInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ROLE_B" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SIM_CARD_NO" raw="false"/></td>
+					<span jwcid="@Conditional" condition='ognl:!"".equals(page.getParameter("IS_EMPTY_ID",""))'>
+					<td><span jwcid="@Insert" value="ognl:info.EMPTY_CARD_ID" raw="false"/></td></span>
+					<!-- <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_S_BRAND', 'BRAND_CODE', 'BRAND', info.BRAND_CODE)" raw="false"/></td> -->
+					<td><span jwcid="@Insert" value="ognl:info.BRAND" raw="false"/></td>
+				    <!-- <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_B_PRODUCT', 'PRODUCT_ID', 'PRODUCT_NAME', info.PRODUCT_ID)" raw="false"/></td> -->
+				    <td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+				  	<td><span jwcid="@Insert" value="ognl:info.SCORE_VALUE" raw="false"/></td>
+				    <td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false"/></td>
+				    <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="false"/></td>
+				 	<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>								
+					<td><span jwcid="@Insert" value="ognl:info.STATE_NAME" raw="false"/></td>
+				    <td><span jwcid="@Insert" value="ognl:info.LAST_STOP_TIME" raw="false"/></td>
+				</tr>			
+			</tbody>
+		</table>
+	
+	</div>
+	</div>
+	</div>
+	<!-- 翻页 开始 -->
+	<!-- 翻页 结束 -->
+	<!-- 表格 结束 -->
+	<!-- 初始化页面隐藏参数信息 开始 -->
+
+<!-- 初始化页面隐藏参数信息 结束-->
+
+
+<!-- 区域 结束 -->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>欠费停拆机用户查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/userowestop/scripts/queryuserowestop.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+<!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">欠费停拆机用户查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span>证件类型：</span></span>
+							<span class="e_select"><span><span>
+							        <select jwcid="@Select" name="cond_PSPT_KIND" id="cond_PSPT_KIND" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')"
+				                                    addDefault="false" value="ognl:cond.cond_PSPT_KIND" disabled="false" desc="证件类型" nullable="yes" 
+				                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+							</span></span></span>
+						</li>
+					    <li class="li"><span class="label">证件号码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_PSPT_ID" id="cond_PSPT_ID"
+									value="ognl:cond.cond_PSPT_ID" desc="证件号码" maxsize="40" /></span></span>
+						</li>
+						<li class="li"><span class="label">客户名称：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_CUST_NAME" id="cond_CUST_NAME"
+									value="ognl:cond.cond_CUST_NAME" desc="客户名称" maxsize="40" /></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return checkUserOweStop(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					    <button type="button" class="e_button-form"  onclick="resetCondition()"><i class="e_ico-search"></i><span>重 置</span></button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				<div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportUserOweStopPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100989"
+								  config="export/sundryquery/other/QueryUserOweStop.xml" fileName="欠费停机用户查询清单"" cond=QueryCondPart/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	     </div>	  
+				<div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>业务区</th>
+							<th>服务号码</th>
+							<th>客户名称</th>
+							<th>类型</th>
+							<th>生成日期</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE', 'AREA_NAME', info.CITY_CODE)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMOVE_TAG"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DESTROY_TIME"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUserOweStop" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_spec_complain(user_id,serial_number,type,long_content,deal_desc,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,in_date,in_staff_id,in_depart_id,city_code,in_eparchy_code,remark)
+ VALUES(TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:TYPE,:LONG_CONTENT,:DEAL_DESC,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:RSRV_STR6,:RSRV_STR7,:RSRV_STR8,:RSRV_STR9,:RSRV_STR10,TO_DATE(:IN_DATE,'YYYY-MM-DD HH24:MI:SS'),:IN_STAFF_ID,:IN_DEPART_ID,:CITY_CODE,:IN_EPARCHY_CODE,:REMARK)

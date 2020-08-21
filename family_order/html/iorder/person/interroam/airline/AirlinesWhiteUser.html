@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    size="s">
+<head jwcid="@Head">
+    <meta charset="utf-8"/>
+    <title>航空公司白名单管理（新）</title>
+    <script
+        jwcid="@Script"
+        src="iorder/person/interroam/airline/scripts/airlineswhiteuser.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 start -->
+<div class="c_header e_show-phone">
+    <div
+        class="back"
+        onclick="closeNav();">航空公司白名单管理（新）
+    </div>
+</div>
+<!-- 标题栏 end -->
+
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+    <div class="l_padding">
+        <!-- 顶部导入和搜索区域 start -->
+        <div>
+            <div class="c_fn e_hide-phone">
+				<div class="fn">
+					<div class="left">
+						<span class="e_elements">
+                            <span
+                                jwcid="@Select"
+                                id="operTag"
+                                name="operTag"
+                                source="ognl:operTagSet"
+                                textField="text"
+                                valueField="value"
+                                addDefault="false"
+                                nullable="no"
+                                desc="选择操作方式"></span>
+							<input
+                                jwcid="@SimpleUpload"
+                                name="FILE_ID"
+                                ftpCode="personserv"
+                                filePath=""
+                                fileTypes=".xls;.xlsx"/>
+							<button
+                                type="button"
+                                class="e_button-blue"
+                                name="IMPORT_BTN"
+                                id="IMPORT_BTN"
+                                ontap="batImportCaseSn();"><span class="e_ico-import"></span>导入</button>
+							<a
+                                jwcid="@Any"
+                                id="A_TEMPLATE_DATA_XLS"
+                                name="A_TEMPLATE_DATA_XLS"
+                                href="ognl:encodeUrl('attach?action=downloadweb&realName=AIRLINE_TEMPLATE.xls&filePath=template/bat/AIRLINE_TEMPLATE.xls')">
+										<span
+                                            jwcid="@Insert"
+                                            value="[下载模板]"></span>
+							</a>
+						</span>
+					</div>
+
+					<div class="right">
+							<span class="e_elements">
+								<button
+                                    class="e_button e_button-l e_button-r"
+                                    ontap="showPopup('mypop','UI-create')">
+								<i class="e_ico-add"></i><span>新增</span></button>
+								<input
+                                    type="text"
+                                    ontap="showPopup('mypop','UI-search')"/>
+								<button
+                                    class="e_button-blue"
+                                    type="button"
+                                    ontap="showPopup('mypop','UI-search')">
+                                    <span class="e_ico-search"></span>
+								</button>
+							</span>
+					</div>
+				</div>
+			</div>
+            <!-- 弹出框 start -->
+
+            <div
+                jwcid="@Popup"
+                name="mypop">
+                <div class="c_popupGroup">
+                    <div
+                        class="c_popupItem c_popupItem-show"
+                        id="UI-search">
+                        <div class="c_header">
+                            <div
+                                class="back"
+                                ontap="hidePopup('mypop','UI-search')">查询信息</div>
+                        </div>
+                        <div class="c_scroll c_scroll-float c_scroll-header">
+                            <div class="l_padding">
+                                <!-- 表单 开始 -->
+                                <div
+                                    jwcid="QueryViewPart@Part"
+                                    name="QueryViewPart"
+                                    class="c_list c_list-form">
+                                    <ul class="ul">
+                                        <li class="link">
+                                            <div class="label">航空公司名称：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="cond_AIRLINES_NAME"
+                                                    value=""
+                                                    desc="航空公司名称"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link">
+                                            <div class="label">航空公司总部所在省份：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="cond_MAINAIR_PRV_NAME"
+                                                    value=""
+                                                    desc="航空公司总部所在省份"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link">
+                                            <div class="label">航空公司分支机构所在省份：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="cond_PROVINCE_NAME"
+                                                    value=""
+                                                    desc="航空公司分支机构所在省份"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link">
+                                            <div class="label">航空公司分支机构所在地市：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="cond_CITY_NAME"
+                                                    value=""
+                                                    desc="航空公司分支机构所在地市"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link">
+                                            <div class="label">员工姓名：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="cond_STAFF_NAME"
+                                                    value=""
+                                                    desc="员工姓名"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link">
+                                            <div class="label">员工号码：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="cond_SERIAL_NUMBER"
+                                                    datatype="mbphone"
+                                                    value=""
+                                                    desc="员工号码"
+                                                    maxsize="11"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- 表单 结束 -->
+    
+                                <!-- 提交 开始 -->
+                                <div class="c_space"></div>
+                                <div class="c_submit c_submit-full">
+                                    <button
+                                        class="e_button-l e_button-r e_button-blue"
+                                        type="button"
+                                        ontap="queryAirlinesWhite();"><i class="e_ico-search"></i><span>查询</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 查询框结束 -->
+    
+                    <!-- 新增框开始 -->
+                    <div
+                        class="c_popupItem c_popupItem-show"
+                        id="UI-create">
+                        <div class="c_header">
+                            <div
+                                class="back"
+                                ontap="hidePopup('mypop','UI-create')">新增信息</div>
+                        </div>
+                        <div class="c_scroll c_scroll-float c_scroll-header">
+                            <div class="l_padding">
+                                <!-- 表单 开始 -->
+                                <div
+                                    jwcid="CreatetUserPart@Part"
+                                    name="CreatetUserPart"
+                                    class="c_list c_list-form">
+                                    <ul>
+                                        <li class="link required">
+                                            <div class="label">航空公司名称：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="AIRLINES_NAME"
+                                                    value=""
+                                                    desc="航空公司名称"
+                                                    nullable="no"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link required">
+                                            <div class="label">航空公司总部所在省份：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="MAINAIR_PRV_NAME"
+                                                    value=""
+                                                    desc="航空公司总部所在省份"
+                                                    nullable="no"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link required">
+                                            <div class="label">航空公司分支机构所在省份：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="PROVINCE_NAME"
+                                                    value=""
+                                                    desc="航空公司分支机构所在省份"
+                                                    nullable="no"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link required">
+                                            <div class="label">航空公司分支机构所在地市：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="CITY_NAME"
+                                                    value=""
+                                                    desc="航空公司分支机构所在地市"
+                                                    nullable="no"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link required">
+                                            <div class="label">员工姓名：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="STAFF_NAME"
+                                                    value=""
+                                                    nullable="no"
+                                                    desc="员工姓名"
+                                                    maxsize="100"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                        <li class="link required">
+                                            <div class="label">员工号码：</div>
+                                            <div class="value">
+                                            <span class="e_mix">
+                                                <input
+                                                    jwcid="@TextField"
+                                                    name="SERIAL_NUMBER"
+                                                    datatype="mbphone"
+                                                    value=""
+                                                    nullable="no"
+                                                    desc="员工号码"
+                                                    maxsize="11"/>
+                                            </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- 表单结束 -->
+    
+                                <!-- 提交 开始 -->
+                                <div class="c_space"></div>
+                                <div class="c_submit c_submit-full">
+                                    <button
+                                        class="e_button-l e_button-r e_button-blue"
+                                        type="button"
+                                        onclick="createAirlinesWhite();"><i class="e_ico-add"></i><span>新增</span></button>
+                                </div>
+                                <!-- 提交 结束 -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 新增框结束 -->
+                </div>
+            </div>
+            <!-- 弹出框 end -->
+        </div>
+        <!-- 顶部导入和搜索区域 end -->
+
+        <div class="c_space"></div>
+    
+        <!-- 展示区域 start -->
+        <divs
+            jwcid="resultsPart@Part"
+            name="resultsPart">
+            <!-- 表格区域 start -->
+            <table
+                name="airLineTable"
+                class="c_table"
+                jwcid="@Table">
+                <thead>
+                    <tr>
+                        <th
+                            class="e_center"
+                            col="AIRLINES_NAME">航空公司名称</th>
+                        <th
+                            class="e_center"
+                            col="MAINAIR_PRV_NAME">航空公司总部所在省份</th>
+                        <th
+                            class="e_center"
+                            col="PROVINCE_NAME">航空公司分支机构所在省份</th>
+                        <th
+                            class="e_center"
+                            col="CITY_NAME">航空公司分支机构所在地市</th>
+                        <th
+                            class="e_center"
+                            col="STAFF_NAME">员工姓名</th>
+                        <th
+                            class="e_center"
+                            col="SERIAL_NUMBER">员工手机号码</th>
+                        <th class="fn">删除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        jwcid="@Foreach"
+                        source="ognl:whiteUserInfos"
+                        value="ognl:info"
+                        element="tr"
+                        index="ognl:rowIndex"
+                        class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                        <td class="e_center"><span
+                            jwcid="@Insert"
+                            value="ognl:info.AIRLINES_NAME"
+                            raw="false"/></td>
+                        <td class="e_center"><span
+                            jwcid="@Insert"
+                            value="ognl:info.MAINAIR_PRV_NAME"
+                            raw="false"/></td>
+                        <td class="e_center"><span
+                            jwcid="@Insert"
+                            value="ognl:info.PROVINCE_NAME"
+                            raw="false"/></td>
+                        <td class="e_center"><span
+                            jwcid="@Insert"
+                            value="ognl:info.CITY_NAME"
+                            raw="false"/></td>
+                        <td class="e_center"><span
+                            jwcid="@Insert"
+                            value="ognl:info.STAFF_NAME"
+                            raw="false"/></td>
+                        <td class="e_center"><span
+                            jwcid="@Insert"
+                            value="ognl:info.SERIAL_NUMBER"
+                            raw="false"/></td>
+                        <td class="fn">
+                            <span
+                                jwcid="@Redirect"
+                                serialNumber="ognl:info.SERIAL_NUMBER"
+                                onclick="deleteAirlinesWhite($(this).attr('serialNumber'));"
+                                class="e_ico-delete"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 表格区域 end -->
+    
+            <!-- 分页区域 start -->
+            <div
+                jwcid="@NavBar"
+                name="pagin"
+                cond="QueryViewPart"
+                part="resultsPart"
+                listener="queryAirlinesWhite"
+                count="ognl:count"
+                pageSize="10"></div>
+            <!-- 分页区域 end -->
+        </divs>
+        <!-- 展示区域 end -->
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="iorder/person/view360/scripts/tabqueryutil.js"></script>
+    <script jwcid="@Script" src="iorder/person/view360/scripts/myrelationtab.js"></script>
+    <title>我的用户关系</title>
+</head>
+<body jwcid="@Body">
+    <!-- 标题栏 开始 -->
+    <div class="c_header e_show-phone">
+        <div class="text">用户关系</div>
+        <div class="fn">
+            <span class="e_ico-user" ontap="tapUserIcon();"></span>
+            <span class="e_ico-search" ontap="tapSearchIcon();"></span>
+            <span class="e_ico-menu" ontap="tapMenuIcon();"></span>
+        </div>
+    </div>
+    <!-- 标题栏 结束 -->
+    <div name="relationScroller" jwcid="@Scroller" checkDOMChanges="true"
+         class="c_scroll c_scroll-white c_scroll-float c_scroll-phone-header">
+        <!-- 分列 开始 -->
+        <div class="l_padding-3 l_padding-phone-1 l_padding-u">
+            <div class="c_space-2 c_space-phone-1"></div>
+            <!-- 标题 开始 -->
+            <div class="c_title c_title-nopadding e_hide-phone">
+                <div class="text e_size-xl e_black">用户关系</div>
+            </div>
+            <!-- 标题 结束 -->
+            <!-- 列表 开始 -->
+            <div jwcid="relationInfoPart@Part"
+                 class="c_list c_list-gray c_list-space c_list-col-2 c_list-phone-col-1 c_list-line c_list-border">
+                <ul>
+                    <li jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+                        element="li">
+                        <div class="content">
+                            <div class="main">
+                                <div class="title">
+                                    <span jwcid="@Insert" value="ognl:info.RELATION_TYPE_NAME"></span>
+                                </div>
+                                <div class="content">
+                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd',info.START_DATE)"></span>
+                                    <span class="e_hide-phone"><span jwcid="@Insert" value="ognl:formatDate(' HH:mm:ss',info.START_DATE)"></span></span>
+                                    <span jwcid="@Insert" value="~"></span>
+                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd',info.END_DATE)"></span>
+                                    <span class="e_hide-phone"><span jwcid="@Insert" value="ognl:formatDate(' HH:mm:ss',info.END_DATE)"></span></span>
+                                </div>
+                                <div class="content">
+                                    <span jwcid="@Insert" value="ognl:'大客户经理：' + info.CUST_MANAGER_NAME"></span>
+                                </div>
+                            </div>
+                            <div jwcid="@Conditional" element="div"
+                                 condition='ognl:"1".equals(isCmccStaff) && null != info.RSRV_VALUE && !"".equals(info.RSRV_VALUE)'
+                                 class="side e_center">
+                                <div class="title">
+                                    <span jwcid="@Insert" value="ognl:info.RSRV_VALUE"></span>
+                                </div>
+                                <div class="content e_size-s">减免</div>
+                            </div>
+                            <div jwcid="@Conditional" element="div"
+                                 condition='ognl:null != info.SHORT_CODE && !"".equals(info.SHORT_CODE)'
+                                 class="side e_center">
+                                <div class="title">
+                                    <span jwcid="@Insert" value="ognl:info.SHORT_CODE"></span>
+                                </div>
+                                <div class="content e_size-s">短号</div>
+                            </div>
+                            <div jwcid="@Conditional" element="div"
+                                 condition='ognl:null != info.ORDERNO && !"".equals(info.ORDERNO)'
+                                 class="side e_center">
+                                <div class="title">
+                                    <span jwcid="@Insert" value="ognl:info.ORDERNO"></span>
+                                </div>
+                                <div class="content e_size-s">顺序</div>
+                            </div>
+                            <div class="fn" ontap="toggleInfo(this);">
+                                <span class="e_ico-unfold"></span>
+                            </div>
+                        </div>
+                        <div class="sub sub-noline" style="display: none;">
+                            <div class="main">
+                                <div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                                    <ul>
+                                        <li>
+                                            <div class="main">
+                                                <div jwcid="@Any" class="title"
+                                                     title="ognl:info.CUST_NAME">
+                                                    <span class="e_blue">A角色</span><span jwcid="@Insert" value="ognl:'（' + info.CUST_NAME + '）'"></span>
+                                                </div>
+                                                <div class="c_space"></div>
+                                                <div class="content e_size-m">
+                                                    <span jwcid="@Insert" value="ognl:'标识：' + info.USER_ID_A"></span>
+                                                </div>
+                                                <div class="content e_size-m">
+                                                    <span jwcid="@Insert" value="ognl:'服务号码：' + info.SERIAL_NUMBER_A"></span>
+                                                </div>
+                                                <div class="content e_size-m">
+                                                    <span jwcid="@Insert" value="ognl:'角色：' + info.ROLE_A"></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="main">
+                                                <div class="title">
+                                                    <span class="e_green">B角色</span>
+                                                </div>
+                                                <div class="c_space"></div>
+                                                <div class="content e_size-m">
+                                                    <span jwcid="@Insert" value="ognl:'标识：' + info.USER_ID_B"></span>
+                                                </div>
+                                                <div class="content e_size-m">
+                                                    <span jwcid="@Insert" value="ognl:'服务号码：' + info.SERIAL_NUMBER_B"></span>
+                                                </div>
+                                                <div class="content e_size-m">
+                                                    <span jwcid="@Insert" value="ognl:'角色：' + info.ROLE_B"></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

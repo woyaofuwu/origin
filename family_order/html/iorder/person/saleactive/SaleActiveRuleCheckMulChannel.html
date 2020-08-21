@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <title>信用购机办理规则预校验</title>
+    <script jwcid="@Script" language="JavaScript" src="iorder/person/saleactive/scripts/SaleActiveRuleCheckMulChannel.js"></script>
+</head>
+
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+    <div class="back" ontap="closeNav();">信用购机办理规则预校验</div>
+    <div class="fn">
+        <span class="e_ico-search" ontap=""></span>
+    </div>
+</div>
+<div class="c_scroll c_scroll-float c_scroll-phone-header" name="scroller1" jwcid="@Scroller" checkDOMChanges="true" >
+    <div class="l_padding l_padding-phone-1">
+        <!-- 认证 开始 -->
+        <div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="520" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+        <!-- 认证 结束 -->
+
+        <input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="" />
+        <input jwcid="@Hidden" name="USER_ID" id="USER_ID" value="" />
+
+        <!-- 标题 开始  -->
+        <div class="c_title">
+            <div class="text">规则校验</div>
+        </div>
+        <!-- 标题 结束  -->
+        <div jwcid="QueryRecordPart@Part" class="c_form c_form-submit c_form-border c_form-label-5 c_form-col-2 c_form-phone-col-1">
+            <ul>
+                <li class="required">
+                    <div class="label">活动类型：</div>
+                    <div class="value">
+                        <select jwcid="@Select" name="SALE_CAMPN_TYPE" id="SALE_CAMPN_TYPE" source="ognl:batcampnTypes" textField="LABEL_NAME" valueField="LABEL_ID" titleField="LABEL_ID" value="" onchange="queryProductByType()" nullable="no" desc="活动类型" />
+                    </div>
+                </li>
+                <li class="required" jwcid="QueryRecordPart1@Part" element="li">
+                    <div class="label">营销方案：</div>
+                    <div class="value">
+                        <select jwcid="@Select" name="SALE_PRODUCT_ID" id="SALE_PRODUCT_ID" source="ognl:saleProducts" textField="SALE_PRODUCT_NAME" valueField="PRODUCT_ID" titleField="SALE_PRODUCT_NAME" value=""  nullable="no"  onchange="checkByProduct()" desc="营销方案" />
+                    </div>
+                </li>
+
+                <li class="required" jwcid="QueryRecordPart2@Part" element="li">
+                    <div class="label">产品包：</div>
+                    <div class="value">
+                        <select jwcid="@Select" name="SALE_PACKAGE_ID" id="SALE_PACKAGE_ID" source="ognl:salePackages" textField="PACKAGE_NAME" valueField="PACKAGE_ID" titleField="PACKAGE_NAME" value=""  addDefault="false" desc="产品包" />
+                    </div>
+                </li>
+                <div class="submit">
+                    <button class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="checkRule()">
+                        <span class="e_ico-check"></span>
+                        <span>校验</span>
+                    </button>
+                </div>
+            </ul>
+        </div>
+        <div class="c_space-c"></div>
+        <!-- 表格 开始 -->
+        <div jwcid="QueryListPart@Part">
+            <table id="sortedTable" name="sortedTable" class="c_table c_table-border c_table-lite c_table-row-8" useScroller="true" jwcid="@Table">
+                <thead>
+                <tr>
+                    <th col="ROW_NUM">序号</th>
+                    <th col="ERR_NUM">产品包</th>
+                    <th col="ERR_INFO">返回信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                    <td data-title="序号" class="key">
+                        <a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" />
+                    </td>
+                    <td data-title="产品包">
+                        <span jwcid="@Insert" value="ognl:info.OFFER_NAME" />
+                    </td>
+                    <td data-title="返回信息">
+                        <span jwcid="@Insert" value="ognl:info.ERR_INFO" />
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <div class="c_space-c"></div>
+            <div jwcid="@NavBar" class="c_page c_page-border" name="listnav" id="listnav" cond="QueryRecordPart" part="QueryListPart" listener="queryCardStorage" pageSize="10" count="ognl:recordCount"></div>
+        </div>
+        <!-- 表格 结束 -->
+    </div>
+</div>
+</body>
+
+</html>

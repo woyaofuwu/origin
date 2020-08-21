@@ -1,0 +1,1 @@
+Select * From  TF_F_RELATION_UU t where t.relation_type_code='45' and t.user_id_b=:USER_ID_B and sysdate between t.start_date and t.end_date

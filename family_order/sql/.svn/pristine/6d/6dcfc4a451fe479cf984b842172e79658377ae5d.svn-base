@@ -1,0 +1,2 @@
+INSERT INTO tf_a_invoicetype(eparchy_code,acct_id,partition_id,note_code,start_acyc_id,end_acyc_id,update_time,update_depart_id,update_staff_id)
+ VALUES(:EPARCHY_CODE,TO_NUMBER(:ACCT_ID),mod(TO_NUMBER(:ACCT_ID),10000),:NOTE_CODE,:START_ACYC_ID,:END_ACYC_ID,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_DEPART_ID,:UPDATE_STAFF_ID)

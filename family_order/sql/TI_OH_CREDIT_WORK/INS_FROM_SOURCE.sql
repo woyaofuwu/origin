@@ -1,0 +1,4 @@
+INSERT INTO ti_oh_credit_work(intrade_id,trade_id,user_id,in_time,exec_time,sub_policy_id,manage_tag,leave_real_fee,credit_value,trade_type_code,finish_time,update_time,update_staff_id,update_depart_id,remark,process_tag,olcom_work_id,answer_tag,process_remark)
+ SELECT intrade_id,trade_id,user_id,in_time,exec_time,sub_policy_id,manage_tag,leave_real_fee,credit_value,trade_type_code,finish_time,update_time,update_staff_id,update_depart_id,remark,process_tag,olcom_work_id,answer_tag,process_remark
+FROM TI_O_CREDIT_WORK
+WHERE trade_id=:TRADE_ID

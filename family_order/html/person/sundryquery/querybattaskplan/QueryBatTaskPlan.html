@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>批量任务计划查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/querybattaskplan/scripts/QueryBatTaskPlan.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取批量任务计划无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">批量任务计划查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"><span class="label">任务类型：</span> <span
+							class="e_select"><span>
+								<select jwcid="@Select" id="cond_BATCH_OPER_TYPE" name="cond_BATCH_OPER_TYPE" source="ognl:batchOperTypes" 
+								valueField="BATCH_OPER_TYPE" textField="BATCH_OPER_NAME"  value="ognl:info.BATCH_OPER_TYPE"
+								 desc="任务类型" />	
+									</span></span>
+						</li>
+						 <li class="li"><span class="label">任务名称：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_BATCH_TASK_NAME" id="cond_BATCH_TASK_NAME"
+									value="ognl:condition.cond_BATCH_TASK_NAME" desc="任务名称"/></span></span>
+						</li>
+						
+						<li class="li"><span class="label">开始时间：</span><span 
+				          class="e_input"><span>
+				                  <input type="text" jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE" value="ognl:condition.cond_START_DATE" desc="开始启动时间"  format="yyyy-MM-dd" maxName="cond_END_DATE"/>
+                           
+                           </span></span>
+			            </li>
+			            
+			            <li class="li"><span class="label">结束时间：</span><span 
+				          class="e_input"><span>
+				                  <input type="text" jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE" value="ognl:condition.cond_END_DATE" desc="结束启动时间"  format="yyyy-MM-dd" minName="cond_START_DATE"/>
+                         </span></span>
+			            </li>
+					
+               		<li class="li">
+               		<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return getBatTaskPlan(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+						</div>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				
+
+				<!-- 表格 开始 -->
+
+				<div jwcid="QueryListPart@Part" element="div">
+				
+				<div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+ 								
+				     </div>
+		  	     </div>	
+		  	     
+		  	    <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>任务名称</th>
+							<th>任务类型</th>
+							<th>创建人</th>
+							<th>创建时间</th>
+							<th>启动时间</th>
+							<th>计划业务总量</th>
+							<th>已完成业务量</th>
+							<th>完成率</th>
+						</tr>
+						
+						
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.BATCH_TASK_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BATCH_OPER_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CREATE_STAFF_ID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CREATE_TIME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TOTAL_COUNT" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.FINISH_COUNT" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PER" raw="true"/></td>
+						</tr>
+						
+						                                           
+						</tbody>
+					</table>
+
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryBatTaskPlan" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

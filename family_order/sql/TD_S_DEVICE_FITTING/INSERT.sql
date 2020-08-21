@@ -1,0 +1,2 @@
+INSERT INTO td_s_device_fitting(eparchy_code,device_type_code,fitting_code,fitting,update_time,update_staff_id,update_depart_id,remark)
+ VALUES(:EPARCHY_CODE,:DEVICE_TYPE_CODE,:FITTING_CODE,:FITTING,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK)

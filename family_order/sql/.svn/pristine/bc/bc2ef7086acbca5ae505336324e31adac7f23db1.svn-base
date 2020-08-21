@@ -1,0 +1,3 @@
+SELECT 'ContactType' KEY,CONTACT_TYPE_CODE VALUE1,'-1' VALUE2, CONTACT_TYPE VRESULT
+     FROM td_s_contacttype
+WHERE 'ContactType'=:KEY

@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+SELECT a.para_code1,a.para_code2,a.para_code3 FROM td_s_commpara a WHERE  a.SUBSYS_CODE = :SUBSYS_CODE AND a.PARAM_ATTR = :PARAM_ATTR AND a.PARAM_CODE = :PARAM_CODE AND (sysdate between a.start_date and a.end_date)

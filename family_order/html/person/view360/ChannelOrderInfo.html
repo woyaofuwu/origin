@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: TradeHistoryInfo.html,v 1.24 2013/05/06 09:21:26 xiaolu Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 - 电渠信息查询</title>
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/thpage.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/chanealOrderInfo.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">电渠订单信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart1@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"/>
+
+	</div>
+	<!-- 隐藏域 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+
+			<li class="li">
+				<span class="label">开始日期：</span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					
+					<span class="e_input e_input-left"><span>
+					<input type="text" value="ognl:condition.START_DATE" name="START_DATE" id="START_DATE"
+									   jwcid="@DateField" format="yyyy-MM-dd"
+									   desc="开始日期" datatype="date"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">终止日期：</span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					
+					<span class="e_input e_input-left"><span>
+					<input type="text" value="ognl:condition.END_DATE" name="END_DATE" id="END_DATE"
+									   jwcid="@DateField" format="yyyy-MM-dd"
+									   desc="结束日期" datatype="date"/> 
+					</span></span>
+				</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+
+			<button jwcid="@Any" name="query_BTN" id="query_BTN" class="e_button-form" onclick="return thQuery();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+		<table jwcid="@Table"  name="channelInfoTable" id="channelInfoTable">
+			<thead>
+				<tr>
+					<th>订单编号</th>
+					<th>订单状态</th>
+					<th>订单类型</th>
+					<th>支付方式</th>
+					<th>订单金额</th>
+					<th>支付状态</th>
+					<th>物流状态</th>
+					
+				</tr>
+			</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+                        <td><a class="mycolor" jwcid="@Redirect" value = "ognl:info.ORDER_NO"  caption = "受理信息" 
+                        	cust_id="ognl:condition.CUST_ID" 
+                        	user_id="ognl:condition.USER_ID" 
+                        	trade_id='ognl:info.ORDER_NO'
+							trade_type = "ognl:info.TRADE_TYPE_CODE"	
+							onclick="contorlRedirect(getAttribute('cust_id'),getAttribute('user_id'),getAttribute('trade_flag'),getAttribute('order_no'),getAttribute('trade_type'));"/>
+						</td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.ORDER_STATE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.ORDER_TYPE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.PAY_TYPE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.ORDER_TOTAL" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.PAY_STATE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.WL_STATE" raw="false" /></font></td>
+
+                   </tr>
+		</tbody>
+		</table>
+	</div>
+	</div>
+	    <!-- 翻页（替换为页面组件） 开始  -->
+			<div jwcid="@NavBar" name="ChInfonav" id="ChInfonav" cond="QueryCondPart1,QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="10" count="ognl:infosCount"></div>
+	 	<!--  翻页 结束  -->
+ </div>
+	<!-- 表格 结束 -->
+	
+	<!-- 为后面查询准备，待定 -->
+	<div jwcid="mytabPart@Part">
+	    <!-- 分页标签（替换为页面组件） 开始 -->
+	    <div jwcid="mytab@Tabset" name="mytab" switchAction="myTabSwitchAction(ptitle,title);" >
+	
+	</div>
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div>
+
+</div>
+</body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onTradeHistoryInfo();
+	});
+</script>
+</html>

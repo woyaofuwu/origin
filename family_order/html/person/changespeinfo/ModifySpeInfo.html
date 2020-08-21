@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/changespeinfo/scripts/modifyspeinfo.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户特殊资料变更</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="72" element="div"/>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<div jwcid="ChangeDataPart@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">当前品牌：</span></span>
+<!-- 				<span class="text" jwcid="@Insert" name="E_BRAND_CODE" id="E_BRAND_CODE" value= "ognl:userInfo.BRAND_NAME" disabled="true" desc="当前品牌" ></span>-->			 	<span class="e_select"><span><span>
+					<select jwcid="@Select" name="E_BRAND_CODE" id="E_BRAND_CODE"  
+					  source="ognl:brandList" 
+					  textField="TEXT" valueField="VALUE"
+					  titleField="TEXT" value="ognl:commInfo.BRAND_CODE" desc="当前品牌"  disabled="true" nullable="no"/>
+				</span></span></span> 
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">业务区：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="CITY_CODE" id="CITY_CODE" 
+					source="ognl:pageutil.getList('TD_M_AREA','AREA_CODE','AREA_NAME',new java.lang.String[]{'AREA_LEVEL','PARENT_AREA_CODE'},new java.lang.String[]{'30',getVisit().getStaffEparchyCode()})" 
+					  textField="AREA_NAME" valueField="AREA_CODE"
+					  titleField="AREA_NAME" value="ognl:userInfo.CITY_CODE" desc="用户业务区"  disabled="true" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span class="e_required">用户类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="USER_TYPE_CODE" id="USER_TYPE_CODE"
+							source="ognl:pageutil.getList('TD_B_USERTYPE','USER_TYPE_CODE','USER_TYPE','EPARCHY_CODE',getVisit().getStaffEparchyCode())"
+							textField="USER_TYPE" valueField="USER_TYPE_CODE" value="ognl:userInfo.USER_TYPE_CODE"
+							desc="用户类型" nullable="no" disabled="true" titleField="USER_TYPE"/>
+					</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">用户状态：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="USER_STATE_CODESET" id="USER_STATE_CODESET"   
+					 source="ognl:stateList"
+					 textField="STATUS_NAME" valueField="FUNC_STATUS"
+                     			titleField="STATUS_NAME"	nullable="no"  value="ognl:commInfo.USER_STATE_CODESET" disabled="true" desc="用户状态" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">用户卡号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="SIM_CARD_NO" id="SIM_CARD_NO" value="ognl:commInfo.SIM_CARD_NO" maxsize="100" 
+									onchange="simCardNoCheck()" disabled="true" desc="用户卡号" nullable="no" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">用户IMSI：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="IMSI" id="IMSI" value="ognl:commInfo.IMSI" maxsize="100" 
+									onchange="imsiCheck()" disabled="true" desc="用户IMSI" nullable="no" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">发展工号：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="DEVELOP_STAFF_ID" id="DEVELOP_STAFF_ID" value="ognl:userInfo.DEVELOP_STAFF_ID" disabled="true" maxlength="8" maxsize="8"  desc="发展工号"/></span></span>
+			</li>
+			<li class="li col-3">
+				<span class="label"><span class="e_required">修改原因：</span></span>
+				<span class="e_input">
+					<input type="text" jwcid="@TextField" name="REMARK" id="REMARK" value="" maxsize="100" 
+									disabled="true" desc="修改原因" nullable="no" />
+				</span>
+			</li>
+
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 隐藏数据-->  
+	<input type="hidden" jwcid="@Any" id="OLD_SIM_CARD_NO" name="OLD_SIM_CARD_NO" value="ognl:commInfo.SIM_CARD_NO" />
+	<input type="hidden" jwcid="@Any" id="OLD_IMSI" name="OLD_IMSI" value="ognl:commInfo.IMSI" />
+	<input type="hidden" jwcid="@Any" id="OLD_BRAND_CODE" name="OLD_BRAND_CODE" value="ognl:commInfo.BRAND_CODE" />
+	<input type="hidden" jwcid="@Any" id="OLD_USER_STATE_CODESET" name="OLD_USER_STATE_CODESET" value="ognl:commInfo.USER_STATE_CODESET" />
+	<!--隐藏数据 结束-->
+	
+	</div>
+<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" isReset="true" area="AuthPart,ChangeDataPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+	
+</div></div></body>
+</html>

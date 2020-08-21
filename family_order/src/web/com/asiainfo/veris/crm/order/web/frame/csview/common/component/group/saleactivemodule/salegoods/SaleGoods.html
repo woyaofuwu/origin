@@ -1,0 +1,89 @@
+<!-- $Id: SaleGoods.html,v 1.4 2013/04/10 08:33:01 anwx Exp $ -->
+<input jwcid="@Hidden" id="SALEGOODS_COMPONENT_ID" name="SALEGOODS_COMPONENT_ID" value="ognl:id"/>
+<input jwcid="@Hidden" id="SALEGOODS_NEW_IMEI" name="SALEGOODS_NEW_IMEI" value="ognl:newImei"/>
+<div class="">
+	<div class="c_table">
+		<table id="SaleGoodsTable" name="SaleGoodsTable">	
+			<colgroup>
+				<col style="width:50px;"></col>
+				<col style="width:24px;"></col>
+				<col></col>
+				<col style="width:190px;"></col>
+				<col style="width:190px;"></col>
+			</colgroup>		
+			<tbody>
+				<tr class="even">
+					<td class="e_center" rowspan="10"><strong>实物</strong></td>
+					<td class="e_center">选择</td>
+					<td class="e_center">名称</td>
+					<td class="e_center">实物描述</td>
+					<td class="e_center">促销员工/手机串号校验</td>
+				</tr>
+				<tr
+					jwcid="@Foreach" 
+					source="ognl:infos" 
+					value="ognl:info"
+					element="tr">
+					<td class="e_center">
+						<input type="checkbox" jwcid="@Checkbox"
+							name="ognl:'GOODS_CB_'+rowIndex+'_'+info.GOODS_ID" 
+							id="ognl:'GOODS_CB_'+rowIndex+'_'+info.GOODS_ID" 
+							value="ognl:info.GOODS_ID"
+							element_id="ognl:info.GOODS_ID"
+							element_name="ognl:info.GOODS_NAME"
+							element_type_code="ognl:info.ELEMENT_TYPE_CODE"
+							fee="ognl:info.FEE"
+							fee_mode="ognl:info.FEE_MODE"
+							fee_type_code="ognl:info.FEE_TYPE_CODE"
+							pay_mode="ognl:info.PAY_MODE"
+                        	deposit_type="ognl:info.DEPOSIT_TYPE"
+							in_deposit_code="ognl:info.IN_DEPOSIT_CODE"
+							out_deposit_code="ognl:info.OUT_DEPOSIT_CODE"
+							has_check="ognl:info.HAS_CHECK";
+                        	index="ognl:rowIndex"
+							checked="ognl:info.MAIN_TAG == 1 || info.DEFAULT_TAG == 1 || info.FORCE_TAG == 1"
+							disabled="ognl:info.FORCE_TAG == 1 || info.MAIN_TAG == 1"
+							onclick="saleactiveModule.spCheckBoxOnclickAction(this.id)" />
+					</td>
+					<td class="wrap">
+						<span jwcid="@Insert" value="ognl:info.GOODS_NAME"/>
+					</td>
+					<td class="wrap">
+						<span jwcid="@Insert" value="ognl:info.GOODS_EXPLAIN"/>
+					</td>
+					<td class="edit">
+						<div jwcid="@Conditional" condition="ognl:info.NEED_CHECK == 1">
+							<span class="e_elements">
+								<div jwcid="@Conditional" condition="ognl:info.ENTER_SALE_STAFF_TAG == 1 ">
+									<span class="e_input e_elementsLeft e_input-left" style="width:50px;"><span>
+										<input jwcid="@Any" type="text" id="ognl:'GOODS_'+rowIndex+'_STAFF_ID'" name="ognl:'GOODS_'+rowIndex+'_STAFF_ID'" 
+														index="ognl:'GOODS_'+rowIndex+'_RES_CODE'"
+				                                        onkeydown="if(event.keyCode==13||event.keyCode==8||(event.keyCode>=65&&event.keyCode<=90)||(!event.shiftKey&&event.keyCode>=48&&event.keyCode<=57)||(!event.shiftKey&&event.keyCode>=96&&event.keyCode<=105)){return true;}else{return false;}" 
+				                                        onkeyup="this.value=this.value.toUpperCase()"
+														value="" title="输入促销员工" desc="促销员工" onpropertychange=""
+														/>
+									</span></span>
+								</div>
+								<button jwcid="@Any" class="e_button-right" type="button" 
+									goodsId="ognl:info.GOODS_ID" index="ognl:rowIndex" id="ognl:'resCheckButton'+rowIndex" 
+									onclick="saleactiveModule.spCheckResInfo(this);">
+									<span>校验</span>
+								</button>
+								<span class="e_input e_elementsAuto e_input-center"><span>
+									<input jwcid="@Any" type="text" id="ognl:'GOODS_'+rowIndex+'_RES_CODE'" name="ognl:'GOODS_'+rowIndex+'_RES_CODE'" 
+											chkboxid="ognl:'GOODS_CB_'+rowIndex+'_'+info.GOODS_ID" staff_id="" enterstafftag="ognl:info.ENTER_SALE_STAFF_TAG"
+											value="" title="输入手机串号" desc="手机串号" 
+											resCheck="ognl:info.RES_CHECK" resTypeCode="ognl:info.RES_TYPE_CODE" 
+											resId="ognl:info.RES_ID" index="ognl:rowIndex" goodsId="ognl:info.GOODS_ID"/>
+								</span></span>
+							</span>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(info.RES_CHECK != 1 || info.NEED_CHECK == 0) && info.RES_CHECK != 2 && info.RES_CHECK != 3 ">无资源需要校验</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- 表格 结束 -->
+<input jwcid="@TextField" name="SALEGOODS_EPARCHY_CODE" id="SALEGOODS_EPARCHY_CODE" value="ognl:eparchyCode"  style="display:none"/>

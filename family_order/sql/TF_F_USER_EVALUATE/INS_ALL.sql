@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_evaluate(staff_id,evaluate_code,evaluate_class,evaluate_notion,evaluate_date,remark)
+ VALUES(:STAFF_ID,:EVALUATE_CODE,:EVALUATE_CLASS,:EVALUATE_NOTION,TO_DATE(:EVALUATE_DATE,'YYYY-MM-DD'),:REMARK)

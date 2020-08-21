@@ -1,0 +1,490 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/acceptanceperiodchange/script/acceptanceperiodapply.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">验收期变更申请</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+		<div jwcid="GroupAndProduct@Part">
+			<div class="c_space"></div>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="required" >
+						<div class="label">订单号</div>
+						<div class="value" onclick="showPopup('qryPopup5','qryInfo');">
+							<span class="e_group">
+								<span class="e_groupRight">
+									<button >
+										<span class="e_ico-search"></span>
+										<span>查询</span>
+									</button>
+								</span>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="c_title">
+				<div class="text">验收期信息</div>
+			</div>
+			
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">老验收期</div>
+						<div class="value"><input jwcid="@TextField" id="ACCEPTTANCE_PERIOD" name="ACCEPTTANCE_PERIOD" readonly="readnoly" value="ognl:otherInfo.ACCEPTTANCE_PERIOD"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">新验收期</div>
+						<div class="value"><select id="NEW_ACCEPTTANCE_PERIOD" name="NEW_ACCEPTTANCE_PERIOD" jwcid="@Select" source="ognl:pageutil.getStaticList('ACCEPTTANCE_PERIOD')" textField="DATA_NAME" valueField="DATA_ID"/></div>
+					</li>
+					<li class="link required" >
+						
+						<!-- <div class="label">查询订单   <span class="e_ico-search"></span></div>
+						<div class="value"></div>
+						<div class="e_ico-search"></div> -->
+					</li>
+				</ul>
+			</div>
+			<!-- <div class="c_form c_form-border c_form-col-3 c_form-phone-col-1  c_form-label-4 c_form-submit-h">
+				<ul>
+					<li class="link required">
+						<div class="label">订单号：</div>
+						<div class="value">
+							<input type="text" id="IBSYSID_FOR_QRY" name="IBSYSID_FOR_QRY" />
+						</div>
+					</li>
+					<li class="link">
+						<button type="button" class="e_button-r e_button-l e_button-green" onclick="qryInfos();">查询</button>
+					</li>
+				</ul>
+			</div> -->
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">客户信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<input type="hidden" jwcid="@Any" id="IBSYSID" name="IBSYSID" value="ognl:groupInfo.IBSYSID"/>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">客户名称</div>
+						<div class="value"><input jwcid="@TextField" id="CUST_NAME" name="CUST_NAME" readonly="readnoly" value="ognl:groupInfo.CUST_NAME"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">客户编码</div>
+						<div class="value"><input jwcid="@TextField" id="GROUP_ID" name="GROUP_ID" readonly="readnoly"  value="ognl:groupInfo.GROUP_ID" /></div>
+					</li>
+					<li class="link" ontap="showPopup('qryPopup1','qryCustInfos');">
+						<div class="label">其他客户信息</div>
+						<div class="value"></div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">产品信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<div class="c_box c_box-border">
+									<!-- 参数 开始 -->
+									<div class="c_table">
+									<table jwcid="@Table" name="myTable1">
+										<thead>
+											<tr>
+												<th>产品编码</th>
+												<th>产品名称</th>
+												<th>订单号</th>
+												<th>专线实例号</th>
+												<th>业务保障等级</th>
+												<th>专线名称</th>
+												<th>用户技术联系人</th>
+												<th>用户技术联系人电话</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr jwcid="@Foreach" source="ognl:pattrs" value="ognl:pattr" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+												onclick="qryProductInfo(this);" productNo="ognl:pattr.PRODUCTNO" ibsysid="ognl:pattr.IBSYSID">
+												<td><span jwcid="@Insert" value="ognl:pattr.PRODUCT_ID"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PRODUCT_NAME"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.IBSYSID"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PRODUCTNO"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.BIZSECURITYLV"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.TRADENAME"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PORTACONTACT"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PORTACONTACTPHONE"　raw="false"/></td>
+											</tr>
+										</tbody>
+										</table>
+								</div>
+								</div>
+									
+				<!-- <ul>
+					<li class="link required">
+						<div class="label">产品名称</div>
+						<div class="value"><input jwcid="@TextField" id="PRODUCT_NAME" name="PRODUCT_NAME" readonly="readnoly" value="ognl:info.PRODUCT_NAME" /></div>
+					</li>
+					<li class="link required">
+						<div class="label">产品编码</div>
+						<div class="value"><input jwcid="@TextField" id="PRODUCT_ID" name="PRODUCT_ID" readonly="readnoly" value="ognl:info.PRODUCT_ID" /></div>
+					</li>
+					<li class="link" ontap="showPopup('qryPopup2','UI-moreProduct');">
+						<div class="label">其他产品信息</div>
+						<div class="value"></div>
+						<div class="more"></div>
+					</li>
+				</ul> -->
+			</div>
+			<!-- 表单 结束 -->
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">验收期历史变更信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<div class="c_box c_box-border">
+					<!-- 参数 开始 -->
+					<div class="c_table">
+					<table jwcid="@Table" name="myTable2">
+						<thead>
+							<tr>
+								<th>订单号</th>
+								<th>主订单号</th>
+								<th>新验收期</th>
+								<th>老验收期</th>
+								<th>提单员工编码</th>
+								<th>提单部门编码</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:accetanceperiodInfos" value="ognl:accetanceperiodInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><span jwcid="@Insert" value="ognl:accetanceperiodInfo.IBSYSID"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:accetanceperiodInfo.MAIN_IBSYSID"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:accetanceperiodInfo.NEW_ACCEPTTANCE_PERIOD"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:accetanceperiodInfo.OLD_ACCEPTTANCE_PERIOD"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:accetanceperiodInfo.STAFF_ID"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:accetanceperiodInfo.DEPART_ID"　raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+					<!-- 参数 结束 -->
+				</div>
+			</div>
+			<!-- 表单 结束 -->
+			</div>
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy" onclick="$.nav.close();">取消</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" onclick="getCustInfo();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+	</div>
+	<!-- 滚动 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup5" id="qryPopup5">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryInfo">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);">返回</div>
+			</div>
+			<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding">
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link">
+								<div class="label">订单号</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_IBSYSID"  name="cond_IBSYSID" value="ognl:info.IBSYSID"  desc="定单流水号" /></div>
+							</li>
+							<!-- <li class="link">
+								<div class="label">集团客户编码</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_GROUPID"  name="cond_GROUPID" value="ognl:info.GROUPID"  desc="集团客户编码" /></div>
+							</li> -->
+							<li class="link">
+								<div class="label">专线实例号</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_PRODUCTNO"  name="cond_PRODUCTNO" value="ognl:info.PRODUCTNO"  desc="专线实例号" /></div>
+							</li>
+							<!-- <li class="link">
+								<div class="label">订单号</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_SERIALNO"  name="cond_SERIALNO" value="ognl:info.SERIALNO"  desc="订单号" /></div>
+							</li> -->
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="qryInfos();hidePopup(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	<div jwcid="@Popup" name="qryPopup1" id="qryPopup1">
+	<div jwcid="GroupInfo@Part" class="c_popupGroup">
+		<div class="c_popupItem" id="qryCustInfos">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);">返回</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding">
+					<!-- 参数 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户级别：</span>
+								<span class="value" jwcid="@Insert" id="CLASS_NAME" name="CLASS_NAME" value="ognl:groupInfo.CLASS_NAME"/>
+							</li>
+							<li>
+								<span class="label">客户地址：</span>
+								<span class="value" jwcid="@Insert" id="GROUP_ADDR" name="GROUP_ADDR" value="ognl:groupInfo.GROUP_ADDR"/>
+							</li>
+							<li>
+								<span class="label">客户所属市县：</span>
+								<span class="value" jwcid="@Insert" id="CITY_NAME" name="CITY_NAME" value="ognl:groupInfo.CITY_NAME"/>
+							</li>
+							<li>
+								<span class="label">所属行业：</span>
+								<span class="value" jwcid="@Insert" id="CALLING_TYPE_NAME" name="CALLING_TYPE_NAME" value="ognl:groupInfo.CALLING_TYPE_NAME"/>
+							</li>
+							<li>
+								<span class="label">子行业类别：</span>
+								<span class="value" jwcid="@Insert" id="SUB_CALLING_TYPE_NAME" name="SUB_CALLING_TYPE_NAME" value="ognl:groupInfo.SUB_CALLING_TYPE_NAME"/>
+							</li>
+							<li>
+								<span class="label">客户邮箱：</span>
+								<span class="value" jwcid="@Insert" id="EMAIL" name="EMAIL" value="ognl:groupInfo.EMAIL"/>
+							</li>
+							<li>
+								<span class="label">客户邮编：</span>
+								<span class="value" jwcid="@Insert" id="POST_CODE" name="POST_CODE" value="ognl:groupInfo.POST_CODE"/>
+							</li>
+							<li>
+								<span class="label">客户联系人：</span>
+								<span class="value" jwcid="@Insert" id="RSRV_STR2" name="RSRV_STR2" value="ognl:groupInfo.RSRV_STR2"/>
+							</li>
+							<li>
+								<span class="label">联系人电话：</span>
+								<span class="value" jwcid="@Insert" id="RSRV_STR7" name="RSRV_STR7" value="ognl:groupInfo.RSRV_STR7"/>
+							</li>
+						</ul>
+					</div>
+					<!-- 参数 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	<!-- <div class="c_popup c_popup-full" jwcid="@Popup" name="qryPopup2" id="qryPopup2">
+				<div jwcid="ProductInfo@Part" class="c_popupGroup">
+					<div class="c_popupItem" id="UI-moreProduct">
+						<div class="c_header">
+							<div class="back" ontap="hidePopup(this)">其他产品信息</div>
+						</div>
+						
+						<div class="c_scroll c_scroll-float c_scroll-header">
+							<div class="l_padding l_padding-u">
+								标题 开始
+								<div class="c_title">
+									<div class="text">专线业务信息</div>
+								</div>
+								标题 结束
+								参数 开始
+								<div class="c_box c_box-border">
+									参数 开始
+									<div class="c_table">
+									<table>
+										<thead>
+											<tr>
+												<th>产品编码</th>
+												<th>产品名称</th>
+												<th>订单号</th>
+												<th>专线实例号</th>
+												<th>业务保障等级</th>
+												<th>专线名称</th>
+												<th>用户技术联系人</th>
+												<th>用户技术联系人电话</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr jwcid="@Foreach" source="ognl:pattrs" value="ognl:pattr" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+												<td><span jwcid="@Insert" value="ognl:pattr.PRODUCT_ID"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PRODUCT_NAME"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.IBSYSID"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PRODUCTNO"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.BIZSECURITYLV"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.TRADENAME"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PORTACONTACT"　raw="false"/></td>
+												<td><span jwcid="@Insert" value="ognl:pattr.PORTACONTACTPHONE"　raw="false"/></td>
+											</tr>
+										</tbody>
+									</table>
+									</div>
+									参数 结束
+								</div>
+								<div class="c_space"></div>
+								提交 开始
+								<div class="c_submit c_submit-center">
+									<button type="button" class="e_button-r e_button-l e_button-blue"  ontap="hidePopup(this)">关闭</button>
+								</div>
+								提交 结束
+								<div class="c_space"></div>
+							</div>
+						</div>
+				</div>
+		</div>
+	</div> -->
+	<div class="c_popup c_popup-full" jwcid="@Popup" name="qryPopup2" id="qryPopup2">
+				<div jwcid="ProductInfo@Part" class="c_popupGroup">
+					<div class="c_popupItem" id="UI-moreProduct">
+						<div class="c_header">
+							<div class="back" ontap="hidePopup(this)">其他产品信息</div>
+						</div>
+						
+						<div class="c_scroll c_scroll-float c_scroll-header">
+							<div class="l_padding l_padding-u">
+								<!-- 标题 开始 -->
+								<div class="c_title">
+									<div class="text">专线业务信息</div>
+								</div>
+								<!-- 标题 结束 -->
+								<!-- 参数 开始 -->
+								<div class="c_box c_box-border">
+									<!-- 参数 开始 -->
+									<div class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-11">
+										<ul>
+											<li>
+												<span class="label">产品编码：</span>
+												<span class="value" jwcid="@Insert" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:info.PRODUCT_ID"/>
+											</li>
+											<li>
+												<span class="label">产品名称：</span>
+												<span class="value" jwcid="@Insert" id="PRODUCT_NAME" name="PRODUCT_NAME" value="ognl:info.PRODUCT_NAME"/>
+											</li>
+											<li>
+												<span class="label">业务保障等级：</span>
+												<span class="value" jwcid="@Insert" id="BIZSECURITYLV" name="BIZSECURITYLV" value="ognl:productInfo.BIZSECURITYLV"/>
+											</li>
+											<li>
+												<span class="label">业务带宽（速率）：</span>
+												<span class="value" jwcid="@Insert" id="BANDWIDTH" name="BANDWIDTH" value="ognl:productInfo.BANDWIDTH"/>
+											</li>
+											<li>
+												<span class="label">所属省份：</span>
+												<span class="value" jwcid="@Insert" id="PROVINCEA" name="PROVINCEA" value="ognl:productInfo.PROVINCEA"/>
+											</li>
+											<li>
+												<span class="label">所属地市：</span>
+												<span class="value" jwcid="@Insert" id="CITYA" name="CITYA" value="ognl:productInfo.CITYA"/>
+											</li>
+											<li>
+												<span class="label">所属区县：</span>
+												<span class="value" jwcid="@Insert" id="AREAA" name="AREAA" value="ognl:productInfo.AREAA"/>
+											</li>
+											<li>
+												<span class="label">街道/乡镇：</span>
+												<span class="value" jwcid="@Insert" id="COUNTYA" name="COUNTYA" value="ognl:productInfo.COUNTYA"/>
+											</li>
+											<li>
+												<span class="label">门牌/村组：</span>
+												<span class="value" jwcid="@Insert" id="VILLAGEA" name="VILLAGEA" value="ognl:productInfo.VILLAGEA"/>
+											</li>
+											<li>
+												<span class="label">业务端口类型：</span>
+												<span class="value" jwcid="@Insert" id="PORTAINTERFACETYPE" name="PORTAINTERFACETYPE" value="ognl:productInfo.PORTAINTERFACETYPE"/>
+											</li>
+											<li>
+												<span class="label">IP地址类型：</span>
+												<span class="value" jwcid="@Insert" id="IPTYPE" name="IPTYPE" value="ognl:productInfo.IPTYPE"/>
+											</li>
+											<li>
+												<span class="label">客户申请公网IP地址数：</span>
+												<span class="value" jwcid="@Insert" id="CUSAPPSERVIPADDNUM" name="CUSAPPSERVIPADDNUM" value="ognl:productInfo.CUSAPPSERVIPADDNUM"/>
+											</li>
+											<li>
+												<span class="label">申请公网IPV4地址数：</span>
+												<span class="value" jwcid="@Insert" id="CUSAPPSERVIPV4ADDNUM" name="CUSAPPSERVIPV4ADDNUM" value="ognl:productInfo.CUSAPPSERVIPV4ADDNUM"/>
+											</li>
+											<li>
+												<span class="label">申请公网IPV6地址数：</span>
+												<span class="value" jwcid="@Insert" id="CUSAPPSERVIPV6ADDNUM" name="CUSAPPSERVIPV6ADDNUM" value="ognl:productInfo.CUSAPPSERVIPV6ADDNUM"/>
+											</li>
+											<li>
+												<span class="label">专线实例号：</span>
+												<span class="value" jwcid="@Insert" id="PRODUCTNO" name="PRODUCTNO" value="ognl:productInfo.PRODUCTNO"/>
+											</li>
+											<li>
+												<span class="label">专线名称：</span>
+												<span class="value" jwcid="@Insert" id="TRADENAME" name="TRADENAME" value="ognl:productInfo.TRADENAME"/>
+											</li>
+											<li>
+												<span class="label">用户技术联系人：</span>
+												<span class="value" jwcid="@Insert" id="PORTACONTACT" name="PORTACONTACT" value="ognl:productInfo.PORTACONTACT"/>
+											</li>
+											<li>
+												<span class="label">用户技术联系电话：</span>
+												<span class="value" jwcid="@Insert" id="PORTACONTACTPHONE" name="PORTACONTACTPHONE" value="ognl:productInfo.PORTACONTACTPHONE"/>
+											</li>
+										</ul>
+									</div>
+									<!-- 参数 结束 -->
+								</div>
+								<div class="c_space"></div>
+								<!-- 提交 开始 -->
+								<div class="c_submit c_submit-center">
+									<button type="button" class="e_button-r e_button-l e_button-blue"  ontap="hidePopup(this)">关闭</button>
+								</div>
+								<!-- 提交 结束 -->
+								<div class="c_space"></div>
+							</div>
+						</div>
+				</div>
+		</div>
+	</div>
+	<!-- 弹窗 结束 -->
+	<script>
+		//Wade.setRatio();
+		//window["UI-popup01"] = new Wade.Popup("UI-popup01");
+		//window["UI-popup02"] = new Wade.Popup("UI-popup02");
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo);
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+update tf_f_user t set t.remove_tag=:REMOVE_TAG where t.user_id=:USER_ID

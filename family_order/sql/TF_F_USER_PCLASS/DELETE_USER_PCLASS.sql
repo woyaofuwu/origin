@@ -1,0 +1,4 @@
+UPDATE tf_f_user_pclass
+   SET end_date=TRUNC(SYSDATE)-1/24/3600,update_time=SYSDATE
+WHERE partition_id=MOD(TO_NUMBER(:USER_ID),10000) AND user_id=TO_NUMBER(:USER_ID)
+AND end_date > sysdate

@@ -1,0 +1,1 @@
+SELECT count(distinct serialno) SEQSERIALNO FROM TF_B_EOP_EOMS  where IBSYSID=:IBSYSID

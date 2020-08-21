@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>母VPMN集团资料查询</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/querygroupinfo/ParentVpmnQuery.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 提示区域开始 -->
+<div class="c_tip" jwcid="hintPart@Part">
+	<span jwcid="@Insert" value="ognl:message" raw="true"/>
+</div>
+<!-- 提示区域结束 -->
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">母VPMN集团资料查询</div>
+	</div>
+	
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul>
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+					<select name="cond_QueryType" id="cond_QueryType" onchange="javascript:changeQueryType()">
+                          <option value="0" selected>按母VPMN编号查询</option>
+                          <option value="1">按子VPMN编号查询</option>
+					</select>
+				</span></span></span>
+			</li>
+			<li class="li" id="parentSerialNumber">
+				<span class="label"><span class="e_required">母VPMN编码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_PARENT_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" nullable="no" desc="母VPMN编码"/></span></span>
+			</li>
+			<li class="li" id="subSerialNumber" style="display:none">
+				<span class="label"><span class="e_required">子VPMN编码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_SUB_SERIAL_NUMBER" value="ognl:condition.cond_SUB_SERIAL_NUMBER" desc="子VPMN编码"/></span></span>
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return queryVpmn();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	<div class="c_title c_title-2">
+		<div class="text">子母VPMN信息</div>
+	</div>
+	
+	<!-- 数据显示区域开始 -->
+	<div jwcid="vpmnExport@Part" optimize="true">
+		<div class="fctTop e_clear">
+			<div class="fctLeft">
+				<div align="right" class="button">
+					<ul>
+					 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="9021" 
+						config="export/querygroupinfo/ParentVpmnQuery.xml"
+						fileName="母VPMN集团资料查询" cond="queryForm"
+						ftpSite="groupserv" beforeAction="" action="" /> 
+					</ul>
+				</div>
+			</div> 
+		</div>
+	</div>
+	<div jwcid="vpmnPart@Part" optimize="true">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>集团类别</th>
+						<th>集团用户标识</th>
+						<th>集团编码</th>
+						<th>集团名称</th>
+						<th>集团类型</th>
+						<th>集团成立时间</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:vpmnList" value="ognl:vpmn" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert"  value="ognl:vpmn.RSRV_STR1" raw="false"/></td>
+						<td><span jwcid="@Insert"  value="ognl:vpmn.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:vpmn.VPN_NO" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:vpmn.VPN_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:vpmn.RSRV_STR2" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:vpmn.OPEN_DATE" raw="false"/></td>
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+	</div>
+	<!-- 数据显示区域结束 -->
+	
+</div>
+	
+</div></div>
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+<!-- 标题栏 开始 -->
+<div class="c_title">
+    <div class="text">营销活动</div>
+    <div class="fn">
+        <div jwcid="@Conditional" condition='ognl:info.MUL_CHANNEL_TAG!=1&&tradeTypeCode != 3814'>
+            <ul>
+                <li id="ShowHotRecommArea" ontap="saleActive.queryHotRecommSaleActives();">
+                    <span class="e_ico-unfold"></span>显示热门活动
+                </li>
+                <li id="HideHotRecommArea" ontap="saleActive.toggleArea(this, '#ShowHotRecommArea', '#HotRecommArea');"
+                    style="display: none;">
+                    <span class="e_ico-fold"></span>隐藏热门活动
+                </li>
+                <li id="ShowValidSaleArea" ontap="saleActive.queryValidSaleActives();">
+                    <span class="e_ico-unfold"></span>显示已有的活动
+                </li>
+                <li id="HideValidSaleArea" ontap="saleActive.toggleArea(this, '#ShowValidSaleArea', '#ValidSaleArea');"
+                    style="display: none;"><span class="e_ico-fold"></span>隐藏已有的活动
+                </li>
+            </ul>
+        </div>
+        <div jwcid="@Conditional" condition='ognl:info.MUL_CHANNEL_TAG==1||tradeTypeCode == 3814'>
+            <ul>
+                <li id="ShowValidSaleArea" ontap="saleActive.queryValidSaleActives();">
+                    <span class="e_ico-unfold"></span>显示已有的活动
+                </li>
+                <li id="HideValidSaleArea" ontap="saleActive.toggleArea(this, '#ShowValidSaleArea', '#ValidSaleArea');"
+                    style="display: none;"><span class="e_ico-fold"></span>隐藏已有的活动
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- 标题栏 结束 -->
+<!-- 已办理活动区域 开始 -->
+<div jwcid="ValidSaleArea@Part" style="display: none;">
+    <div class="c_list c_list-space c_list-line">
+        <ul>
+            <li jwcid="@Foreach" source="ognl:saleInfos" value="ognl:saleInfo"
+                index="ognl:rowIndex" element="li">
+                <div class="content">
+                    <div class="main">
+                        <div class="title">
+                            <span jwcid="@Insert" value="ognl:saleInfo.PACKAGE_NAME"></span>
+                        </div>
+                        <div class="content content-auto">
+                            <span jwcid="@Insert" value="ognl:saleInfo.PACKAGE_DESC"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub">
+                    <div class="main">
+                        <!-- 参数 开始 -->
+                        <div class="c_param c_param-col-3 c_param-phone-col-1">
+                            <ul>
+                                <li>
+                                    <span class="label">类别：</span>
+                                    <span class="value">
+                                        <span jwcid="@Insert" value="ognl:saleInfo.ACTIVE_TYPE"></span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="label">有效期：</span>
+                                    <span class="value">
+                                        <span jwcid="@Insert" value="ognl:saleInfo.START_DATE + ' ～ ' + saleInfo.END_DATE"></span>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="label">受理员工：</span>
+                                    <span class="value">
+                                        <span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',saleInfo.TRADE_STAFF_ID)"></span>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 参数 结束 -->
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="c_space"></div>
+</div>
+<!-- 已办理活动区域 结束 -->
+<!-- 热门推荐活动区域 开始 -->
+<div jwcid="@Conditional" condition='ognl:info.MUL_CHANNEL_TAG!=1&&tradeTypeCode != 3814'>
+    <div jwcid="HotRecommArea@Part" style="display: none;">
+        <div class="c_list c_list-s c_list-col-3 c_list-line c_list-border c_list-phone-col-1">
+            <ul>
+                <li jwcid="@Foreach" source="ognl:hotRecommSales"
+                    value="ognl:hotRecommSale" index="ognl:rowIndex"
+                    element="li" class="link"
+                    ontap="saleActive.queryPackageFromHotRecommList(this);"
+                    title="ognl:hotRecommSale.OFFER_DESCRIPTION"
+                    productId="ognl:hotRecommSale.SALE_PRODUCT_ID"
+                    packageId="ognl:hotRecommSale.OFFER_CODE">
+                    <div class="main">
+                        <span jwcid="@Insert" value="ognl:hotRecommSale.OFFER_NAME"></span>
+                    </div>
+                    <div class="side">
+                        <span jwcid="@Conditional" condition="ognl:hotRecommSale.POPULARITY_TYPE == 1">
+                            <span class="e_tag e_tag-orange">热</span>
+                        </span>
+                        <span jwcid="@Conditional" condition="ognl:hotRecommSale.POPULARITY_TYPE == 2">
+                            <span class="e_tag e_tag-green">荐</span>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="c_space"></div>
+    </div>
+</div>
+<!-- 热门推荐活动区域 结束 -->
+<!-- 活动选择区域 开始 -->
+<div class="c_list c_list-s c_list-col-2 c_list-line c_list-border c_list-phone-col-1">
+    <ul>
+        <li class="link">
+            <div class="label">活动类型</div>
+            <div class="value">
+                <span jwcid="@Select" name="SALE_CAMPN_TYPE"
+                      source="ognl:campnTypes" textField="LABEL_NAME"
+                      valueField="LABEL_ID" nullable="yes" desc="活动类型"
+                      disabled="ognl:'true'.equals(info.NEED_DISABLED)"
+                      onchange="saleActive.queryProductByType(this);"></span>
+            </div>
+        </li>
+        <li class="link required">
+            <div class="label">营销方案</div>
+            <div class="value" id="SALE_PRODUCT_SELECT_CONTAINER">
+                <span class="e_select e_dis">--请选择--</span>
+            </div>
+        </li>
+        <li id ="CREDIT_PURCHASES_PART">
+            <div class="label">信用购机</div>
+            <div class="value" >
+				<input  jwcid="@Any" type="checkbox" name="CREDIT_PURCHASES" id="CREDIT_PURCHASES"  value="0"  ontap="saleActive.chooseNp();"/>
+            </div>
+        </li>
+        <li id="IsiPhone6Part" style="display: none;">
+            <div class="c_tip">提示：请先输入IMEI，再选择营销方案。只有IMEI校验通过，才可办理免预存活动包。</div>
+        </li>
+        <li id="iPhone6IMEIPart" style="display: none;">
+            <div class="label">IMEI</div>
+            <div class="value">
+                <input jwcid="@TextField" name="IPHONE6_IMEI" desc="IPHONE6串码"
+                       onenterAction="saleActive.queryPackages();"
+                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+            </div>
+        </li>
+        <li id="SaleStaffIdPart" style="display: none;">
+            <div class="label">促销员工</div>
+            <div class="value">
+                <input jwcid="@TextField" name="SALE_STAFF_ID" desc="促销员工"
+                       value="ognl:getVisit().getStaffId()"
+                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+            </div>
+        </li>
+        <li id="IMEIQueryPart" style="display: none;">
+            <div class="label">终端串码</div>
+            <div class="value">
+                <input jwcid="@TextField" name="NEW_IMEI" desc="终端串码"
+                       onenterAction="saleActive.queryPackages();"
+                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+            </div>
+        </li>
+        <li id="GiftCodePart" style="display: none;">
+            <div class="label">礼品码</div>
+            <div class="value">
+                <input jwcid="@TextField" name="GIFT_CODE" desc="礼品码"
+                       onenterAction="saleActive.queryPackages();"
+                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+            </div>
+        </li>
+        <li id="SalePackageBtn" class="link required">
+            <div class="label">营销包</div>
+            <div class="value">
+                <span class="text" id="SALE_PACKAGE"></span>
+                <input jwcid="@Hidden" name="SALE_PACKAGE_ID"/>
+            </div>
+            <div class="more"></div>
+        </li>
+        <li class="link">
+            <div class="label">营销包搜索</div>
+            <div class="value"><span class="e_mix">
+                <input jwcid="@TextField" name="SEARCH_KEYWORD"
+                       placeholder="请输入关键字，按回车查询"
+                       onenterAction="saleActive.queryPackages();"/>
+                <span class="e_ico-check e_show-phone"
+                      ontap="saleActive.queryPackages();"></span></span>
+            </div>
+        </li>
+        <li id="GoodsInfoPart" style="display: none;">
+            <div class="label">终端信息</div>
+            <div class="value">
+                <span class="text" id="GOODS_INFO"></span>
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- 活动选择区域 结束 -->
+<div jwcid="SaleActiveModule@SaleActiveModule"
+     packageId="ognl:info.PACKAGE_ID" productId="ognl:info.PRODUCT_ID"
+     eparchyCodeCompId="ognl:eparchyCodeCompId" element="div"
+     style="display: none;"></div>
+
+<input jwcid="@Hidden" name="SALEACTIVE_COMPONENT_ID" value="ognl:id"/>
+<input jwcid="@Hidden" name="SALEACTIVE_USER_ID" value="ognl:info.USER_ID"/>
+<input jwcid="@Hidden" name="SALEACTIVE_CUST_ID" value="ognl:info.CUST_ID"/>
+<input jwcid="@Hidden" name="SALEACTIVE_ACCT_DAY" value="ognl:info.ACCT_DAY"/>
+<input jwcid="@Hidden" name="SALEACTIVE_FIRST_DATE" value="ognl:info.FIRST_DATE"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEXT_ACCT_DAY" value="ognl:info.NEXT_ACCT_DAY"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEXT_FIRST_DATE" value="ognl:info.NEXT_FIRST_DATE"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEED_CHECK" value="ognl:needCheck"/>
+<input jwcid="@Hidden" name="SALEACTIVE_NEED_USER_ID" value="ognl:needUserId"/>
+<input jwcid="@Hidden" name="SALEACTIVE_EPARCHY_CODE_COMPID" value="ognl:eparchyCodeCompId"/>
+<input jwcid="@Hidden" name="AFTER_SELECTPACKAGE_EVENT" value="ognl:afterSelectPackageEvent"/>
+<input jwcid="@Hidden" name="ALL_MONEY_NAME" value=""/>
+<input jwcid="@Hidden" name="IS_GIFT_ACTIVE" value="0"/>
+<input jwcid="@Hidden" name="QUERY_VALID_SALE_FINISHED" value="0"/>
+<input jwcid="@Hidden" name="QUERY_HOT_RECOMM_SALE_FINISHED" value="0"/>
+<input jwcid="@Hidden" name="PRODUCT_ID_FROM_HOT_RECOMM" value=""/>
+<input jwcid="@Hidden" name="PACKAGE_ID_FROM_HOT_RECOMM" value=""/>
+<input jwcid="@Hidden" name="TRADE_TYPE_CODE" value="ognl:tradeTypeCode"/>
+<input jwcid="@Hidden" name="CREDIT_PURCHASES_FLG" id="CREDIT_PURCHASES_FLG" value="0"/>
+
+<div jwcid="ElementAttrPart@ElementAttr" element="div"
+     confirmHandler="saleActiveModule.confirmAttr(this.getAttribute('itemIndex'));"></div>
+<div jwcid="ElementDateChoicePart@ElementDateChoice" element="div"
+     confirmHandler="saleActiveModule.confirmDateChoice(this.getAttribute('itemIndex'));"></div>

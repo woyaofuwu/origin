@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>押金业务</title>
+<script  language="JavaScript" src="person/foregiftmgr/scripts/foregift.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper" jwcid="ForeGiftALLPart@Part"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="290"  moreUser="true" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+		<div jwcid="UCAViewPart@Part">
+				<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+				<div jwcid="@csserv:AcctInfoView" acctInfoView="ognl:acctInfoView" />
+				<!--<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		--></div> 
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">押金资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 刷新2区域  开始 -->
+	<div  jwcid="ForeGiftPart2@Part">
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="foreGiftTable@Part">
+			<table jwcid="@Table" id="DeptTable" name="DeptTable" rowClick="tableRowClick" >
+				<thead>
+					<tr>
+						<th col="FOREGIFT_CODE_BOX_TEXT">押金类型</th>
+						<th col="FOREGIFT_CODE">押金类型编码</th>
+						<th col="PRE_MONEY">原有押金金额（元）</th>
+						<th col="PAY_MONEY">现缴押金金额（元）</th>
+						<th col="NOW_MONEY">现有押金金额（元）</th>
+						<th col="FOREGIFT_UPDATE_TIME">押金处理时间</th>
+						<th col="SERIAL_NUMBER">电话号码</th>
+						<th col="FOREGIFT_CUST_NAME" style="display:none">打印名称</th>
+						<th col="FOREGIFT_PSPT_ID" style="display:none">打印证件号码</th>
+						
+						<th col="FOREGIFT_PROCESS_TAG" id="col_FOREGIFT_PROCESS_TAG" style="display:none">发票是否被清退</th>
+						<th col="FOREGIFT_END_DATE"  id="col_FOREGIFT_END_DATE" style="display:none">结束时间</th>
+						<th col="FOREGIFT_USER_ID" id="col_FOREGIFT_USER_ID" style="display:none">用户id</th>
+						<th col="FOREGIFT_RSRV_NUM2"  id="col_FOREGIFT_RSRV_NUM2"style="display:none">发票记录中的金额</th>
+					</tr>
+				</thead>
+				<tbody name="DeptTableValues" id="DeptTableValues">
+					<tr jwcid="@Foreach" source="ognl:foreGifts" value="ognl:foreGift" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_FOREGIFT','FOREGIFT_CODE','FOREGIFT_NAME',foreGift.FOREGIFT_CODE)"/></td>
+						<td><span jwcid="@Insert" value="ognl:foreGift.FOREGIFT_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',foreGift.MONEY/100)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="0.00" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',foreGift.MONEY/100)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:foreGift.UPDATE_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:foreGift.SERIAL_NUMBER" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:foreGift.CUST_NAME" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:foreGift.PSPT_ID" raw="false"/></td>
+						
+						<td style="display:none"><span jwcid="@Insert" value="ognl:foreGift.PROCESS_TAG" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:foreGift.END_DATE" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:foreGift.USER_ID" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:foreGift.MONEY" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 表格 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-5" id="EditPart" name="EditPart">
+			<ul class="ul">
+				<li class="li">
+				    <span class="label">操作类型：</span>
+					<span class="e_select" ><span><span>
+							<select jwcid="@Select"  name="OP_CODE" id="OP_CODE" 
+							source="ognl:opTypes"
+							textField="PARAM_NAME" valueField="PARAM_CODE" value="ognl:editForeGift"
+							desc="操作类型"  nullable="no" onchange="operForegiftType();" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">押金类型：</span>
+					<span class="e_select" ><span><span>
+							<select jwcid="@Select"  name="FOREGIFT_CODE" id="FOREGIFT_CODE" 
+							source="ognl:pageutil.getList('TD_S_STATIC','DATA_ID','DATA_NAME',new java.lang.String[]{'TYPE_ID'},new java.lang.String[]{'TD_S_FOREGIFT'})"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:editForeGift.TYPE_ID"
+							desc="操作类型"  nullable="no" onchange="foregiftType();" />foreGiftCode
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">押金金额：</span>
+					<span class="e_elements">
+						<span class="e_label e_label-right"><span>元</span></span>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Money" id="PAY_MONEY" name="PAY_MONEY" value="ognl:editForeGift.MONEY" desc="押金金额"  />
+						</span></span>
+					</span>
+				</li>
+				<li class="li" style="display:none">
+					<span class="label">打印名称：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="FOREGIFT_CUST_NAME" name="FOREGIFT_CUST_NAME" value="ognl:custInfoView.CUST_NAME"/>
+					</span></span>
+				</li>
+				<li class="li" style="display:none">
+					<span class="label">打印证件号码：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="FOREGIFT_PSPT_ID" name="FOREGIFT_PSPT_ID" value="ognl:custInfoView.ROAM_PSPT_ID"/>
+					</span></span>
+				</li>
+				
+				<li class="li col-2">
+					<span class="label">备注：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="REMARK" name="REMARK" value="ognl:commInfo.REMARK"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="return receiveForeGift(this);"><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="bupdate" name="bupdate" onclick="return returnForeGift(this);"><i id="ibcreate" name="ibcreate" class="e_ico-cancel"></i><span>清退</span></button>
+				<button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="return deleteForeGift(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<!-- 刷新2区域  结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="invoicePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">发票号码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" onclick="return checkInvoiceNo();"><i class="e_ico-check"></i><span>校验发票</span></button>
+					<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" id="INVOICE_NO" name="INVOICE_NO"  value="ognl:invoice.INVOICE_NO" 
+								    desc="发票号码"  maxLength="15" datatype="numeric" nullable="no"/>
+							<input style="display:none;" type="text" jwcid="@TextField" id="IS_USED" name="IS_USED" value="ognl:invoice.IS_USED" desc="发票是否已经使用" datatype="text" />
+							<input style="display:none;" type="text" jwcid="@TextField" id="INVOICE_FEE_SUM" name="INVOICE_FEE_SUM" value="ognl:invoice.INVOICE_FEE_SUM" desc="发票总额" datatype="text" />
+							<input style="display:none;" type="text" jwcid="@TextField" id="PROCESS_TAG" name="PROCESS_TAG" value="ognl:invoice.PROCESS_TAG" desc="发票是否被清退" datatype="text" />
+							<input style="display:none;" type="text" jwcid="@TextField" id="NON_CUSTOMER_USER_ID" name="NON_CUSTOMER_USER_ID" value="ognl:invoice.NON_CUSTOMER_USER_ID" desc="无主发票USERID" datatype="text" />
+					</span></span>
+				</span>			
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitDepts()" isReset="true" area="ForeGiftALLPart"  element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenPart@Part">
+   		<input type="hidden" jwcid="@Any" id="HFQT_PRV"      name="HFQT_PRV"      value="ognl:commInfo.HFQT_PRV"  />
+	   <input type="hidden" jwcid="@Any" id="INVOICE_TAG"      name="INVOICE_TAG"      value="ognl:commInfo.INVOICE_TAG"  />
+	   <input type="hidden" jwcid="@Any" id="REMOVE_TAG"       name="REMOVE_TAG"       value="ognl:userInfoView.REMOVE_TAG"  />
+	   <input type="hidden" jwcid="@Any" id="LONG_SERVICE_ID"  name="LONG_SERVICE_ID"  value="ognl:commInfo.LONG_SERVICE_ID"  />
+	   <input type="hidden" jwcid="@Any" id="ABOVE_START_DATE" name="ABOVE_START_DATE" value="ognl:commInfo.ABOVE_START_DATE"  />
+	   <input type="hidden" jwcid="@Any" id="FOREGIFT_LIMIT"  name="FOREGIFT_LIMIT"  value="ognl:commInfo.FOREGIFT_LIMIT"  />
+	   <input type="hidden" jwcid="@Any" id="ROAM_SERVICE_ID"  name="ROAM_SERVICE_ID"  value="ognl:commInfo.ROAM_SERVICE_ID"  />
+	   <input type="hidden" jwcid="@Any" id="CANCEL_LONGROAM_TIME"  name="CANCEL_LONGROAM_TIME"  value="ognl:commInfo.CANCEL_LONGROAM_TIME"  />
+       <input type="hidden" id="X_CODING_STR" name="X_CODING_STR"/>
+       <input jwcid="@Any" type="hidden"  id="USER_ID"    name="USER_ID"  value="ognl:userInfoView.USER_ID" />
+       <input jwcid="@Any" type="hidden"  id="CUST_NAME1"  name="CUST_NAME1"  value="ognl:custInfoView.CUST_NAME"  />
+       <input jwcid="@Any" type="hidden"  id="PSPT_ID"  name="PSPT_ID"  value="ognl:custInfoView.PSPT_ID"  />
+       <input type="hidden" jwcid="@Any" id="Balance" name="Balance" value="ognl:Balance" desc="" />
+   </div>
+<!-- 隐藏区域 结束 -->
+
+
+</div></div></body>
+</html>

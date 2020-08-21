@@ -1,0 +1,5 @@
+SELECT to_char(asycrecv_id) asycrecv_id,eparchy_code,city_code,trade_type_code,discnt_code,to_char(acct_id_in) acct_id_in,to_char(user_id_in) user_id_in,acyc_id,deposit_code,to_char(recv_fee) recv_fee,recover_tag,to_char(operate_id) operate_id,operate_type,to_char(input_time,'yyyy-mm-dd hh24:mi:ss') input_time,to_char(deal_time,'yyyy-mm-dd hh24:mi:ss') deal_time,deal_tag,result_code,result_info,round_tag,recv_eparchy_code,recv_city_code,recv_depart_id,recv_staff_id,to_char(acct_id_out) acct_id_out,to_char(user_id_out) user_id_out,out_deposit_code,partition_id,rsrv_attr,rsrv_info,rsrv_char,to_char(rsrv_date,'yyyy-mm-dd hh24:mi:ss') rsrv_date 
+  FROM ti_a_asyc_disrecv
+ WHERE MOD(acct_id_in,10000)>=TO_NUMBER(:START_ID)
+   AND MOD(acct_id_in,10000)<=TO_NUMBER(:END_ID)
+   AND deal_tag='0' ORDER BY INPUT_TIME

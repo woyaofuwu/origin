@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/broadband/cttnet/cttnetmodifyacctinfo/scripts/cttmodifyacctinfo.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2" >
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="9728" element="div"/>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div jwcid="AcctInfoPart@Part">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">业务受理</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">帐户名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="acctinfo_PAY_NAME" id="acctinfo_PAY_NAME" value="ognl:acctInfo.PAY_NAME" disabled = "true" desc="帐户名称" nullable="no"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">帐户类别：</span></span>
+					<span class="e_select"><span><span>
+						 <select jwcid="@Select" name="acctinfo_PAY_MODE_CODE" id="acctinfo_PAY_MODE_CODE" value="ognl:acctInfo.PAY_MODE_CODE" disabled = "true" nullable="no" onchange="checkPaymode()" filter = "true"
+													      
+													     textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('TD_S_PAYMODE')"  desc="帐户类别"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="superBank">上级银行：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="comminfo_SUPERBANK_CODE" id="comminfo_SUPERBANK_CODE" value ='ognl:acctInfo.SUPER_BANK_CODE'
+														 source="ognl:pageutil.getList('TD_S_SUPERBANK_CTT','SUPER_BANK_CODE','SUPER_BANK')"
+														textField="SUPER_BANK" valueField="SUPER_BANK_CODE" titleField="SUPER_BANK" disabled="true"  desc="上级银行"   nullable="no" onchange="checkSuperBank()"/>
+					</span></span></span>
+				</li>
+				
+	
+	
+				<li class="li">
+					<span class="label"><span id="brand">银行名称：</span></span>
+					<span class="e_elements">
+					
+						<button type="button" class="e_button-right" id="bankFld" disabled="true" onclick="if(checkBank() == false) return false;javascript:popupPage('broadband.cttnet.cttnetmodifyacctinfo.CttViewBankPage','queryBank','&multi=true&comminfo_SUPERBANK_CODE=' +$('#comminfo_SUPERBANK_CODE').val()+'&SERIAL_NUMBER='+$('#AUTH_SERIAL_NUMBER').val(),'银行名称列表',400,300,'acctinfo_BANK_CODE')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" value="ognl:acctInfo.BANK_CODE" text="ognl:acctInfo.BANK" name="acctinfo_BANK_CODE" id="acctinfo_BANK_CODE" desc="银行名称"/>
+						</span></span>
+					</span>	
+				</li>
+				
+				<li class="li">
+					<span class="label"><span id="bankAcctNo">银行帐号：</span></span>
+					<span class="e_input"><span><input type="text" id = "acctinfo_BANK_ACCT_NO" jwcid="@TextField" name="acctinfo_BANK_ACCT_NO"  value="ognl:acctInfo.BANK_ACCT_NO" 
+													   maxsize="30" nullable="no" disabled="true"  desc="银行帐号" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">合同号：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="acctinfo_CONTRACT_NO" id="acctinfo_CONTRACT_NO" disabled = "true" value="ognl:acctInfo.CONTRACT_NO" maxsize="20" desc="合同号" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">银行协议号：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="acctinfo_RSRV_STR6" id="acctinfo_RSRV_STR6" disabled = "true" value="ognl:acctInfo.RSRV_STR6" maxsize="30"  desc="银行协议号" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">帐单类别：</span></span>
+					<span class="e_select"><span><span>
+						 <select jwcid="@Select" name="acctinfo_RSRV_STR3" id="acctinfo_RSRV_STR3" value="ognl:acctInfo.RSRV_STR3" disabled = "true" nullable="no"  filter = "true"
+													      
+													     textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('ACCOUNT_BILLPAPER_TYPE')"  desc="帐单类别"/>
+					</span></span></span>
+				</li>
+				<!-- REQ201710090024-关于铁通迁移固话用户办理界面优化及套餐开发的需求-NGBOSS-铁通模块-个人业务-其他业务-帐户资料变更（铁通），
+					请业务支撑部收回是否收改号费选择，下线收费功能 @auth zhaohj3 @date 2017-12-8 11:50:22 -->
+				<!-- <li class="li">
+						<span class="label"><span class="e_required">是否收改号费：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="acctInfo_IS_RECFEE" id="acctInfo_IS_RECFEE" source="ognl:pageutil.getStaticList('IS_RECFEE_MODINAME')"
+			                        textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:acctInfo.IS_RECFEE" desc="是否收改号费"  disabled="true" nullable="no"
+			                        onchange="ajaxModiAcctName()" />
+							</span></span></span>
+				</li> -->
+				
+				<li class="li col-3">
+					<span class="label">备注：</span>
+					<span class="e_input"><span><textarea  jwcid="@TextField" name="REMARK" id="REMARK" value="ognl:commInfo.REMARK" rows="1" disabled = "false" maxsize="100" desc="备注"/></span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	
+		<!-- 隐藏数据-->               
+			<input jwcid="@Any" id="ACCT_DAY_TAG" type="hidden" name="ACCT_DAY_TAG" value="ognl:acctDayInfo.ACCT_DAY_TAG" />
+			<input jwcid="@Any" id="NEXT_ACCT_DAY" type="hidden" name="NEXT_ACCT_DAY" value="ognl:acctDayInfo.NEXT_ACCT_DAY" />
+			<input jwcid="@Any" id="BOOK_ACCT_DAY" type="hidden" name="BOOK_ACCT_DAY" value="ognl:acctDayInfo.BOOK_ACCT_DAY" />
+			
+			<input jwcid="@Any" id="acctinfo_OLD_PAY_NAME" type="hidden" name="acctinfo_OLD_PAY_NAME" value="ognl:acctInfo.PAY_NAME" />
+			<input jwcid="@Any" type="hidden"  id="FEE_MODE"  name="FEE_MODE"/>
+		    <input jwcid="@Any" type="hidden"  id="FEE"  name="FEE"/>
+		    <input jwcid="@Any" type="hidden"  id="FEE_TYPE_CODE"  name="FEE_TYPE_CODE"/>
+	    <!--隐藏数据 结束-->
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" isReset="true" area="AuthPart,AcctInfoPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+</div></div></body>
+</html>

@@ -1,0 +1,3 @@
+SELECT 'UnifyPayName' KEY,UNIFY_PAY_TYPE VALUE1, '' VALUE2, UNIFY_PAY_NAME VRESULT
+    FROM td_b_unifypaytype
+WHERE 'UnifyPayName'=:KEY

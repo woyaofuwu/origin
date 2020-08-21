@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>上传欢迎词</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/imsmanage/newgrpauditmanage/GrpWordWelcomeActive.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">欢迎词查询</div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="CondGroupPart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" selectGroupListener="getGroupBaseInfo" refreshPart="GroupInfoPart,GrpConditionInfoPart,GantPart,feePart"/>		
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div jwcid="GroupInfoPart@Part">
+		<input type="text"  jwcid="@saleserv:GroupUserInfo" groupUserInfo="ognl:info"/>
+	</div>
+	
+	<div jwcid="GrpConditionInfoPart@Part">
+		<input jwcid="@Any" id="GRP_USER_ID" name="GRP_USER_ID" value="ognl:info.USER_ID" style="display:none;"/>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="GantPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-5">
+		<div class="c_table">
+		<table jwcid="FeeTable@Table" name="FeeTable" rowClick="tableRowClick">
+			<thead>
+				<tr>
+					<th col="GROUP_ID">集团客户编码</th>
+					<th col="USER_ID">集团产品用户标识</th>
+					<th col="FILE_ID">文件ID</th>
+					<th col="FILE_NAME">文件名</th>
+					<th col="VPN_NO">BGname集团编号</th>
+					<th col="WORDS_DES">欢迎词描述</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+	                <td><span jwcid="@Insert" value="ognl:info.GROUP_ID"/></td>
+	                <td><span jwcid="@Insert" value="ognl:info.USER_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.FILE_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.FILE_NAME"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.VPN_NO"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"/></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		</div>
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="LogNav" id="LogNav" cond="CondGroupPart" part="GantPart" listener="queryGrpVoiceWelcomeFiles" pageSize="10" count="ognl:logCount"></div>
+		<!-- 分页 结束 -->
+				
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 区域 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8" jwcid="feePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>集团客户编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@Any" id="GROUP_ID" name="GROUP_ID" desc="集团客户编码" readonly="true"/>	
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span>集团产品用户标识：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@Any" id="USER_ID" name="USER_ID" desc="集团产品用户标识" readonly="true"/>	
+				</span></span>			
+			</li>
+			<li class="li">
+				<span class="label"><span>文件ID：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@Any" id="FILE_ID" name="FILE_ID" desc="文件ID" readonly="true"/>	
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span>文件名：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@Any" id="FILE_NAME" name="FILE_NAME" desc="文件名" readonly="true"/>	
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span>BGname集团编号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@Any" id="VPN_NO" name="VPN_NO" desc="BGname集团编号" readonly="true"/>	
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span>欢迎词描述：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@Any" id="WORDS_DES" name="WORDS_DES" desc="欢迎词描述" readonly="true"/>	
+				</span></span>					
+			</li>
+		</ul>
+				
+	</div>
+	<!-- 区域 结束 -->
+	
+	<div class="submitPlace"></div>
+	<div class="submit e_center">
+		<button type="button" class="e_button-form" id="updateWord" name="updateWord" onclick="return updateGrpWord();"><i class="e_ico-edit"></i><span>审核欢迎词</span></button>
+		<button type="button" class="e_button-form" id="activeWord" name="activeWord" onclick="return activeGrpWord();"><i class="e_ico-add"></i><span>激活欢迎词</span></button>
+		<button type="button" class="e_button-form" id="deleteFee" name="deleteFee" onclick="return deleteGrpWord();"><i class="e_ico-delete"></i><span>重置</span></button>
+	</div>
+		
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

@@ -1,0 +1,1 @@
+SELECT * FROM tf_f_user where serial_number = :SERIAL_NUMBER and remove_tag='0' and open_date > to_date(:OPEN_DATE,'yyyymmddhh24miss')

@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GPON宽带子账户移机</title>
+<script jwcid="@Script" src="person/broadband/widenet/widenetmove/scripts/widenetmove.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+    <!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  authType="04"  tradeTypeCode="636"   tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	
+		<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		<div jwcid="@csserv:AcctInfoView" acctInfoView="ognl:acctInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">原宽带资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div class="c_form c_form-label-7 c_form-col-2 c_form-text" jwcid="wideInfoPart@Part">
+		<ul class="ul">
+		    <li class="li">
+				<span class="label">原标准地址：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="OLD_STAND_ADDRESS" id="OLD_STAND_ADDRESS" value="ognl:wideInfo.STAND_ADDRESS" desc="原标准地址"/>
+				</span></span>
+			</li>	
+		   <li class="li">
+				<span class="label">原详细地址：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="OLD_DETAIL_ADDRESS" id="OLD_DETAIL_ADDRESS" value="ognl:wideInfo.DETAIL_ADDRESS" desc="原详细地址"/>
+				</span></span>
+			</li>
+           <li class="li">
+				<span class="label">原标准地址编码：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="OLD_STAND_ADDRESS_CODE" id="OLD_STAND_ADDRESS_CODE" value="ognl:wideInfo.STAND_ADDRESS_CODE" desc="原标准地址编码"/>
+				</span></span>
+			</li>
+	    </ul>
+	</div>			
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">子账号类型</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div class="c_form" jwcid="prewideTypePart@Part">
+	  <ul class="ul">
+	  	    <li class="li">
+				<span class="label"><span class="e_required">账号类型：</span></span>
+				<span class="e_select"><span><span>
+					 <select jwcid="@Select" name="PREWIDE_TYPE" id="PREWIDE_TYPE" value="ognl:wideInfo.PREWIDE_TYPE" nullable="no"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('PREWIDE_TYPE')"  desc="账号类型"/>
+				</span></span></span>
+			</li>
+            <li class="li">
+				<span class="label"><span class="e_required">主号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="SERIAL_NUMBER_A" id="SERIAL_NUMBER_A" value="ognl:wideInfo.SERIAL_NUMBER_A" nullable="no" desc="主号码" onblur="checkSerialNumber()"/>
+				</span></span>
+			</li>		
+	  </ul>
+	</div>
+	
+	<div class="c_table c_table-fixed" jwcid="allAcct@Part">
+	  <table>
+	     <tr jwcid="@Foreach" source="ognl:allAcct" value="ognl:wideInfo" element="tr">
+	       	<td style="width:200px;"><span jwcid="@Insert" value="ognl:wideInfo.TYPE" raw="false"/>:<span jwcid="@Insert" value="ognl:wideInfo.SERIAL_NUMBER" raw="false"/></td>										
+			<td>服务状态:<span jwcid="@Insert" value="ognl:wideInfo.USER_STATE_CODESET" raw="false"/></td>	
+	     </tr>
+	  </table>
+	</div>
+</div>
+<!-- 区域 结束 -->  
+	
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">新宽带资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div class="c_form c_form-label-7 c_form-col-2" jwcid="newWideInfoPart@Part">
+	  <ul class="ul">
+			 <li class="li">
+				<span class="label"><span class="e_required">新标准地址：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="STAND_ADDRESS" id="STAND_ADDRESS" value="ognl:newWideInfo.STAND_ADDRESS" nullable="no" desc="新标准地址"/>
+				</span></span>
+			</li>
+			 <li class="li">
+				<span class="label"><span class="e_required">新详细地址：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="DETAIL_ADDRESS" id="DETAIL_ADDRESS" value="ognl:newWideInfo.DETAIL_ADDRESS" nullable="no" desc="详细地址"/>
+				</span></span>
+			</li>
+			 <li class="li">
+				<span class="label"><span class="e_required">新标准地址编码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="STAND_ADDRESS_CODE" id="STAND_ADDRESS_CODE" value="ognl:newWideInfo.STAND_ADDRESS_CODE" nullable="no" desc="标准地址CODE"/>
+				</span></span>
+			</li>
+			
+		   <li class="li">
+				<span class="label">联系电话：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="NEW_PHONE" id="NEW_PHONE" value="ognl:newWideInfo.PHONE" maxsize="100" desc="联系电话"/>
+				</span></span>
+			</li>
+				
+			 <li class="li">
+				<span class="label">联系人：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="NEW_CONTACT" id="NEW_CONTACT" value="ognl:newWideInfo.CONTACT" maxsize="100" desc="联系人"/>
+				</span></span>
+			</li>
+
+            <li class="li">
+				<span class="label">联系人电话：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="NEW_CONTACT_PHONE" id="NEW_CONTACT_PHONE" value="ognl:newWideInfo.CONTACT_PHONE" maxsize="100" desc="联系人电话"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">地区：</span></span>
+				<span class="e_select"><span><span>
+					 <select jwcid="@Select" name="AREA_CODE" id="AREA_CODE" value="ognl:newWideInfo.AREA_CODE" nullable="no"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('COP_AREA_CODE')"  desc="地区"/>
+				</span></span></span>
+			</li>
+			
+		</ul>	
+	</div>
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" area="AuthPart,newWideInfoPart,prewideTypePart"  listener="onTradeSubmit"  isReset="true" element="div"/>
+</div>
+<!-- 区域 结束 -->	
+
+</div></div>
+<input jwcid="@Hidden" name="USER_ID_A" id="USER_ID_A" value=""/>
+<input jwcid="@Hidden" name="GPON_USER_ID" id="GPON_USER_ID" value=""/>
+<input jwcid="@Hidden" name="GPON_SERIAL_NUMBER" id="GPON_SERIAL_NUMBER" value=""/>
+</body>
+</html>

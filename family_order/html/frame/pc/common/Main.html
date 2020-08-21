@@ -1,0 +1,1028 @@
+<!DOCTYPE HTML>
+<html class="s_noside">
+<head jwcid="@Head">
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=8" /> -->
+<title>客户关系管理系统CRM</title>
+<link jwcid="@Style" href="frame/css/pc.css" rel="stylesheet"
+	type="text/css" />
+<link jwcid="@Style" href="frame/css/pc-ie8.css" rel="stylesheet"
+	type="text/css" />
+<script jwcid="@Script" src="frame/scripts/pc/main.js"></script>
+<script jwcid="@Script" src="frame/scripts/pc/adapter.js"></script>
+<script jwcid="@Script" src="frame/scripts/pc/navtabset.js"></script>
+<script jwcid="@Script" src="frame/scripts/pc/searchoperator.js"></script>
+<script jwcid="@Script" src="frame/scripts/pc/msgbox.js"></script>
+<script jwcid="@Script" src="frame/scripts/menuopener.js"></script>
+<script jwcid="@Script" src="frame/scripts/msgrpc.js"></script>
+</head>
+<body jwcid="@Body" onclick="hideDetail();">
+
+	<!-- 工作台 开始 -->
+	<div id="main_ct" class="m_main m_main-biz m_main-cover">
+		<iframe id="navframe_def" jwcid="@Any" src="ognl:welcomePage"
+			frameborder="0"></iframe>
+		<input jwcid="@Any" type="hidden" id="isManager" name="isManager"
+			value="ognl:isManager" /> <input jwcid="@Any" type="hidden"
+			id="navShow" value="ognl:navShow" /> <input jwcid="@Any"
+			type="hidden" id="msgShow" value="ognl:msgShow" />
+		<div class="cover" id="mainCover" style="display: none;"></div>
+		<div class="cover" id="detailCover" style="display: none;"></div>
+	</div>
+	<!-- 工作台 结束 -->
+
+	<!-- 顶部区域 开始 -->
+	<div class="m_header">
+		<div class="staff" id="staff_min">
+			<div class="head">
+				<img src="frame/img/head.png" />
+			</div>
+			<div class="info">
+				<div class="content">
+					<div class="name">
+						<span jwcid="@Insert" value="ognl:getVisit().getStaffName()" />
+					</div>
+					<div class="role">
+						<span id="staff_city"><span jwcid="@Insert"
+							value="ognl: getVisit().getStaffEparchyName()" /></span> / <span
+							jwcid="@Insert" value="ognl:getVisit().getStaffId()" />
+					</div>
+				</div>
+			</div>
+			<div class="unfold"></div>
+		</div>
+
+		<div class="card" id="staff_max" style="display: none;">
+			<div class="base">
+				<div class="head">
+					<img src="frame/img/head.png" />
+				</div>
+				<div class="info">
+					<div class="role">
+						<span jwcid="@Insert" value="ognl:getVisit().getStaffId()" />
+					</div>
+					<div class="name">
+						<span jwcid="@Insert" value="ognl:getVisit().getStaffName()" />
+					</div>
+				</div>
+			</div>
+			<div class="num">
+				<ul>
+					<li>
+						<div class="value" id="monFee">0</div>
+						<div class="label">本月收费</div>
+					</li>
+					<li>
+						<div class="value" id="dayFee">0</div>
+						<div class="label">当天交易</div>
+					</li>
+				</ul>
+			</div>
+			<div class="fn">
+				<ul>
+					<li
+						ontap="$('#staff_max').css('display', 'none');$.menuopener.openMenu(null, '我的报表', '/statcentre/statcentre?service=page/report.table&listener=init&REPORT_ID=SD_DEPART_DAY_BUSS');">我的报表</li>
+					<li
+						ontap="$('#staff_max').css('display', 'none');$.navtabset.openDeskNav()">我的导航</li>
+					<li class="more" id="more_btn">更多功能</li>
+				</ul>
+			</div>
+			<div class="op">
+				<div class="city" id="city_btn">
+					<span jwcid="@Insert"
+						value="ognl: getVisit().getStaffEparchyName()" />
+				</div>
+				<div class="exit" title="退出系统" ontap="javascript:logout();">退出</div>
+			</div>
+			<div class="cityList" style="display: none;" id="city_choose">
+				<ul>
+					<div jwcid="@Foreach" source="ognl:eparchies" value="ognl:eparchy">
+						<li jwcid="@Any" id="ognl:eparchy.AREA_CODE"><span
+							jwcid="@Insert" value="ognl:eparchy.DISTRICT_NAME" /></li>
+					</div>
+				</ul>
+				<input jwcid="@Any" type="hidden" id="isProv" name="isProv"
+					value="ognl:isProv" />
+			</div>
+		</div>
+		<div tag="home" class="home on" id="m_home"></div>
+		<div id="m_task" class="task">
+			<!-- task-full -->
+			<ul id="tab_ct_ul">
+			</ul>
+			<span class="e_ico-search" id="show_search" style="display: none;"></span>
+			<div class="search" id="searchPart">
+				<input type="text" id="menu_search"
+					placeholder="请输入“菜单 / 商品”名称开始搜索，支持拼音首字母" /> <span
+					class="e_ico-search" id="button_search"></span> <span
+					class="e_ico-close" id="close_search"></span>
+			</div>
+		</div>
+		<div class="op">
+			<div class="min"></div>
+			<div class="default"></div>
+			<div class="close"></div>
+		</div>
+	</div>
+	<!-- 顶部区域 结束 -->
+
+	<!-- 搜索结果 开始 -->
+	<div class="c_float" id="menu_search_ct"
+		style="top: 0.6rem; right: 0; width: 6.4rem;">
+		<!-- 滚动（替换为 java 组件） 开始 -->
+		<div id="floatScroll" name="floatScroll" jwcid="@Scroller">
+			<!-- 列表 开始 -->
+			<div class="c_list c_list-line">
+				<ul id="menu_search_list">
+				</ul>
+			</div>
+			<!-- 列表 结束 -->
+		</div>
+		<!-- 滚动 结束 -->
+	</div>
+	<!-- 搜索结果 结束 -->
+
+	<!-- 功能区域 开始 -->
+	<div class="m_fn">
+		<ul id="m_fn_ul">
+			<!--	<li tag="home" class="home on"></li> -->
+			<li tag="cust" class="cust" id="personFn"></li>
+			<li tag="group" class="group" id="groupFn"></li>
+			<li tag="favo" class="favo" id="favoFn"></li>
+			<li tag="notice" class="notice"><span id="msg_mini"
+				style="display: none" class="num">0</span></li>
+			<li tag="ambu" class="ambulance"></li>
+			<li tag="wiki" class="wiki"></li>
+			<li tag="like" class="like"></li>
+			<li tag="menu" class="menu" id="menu_btn"></li>
+		</ul>
+	</div>
+	<!-- 功能区域 结束 -->
+	<!-- 客户区域开始 -->
+	<div class="m_cust m_cust-scroll" jwcid="LoginPart@Part"
+		style="display: none;">
+		<div class="wrapper">
+			<div jwcid="m_person@icsserv:PersonLogin" />
+			<!--
+		<div class="sale l_padding l_padding-side" jwcid="SaleListPart@Part">
+			<div id="saleNgboss" jwcid="@quickstart:Sale" accessNum="ognl:saleInfo.ACCESS_NUM"/>
+		</div>
+		-->
+
+			<div class="sale l_padding l_padding-side">
+				<div jwcid="m_hint@icsserv:HintInfo" hasTitle="true" />
+			</div>
+
+		</div>
+	</div>
+	<!-- 客户区域 结束 -->
+
+
+
+
+	<!-- 集团客户区域 开始 -->
+	<div jwcid="m_group@icsserv:GroupLogin" />
+	<!-- 集团客户区域 结束 -->
+
+
+	<!-- 收藏夹区域 开始 -->
+	<div id="m_favo" class="m_favo" style="display: none;">
+		<div class="title" style="display: none;">
+			<div class="text">我的收藏</div>
+			<div class="config"></div>
+		</div>
+		<div class="tab">
+			<ul id="favo_tabs">
+				<li class="on">功能</li>
+				<li>报表</li>
+				<li>商品</li>
+				<li>酬金</li>
+			</ul>
+		</div>
+		<div jwcid="@Part" id="favo_pages">
+			<div class="content">
+				<div class="c_scroll">
+					<div class="favo">
+						<ul>
+							<div jwcid="@Foreach" source="ognl:funcs" value="ognl:func">
+								<li class="link" jwcid="@Any"
+									ontap="ognl:'$.menuopener.openMenu(\''+func.FUNC_ID+'\', \''+func.NAME+'\', \''+func.VIEWNAME+'\')'">
+									<div class="pic">
+										<img jwcid="@Any" src="ognl:'/static/menu/'+func.FUNC_IMG"
+											alt="" />
+									</div>
+									<div class="text">
+										<span jwcid="@Insert" value="ognl:func.NAME" />
+									</div> <span
+									class="e_ico-delete e_ico-pic-r e_ico-pic-blue e_ico-pic-xxxs"
+									type="button" jwcid="@Any"
+									ontap="ognl:'$.sidebar.deleteCollect(this,\''+func.MENU_FAV_ID+'\');return false;'">
+								</span>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="content" style="display: none;">
+				<div class="c_scroll">
+					<div class="favo">
+						<ul>
+							<div jwcid="@Foreach" source="ognl:reports" value="ognl:report">
+								<li class="link" jwcid="@Any"
+									ontap="ognl:'$.menuopener.openMenu(\''+report.FUNC_ID+'\', \''+report.NAME+'\', \''+report.VIEWNAME+'\')'">
+									<div class="pic">
+										<img jwcid="@Any" src="ognl:'/static/menu/'+report.FUNC_IMG"
+											alt="" />
+									</div>
+									<div class="text">
+										<span jwcid="@Insert" value="ognl:report.NAME" />
+									</div> <span
+									class="e_ico-delete e_ico-pic-r e_ico-pic-blue e_ico-pic-xxxs"
+									type="button" jwcid="@Any"
+									ontap="ognl:'$.sidebar.deleteCollect(this,\''+report.MENU_FAV_ID+'\');return false;'">
+								</span>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="content" style="display: none;">
+				<div class="c_scroll">
+					<div class="c_list c_list-hideFn c_list-line">
+						<ul>
+							<div jwcid="@Foreach" source="ognl:goods" value="ognl:good">
+								<li class="link" jwcid="@Any" title="ognl:good.OFFER_NAME"
+									ontap="ognl:'$.navsearch.openOfferPage(\''+good.FUNC_ID+'\', \''+good.OFFER_TYPE+'\',\''+good.OFFER_NAME+'\')'">
+									<div class="pic">
+										<img src="/static/menu/temp109.png" alt="" />
+									</div>
+									<div class="main">
+										<div class="content content-row-2">
+											<span jwcid="@Insert" value="ognl:good.OFFER_NAME" />
+										</div>
+									</div>
+									<div class="fn" jwcid="@Any"
+										ontap="ognl:'$.sidebar.deleteCollect(this,\''+good.MENU_FAV_ID+'\');return false;'">
+										<span class="e_ico-delete"></span>
+									</div>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<div class="c_line"></div>
+			</div>
+			<div class="content" style="display: none;">
+				<div class="c_scroll">
+					<div class="favo">
+						<ul>
+							<div jwcid="@Foreach" source="ognl:rewards" value="ognl:reward">
+								<li class="link" jwcid="@Any"
+									ontap="ognl:'$.menuopener.openMenu(\''+reward.FUNC_ID+'\', \''+reward.NAME+'\', \''+reward.VIEWNAME+'\')'">
+									<div class="pic">
+										<img jwcid="@Any" src="ognl:'/static/menu/'+reward.FUNC_IMG"
+											alt="" />
+									</div>
+									<div class="text">
+										<span jwcid="@Insert" value="ognl:reward.NAME" />
+									</div> <span
+									class="e_ico-delete e_ico-pic-r e_ico-pic-blue e_ico-pic-xxxs"
+									type="button" jwcid="@Any"
+									ontap="ognl:'$.sidebar.deleteCollect(this,\''+reward.MENU_FAV_ID+'\');return false;'">
+								</span>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<div class="c_line"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 收藏夹区域 结束 -->
+
+
+	<!-- 公告消息 开始  -->
+	<div id="m_notice" class="m_notice" style="display: none;">
+		<div name="noticeTabset" class="c_tab c_tab-sp c_tab-full c_tab-avg"
+			jwcid="@Tabset">
+			<div id="noticeUnread" title="未读" class="content">
+
+				<div name="noticeUnreadScroller" jwcid="@Scroller"
+					class="c_scroll c_scroll-float c_scroll-page">
+
+					<div class="c_list c_list-s">
+						<ul id="noticeUlUnread">
+
+						</ul>
+					</div>
+
+				</div>
+			</div>
+			<div id="noticeReaded" title="已读" class="content"
+				style="display: none;">
+				<div name="noticeReadedScroller" jwcid="@Scroller"
+					class="c_scroll c_scroll-float c_scroll-page">
+
+					<div class="c_list c_list-s">
+						<ul id="noticeUlReaded">
+
+						</ul>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- 公告消息 结束 -->
+
+	<!-- 功能菜单 开始 -->
+	<div id="m_menu" name="m_menu" class="m_menu" jwcid="@Scroller"
+		style="display: none;">
+		<ul>
+			<!--
+		<li class="lock">锁屏</li>
+		-->
+			<li class="help" id="openNavHelp" ontap="$.navtabset.openDeskNav()">打开导航</li>
+			<li class="shot" id="screenShots">截屏</li>
+			<!--
+		<li class="ambulance">报障平台</li>
+		<li class="itc">ITC 在线支持</li>
+		<li class="wiki">知识库</li>
+		-->
+			<li class="help"
+				ontap="window.open('/static/doc.rar','_new_help_win','height=40,width=100,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')">操作手册</li>
+			<li class="download"
+				ontap="window.open('/static/file/nopaper.rar','_new_download_win','height=40,width=100,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')">控件下载</li>
+			<li class="download"
+				ontap="window.open('/static/file/ieset.rar','_ieset_download_win','height=40,width=100,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')">IE设置脚本下载</li>
+			<!--
+		<li class="config">系统设置</li>
+		-->
+		</ul>
+		<ul>
+			<!-- 
+		<li class="password">修改密码</li>
+		<li class="head">编辑头像</li>
+		<li class="table">我的报表</li>
+		<li class="chart">我的计件</li>
+		<li class="evaluate">设计师评价</li>
+		-->
+			<li class="import" id="my_impexp">导入 / 导出</li>
+			<span jwcid="@Conditional"
+				condition="ognl:hasPriv('SYS_STATIC_CACHE_MGR')">
+				<li class="refresh" id="memCacheFlush">静态参数</li>
+			</span>
+			<li class="verify" id="privCheck">权限验证</li>
+			<span jwcid="@Conditional"
+				condition="ognl:hasPriv('SYS_PRIV_RELOAD_MGR')">
+				<li class="refresh" id="privReload">权限刷新</li>
+			</span>
+			<!-- 
+		<li class="fail" id="errCode">异常编码维护</li>
+		<li class="table" id="iconChoose">图标选择</li>
+		-->
+			<span jwcid="@Conditional"
+				condition="ognl:hasPriv('SYS_SESSION_MGR')"> <!--
+			<li class="table" id="monitorses">会话管理</li>
+			-->
+				<li class="table" id="monitormap">会话监控</li>
+			</span>
+			<li class="wiki" id="m_menu_log">日志跟踪</li>
+		</ul>
+	</div>
+	<!-- 功能菜单 结束 -->
+
+	<!-- 帮助 开始 个人-->
+	<div class="m_help" id="helpNavPerson" style="display: none;">
+		<div id="UI-step1" class="step1">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom-right">
+					<div class="content">
+						<div class="text">员工信息区：在这里可以查看您工号的一切信息，点击可查看更多！</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step1').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step1').css('display','none');$('#UI-step2').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step2" class="step2" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-right">
+					<div class="content">
+						<div class="text">用户登录区：办理业务前需要在这里登录鉴权哦！登录后会显示用户信息。</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step2').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step2').css('display','none');$('#UI-step3').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step3" class="step3" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-right">
+					<div class="content">
+						<div class="text">功能区：收藏夹、公告、截屏等实用小功能都在这里哦！</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step3').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step3').css('display','none');$('#UI-step4').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step4" class="step4" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-top-left">
+					<div class="content">
+						<div class="text">常用业务区：这些小伙伴，是按您使用的热度排序的哦！</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step4').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step4').css('display','none');$('#UI-step5').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step5" class="step5" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom-left">
+					<div class="content">
+						<div class="text">搜索区：无论您找菜单还是找商品，您只需输入名称或拼音首字母，剩下的就交给我吧！</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step5').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step5').css('display','none');$('#UI-step6').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step6" class="step6" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-top-left">
+					<div class="content">
+						<div class="text">主菜单：看看我们尊敬的客户需要些什么服务。</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step6').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step6').css('display','none');$('#UI-step7').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step7" class="step7" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom">
+					<div class="content">
+						<div class="text">首页：这是您自己的工作台，即时显示您的业务受理情况，不要让小姑娘生气噢。</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step7').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step7').css('display','none');$('#UI-step8').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step8" class="step8" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom">
+					<div class="content">
+						<div class="text">热门商品：客户最近常常购买的商品都在这里面噢。</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step8').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step8').css('display','none');$('#UI-step9').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step9" class="step9" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom">
+					<div class="content">
+						<div class="text">查资料（原客户资料综合查询）：我欠费了吗？实名认证了吗？查查 PUK
+							码？请点击“查资料”进入“我的移动”。</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step9').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step9').css('display','none');$('#UI-step10').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step10" class="step10" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom">
+					<div class="content">
+						<div class="text">更多：这里是完整的菜单地图，想不到搜索的关键字了？那就来这里耐心找找吧！</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step10').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step10').css('display','none');$('#UI-step11').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="UI-step11" class="step11" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom">
+					<div class="content">
+						<div class="text">任务栏：已经打开的菜单都在这里，最多可容纳8个小伙伴，还可以切换使用哦！</div>
+						<div class="fn">
+							<button
+								onclick="$('#UI-step11').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#UI-step11').css('display','none');$('#helpNavPerson').css('display','none');$('#dialogPerson').css('display','');">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 帮助 结束 个人-->
+
+
+
+	<!-- 帮助 开始 集团-->
+	<div class="m_help m_help-group" id="helpNavGroup"
+		style="display: none;">
+		<div id="GR-step1" class="step1">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom-right">
+					<div class="content">
+						<div class="text">员工信息区：关于您的一切信息，都在这里！点击可查看更多。</div>
+						<div class="fn">
+							<button
+								onclick="$('#GR-step1').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#GR-step1').css('display','none');$('#GR-step2').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="GR-step2" class="step2" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-right">
+					<div class="content">
+						<div class="text">用户登录 / 信息区：办理业务时统一鉴权入口，鉴权后，展示用户信息。</div>
+						<div class="fn">
+							<button
+								onclick="$('#GR-step2').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#GR-step2').css('display','none');$('#GR-step3').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="GR-step3" class="step3" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-right">
+					<div class="content">
+						<div class="text">功能区：有收藏夹、公告、截屏等一些实用的小功能。</div>
+						<div class="fn">
+							<button
+								onclick="$('#GR-step3').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#GR-step3').css('display','none');$('#GR-step4').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="GR-step4" class="step4" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+				<div class="s4"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-top-left">
+					<div class="content">
+						<div class="text">客户经理工作台：提供客户经理集中统一的工作发起和处理入口，便捷的访问路径，对各类信息集中管理，聚焦展示，实现信息的个性化引导。</div>
+						<div class="fn">
+							<button
+								onclick="$('#GR-step4').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#GR-step4').css('display','none');$('#GR-step5').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="GR-step5" class="step5" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+				<div class="s3"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom-left">
+					<div class="content">
+						<div class="text">搜索区：无论您找菜单还是找商品，您只需输入名称或拼音首字母，剩下的就交给我吧！</div>
+						<div class="fn">
+							<button
+								onclick="$('#GR-step5').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#GR-step5').css('display','none');$('#GR-step6').css('display','')">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="GR-step6" class="step11" style="display: none;">
+			<div class="bg">
+				<div class="s1"></div>
+				<div class="s2"></div>
+			</div>
+			<div class="tip">
+				<div
+					class="c_tooltip c_tooltip-help c_tooltip-help-l c_tooltip-arrow-curve c_tooltip-bottom">
+					<div class="content">
+						<div class="text">任务栏：已经打开的菜单都在这里，最多可容纳8个小伙伴，还可以切换使用哦！</div>
+						<div class="fn">
+							<button
+								onclick="$('#GR-step6').css('display','none');$.sidebar.navAction()">不再显示</button>
+							<button
+								onclick="$('#GR-step6').css('display','none');$('#helpNavGroup').css('display','none');$('#dialogGroup').css('display','');">知道了</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 帮助 结束 集团-->
+
+	<!-- 弹窗 开始 个人-->
+	<div class="c_dialog" id="dialogPerson" style="display: none;">
+		<div class="wrapper" style="width: 5.4rem;">
+			<!-- 标题栏 开始 -->
+			<div class="header header-white">
+				<div class="text"></div>
+				<div class="fn">
+					<div class="close"
+						onclick="$('#dialogPerson').css('display','none');"></div>
+				</div>
+			</div>
+			<!-- 标题栏 结束 -->
+			<!-- 内容 开始 -->
+			<div class="content">
+				<!-- 信息提示 开始 -->
+				<div class="c_msg c_msg-h c_msg-help">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="info">
+							<div class="text">
+								<div class="title">接下来一起来学习办理业务吧！</div>
+								<div class="content">请选择您要学习的业务</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 信息提示 结束 -->
+				<div class="c_box l_padding-3 l_padding-side">
+					<!-- 列表 开始 -->
+					<div class="c_list c_list-border c_list-line c_list-col-4 c_list-v">
+						<ul>
+							<li class="link"
+								onclick="$('#dialogPerson').css('display','none');$.sidebar.tipAction('输入“gryhkh”（个人用户开户的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1051.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">个人用户开户</div>
+								</div>
+							</li>
+							<li class="link"
+								onclick="$('#dialogPerson').css('display','none');$.sidebar.tipAction('输入“hfsq”（话费收取的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1104.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">话费收取</div>
+								</div>
+							</li>
+							<li class="link"
+								onclick="$('#dialogPerson').css('display','none');$.sidebar.tipAction('输入“spdg”（商品订购的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/9002.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">商品订购</div>
+								</div>
+							</li>
+							<li class="link"
+								onclick="$('#dialogPerson').css('display','none');$.sidebar.tipAction('输入“xh”（销户的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1113.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">销户</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- 列表 结束 -->
+					<div class="c_space-3"></div>
+				</div>
+			</div>
+			<!-- 内容 结束 -->
+		</div>
+	</div>
+	<!-- 弹窗 结束 个人-->
+
+	<!-- 弹窗 开始 集团-->
+	<div class="c_dialog" id="dialogGroup" style="display: none;">
+		<div class="wrapper" style="width: 5.4rem;">
+			<!-- 标题栏 开始 -->
+			<div class="header header-white">
+				<div class="text"></div>
+				<div class="fn">
+					<div class="close"
+						onclick="$('#dialogGroup').css('display','none');"></div>
+				</div>
+			</div>
+			<!-- 标题栏 结束 -->
+			<!-- 内容 开始 -->
+			<div class="content">
+				<!-- 信息提示 开始 -->
+				<div class="c_msg c_msg-h c_msg-help">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="info">
+							<div class="text">
+								<div class="title">接下来一起来学习办理业务吧！</div>
+								<div class="content">请选择您要学习的业务</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 信息提示 结束 -->
+				<div class="c_box l_padding-3 l_padding-side">
+					<!-- 列表 开始 -->
+					<div class="c_list c_list-border c_list-line c_list-col-4 c_list-v">
+						<ul>
+							<li class="link"
+								onclick="$('#dialogGroup').css('display','none');$.sidebar.tipAction('输入“jtgjffgxgl”（集团高级付费关系管理的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1127.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">集团高级付费关系管理</div>
+								</div>
+							</li>
+							<li class="link"
+								onclick="$('#dialogGroup').css('display','none');$.sidebar.tipAction('输入“jtyxsl”（集团营销受理的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1128.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">集团营销受理</div>
+								</div>
+							</li>
+							<li class="link"
+								onclick="$('#dialogGroup').css('display','none');$.sidebar.tipAction('输入“cyspywsl”（成员商品业务受理的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1125.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">成员商品业务受理</div>
+								</div>
+							</li>
+							<li class="link"
+								onclick="$('#dialogGroup').css('display','none');$.sidebar.tipAction('输入“jtspywsl”（集团商品业务受理的拼音首字母）试试。')">
+								<div class="pic l_padding-3 l_padding-side">
+									<div class="c_space-2"></div>
+									<img src="/static/menu/1126.png" alt="" />
+								</div>
+								<div class="main">
+									<div class="content">集团商品业务受理</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- 列表 结束 -->
+					<div class="c_space-3"></div>
+				</div>
+			</div>
+			<!-- 内容 结束 -->
+		</div>
+	</div>
+	<!-- 弹窗 结束 集团-->
+
+	<!-- 默认提示 开始 -->
+	<div id="searchTip" class="c_tooltip c_tooltip-help c_tooltip-left"
+		style="right: 6.8rem; top: 0.85rem; display: none;">
+		<div id="searchTipContent" class="content">输入“kh”（开户的拼音首字母）试试。</div>
+	</div>
+	<!-- 默认提示 结束 -->
+
+
+	<!-- 发布公告 开始 -->
+	<div class="c_dialog" id="UI-release" style="display: none;">
+		<div class="wrapper" style="width: 8.6rem;">
+			<!-- 标题栏 开始 -->
+			<div class="c_header c_header-white">
+				<div class="text"></div>
+				<div class="fn">
+					<label><input type="checkbox" id="msgnoshow" /> 不再显示</label>
+					<button class="e_button-red" type="button"
+						onclick="$.sidebar.msgAction()">
+						<span class="e_ico-close"></span>
+					</button>
+				</div>
+			</div>
+			<!-- 标题栏 结束 -->
+			<!-- 内容 开始 -->
+			<div class="content">
+				<div class="c_scroll c_scroll-white"
+					style="height: 5rem; overflow: hidden;">
+					<!-- 段落 开始 -->
+					<div class="c_article">
+						<div class="content"
+							style="border-top: 0 none; margin-top: -0.6rem;">
+							<img src="/static/menu/release.jpg" alt="" style="width: 100%;" /><br />
+							<br />
+							<!-- 分列 开始 -->
+							<div class="l_col">
+								<div class="l_colItem" style="width: 1.5rem;">
+									<!-- 信息提示 开始 -->
+									<div class="c_msg c_msg-h c_msg-success">
+										<div class="wrapper">
+											<div class="emote" style="margin-top: -0.3rem;"></div>
+										</div>
+									</div>
+									<!-- 信息提示 结束 -->
+								</div>
+								<div class="l_colItem">
+									<span class="e_size-xxl e_red">亲</span>，还在到处找页面？还在死背菜单点？<span
+										class="e_red e_size-xxl" style="font-style: italic">全新
+										CRM 华丽登场啦！</span><br /> <span class="e_red"> 不再找，找，找。<br />
+										&nbsp;无需背，背，背。<br /></span>
+								</div>
+							</div>
+							<!-- 分列 结束 -->
+							<div style="margin-top: -0.2rem; position: relative; z-index: 2;">
+								输入客户号码，进入“我的移动”，客户主要信息在此一览无余，办活动，改套餐，退业务，不再层层切换，统统一键搞定，一键搞定，一键搞定！从未有过的舒爽感觉，从此刻开始！<br />
+								<div class="c_space"></div>
+								<div class="e_right e_blue e_strong e_size-">
+									快快体验我们一线人员亲手设计的 <span class="e_red">CRM</span> 吧！
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 段落 结束 -->
+				</div>
+			</div>
+			<!-- 内容 结束 -->
+		</div>
+	</div>
+	<!-- 发布公告 结束 -->
+
+	<!-- 右键菜单 开始 -->
+	<div class="m_contextMenu" id="menuContextMenu"
+		onclick="$('#menuContextMenu').css('display','none');"
+		style="display: none;">
+		<ul>
+			<li id="contextClose" ontap="$.navtabset.close()">关闭</li>
+			<li id="contextCloseAll" ontap="$.navtabset.closeAll()">全部关闭</li>
+			<li id="contextCloseOthers" ontap="$.navtabset.closeOther()">关闭其他</li>
+		</ul>
+		<ul>
+			<li id="pageReload" ontap="$.navtabset.pageReload()">刷新</li>
+			<li id="contextAddFavo" ontap="$.navtabset.addFavo()">收藏</li>
+			<li id="contextOpenIndex" ontap="$.navtabset.openMenuNav()">打开导航</li>
+		</ul>
+	</div>
+	<!-- 右键菜单 结束 -->
+	<div id="opTip" class="c_tip c_tip-float"
+		style="top: 0.7rem; left: 6rem;"></div>
+	<script language="javascript">
+//<!--
+//document.write("<script language=\"javascript\" type=\"text/javascript\" src=\"handler?clazz=com.asiainfo.veris.framework.web.frame.handler.VariableHandler&method=init&_=" + (new Date()).getTime() + "\"><" +"/sc" + "ript>");
+//-->
+</script>
+</body>
+</html>

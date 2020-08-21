@@ -1,0 +1,5 @@
+SELECT T.OID,
+       T.ADDID,
+       T.ADDVALUE     
+  FROM TF_B_CTRM_ORDER_ATTR T
+ WHERE T.OID = :OID

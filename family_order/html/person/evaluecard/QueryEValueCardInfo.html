@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>卡信息及充值记录查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/evaluecard/scripts/EValueCard.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 查询区 -->
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+		<div class="text">卡信息及充值记录查询</div>
+	</div>
+<!-- 查询开始 -->
+<div jwcid="QueryCondPart@Part">
+	<div class="c_form c_form-label-7" jwcid="NormalQueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">电子卡卡号：</span></span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="CARD_NO" name="CARD_NO" 
+					       value="ognl:cond.CARD_NO"  desc="电子卡卡号" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button name="bquery" id="bquery" class="e_button-form" onclick="return queryEValueCardInfoAndPayInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+</div>
+</div>
+	<!-- 查询结束 -->
+</div>
+	<!-- 查询区域结束 -->
+<!-- 展示区域 -->
+<div class="c_box" id="remarkPart">
+    <!-- 展示表格 开始 -->
+    <div class="c_title c_title-2">
+		<div class="text">卡信息</div>
+	</div>
+	<div class="c_scroll c_scroll-table-10" jwcid="QueryCardInfoPart@Part">
+		<div class="c_table">
+			<table jwcid="@Table" id="monitorInfoTable" name="monitorInfoTable">
+				<thead>
+					<tr>
+					 	<tr>
+							<th col='RSRV_STR1'>卡号</th>
+							<th col='RSRV_STR2'>面值(分)</th>
+							<th col='RSRV_STR3'>卡业务类型</th>
+							<th col='RSRV_STR4'>卡业务属性</th>
+							<th col='RSRV_STR5'>有效期</th>
+							<th col='RSRV_STR6'>卡状态</th>
+						</tr>
+					</tr>
+				</thead>
+				<tbody id="MonitorInfoTable_Body">
+					<tr jwcid="@Foreach" source="ognl:cardInfos" value="ognl:info" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CARD_NO"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CARD_MONEY"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_CARD_TYPE',info.CARD_TYPE)"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CARD_BUSIPROP"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACTIVE_DAYS"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_STATEFLAG',info.CARD_STATEFLAG)"></span></td>
+					</tr>
+			</tbody>
+			</table>
+			
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 展示表格 开始 -->
+    <div class="c_title c_title-2">
+		<div class="text">充值记录</div>
+	</div>
+	<div class="c_scroll c_scroll-table-10" jwcid="QueryPayedInfoPart@Part">
+		<div class="c_table">
+			<table jwcid="@Table" id="monitorInfoTable" name="monitorInfoTable">
+				<thead>
+					<tr>
+					 	<tr>
+							<th col='RSRV_STR1'>充值交易流水号</th>
+							<th col='RSRV_STR2'>充值时间</th>
+							<th col='RSRV_STR3'>充值渠道</th>
+							<th col='RSRV_STR4'>充值号码</th>
+							<th col='RSRV_STR5'>被充值号码</th>
+						</tr>
+					</tr>
+				</thead>
+				<tbody id="MonitorInfoTable_Body">
+					<tr jwcid="@Foreach" source="ognl:payinfos" value="ognl:info" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.SURELY_TRANSACTIONID"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACTION_TIME"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_RECHARGE_CHANNEL',info.CHANNEL_TYPE)"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.MAIN_SERIAL_NUMBER"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.SURELY_SERIAL_NUMBER"></span></td>
+					</tr>
+			</tbody>
+			</table>
+			
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div>
+</body>
+</html>

@@ -1,0 +1,1559 @@
+<div jwcid="@Conditional" condition="ognl:operCode == '20'">
+	<div class="c_title">
+		<div class="text"><!-- <span jwcid="@Insert" value="ognl:offerName" /> -->数据列表</div>
+		<div class="fn">
+			<ul>
+			<!-- 	<li ontap="showUpload();" id="batchAdd"><span class="e_ico-import"></span>批量新增</li> -->
+			<li ontap="addDataLineParam();" id="batchAdd"><span class="e_ico-add"></span>新增</li>
+				<!-- 暂时屏蔽，暂时不提供快开 -->
+				<li id="batchAdd">
+					<div jwcid="@Conditional" condition="ognl: templetId== 'EDIRECTLINEOPEN'||templetId == 'DIRECTLINEMARKETINGADD' || templetId == 'DIRECTLINEMARKETINGUPD'">
+					<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+					</div>
+				</li>
+				<div jwcid="@Conditional" condition="ognl:templetId== 'ERESOURCECONFIRMZHZG' ">
+					<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+					<li id="batchAdd">
+						<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+							<span name="batchAddImportZHZG" taskId="2019050710" jwcid="@Import"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								cond="ParamPart" configFile="import/bat/group/ZHZG_BATCH_VOIPLINE.xml"
+								templateFile="template/bat/group/ZHZG_BATCH_VOIPLINE.xls"
+								ftpCode="eosdata" buttonText="批量新增" fileName="VOIP专线批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+							<span name="batchAddImportZHZG" taskId="2019050712" jwcid="@Import"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								cond="ParamPart" configFile="import/bat/group/ZHZG_BATCH_DATALINE.xml"
+								templateFile="template/bat/group/ZHZG_BATCH_DATALINE.xls"
+								ftpCode="eosdata" buttonText="批量新增" fileName="数据专线批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+							<span name="batchAddImportZHZG" taskId="2019050711" jwcid="@Import"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								cond="ParamPart" configFile="import/bat/group/ZHZG_BATCH_INTERNET.xml"
+								templateFile="template/bat/group/ZHZG_BATCH_INTERNET.xls" ftpCode="eosdata"
+								buttonText="批量新增" fileName="互联网专线批量导入模板.xls" auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+							<span name="batchAddImportZHZG" taskId="2019050711" jwcid="@Import"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								cond="ParamPart" configFile="import/bat/group/ZHZG_BATCH_IMSLINE.xml"
+								templateFile="template/bat/group/ZHZG_BATCH_IMSLINE.xls" ftpCode="eosdata"
+								buttonText="批量新增" fileName="IMS专线批量导入模板.xls" auto="false" />
+						</div>
+				</li>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:templetId!= 'EDIRECTLINEOPEN'">
+				<li ontap="addDataLineParam();" id="add"><span class="e_ico-add"></span>新增</li>
+			</div>
+			<li ontap="deleteDataLineParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+			</ul>
+		</div>
+		<div jwcid="@Any" style="display:none" id="SUCC_LIST" desc="上传到ftp的数据"><span jwcid="@Insert" value="ognl:ftpInfo" /></div>
+	</div>
+	<div class="c_list c_list-line c_list-border" style="display:none;">
+		<ul id="DATALINE_PARAM_UL">
+			
+		</ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:operCode == '25'">
+	<!-- 列表 结束 -->
+	<div class="c_title">
+		<div class="text">受理信息</div>
+		<div class="fn">
+			<ul>
+				<li id="showInfo" ontap="$(this).hide(); $('#hideInfo').show(); $('#delParamPart').toggleClass('e_hide-x')"><span class="e_ico-show"></span>显示次要信息</li>
+				<li id="hideInfo" ontap="$(this).hide(); $('#showInfo').show(); $('#delParamPart').toggleClass('e_hide-x')"  style="display:none;"><span class="e_ico-hide"></span>隐藏次要信息</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="@Part" id="delParamPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1 e_hide-x">
+		<ul>
+			<li class="link required">
+				<div class="label">专线范围</div>
+				<div class="value">
+					<input jwcid="@Select" name="DIRECTLINE_SCOPE"  source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BizRange')"  textField="DATA_NAME" valueField="DATA_ID" 
+						value="ognl:info.DIRECTLINE_SCOPE" nullable="no"  onChange="refreshLineType(this,'DIRECTLINE_TYPE');" desc="专线范围"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">拆机类型</div>
+				<div class="value">
+					<input jwcid="@Select" name="DIRECTLINE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('zxType')" textField="DATA_NAME" valueField="DATA_ID"
+                             value="ognl:info.DIRECTLINE_TYPE"  nullable="no" desc="拆机类型"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">拆机原因</div>
+				<div class="value">
+					<input jwcid="@Select" name="backoutCause" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('cancelReasonCrm')" textField="DATA_NAME" valueField="DATA_NAME"
+                             value="ognl:info.backoutCause"  nullable="no" desc="拆机原因"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">客户要求拆机时间</div>
+				<div class="value">
+					<input  name="cancelTime" id="cancelTime" nullable="no" jwcid="@DateField" dropDown="true" value="ognl:info.cancelTime" format="yyyy-MM-dd HH:mm:ss" desc="客户要求拆机时间"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">合同是否到期</div>
+				<div class="value">
+					<input jwcid="@Switch" name="CONTACTEXPIRES" value="ognl:info.CONTACTEXPIRES" onValue="1" onText="是" 
+						 offValue="0" offText="否" desc="合同是否到期"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">费用是否清算完毕</div>
+				<div class="value">
+					<input jwcid="@Switch" name="PAYMENTCOMPLETE" value="ognl:info.PAYMENTCOMPLETE" onValue="1" onText="是" 
+						 offValue="0" offText="否" desc="费用是否清算完毕"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">拆机联系人</div>
+				<div class="value">
+					<input jwcid="@TextField" name="CONTACT" value="ognl:info.CONTACT" nullable="no" desc="拆机联系人"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">拆机联系电话</div>
+				<div class="value">
+					<input jwcid="@TextField" name="CONTACT_PHONE" value="ognl:info.CONTACT_PHONE" nullable="no" desc="拆机联系电话"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">拆机详细地址</div>
+				<div class="value">
+					<input jwcid="@TextField" name="EOMS_ADDRESS" value="ognl:info.EOMS_ADDRESS" nullable="no" desc="拆机详细地址"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">是否能挽留集团客户</div>
+				<div class="value">
+					<input jwcid="@Switch" name="KEEPENTERPRISECU" value="ognl:info.KEEPENTERPRISECU" onValue="1" onText="是" 
+						 offValue="0" offText="否" desc="是否能挽留集团客户"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">挽留客户情况说明</div>
+				<div class="value">
+					<input jwcid="@TextField" name="COMENT" value="ognl:info.COMENT" nullable="no" desc="挽留客户情况说明"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">客户侧是否自备业务设备</div>
+				<div class="value">
+					<input jwcid="@Switch" name="isCustomerProvideEquipment" value="ognl:info.isCustomerProvideEquipment" onValue="1" onText="是" 
+						 offValue="0" offText="否" desc="客户侧是否自备业务设备"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">拆机详细原因</div>
+				<div class="value">
+					<input type="text" jwcid="@TextArea" name="REMARK" value="ognl:info.REMARK==null?'无':info.REMARK" 
+                                nullable="no" rows="3" cols="200" maxsize="200" desc="拆机详细原因"/>
+				</div>
+			</li>
+			<li class="link e_x">
+				<div class="label">宽带：公网IP地址</div>
+				<div class="value">
+					<input jwcid="@TextField" name="IP_ADD" value="ognl:info.IP_ADD" desc="宽带：公网IP地址"/>
+				</div>
+			</li>
+			<li class="link e_x">
+				<div class="label">GPRS：APN名称</div>
+				<div class="value">
+					<input jwcid="@TextField" name="APNNAME" value="ognl:info.APNNAME" desc="GPRS：APN名称"/>
+				</div>
+			</li>
+			<li class="link e_x">
+				<div class="label">语音专线：信令点编码</div>
+				<div class="value">
+					<input jwcid="@TextField" name="CODE" value="ognl:info.CODE" desc="语音专线：信令点编码"/>
+				</div>
+			</li>
+			<li class="link" style="display: none;">
+				<div class="label">专线范围显示值</div>
+				<div class="value">
+					<input jwcid="@TextField" name="BizRange" value="ognl:info.BizRange" desc="专线范围显示值"/>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHANGEFEE' ">
+	<div class="c_title">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" />全选</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM">
+			<li jwcid="@Foreach" source="ognl:directLineList" value="ognl:directInfo" index="ognl:rowIndex"  element="li">
+				<div class="fn">
+					<input type="checkbox" name="DATALINE_TAG" jwcid="@Checkbox" value="ognl:directInfo.tradeID" id="ognl:getPage().getData().getString('OFFER_CODE')+'_'+rowIndex"
+						   serialNumber="ognl:directInfo.SERIAL_NUMBER_B" productNo="ognl:directInfo.V19249V1" userId="ognl:directInfo.USER_ID" disabled="ognl:templetId == 'EDIRECTLINECONTRACTCHANGE'? 'true':'false'" /><!-- onclick="selectDirectLine(this);"/> -->
+				</div>
+				<div class="main" jwcid="@Any" id="ognl:rowIndex+'new'">
+					<div class="title"><span jwcid="@Insert" value="ognl:directInfo.tradeID" /></div>
+					<div class="content e_hide-phone">
+						<!-- 参数 开始 -->
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul>
+								<div jwcid="@Conditional" condition="ognl:userInfo.PRODUCT_ID == '7012' || userInfo.PRODUCT_ID == '7011' || userInfo.PRODUCT_ID == '7016'
+									|| userInfo.PRODUCT_ID == '70111'|| userInfo.PRODUCT_ID == '70112'|| userInfo.PRODUCT_ID == '70121'|| userInfo.PRODUCT_ID == '70122'">
+									<li>
+										<span class="label">成员服务号码：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.SERIAL_NUMBER_B" id="ognl:rowIndex+'SERIALNUMBER'" desc="成员服务号码" name="SERIALNUMBER" oldvalue="ognl:directInfo.SERIAL_NUMBER_B"/></span>
+									</li>
+								</div>
+								<li>
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V1" id="ognl:rowIndex+'ProductNO'" desc="专线实例号" name="pam_NOTIN_LINE_INSTANCENUMBER" oldvalue="ognl:directInfo.V19249V1" /></span>
+								</li>
+								<li>
+									<span class="label">带宽（兆）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V2" id="ognl:rowIndex+'width'" desc="带宽"  name="pam_NOTIN_LINE_BROADBAND" oldvalue="ognl:directInfo.V19249V2"/></span>
+								</li>
+								<li>
+									<span class="label">月租费（元/月）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V3" id="ognl:rowIndex+'price'" desc="月租费" name="pam_NOTIN_LINE_PRICE" oldvalue="ognl:directInfo.V19249V3"/></span>
+								</li>
+								<li>
+									<span class="label">一次性费用（安装调试费）（元）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V4" id="ognl:rowIndex+'once'" desc="一次性费用（安装调试费）" name="pam_NOTIN_INSTALLATION_COST" oldvalue="ognl:directInfo.V19249V4"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">一次性通信服务费（元）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V5" id="ognl:rowIndex+'servce'" desc="一次性通信服务费（元）" name="pam_NOTIN_ONE_COST" oldvalue="ognl:directInfo.V19249V5"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">成员用户标识：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.USER_ID" id="ognl:rowIndex+'user'" desc="成员userId" name="USER_ID" oldvalue="ognl:directInfo.USER_ID"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">业务标识：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V1" id="ognl:rowIndex+'number'" desc="业务标识" name="pam_NOTIN_PRODUCT_NUMBER" oldvalue="ognl:directInfo.V19249V1"/></span>
+								</li>
+								<div jwcid="@Conditional" condition="ognl:(userInfo.PRODUCT_ID == '7011'||userInfo.PRODUCT_ID == '70111'||userInfo.PRODUCT_ID == '70112')">
+									<li>
+										<span class="label">IP地址使用费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V7" id="ognl:rowIndex+'ip'"   desc="IP地址使用费" name="pam_NOTIN_IP_PRICE" oldvalue="ognl:directInfo.V19249V7"/></span>
+									</li>
+									<li>
+										<span class="label">软件应用服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V8" id="ognl:rowIndex+'soft'"  desc="软件应用服务费" name="pam_NOTIN_SOFTWARE_PRICE" oldvalue="ognl:directInfo.V19249V8"/></span>
+									</li>
+									<li>
+										<span class="label">技术支持服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V9" id="ognl:rowIndex+'tech'" desc="技术支持服务费" name="pam_NOTIN_NET_PRICE" oldvalue="ognl:directInfo.V19249V9"/></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:(userInfo.PRODUCT_ID == '7012'||userInfo.PRODUCT_ID == '70121'||userInfo.PRODUCT_ID == '70122')">
+									<li>
+										<span class="label">SLA服务费（元/月）：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V1924913" id="ognl:rowIndex+'sla'" desc="SLA服务费" name="pam_NOTIN_SLA" oldvalue="ognl:directInfo.V1924913"/></span>
+									</li>
+									<li>
+										<span class="label">软件应用服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V8" id="ognl:rowIndex+'soft'" desc="软件应用服务费" name="pam_NOTIN_SOFTWARE_PRICE" oldvalue="ognl:directInfo.V19249V8"/></span>
+									</li>
+									<li>
+										<span class="label">技术支持服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V9" id="ognl:rowIndex+'tech'" desc="技术支持服务费" name="pam_NOTIN_NET_PRICE"  oldvalue="ognl:directInfo.V19249V9"/></span>
+									</li>
+									<li>
+										<span class="label">集团所在市县分成比例(%)：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V1924910" id="ognl:rowIndex+'groupprecent'" desc="集团所在市县分成比例" name="pam_NOTIN_GROUP_PERCENT" oldvalue="ognl:directInfo.V1924910"/></span>
+									</li>
+									<li>
+										<span class="label">A端所在市县分成比例(%)：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V1924911" id="ognl:rowIndex+'aprecent'" desc="A端所在市县分成比例" name="pam_NOTIN_A_PERCENT"  oldvalue="ognl:directInfo.V1924911"/></span>
+									</li>
+									<li>
+										<span class="label">Z端所在市县分成比例(%)：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V1924912" id="ognl:rowIndex+'zprecent'" desc="Z端所在市县分成比例" name="pam_NOTIN_Z_PERCENT" oldvalue="ognl:directInfo.V1924912"/></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:userInfo.PRODUCT_ID == '7010'">
+									<li>
+										<span class="label">语音通信费（元/分钟）：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_RSRV_STR15" id="ognl:rowIndex+'voice'"  desc="语音通信费" name="pam_NOTIN_VOICE" oldvalue="ognl:directInfo.NOTIN_RSRV_STR15"/></span>
+									</li>
+									<li style="display: none">
+										<span class="label">专线</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_LINE_NUMBER" id="ognl:rowIndex+'line'"  desc="专线" name="pam_NOTIN_LINE_NUMBER" oldvalue="ognl:directInfo.NOTIN_LINE_NUMBER"/></span>
+									</li>
+									<li style="display: none">
+										<span class="label">专线Code</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_LINE_NUMBER_CODE" id="ognl:rowIndex+'lineCode'"  desc="专线CODE" name="pam_NOTIN_LINE_NUMBER_CODE" oldvalue="ognl:directInfo.NOTIN_LINE_NUMBER_CODE" /></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:userInfo.PRODUCT_ID == '7016'">
+									<li>
+										<span class="label">IP地址使用费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V7" id="ognl:rowIndex+'ip'"   desc="IP地址使用费" name="pam_NOTIN_IP_PRICE" oldvalue="ognl:directInfo.V19249V7"/></span>
+									</li>
+									<li>
+										<span class="label">软件应用服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V8" id="ognl:rowIndex+'soft'"  desc="软件应用服务费" name="pam_NOTIN_SOFTWARE_PRICE" oldvalue="ognl:directInfo.V19249V8"/></span>
+									</li>
+									<li>
+										<span class="label">技术支持服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.V19249V9" id="ognl:rowIndex+'tech'" desc="技术支持服务费" name="pam_NOTIN_NET_PRICE" oldvalue="ognl:directInfo.V19249V9"/></span>
+									</li>
+								</div>
+							</ul>
+						</div>
+						<!-- 参数 结束 -->
+					</div>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:templetId != 'EDIRECTLINECONTRACTCHANGE'">
+					<div jwcid="@Any" class='fn' ontap="ognl:'modifyDataLineParam(&#39;OFFER_CHA_'+getPage().getData().getString('OFFER_CODE')+'_'+rowIndex+'&#39);'"><span class='e_ico-edit'></span></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECHANGE'"><!-- 资管暂时不支持快速变更，等支持了可以和DIRECTLINECHANGESIMPLE共用一个块 -->
+<div class="c_title">
+	<div jwcid="changeLinePopupItem@Part" class="c_popupItem" id="changeLinePopupItem">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+				<li>
+				<span jwcid="@Conditional" condition="ognl:productId == '7010'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeLineExport"
+						cond="changeLinePopupItem" taskId="2019061301"
+						configFile="export/bat/group/ExportConfCrm_VOIP.xml"
+						ftpCode="eosdata" fileName="VOIP专线变更信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeLineExport"
+						cond="changeLinePopupItem" taskId="2019061301"
+						configFile="export/bat/group/ExportConfCrm_Internet.xml"
+						ftpCode="eosdata" fileName="互联网专线变更信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeLineExport"
+						cond="changeLinePopupItem" taskId="2019061301"
+						configFile="export/bat/group/ExportConfCrm_DataLine.xml"
+						ftpCode="eosdata" fileName="数据专线变更信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:productId == '7016'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeLineExport"
+						cond="changeLinePopupItem" taskId="2019061301"
+						configFile="export/bat/group/ExportConfCrm_Ims.xml"
+						ftpCode="eosdata" fileName="Ims变更信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				</li>
+					<li>
+						<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+							<span name="batchChangeImport" taskId="2019061302"
+								jwcid="@Import" cond="changeLinePopupItem,CommonPart"
+								params="ognl:'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CONFCRMINFO_VOIP.xml"
+								templateFile="template/bat/group/BATCH_VOIPLINE.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="VOIP专线变更批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+							<span name="batchChangeImport" taskId="2019061302"
+								jwcid="@Import" cond="changeLinePopupItem,CommonPart"
+								params="ognl:'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CONFCRMINFO_DATALINE.xml"
+								templateFile="template/bat/group/BATCH_DATALINE.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="数据专线变更批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+							<span name="batchChangeImport" taskId="2019061302"
+								jwcid="@Import" cond="changeLinePopupItem,CommonPart"
+								params="ognl:'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CONFCRMINFO_INTERNET.xml"
+								templateFile="template/bat/group/BATCH_INTERNET.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="互联网专线变更批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+							<span name="batchChangeImport" taskId="2019061302"
+								jwcid="@Import" cond="changeLinePopupItem,CommonPart"
+								params="ognl:'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CONFCRMINFO_IMS.xml"
+								templateFile="template/bat/group/BATCH_IMS.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="IMS专线变更批量导入模板.xls"
+								auto="false" />
+						</div>
+					</li>
+					<li ontap="deleteDataLineParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+				</ul>
+			</div>
+		<input style="display: none" jwcid="@Hidden" id="CHANGELINENOS" name="CHANGELINENOS" value=""/>
+	</div>
+	</div>
+	<div class="c_list c_list-line c_list-border" style="display:none;">
+		<ul id="DATALINE_PARAM_UL">
+			
+		</ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'DIRECTLINECHANGESIMPLE'||templetId == 'MANUALSTOP'||templetId == 'MANUALBACK'">
+	<div jwcid="changSimplePart@Part">
+		<input jwcid="@Any" style="display:none" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:productId" />
+		<input jwcid="@Any" style="display:none" id="USER_ID" name="USER_ID" value="ognl:userInfo.GRP_USER_ID" />
+		<input jwcid="@Any" style="display:none" id="CHANGEMODEIMPORT" name="CHANGEMODEIMPORT" value="" />
+	</div>
+		
+	<div class="c_title"  jwcid="changImportPart@Part" id="changImport" name ="">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked);setExportLineNos();" class="e_checkbox" checked='checked'/>全选</li>
+				
+				<div jwcid="@Conditional" condition="ognl:templetId != 'MANUALSTOP'&&templetId != 'MANUALBACK'">
+				<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+					<li>
+						<span class="e_space"></span>
+						<button type="button" jwcid="@Export" name="ChangeSimpleExport"
+							cond="changSimplePart" taskId="2019060410"
+							configFile="export/bat/group/ChangSimpleCrm_VOIP.xml"
+							ftpCode="eosdata" fileName="VOIP简单变更信息导出.xls">
+							<span class="e_ico-export"/><span>导出</span>
+						</button>
+					</li>
+					
+					<li>
+						<span class="e_space"></span>
+						<button type="button" cond="changSimplePart,changImportPart" name="ChangeSimpleImport" taskId="2019060411"
+							jwcid="@Import"  
+							configFile="import/bat/group/ChangSimpleCrm_VOIP.xml"
+							templateFile="template/bat/group/ChangSimpleCrm_VOIP.xls"
+							fileName="VOIP简单变更信息导入.xls" ftpCode="eosdata" auto="false"
+							>
+							<span class="e_ico-import"/><span>导入</span>
+						</button>
+					</li>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+					<li>
+						<span class="e_space"></span>
+						<button type="button" jwcid="@Export" name="ChangeSimpleExportInternet"
+							cond="changSimpleLineNoPart" taskId="2019061410"
+							configFile="export/bat/group/ChangSimpleCrm_Internet.xml"
+							ftpCode="eosdata" fileName="互联网简单变更信息导出.xls">
+							<span class="e_ico-export"/><span>导出</span>
+						</button>
+					</li>
+					
+					<li>
+						<span class="e_space"></span>
+						<button type="button" 
+							cond="changImportPart,changSimpleLineNoPart,changeModePart" 
+							name="ChangeSimpleImportInternet" taskId="2019061510"
+							jwcid="@Import"  
+							configFile="import/bat/group/ChangSimpleCrm_Internet.xml"
+							templateFile="template/bat/group/SIMPLE_BATCH_INTERNET.xls"
+							fileName="互联网简单变更信息导入.xls"
+							ftpCode="eosdata"
+							>
+							<span class="e_ico-import"/><span>导入</span>
+						</button>
+					</li>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+					<li>
+						<span class="e_space"></span>
+						<button type="button" jwcid="@Export" name="ChangeSimpleExportInternet"
+							cond="changSimpleLineNoPart" taskId="2019061410"
+							configFile="export/bat/group/ChangSimpleCrm_DataLine.xml"
+							ftpCode="eosdata" fileName="数据专线简单变更信息导出.xls">
+							<span class="e_ico-export"/><span>导出</span>
+						</button>
+					</li>
+					
+					<li>
+						<span class="e_space"></span>
+						<button type="button" 
+							cond="changSimplePart,changSimpleLineNoPart,changeModePart" 
+							name="ChangeSimpleImportInternet" taskId="2019061510"
+							jwcid="@Import"  
+							configFile="import/bat/group/ChangSimpleCrm_DataLine.xml"
+							templateFile="template/bat/group/SIMPLE_BATCH_DATALINE.xls"
+							fileName="数据专线简单变更信息导入.xls"
+							ftpCode="eosdata"
+							>
+							<span class="e_ico-import"/><span>导入</span>
+						</button>
+					</li>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+					<li>
+						<span class="e_space"></span>
+						<button type="button" jwcid="@Export" name="ChangeSimpleExportInternet"
+							cond="changSimpleLineNoPart" taskId="2019061410"
+							configFile="export/bat/group/ChangSimpleCrm_Ims.xml"
+							ftpCode="eosdata" fileName="Ims简单变更信息导出.xls">
+							<span class="e_ico-export"/><span>导出</span>
+						</button>
+					</li>
+					
+					<li>
+						<span class="e_space"></span>
+						<button type="button" 
+							cond="changImportPart,changSimpleLineNoPart,changeModePart" 
+							name="ChangeSimpleImportInternet" taskId="2019061510"
+							jwcid="@Import"  
+							configFile="import/bat/group/ChangSimpleCrm_Ims.xml"
+							templateFile="template/bat/group/SIMPLE_BATCH_IMS.xls"
+							fileName="Ims简单变更信息导入.xls"
+							ftpCode="eosdata"
+							>
+							<span class="e_ico-import"/><span>导入</span>
+						</button>
+					</li>
+				</div>
+				</div>
+				<li ontap="deleteDataLineParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM_UL">
+			<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+			<li>
+				<div class="e_size-xl e_red">&emsp;&emsp;如未看到数据，请选择专线业务范围和变更场景！</div>
+			</li>
+			</div>
+		</ul>
+	</div>
+	<div jwcid="changSimpleLineNoPart@Part" style="display:none">
+		<input jwcid="@TextField" name="LINE_NOS" id="LINE_NOS" value=""/>
+		<input id="OUT_FLAG"/>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINECANCEL'">
+	<div class="c_title">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+				<li ontap="deleteDataLineParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM_UL">
+			<li jwcid="@Foreach" source="ognl:directLineList" value="ognl:directInfo" index="ognl:rowIndex"  element="li" id="ognl:'DATALINE_'+rowIndex+'_LI'">
+				<div class="fn">
+					<input type="checkbox" checked='checked' name="DATALINE_TAG" jwcid="@Checkbox" value="ognl:directInfo.tradeID" id="ognl:'DATALINE_'+rowIndex"
+					userId="ognl:directInfo.USER_ID" serialNumber="ognl:directInfo.SERIAL_NUMBER_B"/>
+				</div>
+				<div class="main" jwcid="@Any" id="ognl:rowIndex+'new'">
+					<div class="title"><span jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" /></div>
+					<div class="content e_hide-phone">
+					<div name='scroller' jwcid='@Scroller' class='c_scroll' style='height:3em'>
+						<!-- 参数 开始 -->
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul>
+								<li>
+									<span class="label">专线宽带(兆)：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BAND_WIDTH" id="ognl:rowIndex+'BAND_WIDTH'" desc="专线宽带" name="BAND_WIDTH"/></span>
+								</li>
+								<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+								<li>
+									<span class="label">路由保护方式：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.ROUTE_MODE" id="ognl:rowIndex+'ROUTE_MODE'" desc="路由保护方式" name="ROUTE_MODE"/></span>
+								</li>
+								<li>
+									<span class="label">业务保障等级：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BIZ_SECURITY_LV" id="ognl:rowIndex+'BIZ_SECURITY_LV'" desc="业务保障等级" name="BIZ_SECURITY_LV"/></span>
+								</li>
+								<li>
+									<span class="label">A端用户名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CUSTOME_A" id="ognl:rowIndex+'PORT_CUSTOME_A'" desc="A端用户名称" name="PORT_CUSTOME_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端所属省份：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PROVINCE_A" id="ognl:rowIndex+'PROVINCE_A'" desc="A端所属省份" name="PROVINCE_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端所属地市：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CITY_A" id="ognl:rowIndex+'CITY_A'" desc="A端所属地市" name="CITY_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端所属区县：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.AREA_A" id="ognl:rowIndex+'AREA_A'" desc="A端所属区县" name="AREA_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端街道/乡镇：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.COUNTY_A" id="ognl:rowIndex+'COUNTY_A'" desc="A端街道/乡镇" name="COUNTY_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端门牌/村组：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.VILLAGE_A" id="ognl:rowIndex+'VILLAGE_A'" desc="A端门牌/村组" name="VILLAGE_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端口类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_INTERFACE_TYPE_A" id="ognl:rowIndex+'PORT_INTERFACE_TYPE_A'" desc="A端口类型" name="PORT_INTERFACE_TYPE_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端用户技术联系人：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_A" id="ognl:rowIndex+'PORT_CONTACT_A'" desc="A端用户技术联系人" name="PORT_CONTACT_A"/></span>
+								</li>
+								<li>
+									<span class="label">A端用户技术联系人电话：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_PHONE_A" id="ognl:rowIndex+'PORT_CONTACT_PHONE_A'" desc="A端用户技术联系人电话" name="PORT_CONTACT_PHONE_A"/></span>
+								</li>
+								<li>
+									<span class="label">Z端用户名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CUSTOME_Z" id="ognl:rowIndex+'PORT_CUSTOME_Z'" desc="Z端用户名称" name="PORT_CUSTOME_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端所属省份：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PROVINCE_Z" id="ognl:rowIndex+'PROVINCE_Z'" desc="Z端所属省份" name="PROVINCE_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端所属地市：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CITY_Z" id="ognl:rowIndex+'CITY_Z'" desc="Z端所属地市" nZme="CITY_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端所属区县：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.AREA_Z" id="ognl:rowIndex+'AREA_Z'" desc="Z端所属区县" name="AREA_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端街道/乡镇：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.COUNTY_Z" id="ognl:rowIndex+'COUNTY_Z'" desc="Z端街道/乡镇" name="COUNTY_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端门牌/村组：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.VILLAGE_Z" id="ognl:rowIndex+'VILLAGE_Z'" desc="Z端门牌/村组" name="VILLAGE_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端口类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_INTERFACE_TYPE_Z" id="ognl:rowIndex+'PORT_INTERFACE_TYPE_Z'" desc="Z端口类型" name="PORT_INTERFACE_TYPE_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端用户技术联系人：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_Z" id="ognl:rowIndex+'PORT_CONTACT_Z'" desc="Z端用户技术联系人" name="PORT_CONTACT_Z"/></span>
+								</li>
+								<li>
+									<span class="label">Z端用户技术联系人电话：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_PHONE_Z" id="ognl:rowIndex+'PORT_CONTACT_PHONE_Z'" desc="Z端用户技术联系人电话" name="PORT_CONTACT_PHONE_Z"/></span>
+								</li>
+								<li>
+									<span class="label">专线名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR5" id="ognl:rowIndex+'RSRV_STR5'" desc="专线名称" name="RSRV_STR5"/></span>
+								</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+								<li>
+									<span class="label">传输接入方式：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR2" id="ognl:rowIndex+'RSRV_STR2'" desc="传输接入方式" name="RSRV_STR2"/></span>
+								</li>
+								<li>
+									<span class="label">业务保障等级：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BIZ_SECURITY_LV" id="ognl:rowIndex+'BIZ_SECURITY_LV'" desc="业务保障等级" name="BIZ_SECURITY_LV"/></span>
+								</li>
+								<li>
+									<span class="label">用户名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CUSTOME_A" id="ognl:rowIndex+'PORT_CUSTOME_A'" desc="用户名称" name="PORT_CUSTOME_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属省份：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PROVINCE_A" id="ognl:rowIndex+'PROVINCE_A'" desc="所属省份" name="PROVINCE_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属地市：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CITY_A" id="ognl:rowIndex+'CITY_A'" desc="所属地市" name="CITY_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属区县：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.AREA_A" id="ognl:rowIndex+'AREA_A'" desc="所属区县" name="AREA_A"/></span>
+								</li>
+								<li>
+									<span class="label">街道/乡镇：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.COUNTY_A" id="ognl:rowIndex+'COUNTY_A'" desc="街道/乡镇" name="COUNTY_A"/></span>
+								</li>
+								<li>
+									<span class="label">门牌/村组：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.VILLAGE_A" id="ognl:rowIndex+'VILLAGE_A'" desc="门牌/村组" name="VILLAGE_A"/></span>
+								</li>
+								<li>
+									<span class="label">端口类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_INTERFACE_TYPE_A" id="ognl:rowIndex+'PORT_INTERFACE_TYPE_A'" desc="端口类型" name="PORT_INTERFACE_TYPE_A"/></span>
+								</li>
+								<li>
+									<span class="label">用户技术联系人：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_A" id="ognl:rowIndex+'PORT_CONTACT_A'" desc="用户技术联系人" name="PORT_CONTACT_A"/></span>
+								</li>
+								<li>
+									<span class="label">用户技术联系人电话：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_PHONE_A" id="ognl:rowIndex+'PORT_CONTACT_PHONE_A'" desc="用户技术联系人电话" name="PORT_CONTACT_PHONE_A"/></span>
+								</li>
+								<li>
+									<span class="label">IP地址类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR1" id="ognl:rowIndex+'RSRV_STR1'" desc="IP地址类型" name="RSRV_STR1"/></span>
+								</li>
+								<li>
+									<span class="label">客户申请公网IP地址数：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CUST_APPSERV_IPADDNUM" id="ognl:rowIndex+'CUST_APPSERV_IPADDNUM'" desc="客户申请公网IP地址数" name="CUST_APPSERV_IPADDNUM"/></span>
+								</li>
+								<li>
+									<span class="label">申请公网IPV4地址数：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_NUM1" id="ognl:rowIndex+'RSRV_NUM1'" desc="申请公网IPV4地址数" name="RSRV_NUM1"/></span>
+								</li>
+								<li>
+									<span class="label">申请公网IPV6地址数：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_NUM2" id="ognl:rowIndex+'RSRV_NUM2'" desc="申请公网IPV6地址数" name="RSRV_NUM2"/></span>
+								</li>
+								<li>
+									<span class="label">域名：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.DO_MAINNAME" id="ognl:rowIndex+'DO_MAINNAME'" desc="域名" name="DO_MAINNAME"/></span>
+								</li>
+								<li>
+									<span class="label">主域名服务器地址：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.MAIN_DO_MAINADD" id="ognl:rowIndex+'MAIN_DO_MAINADD'" desc="主域名服务器地址" name="MAIN_DO_MAINADD"/></span>
+								</li>
+								<li>
+									<span class="label">专线名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR5" id="ognl:rowIndex+'RSRV_STR5'" desc="专线名称" name="RSRV_STR5"/></span>
+								</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+								<li>
+									<span class="label">传输接入方式：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR2" id="ognl:rowIndex+'RSRV_STR2'" desc="传输接入方式" name="RSRV_STR2"/></span>
+								</li>
+								<li>
+									<span class="label">语音接入类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.SUPPORT_MODE" id="ognl:rowIndex+'SUPPORT_MODE'" desc="语音接入类型" name="SUPPORT_MODE"/></span>
+								</li>
+								<li>
+									<span class="label">用户名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CUSTOME_A" id="ognl:rowIndex+'PORT_CUSTOME_A'" desc="用户名称" name="PORT_CUSTOME_A"/></span>
+								</li>
+								<li>
+									<span class="label">业务保障等级：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BIZ_SECURITY_LV" id="ognl:rowIndex+'BIZ_SECURITY_LV'" desc="业务保障等级" name="BIZ_SECURITY_LV"/></span>
+								</li>
+								<li>
+									<span class="label">中继数：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_NUM3" id="ognl:rowIndex+'RSRV_NUM3'" desc="中继数" name="RSRV_NUM3"/></span>
+								</li>
+								<li>
+									<span class="label">座机数量：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.AMOUNT" id="ognl:rowIndex+'AMOUNT'" desc="座机数量" name="AMOUNT"/></span>
+								</li>
+								<li>
+									<span class="label">所属省份：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PROVINCE_A" id="ognl:rowIndex+'PROVINCE_A'" desc="所属省份" name="PROVINCE_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属地市：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CITY_A" id="ognl:rowIndex+'CITY_A'" desc="所属地市" name="CITY_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属区县：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.AREA_A" id="ognl:rowIndex+'AREA_A'" desc="所属区县" name="AREA_A"/></span>
+								</li>
+								<li>
+									<span class="label">街道/乡镇：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.COUNTY_A" id="ognl:rowIndex+'COUNTY_A'" desc="街道/乡镇" name="COUNTY_A"/></span>
+								</li>
+								<li>
+									<span class="label">门牌/村组：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.VILLAGE_A" id="ognl:rowIndex+'VILLAGE_A'" desc="门牌/村组" name="VILLAGE_A"/></span>
+								</li>
+								<li>
+									<span class="label">端口类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_INTERFACE_TYPE_A" id="ognl:rowIndex+'PORT_INTERFACE_TYPE_A'" desc="端口类型" name="PORT_INTERFACE_TYPE_A"/></span>
+								</li>
+								<li>
+									<span class="label">用户技术联系人：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_A" id="ognl:rowIndex+'PORT_CONTACT_A'" desc="用户技术联系人" name="PORT_CONTACT_A"/></span>
+								</li>
+								<li>
+									<span class="label">用户技术联系人电话：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_PHONE_A" id="ognl:rowIndex+'PORT_CONTACT_PHONE_A'" desc="用户技术联系人电话" name="PORT_CONTACT_PHONE_A"/></span>
+								</li>
+								<li>
+									<span class="label">业务端口速率：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_TYPE_A" id="ognl:rowIndex+'PORT_TYPE_A'" desc="业务端口速率" name="PORT_TYPE_A"/></span>
+								</li>
+								<li>
+									<span class="label">客户侧是否自备业务设备：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.IS_CUSTOMER_PROVIDE_EQUIPMENT" id="ognl:rowIndex+'IS_CUSTOMER_PROVIDE_EQUIPMENT'" desc="客户侧是否自备业务设备" name="IS_CUSTOMER_PROVIDE_EQUIPMENT"/></span>
+								</li>
+								<li>
+									<span class="label">客户侧设备类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CUSTOMER_DEVICE_MODE" id="ognl:rowIndex+'CUSTOMER_DEVICE_MODE'" desc="客户侧设备类型" name="CUSTOMER_DEVICE_MODE"/></span>
+								</li>
+								<li>
+									<span class="label">客户侧设备型号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CUSTOMER_DEVICE_TYPE" id="ognl:rowIndex+'CUSTOMER_DEVICE_TYPE'" desc="客户侧设备型号" name="CUSTOMER_DEVICE_TYPE"/></span>
+								</li>
+								<li>
+									<span class="label">客户侧设备厂家：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CUSTOMER_DEVICE_VENDOR" id="ognl:rowIndex+'CUSTOMER_DEVICE_VENDOR'" desc="客户侧设备厂家" name="CUSTOMER_DEVICE_VENDOR"/></span>
+								</li>
+								<li>
+									<span class="label">开通权限：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PHONE_PERMISSION" id="ognl:rowIndex+'PHONE_PERMISSION'" desc="开通权限" name="PHONE_PERMISSION"/></span>
+								</li>
+								<li>
+									<span class="label">码号段表：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PHONE_LIST" id="ognl:rowIndex+'PHONE_LIST'" desc="码号段表" name="PHONE_LIST"/></span>
+								</li>
+								<li>
+									<span class="label">关联的产品实例编号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CON_PRODUCT_NO" id="ognl:rowIndex+'CON_PRODUCT_NO'" desc="关联的产品实例编号" name="CON_PRODUCT_NO"/></span>
+								</li>
+								<li>
+									<span class="label">专线名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR5" id="ognl:rowIndex+'RSRV_STR5'" desc="专线名称" name="RSRV_STR5"/></span>
+								</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+								<li>
+									<span class="label">传输接入方式：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR2" id="ognl:rowIndex+'RSRV_STR2'" desc="传输接入方式" name="RSRV_STR2"/></span>
+								</li>
+								<li>
+									<span class="label">业务保障等级：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BIZ_SECURITY_LV" id="ognl:rowIndex+'BIZ_SECURITY_LV'" desc="业务保障等级" name="BIZ_SECURITY_LV"/></span>
+								</li>
+								<li>
+									<span class="label">用户名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CUSTOME_A" id="ognl:rowIndex+'PORT_CUSTOME_A'" desc="用户名称" name="PORT_CUSTOME_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属省份：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PROVINCE_A" id="ognl:rowIndex+'PROVINCE_A'" desc="所属省份" name="PROVINCE_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属地市：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CITY_A" id="ognl:rowIndex+'CITY_A'" desc="所属地市" name="CITY_A"/></span>
+								</li>
+								<li>
+									<span class="label">所属区县：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.AREA_A" id="ognl:rowIndex+'AREA_A'" desc="所属区县" name="AREA_A"/></span>
+								</li>
+								<li>
+									<span class="label">街道/乡镇：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.COUNTY_A" id="ognl:rowIndex+'COUNTY_A'" desc="街道/乡镇" name="COUNTY_A"/></span>
+								</li>
+								<li>
+									<span class="label">门牌/村组：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.VILLAGE_A" id="ognl:rowIndex+'VILLAGE_A'" desc="门牌/村组" name="VILLAGE_A"/></span>
+								</li>
+								<li>
+									<span class="label">端口类型：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_INTERFACE_TYPE_A" id="ognl:rowIndex+'PORT_INTERFACE_TYPE_A'" desc="端口类型" name="PORT_INTERFACE_TYPE_A"/></span>
+								</li>
+								<li>
+									<span class="label">用户技术联系人：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_A" id="ognl:rowIndex+'PORT_CONTACT_A'" desc="用户技术联系人" name="PORT_CONTACT_A"/></span>
+								</li>
+								<li>
+									<span class="label">用户技术联系人电话：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PORT_CONTACT_PHONE_A" id="ognl:rowIndex+'PORT_CONTACT_PHONE_A'" desc="用户技术联系人电话" name="PORT_CONTACT_PHONE_A"/></span>
+								</li>
+								<li>
+									<span class="label">客户申请公网IP地址数：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.CUST_APPSERV_IPADDNUM" id="ognl:rowIndex+'CUST_APPSERV_IPADDNUM'" desc="客户申请公网IP地址数" name="CUST_APPSERV_IPADDNUM"/></span>
+								</li>
+								<li>
+									<span class="label">域名：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.DO_MAINNAME" id="ognl:rowIndex+'DO_MAINNAME'" desc="域名" name="DO_MAINNAME"/></span>
+								</li>
+								<li>
+									<span class="label">主域名服务器地址：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.MAIN_DO_MAINADD" id="ognl:rowIndex+'MAIN_DO_MAINADD'" desc="主域名服务器地址" name="MAIN_DO_MAINADD"/></span>
+								</li>
+								<li>
+									<span class="label">专线名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR5" id="ognl:rowIndex+'RSRV_STR5'" desc="专线名称" name="RSRV_STR5"/></span>
+								</li>
+								</div>
+								<li style="display:none">
+									<span class="label">是否停机：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.ISSTOP" id="ognl:rowIndex+'ISSTOP'" desc="是否停机" name="ISSTOP"/></span>
+								</li>
+							</ul>
+						</div>
+						<!-- 参数 结束 -->
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'ECHANGERESOURCECONFIRM'">
+<div class="c_title">
+	<div jwcid="changeZhzgPopupItem@Part" class="c_popupItem" id="changeZhzgPopupItem">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+				<li>
+				<span jwcid="@Conditional" condition="ognl:productId == '7010'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeZhzgExport"
+						cond="changeZhzgPopupItem" taskId="2019060910"
+						configFile="export/bat/group/ChangeZhzgExport_VOIP.xml"
+						ftpCode="eosdata" fileName="VOIP变更资源确认信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeZhzgExport"
+						cond="changeZhzgPopupItem" taskId="2019060911"
+						configFile="export/bat/group/ChangeZhzgExport_Internet.xml"
+						ftpCode="eosdata" fileName="互联网变更资源确认信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeZhzgExport"
+						cond="changeZhzgPopupItem" taskId="2019060912"
+						configFile="export/bat/group/ChangeZhzgExport_DataLine.xml"
+						ftpCode="eosdata" fileName="数据专线变更资源确认信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:productId == '7016'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="changeZhzgExport"
+						cond="changeZhzgPopupItem" taskId="2019060911"
+						configFile="export/bat/group/ChangeZhzgExport_Ims.xml"
+						ftpCode="eosdata" fileName="IMS变更资源确认信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				</li>
+					<li>
+						<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+							<span name="batchChangeImportZHZG" taskId="2019061110"
+								jwcid="@Import" cond="ParamPart"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CHANGE_ZHZG_VOIPLINE.xml"
+								templateFile="template/bat/group/CHANGE_ZHZG_VOIPLINE.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="VOIP变更勘察批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+							<span name="batchChangeImportZHZG" taskId="2019061112"
+								jwcid="@Import" cond="ParamPart"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CHANGE_ZHZG_DATALINE.xml"
+								templateFile="template/bat/group/CHANGE_ZHZG_DATALINE.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="数据专线变更勘察批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+							<span name="batchChangeImportZHZG" taskId="2019061111"
+								jwcid="@Import" cond="ParamPart"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CHANGE_ZHZG_INTERNET.xml"
+								templateFile="template/bat/group/CHANGE_ZHZG_INTERNET.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="互联网专线变更勘察批量导入模板.xls"
+								auto="false" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+							<span name="batchChangeImportZHZG" taskId="2019061111"
+								jwcid="@Import" cond="ParamPart"
+								params="ognl:'&TEMPLET_ID='+templetId+'&PRODUCT_ID='+ProductId" 
+								configFile="import/bat/group/CHANGE_ZHZG_IMS.xml"
+								templateFile="template/bat/group/CHANGE_ZHZG_IMS.xls"
+								ftpCode="eosdata" buttonText="导入" fileName="互联网专线变更勘察批量导入模板.xls"
+								auto="false" />
+						</div>
+					</li>
+					<li ontap="deleteDataLineParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+				</ul>
+			</div>
+		<input style="display: none" jwcid="@Hidden" id="CHANGEDATALINENOS" name="CHANGEDATALINENOS" value=""/>
+	</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM_UL">
+			<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+			<li>
+				<div class="e_size-xl e_red">&emsp;&emsp;如未看到数据，请选择专线业务范围和变更场景！</div>
+			</li>
+			</div>
+		</ul>
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:templetId == 'DIRECTLINEMARKETINGADD' || templetId == 'DIRECTLINEMARKETINGUPD'">
+		<ul id="DATALINE_PARAM_UL">
+			<li jwcid="@Foreach" source="ognl:directLineList" value="ognl:directInfo" index="ognl:rowIndex"  element="li" id="ognl:'DATALINE_'+rowIndex+'_LI'">
+				<div class="fn">
+					<input type="checkbox" name="DATALINE_TAG" jwcid="@Checkbox" value="ognl:directInfo.tradeID" id="ognl:'DATALINE_'+rowIndex"
+						   productNo="ognl:directInfo.V19249V1" userId="ognl:directInfo.USER_ID" serialNumber="ognl:directInfo.SERIAL_NUMBER_B"/>
+				</div>
+				<div class="main" jwcid="@Any" id="ognl:rowIndex+'new'">
+					<div class="title"><span jwcid="@Insert" value="ognl:directInfo.tradeID" /></div>
+					<div class="content e_hide-phone">
+						<!-- 参数 开始 -->
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul >
+								<li>
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" id="ognl:rowIndex+'PRODUCT_NO'" desc="专线实例号" name="PRODUCT_NO"/></span>
+								</li>
+								<li>
+									<span class="label">业务带宽（兆）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BAND_WIDTH" id="ognl:rowIndex+'width'" desc="带宽"  name="BAND_WIDTH"/></span>
+								</li>
+								<li>
+									<span class="label">协议期限(年)：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_TERM" id="ognl:rowIndex+'width'" desc="协议期限(年)"  name="NOTIN_TERM"/></span>
+								</li>
+								<li>
+									<span class="label">预计资费(元/月)：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_COST" id="ognl:rowIndex+'width'" desc="预计资费(元/月)"  name="NOTIN_COST"/></span>
+								</li>
+								<li>
+									<span class="label">回收期(年)：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_PAYBACK_PERIOD" id="ognl:rowIndex+'width'" desc="回收期(年)"  name="NOTIN_PAYBACK_PERIOD"/></span>
+								</li>
+								<li>
+									<span class="label">百元值：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.NOTIN_HUNDRED" id="ognl:rowIndex+'width'" desc="百元值"  name="NOTIN_HUNDRED"/></span>
+								</li>
+							</ul>
+						</div>
+						<!-- 参数 结束 -->
+					</div>
+				</div>
+				<div jwcid="@Any" class='fn' productNo="ognl:directInfo.PRODUCT_NO" ontap="ognl:'modifyChangeDataLineParam(this);'"><span class='e_ico-edit'></span></div>
+			</li>
+		</ul>
+</div>
+
+<div jwcid="@Conditional" condition="ognl:templetId == 'AUDITEDIRECTLINECHANGEFEE'">
+	<div class="c_title">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM">
+			<li jwcid="@Foreach" source="ognl:directLineList" value="ognl:directInfo" index="ognl:rowIndex"  element="li">
+				<div class="main" jwcid="@Any">
+					<div class="content e_hide-phone">
+						<!-- 参数 开始 -->
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul>
+								<li>
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_LINE_INSTANCENUMBER" desc="专线实例号" name="pam_NOTIN_LINE_INSTANCENUMBER"/></span>
+								</li>
+								<li>
+									<span class="label">带宽（兆）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_LINE_BROADBAND" desc="带宽"  name="pam_NOTIN_LINE_BROADBAND"/></span>
+								</li>
+								<li>
+									<span class="label">月租费（元/月）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_LINE_PRICE"  desc="月租费" name="pam_NOTIN_LINE_PRICE"/></span>
+								</li>
+								<li>
+									<span class="label">一次性费用（安装调试费）（元）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_INSTALLATION_COST" desc="一次性费用（安装调试费）" name="pam_NOTIN_INSTALLATION_COST"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">一次性通信服务费（元）：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_ONE_COST"  desc="一次性通信服务费（元）" name="pam_NOTIN_ONE_COST" /></span>
+								</li>
+													
+								<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+									<li>
+										<span class="label">IP地址使用费：</span>
+										<span class="value"><input jwcid="@Insert"  desc="IP地址使用费" value="ognl:directInfo.pam_NOTIN_IP_PRICE"  name="pam_NOTIN_IP_PRICE" /></span>
+									</li>
+									<li>
+										<span class="label">软件应用服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_SOFTWARE_PRICE"   name="pam_NOTIN_SOFTWARE_PRICE"/></span>
+									</li>
+									<li>
+										<span class="label">技术支持服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_NET_PRICE" desc="技术支持服务费" name="pam_NOTIN_NET_PRICE" /></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+									<li>
+										<span class="label">SLA服务费（元/月）：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_SLA"  desc="SLA服务费" name="pam_NOTIN_SLA" /></span>
+									</li>
+									<li>
+										<span class="label">软件应用服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_SOFTWARE_PRICE"  desc="软件应用服务费" name="pam_NOTIN_SOFTWARE_PRICE" /></span>
+									</li>
+									<li>
+										<span class="label">技术支持服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_NET_PRICE"  desc="技术支持服务费" name="pam_NOTIN_NET_PRICE" /></span>
+									</li>
+									<li>
+										<span class="label">集团所在市县分成比例：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_GROUP_PERCENT" desc="集团所在市县分成比例" name="pam_NOTIN_GROUP_PERCENT"/></span>
+									</li>
+									<li>
+										<span class="label">A端所在市县分成比例：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_A_PERCENT" desc="A端所在市县分成比例" name="pam_NOTIN_A_PERCENT" /></span>
+									</li>
+									<li>
+										<span class="label">Z端所在市县分成比例：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_Z_PERCENT" desc="Z端所在市县分成比例" name="pam_NOTIN_Z_PERCENT"/></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+									<li>
+										<span class="label">语音通信费（元/分钟）：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_VOICE"  desc="语音通信费" name="pam_NOTIN_VOICE" /></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+									<li>
+										<span class="label">IP地址使用费：</span>
+										<span class="value"><input jwcid="@Insert"  desc="IP地址使用费" value="ognl:directInfo.pam_NOTIN_IP_PRICE"  name="pam_NOTIN_IP_PRICE" /></span>
+									</li>
+									<li>
+										<span class="label">软件应用服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_SOFTWARE_PRICE"   name="pam_NOTIN_SOFTWARE_PRICE"/></span>
+									</li>
+									<li>
+										<span class="label">技术支持服务费：</span>
+										<span class="value"><input jwcid="@Insert" value="ognl:directInfo.pam_NOTIN_NET_PRICE" desc="技术支持服务费" name="pam_NOTIN_NET_PRICE" /></span>
+									</li>
+								</div>
+							</ul>
+						</div>
+						<!-- 参数 结束 -->
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="c_title">
+     	<div class="text">附件</div>
+    </div>
+    <div class="l_padding l_padding-u">
+     	<div class="c_list c_list-s" id="linkon">
+      		<ul jwcid="@Foreach" source="ognl:reasonList" value="ognl:reason"
+       			element="ul">
+       			<li class="link">
+        			<div class="ico">
+         				<span class="e_ico-word"></span>
+       			    </div> 
+           			<a jwcid="@Any" href="ognl:'attach?action=download&fileId=' + reason.FILE_ID+'&realName='+reason.ATTACH_NAME"
+          				target="_blank"> <span jwcid="@Insert" value="ognl:reason.ATTACH_NAME" raw="false" />
+         			</a>
+        			<div class="c_space"></div>
+       			</li>
+      		</ul>
+     	</div>
+    </div>
+</div>
+
+
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEDATACHANGE'">
+	<div class="c_title">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked=""/>全选</li>
+				<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+					<li id="EDIRECTLINEDATACHANGE_ExportLi">
+						<span jwcid="@Export"
+							name="EDIRECTLINEDATACHANGE_Export"
+							cond="OfferPart,ParamPart" taskId="201906101829"
+							configFile="export/querygroupinfo/DataChangeInfo7012.xml"
+							fileName="基本资料变更导出数据.xls" ftpCode="eosdata"
+						/>
+						
+					</li>
+					<li id="EDIRECTLINEDATACHANGE_ImportLi">
+						<span name="EDIRECTLINEDATACHANGE_Import" taskId=201906110922 jwcid="@Import"
+							cond="OfferPart,ParamPart" configFile="import/bat/group/DataChangeInfo7012.xml"
+							ftpCode="eosdata" buttonText="批量导入修改" fileName="基本资料修改导入.xls"
+							auto="false" />
+					</li>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:productId == '7011' || productId == '7010'|| productId == '7016'
+					||productId == '70111' || productId == '70112'">
+					<li id="EDIRECTLINEDATACHANGE_ExportLi">
+						<span jwcid="@Export"
+							name="EDIRECTLINEDATACHANGE_Export"
+							cond="OfferPart,ParamPart" taskId="201906101829"
+							configFile="export/querygroupinfo/DataChangeInfo.xml"
+							fileName="基本资料变更导出数据.xls" ftpCode="eosdata"
+						/>
+						
+					</li>
+					<li id="EDIRECTLINEDATACHANGE_ImportLi">
+						<span name="EDIRECTLINEDATACHANGE_Import" taskId=201906110922 jwcid="@Import"
+							cond="OfferPart,ParamPart" configFile="import/bat/group/DataChangeInfo.xml"
+							ftpCode="eosdata" buttonText="批量导入修改" fileName="基本资料修改导入.xls"
+							auto="false" />
+					</li>
+				</div>
+				<li ontap="deleteDerectLineDataChangeParam();" id="delete" ><span class="e_ico-delete"></span>删除</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM">
+			<li jwcid="@Foreach" source="ognl:directLineList" value="ognl:directInfo" index="ognl:rowIndex"  element="li" id="ognl:'checkbox_'+rowIndex+'_LI'">
+				<div class="fn">
+					<input  jwcid="@Checkbox" type="checkbox" name="DATALINE_TAG"  value="ognl:directInfo.tradeID" id="ognl:'checkbox_'+rowIndex"
+						   serialNumber="ognl:directInfo.SERIAL_NUMBER_B" productNo="ognl:directInfo.V19249V1" userId="ognl:directInfo.USER_ID" /><!-- onclick="selectDirectLine(this);"/> -->
+				</div>
+				<div class="main" jwcid="@Any" id="ognl:rowIndex+'new'">
+					<div class="title"><span jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" /></div>
+					<div class="content e_hide-phone">
+						<!-- 参数 开始 -->
+						<div name='scrollerDataChange' jwcid='@Scroller' class='c_scroll' style='height:3em'>
+						
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul>
+								<li style="display: none">
+									<span class="label">成员用户标识：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.USER_ID" id="ognl:rowIndex+'user'" desc="成员userId" name="USER_ID" oldvalue="ognl:directInfo.USER_ID"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" id="ognl:rowIndex+'PRODUCTNO'" desc="专线实例号" name="PRODUCTNO" oldvalue="ognl:directInfo.PRODUCT_NO"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" id="ognl:rowIndex+'pam_NOTIN_LINE_INSTANCENUMBER'" desc="专线实例号" name="pam_NOTIN_LINE_INSTANCENUMBER" oldvalue="ognl:directInfo.PRODUCT_NO"/></span>
+								</li>
+								<li style="display: none">
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" id="ognl:rowIndex+'PRODUCT_NO'" desc="专线实例号" name="PRODUCT_NO" oldvalue="ognl:directInfo.PRODUCT_NO"/></span>
+								</li>
+								<li >
+									<span class="label">专线名称：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.RSRV_STR5" id="ognl:rowIndex+'TRADENAME'" desc="专线名称" name="TRADENAME" oldvalue="ognl:directInfo.RSRV_STR5"/></span>
+								</li>
+													
+								<div jwcid="@Conditional" condition="ognl:productId == '7010'">
+									<li style="display: none">
+										<span class="label">专线类型：</span>
+										<span class="value"><input jwcid="@Insert" value="语音" id="ognl:rowIndex+'NOTIN_PRODUCT_NAME'" desc="专线实例号" name="NOTIN_PRODUCT_NAME" oldvalue="语音"/></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人" id="ognl:rowIndex+'PORTACONTACT'" value="ognl:directInfo.PORT_CONTACT_A"  name="PORTACONTACT"  oldvalue="ognl:directInfo.PORT_CONTACT_A" /></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人电话" id="ognl:rowIndex+'PORTACONTACTPHONE'" value="ognl:directInfo.PORT_CONTACT_PHONE_A"  name="PORTACONTACTPHONE" oldvalue="ognl:directInfo.PORT_CONTACT_PHONE_A" /></span>
+									</li>
+									<li >
+										<span class="label">用户名称：</span>
+										<span class="value"><input jwcid="@Insert" desc="用户名称"  id="ognl:rowIndex+'PORTACUSTOM'"  name="PORTACUSTOM" value="ognl:directInfo.PORT_CUSTOME_A" oldvalue="ognl:directInfo.PORT_CUSTOME_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属省份：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属省份"  id="ognl:rowIndex+'PROVINCEA'"  name="PROVINCEA" value="ognl:directInfo.PROVINCE_A" oldvalue="ognl:directInfo.PROVINCE_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属地市：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属地市"  id="ognl:rowIndex+'CITYA'"  name="CITYA" value="ognl:directInfo.CITY_A" oldvalue="ognl:directInfo.CITY_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属区县：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属区县"  id="ognl:rowIndex+'AREAA'"  name="AREAA" value="ognl:directInfo.AREA_A" oldvalue="ognl:directInfo.AREA_A"/></span>
+									</li>
+									<li >
+										<span class="label">街道/乡镇：</span>
+										<span class="value"><input jwcid="@Insert" desc="街道/乡镇"  id="ognl:rowIndex+'COUNTYA'"  name="COUNTYA" value="ognl:directInfo.COUNTY_A" oldvalue="ognl:directInfo.COUNTY_A"/></span>
+									</li>
+									<li >
+										<span class="label">门牌/村组：</span>
+										<span class="value"><input jwcid="@Insert" desc="门牌/村组"  id="ognl:rowIndex+'VILLAGEA'"  name="VILLAGEA" value="ognl:directInfo.VILLAGE_A" oldvalue="ognl:directInfo.VILLAGE_A"/></span>
+									</li>
+									
+								</div>
+								<div jwcid="@Conditional" condition="ognl:(productId == '7011'||productId == '70111'||productId == '70112')">
+									<li style="display: none">
+										<span class="label">专线类型：</span>
+										<span class="value"><input jwcid="@Insert" value="互联网" id="ognl:rowIndex+'NOTIN_PRODUCT_NAME'" desc="专线实例号" name="NOTIN_PRODUCT_NAME" oldvalue="互联网"/></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人" id="ognl:rowIndex+'PORTACONTACT'" value="ognl:directInfo.PORT_CONTACT_A"  name="PORTACONTACT"  oldvalue="ognl:directInfo.PORT_CONTACT_A" /></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人电话" id="ognl:rowIndex+'PORTACONTACTPHONE'" value="ognl:directInfo.PORT_CONTACT_PHONE_A"  name="PORTACONTACTPHONE" oldvalue="ognl:directInfo.PORT_CONTACT_PHONE_A" /></span>
+									</li>
+									<li >
+										<span class="label">用户名称：</span>
+										<span class="value"><input jwcid="@Insert" desc="用户名称"  id="ognl:rowIndex+'PORTACUSTOM'"  name="PORTACUSTOM" value="ognl:directInfo.PORT_CUSTOME_A" oldvalue="ognl:directInfo.PORT_CUSTOME_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属省份：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属省份"  id="ognl:rowIndex+'PROVINCEA'"  name="PROVINCEA" value="ognl:directInfo.PROVINCE_A" oldvalue="ognl:directInfo.PROVINCE_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属地市：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属地市"  id="ognl:rowIndex+'CITYA'"  name="CITYA" value="ognl:directInfo.CITY_A" oldvalue="ognl:directInfo.CITY_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属区县：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属区县"  id="ognl:rowIndex+'AREAA'"  name="AREAA" value="ognl:directInfo.AREA_A" oldvalue="ognl:directInfo.AREA_A"/></span>
+									</li>
+									<li >
+										<span class="label">街道/乡镇：</span>
+										<span class="value"><input jwcid="@Insert" desc="街道/乡镇"  id="ognl:rowIndex+'COUNTYA'"  name="COUNTYA" value="ognl:directInfo.COUNTY_A" oldvalue="ognl:directInfo.COUNTY_A"/></span>
+									</li>
+									<li >
+										<span class="label">门牌/村组：</span>
+										<span class="value"><input jwcid="@Insert" desc="门牌/村组"  id="ognl:rowIndex+'VILLAGEA'"  name="VILLAGEA" value="ognl:directInfo.VILLAGE_A" oldvalue="ognl:directInfo.VILLAGE_A"/></span>
+									</li>
+									
+								</div>
+								<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+									<li style="display: none">
+										<span class="label">专线类型：</span>
+										<span class="value"><input jwcid="@Insert" value="数据" id="ognl:rowIndex+'NOTIN_PRODUCT_NAME'" desc="专线实例号" name="NOTIN_PRODUCT_NAME" oldvalue="数据"/></span>
+									</li>
+									<li>
+										<span class="label">A端用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="A端用户技术联系人" id="ognl:rowIndex+'PORTACONTACT'" value="ognl:directInfo.PORT_CONTACT_A"  name="PORTACONTACT" oldvalue="ognl:directInfo.PORT_CONTACT_A" /></span>
+									</li>
+									<li>
+										<span class="label">A端用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="A端用户技术联系人电话" id="ognl:rowIndex+'PORTACONTACTPHONE'" value="ognl:directInfo.PORT_CONTACT_PHONE_A"  name="PORTACONTACTPHONE"  oldvalue="ognl:directInfo.PORT_CONTACT_PHONE_A" /></span>
+									</li>
+									<li >
+										<span class="label">A端用户名称：</span>
+										<span class="value"><input jwcid="@Insert" desc="A端用户名称"  id="ognl:rowIndex+'PORTACUSTOM'"  name="PORTACUSTOM" value="ognl:directInfo.PORT_CUSTOME_A" oldvalue="ognl:directInfo.PORT_CUSTOME_A"/></span>
+									</li>
+									<li >
+										<span class="label">A端所属省份：</span>
+										<span class="value"><input jwcid="@Insert" desc="A端所属省份"  id="ognl:rowIndex+'PROVINCEA'"  name="PROVINCEA" value="ognl:directInfo.PROVINCE_A" oldvalue="ognl:directInfo.PROVINCE_A"/></span>
+									</li>
+									<li >
+										<span class="label">A端所属地市：</span>
+										<span class="value"><input jwcid="@Insert" desc="A端所属地市"  id="ognl:rowIndex+'CITYA'"  name="CITYA" value="ognl:directInfo.CITY_A" oldvalue="ognl:directInfo.CITY_A"/></span>
+									</li>
+									<li >
+										<span class="label">A端所属区县：</span>
+										<span class="value"><input jwcid="@Insert" desc="A端所属区县"  id="ognl:rowIndex+'AREAA'"  name="AREAA" value="ognl:directInfo.AREA_A" oldvalue="ognl:directInfo.AREA_A"/></span>
+									</li>
+									<li >
+										<span class="label">A端街道/乡镇：</span>
+										<span class="value"><input jwcid="@Insert" desc="A端街道/乡镇"  id="ognl:rowIndex+'COUNTYA'"  name="COUNTYA" value="ognl:directInfo.COUNTY_A" oldvalue="ognl:directInfo.COUNTY_A"/></span>
+									</li>
+									<li >
+										<span class="label">A端门牌/村组：</span>
+										<span class="value"><input jwcid="@Insert" desc="A端门牌/村组"  id="ognl:rowIndex+'VILLAGEA'"  name="VILLAGEA" value="ognl:directInfo.VILLAGE_A" oldvalue="ognl:directInfo.VILLAGE_A"/></span>
+									</li>
+									<li >
+										<span class="label">Z端用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="Z端用户技术联系人" id="ognl:rowIndex+'PORTZCONTACT'" value="ognl:directInfo.PORT_CONTACT_Z"  name="PORTZCONTACT" oldvalue="ognl:directInfo.PORT_CONTACT_Z" /></span>
+									</li>
+									<li>
+										<span class="label">Z端用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="Z端用户技术联系人电话" id="ognl:rowIndex+'PORTZCONTACTPHONE'" value="ognl:directInfo.PORT_CONTACT_PHONE_Z"  name="PORTZCONTACTPHONE" oldvalue="ognl:directInfo.PORT_CONTACT_PHONE_Z" /></span>
+									</li>
+									<li >
+										<span class="label">Z端用户名称：</span>
+										<span class="value"><input jwcid="@Insert" desc="Z端用户名称"  id="ognl:rowIndex+'PORTZCUSTOM'"  name="PORTZCUSTOM" value="ognl:directInfo.PORT_CUSTOME_Z" oldvalue="ognl:directInfo.PORT_CUSTOME_Z"/></span>
+									</li>
+									<li >
+										<span class="label">Z端所属省份：</span>
+										<span class="value"><input jwcid="@Insert" desc="Z端所属省份"  id="ognl:rowIndex+'PROVINCEZ'"  name="PROVINCEZ" value="ognl:directInfo.PROVINCE_Z" oldvalue="ognl:directInfo.PROVINCE_Z"/></span>
+									</li>
+									<li >
+										<span class="label">Z端所属地市：</span>
+										<span class="value"><input jwcid="@Insert" desc="Z端所属地市"  id="ognl:rowIndex+'CITYZ'"  name="CITYZ" value="ognl:directInfo.CITY_Z" oldvalue="ognl:directInfo.CITY_Z"/></span>
+									</li>
+									<li >
+										<span class="label">Z端所属区县：</span>
+										<span class="value"><input jwcid="@Insert" desc="Z端所属区县"  id="ognl:rowIndex+'AREAZ'"  name="AREAZ" value="ognl:directInfo.AREA_Z" oldvalue="ognl:directInfo.AREA_Z"/></span>
+									</li>
+									<li >
+										<span class="label">Z端街道/乡镇：</span>
+										<span class="value"><input jwcid="@Insert" desc="Z端街道/乡镇"  id="ognl:rowIndex+'COUNTYZ'"  name="COUNTYZ" value="ognl:directInfo.COUNTY_Z" oldvalue="ognl:directInfo.COUNTY_Z"/></span>
+									</li>
+									<li >
+										<span class="label">Z端门牌/村组：</span>
+										<span class="value"><input jwcid="@Insert" desc="Z端门牌/村组"  id="ognl:rowIndex+'VILLAGEZ'"  name="VILLAGEZ" value="ognl:directInfo.VILLAGE_Z" oldvalue="ognl:directInfo.VILLAGE_Z"/></span>
+									</li>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:productId == '7016'">
+									<li style="display: none">
+										<span class="label">专线类型：</span>
+										<span class="value"><input jwcid="@Insert" value="互联网" id="ognl:rowIndex+'NOTIN_PRODUCT_NAME'" desc="专线实例号" name="NOTIN_PRODUCT_NAME" oldvalue="互联网"/></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人" id="ognl:rowIndex+'PORTACONTACT'" value="ognl:directInfo.PORT_CONTACT_A"  name="PORTACONTACT"  oldvalue="ognl:directInfo.PORT_CONTACT_A" /></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人电话" id="ognl:rowIndex+'PORTACONTACTPHONE'" value="ognl:directInfo.PORT_CONTACT_PHONE_A"  name="PORTACONTACTPHONE" oldvalue="ognl:directInfo.PORT_CONTACT_PHONE_A" /></span>
+									</li>
+									<li >
+										<span class="label">用户名称：</span>
+										<span class="value"><input jwcid="@Insert" desc="用户名称"  id="ognl:rowIndex+'PORTACUSTOM'"  name="PORTACUSTOM" value="ognl:directInfo.PORT_CUSTOME_A" oldvalue="ognl:directInfo.PORT_CUSTOME_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属省份：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属省份"  id="ognl:rowIndex+'PROVINCEA'"  name="PROVINCEA" value="ognl:directInfo.PROVINCE_A" oldvalue="ognl:directInfo.PROVINCE_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属地市：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属地市"  id="ognl:rowIndex+'CITYA'"  name="CITYA" value="ognl:directInfo.CITY_A" oldvalue="ognl:directInfo.CITY_A"/></span>
+									</li>
+									<li >
+										<span class="label">所属区县：</span>
+										<span class="value"><input jwcid="@Insert" desc="所属区县"  id="ognl:rowIndex+'AREAA'"  name="AREAA" value="ognl:directInfo.AREA_A" oldvalue="ognl:directInfo.AREA_A"/></span>
+									</li>
+									<li >
+										<span class="label">街道/乡镇：</span>
+										<span class="value"><input jwcid="@Insert" desc="街道/乡镇"  id="ognl:rowIndex+'COUNTYA'"  name="COUNTYA" value="ognl:directInfo.COUNTY_A" oldvalue="ognl:directInfo.COUNTY_A"/></span>
+									</li>
+									<li >
+										<span class="label">门牌/村组：</span>
+										<span class="value"><input jwcid="@Insert" desc="门牌/村组"  id="ognl:rowIndex+'VILLAGEA'"  name="VILLAGEA" value="ognl:directInfo.VILLAGE_A" oldvalue="ognl:directInfo.VILLAGE_A"/></span>
+									</li>
+									
+								</div>
+								<li >
+									<span class="label">专线带宽：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BAND_WIDTH" id="ognl:rowIndex+'BANDWIDTH'" desc="专线带宽" name="BANDWIDTH" oldvalue="ognl:directInfo.BAND_WIDTH"/></span>
+								</li>
+								<li >
+									<span class="label">业务保障等级：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.BIZ_SECURITY_LV" id="ognl:rowIndex+'BIZSECURITYLV'" desc="业务保障等级" name="BIZSECURITYLV" oldvalue="ognl:directInfo.BIZ_SECURITY_LV"/></span>
+								</li>
+								<!-- <li >
+									<span class="label">传输接入方式：</span>
+									<span class="value"><input jwcid="@Insert" desc="传输接入方式"  id="ognl:rowIndex+'BIZSECURITYLV'"  name="BIZSECURITYLV" value="ognl:directInfo.BIZ_SECURITY_LV" oldvalue="ognl:directInfo.BIZ_SECURITY_LV"/></span>
+								</li> -->
+							</ul>
+						</div>
+						</div>
+						<!-- 参数 结束 -->
+					</div>
+				</div>
+				<div jwcid="@Any" class='fn' ontap="ognl:'modifyDataLineParam(&#39;OFFER_CHA_'+getPage().getData().getString('OFFER_CODE')+'_'+rowIndex+'&#39);'"><span class='e_ico-edit'></span></div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+<div jwcid="@Conditional" condition="ognl:templetId == 'EDIRECTLINEDATACHANGEAUDIT'">
+	<div class="c_title">
+		<div class="text">数据列表</div>
+		<div class="fn">
+			<ul>
+				<li><input type="checkbox" id="LINENOS" name="LINENOS" ontap="checkedAll('DATALINE_TAG', this.checked)" class="e_checkbox" checked='checked'/>全选</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_list c_list-line c_list-border">
+		<ul id="DATALINE_PARAM">
+			<li jwcid="@Foreach" source="ognl:directLineList" value="ognl:directInfo"   element="li">
+
+				<div class="main" jwcid="@Any">
+					<div class="content e_hide-phone">
+						<!-- 参数 开始 -->
+						<div class="c_param c_param-label-auto c_param-col-3">
+							<ul>
+								<li style="display: none">
+									<span class="label">专线实例号：</span>
+									<span class="value">
+										<input jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" id="ognl:rowIndex+'pam_NOTIN_LINE_INSTANCENUMBER'" desc="专线实例号" name="pam_NOTIN_LINE_INSTANCENUMBER" oldvalue="ognl:directInfo.PRODUCT_NO"/>
+									</span>
+								</li>
+								<li >
+									<span class="label">专线实例号：</span>
+									<span class="value"><input jwcid="@Insert" value="ognl:directInfo.PRODUCT_NO" id="ognl:rowIndex+'PRODUCT_NO'" desc="专线实例号" name="PRODUCT_NO" oldvalue="ognl:directInfo.PRODUCT_NO"/></span>
+								</li>
+													
+								<div jwcid="@Conditional" condition="ognl:productId == '7011'||productId == '7010'||productId == '7016'||productId == '70111'||productId == '70112'">
+									<li>
+										<span class="label">用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人" id="ognl:rowIndex+'PORTACONTACT'" value="ognl:directInfo.PORTACONTACT"  name="PORTACONTACT"  oldvalue="ognl:directInfo.PORTACONTACT" /></span>
+									</li>
+									<li>
+										<span class="label">用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="用户技术联系人电话" id="ognl:rowIndex+'PORTACONTACTPHONE'" value="ognl:directInfo.PORTACONTACTPHONE"  name="PORTACONTACTPHONE" oldvalue="ognl:directInfo.PORTACONTACTPHONE" /></span>
+									</li>
+									
+								</div>
+								<div jwcid="@Conditional" condition="ognl:(productId == '7012'||productId == '70121'||productId == '70122')">
+									<li>
+										<span class="label">A端用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="A端用户技术联系人" id="ognl:rowIndex+'PORTACONTACT'" value="ognl:directInfo.PORTACONTACT"  name="PORTACONTACT" oldvalue="ognl:directInfo.PORTACONTACT" /></span>
+									</li>
+									<li>
+										<span class="label">A端用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="A端用户技术联系人电话" id="ognl:rowIndex+'PORTACONTACTPHONE'" value="ognl:directInfo.PORTACONTACTPHONE"  name="PORTACONTACTPHONE"  oldvalue="ognl:directInfo.PORTACONTACTPHONE" /></span>
+									</li>
+									<li>
+										<span class="label">Z端用户技术联系人：</span>
+										<span class="value"><input jwcid="@Insert"  desc="Z端用户技术联系人" id="ognl:rowIndex+'PORTZCONTACT'" value="ognl:directInfo.PORTZCONTACT"  name="PORTZCONTACT" oldvalue="ognl:directInfo.PORTZCONTACT" /></span>
+									</li>
+									<li>
+										<span class="label">Z端用户技术联系人电话：</span>
+										<span class="value"><input jwcid="@Insert"  desc="Z端用户技术联系人电话" id="ognl:rowIndex+'PORTZCONTACTPHONE'" value="ognl:directInfo.PORTZCONTACTPHONE"  name="PORTZCONTACTPHONE" oldvalue="ognl:directInfo.PORTZCONTACTPHONE" /></span>
+									</li>
+								</div>
+							</ul>
+						</div>
+						<!-- 参数 结束 -->
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<input type="hidden" id="DATALINE_MAX_INDEX" value="0" desc="记录当前专线的最大数量，每新增一条该数量加1"/>
+<input jwcid="@Hidden" name="GRP_USER_ID" id="GRP_USER_ID" value="ognl:userInfo.GRP_USER_ID"  desc="集团用户标识"/>
+<input jwcid="@Hidden" name="GRP_SERIAL_NUMBER" id="GRP_SERIAL_NUMBER" value="ognl:userInfo.GRP_SERIAL_NUMBER"  desc="集团服务号码"/>
+<script type="text/javascript">
+$(function(){
+	initPageParam();
+});
+</script>

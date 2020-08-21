@@ -1,0 +1,2 @@
+INSERT INTO td_m_codearea(code_area_code,remark,update_time,update_staff_id,update_depart_id,rsrv_tag1,rsrv_tag2,rsrv_tag3,rsrv_date1,rsrv_date2,rsrv_date3,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(:CODE_AREA_CODE,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:RSRV_TAG1,:RSRV_TAG2,:RSRV_TAG3,TO_DATE(:RSRV_DATE1,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:RSRV_DATE2,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:RSRV_DATE3,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

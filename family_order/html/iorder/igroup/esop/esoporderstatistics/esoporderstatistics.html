@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- <script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script> -->
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/esoporderstatistics/script/esoporderstatistics.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">待归档工单统计</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="l_query" jwcid="queryPart@Part">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="left">
+				<button type="button" class="e_button-blue" onclick="batchSenderSms();"><span class="e_commodity-msg"></span><span>批量发送短信提醒</span></button>
+			</div>
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('mypop','chooseOfferItem')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div class="l_queryResult">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" name="myTable" id="myTable" class="c_table c_table-checkbox">
+				<thead>
+					<tr>
+						<th col="TRADE_ID_SUB">
+					 	<th class="e_center"><input type="checkbox" id="checkbox" name="checkbox" ontap="checkedAll('TRADES', this.checked)" class="e_checkbox"/></th>
+					 	</th>
+						<th class="e_center" col="FLOW_TEMPLET_TYPE">工单类型</th>
+						<th class="e_center" col="IBSYSID">工单流水号</th>
+						<th class="e_center" col="PRODUCT_NO">专线实例号</th>
+						<th class="e_center" col="TITLE">工单主题</th>
+						<th class="e_center" col="STAFF_ID">工单当前处理人</th>
+						<th class="e_center" col="STAFF_NAME">工号名称</th>
+						<th class="e_center" col="STAFF_PHONE">手机号码</th>
+						<th class="e_center" col="NODE_NAME">节点名称</th>
+						<th class="e_center" col="RECEIVE_TIME">工单接受时间</th>
+						<th class="e_center" col="WAIT_TIME">工单到达时长</th>
+						<th class="e_center">短信提醒</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:pattrs" value="ognl:pattr" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+						ibsysid="ognl:pattr.IBSYSID" title="ognl:pattr.TITLE" staff="ognl:pattr.STAFF_ID" staffPhone="ognl:pattr.STAFF_PHONE">
+						<td>
+			   				<td class="e_center"><input type="checkbox" id="TRADES" name="TRADES" jwcid="@Any"/></td>	
+						</td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.FLOW_TEMPLET_TYPE"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.IBSYSID"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.PRODUCT_NO"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.TITLE"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.STAFF_ID"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.STAFF_NAME"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.STAFF_PHONE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.NODE_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.RECEIVE_TIME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.WAIT_TIME" raw="false"/></td>
+						<td class="e_center"><button type="button" class="e_button-blue" onclick="singleSenderSms(this)"><span>发送短信</span></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 表格 结束 -->
+	</div>
+	
+	<div jwcid="@Conditional" condition="ognl:pattrs == null || pattrs.size() == 0">
+	<div class="l_queryMsg" id="queryMsg">
+		<!-- 无数据提示 开始 -->
+		<div class="c_msg">
+			<div class="wrapper">
+				<div class="emote"></div>
+				<div class="info">
+					<div class="text">
+						<div class="title">暂时没有数据</div>
+						<div class="content">请输入查询条件</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 无数据提示 结束 -->
+	</div>
+	</div>
+
+	<div class="l_queryPage">
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar"
+			name="navbar1"
+			cond="qryInfo"  
+			count="ognl:infoCount" 
+			listener="qryOrderInfos" 
+			part="queryPart" 
+			pageSize="50" 
+		></div>
+		<!-- 分页 结束 -->
+	</div>
+	</div>
+	
+	<div jwcid="@Popup" id="mypop" name="mypop" class="c_popup c_popup-fixed">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="chooseOfferItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">查询工单</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="qryInfo@Part" class="l_padding">
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link">
+								<div class="label">工单类型</div>
+								<div class="value"><select id="SUB_TYPE_CODE" name="SUB_TYPE_CODE" jwcid="@Select" source="ognl:pageutil.getStaticList('EOP_SUB_TYPE_CODE')" textField="DATA_NAME" valueField="DATA_ID"/></div>
+							</li>
+							<li class="link">
+								<div class="label">工单流水号</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_IBSYSID"  name="cond_IBSYSID" value="ognl:info.IBSYSID"  desc="工单流水号"/></div>
+							</li>
+							<li class="link">
+								<div class="label">专线实例号</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_PRODUCTNO"  name="cond_PRODUCTNO" value="ognl:info.PRODUCTNO"  desc="专线实例号" /></div>
+							</li>
+							<li class="link">
+								<div class="label">工单主题</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_TITLE"  name="cond_TITLE" value="ognl:info.TITLE"  desc="工单主题"/></div>
+							</li>
+							<li class="link">
+								<div class="label">工号</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_STAFF_ID"  name="cond_STAFF_ID" value="ognl:info.STAFF_ID"  desc="工号"/></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" id="qryButton" class="e_button-r e_button-l e_button-blue" ontap="qryOrderInfos(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		//Wade.setRatio();
+		//window["UI-popup01"] = new Wade.Popup("UI-popup01");
+		//window["UI-popup02"] = new Wade.Popup("UI-popup02");
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo.map.GROUP_ID);
+		}
+	</script>
+
+</body>
+</html>

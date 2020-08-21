@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id:$-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>机场VIP服务</title>
+<script language="JavaScript" src="scripts/saleserv.js"></script>
+<script language="JavaScript" src="person/interboss/mobileoperation/scripts/iairportvipservice.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/cssubmit/CSSubmit.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	 <!-- 标题 开始 -->
+	   <div class="c_title">
+		 <div class="text">路由信息</div>
+	   </div>
+	   <!-- 标题 结束 -->
+	   <!-- 表单 开始 -->
+	   <div class="c_form c_form-label-5 c_form-col-3" jwcid="AddrCondPart@Part">
+	      <ul class="ul">
+	         <li class="li">
+	            <span class="label"><span class="e_required">路由类型：</span></span>
+		            <span class="e_select"><span><span>
+							<select jwcid="@Select" id="cond_ROUTETYPE" name="cond_ROUTETYPE" 
+								source="ognl:pageutil.getStaticList('ROUTERTYPE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:cond.cond_ROUTETYPE"
+								titleField="DATA_NAME" addDefault ="false"  nullable="no" desc="路由类型" />
+				</span></span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label">手机号码：</span>
+	            <span class="e_input"><span>
+	               <input jwcid="@TextField" id="cond_MOBILENUM" name="cond_MOBILENUM" value="ognl:cond.cond_MOBILENUM" desc="手机号码"
+	               maxLength="11" onBlur = "changeValue()"/>
+	            </span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label">省代码：</span>
+	            <span class="e_select"><span><span>
+						<select jwcid="@Select" id="cond_PROVINCE_CODE" name="cond_PROVINCE_CODE" 
+							source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')" 
+							valueField="DATA_ID" textField="DATA_NAME" value="ognl:cond.cond_PROVINCE_CODE"
+							titleField="DATA_NAME" nullable="no" desc="省代码" disabled = "true"/>
+				</span></span></span>
+	        </li>
+	     </ul>
+	</div>
+	   <!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8"   jwcid="CustCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">客户标志类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_IDTYPE" name="cond_IDTYPE" 
+								source="ognl:pageutil.getStaticList('USER_IDTYPE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:cond.cond_IDTYPE"
+								titleField="DATA_NAME" nullable="no" desc="客户标志类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户标志号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_IDVALUE" name="cond_IDVALUE" value="ognl:cond.cond_IDVALUE" 
+				     desc="客户标志号码" nullable = "no"  onBlur = "changeValue1()"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">校验方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_VERIFY_TYPE" name="cond_VERIFY_TYPE" 
+								source="ognl:pageutil.getStaticList('IDENTITY_CHECK_CODE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:cond.cond_VERIFY_TYPE"
+								titleField="DATA_NAME" nullable="no" desc="校验方式" onChange="checkVerify()"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<div  id="idcardtype">
+					<span class="label"><span id="span_IDCARDTYPE" class="e_required">证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="cond_IDCARDTYPE" name="cond_IDCARDTYPE" 
+									source="ognl:pageutil.getStaticList('IBOSS_PSPT_TYPE_CODE')" 
+									valueField="DATA_ID" textField="DATA_NAME" value="ognl:cond.cond_IDCARDTYPE"
+									titleField="DATA_NAME"  desc="证件类型" />
+					</span></span></span>
+				</div>
+				<div  style="display:none" id = "userpasswd">
+					<span class="label"><span id="span_USER_PASSWD">客服密码：</span></span>
+					<span class="e_input"><span> 
+						<input jwcid="@Password" id="cond_USER_PASSWD"
+						name="cond_USER_PASSWD" hidden="true"  
+						maxLength="6" value="ognl:cond.cond_USER_PASSWD" desc="客服密码" /> 
+					</span></span>
+				</div>
+				
+			</li>
+			<li class="li" id = "idcardnum">
+				<span class="label"><span id="span_IDCARDNUM" class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_IDCARDNUM" name="cond_IDCARDNUM" value="ognl:cond.cond_IDCARDNUM" desc="证件号码" />
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="queryVIPCustInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+  
+<!-- 区域 开始 -->
+<div class="c_box"> 
+    <!-- 区域 开始 -->
+	<div jwcid="InfoPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form   c_form-col-3 c_form-label-10">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:info.CUST_NAME"
+							desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">帐户余额：</span>
+					<span class="text" jwcid="@Insert" name="ALL_BALANCE" id="ALL_BALANCE" value="ognl:info.CRM_BALANCE"
+							desc="帐户余额"/>
+				</li>
+				<li class="li">
+					<span class="label">欠费金额：</span>
+					<span class="text" jwcid="@Insert" name="DEBT_BALANCE" id="DEBT_BALANCE" value="ognl:info.DEBT_BALANCE"
+							desc="欠费金额"/>
+				</li>
+				<li class="li">
+					<span class="label">证件类型：</span>
+					<span class="text" jwcid="@Insert" name="IDCARDTYPE" id="IDCARDTYPE"
+							value="ognl:pageutil.getStaticValue('IBOSS_PSPT_TYPE_CODE', info.IDCARDTYPE)"
+							desc="证件类型" />
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="text" jwcid="@Insert" name="IDCARDNUM" id="IDCARDNUM" value="ognl:info.IDCARDNUM"
+							desc="证件号码"/>
+				</li>
+				<li class="li">
+					<span class="label">证件地址：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_ADDR" id="PSPT_ADDR" value="ognl:info.PSPT_ADDR"
+							desc="证件地址"/>
+				</li>
+				<li class="li">
+					<span class="label">大客户等级：</span>
+					<span class="text" jwcid="@Insert" name="USERRANK" id="USERRANK" value="ognl:info.USERRANK"
+							desc="大客户等级"/>
+				</li>
+				<li class="li">
+					<span class="label">可兑换积分（M值）：</span>
+					<span class="text" jwcid="@Insert" name="SCORE" id="SCORE" value="ognl:info.SCORE"
+							desc="可兑换积分（M值）"/>
+				</li>
+				<li class="li">
+					<span class="label">剩余免费次数：</span>
+					<span class="text" jwcid="@Insert" name="FREE_TIMES" id="FREE_TIMES" value="ognl:info.FREE_TIMES"
+							desc="剩余免费次数"/>
+				</li>
+				<li class="li">
+					<span class="label">VIP卡号：</span>
+					<span class="text" jwcid="@Insert" name="VIP_NO" id="VIP_NO" value="ognl:info.VIP_NO"
+							desc="VIP卡号"/>
+				</li>
+				<li class="li">
+					<span class="label">大客户经理：</span>
+					<span class="text" jwcid="@Insert" name="USER_MGR" id="USER_MGR" value="ognl:info.USER_MGR"
+							desc="大客户经理"/>
+				</li>
+				<li class="li">
+					<span class="label">大客户经理电话：</span>
+					<span class="text" jwcid="@Insert" name="SVCPHNUM" id="SVCPHNUM" value="ognl:info.USER_MGR_NUM"
+							desc="大客户经理电话"/>
+				</li>
+				<li class="li">
+					<span class="label">用户品牌：</span>
+					<span class="text" jwcid="@Insert" name="BRAND_CODE" id="BRAND_CODE"
+							value="ognl:pageutil.getStaticValue('INTERBOSS_BRAND', info.BRAND_CODE)"
+							desc="用户品牌" />
+				</li>
+				<li class="li">
+					<span class="label">开户日期：</span>
+					<span class="text" jwcid="@Insert" name="OPEN_DATE" id="OPEN_DATE" value="ognl:info.OPEN_DATE"
+							desc="开户日期"/>
+				</li>
+				<li class="li">
+					<span class="label">PUK码：</span>
+					<span class="text" jwcid="@Insert" name="PUK" id="PUK" value="ognl:info.PUK"
+							desc="PUK码"/>
+				</li>
+				<li class="li">
+					<span class="label">用户状态：</span>
+					<span class="text" jwcid="@Insert" name="USER_STATE_CODESET" id="USER_STATE_CODESET" value="ognl:pageutil.getStaticValue('USER_STATE_CODESET',info.USER_STATE_CODESET)"
+							desc="用户状态"/>
+				</li>
+				<li class="li"><span class="label">GPRS开通：</span> <span
+					class="text"><span> <input jwcid="@Checkbox"
+					id="GPRS_TAG" name="GPRS_TAG" value="ognl:0 == info.GPRS_TAG?true:false"
+					checked='ognl: false' desc="是否开通GPRS"
+					 disabled="true" /> </span></span></li>
+			    <li class="li"><span class="label">国际漫游开通：</span> <span
+					class="text"><span> <input jwcid="@Checkbox"
+					id="ROAM_TYPE" name="ROAM_TYPE" value="ognl:0 == info.ROAM_TYPE?true:false"
+					checked='ognl:"0".equals(info.ROAM_TYPE)?true:false' desc="是否开通国际漫游"
+					disabled="true" /> </span></span></li>
+
+				<li class="li" style="display:none;">
+						<input style="display:none" jwcid="@TextField" id="TOTALSCORE2" name="TOTALSCORE2"   value="0"/>
+						<input style="display:none" jwcid="@TextField" id="AMOUNT2" name="AMOUNT2"   value="0"/>
+						<input style="display:none" jwcid="@TextField" id="ACCOUNT_FLAG" name="ACCOUNT_FLAG"   value="ognl:cond.ACCOUNT_FLAG"/>
+						<input style="display:none" jwcid="@TextField" id="SVCCODE" name="SVCCODE" value="ognl:info.SVCCODE" />
+						<input style="display:none" jwcid="@TextField" id="SVCDISC" name="SVCDISC" value="ognl:info.SVCDISC" />
+						<input style="display:none" jwcid="@TextField" id="ITEMID" name="ITEMID" value="ognl:info.ITEMID" />
+						<input style="display:none" jwcid="@TextField" id="ITEMVALUE" name="ITEMVALUE" value="ognl:info.ITEMVALUE" />
+						<input style="display:none" jwcid="@TextField" id="SVCCODE_ALL" name="SVCCODE_ALL" value="ognl:info.SVCCODE_ALL" />
+						<input style="display:none" jwcid="@TextField" id="SVCDISC_ALL" name="SVCDISC_ALL" value="ognl:info.SVCDISC_ALL" />
+						<input style="display:none" jwcid="@TextField" id="DISABLED_FLAG" name="DISABLED_FLAG" value="ognl:info.DISABLED_FLAG" />
+					</li>	
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<!-- 区域 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 分栏 开始 -->
+	<div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:22%;">
+	
+			
+			
+			<!-- 标题 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">服务类型</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_scroll" style="height:195px;"><div class="c_table" jwcid="allservice@Part">
+				<table onclick = "getMainCondition(event)">
+					<thead>
+						<tr>
+							<th>服务代码</th>
+							<th>服务名称</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:serInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? 'even':'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.PARAM_CODE" raw="false" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARAM_NAME" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div></div>
+			<!-- 表格 结束 -->
+
+	
+		</div>
+		<!-- 第 1 栏 结束 -->
+		<!-- 第 2 栏 开始 -->
+		<div class="l_left" style="width:30%;">
+			<!-- 标题 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">可选服务</div>
+				<div class="tip"><span class="e_tip">双击添加</span></div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_scroll" style="height:195px;"><div class="c_table" jwcid="canSelectRecord@Part">
+				<table id="canSelectTable" ondblclick = "addRecord(event)">
+					<thead>
+						<tr>
+							<th>服务代码</th>
+							<th>服务名称</th>
+							<th>扣减积分</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:detailInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.PARAM_CODE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARAM_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE1" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div></div>
+			<!-- 表格 结束 -->
+
+
+	
+		</div>
+		<!-- 第 2 栏 结束 -->
+		<!-- 第 3 栏 开始 -->
+		<div class="l_left" style="width:22%;">
+			
+			<!-- 标题 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">已选服务</div>
+				<div class="tip"><span class="e_tip">双击删除</span></div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_scroll" style="height:195px;"><div class="c_table" jwcid="selectedpart@Part">
+				<table id = "selectedRecord" ondblclick = "deleteId(event)">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>服务名称</th>
+							<th style="display:none">扣减积分</th>
+							<th style="display:none">一级编码</th>
+							<th style="display:none">一级名称</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:subInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.CODE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.NAME" raw="false" /></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.SCORE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.SVCCODE" raw="false" /></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.SVCDISC" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div></div>
+			<!-- 表格 结束 -->
+	
+		</div>
+		<!-- 第 3 栏 结束 -->
+		<!-- 第 4 栏 开始 -->
+		<div class="l_auto">	
+			<!-- 标题 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">业务信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-1 c_form-label-6" jwcid="LevelPart@Part">
+				<ul class="ul">
+					<!--<li class="li">
+						<span class="label">剩余免费次数：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField"  readonly="true" id="FREE_TIMES" name ="FREE_TIMES" desc="剩余免费次数" value="ognl:info.RSRV_STR19"/>
+						</span></span>
+					</li>
+					--><li class="li">
+						<span class="label"><span class="e_required">服务级别：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="cond_SVCLEVEL" id="cond_SVCLEVEL"
+								source="ognl:pageutil.getStaticList('AIRPORT_VIP_SERVICELEVEL')"
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.SVCLEVEL"
+								desc="服务级别" onChange = "afterAction(getScore(),getAmount());"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">随员情况：</span></span>
+						<span class="e_elements">
+							<span class="e_label e_label-right"><span>位</span></span>
+							<span class="e_input e_input-left"><span>
+									<input jwcid="@TextField"  id="cond_ATTENDANTS" name ="cond_ATTENDANTS" desc="随员情况" 
+									value="ognl:cond.ATTENDANTS" onBlur = "changeTimes()"/>
+							</span></span>
+						</span>
+					</li>
+					<li class="li">
+						<span class="label">应扣免费次数：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField"  id="TOTALTIMES" name ="TOTALTIMES"  desc="应扣免费次数" value="ognl:info.TOTALTIMES" readonly="true" datatype="numeric"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">应扣积分：</span>
+						<span class="e_input"><span>
+								<input jwcid="@TextField"  readonly="true" id="cond_TOTALSCORE" name ="cond_TOTALSCORE" desc="应扣积分" value="ognl:cond.TOTALSCORE" datatype="numeric"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">服务费：</span>
+						<span class="e_elements">
+							<span class="e_label e_label-right"><span>元</span></span>
+							<span class="e_input e_input-left"><span>
+								<input jwcid="@TextField"  id="AMOUNT" name ="AMOUNT" desc="应扣积分" value="ognl:cond.AMOUNT" datatype="numeric" readonly="true"/>
+							</span></span>
+						</span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">机场名称：</span></span>
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_AIRPORTNAME" id="cond_AIRPORTNAME"  
+							source="ognl:pageutil.getList('TD_S_COMMPARA','PARAM_CODE', 'PARAM_NAME',new java.lang.String[]{'SUBSYS_CODE','PARAM_ATTR','EPARCHY_CODE'},new java.lang.String[]{'CSM','121',getVisit().getStaffEparchyCode()})"
+								desc="机场名称" nullable="no" value="ognl:cond.cond_AIRPORTNAME"  textField="PARAM_NAME"  valueField="PARAM_CODE"  titleField="PARAM_NAME"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">航班：</span></span>
+						<span class="e_input"><span>
+								<input jwcid="@TextField"   id="cond_PLANLINE" name ="cond_PLANLINE" desc="航班" value="ognl:cond.cond_PLANLINE"/>
+						</span></span>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+	
+			
+		</div>
+		<!-- 第 4 栏 结束 -->
+	</div>
+	<!-- 分栏 结束 -->
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return checkRightsAirport();" id="checkBtn"><i></i><span>鉴权</span></button>
+		<button type="button" class="e_button-page-ok" onclick="return airportCharge();" id="submitBtn"><i></i><span>记账</span></button>
+		<button type="button" class="e_button-page" onclick="resetSubmit()"><i class="e_ico-reset"></i><span>重置</span></button>
+	</div>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

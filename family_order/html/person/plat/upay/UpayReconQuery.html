@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryUserDiscnt.html,v 1.4 2013/04/17 08:35:53 xiekl Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>日对账明细</title>
+<script jwcid="@Script" src="person/plat/upay/scripts/upayreconquery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">日对账明细</div>
+		<div class="fn">
+			<button type="button" class="l_ml" onclick="runCancelTrade()" id="startButton"><i class="e_ico-play"></i><span>返销</span></button>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="UpayReconCond@Part" id="UpayReconCond" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER" 
+					 value="ognl:cond.cond_SERIAL_NUMBER"
+					  desc="手机号码" nullable="yes" datatype="mbphone"  maxlength="11"/>
+				</span></span>
+			</li>
+			 <li class="li">
+				<span class="label">处理状态：</span>
+				<span class="e_select"><span><span>
+				<select name="cond_DEAL_TAG" id="DEAL_TAG">
+				 <option value="" selected="selected">全部</option>
+				 <option value="0">未处理</option>
+				 <option value="1">返销成功</option>
+				 <option value="2">返销失败</option>
+				</select>
+				</span></span></span>
+			</li>			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<input jwcid="@Hidden" name="cond_CUTOFF_DAY" id="cond_CUTOFF_DAY" value="ognl:cond.CUTOFF_DAY"/>
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryUpayRecon(this);"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="UpayReconList@Part" id="UpayReconList"  element="div">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="UpayReconList">
+			<thead>
+				<tr>
+				  <th><input jwcid="@Checkbox" name="myCheck" onclick="checkedOther('trades')"/></th>
+				  <th onclick="Wade.dom.sortTable('dataList',0,'string')"><span>系统流水</span></th>
+				  <th onclick="Wade.dom.sortTable('dataList',1,'string')"><span>订单号</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',2,'string')"><span>手机号码</span></th>	
+                  <th onclick="Wade.dom.sortTable('dataList',3,'string')"><span>金额(分)</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',4,'string')"><span>对账日</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',5,'string')"><span>对账结果</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',6,'string')"><span>对账说明</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',7,'string')"><span>处理标识</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',8,'string')"><span>返销时间</span></th>	
+                  <th onclick="Wade.dom.sortTable('dataList',9,'string')"><span>返销说明</span></th>	
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center">
+							<span jwcid="@Conditional" condition="ognl:info.RECON_STATE_CODE==1">
+								<input jwcid="@Checkbox" name="trades" value="ognl:info.TRADE_ID"/>
+							</span>
+							<span jwcid="@Conditional" condition="ognl:info.RECON_STATE_CODE==2">
+								<input jwcid="@Checkbox" name="trades" value="ognl:info.TRADE_ID" disabled="true"/>
+							</span>
+							<span jwcid="@Conditional" condition="ognl:info.RECON_STATE_CODE==3">
+								<input jwcid="@Checkbox" name="trades" value="ognl:info.TRADE_ID" disabled="true"/>
+							</span>
+						</td>
+						<td><span jwcid="@Insert" value="ognl:info.IBSYSID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FEE" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.CUTOFF_DAY" raw="true"/></td>																		
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('UPAY_RECON_STATE',info.RECON_STATE_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+						<td>
+						<span jwcid="@Conditional" condition="ognl:info.DEAL_TAG==0">
+						<span jwcid="@Insert" value="未处理" raw="true"/>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.DEAL_TAG==1">
+						<span jwcid="@Insert" value="返销成功" raw="true"/>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.DEAL_TAG==2">
+						<span jwcid="@Insert" value="返销失败" raw="true"/>
+						</span>
+						</td>
+                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd',info.RSRV_STR2)" raw="true"/></td>	
+                        <td class="wrap"><span jwcid="@Insert" value="ognl:info.RSRV_STR1"/></td>	
+					</tr>
+			</tbody>
+		</table>
+	</div>
+	<div jwcid="@NavBar" name="PaginBar" id="PaginBar" cond="UpayReconCond" count="ognl:paginCount"  listener="queryUpayRecon" pageSize = "20" part="UpayReconList" />
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></body>
+</html>

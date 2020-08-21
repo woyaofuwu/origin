@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/changeservice/scripts/changeservice.js"></script>
+<title>特殊服务变更</title>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 用户鉴权 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="110" tradeAction="refreshPartAtferAuth(data);" element="div"></div>
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+
+<!--  用户鉴权 结束 -->
+<div class="c_box">
+	<div jwcid="mytab@Tabset" switchAction="myTabSwitchAction(this)" tabStyle="c_tab">
+	    <div jwcid="cpelock@TabsetContent" title="已有服务信息">
+	      <div jwcid="userSvc@Part" element="div">
+				  <div class="c_scroll c_scroll-table-10">
+				<div class="c_table">
+					<table jwcid="hasUserSvc@Table"  id="hasUserSvc" >
+						<thead>
+							<tr>
+							
+							
+							    <div jwcid="@Conditional" condition="ognl:showDelInfo.IS_SHOW_DEL == 1">
+								<th col="TAG_NAME">是否删除</th>
+								</div>
+								<th col="SERVICE_NAME">服务名称</th>
+								<th col="START_DATE">开始时间</th>
+								<th col="END_DATE">结束时间</th>
+								<th col="MAIN_TAG">主服务标记</th>
+								<th col="INST_ID" style="display:none">唯一标识</th>
+								<th col="PRODUCT_ID" style="display:none"></th>
+								<th col="PACKAGE_ID" style="display:none"></th>
+								<th col="MODIFY_TAG" style="display:none"></th>
+								<th col="OLD_START_DATE" style="display:none"></th>
+								<th col="OLD_END_DATE" style="display:none"></th>
+								<th col="SERVICE_ID" style="display:none"></th>
+							</tr>
+						</thead>
+						<tbody >
+							<tr jwcid="@Foreach"  source="ognl:hasUserSvcs" value="ognl:hasUserSvc" element="tr" index="ognl:rowIndex">
+							
+							
+							    <div jwcid="@Conditional" condition="ognl:showDelInfo.IS_SHOW_DEL == 1">
+								<td><div jwcid="@Conditional" condition="ognl:hasUserSvc.IS_DEL == 1">
+									<input type="checkbox"name="useridbs" id="ognl:rowIndex+'useridbs'" jwcid="@Any" value="ognl:hasUserSvc.SERVICE_ID" onClick="delUserSvc(this)"/>
+									</div>
+								</td>
+								</div>
+								
+								<td><span jwcid="@Insert" value="ognl:hasUserSvc.SERVICE_NAME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', hasUserSvc.START_DATE)"></span></td>
+								<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', hasUserSvc.END_DATE)"></span></td>
+								<td><span jwcid="@Insert" value="ognl:hasUserSvc.MAIN_TAG"></span></td>
+							    <td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.INST_ID"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.PRODUCT_ID"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.PACKAGE_ID"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value=""></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.START_DATE"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.END_DATE"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.SERVICE_ID"></span></td>
+							</tr>
+						</tbody>
+					</table>
+			     </div>
+		       </div>
+		    </div>
+	    </div>
+	    <div jwcid="cpeCrossLock@TabsetContent" title="新订服务信息">
+	        <div jwcid="cpeCrossLockPart@Part" element="div">
+				  <div class="c_scroll c_scroll-table-10">
+		<div class="c_table">
+					<table jwcid="newUserSvc@Table"  id="newUserSvc" >
+						<thead>
+							<tr>
+								<th col ="MODIFY_NAME">新增标识</th>
+								<th col ="SERVICE_ID">服务编码</th>
+								<th col ="SERVICE_NAME">服务名称</th>
+								<th col ="START_DATE">开始时间</th>
+								<th col ="END_DATE">结束时间</th>
+								<th col="DISCNT_CODE" style="display:none">套餐编码</th>
+								<th col="PRODUCT_ID" style="display:none"></th>
+								<th col="PACKAGE_ID" style="display:none"></th>
+								<th col="NEXT_PRODUCT_ID" style="display:none"></th>
+								<th col="MODIFY_TAG" style="display:none"></th>
+							</tr>
+						</thead>
+						<tbody >
+							<tr jwcid="@Foreach"  source="ognl:newUserSvcs" value="ognl:newUserSvc" element="tr" index="ognl:rowIndex">
+								<td><span jwcid="@Insert" value="ognl:newUserSvc.MODIFY_NAME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:newUserSvc.SERVICE_ID"></span></td>
+								<td><span jwcid="@Insert" value="ognl:newUserSvc.SERVICE_NAME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:newUserSvc.START_DATE"></span></td>
+								<td><span jwcid="@Insert" value="ognl:newUserSvc.END_DATE"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.DISCNT_CODE"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.PRODUCT_ID"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.PACKAGE_ID"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.NEXT_PRODUCT_ID"></span></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.MODIFY_TAG"></span></td>
+							</tr>
+						</tbody>
+					</table>
+			     </div>
+		       </div>
+		    </div>
+		    
+		    <div jwcid="editPart@Part" element="div">
+		    <div class="c_form c_form-col-2 c_form-label-6">
+			<ul class="ul">
+			
+				<li class="li">
+					<span class="label">新增服务：</span>
+					<span class="e_select"><span><span>
+                                <select jwcid="@Select" name="ADD_SVC" id="ADD_SVC" textField="PARA_CODE2" valueField="PARA_CODE1" titleField="PARA_CODE2" 
+									source="ognl:addSvcs" value="" desc="新增服务" nullable="no" onChange="changeState('ADD_SVC')"/>
+                               </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">删除服务：</span>
+					<span class="e_select"><span><span>
+                                 <select jwcid="@Select" name="DEL_SVC" id="DEL_SVC" textField="PARA_CODE2" valueField="PARA_CODE11" titleField="PARA_CODE2" 
+									source="ognl:delSvcs" value="" desc="删除服务" nullable="no" onChange="changeState('DEL_SVC')"/>
+                                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">起始时间：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="NEW_START_DATE" id="NEW_START_DATE"   format="yyyy-MM-dd HH:mm:ss" desc="起始时间" afterAction="changestarttime()" value="ognl:@com.ailk.bizcommon.util.SysDateMgr@getSysDate()"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">终止时间：</span>
+					<span class="e_input" id="NEW_END_DATE_SPAN"><span><span>
+						<input type="text" jwcid="@DateField" name="NEW_END_DATE" id="NEW_END_DATE" format="yyyy-MM-dd HH:mm:ss" desc="终止时间" afterAction="changeendtime()" value="ognl:editInfo.NEW_END_DATE"/>
+						
+						 <select jwcid="@Select" name="NEW_END_DATE_SEL" id="NEW_END_DATE_SEL"  style="display:none"	source="ognl:pageutil.getStaticList('ROAM_ENDDATE_SEL_TYPE')"
+										textField="DATA_NAME" valueField="DATA_ID"  value="" desc="终止时间"   onChange="changeEndDateState()"/>
+					</span></span></span>
+				</li>
+				 
+	
+			
+			</ul>
+			  
+			<div class="submitPlace"></div>
+			<div class="submit e_right"  >
+				<button class="e_button-form e_dis" onclick="return addSvc();" id="add" disabled="true"><i class="e_ico-add"></i><span>新增</span></button>
+				<button class="e_button-form e_dis" onclick="return delSvc();" id="del" disabled="true"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="e_button-form e_dis" onclick="resetSvc();" id="reset" disabled="true"><i class="e_ico-reset"></i><span>清空</span></button>
+			</div>
+			
+	    </div>
+		 </div>  
+	    </div>
+	    
+	</div>
+</div>
+
+<div class="c_box">
+<!-- 
+     <div class="c_form c_form-label-6 c_form-col-3">
+			
+			<ul class="ul">
+				<li class="li col-3">
+					<span class="label">备注：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="REMARK"	id="REMARK" type="text" value="" nullable="yes" desc="备注"/>
+		            </span></span>
+				</li>
+			</ul>
+		</div>		 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeAction()" listener="submitTrade"  isReset="true" area="AuthPart" element="div" />
+</div>
+</div></div>
+</body>
+
+</html>

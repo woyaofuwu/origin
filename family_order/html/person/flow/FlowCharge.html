@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: ReserveTradeArchive.html,v 1.1 2009/12/16 20:29:05 wangmo Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>流量充值</title>
+<script jwcid="@Script" language="JavaScript" src="person/flow/scripts/FlowCharge.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="666"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="refreshParts1@Part">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">流量余额</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="BalancePart@Part">
+	<input type="hidden" jwcid="@Any" id="SEL_USER_ID" name="SEL_USER_ID" value="ognl:userInfo.USER_ID"/>
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-5" >
+		<table  jwcid="@Table" id="BalanceTable">
+			<thead>
+				<tr>
+					<th style="width:20em;">账本流水</th>
+					<th style="width:20em;">账户标识</th>
+					<th style="width:20em;">商品编码</th>
+					<th style="width:20em;">账本类型</th>
+					<th style="width:20em;">账本余额（KB）</th>
+					<th style="width:20em;">初始额度（KB）</th>
+					<th style="width:20em;">购买金额（元）</th>
+					<th style="width:20em;">生效时间</th>
+					<th style="width:20em;">失效时间</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr jwcid="@Foreach" source="ognl:balances" value="ognl:balance" index="ognl:rowIndex" element="tr" rowIndex="ognl:rowIndex" >
+					<td><span jwcid="@Insert" value="ognl:balance.FM_BALANCE_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.FM_ACCT_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.COMM_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.FM_ASSET_TYPE_NAME"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.BALANCE"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.INIT_FLOW"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.INIT_FEE"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.EFFECTIVE_DATE"/></td>
+					<td><span jwcid="@Insert" value="ognl:balance.EXPIRE_DATE"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+<!-- 区域 结束 -->
+	
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="refreshParts2@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">流量商品</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" id="flowProdCond">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">商品编码：</span>
+				<span class="e_input"><span><input jwcid="@TextField" name="SEL_COMM_ID" id="SEL_COMM_ID" desc="商品编码" value=""/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">商品名称：</span>
+				<span class="e_input"><span><input jwcid="@TextField" name="SEL_COMM_NAME" id="SEL_COMM_NAME" desc="商品名称" value=""/></span></span>
+			</li>
+			<li class="submit">
+				<button jwcid="searchBtn@Any" id="searchBtn" type="button" class="e_button-form l_ml" onclick="queryFlowProduct();">
+				<i class="e_ico-search"></i><span>查询</span></button>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_box c_table c_table-row-5" jwcid="ProdListPart@Part">
+		<table jwcid="@Table" id="ProdListTable" name="ProdListTable">
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th style="width:20em;">商品编码</th>
+					<th style="width:20em;">商品名称</th>
+					<th style="width:20em;">商品价格（元）</th>
+					<th style="width:20em;">商品额度（kb）</th>
+					<th style="width:20em;">是否季包半年包</th>
+					<th style="width:20em;">是否结转</th>
+					<th style="width:20em;">是否转赠</th>
+					<th style="width:20em;">生效方式</th>
+					<th style="width:20em;">开始时间</th>
+					<th style="width:20em;">失效时间</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr" rowIndex="ognl:rowIndex" >
+					<td class="e_center">
+							   <input type="checkbox" name="custs" jwcid="@Checkbox"
+									index="ognl:rowIndex" count="0"
+									COMM_NO="ognl:info.COMM_ID"
+									COMM_NAME="ognl:info.COMM_NAME"
+									PRICE="ognl:info.FEE"
+									INIT_VALUE="ognl:info.INIT_VALUE"
+									COMM_TYPE="ognl:info.COMM_TYPE"
+									START_DATE="ognl:info.START_DATE"
+									END_DATE="ognl:info.END_DATE"
+									nullable="no"
+									onclick="chkInput(this,'custs');" />
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.COMM_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.COMM_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.FEE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.INIT_VALUE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.QUARTER_TAG" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CARRY_OVER_TAG" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RES_SWITCH" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ENABLE_MODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_title">
+		<div class="text">流量充值</div>
+		<span class="e_select"><span><span>
+		<select id="FAST_PAY_CODE" jwcid="@Select" name="FAST_PAY_CODE"
+			source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('FlowCharge')" 
+			textField="DATA_NAME" valueField="DATA_ID" value="1"
+			desc="流量充值类型" addDefault="false" onchange="onFastPayCodeChange();"/>
+		</span></span></span>
+		<span class="fn" jwcid="FastPayListPart@Part">
+			<div jwcid="@Foreach" source="ognl:fastpays" value="ognl:fastpay" index="ognl:rowIndex">
+				<button class="l_ml" jwcid="@Button" id="ognl:'But_'+rowIndex" name="ognl:'But_'+rowIndex" onclick="fastPayFee(this)" orderId="ognl:fastpay.PARA_CODE1" orderName="ognl:fastpay.PARA_CODE2">
+					<i class="e_ico-ok"></i>
+					<span jwcid="@Insert" value="ognl:fastpay.PARA_CODE2"></span>
+				</button>
+				<!--<button class="l_ml" id="fastPay20Butt" name="fastPay20Butt" onclick="fastPayFee(20)"><i class="e_ico-ok"></i><span>快速充值200M</span></button>-->
+			</div>
+		</span>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-1 c_form-col-4">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">充值流量（kb）：</span></span>
+				<span class="e_input">
+					<span><input jwcid="@TextField" name="AMOUNT" id="AMOUNT" value="" desc="充值流量" readonly="readonly" nullable="no" /></span>
+					<input type="hidden" jwcid="@Any" id="COMM_ID" name="COMM_ID"/>
+					<input type="hidden" jwcid="@Any" id="COMM_NAME" name="COMM_NAME"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">扣除话费（元）：</span></span>
+				<span class="e_input">
+					<span><input jwcid="@TextField" name="TRANS_FEE" id="TRANS_FEE" value="" desc="扣除话费" readonly="readonly" nullable="no" /></span>
+					 <input type="hidden" jwcid="@Any" id="EFFECTIVE_DATE" name="EFFECTIVE_DATE"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">购买数量：</span></span>
+				<span class="e_input">
+					<span><input jwcid="@TextField" name="COMM_NUM" id="COMM_NUM" value="1" desc="购买数量" nullable="no" datatype="pinteger"/></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">备注：</span></span>
+				<span class="e_input">
+					<span><input jwcid="@TextField" name="REMARK" id="REMARK" value="" desc="备注" nullable="no"/></span>
+					<input type="hidden" jwcid="@Any" id="EXPIRE_DATE" name="EXPIRE_DATE" />
+				</span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_form c_form-label-1 c_form-col-4">
+	    <ul class="ul">
+			<li class="li">
+				<div class="fn">
+					<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input jwcid="@Checkbox" type="checkbox" id="submit_TRANS_NEEDED" name="submit_TRANS_NEEDED" checked="true" class="e_checkbox" desc="是否立即提取到免费资源"/>是否立即提取到免费资源</label>
+				</div>
+			</li>
+	    </ul>
+    </div>
+	<!-- 参数列表 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitTrade(this)" area="AuthPart,refreshParts2"  element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div>
+</div>
+</body>
+</html>

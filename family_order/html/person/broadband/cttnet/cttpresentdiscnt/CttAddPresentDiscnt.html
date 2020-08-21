@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttpresentdiscnt/scripts/cttaddpresentdiscnt.js" ></script>
+<script jwcid="@Script"  src="person/np/npapplycancel/scripts/busiTable.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title"><div class="text">新增赠送信息</div></div>
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">用户账号：</span>
+					<span class="e_input"><span>		
+					<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="用户账号" disabled="false" /></span>
+					</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return querySendBackDiscnt()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="ResultDataPart@Part">
+			
+		<div class="c_scroll c_scroll-table-10">
+			<div class="c_table">
+				<table jwcid="@Table" id="queryTable">
+					<thead>
+						<tr>
+							<th style="width:50px;">选择</th>
+							<th style="width:100px; display:none;">优惠编码</th>
+							<th>优惠</th>
+							<th>赠送金额（移动）</th>
+							<th>赠送数量(移动）</th>
+							<th>赠送金额（固话）</th>
+							<th>赠送数量（固话）</th>
+							<th>时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:sendBackDiscnts" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >	
+							<td><input  jwcid="@Radio" onclick="checkDiscntRadio(this);" name="tabCheck" checked="ognl:rowIndex ==0 ? 'true' : 'false'"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID"></span><br /></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.INST_ID"></span><br /></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.DISCNT_CODE"/><br /></td>
+							<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.M_MONEY"/></td> 
+							<td><span jwcid="@Insert" value="ognl:info.M_COUNT"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.T_MONEY"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.T_COUNT"/></td>  
+							<td><span dataType="date" jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="pageinfo" id="pageinfo" listener="querySendBackDiscnt" pageSize="10" cond="QueryPart" part="ResultDataPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	</div>
+			
+	<!-- 被赠送人信息开始  -->
+	<div id="presentDiv" style="display:none">
+	<div jwcid="PresentPart@Part">
+	<div class="c_table c_table-row-10 l_mt">
+			<div class="c_title">
+					<div class="text">赠送信息列表</div>
+					</div>
+				<table jwcid="@Table" id="zsTable"  name = "zsTable" rowDBClick="editPresentRow">
+					<thead>
+						<tr>
+							<th col="X_TAG" style="display:none">TAG</th>
+			      			<th col="PHONE_TYPE" style="width:100px">号码类型</th>
+							<th col="PRESENT_SERIAL_NUMBER" style="width:200px">赠送号码</th>
+			      			<th col="PRESENT_MONEY" style="width:200px">赠送金额</th>
+			      			<th col="INST_ID" style="display:none"></th>
+			      			<th col="REMARK">备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:presentDiscnts" value="ognl:info" element="tr"  >	
+								<td style="display:none"><span jwcid="@Insert" value="ognl:info.X_TAG" raw="false"/></td>
+			      				<td><span jwcid="@Insert" value="ognl:info.PHONE_TYPE" raw="false"/></td>
+			      				<td><span jwcid="@Insert" value="ognl:info.PRESENT_SERIAL_NUMBER" raw="false"/></td>
+			      				<td><span jwcid="@Insert" value="ognl:info.PRESENT_MONEY/100" raw="false"/></td>
+			      				<td style="display:none"><span jwcid="@Insert" value="ognl:info.INST_ID" raw="false"/></td>
+			      				<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	</div>
+	<!-- 被赠送人信息 结束 -->
+	
+	<div id="operDiv" style="display:none">
+			<div class="c_title">
+					<div class="text">编辑赠送人信息</div>
+					</div>
+				<div class="c_form c_form-col-3 c_form-label-8" id = "editInfo">
+					<ul class="ul">
+						<li class="li">
+								<span class="label"><span>号码类型：</span></span>
+								<span>
+									<select id="PHONE_TYPE" desc="号码类型">
+										<option value="移动号码">移动号码</option>
+										<option value="固话号码">固话号码</option>
+									</select>
+								</span>
+						</li>
+						<li class="li">
+						<span class="label">赠送号码：</span>
+							<span class="e_input"><span>		
+							<input type="text" jwcid="@TextField" name="PRESENT_SERIAL_NUMBER" id="PRESENT_SERIAL_NUMBER" value="ognl:info.PRESENT_SERIAL_NUMBER" maxSize="40"  desc="赠送号码"  /></span>
+						</span>
+						</li>
+						<li class="li">
+						<span class="label">赠送金额：</span>
+							<span class="e_input"><span>		
+							<input type="text" jwcid="@TextField" name="PRESENT_MONEY" id="PRESENT_MONEY" value="ognl:info.PRESENT_MONEY" dataType="numeric" maxSize="11" desc="赠送金额"  /></span>
+						</span>
+						</li>
+					</ul>
+					<ul class="ul">
+						<li class="li col-3">
+						<span class="label">备注：</span>
+							<span class="e_input"><span>		
+							<input type="text" jwcid="@TextField" name="REMARK" id="REMARK" value="ognl:info.REMARK" maxSize="100" desc="备注"  /></span>
+						</span>
+						</li>
+					</ul>
+				</div>
+		</div>
+		
+		<!-- 按钮区 开始 --> 
+        <div class="c_submit">
+      		<button id="btnAdd" class="e_button" onclick="addPresentRow(this);" style="display:none">新增</button>
+      		<button id="btnUpdate" class="e_button" onclick="updatePresentRow(this);" style="display:none">修改</button>
+       		<button id="btnSubmit" class="e_button" onclick="savePresentDiscnt(this);" style="display:none">提交</button>
+        </div>
+       	<!-- 按钮区 结束 -->	
+     	<input type="text" jwcid="@TextField" name="save_USER_ID" id="save_USER_ID" value="ognl:info.USER_ID" style="display:none"/>
+     	<input type="text" jwcid="@TextField" name="save_ACCT_ID" id="save_ACCT_ID" value="ognl:info.ACCT_ID" style="display:none"/>	
+     	<input type="text" jwcid="@TextField" name="save_DISCNT_INST_ID" id="save_DISCNT_INST_ID" value="ognl:info.DISCNT_INST_ID" style="display:none"/>		
+       	<input type="text" jwcid="@TextField" name="save_DISCNT_CODE" id="save_DISCNT_CODE" value="ognl:info.DISCNT_CODE" style="display:none"/>	
+       	<input type="text" jwcid="@TextField" name="M_MONEY" id="M_MONEY" value="ognl:info.M_MONEY" style="display:none"/>
+       	<input type="text" jwcid="@TextField" name="M_COUNT" id="M_COUNT" value="ognl:info.M_COUNT" style="display:none"/>	
+       	<input type="text" jwcid="@TextField" name="T_MONEY" id="T_MONEY" value="ognl:info.M_MONEY" style="display:none"/>	
+       	<input type="text" jwcid="@TextField" name="T_COUNT" id="T_COUNT" value="ognl:info.M_COUNT" style="display:none"/>	
+       	
+
+</div>
+</div></div>
+</body>
+</html>

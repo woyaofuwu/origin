@@ -1,0 +1,1 @@
+select to_char(SYSDATE + (to_number(:HOURS)/24), 'yyyy-mm-dd hh24:mi:ss') FORCE_START_TIME from dual

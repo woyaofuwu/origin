@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/group/param/adc/newxxt/CreateParamInfo.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<script type="text/javascript">
+$(document).ready(
+	function(){initParamInfo();}
+);
+</script>
+
+<body jwcid="@Body">
+
+<div id="studentParam_all">
+			<!-- 表格 开始 -->
+			<div class="c_scroll" style="height:181px;"><div class="c_table"  element="div">
+              <table jwcid="@Table"
+				name="MoListTable"
+				id="MoListTable"
+				rowClick="tableRowClick"
+				rowDBClick="tableRowDBClick">
+                     <thead>
+           		            <tr>
+           			            <th col="STUD_KEY_NAME">学生参数</th>
+           			            <th col="STUD_KEY" style="display:none">学生参数</th>
+           			            <th col="STUD_NAME">学生姓名</th>
+          		                <th col="ELEMENT_NAME">优惠</th>
+          		                <th col="ELEMENT_ID" style="display:none">优惠</th>
+           		            </tr>
+                     </thead>
+                     <tbody>
+          	            <tr jwcid="@Foreach" source="ognl:studentListInfos" value="ognl:info"  element="tr">
+          		            <td style="display:none"><span jwcid="@Insert" value="ognl:info.STUD_KEY"/></td>
+          		            <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_STU_NAME', info.STUD_KEY)"/></td>
+          		            <td><span jwcid="@Insert" value="ognl:info.STUD_NAME"/></td>
+          		            <td style="display:none"><span jwcid="@Insert" value="ognl:info.ELEMENT_ID"/></td>
+          		            <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_B_DISCNT','DISCNT_CODE','DISCNT_NAME',info.ELEMENT_ID)"/></td>
+          	            </tr>
+                     </tbody>
+                    </table>
+			</div></div>
+			<!-- 表格 结束 -->
+
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-3 c_form-label-6">
+			<div jwcid="MoListDetail@Part" element="div">
+				<ul class="ul">
+					<li class="li">
+						<span class="label"><span class="e_required">学生参数：</span></span>
+						<span class="e_select"><span><span>
+          						   <input type="hidden" id="STUD_KEY_NAME" name="STUD_KEY_NAME"/>
+          						   <select jwcid="@Select" name="STUD_KEY" id="STUD_KEY"
+		          						    source="ognl:pageutil.getStaticList('TD_STU_NAME')"
+		       							    textField="DATA_NAME" valueField="DATA_ID"
+		       							    value="ognl:moinfoDetail.STUD_KEY"
+		       							    desc="学生参数:" nullable="no" onchange="setStuDiscnt()"/>
+						</span></span></span>
+					</li>
+
+					<li class="li">
+						<span class="label"><span class="e_required">学生姓名：</span></span>
+						<span class="e_input"><span>
+                               <input jwcid="@TextField" name="STUD_NAME" id="STUD_NAME" value="ognl:moinfoDetail.STUD_NAME" type="text"  nullable="no" desc="学生姓名" />
+						</span></span>
+					</li>
+
+					<li class="li">
+						<span class="label"><span class="e_required">优惠：</span></span>
+						<span class="e_select"><span><span>
+							<input type="hidden" id="ELEMENT_NAME" name="ELEMENT_NAME"/>
+						    <select jwcid="@Select" name="ELEMENT_ID" id="ELEMENT_ID"  disabled='true'
+						     		source="ognl:stuDiscntAll"
+							 		textField="ELEMENT_NAME" valueField="ELEMENT_ID" nullable="no"  value="ognl:moinfoDetail.ELEMENT_ID"   desc="优惠" />
+						 </span></span></span>
+					</li>
+
+
+				</ul>
+				<div class="submitPlace"></div>
+				<div class="submit">
+					<button class="e_button-form" type="button"  id="bcreate" name="bcreate"    onclick="return addMoinfo();"><i class="e_ico-add"></i><span>新增</span></button>
+					<!--
+					<button class="e_button-form" type="button"  id="bupdate" name="bupdate" 	onclick="return updateMoinfo();"><i class="e_ico-edit"></i><span>修改</span></button>
+					-->
+					<button class="e_button-form" type="button"  id="bdelete" name="bdelete" 	onclick="return deleteMoinfo();"><i class="e_ico-delete"></i><span>删除</span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+
+
+	<!-- 提交 开始 -->
+   	<div class="c_submit">
+	    <button class="e_button-page-ok" type="button" value="确定" id="bt_ok" name="bt_ok" desc="确定"  onclick="setData();"><i></i><span>确定</span></button>
+	    <button class="e_button-page-cancel" type="button" value="取消" id="bt_canlet" name="bt_canlet" desc="取消" onclick="setCancleData();"><i></i><span>取消</span></button>
+	</div>
+	<!-- 提交 结束 -->
+
+
+   <textarea jwcid="@TextArea"  id="pam_STU_LIST" name="pam_STU_LIST"  value=""  style="display:none"   />
+   <textarea jwcid="@TextArea"  id="stuParamkey" name="stuParamkey"  value="ognl:stuParamkey"  style="display:none"   />
+   <textarea jwcid="@TextArea"  id="stu_DiscntAll" name="stu_DiscntAll"  value="ognl:stuDiscntAll"  style="display:none"   />
+
+   <input jwcid="@Hidden" name="NOTIN_SERIAL_NUMBER" value="ognl:hiddenParam.NOTIN_SERIAL_NUMBER"/>
+   <input jwcid="@Hidden" name="NOTIN_OUT_SN" value="ognl:hiddenParam.NOTIN_OUT_SN"/>
+   <input jwcid="@Hidden" name="GRP_USER_ID" value="ognl:hiddenParam.GRP_USER_ID"/>
+   <input jwcid="@Hidden" name="GROUP_ID" value="ognl:hiddenParam.GROUP_ID"/>
+</div>
+
+</body>
+
+</html>

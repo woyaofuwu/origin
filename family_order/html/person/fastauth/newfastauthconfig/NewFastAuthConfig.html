@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新授权业务配置</title>
+<script jwcid="@Script" language="JavaScript" src="person/fastauth/newfastauthconfig/scripts/NewFastAuthConfig.js"></script>
+<script>
+function initHeight() {
+	var col1 = document.getElementById("col1");
+	var col2 = document.getElementById("col2");
+	var col3 = document.getElementById("col3");
+	var bh = document.body.offsetHeight;
+	col1.style.height = bh - 131 + "px"
+	col2.style.height = bh - 120 + "px"
+	col3.style.height = bh - 130 + "px"
+}
+</script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">查询条件</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-7" jwcid="queryInfoPart@Part">
+					<ul class="ul">
+					  <li class="li">
+						<span class="label">菜单名称：</span>
+						<span class="e_select"><span><span>
+							 <select jwcid="@Select" name="COND_MENU_ID" id="COND_MENU_ID"
+												source="ognl:acceptTradeList"
+												textField="MENU_TITLE" valueField="MENU_ID" 
+												 titleField="MENU_TITLE" value="ognl:condition.cond_TRADE_TYPE_CODE" desc="菜单名称"/>	
+						</span></span></span>
+					  </li>
+					  <li class="li">
+						<span class="label">菜单状态：</span>
+						<span class="e_select"><span><span>
+						        <select jwcid="@Select" name="COND_FASTAUTH_CONFIG_STATE" id="COND_FASTAUTH_CONFIG_STATE" source="ognl:pageutil.getStaticList('FASTAUTH_CONFIG_STATE')"
+			                                    value="ognl:condition.FASTAUTH_CONFIG_STATE"  desc="菜单状态" nullable="yes" 
+			                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+						</span></span></span>
+					  </li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryFastAuth22();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="detailPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">已允许授权的业务</div>	     
+		  	       <div class="fn">
+		  	             <button type="button" class="l_ml" onclick="importFunc();">
+								<i class="e_ico-import"></i><span>导入</span>
+						 </button>
+		  	          <div class="button" jwcid="@Conditional" condition="ognl:authTradeList.size > 0">
+                         <span jwcid="@Export" name="exportFilePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100962"
+											  config="export/sundryquery/other/FASTAUTHINFOLIST.xml" fileName="已允许快速授权业务列表" cond=queryInfoPart/>
+						 <button type="button" class="l_ml" onclick="openUpdateAuth22();">
+								<i class="e_ico-edit"></i><span>修改</span>
+						 </button>
+						 <button type="button" class="l_ml" onclick="deleteAuth22();">
+								<i class="e_ico-delete"></i><span>删除</span>
+						 </button>
+                      </div>
+				    </div>
+				 </div>
+				 <div class="c_table ">
+					<table jwcid="@Table" name="ResultTable" id="ResultTable"  sort="true">
+						<thead>
+						<tr>
+			  				<th></th>
+							<th>菜单名称</th>
+							<th>菜单编码</th>
+							<th>生效时间</th>
+							<th>失效时间</th>
+							<th>更新员工</th>
+							<th>更新部门</th>
+							<th>更新时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:authTradeList" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td name="ACCEPT_TRADE_ID"><span input type="radio" name="ACCEPT_TRADE_ID" jwcid="@Radio" value="ognl:info.MENU_ID" onclick="onclickTradeId();"/></td>
+							<td name="MENU_TITLE"><span jwcid="@Insert" value="ognl:info.MENU_TITLE" raw="true"/></td>
+							<td name="MENU_ID"><span jwcid="@Insert" value="ognl:info.MENU_ID" raw="true"/></td>
+							<td name="START_DATE"><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+							<td name="END_DATE"><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true"/></td>
+							<td name="UPDATE_STAFF_ID"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.UPDATE_STAFF_ID)" raw="true"/></td>
+							<td name="UPDATE_DEPART_ID"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.UPDATE_DEPART_ID)" raw="true"/></td>
+							<td name="UPDATE_TIME"><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="true"/></td>
+						</tr>	                                         
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="queryInfoPart" part="detailPart" listener="queryHadTrade" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	       </div>
+	<!-- 可申请的授权业务结束 -->
+	<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">配置业务</div>
+		</div>
+	<!-- 标题 结束 -->
+	<!-- 分栏 开始 -->
+	<div class="l_col l_col-close">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:50%;">
+		   		<!-- 输入 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-8" jwcid="queryMenu@Part">
+						<div class="c_tip2">请逐级选择菜单范围!!</div>
+						<ul class="ul">
+						  <li class="li">
+							<span class="label">业务子系统范围：</span>
+							<span class="e_select"><span><span>
+								 <select jwcid="@Select" name="cond_TRADE_RANGE" id="cond_TRADE_RANGE"
+													source="ognl:subSysList"
+													textField="SUBSYS_NAME" valueField="SUBSYS_CODE" 
+													 titleField="SUBSYS_NAME" value="ognl:condition.cond_TRADE_TYPE_CODE" desc="业务子系统范围" onchange="sysChangeRange();"/>	
+							</span></span></span>
+						  </li>
+						   <li class="li">
+							<span class="label">->业务子范围：</span>
+							<span class="e_select"><span><span>
+								 <select jwcid="@Select" name="cond_TRADE_RANGE_CHILD" id="cond_TRADE_RANGE_CHILD"
+								                    source=""
+													textField="MENU_TITLE" valueField="MENU_ID" 
+													 titleField="MENU_TITLE" value="ognl:condition.cond_TRADE_TYPE_CODE" desc="业务子范围" onchange="sysChildChangeRange();" />	
+							</span></span></span>
+						  </li>
+		                  <li class="li">
+							<span class="label">->业务类型范围：</span>
+							<span class="e_select"><span><span>
+								 <select jwcid="@Select" name="cond_TRADE_CHILD_CHILD" id="cond_TRADE_CHILD_CHILD"
+													textField="MENU_TITLE" valueField="MENU_ID"  source=""
+													 titleField="MENU_TITLE" value="ognl:condition.cond_TRADE_TYPE_CODE" desc="业务类型范围"  nullable="no"/>	
+							</span></span></span>
+							<div style="display:none">
+										<textarea jwcid="@TextArea" style="width:500px" name="subSysChildList" id="subSysChildList" value="ognl:subSysChildList"  maxsize="10000" title="业务子范围" raw="true"></textarea>
+										<textarea jwcid="@TextArea"  style="width:500px" name="subSysTradeList" id="subSysTradeList" value="ognl:subSysTradeList"  maxsize="10000" title="业务类型信息" raw="true"></textarea>
+										
+							</div>
+						  </li>
+						  <li class="li">
+							<span class="label">禁止授权员工：</span>
+							<span class="e_elements">
+								<button type="button" class="e_button-right" id="FROBIDEN_STAFF" name="FROBIDEN_STAFF" onclick="javascript:popupPage('fastauth.newfastauthconfig.StaffAuth', '', '&multi=true', '禁止授权员工', '600', '400','cond_FROBIDEN_STAFF');">
+								<i class="e_ico-check"></i><span></span></button>
+								<span class="e_input e_input-left"><span>
+								<input type="text" jwcid="@Popup"  value="ognl:condition.FROBIDEN_STAFF" text="ognl:condition.FROBIDEN_STAFF"
+								       name="cond_FROBIDEN_STAFF" id="cond_FROBIDEN_STAFF" desc="禁止授权员工" editable=true/>
+								</span></span>
+							</span>	
+				          </li>	
+						</ul>
+						<div class="submitPlace"></div>
+					    <div class="submit">
+							<button jwcid="@Any" name="QUERY_MENU_BTN" id="QUERY_MENU_BTN"
+								class="e_button-form"  onclick="return queryMenus();">
+								<i class="e_ico-search"></i><span>查询</span>
+							</button>
+					    </div>
+				</div>
+				<!-- 输入 结束 -->
+                <div class="c_popupBox">
+					<div class="c_popupTitle">
+						<div class="text">菜单栏</div>
+						<div class="fn"></div>
+					</div>
+					<div id="treePart" jwcid="@Part" optimize="true">
+						<div class="c_popupContent"><div class="c_popupContentWrapper">
+							<div class="c_scroll" style="height:150px">
+								<div jwcid="@Tree" id="menuTree"
+									listener="ognl:treeData" 
+									checkbox="false" search="false" folder="true" expandAll="true"
+									></div>
+							</div>
+						</div></div>
+					</div>
+			    </div>
+		</div>
+		<!-- 第 1 栏 结束 -->
+		<!-- 第 2 栏 开始 -->
+        <div class="l_left" style="width:10px;">
+				<!-- 表格 开始 -->
+				<div class="c_table c_table-expOff l_cl l_cr"><div class="nowrapOff">
+					<div class="table"><div class="wrapper"><div class="wrapper2">
+					</div></div></div>
+				</div></div>
+				<!-- 表格 结束 -->
+		</div>		
+		<!-- 第 2 栏 结束 -->
+		<!-- 第 3 栏 开始 -->
+		<div class="l_left" style="width:auto;">
+				<!-- 二级标题 开始 -->
+				<div class="c_inputField">
+					<div class="top e_cSet">属性配置</div>
+				</div>
+				<!-- 二级标题 结束 -->
+				<!-- 表格 开始 -->
+				<div class="c_table"><div class="nowrapOn">
+					<div class="table"><div class="wrapper" id="col3" style="height:232px; overflow:auto;"><div class="wrapper2">
+						<table>
+							<thead>
+								<tr>
+									<th width="auto;"></th>
+									<th width="15%">菜单名称</th>
+									<th width="20%;">菜单编码</th>
+									<th width="30%;">开始时间</th>
+									<th width="30%;">结束时间</th>
+								</tr>
+							</thead>
+							<tbody id="menuConfigArea">
+								
+							</tbody>
+						</table>
+					</div></div></div>
+				</div></div>
+				<!-- 表格 结束 -->
+		</div>
+		<!-- 第 3 栏 结束 -->
+	</div>
+	<!-- 分栏 结束 -->
+	<div class="c_box l_ct e_rSet" style="height:10px">
+    </div>
+    <div class="c_submit">
+		<input class="e_input" style="display:none" id = "menuesValue" name="menuesValue" type="text" jwcid="@TextField" desc=""  value="ognl:condition.menusValue" />
+    	<button type="button" class="e_button-page-ok" id="bimport" name="bimport"  onclick="if(!getConfigTab()){return false;}else{postMenus();return true;}" ><i class="e_ico-ok"></i><span>提交</span></button>
+    </div>
+    <!-- 弹出frame开始 -->
+    <div class="c_popup" id="IncreateFrame" style="display: none">
+	    <iframe frameborder="0"></iframe>
+        <div class="c_popupPopup" style="height:100px; width:700px;">
+	        <div class="c_popupFillet">
+				<div class="c_popupFilletTop">
+					<div class="c_popupFillet11"></div>
+					<div class="c_popupFillet12"></div>
+				</div>
+			</div>
+			<div class="c_popupTop">
+				<div class="c_popupTitle" id="IncreateFrameName">弹出窗口</div>
+				<div class="c_popupFct">
+					<a class="c_popupClose" onclick="hideLayer('IncreateFrame')"></a>
+				</div>
+			</div>
+			<div class="c_popupWrapper">
+				<div class="c_popupBody"><div class="l_padding">
+					<div class="c_inputField"><div class="aclinicOn"><div class="char7">
+						<div class="c_form c_form-col-3 c_form-label-7" jwcid="theMenuPart@Part">
+							<ul class="ul">
+							  <li class="li">
+								<span class="label">菜单选择：</span>
+								<span class="e_select"><span><span>
+									 <select jwcid="@Select" name="condition_MENU_ID" id="condition_MENU_ID"
+														source="ognl:acceptTradeList"
+														textField="MENU_TITLE" valueField="MENU_ID" 
+														 titleField="MENU_TITLE" value="ognl:condition.cond_TRADE_TYPE_CODE" desc="菜单选择"/>	
+								</span>
+								<input type="hidden" name="OPERATE_FLAG" id="OPERATE_FLAG" value=""/>
+								</span></span>
+							  </li>
+							  <li class="li">
+								<span class="label"><span class="e_required">生效时间：</span></span>
+								<span class="e_elements">
+									<span class="e_input e_input-left"><span>
+										<input jwcid="@DateField" name="condition_START_DATE" id="condition_START_DATE"  value="ognl:condition.START_DATE" desc="生效时间"/>
+									</span></span>
+								</span>
+							 </li>
+							 <li class="li">
+								<span class="label"><span class="e_required">失效时间：</span></span>
+								<span class="e_elements">
+									<span class="e_input e_input-left"><span>
+									    <input jwcid="@DateField" name="condition_END_DATE" id="condition_END_DATE"   value="ognl:condition.START_DATE"  desc="失效时间"/>
+									</span></span>
+								</span>
+							 </li>
+							</ul>
+						</div>
+		
+					</div></div></div>
+				</div></div>
+			</div>
+			<div class="c_popupBottom">
+				<input class="e_button" type="button" value="确定" onclick="operate22();" />
+				<input class="e_button" type="button" value="取消" onclick="hideLayer('IncreateFrame');" />
+			</div>
+			<div class="c_popupFillet">
+				<div class="c_popupFilletBottom">
+					<div class="c_popupFillet21"></div>
+					<div class="c_popupFillet22"></div>
+				</div>
+			</div>
+        </div>    
+    </div>
+<!-- 弹出frame结束 -->
+<!-- 区域 结束 -->
+</div></div></div>
+</body>
+</html>

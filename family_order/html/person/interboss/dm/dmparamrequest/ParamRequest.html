@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>参数配置请求</title>
+<script language="JavaScript" src="person/interboss/dm/dmparamrequest/scripts/dmparamrequest.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data);" tradeTypeCode="2701" element="div"></div>
+	<!-- 认证 结束 -->
+	<!-- 三户展示组件 开始 -->
+		<div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		</div>
+	<!-- 三户展示组件 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">终端选择</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-2" jwcid="terminalPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">终端厂商：</span></span>
+				<span class="e_select" ><span><span>
+						<select jwcid="@Select"  name="comminfo_TERM_FACTORY" id="comminfo_TERM_FACTORY" 
+						source="ognl:facts"
+						valueField="MANUFACTURERID"  textField="MANUFACTURERNAME" value="ognl:info.TERM_STYLE"
+						desc="终端厂商"  nullable="no" onchange="factoryChange();" disabled ="true"/>
+				</span></span></span>
+				
+			</li>
+			<li class="li" jwcid="termsPart@Part"> 
+				<span class="label"><span class="e_required">终端型号：</span></span>
+				<span class="e_select" ><span><span>
+						<select jwcid="@Select"  name="comminfo_TERM_STYLE" id="comminfo_TERM_STYLE" 
+						source="ognl:terms"
+						valueField="TERMINALID"  textField="TERMINALNAME" value="ognl:info.TERM_STYLE"
+						desc="终端型号"  nullable="no" onchange="termChange();" disabled ="true"/>
+						<textarea jwcid="@TextArea"  id="terminalusablefuncs"   name="terminalusablefuncs"   type="hidden" value="ognl:terms"   style="display:none"/>
+				</span></span></span>
+			</li>
+			<li class="li col-2">
+				<span class="label">支持功能：</span>
+				<div class="c_fn">
+					<ul id="funcs">
+						
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务选择</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="tradeTypePart@Part">
+			<table jwcid="@Table" id="DeptTable" name="DeptTable">
+				<thead>
+				       <tr>
+							<th><label for="option">选择<input type="checkbox" name="option" jwcid="@Any" 
+							 id="option" onclick="checkedAll('apprs', checked)"/></label></th>
+							<th>业务类型标识</th>
+							<th>业务名称</th>
+						</tr>
+				</thead>
+				<tbody>
+					   <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						    <td><input jwcid="@Checkbox" id="ognl:rowIndex+'apprs'" name="apprs"  funcname="ognl:info.FUNCTIONNAME" funcid="ognl:info.FUNCTIONID" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.FUNCTIONID"/></td>
+						    <td><span jwcid="@Insert" value="ognl:info.FUNCTIONNAME" /></td>
+						</tr>
+				 </tbody>
+			</table>
+		</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenPart@Part">
+	   <input type="hidden"   id="comminfo_TERMINALID"    name="comminfo_TERMINALID" >
+	   <input type="hidden"  id="comminfo_OPERATEID"      name="comminfo_OPERATEID" />
+	   <input type="hidden"  id="comminfo_FUNCTIONID"     name="comminfo_FUNCTIONID" />
+   </div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="sendHttpRequest()" isReset="true"   area="AuthPart,tradeTypePart,terminalPart,hiddenPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

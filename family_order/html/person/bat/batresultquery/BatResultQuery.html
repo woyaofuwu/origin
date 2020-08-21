@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/batdeal/batresultquery.js"></script>
+</head>
+<body jwcid=@Body><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量结果查询</div>
+		<div class="fn">
+				<span jwcid="@Export"
+				name="exportFile" 
+				serviceName="2321" 
+				config="export/bat/BatDealQuery.xml"
+				fileName="批量结果信息"
+				cond=""
+				ftpSite="personserv"
+				beforeAction="exportBeforeAction"
+				action=""
+				fileType="{'.xls':'.xls'}"
+				></span>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="QueryCondPart@Part" class="c_form">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input" style="width:140px;"><span>
+				<input name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" jwcid="@TextField" type="text" value="ognl:info.cond_SERIAL_NUMBER" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">开始日期：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="cond_START_TIME" id="cond_START_TIME" maxName="cond_START_TIME" value="ognl:info.cond_START_TIME" format="yyyy-MM-dd" desc="起始时间" min="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.util.SysDateMgr@getSysTime()" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束日期：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="cond_END_TIME" id="cond_END_TIME" minName="cond_START_TIME" value="ognl:info.cond_END_TIME" format="yyyy-MM-dd" desc="结束时间" min="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.util.SysDateMgr@getSysTime()" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="queryBatDealBySN();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryListTable">
+			<thead>
+				<tr>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="BATCH_TASK_ID">批量任务标识</th>
+					<th col="BATCH_OPER_TYPE">批量业务类型</th>
+					<th col="REFER_TIME">导入时间</th>
+					<th col="DEAL_STATE">处理状态</th>
+					<th col="DEAL_TIME">处理时间</th>
+					<th col="CANCEL_TAG">返销标记</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:taskInfos" value="ognl:taskInfo" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:taskInfo.SERIAL_NUMBER" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.BATCH_TASK_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" raw="true" value="ognl:pageutil.getStaticValue('TD_B_BATCHTYPE','BATCH_OPER_TYPE','BATCH_OPER_NAME',taskInfo.BATCH_OPER_TYPE)"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.REFER_TIME" raw="true"/></td>
+					<td><span jwcid="@Insert" raw="true" value="ognl:pageutil.getStaticValue('BAT_TASK_STATE_TAG', taskInfo.DEAL_STATE)"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.DEAL_TIME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BATDEAL_CANCELTAG', taskInfo.CANCEL_TAG)" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="QueryCondPart" part="QueryListPart" listener="queryBatDealBySN" pageSize="10" count="ognl:batchTaskListCount"></div>
+	</div>
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

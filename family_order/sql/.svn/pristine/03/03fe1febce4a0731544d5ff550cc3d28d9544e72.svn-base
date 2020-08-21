@@ -1,0 +1,2 @@
+INSERT INTO tf_f_recommend_contacts(user_id,serial_number,channel_code,execute_id,execute_desc,id_type,id,accept_date,accept_month,trade_type_code,staff_id,depart_id,city_code,eparchy_code,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:CHANNEL_CODE,:EXECUTE_ID,:EXECUTE_DESC,:ID_TYPE,:ID,SYSDATE,TO_NUMBER(TO_CHAR(SYSDATE,'mm')),:TRADE_TYPE_CODE,:STAFF_ID,:DEPART_ID,:CITY_CODE,:EPARCHY_CODE,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

@@ -1,0 +1,1 @@
+select * from TF_F_USER t where t.SERIAL_NUMBER = :SERIAL_NUMBER

@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>订购关系查询</title>
+<script jwcid="@Script" language="JavaScript"
+	src="person/addresslist/scripts/queryCommRecord.js"></script>
+<script language="javascript">
+	window.attachEvent("onunload", closePage);
+	function closePage() {
+		ajaxSubmit('HiddenPart,SerialNumPart', 'closePage', null, null, null);
+	};
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">订购关系查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 查询条件 开始 -->
+	<div class="c_form c_form-col-3" jwcid="QueryRecordPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.cond_SERIAL_NUMBER"  maxLength="11" desc="手机号码" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span>业务类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_ORDERRELA_TYPE" id="cond_ORDERRELA_TYPE"
+								source="ognl:pageutil.getStaticList('ORDERRELA_TYPE')" desc="查询类型"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  
+								 value="ognl:cond.cond_ORDERRELA_TYPE"
+								  />
+					</span></span></span>
+			   </li>
+			   <li class="li">
+					<span class="label"><span class="e_required">开始时间：</span></span>
+					<span class="e_elements">
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" 
+							value="ognl:cond.cond_START_DATE" time="true" format="yyyy-MM-dd HH:mm:ss" desc="开始时间" maxName="cond_END_DATE"/>
+						</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束时间：</span></span>
+					<span class="e_elements">
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" 
+							value="ognl:cond.cond_END_DATE" time="true" format="yyyy-MM-dd HH:mm:ss" desc="结束时间" minName="cond_START_DATE"/>
+						</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">业务线：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_ORDERRELA_LINE" id="cond_ORDERRELA_LINE"
+								source="ognl:pageutil.getStaticList('ORDERRELA_LINE')" desc="业务线"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  
+								 value="ognl:cond.cond_ORDERRELA_LINE" nullable="no"
+								  />
+					</span></span></span>
+				</li>
+				
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecord();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 隐藏区域 开始 -->
+   	<div jwcid="HiddenPart@Part" element="div">
+		<input jwcid="@Hidden" id="INDICTSEQ" name="INDICTSEQ" value="ognl:result.INDICTSEQ" />
+		<input jwcid="@Hidden" id="ORIGINTIME" name="ORIGINTIME" value="ognl:result.ORIGINTIME" />
+		<input jwcid="@Hidden" id="MAXRECORDNUM" name="MAXRECORDNUM" value="ognl:result.MAXRECORDNUM" />
+		<input jwcid="@Hidden" id="RSLTPAGECURRCNT" name="RSLTPAGECURRCNT" value="ognl:result.RSLTPAGECURRCNT" />
+		<input jwcid="@Hidden" id="PIGEONHOLE" name="PIGEONHOLE" value="ognl:result.PIGEONHOLE" />
+		<input jwcid="@TextArea" type="hidden" id="REPORTPAGE" name="REPORTPAGE" value="ognl:reportPage" style="display:none"/>
+	</div>
+	<div jwcid="SerialNumPart@Part" element="div">
+		<input jwcid="@Hidden" id="CALLERNO" name="CALLERNO" value="ognl:result.CALLERNO" />
+	</div>
+	<!-- 隐藏区域 结束 -->
+	<!-- 查询结果 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+	</div>
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>返回结果</th>
+					<th>订单数量</th>
+					<th>业务线</th>
+					<th>服务企业名称</th>
+					<th>应用名称</th>
+					<th>应用ID</th>
+					<th>用户手机号码</th>
+					<th>订购服务的时间</th>
+					<th>定购渠道标识</th>
+					<th>订单价格</th>
+					<th>订单过期时间</th>
+					<th>订单唯一编号</th>
+					<th>用户定购的服务类型</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value='ognl:(info.RSRV_STR0 == "0")?"成功":"失败"' raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ORDERRELA_LINE', info.RSRV_STR2)" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR7" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ORDERRELA_CHANNEL', info.RSRV_STR8)" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR10" raw="true" desc="订单价格(单位：分)"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR11" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR12" raw="true" desc="订单唯一编号"/></td>						
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ORDERRELA_SVCTYPE', info.RSRV_STR13)" raw="true"/></td>						
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jjwcid="@NavBar" name="recordNav" id="recordNav"
+						cond="HiddenPart,SerialNumPart" part="HiddenPart,QueryListPart"
+						listener="queryOtherRecord" pageSize="ognl:result.RSLTPAGECURRCNT"
+						count="ognl:result.MAXRECORDNUM"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+
+</html>

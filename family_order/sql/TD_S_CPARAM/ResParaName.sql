@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+SELECT 'ResParaName' KEY, eparchy_code VALUE1, PARA_CODE1 VALUE2, PARA_CODE2 VALUE3, PARA_VALUE1 VRESULT
+  FROM td_m_assignpara
+ WHERE 'ResParaName' = :KEY
+       and PARA_ATTR = 1000

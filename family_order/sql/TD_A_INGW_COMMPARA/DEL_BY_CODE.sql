@@ -1,0 +1,4 @@
+DELETE FROM TD_A_INGW_COMMPARA
+ WHERE eparchy_code=:EPARCHY_CODE
+   AND para_attr = :PARA_ATTR
+   AND para_code = :PARA_CODE

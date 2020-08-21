@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script language="JavaScript" src="person/evaluecard/scripts/EValueCard.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">客户查询</div>
+    </div>
+    <!-- 标题 结束 -->
+    <!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth2(data)"  tradeTypeCode="5433" element="div" />
+    <!-- 认证 结束 -->
+    <!-- 参数列表 开始 -->
+    <div class="c_form c_form-label-5 c_form-col-2 c_form-text" jwcid="freshPart@Part">
+        <ul class="ul">
+            <li class="li">
+                <span class="label">客户名称：</span>
+                <span class="text" jwcid="@Insert"   value="ognl:editInfo.CUST_NAME" desc="客户名称："/>
+            </li>
+            
+            <li class="li">
+                <span class="label">证件号码：</span>
+                <span class="text" jwcid="@Insert"  value="ognl:editInfo.PSPT_ID" desc="证件号码"/>
+                
+            </li>
+            <li class="li">
+                <span class="label">证件类型：</span>
+                <span class="text" jwcid="@Insert"  
+                                                value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',editInfo.PSPT_TYPE_CODE)"></span>
+            </li>
+            <li class="li">
+                <span class="label">证件地址：</span>
+                <span class="text" jwcid="@Insert"   value="ognl:editInfo.PSPT_ADDR" desc="证件地址"/>
+                
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="c_box">
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">操作类型</div>
+    </div>
+    <div jwcid="SelOperTypePart@Part">
+         <ul class="ul">
+             <li class="li" id="isweather">
+             <!-- 
+                <span class="label"><span class="e_required">操作：</span></span>
+             -->
+                <div class="c_fn">
+                    <ul>
+                        <li><label><input type="radio" name="cond_OPERTYPE" id="cond_OPERTYPE1" checked class="e_radio" value="1" onclick="return initDisplayDiv()"/>批量销售受理</label></li>
+                        <li><label><input type="radio" name="cond_OPERTYPE" id="cond_OPERTYPE0" class="e_radio" value="0" onclick="return initDisplayDiv()"/>批量销售查询</label></li>
+                    </ul>
+                </div>
+            </li>
+         </ul>
+    </div>
+    
+    
+</div>
+<div class="c_box e_dis" id="BatchSellReqALLPart" >
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">批量销售受理</div>
+    </div>
+    <!-- 标题 结束 -->
+    
+    <!-- 刷新2区域  开始 -->
+    <div  jwcid="SellReqPart@Part">
+        <!-- 表格 开始 -->
+        <div class="c_table c_table-row-5">
+            <table jwcid="@Table" id="SellReqTable" name="SellReqTable">
+                <thead>
+                    <tr>
+                        <th col="CARD_TYPE_TEXT">卡类型</th>
+                        <th col="CARD_TYPE" style="display:none">卡类型</th>
+                        <th col="BUY_COUNT">购卡数量</th>
+                        <th col="CARD_MONEY">卡面值（元）</th>
+                        <th col="CHANNEL_TYPE_TEXT">受理渠道</th>                        
+                        <th col="CHANNEL_TYPE" style="display:none">受理渠道</th>
+                        <th col="PUBLIC_KEY_ID">公钥ID</th>
+                        <th col="CARD_BUSIPROP">卡业务属性</th>
+                    </tr>
+                </thead>
+                <tbody name="SellReqTableValues" id="SellReqTableValues">
+                </tbody>
+            </table>
+        </div>
+        <!-- 表格 结束 -->
+        <!-- 表单 开始 -->
+        <div class="c_form c_form-col-3 c_form-label-5" id="EditPart" name="EditPart">
+            <ul class="ul">
+                <li class="li">
+                    <span class="label"><span class="e_required">受理渠道：</span></span>
+                    <span class="e_select"><span><span>
+                    <select jwcid="@Select" name="CHANNEL_TYPE" id="CHANNEL_TYPE"
+                            source="ognl:pageutil.getStaticList('EVALUECARD_CHANNEL_TYPE')" addDefault="true"
+                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                            desc="卡类型" nullable="no" />
+                    </span></span></span>                   
+                </li>
+                <li class="li">
+                    <span class="label"><span class="e_required">公钥ID：</span></span>
+                    <span class="e_input"><span>
+                    <input type="text" jwcid="@Any"  id="PUBLIC_KEY_ID" name="PUBLIC_KEY_ID"/>
+                    </span></span>
+                </li>
+                <li class="li">
+                    <span class="label"><span class="e_required">卡类型：</span></span>
+                    <span class="e_select"><span><span>
+                        <select jwcid="@Select" name="CARD_TYPE" id="CARD_TYPE"
+                            source="ognl:pageutil.getStaticList('EVALUECARD_TYPE')" addDefault="true"
+                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                             desc="卡类型" nullable="no" />
+                    </span></span></span>
+                </li>
+                <li class="li">
+                    <span class="label"><span class="e_required">购卡数量：</span></span>
+                    <span class="e_input" ><span>
+                        <input type="text" jwcid="@Any" id="BUY_COUNT" name ="BUY_COUNT" value="" datatype="numeric" nullable="no" desc="购卡数量"/>
+                    </span></span>
+                </li>
+                <li class="li" >
+                    <span class="label"><span class="e_required">卡面值（元）：</span></span>
+                    <span class="e_input" ><span>
+                        <input name="CARD_MONEY" id="CARD_MONEY"  jwcid="@Any" min="1" nullable="no" datatype="numeric" value="" type="text" desc="卡面值"/>
+                    </span></span>
+                </li> 
+                <li class="li" >
+                    <span class="label"><span>卡业务属性：</span></span>
+                    <span class="e_input" ><span>
+                        <input name="CARD_BUSIPROP" id="CARD_BUSIPROP"  jwcid="@Any" value="" type="text" desc="卡业务属性"/>
+                    </span></span>
+                </li> 
+                              
+            </ul>
+            <div class="submitPlace"></div>
+            <div class="submit">
+                <button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="return createSellReq(this);" disabled><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+                <button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="return deleteSellReq(this)" disabled><i id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+            </div>
+        </div>
+        <!-- 表单 结束 -->
+    </div>
+    <!-- 刷新2区域  结束 -->
+    
+    <!-- 提交 开始 -->
+    <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitSellReqs()" affirmAction="toQueryTrans()" area="BatchSellReqALLPart,AuthPart,QueryCondPart,hiddenPart"  element="div"/>
+    <!-- 提交 结束 -->
+</div>
+    
+<div class="c_box e_dis" id="QueryBatchSellReqPart" style="display:none;">
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">批量销售查询</div>
+        <!-- 
+        <div class="fn">
+            <button type="button" onclick="$('#popup-add').css('display','')"><i class="e_ico-add"></i><span>新增</span></button>
+        </div>
+         -->
+    </div>
+    <!-- 标题 结束 -->
+    <div id="tipInfo" class="c_tip">请输入批量流水号或时间查询，要求【开始、结束】日期时间段不能超过31天。</div>
+    <!-- 表单 开始 -->
+    <div class="c_form" jwcid="QueryCondPart@Part">
+        <ul class="ul">
+            <li class="li">
+                <span class="label">批量流水号：</span>
+                <span class="e_input"><span>
+                    <input type="text" jwcid="@TextField" name="cond_TRANSACTION_ID" id="cond_TRANSACTION_ID"  value="ognl:condition.cond_TRANSACTION_ID" desc="业务流水号"/>
+                </span></span>              
+            </li>
+            <li class="li">
+                    <span class="label"><span class="e_required">开始时间：</span></span>
+                    <span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" 
+                    value="ognl:(condition.cond_START_DATE == null) ? @com.ailk.bizcommon.util.SysDateMgr@getYesterdayDate() : condition.cond_START_DATE"
+                                    nullable="no"  desc="开始时间"   /></span></span>
+             </li>
+             <li class="li">
+                 <span class="label"><span class="e_required">结束时间：</span></span>
+                 <span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" 
+                 value="ognl:(condition.cond_END_DATE == null) ? @com.ailk.bizcommon.util.SysDateMgr@getTomorrowDate() : condition.cond_END_DATE"
+                                 nullable="no"  desc="结束时间"   /></span></span>
+             </li>
+             
+            <li class="li" style="display:none">
+                <span class="label">购卡人联系电话：</span>
+                <span class="e_input"><span>
+                    <input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"  value="ognl:condition.cond_SERIAL_NUMBER" desc="购卡人联系电话"/>
+                </span></span>              
+            </li>
+        </ul>
+        <div class="submitPlace"></div>
+        <div class="submit">
+            <button type="button" class="e_button-form" onclick="queryBatchReqInfo()" disabled><i class="e_ico-search"></i><span>查询</span></button>
+        </div>
+    </div>
+    <!-- 表单 结束 -->
+    <!-- 表格 开始 -->
+    <div id="refreshtable"  jwcid="refreshtable@Part" optimize="true">
+    <div class="c_scroll c_scroll-table-15"><div class="c_table">
+        <table jwcid="@Table" id="QueryListTable" name="QueryListTable">
+            <thead>
+                <tr>
+                    <th>操作</th>
+                    <th col="FILE_ID" style="display:none"></th>
+                    <th col="FILE_NAME" style="display:none"></th>
+                    <th>序号</th> 
+                    <th>交易流水号</th>                    
+                    <th>手机号码</th>                                       
+                    <th>受理渠道</th>
+                    <th>受理时间</th>
+                    <th>类型</th>
+                    <th>面额（分）</th>
+                    <th>数量</th>
+                    <th>省代码</th>
+                    <th>支付方式</th>
+                    <th>对账日期</th>
+                    <th>卡业务属性</th>
+                    <th>客户公钥ID</th>
+                    <th>执行情况</th>
+                </tr>
+            </thead>
+            <tbody id="MaterialList">
+                <tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                   <td class="e_center"><a jwcid="@Redirect" disabled="ognl:(info.STATUS==2?false:true)" value="下载反馈文件" onclick="downLoadFile(this.parentNode.parentNode.rowIndex)"/></td>  
+                    <!-- <td class="e_center"> <a jwcid="@Any" disabled="ognl:(info.STATUS==2?false:true)" href="ognl:encodeUrl('attach?action=download&fileId=' + info.FILE_NAME + '&realName=VCES_SELLBACK.TXT')">下载反馈文件</a></td> -->  
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.FILE_NAME" raw="false"/></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:pageutil.getFtpFile(info.FILE_NAME).FILE_NAME" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.ORDER_NO" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.TRANSACTION_ID" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>                    
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_CHANNEL_TYPE',info.CHANNEL_TYPE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_TYPE',info.CARD_TYPE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.CARD_MONEY" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.BUY_COUNT" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.HOME_PRO" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_PAYMENT',info.PAYMENT)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.SETTLE_DATE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.CARD_BUSIPROP" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.PUBLIC_KEY_ID" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_BATSELL_STATUS',info.STATUS)" raw="false"/></td>
+                    <!--  -->
+                    
+                
+                </tr>
+            </tbody>
+        </table>
+    </div></div>
+    <!-- 表格 结束 -->
+    <!-- 翻页（替换为页面组件） 开始 -->
+    <span jwcid="@NavBar" name="pageNav" cond="queryForm" listener="queryBatchReqInfo" pageSize="15"  part="refreshtable" count="ognl:pageCount"/>
+    <!-- 翻页 结束 -->
+   </div>
+</div>
+
+<!-- 区域 结束 -->
+
+<!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenPart@Part">
+       <input type="hidden" id="X_BATSELLREQ_STR" name="X_BATSELLREQ_STR"/>
+   </div>
+<!-- 隐藏区域 结束 -->
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+ SELECT T.PARTITION_ID,
+        to_char(T.USER_ID) USER_ID,
+        T.SERIAL_NUMBER,
+	to_char(T.START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+	to_char(T.END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+        T.REMARK,
+        T.RSRV_NUM1,
+        T.RSRV_NUM2,
+        T.RSRV_NUM3,
+        T.RSRV_NUM4,
+        T.RSRV_NUM5,
+        T.RSRV_STR1,
+        T.RSRV_STR2,
+        T.RSRV_STR3,
+        T.RSRV_STR4,
+        T.RSRV_STR5,
+        T.RSRV_STR6,
+        T.RSRV_STR7,
+        T.RSRV_STR8,
+        T.RSRV_STR9,
+        T.RSRV_STR10,
+        to_char(t.rsrv_date1, 'yyyy-mm-dd hh24:mi:ss') rsrv_date1,
+       to_char(t.rsrv_date2, 'yyyy-mm-dd hh24:mi:ss') rsrv_date2,
+       to_char(t.rsrv_date3, 'yyyy-mm-dd hh24:mi:ss') rsrv_date3,
+        T.RSRV_TAG1,
+        T.RSRV_TAG2,
+        T.RSRV_TAG3
+   FROM TF_F_USER_SCORE_LIMIT T
+  WHERE T.PARTITION_ID = MOD(:USER_ID, 10000)
+    AND T.USER_ID = :USER_ID
+    AND SYSDATE between T.START_DATE and T.END_DATE

@@ -1,0 +1,1 @@
+update TF_B_TRANSFEE_TEMP set RSPCODE =:RSP_CODE where log_id =:TRADE_ID   

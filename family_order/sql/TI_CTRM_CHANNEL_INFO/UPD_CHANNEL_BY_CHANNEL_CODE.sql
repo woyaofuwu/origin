@@ -1,0 +1,12 @@
+UPDATE TI_CTRM_CHANNEL_INFO
+   SET CHANNEL_TYPE     = :CHANNEL_TYPE,
+       UPDATE_TIME      = to_date(:UPDATE_TIME, 'yyyy-MM-dd hh24:mi:ss'),
+       CHANNEL_SMS_NAME  = :CHANNEL_SMS_NAME,
+       CHANNEL_NAME = :CHANNEL_NAME,
+       RSRV_STR1        = :RSRV_STR1,
+	   	 RSRV_STR2	      = :RSRV_STR2,
+       RSRV_STR3	      = :RSRV_STR3,
+       RSRV_STR4	      = :RSRV_STR4,
+       RSRV_STR5	      = :RSRV_STR5
+
+ WHERE CHANNEL_CODE = :CHANNEL_CODE

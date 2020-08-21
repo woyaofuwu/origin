@@ -1,0 +1,8 @@
+UPDATE tf_b_trade_other
+   SET RSRV_STR1=:RSRV_STR1,
+   RSRV_STR2=:RSRV_STR2,
+   RSRV_STR3=:RSRV_STR3,
+   RSRV_STR4=:RSRV_STR4  
+ WHERE trade_id=TO_NUMBER(:TRADE_ID)
+   AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))
+   AND rsrv_value_code=:RSRV_VALUE_CODE

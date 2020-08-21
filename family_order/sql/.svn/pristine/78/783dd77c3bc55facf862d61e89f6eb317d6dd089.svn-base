@@ -1,0 +1,1 @@
+select t.* from uop_crm1.tf_f_user_svc t where t.user_id=:USER_ID and sysdate < t.end_date and t.service_id<>:SERVICE_ID

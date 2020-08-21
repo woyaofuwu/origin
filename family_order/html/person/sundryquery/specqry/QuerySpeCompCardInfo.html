@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/specqry/scripts/specqry.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="l_col">
+			<!-- 活动详情 开始 -->
+				<div class="c_form c_form-col-2">
+				<div class="" jwcid="submit_part@Part" >
+						<ul class="ul">
+							<li class="li" >
+							<span class="label e_required" >起始工号：</span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "cond_START_STAFF_ID" value="ognl:condition.cond_START_STAFF_ID"  
+											onblur="completeEndSn(this, 'cond_END_STAFF_ID');" 
+											onkeyup="synOnKeyup(this, 'cond_END_STAFF_ID'); this.value=this.value.toUpperCase()" 
+										 desc="起始工号"   nullable="no" maxsize="8"  maxlength="8"  />
+								</span></span>
+							</li>
+							<li class="li" >
+							<span class="label e_required" >终止工号：</span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "cond_END_STAFF_ID" value="ognl:condition.cond_END_STAFF_ID" 
+											onkeyup="this.value=this.value.toUpperCase()"
+										desc="终止工号"   maxlength="8" maxsize="8"  nullable="no"   />
+								</span></span>
+							</li>
+							
+							<li class="li"  >
+								<span class="label e_required">开始日期：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" name="cond_START_DATE" value="ognl:condition.cond_START_DATE" desc="开始日期" nullable="no"  />
+								</span></span>
+							</li>
+							<li class="li" >
+								<span class="label e_required">结束日期：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" name="cond_END_DATE" value="ognl:condition.cond_END_DATE" 
+									afterAction="chgEndDateSynStartDate(this, 'cond_START_DATE');" desc="结束日期" nullable="no" />
+								</span></span>
+							</li>
+						</ul>
+					</div>
+
+						<div class="submitPlace"></div>
+						<div class="submit e_right"  >
+							<button class="e_button-form"  onclick="sundryQuery('checkDateRange31','querySpeCompCardInfo');"><i class="e_ico-search"></i><span>查询</span></button>
+							<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+						</div>
+				</div>
+				<div  jwcid="result_Table@Part" optimize="true">
+			    <div id="exportarea"  class="c_scroll c_scroll-x style='height:auto'">
+			        <div class="c_title c_title-2">
+					 <div class="text">查询结果</div>
+						 <div class="fn" >
+							  <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="5009"
+									  config="export/sundryquery/specqry/QuerySpeCompCardInfo.xml" cond="submit_part" /> 
+									<button class="l_ml" type="button" onclick="$.printArea('print_Table','绿色田野卡基站信息查询打印','60%')">
+														<i class="e_ico-print"></i><span>打印</span>
+									</button> 
+					 	</div>
+					 	
+			  	    </div>
+			  	    		<div  jwcid="print_Table@Part" optimize="true">
+							<div class="c_table">
+							<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+						  			<tr>
+										<th>SIM卡号</th>
+										<th>SIM卡类别</th>
+										<th>归属业务区</th>
+										<th>归属员工</th>
+										<th>费用名称</th>
+										<th>金额(元)</th>
+										<th>付款方式</th>
+										<th>备注</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										
+											<td><span jwcid="@Insert" value="ognl:info.START_VALUE"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.SIM_TYPE_NAME"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_M_AREA','AREA_CODE', 'AREA_NAME', info.CITY_CODE)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.STAFF_ID"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.FEE_NAME"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.FEE"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_S_PAYMONEY','PAY_MONEY_CODE', 'PAY_MONEY', info.PAY_MONEY_CODE)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+										</tr>
+									</tbody>
+							</table>
+							<!-- end table -->
+					</div>
+				</div>		
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="20"  listener="querySpeCompCardInfo" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+			</div>
+			</div>			
+						
+</div></div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

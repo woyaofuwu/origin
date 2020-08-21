@@ -1,0 +1,3 @@
+UPDATE tf_sm_vipclub_member
+   SET club_id=:CLUB_ID,vip_id=:VIP_ID,cust_name=:CUST_NAME,vip_type_code=:VIP_TYPE_CODE,class_id=:CLASS_ID,serial_number=:SERIAL_NUMBER,vip_no=:VIP_NO,join_date=TO_DATE(:JOIN_DATE, 'YYYY-MM-DD HH24:MI:SS'),birth_yearmonth=TO_DATE(:BIRTH_YEARMONTH, 'YYYY-MM-DD HH24:MI:SS'),contract_phone=:CONTRACT_PHONE,parfor_score=TO_NUMBER(:PARFOR_SCORE),create_time=TO_DATE(:CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS'),create_staff_id=:CREATE_STAFF_ID,remart=:REMART,prevaluen1=TO_NUMBER(:PREVALUEN1),prevaluev1=:PREVALUEV1,prevaluev2=:PREVALUEV2,prevaluev3=:PREVALUEV3,prevaluev4=:PREVALUEV4,prevalued1=TO_DATE(:PREVALUED1, 'YYYY-MM-DD HH24:MI:SS'),RSRV_STR1=:RSRV_STR1,RSRV_STR3=:RSRV_STR3  
+ WHERE member_id=:MEMBER_ID

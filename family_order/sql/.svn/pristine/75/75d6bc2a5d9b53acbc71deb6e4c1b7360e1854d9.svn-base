@@ -1,0 +1,19 @@
+SELECT T.USER_TYPE, 
+       T.CUST_ID, 
+       T.USER_ID, 
+       T.CUST_NAME, 
+       T.PSPT_TYPE_CODE, 
+       T.PSPT_ID,
+       T.INSERT_DATE,
+       T.INSERT_STAFF_ID,
+       T.INSERT_DEPART_ID,
+       T.REMOVE_TAG,
+       T.REMARK,
+       T.RSRV_STR1,
+       T.RSRV_STR2,
+       T.RSRV_STR3,
+       T.RSRV_STR4,
+       T.RSRV_STR5
+  FROM TF_F_USER_PSPT T
+ WHERE T.USER_ID = :USER_ID
+   AND T.USER_TYPE = :USER_TYPE

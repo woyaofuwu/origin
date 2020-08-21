@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团增值税专票申请单申请</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/taxprint/GrpTaxPrintTicketApply.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	
+	<div class="c_form c_form-col-2 c_form-label-8" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction()" afterAction="selectGroupAfterAction(data);" refreshPart="taxApplyPart,taxLogPart"/>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">发票单位名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_CUST_NAME" value="ognl:condition.cond_SERIAL_NUMBER" nullable="no" readonly="true" desc="发票单位名称"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">业务开始时间：</span>
+				<span class="e_elements"><span class="e_input e_input-left"><span>
+					<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:condition.cond_START_DATE" nullable="no" desc="业务开始时间"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">业务结束时间：</span>
+				<span class="e_elements"><span class="e_input e_input-left"><span>
+					<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" value="ognl:condition.cond_END_DATE" nullable="no" desc="业务结束时间"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<!-- 隐藏域 -->
+		<input type="hidden" jwcid="@Any" name="cond_CUST_ID" id="cond_CUST_ID"/>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return qryTaxLog();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	<!-- 购方信息 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">购方信息</div>
+	</div>
+	
+	<div class="c_form c_form-col-2 c_form-label-8" jwcid="taxApplyPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">购方名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_COMP_NAME" value="ognl:taxApply.COMP_NAME" nullable="no" desc="购方名称"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">购方税号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_TAX_APPLY_ID" value="ognl:taxApply.TAX_APPLY_ID" nullable="no" desc="购方税号"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">购方银行账号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_BANK_NO" value="ognl:taxApply.BANK_NO" nullable="no" desc="购方银行账号"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">购方电话：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_TELEPHONE" value="ognl:taxApply.TELEPHONE" nullable="no" desc="购方电话"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 购方信息 结束 -->
+	
+	<div class="c_title c_title-2">
+		<div class="text">审核信息</div>
+	</div>
+	
+	<div class="c_form c_form-col-2 c_form-label-6" jwcid="nextUserPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">下级审批人：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_NEXT_USER" name="cond_NEXT_USER" source="ognl:nextUserList" valueField="STAFF_ID" textField="STAFF_NAME" nullable="no" desc="下级审批人"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">备注：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_REMARK" value="ognl:taxApply.REMARK" nullable="no" desc="备注"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="c_title c_title-2">
+		<div class="text">增值税业务受理信息</div>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="taxLogPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>选择</th>
+						<th>业务流水号</th>
+						<th>客户名称</th>
+						<th>业务类型</th>
+						<th>办理时间</th>
+						<th>业务办理人</th>
+					</tr>
+				</thead>
+				<tbody id="taxLogBody">
+					<tr jwcid="@Foreach" source="ognl:taxLogList" value="ognl:taxLog" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'even'">
+						<td class="e_center"><input jwcid="@Radio" name="myRadio" value="ognl:taxLog.TRADE_ID"/></td>
+						<td><a href="#nogo" jwcid="@Any" tradeId="ognl:taxLog.TRADE_ID" onclick="showTaxDetail($(this).attr('tradeId'))"><span jwcid="@Insert" value="ognl:taxLog.TRADE_ID"/></a></td>
+						<td><span jwcid="@Insert" value="ognl:taxLog.CUST_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:taxLog.TRADE_TYPE"/></td>
+						<td><span jwcid="@Insert" value="ognl:taxLog.ACCEPT_DATE"/></td>
+						<td><span jwcid="@Insert" value="ognl:taxLog.TRADE_STAFF_ID"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		
+		<div jwcid="@NavBar" name="pageNav" id="pageNav" cond="queryForm" part="taxLogPart" listener="queryStartTaskInfo" count="ognl:infoCount" pageSize="10"></div>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="taxApplyPart,nextUserPart" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+	
+</div>
+	
+</div></div>
+
+<!-- 弹出框 开始 -->
+<div class="c_popup" id="taxDetail" style="display:none">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox">
+			<div class="c_popupTitle">
+				<div class="text">增值税详细信息</div>
+				<div class="fn"><a href="#nogo" class="close" onclick="hiddenTaxDetail()"></a></div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表格 开始 -->
+				<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th id="col_FEEITEM_NAME">费用项名称</th>
+								<th id="col_GOODS_NAME">业规格型号</th>
+								<th id="col_UNIT">单位</th>
+								<th id="col_COUNT">数量</th>
+								<th id="col_PRICE">单价(元)</th>
+								<th id="col_SALE_PRICE">金额(元)</th>
+								<th id="col_RATE">税率</th>
+							</tr>
+						</thead>
+						<tbody id="taxDetailBody">
+							<tr jwcid="@Foreach" source="ognl:taxDetailList" value="ognl:taxDetail" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><span jwcid="@Insert" value="ognl:taxDetail.FEEITEM_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:taxDetail.GOODS_NAME"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:taxDetail.UNIT" raw="true"/></td>
+								<td><span jwcid="@Insert" value="ognl:taxDetail.COUNT" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:taxDetail.PRICE" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:taxDetail.SALE_PRICE" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:taxDetail.RATE" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+				<!-- 表格 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 弹出框 结束 -->
+
+</body>
+
+</html>

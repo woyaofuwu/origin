@@ -1,0 +1,2 @@
+INSERT INTO td_m_vipclass(vip_type_code,class_id,class_name,priority,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:VIP_TYPE_CODE,:CLASS_ID,:CLASS_NAME,:PRIORITY,:REMARK,sysdate,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

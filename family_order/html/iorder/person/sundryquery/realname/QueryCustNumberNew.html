@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>一证多号信息查询</title>
+	<script language="JavaScript" src="iorder/person/sundryquery/realname/scripts/QueryCustNumberNew.js"></script>
+	<script jwcid="@Script" src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">一证多号信息查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	
+	<div jwcid="QueryPart@Part" class="l_query l_query-nopage">
+		<div jwcid="psptPart@Part" class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">一证多号</div>
+				</div>
+				<div class="right">
+					<span class="label">证件类型：</span>
+					<select jwcid="@Select" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+						source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+						value="0" desc="证件类型" nullable="no" />
+					<span class="e_space"></span>
+					<span class="label">证件号码：</span>
+					<input type="text" jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" desc="证件号码" value = "" enterAction="return queryCustNumber();" nullable="no" />
+					<button class="e_button-blue" name="ReadCardButton" id="SCAN_PSPT" onclick="return clickScanPspt();"><i class="e_ico-scan"></i><span>扫描</span></button>
+					<span class="e_space"></span>
+					<button class="e_button-blue" name="QUERY_MOD" id="QUERY_MOD" onclick="return queryCustNumberMod();"><i class="e_ico-search"></i><span>免模糊化查询</span></button>
+					<span class="e_space"></span>
+					<button class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryCustNumber();"><i class="e_ico-search"></i><span>查询</span></button>
+				</div>
+			</div>
+		</div>
+		<div class="c_space"></div>
+		<div jwcid="QueryListPart@Part" class="l_queryResult">
+			<table jwcid="@Table" name="UserPsptTable">
+				<thead>
+					<tr>
+						<th>手机号码</th>
+						<th>证件类型</th>
+						<th>证件号码</th>
+						<th>归属省份</th>
+						<th>业务生效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:numberInfos"
+						value="ognl:numberInfo" element="tr" index="ognl:rowIndex"
+						class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td data-title="手机号码"><span jwcid="@Insert" value="ognl:numberInfo.IDV" /></td>
+						<td data-title="证件类型"><span jwcid="@Insert" value="ognl:numberInfo.IDCARD_TYPE" /></td>
+						<td data-title="证件号码"><span jwcid="@Insert" value="ognl:numberInfo.IDCARD_NUM" /></td>
+						<td data-title="归属省份"><span jwcid="@Insert" value="ognl:numberInfo.HOME_PROV" /></td>
+						<td data-title="业务生效时间"><span jwcid="@Insert" value="ognl:numberInfo.EFFETI_TIME" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script jwcid="@Script" src="/treasury/scripts/treasury.js" outer="true" type="text/javascript"></script>
+	
+	<div class="value">
+        <input jwcid="@Hidden" id="ProtraitCompare_Tag" name="ProtraitCompare_Tag" value="0" desc="是否通过人像比对校验"/>
+    </div>
+</body>
+</html>

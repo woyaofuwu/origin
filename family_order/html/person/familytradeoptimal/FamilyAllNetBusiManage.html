@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: ReserveTradeArchive.html,v 1.1 2009/12/16 20:29:05 wangmo Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>全国家庭网业务办理</title>
+<script jwcid="@Script" language="JavaScript" src="person/familytradeoptimal/scripts/familyallnetbusimanage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">家庭网业务办理</span>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="2582" tradeAction="refreshPartAtferAuth(data)" autoAuth="true"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<span class="l_ml"><button type="button" name="Create" id="Create" onclick="onCreTradeSubmit()" class="e_button-page-ok"><i></i><span>创建家庭网</span></button></span>
+	<span class="l_ml"><button type="button" name="Destroy" id="Destroy" onclick="onDesTradeSubmit()" class="e_button-page-cancel"><i></i><span>注销家庭网</span></button></span>
+</div>
+<div class="c_box">
+	<div jwcid="FamilyInfoPart@Part"   style="display:none">
+		<div class="c_title">
+			<span class="text">家庭网成员新增</span>
+			<div class="fn">
+				<button type="button" id="bAdd" name="bAdd" onclick="addMeb()"><i class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" id="bDel" name="bDel" onclick="delMeb()"><i class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-5" id="MAIN_NUM_INFO">
+			<ul class="ul">
+				
+				<li class="li">
+					<span class="label"><span class="e_required">副号码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="VICE_SERIAL_NUMBER" id="VICE_SERIAL_NUMBER" datatype="mbphone" maxLength="11" value="" desc="副号码" nullable="no" />
+						
+						<div jwcid="@csserv:UserCheck" tradeAction="mebCheck()" fieldName="VICE_SERIAL_NUMBER" checkTag="01000" bindEvent="false" />
+					</span></span>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="c_box" jwcid="OperInfoPart@Part" style="display:none">
+	<div class="c_title">
+		<span class="text">操作信息</span>
+	</div>
+	<div class="c_form c_form-col-2 c_form-label-6">
+		<ul class="ul">
+			<li class="li" id="VALID_MEMBER_NUMBER_AREA">
+				<span class="label"><span>当前生效成员数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="VALID_MEMBER_NUMBER" id="VALID_MEMBER_NUMBER" value="0" desc="当前生效成员数"
+					disabled="true" />
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span>本次新增成员数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="ADD_MEMBER_NUMBER" id="ADD_MEMBER_NUMBER" value="0" desc="本次新增成员数"
+					disabled="true" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>本次操作的业务：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="TRADE_OPTION" id="TRADE_OPTION" value="NULL" desc="本次操作的业务"
+					disabled="true" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="c_box"  jwcid="HideOutPart@Part" style="display:none">
+	<div class="c_title">
+		<span class="text">家庭网成员删除</span>
+	</div>
+	<div jwcid="viceInfopart@Part" id="viceInfopart">
+		<div class="c_scroll c_scroll-table-5">
+			<div class="c_table">
+				<table jwcid="@Table" id="viceInfoTable" name="viceInfoTable" rowClick="clickRow">
+		      	<thead>
+				  	<tr>
+				  		<th col="INST_TAG" style="display:none">标识</th>
+						<th col="INST_ID_B" style="display:none">实例编码</th>
+						<th col="SERIAL_NUMBER_B">成员号码</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+						<th col="MEMBER_DELETE_B">操作</th>
+					</tr>
+				</thead>
+				<tbody id="viceInfoTable_Body">
+					<tr jwcid="@Foreach" source="ognl:viceInfos" value="ognl:viceInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td  style="display:none"><span jwcid="@Insert" value=""/></td>
+						<td  style="display:none"><span jwcid="@Insert" value="ognl:viceInfo.INST_ID_B"/></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER_B"></span></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.START_DATE"/></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.END_DATE"/></td>						 
+						<td><span><button type="button" name="bDel" onclick="deleteMeb(this)"><span>删除</span></button></span></td>
+					</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_form c_form-label-5 c_form-col-1">
+	    <ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK"
+	                 value=""
+					 desc="备注" disabled=""/>
+				</span></span>
+			</li>
+	    </ul>
+    </div>
+    
+    
+<div class="c_submit c_submit-center">
+ 					<button jwcid="@Button" accesskey="Y" class="e_button-r e_button-l e_button-green" name="CSSUBMIT_BUTTON" onclick="onTradeSubmit()">
+					<i jwcid="@Any" class="e_ico-submit"></i><span>提交</span>
+					</button>		
+					
+	</div>	
+		
+					
+	</div>
+	
+	
+</div>
+<!--受理信息结束-->
+<div></div></body>
+</html>

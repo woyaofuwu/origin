@@ -1,0 +1,2 @@
+INSERT INTO tl_b_send_user_state(operate_id,serial_number,user_id,biz_type_code,actioncode,homedomain,sys_code,user_state_code,send_status,send_date,send_staff,deal_flag,deal_result)
+ VALUES(TO_NUMBER(:OPERATE_ID),:SERIAL_NUMBER,TO_NUMBER(:USER_ID),:BIZ_TYPE_CODE,:ACTIONCODE,:HOMEDOMAIN,:SYS_CODE,:USER_STATE_CODE,:SEND_STATUS,TO_DATE(:SEND_DATE,'YYYY-MM-DD HH24:MI:SS'),:SEND_STAFF,:DEAL_FLAG,:DEAL_RESULT)

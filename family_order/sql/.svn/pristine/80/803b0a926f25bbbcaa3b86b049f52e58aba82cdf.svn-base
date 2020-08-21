@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+select DETAIL_ITEM_CODE rsrv_Num1,       0 rsrv_Num2,       0 rsrv_Num3,       DETAIL_ITEM PARA_CODE1,       '' PARA_CODE2,       '' PARA_CODE3,       '' PARA_CODE4,       '' PARA_CODE4,       '' PARA_CODE5,       '' PARA_CODE6,       '' PARA_CODE7,       '' PARA_CODE8,       '' PARA_CODE9  FROM TD_A_DETAILITEM

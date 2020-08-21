@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryUserDiscnt.html,v 1.4 2013/04/17 08:35:53 xiekl Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>平台业务订购关系查询</title>
+<script language="JavaScript" jwcid="@Script" src="scripts/csserv/component/usercheck/UserCheck.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">平台业务订购关系查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-2" jwcid="UserPlatsvcCond@Part" id="UserPlatsvcCond" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER" 
+					 value="ognl:getData().getString('SERIAL_NUMBER','')"
+					  desc="手机号码" nullable="no" datatype="mbphone"  />
+					  <!-- div  jwcid="@csserv:UserCheck"  
+						fieldName="cond_SERIAL_NUMBER"/-->
+				</span></span>
+			</li>
+			 <li class="li">
+				<span class="label">业务平台：</span>
+				<span class="e_select"><span><span>
+				  <select name="cond_BIZ_TYPE_CODE" jwcid="cond_BIZ_TYPE_CODE@Select"
+									source="ognl:pageutil.getStaticList('BIZ_TYPE_CODE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="ognl:cond.cond_BIZ_TYPE_CODE" desc="业务平台"
+									addDefault="yes"/>
+				</span></span></span>
+			</li>	
+			 <li class="li">
+				<span class="label">业务状态：</span>
+				<span class="e_select"><span><span>
+				 <select name="cond_BIZ_STATE_CODE" jwcid="cond_BIZ_STATE_CODE@Select"
+									source="ognl:pageutil.getStaticList('PLAT_BIZ_STATE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="ognl:cond.cond_BIZ_TYPE_CODE" desc="业务状态"
+									addDefault="yes"/>
+				</span></span></span>
+			</li>
+			 <li class="li">
+				<span class="label">操作编码：</span>
+				<span class="e_select"><span><span>
+				 <select name="cond_OPER_CODE" jwcid="cond_OPER_CODE@Select"
+									source="ognl:pageutil.getStaticList('PLATSVCOPERCODE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="ognl:cond.cond_OPER_CODE" desc="操作编码"
+									addDefault="yes"/>
+				</span></span></span>
+			</li>	
+			 <li class="li">
+				<span class="label">服务商编码：</span>
+				<span class="e_input"><span>
+				  	<input type="text" jwcid="@TextField" id="cond_SP_CODE" name="cond_SP_CODE" value="ognl:cond.cond_SP_CODE"  desc="服务商编码" />
+				</span></span>
+			</li>	
+		    <li class="li">
+				<span class="label">业务编码：</span>
+				<span class="e_input"><span>
+				  <input type="text" jwcid="@TextField" id="cond_BIZ_CODE" name="cond_BIZ_CODE" value="ognl:cond.cond_BIZ_CODE"  desc="业务编码"/>
+				</span></span>
+			</li>	
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryUserPlatsvcs(this);"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="PlatsvcList@Part" id="PlatsvcList"  element="div">
+	<div class="c_scroll c_scroll-x style="height:500px"">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="UserPlatsvcTable">
+			<thead>
+				<tr>
+						  <th onclick="Wade.dom.sortTable('dataList',0,'string')"><span>状态</span></th>
+						  <th onclick="Wade.dom.sortTable('dataList',1,'string')"><span>操作</span></th>
+                          <th onclick="Wade.dom.sortTable('dataList',2,'string')"><span>内置卡号</span></th>	
+	                      <th onclick="Wade.dom.sortTable('dataList',3,'string')"><span>服务名称</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',4,'string')"><span>价格(元)</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',5,'string')"><span>计费类型</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',6,'string')"><span>平台编码</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',7,'string')"><span>平台名称</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',8,'string')"><span>平台业务编码</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',9,'string')"><span>平台业务名称</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',10,'string')"><span>生效时间</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',12,'string')"><span>失效时间</span></th>                      
+	                      <th onclick="Wade.dom.sortTable('dataList',12,'string')"><span>平台服务商编码</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',13,'string')"><span>平台服务商名称</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',14,'string')"><span>首次订购时间</span></th>
+	                      <th onclick="Wade.dom.sortTable('dataList',15,'string')"><span>本月首次订购时间</span></th>	
+                          <th onclick="Wade.dom.sortTable('dataList',16,'string')"><span>服务编号</span></th>		
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BIZ_STATE_CODE',info.BIZ_STATE_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PLATSVCOPERCODE',info.OPER_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IN_CARD_NO" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.0',info.PRICE / 1000)" raw="false"/></td>												
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPBIZ_BILL_TYPE',info.BILL_TYPE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_TYPE_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BIZ_TYPE_CODE',info.BIZ_TYPE_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.START_DATE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.END_DATE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.FIRST_DATE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.FIRST_DATE_MON)" raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERVICE_ID" raw="true"/></td>				
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	
+	<div jwcid="pagin@NavBar" name="pagin" cond="UserPlatsvcCond"
+			count="ognl:paginCount"  listener="qryUserPlatSvc"
+			pageSize = "10"
+			part="PlatsvcList" />
+			
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></body>
+
+<script language="javascript">
+/*$("#cond_SERIAL_NUMBER").bind("keydown", function(e){
+	queryUserPlatsvcs(e);
+}); 
+*/
+
+function onSerialNumberInputKeyDown(e)
+{
+	if(e.keyCode==13 || e.keyCode==108){
+		queryUserPlatsvcs(e);
+	}
+}
+
+//输入enter时，查询
+$("#cond_SERIAL_NUMBER").bind("keydown",onSerialNumberInputKeyDown);
+
+ function queryUserPlatsvcs(e)
+ {
+      	//查询条件校验
+	if(!$.validate.verifyAll("UserPlatsvcCond")) {
+		return false;
+	}
+	
+	
+	$.beginPageLoading("正在查询数据...");
+	
+	ajaxSubmit('UserPlatsvcCond', 'qryUserPlatSvc', null, 'PlatsvcList', function(data){
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		MessageBox.error("错误",error_info);
+	}
+	 );
+ }
+   
+</script>
+</html>

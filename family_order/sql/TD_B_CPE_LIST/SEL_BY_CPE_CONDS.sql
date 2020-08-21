@@ -1,0 +1,3 @@
+SELECT b.* FROM TD_B_CPE_LIST b WHERE ROWID IN (
+SELECT MAX(ROWID) FROM TD_B_CPE_LIST a WHERE( b.telephone_area LIKE '%'||:TELEPHONE_AREA||'%' OR :TELEPHONE_AREA=a.telephone_area)
+ GROUP BY a.telephone_area)

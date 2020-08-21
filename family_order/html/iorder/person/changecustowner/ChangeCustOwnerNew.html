@@ -1,0 +1,242 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" src="iorder/person/changecustowner/scripts/changecustowner.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">过户</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">
+			<div jwcid="AuthPart@icsserv:Auth" tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="100" element="div"></div>
+			<!-- box 开始 -->
+			<!-- 认证 开始 -->
+			<!-- 过户受理tab页 开始 -->
+			<div style="display:none;">
+				<div jwcid="ChangeCustOwnerTabset@Tabset" name="ChangeCustOwnerTabset" id="ChangeCustOwnerTabset" switchAction="true">
+					<div class="content" title="原客户资料">
+						<div class="c_list c_list-label-5 c_list-col-3 c_list-text" jwcid="OldInfoPart@Part">
+							<ul>
+								<li>
+									<div class="label">原客户名称：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_CUST_NAME" id="OLD_CUST_NAME" value="ognl:custInfo.CUST_NAME" desc="原客户名称" disabled="true"></span>
+										<input jwcid="@Hidden" id="OLD_CUST_NAME_VALUE" name="OLD_CUST_NAME_VALUE" value="ognl:custInfo.CUST_NAME" desc="原客户名称" />
+									</div>
+								</li>
+								<li>
+									<div class="label">用户类型：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_USER_TYPE_CODE" id="OLD_USER_TYPE_CODE" disabled="true" value="ognl:pageutil.getStaticValue('TD_B_USERTYPE', new java.lang.String[]{'USER_TYPE_CODE','EPARCHY_CODE'}, 'USER_TYPE', new java.lang.String[]{userInfo.USER_TYPE_CODE,getVisit().getStaffEparchyCode()})" desc="用户类型"></span>
+									</div>
+								</li>
+								<li>
+									<div class="label">原证件类型：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_PSPT_TYPE_CODE" id="OLD_PSPT_TYPE_CODE" disabled="true" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', custInfo.PSPT_TYPE_CODE)" desc="原证件类型"></span>
+										<input jwcid="@Hidden" id="OLD_PSPT_TYPE_CODE_NUM" name="OLD_PSPT_TYPE_CODE_NUM" value="ognl:custInfo.PSPT_TYPE_CODE" desc="原证件类型" />
+									</div>
+								</li>
+								<li>
+									<div class="label">原证件号码：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_PSPT_ID" id="OLD_PSPT_ID" disabled="true" value="ognl:custInfo.PSPT_ID"></span>
+										<input jwcid="@Hidden" id="OLD_PSPT_ID_NUM" name="OLD_PSPT_ID_NUM" value="ognl:custInfo.PSPT_ID" desc="原证件号码" />
+									</div>
+								</li>
+								<li>
+									<div class="label">开户时间：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_IN_DATE" id="OLD_IN_DATE" disabled="true" value="ognl:userInfo.IN_DATE" desc="开户时间"></span>
+									</div>
+								</li>
+								<li>
+									<div class="label">品牌：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_BRAND_NAME" id="OLD_BRAND_NAME" disabled="true" value="ognl:userInfo.BRAND_NAME" desc="品牌"></span>
+										<input jwcid="@Any" type="hidden" id="OLD_BRAND_CODE" name="OLD_BRAND_CODE" value="ognl:userInfo.BRAND_CODE" />
+									</div>
+								</li>
+								<li>
+									<div class="label">产品：</div>
+									<div class="value">
+										<span class="text" jwcid="@TextField" name="OLD_PRODUCT_NAME" id="OLD_PRODUCT_NAME" disabled="true" value="ognl:userInfo.PRODUCT_NAME" desc="产品"></span>
+										<input jwcid="@Any" type="hidden" id="OLD_PRODUCT_ID" name="OLD_PRODUCT_ID" value="ognl:userInfo.PRODUCT_ID" />
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 过户受理tab页 开始 -->
+
+					<!-- 优惠信息tab页 开始 -->
+					<div class="content" title="优惠信息">
+						<div id="DiscntArea" style="display:none;">
+							<div jwcid="UserDiscntInfoPart@Part" element="div">
+								<table jwcid="@Table" name="UserDiscntInfoTable" class="c_table c_table-row-5">
+									<thead>
+										<tr>
+											<th>资费编码</th>
+											<th>资费名称</th>
+											<th>开始时间</th>
+											<th>结束时间</th>
+											<th>资费标记</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:discntInfos" value="ognl:discntInfo" index="ognl:rowIndex" element="tr">
+											<td>
+												<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_NAME"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:discntInfo.START_DATE"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:discntInfo.END_DATE"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('USER_SPECTAG',discntInfo.SPEC_TAG)"></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 优惠信息tab页 结束 -->
+
+					<!-- 服务信息tab页 开始 -->
+					<div class="content" title="服务信息">
+						<div id="ServiceArea" style="display:none;">
+							<div jwcid="UserSvcInfoPart@Part" element="div">
+								<table jwcid="@Table" name="UserSvcInfoTable" class="c_table c_table-row-5">
+									<thead>
+										<tr>
+											<th>服务名称</th>
+											<th>主体服务</th>
+											<th>开始时间</th>
+											<th>结束时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:svcInfos" value="ognl:svcInfo" index="ognl:rowIndex" element="tr">
+											<td>
+												<span jwcid="@Insert" value="ognl:svcInfo.SERVICE_NAME"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YesOrNo2',svcInfo.MAIN_TAG)"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:svcInfo.START_DATE"></span>
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:svcInfo.END_DATE"></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 原客户资料 box 结束 -->
+			</div>
+			<!-- 新客户资料 box 开始-->
+			<!-- 客户资料 开始 -->
+			<div jwcid="newCustPart@icsserv:CustInfoField" element="div" blackTradeType="100" hideUserTypeCode="true" hideEmail="true" requiredField="PSPT_TYPE_CODE,PSPT_ID,CUST_NAME,PSPT_ADDR,BIRTHDAY,AGENT_PIC_ID" isRealName="true"></div>
+			<!-- 客户资料 结束 -->
+			<div class="c_space-c"></div>
+			<div jwcId="newAcctPart@Part">
+				<!-- 账户资料 开始 -->
+				<div jwcid="@icsserv:AcctInfoField" acctInfo="ognl:acctInfo" listSize="s"></div>
+				<div style="display:none;" id="ACCT_CONTRACT_NO_BODY">
+					<div class="c_list c_list-s c_list-line c_list-border c_list-col-3" id="conteactNoLi">
+						<ul>
+							<li class="link" id="span_CONTRACT_NO">
+								<div class="label">合同号</div>
+								<div class="value">
+									<input jwcid="@TextField" id="CONTRACT_NO" name="CONTRACT_NO" value="ognl:acctInfo.CONTRACT_NO" desc="合同号" />
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- 账户资料 结束 -->
+			<!-- 密码设置 -->
+			<div class="c_space-c"></div>
+			<div jwcId="newPasswordPart@Part">
+				<div jwcid="PasswordSetPart@icsserv:PasswordSet" beforeAction="beforeEvent()" afterAction="afterEvent(data)" element="div" listSize="s" col="3" />
+				<input jwcid="@Any" type="hidden" id="NEW_PASSWD" name="NEW_PASSWD" />
+			</div>
+			<!-- 担保资料 开始 -->
+			<!--<div jwcid="newAssurePart@icsserv:AssureInfoField" element="div"></div>-->
+			<!-- 担保资料 结束 -->
+
+			<div class="c_space"></div>
+			<div jwcid="OtherInfoPart@Part">
+				<div class="c_list c_list-border c_list-s c_list-col-1 c_list-label-6">
+					<ul>
+						<!-- <li>
+							<span class="label">密码设置：</span>
+						</li>
+						<li>
+							<span class="label">单方特殊过户：</span>
+							<span><span>
+								<input type="checkbox" jwcid="@Checkbox" id="SPECIAL_CHANGE_CUST" name="SPECIAL_CHANGE_CUST" /> 
+							</span></span>
+						</li> -->
+						<li class="link">
+							<div class="label">备注</div>
+							<div class="value">
+								<textarea jwcid="@TextField" name="REMARK" id="REMARK" value="" rows="1" disabled="false" maxsize="100" desc="备注" />
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="submitBeforeCheck()" isReset="true" area="AuthPart,newCustPart,newAcctPart,OtherInfoPart,HiddenPart,newPasswordPart" element="div" />
+			<!-- 提交 结束 -->
+		
+			<!-- 新客户资料box 结束 -->
+
+			<div jwcid="HiddenPart@Part">
+				<!-- 行业应用卡 -->
+				<input jwcid="@Any" type="hidden"  id="PRODUCT_ID" name="PRODUCT_ID" value="" />
+				
+				<input jwcid="@Any" type="hidden" id="IS_REAL_NAME" name="IS_REAL_NAME" value="" />
+				<input jwcid="@Any" type="hidden" id="WIDENET_DEAL" name="WIDENET_DEAL" value="" />
+				<input jwcid="@Hidden" name="IMS_TAG" id="IMS_TAG" value="ognl:iMSInfo.IMS_TAG" />
+				<input jwcid="@Hidden" name="DESTORY_IMS_TAG" id="DESTORY_IMS_TAG" />
+				<input jwcid="@Hidden" name="IMS_SERIAL_NUMBER" id="IMS_SERIAL_NUMBER" value="ognl:iMSInfo.IMS_SERIAL_NUMBER" />
+				<input jwcid="@Hidden" name="IMS_BRAND" id="IMS_BRAND" value="ognl:iMSInfo.IMS_BRAND" />
+				<input jwcid="@Hidden" name="IMS_PRODUCT" id="IMS_PRODUCT" value="ognl:iMSInfo.IMS_PRODUCT" />
+				<input jwcid="@Hidden" name="checkGlobalMorePsptIdFlag" id="checkGlobalMorePsptIdFlag" value="true" desc="是否进行全国1证5号校验" />
+			</div>
+		
+		</div>
+	</div>
+	<!-- 客户信息扩展组件 开始 -->
+	<div name="custInfoPopup" jwcid="@Popup" class="c_popup c_popup-half c_popup-half-hasBg">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" popupId="custInfoPopup" element="div" jwcid="CustInfoFieldMorePart@icsserv:CustInfoFieldMore"></div>
+		</div>
+	</div>
+	<!-- 客户信息扩展组件 结束 -->
+	<input jwcid="@Hidden" name="STAFF_ID" value="ognl:getVisit().getStaffId()"/>
+</body>
+
+</html>

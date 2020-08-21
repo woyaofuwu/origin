@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: AccountInfo.html,v 1.7 2013/04/22 08:16:44 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 - 账户信息</title>
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:cond.EPARCHY_CODE"/>
+	</div>
+	<!-- 隐藏域 结束 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>帐号</th>
+					<th>帐户名称</th>
+					<th>付费方式</th>
+					<th>银行编码</th>
+					<th>银行名称</th>
+					<th>银行帐号</th>
+					<th>帐户积分</th>
+					<th>合同号</th>
+					<th>开户时间</th>
+					<th>当前结账日</th>
+					<th>下账期结账日</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="false"/></td>  		
+					<td><span jwcid="@Insert" value="ognl:info.PAY_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PAYMODE',info.PAY_MODE_CODE)" raw="false"/></td>   
+	                <td><span jwcid="@Insert" value="ognl:info.BANK_CODE" raw="false"/></td>  
+	                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_BANK',new java.lang.String[]{'BANK_CODE','EPARCHY_CODE'},'BANK',new java.lang.String[]{info.BANK_CODE,info.EPARCHY_CODE})" raw="false"/></td>  
+				  	<td><span jwcid="@Insert" value="ognl:info.BANK_ACCT_NO" raw="false"/></td>
+				  	<td><span jwcid="@Insert" value="ognl:info.SCORE_VALUE" raw="false"/></td>
+	                <td><span jwcid="@Insert" value="ognl:info.CONTRACT_NO" raw="false"/></td>
+	                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.OPEN_DATE)" raw="false"/></td>
+	                <td><span jwcid="@Insert" value="ognl:info.CURRENT_ACCT_DAY" raw="false"/></td>
+	                <td><span jwcid="@Insert" value="ognl:info.NEXT_ACCT_DAY" raw="false"/></td>
+	              	</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 分页 开始 -->
+	<div jwcid="@NavBar" name="AcctInfoNav" id="AcctInfoNav" cond="QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="10" count="ognl:infosCount"></div>
+	<!-- 分页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+</div>
+</div>
+</body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onQueryAccountInfo();
+	});
+</script>
+</html>

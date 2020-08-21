@@ -1,0 +1,2 @@
+INSERT INTO ti_c_ingw_acct_info(serial_id,ingw_id,exec_month,eparchy_code,user_id,serial_number,operate_flag,item_type_code,item_code,balance,used,eff_date,exp_date,create_date,end_date,msg_flag)
+ VALUES(TO_NUMBER(:SERIAL_ID),:INGW_ID,:EXEC_MONTH,:EPARCHY_CODE,TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:OPERATE_FLAG,:ITEM_TYPE_CODE,:ITEM_CODE,TO_NUMBER(:BALANCE),TO_NUMBER(:USED),TO_DATE(:EFF_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:EXP_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:CREATE_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:MSG_FLAG)

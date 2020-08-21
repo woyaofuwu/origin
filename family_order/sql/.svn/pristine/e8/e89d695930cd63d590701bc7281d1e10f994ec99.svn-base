@@ -1,0 +1,15 @@
+SELECT check_no,oper_date_str,to_char(oper_time,'yyyy-mm-dd hh24:mi:ss') oper_time,res_type_code,oper_flag,stat_type,oper_staff_id,check_result_tag,res_kind_code,capacity_type_code,to_char(produce_batch_id) produce_batch_id,eparchy_code,city_code,depart_id,staff_id,to_char(fact_value) fact_value,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time,update_staff_id,rsrv_tag1,rsrv_tag2,rsrv_tag3,para_value1,para_value2,para_value3,para_value4,para_value5,para_value6,para_value7,para_value8,to_char(para_value9) para_value9,to_char(para_value10) para_value10,to_char(para_value11) para_value11,to_char(para_value12) para_value12,to_char(para_value13) para_value13,to_char(para_value14) para_value14,to_char(para_value15) para_value15,to_char(para_value16) para_value16,to_char(para_value17) para_value17,to_char(para_value18) para_value18,to_char(rdvalue1,'yyyy-mm-dd hh24:mi:ss') rdvalue1,to_char(rdvalue2,'yyyy-mm-dd hh24:mi:ss') rdvalue2,remark2 
+  FROM tf_b_rescheck_log
+where oper_time >= TO_DATE(:START_DATE,'yyyy-mm-dd hh24:mi:ss')
+and oper_time <= TO_DATE(:END_DATE,'yyyy-mm-dd hh24:mi:ss')
+and (:CHECK_NO is null or check_no = :CHECK_NO)
+AND (:RES_TYPE_CODE is null or res_type_code = :RES_TYPE_CODE)
+AND (:RES_KIND_CODE is null or res_kind_code = :RES_KIND_CODE)
+AND (:OPER_FLAG is null or oper_flag = :OPER_FLAG)
+AND (:EPARCHY_CODE is null or eparchy_code = :EPARCHY_CODE)
+AND (:CITY_CODE is null or CITY_CODE = :CITY_CODE)
+AND (:DEPART_ID is null or DEPART_ID =:DEPART_ID)
+AND (:STAFF_ID is null or STAFF_ID = :STAFF_ID)
+AND (:RSRV_TAG1 is null or rsrv_tag1 = :RSRV_TAG1)
+AND (:OPER_STAFF_ID is null or OPER_STAFF_ID = :OPER_STAFF_ID)
+AND (:UPDATE_STAFF_ID is null or UPDATE_STAFF_ID = :UPDATE_STAFF_ID)

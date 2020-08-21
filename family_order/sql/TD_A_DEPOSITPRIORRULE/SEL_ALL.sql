@@ -1,0 +1,3 @@
+--IS_CACHE=Y
+SELECT eparchy_code,deposit_name,deposit_prior_rule_id,deposit_code,deposit_priority,return_tag,limit_start_acyc_id,limit_end_acyc_id,use_limit_tag,to_char(limit_money) limit_money,present_tag,invoice_tag,can_dis_tag,can_tran_tag,can_consign_tag 
+  FROM td_a_depositpriorrule

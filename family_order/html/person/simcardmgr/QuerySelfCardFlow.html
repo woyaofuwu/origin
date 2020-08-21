@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryOrderPlayRecord.html,v 1.5 2013/06/20 06:29:48 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>两不一快流程查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/simcardmgr/scripts/queryselfcardflow.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" 
+					       value="ognl:condition.cond_SERIAL_NUMBER"  desc="手机号码" 
+					       maxLength="11" datatype="mbphone"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">临时号码：</span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_SERIAL_NUMBER_TEMP" name="cond_SERIAL_NUMBER_TEMP" 
+					       value="ognl:condition.cond_SERIAL_NUMBER_TEMP"  desc="临时号码" 
+					       maxLength="11" datatype="mbphone"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryFlow();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+   	<div jwcid="HiddenPart@Part" element="div">
+		<input type="hidden" id="NOW_DATE" name="NOW_DATE" jwcid="@TextField" value="" encode="false"/>
+	</div>
+	
+	<div class="c_title c_title-2">
+			<div class="text">号码流程信息</div>
+   </div>
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x style="height:242px"">
+	<div class="c_table c_table-row-10">
+		<table id="choseTable" jwcid="@Table"  name="choseTable" rowClick="selectInfo" >
+			<thead>
+				<tr>
+					<th col="TRANS_ID">流水号</th>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="SERIAL_NUMBER_TEMP">临时号码</th>
+					<th col="START_DATE">开始时间</th>
+					<th col="END_DATE">结束时间</th>
+					<th col="STATE_NAME">换卡状态</th>
+					<th col="REMARK">备注</th>
+					<th col="HIS_NAME">数据</th>
+					<th col="HIS" style="display:none"></th>
+					<th col="STATE" style="display:none"></th>
+					<th col="UPDATE_TIME">操作时间</th>
+					<th col="RSRV_STR6">删除原因</th>
+					<th col="RSRV_STR7">删除工号</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				    <td class="e_center"><input jwcid="@Radio" name="TRANS_ID" id="TRANS_ID" value="ognl:info.TRANS_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_TEMP" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.START_DATE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.END_DATE) " raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SELF_FLOW_STATE',info.STATE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SELF_FLOW',info.HIS)" raw="true"/></td>
+					<td jwcid="@Any" id="HIS"  name="HIS" value="ognl:info.HIS" style="display:none"></td>	
+					<td jwcid="@Any" id="STATE"  name="STATE" value="ognl:info.STATE" style="display:none"></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR7" raw="true"/></td>		
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart" part="QueryListPart" listener="querySelfCard" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+
+	<div jwcid="DealPart@Part" class="c_form c_form-label-5 c_form-col-3" >
+	<ul class="ul">
+			<li class="li col-2">
+				<span class="label"><span class="e_required">删除原因：</span></span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="DEAL_REASON" name="DEAL_REASON" 
+					       value="ognl:condition.DEAL_REASON"  desc="删除原因" />
+				</span></span>
+			</li>
+	</ul>
+	<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return delFlow();"><i class="e_ico-delete"></i><span>删除</span></button>
+		</div>
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

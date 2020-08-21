@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/scoreconvert/scripts/scoreconvert.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">兑换记录查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form">
+		<ul class="ul" jwcid="QueryPart@Part">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"  value="ognl:getData().getString('SERIAL_NUMBER','')"  desc="手机号码" maxsize="40"  nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>流水号：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_ORDER_SEQ" id="cond_ORDER_SEQ" value="ognl:condition.cond_ORDER_SEQ"   desc="流水号" /></span></span>
+			</li>
+			<input jwcid="@TextField" name="IN_MODE_CODE" id="IN_MODE_CODE" value="ognl:condition.IN_MODE_CODE" style="display:none"/>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="return queryconvert();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="RecordPart@Part">
+	<div class="c_scroll c_scroll-table-20"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>序号</th>
+					<div jwcid="@Conditional" condition='ognl:!"1".equals(condition.IN_MODE_CODE)'>
+					<th>撤销订单</th>
+					</div>
+					<div jwcid="@Conditional" condition='ognl:!"3".equals(condition.IN_MODE_CODE)'>
+					<th>查询订单</th>
+					</div>
+					<th>流水号</th>
+					<th>IBOSS订单号</th>
+					<th>用户ID</th>
+					<th>礼品名称</th>
+					<th>礼品数量</th>
+					<th>交易状态</th>
+					<th>订单状态</th>
+					<!-- 
+					<th>配送省</th>
+					<th>配送市</th>
+					<th>配送区</th>
+					-->
+					<th>送货地址</th>
+					<th>联系电话</th>
+					<th>邮编</th>
+					<th>配送时间要求</th>
+					<th>登记时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+				 	<td><span jwcid="@Insert" value="ognl:rowIndex+1" raw="false"/></td>
+				 	<div jwcid="@Conditional" condition='ognl:!"1".equals(condition.IN_MODE_CODE)'>
+				 		<div jwcid="@Conditional" condition="ognl:info.PROC_STATE == 01">
+				 			<td><a jwcid="@Any" orderSeq="ognl:info.ORDER_SEQ" orderId="ognl:info.ORDER_ID" orderSubId="ognl:info.ORDER_SUB_ID" procState="ognl:info.PROC_STATE" onclick="cancelConvertGiftOrder(this)">撤 销</a></td>
+				 		</div>
+				 		<div jwcid="@Conditional" condition="ognl:info.PROC_STATE != 01">
+				 			<td>撤 销</td>
+				 		</div>
+					</div>
+					
+					<div jwcid="@Conditional" condition='ognl:!"3".equals(condition.IN_MODE_CODE)'>
+				 		<div jwcid="@Conditional" condition="ognl:info.PROC_STATE != 03">
+				 			<td><a jwcid="@Any" orderSeq="ognl:info.ORDER_SEQ" orderId="ognl:info.ORDER_ID" orderSubId="ognl:info.ORDER_SUB_ID" procState="ognl:info.PROC_STATE" onclick="queryConvertGiftOrder(this)">查 询</a></td>
+				 		</div>
+				 		<div jwcid="@Conditional" condition="ognl:info.PROC_STATE == 03">
+				 			<td>查 询</td>
+				 		</div>
+					</div>
+					
+					<td><span jwcid="@Insert" value="ognl:info.ORDER_SEQ" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_B_UPMS_GIFT', 'ITEM_ID', 'ITEM_NAME',info.ITEM_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ITEM_NUM" raw="false"/></td>
+					<td><span jwcid="@Insert" cols="4" value="ognl:pageutil.getStaticValue( 'PROC_STATE', info.PROC_STATE)" raw="false"/></td>
+					<td><span jwcid="@Insert" cols="4" value="ognl:pageutil.getStaticValue( 'UPMS_ORDER_STATE', info.ORDER_STATE)"  raw="false"/></td>
+					<!-- 
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TI_B_UPMS_CITY', 'PROVINCE_CODE', 'PROVINCE_NAME',info.DELIV_PROVINCE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TI_B_UPMS_CITY', 'CITY_CODE', 'CITY_NAME',info.CITY)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TI_B_UPMS_CITY', 'DISTRICT_CODE', 'DISTRICT_NAME',info.DISTRICT)" raw="false"/></td>
+					 -->
+					<td><span jwcid="@Insert" cols="4" value="ognl:info.CUS_ADD" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CUS_TEL" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CUS_ADDCODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TIME_REQUEST', info.TIME_REQUEST)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.REG_DATE" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+		<div jwcid="@NavBar"  name="pagin" id="pagin" listener="queryConvertRecord" pageSize="20" cond="QueryPart" part="RecordPart" count="ognl:count"/>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

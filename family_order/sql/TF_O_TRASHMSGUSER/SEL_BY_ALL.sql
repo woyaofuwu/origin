@@ -1,0 +1,7 @@
+SELECT SERIAL_NUMBER,ID_TYPE,CUST_TYPE,STATE_CODE,to_char(START_DATE,'yyyy-mm-dd hh24:mi:ss') START_DATE,to_char(END_DATE,'yyyy-mm-dd hh24:mi:ss') END_DATE,RSRV_STR1,RSRV_STR2,RSRV_STR3
+  FROM TF_O_TRASHMSGUSER
+ WHERE (serial_number = :SERIAL_NUMBER OR :SERIAL_NUMBER IS NULL)
+   AND (id_type = :ID_TYPE OR :ID_TYPE IS NULL)
+   AND cust_type = :CUST_TYPE
+   AND state_code = :STATE_CODE
+   AND SYSDATE BETWEEN start_date and end_date

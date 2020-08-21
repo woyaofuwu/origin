@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/shopping/scripts/ShoppingCart.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>购物车</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+    <div jwcid="AuthPart@csserv:Auth" tradeAction="$.ShoppingCart.loadShoppingCart(data)" tradeTypeCode="5178" element="div"></div>
+</div>
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">购物车明细</div>
+		<div class="fn">
+		   <!-- <a href="#nogo" class="e_button e_button-left" onclick="refreshShoppingCart();"><i class="e_ico-refresh"></i><span>刷新购物车</span></a> -->
+		   <a href="#nogo" class="e_button e_button-left" onclick="$.ShoppingCart.cleanShoppingCart();"  id="CLEAN_SHOPPING" disabled="true"><i class="e_ico-cancel"></i><span>清空购物车</span></a>
+	    </div>
+	</div>
+       <div class="c_form c_form-col-3 c_form-text" jwcid="UCAViewPart@Part" >
+			<ul class="ul">
+			    
+				<li class="li">
+				<div jwcid="shoppingCartPart@Part" >
+					<span class="label e_required">购物流水：</span>
+					<span class="text" jwcid="@Insert" name="SHOPPINGCART_ID" id="SHOPPINGCART_ID" value="ognl:shoppingCartData.SHOPPING_CART_ID" desc="购物流水"/>
+				</div>
+				</li>
+			    
+				<li class="li">
+					<span class="label e_required">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME" desc="客户名称" />
+				</li>
+				
+				<li class="li">
+					<span class="label e_required">证件号码：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" desc="证件号码"/>
+				</li>
+			</ul>
+	  </div>
+		
+	  <div jwcid="shoppingCartTree@Part" id="shoppingCartTree" element="div" uiid="shoppingCartTree">
+	    <div> 
+		<div class="c_table c_table-hover">
+			<table jwcid="@TreeTable" id="shoppingCartTreeTable" treeNodeIndex="rowIndex" treeNodeName="elementId">
+			   <thead>
+					<tr>
+					    <th col="rowIndex" style="display:none">序号</th>
+					    <th col="shoppingCartId" style="display:none">购物车流水</th>
+					    <th col="busiOrderId" style="display:none">订单流水</th>
+					    <th col="busiTradeId" style="display:none">工单流水</th>
+					    <th col="busiOrderType" style="display:none">订单类型</th>
+					    <th col="orderRegSvc" style="display:none">订单登记服务</th>
+					    <th col="elementTypeCode" style="display:none">对象类型</th>
+					    <th col="elementCode" style="display:none">业务对象编码</th>
+						<th col="elementId">业务对象</th>
+						<th col="busiTypeCode" style="display:none">业务操作编码</th>
+						<th col="busiType">业务操作</th>
+						<th col="shoppingStateCode" style="display:none">购物车状态编码</th>
+						<th col="shoppingState">购物车状态</th>
+						<th col="busiOperTable" style="display:none">交易操作的表</th>
+						<th col="feeModeCode" style="display:none">费用类型编码</th>
+						<th col="feeTypeCode" style="display:none">费用科目编码</th>
+						<th col="feeModeDesc">费用类型</th>
+						<th col="feeTypeDesc">费用科目</th>
+						<th col="fee">费用</th>
+						<th col="action">购物车操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:shoppingCartInfos" value="ognl:shoppingCartInfo" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:rowIndex"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.shoppingCartId"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.busiOrderId"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.busiTradeId"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.elementCode"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.orderRegSvc"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.elementTypeCode"></span></td>
+					    <td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.elementId"></span></td>
+						<td jwcid="@TreeTableColumn" 
+							id="shoppingCartInfos"
+							showCheckBox="false"
+							tableName="shoppingCartTreeTable"
+							listener="ognl:listeners.loadShoppingCart"
+							data="ognl:shoppingCartInfo"
+							params="ognl:'&ROUTE_EPARCHY_CODE='+shoppingCartInfo.routeEparchyCode"
+							parentNodeId="parentId"
+							nodeId="elementId"
+							nodeText="elementName"
+							/>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.busiTypeCode"></span></td>
+						<td><span jwcid="@Insert" value="ognl:shoppingCartInfo.busiType"></span></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.shoppingStateCode"></span></td>
+						<td><span jwcid="@Insert" value="ognl:shoppingCartInfo.shoppingState"></span></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.busiOperTable"></span></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.feeModeCode"></span></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:shoppingCartInfo.feeTypeCode"></span></td>
+						<td><span jwcid="@Insert" value="ognl:shoppingCartInfo.feeModeDesc"></span></td>
+						<td><span jwcid="@Insert" value="ognl:shoppingCartInfo.feeTypeDesc"></span></td>
+						<td><span jwcid="@Insert" value="ognl:shoppingCartInfo.fee"></span></td>
+						<td style="width:90px"><span jwcid="@Insert" value="ognl:shoppingCartInfo.action"></span></td>
+					</tr>
+				 </tbody>
+			 </table>
+		  </div>
+	    </div>
+     </div>
+</div>
+
+<div class="c_box">
+    <div class="c_title">
+		<div class="text">二维码受理</div>
+	</div>
+	<div class="" jwcid="testPart@Part">
+		<ul class="ul c_form-col-3" >
+		<li class="li">
+			<span class="e_elements">
+	           <button jwcid="@Button" class="e_button-right" disabled="true" name="TRADE_BUTTON" onclick="$.ShoppingCart.barCode.scanbarcode();"><span>受理</span></button>
+	           <span class="e_input e_input-left"><span><input disabled="true" jwcid="@TextField" name="BARCODE_ID"  value="" type="text" datatype="numeric" nullable="no" desc="二维码受理"/></span></span>
+            </span>
+        </li>
+        <li class="li">
+        </li>
+        <li class="li">
+        </li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box">
+    <div class="c_title">
+		<div class="text">收银台结算</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-text" jwcid="shoppingFeeList@Part">
+		<ul class="ul c_form-col-3" >
+			<li class="li">
+				<span class="label">购物费用：</span>
+				<span class="e_input"><span>
+					<input id="SHOPPING_FEE"  jwcid="@Any" type="text" disabled="true" value="ognl:shoppingFee.FEE"/>
+				</span></span>
+			</li><!--
+			<li class="li">
+				<span class="label"><span>优惠规则：</span></span>
+				<span class="e_select e_select-left"><span><span>
+					<select 
+					jwcid="@Select" 
+					name="staticData"
+					source="ognl:discntRuleSelect" 
+					valueField="RULE_ID"
+					textField="RULE_NAME"
+					titleField="RULE_NAME"
+				    />
+				</span></span></span>
+			</li>
+			--><li class="li">
+				<span class="label">优惠金额(元)：</span>
+				<span class="e_input"><span>
+					<input id="FREE_FEE" jwcid="@Any" type="text" disabled="true" value="0"/>
+				</span></span>
+			</li>
+		</ul>
+		
+		<ul class="ul c_form-col-3">
+		
+		    <li class="li">
+				<span class="label">应收金额(元)：</span>
+				<span class="e_input"><span>
+					<input id="PAY_FEE" jwcid="@Any" type="text" disabled="true" value="ognl:shoppingFee.FEE"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">实收金额(元)：</span>
+				<span class="e_input"><span>
+					<input id="FACT_PAY_FEE" jwcid="@Any" type="text"  value="ognl:shoppingFee.FEE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">支付方式：</span>
+				<span class="e_input"><span>
+					<input id="PAY_MODE" jwcid="@Any" type="text" disabled="true" value="现金"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div jwcid="goodsInfoPart@Part" style="display:none;">
+	<div class="c_form c_form-col-2 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+			  <span class="label"><span class="e_required">实物名称：</span></span>
+			   <span class="e_select e_select-left"><span><span>
+					<select 
+					 jwcid="@Select"  id="goodsname" name="goodsname" source="ognl:goodsInfos" 
+					 textField="GOODS_NAME" valueField="GOODS_ID" titleField="GOODS_NAME"
+					 value="ognl:goodsInfo.GOODS_ID" addDefault="true" onchange="$.ShoppingCart.barCode.selectGoods(this);"
+				    />
+				</span></span></span>
+			</li>
+			<li class="li">
+			 <span class="label"><span class="e_required">实物编码：</span></span>
+			 <span class="e_elements">
+				<button class="e_button-right" type="button" id="resCheckButton" onclick="$.ShoppingCart.barCode.checkRes(this);"><span id="goodsCheckButton">确定</span></button>
+				<span class="e_input e_input-left"><span><input jwcid="@TextField" id="resCode" value="ognl:goodsInfo.RES_CODE" name="resCode"  res_check_input="T"  type="text" resTypeCode="" resId="" resCheck=""/></span></span>
+			  </span>
+			</li>
+		</ul>
+	</div>
+</div>
+		
+<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="$.ShoppingCart.submitShoppingCart()" params="" isReset="true" 
+	 listener="submitShoppingCart" refreshPart="" submitText="提交购物车(Y)" isRender="true" area="" element="div"/>
+	        
+</div></div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/CancelAutoBookWN/scripts/CancelAutoBookWN.js"></script>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+		<div class="c_title">
+				<div class="text">查询条件</div>
+		</div>
+		<div class="c_form" jwcid="QueryCondPart@Part">
+					<div class=""  jwcid="queryPart@Part" >
+							<ul class="ul ">
+								<li class="li " >
+									<span class="label" >手机号码：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name = "cond_SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER" desc="手机号码" maxLength="11"/>
+									</span></span>
+								</li>
+							</ul>
+							<div class="submitPlace" ></div>
+							<div class="submit"  >
+								<button class="e_button-form" onclick="return queryData();" ><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+							
+			 		</div>
+			</div>
+			<!-- 活动详情 开始 -->
+					<div class="c_scroll c_scroll-table-10 c_scroll-x">
+						<div class="" jwcid="refresh_table@Part" >
+								<div class="c_table">
+								<table jwcid="@Table"  name="paramTable"  rowClick="tableRowClick" 	>
+									<thead>
+										<tr>
+											<th col="INST_ID" style="display:none">实例号</th>
+											<th col="CANCEL_SERIAL_NUMBER" id="col_CANCEL_SERIAL_NUMBER" >手机号码</th>
+					                        <th col="CANCEL_START_DATE" id="col_CANCEL_START_DATE" >取消开始时间</th>
+											<th col="CANCEL_END_DATE" id="col_CANCEL_END_DATE" >取消截止时间</th>
+										</tr>
+									</thead>
+									<tbody >
+											<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"	element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.INST_ID"></span></td>	
+											<td><span jwcid="@Insert" value="ognl:info.CANCEL_SERIAL_NUMBER" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.CANCEL_START_DATE)" raw="true" /></td>
+					                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd',info.CANCEL_END_DATE)" raw="true"/></td>
+											</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 翻页（替换为页面组件） 开始 -->
+			         <span jwcid="@NavBar" name="pageNav" cond="queryPart" pageSize="10"  listener="queryCancelInfo" part="refresh_table"  count="ognl:pageCount"/>
+			       <!-- 翻页 结束 -->
+			
+				<div class="c_form c_form-col-3">
+					<div class="" jwcid="editPart@Part" >
+						<ul class="ul ">
+							<li class="li">
+								<span class="label"><span class="e_required">手机号码：</span></span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name = "CANCEL_SERIAL_NUMBER" value="ognl:tempcust.CANCEL_SERIAL_NUMBER" desc="手机号码" maxLength="11" datatype="text"  nullable="no"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">取消开始时间:</span></span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" id="CANCEL_START_DATE" name="CANCEL_START_DATE" value="ognl:tempcust.CANCEL_START_DATE" desc="取消开始日期" format="yyyy-MM-dd" nullable="no" maxName="END_TIME"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">取消截止时间：</span></span>
+								<span class="e_input" ><span>
+								<input type="text" jwcid="@DateField" id="CANCEL_END_DATE" name="CANCEL_END_DATE" value="ognl:tempcust.CANCEL_END_DATE" desc="取消截止日期" format="yyyy-MM-dd" nullable="no" minName="START_TIME"/>
+								</span></span>
+							</li>
+						</ul>
+							<div class="submitPlace"></div>
+							<div class="submit">
+								<button class="e_button-form" onclick="return addLimit();" ><i class="e_ico-add"></i><span>新增</span></button>
+								<button class="e_button-form" onclick="return editLimit();" ><i class="e_ico-modify"></i><span>修改</span></button>
+								<button class="e_button-form" onclick="return delLimit();" ><i class="e_ico-delete"></i><span>删除</span></button>
+								<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+							</div>
+						</div>
+				</div>
+	<div class="c_submit">
+			<button class="e_button-page-ok" onclick="return submitDepts();" ><i class="e_ico-ok"></i><span>提交</span></button>
+	</div>
+			
+</div>
+<!-- 提交 开始 -->
+<input jwcid="@Hidden" name="privateFlag" value="ognl:privateFlag"/>
+<!-- 提交 结束 -->
+<div class="" jwcid="submit_part@Part" >
+	<input jwcid="@Hidden" name="edit_table" value=""/>
+</div>
+</div></div>
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+</html>

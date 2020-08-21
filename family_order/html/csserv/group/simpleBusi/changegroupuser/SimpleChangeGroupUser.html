@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>集团产品变更</title>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/simpleBusi/changegroupuser/SimpleChangeGroupUser.js"></script>
+	</head>
+	<body jwcid="@Body">
+	<div class="m_wrapper"><div class="m_wrapper2">
+	
+		<div id="productInfoPart" >
+		<!-- 区域 开始 -->
+		<div class="c_box">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">集团号码查询</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-3">
+				<ul class="ul">
+					<li class="li">
+						<span jwcid="@saleserv:SelectGroupBySNPopup" condition="ognl:condition" afterErrorAction="selectGroupBySnErrorAfterAction();" afterAction="selectGroupBySnAfterAction(data);" limitType="ognl:condition.PRODUCTTREE_LIMIT_TYPE" limitProducts="ognl:condition.PRODUCTTREE_LIMIT_PRODUCTS"/>
+					</li>
+				</ul>
+			</div>
+			<!--  表单结束 -->
+			<!-- 参数列表 开始 -->
+			<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:info" hasTitle="false"/>
+			<span jwcid="@saleserv:GroupUserInfo" groupUserInfo="ognl:info" hasTitle="false"/>
+			<div style="display:none">
+				<span jwcid="@saleserv:ProductExplain" hasTitle="false"/>
+			</div>
+			<span jwcid="@saleserv:ProductCtrlInfo"/>
+			<!-- 参数列表 结束 -->
+		</div>
+		<!-- 区域 结束 -->
+		
+		<div class="c_box">
+		<div jwcid="mytab@Tabset" switchAction="myTabSwithcAction(ptitle,title)">
+		 
+			<div jwcid="@TabsetContent" id ="productinfotabset" title="产品信息">
+				<div class="l_col s_iframe-lower s_iframe-close">
+					<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width:49%;">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+			                <div class="c_title">
+								<div class="text">待选区</div>
+							</div>
+							<!-- 标题 结束 -->
+							<!-- 分栏 开始 -->
+							<div class="l_col l_col-close">
+								<div jwcid="offerList@csserv:OfferList" 
+			                           element="div"
+			                           svcParam="ognl:cond"
+			                           serviceName="ognl:serviceName"
+			                           productId="ognl:productId"
+			                           categoryId="100000000017,100000000014"></div>
+							</div>
+							<!-- 分栏 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+				    <div class="l_auto">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">已选区</div>
+								<div class="fn">
+									<label for="effectNow" style="display:none">
+							            <input type="checkbox" id="EFFECT_NOW" name="EFFECT_NOW" jwcid="@Checkbox" 
+							            	onclick="if(this.checked){selectedElements.effectNow();$(this).val('true');}else {selectedElements.unEffectNow();$(this).val('false');}"
+							            		disabled='ognl:info.EFFECT_TAG' value="true" checked="true"/><span>立即生效</span>
+							         </label>
+						       </div>
+							</div> 
+			                 <div jwcid="selectedElements@saleserv:SelectedElements"  
+			                    initParam="ognl:cond" 
+			                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElements" 
+			                    renderCallSvc="CS.SelectedElementSVC.getGrpUserChgElements"
+			                    basicStartDateControlId="PRODUCT_PRE_DATE" 
+			                    element="div"></div> 
+			                  
+							<!-- 表格 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+				<!-- 第 2 栏 结束 -->
+				</div>
+				
+				<!-- 分栏 结束 -->
+			</div>
+			
+			<!-- 定制信息 开始 -->
+			<div jwcid="@TabsetContent" id ="grppackage" title="定制信息">
+				<span jwcid="userGrpPackage@saleserv:UserGrpPackage" element="div" grpProductId="ognl:productId" userId="ognl:cond.USER_ID" grpUserEparchyCode="ognl:cond.USER_EPARCHY_CODE"
+				treeTextAction="packageTreeTextAction(nodedata)"/>
+			</div>
+			<!-- 定制信息 结束 -->
+		
+			<!-- 产品参数 开始 -->   
+			<div jwcid="@TabsetContent" id ="prama"  title="产品参数信息" >  
+				<input jwcid="@Hidden" name="jsFilePath" id="jsFilePath"
+				value="ognl:productCtrlInfo.jsFile.ATTR_VALUE"/> 
+				<span jwcid="productParamPart@saleserv:ProductParamDynamicHtml" element="div"
+				param="ognl:dynParam" 
+			       />
+			</div> 
+			<!-- 产品参数 结束 -->
+			
+			<!-- 合同信息开始  -->
+			<div jwcid="@TabsetContent" id ="source" title="合同信息">
+				<span jwcid="@saleserv:SeleContractProduct" />
+			</div>
+			<!-- 合同信息结束  -->
+			
+		</div> 
+	</div>
+		
+		<div jwcid="elementAttr@saleserv:ElementAttr" element="div"></div>
+		<div class="c_box">
+			<div class="c_title">
+				<div class="text">业务受理信息</div>
+			</div>
+			<div class="c_form c_form-col-3 c_form-label-6">
+				<ul class="ul">
+				
+					<li class="li col-3">
+						<span class="label">备注：</span>
+						<span class="e_textarea">
+							<span class="e_textareaTop"><span></span></span>
+							<span class="e_textareaContent">
+								<textarea
+									jwcid="@TextArea" 
+									name="parm_REMARK"
+									id="parm_REMARK" 
+									type="text"
+									value="ognl:info.pamRemark"
+									title="备注"
+									raw="true">
+								</textarea>
+							</span>
+							<span class="e_textareaBottom"><span></span></span>
+						</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<input type="hidden" name="BUSI_TYPE" id="BUSI_TYPE" value="ChgUs"/>
+		<input jwcid="@Any" name="PRODUCT_PRE_DATE" id="PRODUCT_PRE_DATE" value="ognl:cond.PRODUCT_PRE_DATE" style="display:none"/>
+		<input type="hidden" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value="[]"/>
+		<div jwcid="SubmitPart@saleserv:CSSubmit" area="productInfoPart" callBean="com.asiainfo.veris.crm.order.web.frame.csview.group.changeuserelement.GrpUseChgFlowMainHttpHandler" listener="submit" isGrp="true" beforeAction="onSubmitBaseTradeCheck()"  disabledBtn="false" element="div"/>
+		
+		</div>
+	</div></div>
+	</body>
+	<script language="javascript" defer="defer">
+		$(document).ready(function(){
+			if($('#cond_GROUP_SERIAL_NUMBER').val() != '')
+				getGrpInfoBySn();
+		});
+	</script>
+</html>

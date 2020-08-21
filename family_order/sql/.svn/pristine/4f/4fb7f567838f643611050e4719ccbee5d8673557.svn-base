@@ -1,0 +1,3 @@
+UPDATE tf_f_customer
+   SET city_code=:CITY_CODE,score_value=TO_NUMBER(:SCORE_VALUE),credit_value=TO_NUMBER(:CREDIT_VALUE),in_staff_id=:IN_STAFF_ID,in_date=TO_DATE(:IN_DATE, 'YYYY-MM-DD HH24:MI:SS')  
+ WHERE cust_id=TO_NUMBER(:CUST_ID)  AND PARTITION_ID=MOD(TO_NUMBER(:CUST_ID),10000)

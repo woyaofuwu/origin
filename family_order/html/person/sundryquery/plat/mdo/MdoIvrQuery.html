@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: ChangeProduct.html,v 1.3 2013/04/08 13:53:09 jinnian Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" src="person/sundryquery/plat/mdo/scripts/mdoivrquery.js"></script>
+<title>IVR拨打记录查询</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 区域 开始 -->
+	<div class="c_box">
+	    <!-- 标题 开始 -->
+	    <div class="c_title">
+		   <div class="text">IVR拨打记录查询</div>
+	    </div>
+	<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form" jwcid="QueryModIvrCondPart@Part">
+		<ul class="ul">
+		<li class="li">
+		<span class="label"><span class="e_required">手机号码：</span></span>
+		<span class="e_input"><span>
+		<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" 
+		desc="服务号码" nullable="no" maxLength="11" datatype="mbphone"/>
+		</span></span>
+		</li>
+		<li class="li">
+		<span class="label"><span class="e_required">起始日期：</span></span>		
+		<span class="e_input e_input-left"><span>
+		<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:condition.cond_START_DATE"
+		desc="起始日期" nullable="no" format="yyyy-MM-dd" maxName="cond_END_DATE"/>
+		</span></span>
+		</li>
+		<li class="li">
+		<span class="label"><span class="e_required">终止日期：</span></span>
+		<span class="e_input e_input-left"><span>
+		<input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" value="ognl:condition.cond_END_DATE"
+		desc="终止日期" nullable="no" format="yyyy-MM-dd" minName="cond_START_DATE"/>
+		</span></span>
+		</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryMdoIvrInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		</div>
+		<!-- 表单 结束 -->
+		 <!-- 标题 开始 -->
+	    <div class="c_title c_title-2">
+		   <div class="text">基本信息</div>
+	    </div>
+	<!-- 标题 结束 -->
+		
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-label-5 c_form-col-2 c_form-text" jwcid="CustInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text"><span>
+				<input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" readonly="true" desc="客户名称" value="ognl:custInfo.CUST_NAME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text"><span>
+				<input jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" readonly="true" desc="证件号码" value="ognl:custInfo.PSPT_ID"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text"><span>
+				<input jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" readonly="true" desc="证件类型" 
+				value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE',custInfo.PSPT_TYPE_CODE)"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text"><span>
+				<input jwcid="@Insert" name="PSPT_ADDR" id="PSPT_ADDR" readonly="true" desc="证件地址"  value="ognl:custInfo.PSPT_ADDR"/>
+				</span></span>
+			</li>
+		</ul>
+		</div>
+		<!-- 表单 结束 -->
+		 <div class="c_title c_title-2">
+		   <div class="text">查询结果</div>
+	    </div>
+		
+		<!-- 表格区域 开始 -->
+    <div jwcid="QueryListPart@Part">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" ><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>业务名称</th>
+					<th>主叫号码</th>
+					<th>主叫归属省</th>
+					<th>被叫号码</th>
+					<th>SP名称</th>
+					<th>客服电话</th>
+					<th>通话开始时间</th>
+					<th>通话结束时间</th>
+					<th>通话时长 单位:秒</th>
+					<th>计费类型</th>
+					<th>资费</th>
+					<th>信息费 单位:元</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERVICENAME" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.NUM" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.PROVINCENAME" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.RECEIVENUM" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.SPNAME" raw="true" /></td> 
+							<td><span jwcid="@Insert" value="ognl:info.SPCSTEL" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.STARTTIME" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.ENDTIME" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.DURTIME" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MDOIVR_FEETYPE',info.FEETYPE)" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERFEE" raw="true" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.INFOFEE" raw="true" /></td>
+					</tr> 
+			</tbody>
+		</table>
+	</div>
+	</div>
+		<!-- 表格 结束 -->
+		<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="mdoIvrInfoNav" cond="QueryModIvrCondPart" part="QueryListPart" listener="queryMdoIvrInfo" pageSize="2" count="ognl:mdoIvrCount"></div>
+	<!-- 翻页 结束 -->
+	</div>	
+	<!-- 表格区域 结束 -->	
+	</div>
+		<!-- 区域 结束 -->
+
+   
+</div></div>
+</body>
+</html>

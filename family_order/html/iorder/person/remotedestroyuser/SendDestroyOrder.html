@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>跨区销户工单派单</title>
+	<script jwcid="@Script"  src="iorder/person/remotedestroyuser/scripts/senddestroyorder.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">跨区销户工单派单</div>
+</div>
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">	
+		<div jwcid="QueryCondPart@Part">
+			<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border">
+				 <ul class="ul">
+					<li class="link required">
+					<div class="label">手机号码</div>
+					<div class="value">
+						<div class="e_mix">
+							<input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="" desc="手机号码" nullable="no"
+					              maxLength="11"/>
+			                <button type="button" class="e_button-blue" value="查询" id="bt_search" name="bt_search"
+								  desc="查询" onclick="queryDestroyOrder();"><i class="e_ico-search"></i><span>查询</span></button>
+						</div>
+					</div>
+					</li>
+					<!--  
+					<li class="link required">
+					<span class="label">流水号</span>
+					<span class="value">
+						<span class="e_mix">
+							<input jwcid="@TextField" id="cond_TRANSIDO" name="cond_TRANSIDO" value="ognl:condition.cond_TRANSIDO" desc="手机号码" nullable="no" />
+							<button type="button" class="e_button-blue" value="查询" id="bt_search" name="bt_search"
+								desc="查询" onclick="queryDestroyOrder();"><i class="e_ico-search"></i><span>查询 </span></button> 
+						</span>
+					</span>	
+					</li>
+					-->
+				</ul> 
+			</div>
+		</div>
+	<!-- 标题栏 结束 -->
+	<!-- 表格 开始 -->
+		<div jwcid="TableInfoPart@Part" id="TableInfoPart" class="c_scroll" >
+			<div jwcid="DestroyTablePart@Part">
+				<div class="c_table">
+					<table  jwcid="@Table" id="DestroyTable" name="DestroyTable" class="c_table c_table-full">
+						<thead>
+							<tr>
+								<th><span></span></th>
+								<th><span>办理号码</span></th>
+								<th><span>客户姓名</span></th>
+								<th><span>派单状态</span></th>
+								<th><span>审核结果</span></th>
+								<th><span>申请时间</span></th>
+								<th><span>更新时间</span></th>
+								<th><span>联系人号码</span></th>
+								<th><span>现金转费号码</span></th>
+								<th><span>非现金转费号码</span></th>
+								<th><span>建单人号码</span></th>
+								<th><span>建单营业厅</span></th>
+								<th><span>订单流水号</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:destroyInfoList" value="ognl:destroyInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<th><input jwcid="@Radio" name="ORDER_CHECK" value="ognl:destroyInfo.REMOTE_ORDER_ID" disabled='ognl:"0".equals(destroyInfo.DEAL_TAG) ? "false" : "2".equals(destroyInfo.DEAL_TAG) ? "false" : "true"'/></th>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.REMOTE_SERIAL_NUMBER" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.REMOTE_CUST_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value='ognl:"0".equals(destroyInfo.DEAL_TAG) ? "未派单" : "1".equals(destroyInfo.DEAL_TAG) ? "已派单" : "2".equals(destroyInfo.DEAL_TAG) ? "打回待办" : "6".equals(destroyInfo.DEAL_TAG) ? "派单异常" : "9".equals(destroyInfo.DEAL_TAG) ? "归档" : "A".equals(destroyInfo.DEAL_TAG) ? "人工取消" : ""'
+										  raw="false"/></td>
+								<td><span jwcid="@Insert" value='ognl:"0".equals(destroyInfo.RSRV_STR3) ? "销户成功" : "1".equals(destroyInfo.RSRV_STR3) ? "用户原因销户失败" : "2".equals(destroyInfo.RSRV_STR3) ? "销户请求报文填写错误" : "3".equals(destroyInfo.RSRV_STR3) ? "销户附件缺失" : "4".equals(destroyInfo.RSRV_STR3) ? "销户附件不可用" : "未审核"' raw="false"/></td>
+			          			<td><span jwcid="@Insert" value="ognl:destroyInfo.CREATE_DATE" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.UPDATE_TIME" raw="false"/></td>
+			          			<td><span jwcid="@Insert" value="ognl:destroyInfo.CONTACT_PHONE" raw="false"/></td>
+			                    <td><span jwcid="@Insert" value="ognl:destroyInfo.GIFT_SERIAL_NUMBER" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.GIFT_SERIAL_NUMBER_B" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.CREATE_PHONE" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.CREATE_ORG_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.REMOTE_ORDER_ID" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="l_queryPage">
+				<span jwcid="@NavBar" name="queryTradeNav" cond="QueryCondPart" listener="queryDestroyOrder" part="TableInfoPart" pageSize="12" count="ognl:countTrade"/>
+			</div>
+		</div>
+		<div class="c_space"></div>
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-center">
+			<button class="e_button-page-ok e_button-blue e_button-r" id="sendOrder" name="sendOrder"  onclick="sendOrder();"><i class="e_ico-ok"></i><span>派单</span></button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+</div>
+</body>
+</html>

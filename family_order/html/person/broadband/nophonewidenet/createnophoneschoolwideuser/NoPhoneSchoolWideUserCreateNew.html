@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无手机校园宽带开户</title>
+	<script jwcid="@Script" type="text/javascript" src="person/broadband/nophonewidenet/createnophoneschoolwideuser/scripts/nophoneschoolwideusercreate.js"></script>
+	<script jwcid="@Script" src="scripts/iorder/icsserv/component/offer/offerdefine.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/fee/FeeMgr.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script>
+		window.onload=function(){
+		        $.nophoneschoolwideusercreate.initPage();
+		    };
+	  //页面关闭时调用释放资源流程
+	    window.onunload=function(){
+			var oldWideNetAcctId =  $("#OLD_WIDENET_ACCT_ID").val();
+			$.ajax.submit(null, 'releaseWideNetAcct', '&OLD_WIDENET_ACCT_ID='+oldWideNetAcctId, null, function() {
+			    return true;
+			}, function(error_code, error_info, derror) {
+				$.endPageLoading();
+				$.MessageBox.error(error_code, error_info);
+			});
+	    }
+	</script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back">无手机校园宽带开户</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+		<div jwcid="BaseInfoPart@Part">
+			<!-- 表单 开始 -->
+			<div class="c_space"></div>
+			<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">服务号码</div>
+						<div class="value">
+							<span class="e_mix" id="SERIAL_NUMBER_INPUT">
+								<input jwcid="@TextField"   name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER"
+									   desc="新开户号码" nullable="no" maxLength="8" datatype="numeric"
+									   enterAction="$.nophoneschoolwideusercreate.checkWidenetAcctId()" onblur="" />
+								<button type="button" class="e_button-blue" onclick="$.nophoneschoolwideusercreate.getValidWideNetAccountId();"><i class="e_ico-check"></i><span>随机选号</span></button>
+								<button type="button" class="e_button-blue" onclick="$.nophoneschoolwideusercreate.checkWidenetAcctId();"><i class="e_ico-check"></i><span>校验</span></button>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+		</div>
+	
+		<div jwcid="CustInfoFieldPart@icsserv:CustInfoField" isRealName="true"
+	         hideUserTypeCode="true" hideEmail="true" blackTradeType="650" element="div"
+	         requiredField="PSPT_TYPE_CODE,PSPT_ID,CUST_NAME,PSPT_ADDR,PHONE"></div>	
+	    
+	    <div jwcid="@icsserv:AcctInfoField"></div>
+		
+		<div class="c_space-c"></div>
+		<div jwcid="PasswdPart@Part">
+			<div jwcid="PasswordSetPart@icsserv:PasswordSet" beforeAction="PasswdbeforeAction()" afterAction="PasswdafterAction(data)" element="div" col="3"/>
+				<input jwcid="@Password" name="USER_PASSWD" id="USER_PASSWD" value="ognl:info.USER_PASSWD" readonly="true" style="display:none;" desc="用户密码" nullable="no"/>
+			</div>
+		<!-- 表单结束 -->
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">宽带信息</div>
+		</div> 
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		  <div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border" jwcid="widePart@Part">
+			<ul>
+				<li class="link required merge-3">
+					<div class="label">住宿地址</div>
+					<div class="value">
+						<input jwcid="@TextField" name="DETAIL_ADDRESS" id="DETAIL_ADDRESS" value="ognl:info.DETAIL_ADDRESS" nullable="no" desc="详细地址"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">联系人</div>
+					<div class="value">
+						<input jwcid="@TextField" name="CONTACT" id="CONTACT" value="ognl:info.CONTACT" nullable="no"  desc="联系人"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">联系人电话</div>
+					<div class="value">
+						<input jwcid="@TextField" name="CONTACT_PHONE" id="CONTACT_PHONE" value="ognl:info.CONTACT_PHONE"  nullable="no"  maxlength="15" datatype="numeric" desc="联系电话"/>
+					</div>
+				</li>
+				
+				<li class="link">
+					<div class="label">联系电话</div>
+					<div class="value">
+						<input jwcid="@TextField" name="WIDE_PHONE" id="WIDE_PHONE" value="ognl:info.WIDE_PHONE" nullable="no"  maxlength="15" datatype="numeric" desc="联系电话"/>
+					</div>
+				</li>
+				
+				<li class="link required">
+					<div class="label">地区</div>
+					<div class="value">
+						 <span jwcid="@Select" name="AREA_CODE" id="AREA_CODE"   value="ognl:visit.getCityCode()"  nullable="no"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+						  source="ognl:pageutil.getStaticList('COP_AREA_CODE')"  desc="地区"/>
+					</div>
+				</li>
+				
+				<!--<li class="link required">
+					<div class="label">宽带证件号码</div>
+					<div class="value">
+						<input jwcid="@TextField" name="WIDE_PSPT_ID" id="WIDE_PSPT_ID" value="ognl:info.PSPT_ID" nullable="no"  maxlength="20"  desc="宽带证件号码"/>
+					</div>
+				</li>-->
+				
+				<li class="link required">
+					<div class="label">学生学号</div>
+					<div class="value">
+						<input jwcid="@TextField" name="STUDENT_NUMBER" id="STUDENT_NUMBER" value="ognl:info.STUDENT_NUMBER" nullable="no"  maxlength="180"  desc="学生学号"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">宽带产品</div>
+			<div class="fn">
+				<ul>
+					<li onclick="displayOfferList(this,'chooseoffers')"><span class="e_ico-unfold"></span>隐藏服务/优惠</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+	
+		<!-- 参数列表 开始 -->
+		<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+			<ul>
+				<li class="link" jwcid="productType@Part" element="li">
+					<div class="label">宽带产品</div>
+					<div class="value">
+						<span jwcid="@Select" name="WIDE_PRODUCT_ID" id="WIDE_PRODUCT_ID"
+									source="ognl:productList"
+									textField="PRODUCT_NAME" valueField="PRODUCT_ID" value="ognl:info.PRODUCT_ID"
+									desc="当前产品" onchange="changeProduct();"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+		
+		<!-- 优惠服务 开始 -->
+		<div id="chooseoffers" style="">
+			<div class="c_space-c"></div>
+				<div class="l_col l_col-space l_col-phone-popup">
+					<div class="l_colItem l_colItem-popup">
+						<div jwcid="offerList@icsserv:OfferList" 
+	                          element="div" 
+	                          showSearchTag="false"
+	                          categoryId="100000000114,100000000008"></div>
+	                  	</div>       
+	                   <div class="l_colItem e_hide-x" id="selectedDiv">
+	                   		<div class="c_title">
+							    <div class="text">
+							        <span class="e_hide-phone">已选区</span>
+							        <span class="e_show-phone">服务 / 优惠</span>
+							    </div>
+							    <div class="fn">
+							        <ul>
+							            <li id="openDefaultOp" ontap="selectedElements.changeDefaultOp(this,'1');"><span class="e_ico-show"></span>显示必选项</li>
+							            <li id="hideDefaultOp" ontap="selectedElements.changeDefaultOp(this,'2');" style="display:none;"><span class="e_ico-hide"></span>隐藏必选项</li>
+							            <li class="e_show-phone" ontap="$('#colItemPopup').addClass('l_colItem-show');"><span class="e_ico-check"></span>选择</li>
+							        </ul>
+							    </div>
+							</div>
+		                   	<div jwcid="selectedElements@icsserv:SelectedElements" 
+				                  renderCallSvc="CS.SelectedElementSVC.getWidenetUserOpenElements" 
+				                  callAddElementSvc="CS.SelectedElementSVC.dealWidenetSelectedElementsForChg" 
+				                  afterRenderAction="$.nophoneschoolwideusercreate.afterRenderSelectedElements(data);;"
+				                  basicStartDateControlId="NEW_PRODUCT_START_DATE"
+				               	  tradeTypeCode="650"
+				                  element="div"></div>
+	                   </div>
+	            	</div>
+		</div>
+		<!-- 分栏 结束 -->
+	
+		<div jwcid="hiddenPart@Part">
+	   	 	<input jwcid="@Hidden" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="650"/>
+			<input jwcid="@Hidden" name="OLD_WIDENET_ACCT_ID" id="OLD_WIDENET_ACCT_ID" value="ognl:info.OLD_WIDENET_ACCT_ID" desc="原号码"/>
+			<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+			<input jwcid="@Hidden" name="REAL_NAME" id="REAL_NAME" value="1" desc="实名制选择标记"/>
+			<input jwcid="@Hidden" name="REALNAME_LIMIT_CHECK_RESULT" id="REALNAME_LIMIT_CHECK_RESULT" value="false" desc="实名制验证标记"/>
+		</div>
+	
+    	<div jwcid="elementAttr@icsserv:ElementAttr" element="div"></div>
+    
+		<!-- 提交 开始 -->
+		<div class="c_space"></div>
+		<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="$.nophoneschoolwideusercreate.onSubmit()" isReset="true" area="CustInfoPart,AcctInfoPart,PasswdPart,productType,widePart,BaseInfoPart,hiddenPart" element="div" />
+		<!-- 提交 结束 -->
+		</div>
+	</div>
+</body>
+</html>

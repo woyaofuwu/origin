@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>权益信息查询</title>
+<script language="JavaScript"
+	src="iorder/person/sundryquery/querycustandrights/script/querycustandrights.js"></script>
+<script jwcid="@Script"
+	src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">权益信息查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div jwcid="QueryPart@Part" class="l_query l_query-nopage">
+		<div jwcid="psptPart@Part" class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">权益关系查询</div>
+				</div>
+				<div class="right">
+					<span class="label">权益类型名称：</span> <select jwcid="@Select"
+						name="PARA_CODE2" id="PARA_CODE2" textField="DATA_NAME"
+						valueField="DATA_ID" titleField="DATA_NAME"
+						source="ognl:pageutil.getStaticList('RIGHT_ID')" value="0"
+						desc="权益类型名称" nullable="no" /> <span class="e_space"></span> <span
+						class="label">全球通等级标识：</span> <select jwcid="@Select"
+						name="USER_INFO_CLASS" id="USER_INFO_CLASS" textField="DATA_NAME"
+						valueField="DATA_ID" titleField="DATA_NAME"
+						source="ognl:pageutil.getStaticList('USER_INFO_CLASS')" value="0"
+						desc="全球通等级标识" nullable="no" />
+					<button class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN"
+						onclick="return queryCustRights();">
+						<i class="e_ico-search"></i><span>查询</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="c_space"></div>
+
+
+		<div jwcid="QueryListPart@Part" class="l_queryResult">
+			<table jwcid="@Table" name="UserPsptTable">
+				<thead>
+					<tr>
+						<th>权益类型名称</th>
+						<th>权益名称</th>
+						<th>对应的全球通等级</th>
+						<th>权益的次数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+						element="tr" index="ognl:rowIndex"
+						class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td data-title="权益类型名称"><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('RIGHT_ID',info.PARA_CODE2)" />
+						</td>
+						<td data-title="权益名称"><span jwcid="@Insert"
+							value="ognl:info.RIGHT_NAME" />
+						</td>
+						<td data-title="对应的全球通等级"><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('USER_INFO_CLASS',info.PARA_CODE1)" />
+						</td>
+						<td data-title="权益的次数"><span jwcid="@Insert"
+							value="ognl:info.PARA_CODE4" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- 翻页（替换为页面组件） 开始 -->
+		<!-- 	<div jwcid="@NavBar" name="navt" id="navt" cond="psptPart"
+				part="QueryListPart" listener="queryRealNameInfo" pageSize="10"
+				count="ognl:count"></div> -->
+			<!-- 翻页 结束 -->
+		</div>
+	</div>
+
+
+</body>
+</html>

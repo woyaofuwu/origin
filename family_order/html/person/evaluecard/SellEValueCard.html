@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>个人客户电子卡销售界面</title>
+	<script language="JavaScript" src="person/evaluecard/scripts/EValueCard.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="5333" element="div" />
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-2 c_form-text" jwcid="freshPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text" jwcid="@Insert"   value="ognl:editInfo.CUST_NAME" desc="客户名称："/>
+			</li>
+			
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:editInfo.PSPT_ID" desc="证件号码"/>
+				
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert"  
+												value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',editInfo.PSPT_TYPE_CODE)"></span>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert"   value="ognl:editInfo.PSPT_ADDR" desc="证件地址"/>
+				
+			</li>
+		</ul>
+	</div>
+	</div>
+
+<div class="c_box">	
+	<div class="c_title">
+		<div class="text" jwcid="QueryListPart@Part">购卡信息</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-2 e_dis" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			
+			<li class="li">
+				<span class="label"><span class="e_required">卡类型：</span></span>
+                <span class="e_select"><span><span>
+               		<select jwcid="@Select" name="CARD_TYPE" id="CARD_TYPE"
+							source="ognl:pageutil.getStaticList('EVALUECARD_TYPE')" addDefault="true"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                			value="ognl:condition.CARD_TYPE" desc="卡类型" nullable="no" />
+                </span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">购卡数量：</span></span>
+				<span class="e_input" ><span>
+				    <input type="text" jwcid="@Any" id="BUY_COUNT" name ="BUY_COUNT" value="" datatype="numeric" onBlur="insertFee();" nullable="no" desc="购卡数量"/>
+				</span></span>
+			</li>
+			<li class="li" >
+				<span class="label"><span class="e_required">卡面值：</span></span>
+				<span class="e_input" ><span>
+				    <input name="CARD_MONEY" id="CARD_MONEY"  jwcid="@Any" min="1" nullable="no" datatype="numeric" value="" type="text"  onBlur="insertFee();"  desc="卡面值"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">购卡邮箱：</span></span>
+				<span class="e_input" ><span>
+					<input type="text" jwcid="@Any" value="ognl:condition.EMAIL"  id="EMAIL" name ="EMAIL"  desc="购卡邮箱"/>
+					<input jwcid="@TextField" type="hidden" id="OPER_TYPE" name="OPER_TYPE" value="0"/>
+				</span></span>
+			</li>
+			<!-- 
+			<li class="li">
+				<span class="label"><span >有效期：</span></span>
+				<span class="e_elements">
+					<span class="e_input"><span>
+						<input  jwcid="@DateField" name="END_DATE" id="END_DATE" value="ognl:condition.END_DATE" desc="有效期" format="yyyy-MM-dd"  />	
+					</span></span>
+				</span>
+			</li>
+			-->
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" listener="onTradeSubmit" refreshPart=""  area="AuthPart,QueryCondPart" element="div"/>	
+	<!-- 提交 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

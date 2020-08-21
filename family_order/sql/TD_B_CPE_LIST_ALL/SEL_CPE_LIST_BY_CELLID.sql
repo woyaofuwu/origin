@@ -1,0 +1,1 @@
+select t.*  from TD_B_CPE_LIST_ALL t where t.cell_id=to_char(to_number(:CELL_ID))

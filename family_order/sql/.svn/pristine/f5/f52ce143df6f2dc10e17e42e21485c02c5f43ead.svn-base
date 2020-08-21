@@ -1,0 +1,10 @@
+-- t.accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))
+UPDATE TF_B_TRADE
+   SET EXEC_TIME        = SYSDATE,
+       UPDATE_TIME      = SYSDATE,
+       UPDATE_STAFF_ID  = 'ITF00000',
+       UPDATE_DEPART_ID = 'ITF00',
+       REMARK           = '用户二次确认短信返回，需要修改执行时间'
+ WHERE ACCEPT_MONTH = TO_NUMBER(SUBSTR(:TRADE_ID, 5, 2))
+   AND TRADE_ID = TO_NUMBER(:TRADE_ID)
+   AND ACCEPT_DATE + 2 >= SYSDATE --2天之内有效

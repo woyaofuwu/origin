@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/grpvaluecard/scripts/grpvaluecardqry.js"></script>
+</head>
+<body jwcid="@Body" >
+<div class="m_wrapper">
+<div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li" >
+				<span class="label"><span >流量卡卡号(起)：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_START_CARD_NUMBER" id="cond_START_CARD_NUMBER" value="ognl:condition.cond_START_CARD_NUMBER" 
+						onblur="fillEndCardNumber();"
+						desc="流量卡卡号" nullable="yes"/>
+				</span></span>
+			</li>
+			<li class="li" >
+				<span class="label"><span >流量卡卡号(止)：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_END_CARD_NUMBER" id="cond_END_CARD_NUMBER" value="ognl:condition.cond_END_CARD_NUMBER" desc="流量卡卡号" nullable="yes"/>
+				</span></span>
+			</li>
+			<li class="li" id="li_GROUP_ID" style="display: none">
+				<span class="label"><span >集团编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_GROUP_ID" id="cond_GROUP_ID" value="ognl:condition.cond_GROUP_ID" desc="集团编码" nullable="yes"/>
+				</span></span>
+			</li>	
+			<li class="li" id="li_GROUP_NAME" style="display: none">
+				<span class="label"><span >集团名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_GROUP_NAME" id="cond_GROUP_NAME" value="ognl:condition.cond_GROUP_NAME" desc="集团名称" nullable="yes"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">卡状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_STATE_CODE" id="cond_STATE_CODE" source="ognl:pageutil.getStaticList('VALUECARD_STATE_CODE')" addDefault="false"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.cond_STATE_CODE" desc="卡状态"
+									onchange="displayFields();"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryGrpValueCardInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+	<!-- 条件结束-->
+	
+  <!-- 表格 开始 -->
+  <div class="c_box">
+	<div class="c_title">
+		<div class="text">查询结果</div>	
+         <!-- 导出-->
+		<div class="fn" style="display:none">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201606282120" 
+					 config="export/valuecard/GiveValueCardDetailed.xml" fileName="有价卡赠送清单"   cond="QueryCondPart" />
+		</div>	
+	</div>
+
+	
+	<div jwcid="QueryDataPart@Part" element="div">
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" name="QueryListTable" id="QueryListTable" scroll="true">
+				<thead>
+					<tr>
+                        <th col="CARD_NUMBER" id='CARD_NUMBER'>卡号</th>
+						<th col="STATE_CODE" id='STATE_CODE'>卡状态</th>
+						<th col="DEVICE_PRICE" id='DEVICE_PRICE'>卡面值(元)</th>
+						<th col="SALE_PRICE" id='SALE_PRICE'>销售金额(元)</th>
+						<th col="CUST_NUMBER" id='CUST_NUMBER'>手机号码</th>
+						<th col="UPDATE_TIME" id='UPDATE_TIME'>充值时间</th>
+						<th col="ACCEPT_DATE" id='ACCEPT_DATE'>销售时间</th>
+						<th col="GROUP_ID" id='GROUP_ID'>集团编码</th>
+						<th col="GROUP_NAME" id='GROUP_NAME'>集团名称</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:listInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><span jwcid="@Insert" value="ognl:info.CARD_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('VALUECARD_STATE_CODE', info.STATE_CODE)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEVICE_PRICE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALE_PRICE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.GROUP_NAME" raw="true" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart" part="QueryDataPart" 
+	      listener="queryGrpValueCardUseInfo" pageSize="10" count="ognl:pageCount"></div>
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域结束 -->
+</div>
+</div>
+</div>
+</body>
+</html>

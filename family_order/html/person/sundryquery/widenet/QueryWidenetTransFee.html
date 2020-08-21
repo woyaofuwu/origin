@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>校园宽带费用转移</title>
+<script jwcid="@Script" src="person/sundryquery/widenet/scripts/querywidenet.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">校园宽带费用转移</div>
+	</div>
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="QueryWidenetPart@Part">
+		<ul class="ul">	
+		    <li class="li">
+				<span class="label">转移类型：</span>
+				<span class="e_select"><span><span>
+				        <select jwcid="@Select" name="TRANS_TYPE" id="TRANS_TYPE" source="ognl:pageutil.getStaticList('CAMPUS_TRANS_FEE')"
+	                                    value="ognl:condition.TRANS_TYPE"  desc="转移类型" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">起始工号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="START_STAFF_ID" id="START_STAFF_ID" value="ognl:condition.START_STAFF_ID" 
+						 desc="起始工号"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">终止工号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="END_STAFF_ID" id="END_STAFF_ID" value="ognl:condition.END_STAFF_ID" 
+						 desc="终止工号"/>
+				</span></span>
+			</li>
+		  <li class="li">
+				<span class="label">校园名称：</span>
+				<span class="e_select"><span><span>
+				        <select jwcid="@Select" name="CAMPUS_ID" id="CAMPUS_ID" source="ognl:pageutil.getStaticList('CAMPUS_BROADBAND_NAME')"
+	                                    value="ognl:condition.CAMPUS_ID"  desc="转移类型" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">起始日期：</span></span>
+				<span class="e_input"><span>
+						<input jwcid="@DateField" name="START_DATE" id="START_DATE" nullable="no" value="ognl:condition.START_DATE" maxName="END_DATE" desc="起始日期"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">终止日期：</span></span>
+				<span class="e_input"><span>
+						<input jwcid="@DateField" name="END_DATE" id="END_DATE" nullable="no" value="ognl:condition.END_DATE" minName="END_DATE" desc="终止日期"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryTransFee();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 条件结束-->
+    
+  <!-- 表格开始 -->
+		<div jwcid="QueryListPart@Part">
+		<div class="c_scroll c_scroll-x c_scroll-table-10" >
+		   <div class="c_title">
+					 <div class="text">查询结果</div>
+						 <div class="fn">
+						      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+							      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100994"
+									  config="export/sundryquery/other/QueryWidenetTransFee.xml" fileName="校园宽带费用转移" cond=QueryWidenetPart/>
+									<button type="button" class="l_ml" onclick="javascript:$.printArea('QueryListPart','打印预览','60%')">
+										<i class="e_ico-print"></i><span>打印</span>
+								    </button>
+							  </div>
+					     </div>
+			</div>	     
+			<div class="c_table">
+				<table jwcid="@Table">
+					<thead>
+					<tr>
+						<th>号码</th>
+						<th>用户名称</th>
+						<th>业务流水号</th>
+						<th>办理工号</th>
+						<th>办理日期</th>
+						<th>转移类型</th>
+						<th>转出存折编码</th>
+						<th>转出金额(元)</th>						
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_VALUE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR7" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR9" raw="true"/></td>
+							
+					</tr>
+					</tbody>
+				</table>
+		     </div>
+	</div>
+	 <div jwcid="@NavBar"  name="olcomnav" id="olcomnav" listener="queryTransFee" pageSize="10" cond="QueryWidenetPart" part="QueryListPart" count="ognl:infosCount"/>
+</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域结束 -->
+</div></div>
+</body>
+</html>

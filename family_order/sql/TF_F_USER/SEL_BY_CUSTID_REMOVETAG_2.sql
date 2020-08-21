@@ -1,0 +1,12 @@
+SELECT to_char(u.USER_ID) USER_ID, to_char(u.CUST_ID) CUST_ID, u.SERIAL_NUMBER 
+ FROM tf_f_user u,tf_f_user_product up
+WHERE 1=1
+  AND u.CUST_ID = :CUST_ID
+  AND u.REMOVE_TAG = '0'
+  AND up.MAIN_TAG = '1'
+  AND up.brand_code='PWLW'
+  AND u.USER_ID = up.USER_ID
+  AND u.PARTITION_ID = up.PARTITION_ID
+  AND u.PARTITION_ID = mod(up.USER_ID,10000)
+  AND SYSDATE BETWEEN up.START_DATE AND up.END_DATE
+

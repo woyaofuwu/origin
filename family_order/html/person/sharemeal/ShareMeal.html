@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: ReserveTradeArchive.html,v 1.1 2009/12/16 20:29:05 wangmo Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>流量共享</title>
+<script jwcid="@Script" language="JavaScript" src="person/sharemeal/scripts/sharemeal.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">共享</span>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="275" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<div class="" jwcid="discntInfopart@Part" id="discntInfopart">
+	<div class="c_table">
+		<table jwcid="@Table" id="discntInfoTable" name="discntInfoTable">
+      	<thead>
+		  	<tr>
+				<th col="DISCNT_CODE">优惠编码</th>
+				<th col="SERIAL_NUMBER_B">优惠名称</th>
+				<th col="START_DATE">优惠说明</th>
+				<th col="END_DATE">套餐类型</th>
+				<th col="END_DATE">优惠总量(M)</th>
+				<th col="DISTCNT_START_DATE">开始时间</th>
+				<th col="DISTCNT_END_DATE">结束时间</th>
+				
+			</tr>
+		</thead>
+		<tbody id="discntInfoTable_Body">
+			<tr jwcid="@Foreach" source="ognl:discntInfos" value="ognl:discntInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE"/></td>
+				<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_NAME"/></td>
+				<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_EXPLAIN"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SHARE_ITEM_TYPE',discntInfo.ITEM_TYPE)"/></td>
+				<td><span jwcid="@Insert" value="ognl:discntInfo.HIGH_FEE"/></td>
+				<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_START_DATE"/></td>
+				<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_END_DATE"/></td>
+					
+			</tr>
+		</tbody>
+		</table>
+	
+	</div>
+	</div>
+	<div class="c_title">
+		<span class="text">添加成员号码</span>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">成员号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="FMY_SERIAL_NUMBER" 
+						id="FMY_SERIAL_NUMBER" value="" desc="成员号码"
+						maxLength="11" datatype="mbphone"/>
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<button type="button" id="bquery" name="bquery" onclick="addMeb()"><i class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" id="bquery" name="bquery" onclick="delMeb()"><i class="e_ico-delete"></i><span>删除</span></button>
+			</li>
+		</ul>	
+	</div>
+	<div class="" jwcid="viceInfopart@Part" id="viceInfopart">
+	<div class="c_table">
+		<table jwcid="@Table" id="viceInfoTable" name="viceInfoTable">
+      	<thead>
+		  	<tr>
+				<th col="INST_ID"></th>
+				<th col="SERIAL_NUMBER">服务号码</th>
+				<th col="START_DATE">开始时间</th>
+				<th col="END_DATE">结束时间</th>
+				<th col="RSRV_TAG1">是否统付</th>
+			</tr>
+		</thead>
+		<tbody id="viceInfoTable_Body">
+			<tr jwcid="@Foreach" source="ognl:viceInfos" value="ognl:viceInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+					value="ognl:viceInfo.INST_ID" disabled="ognl:1==viceInfo.DEAL_TAG"/></td>
+				<td><span jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER"/></td>
+				<td><span jwcid="@Insert" value="ognl:viceInfo.START_DATE"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:viceInfo.END_DATE"/></td>
+				<td><span jwcid="@Insert" value="ognl:viceInfo.RSRV_TAG1NAME"/></td>
+				<td style="display:none"><span jwcid="@Insert" value="ognl:viceInfo.DEAL_TAG" raw="false"/></td>
+			</tr>
+		</tbody>
+		</table>
+	
+	</div>
+	</div>
+	
+	<div class="c_form c_form-label-5 c_form-col-3">
+	    <ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK"
+	                 value=""
+					 desc="备注" disabled=""/>
+				</span></span>
+			</li>
+	    </ul>
+    </div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart" element="div"/>	
+</div>
+<!--受理信息结束-->
+</div></div></body>
+</html>

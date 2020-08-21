@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/group/querygroupinfo/IPLaterPayQuery.js"></script>             
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 提示区 -->
+<div class="c_box" jwcid="hintPart@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+</div>
+
+    <div class="c_title">
+		<div class="text">IP后付费固定电话号码查询</div>
+	</div>
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+					<select name="cond_QueryType" id="cond_QueryType" onchange="javascript:changeQueryType()">
+                          <option value="0" selected>按集团产品编码查询</option>
+                          <option value="1">按固定号码查询</option>
+					</select>
+				</span></span></span>
+			</li>
+			<li class="li" id="snA"  >
+				<span class="label">集团产品编码：</span>
+					<span class="e_input" ><span><input type="text" jwcid="@TextField"  id="cond_SERIAL_NUMBER_A" name="cond_SERIAL_NUMBER_A" value="ognl:condition.cond_SERIAL_NUMBER_A" desc="集团编码"/></span>
+				</span>
+			</li>
+			<li class="li" id="snB" style="display:none">
+				<span class="label">固定号码：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField"  id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="固定号码"/></span>
+				</span>
+			</li>
+		</ul>
+	
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return queryInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 订单信息开始 -->
+	<div id="refreshtable" jwcid="refreshtable@Part" optimize="true">
+		<div class="c_title">
+			<div class="text">IP后付费固定电话号码查询</div>
+			<span class="fn">
+				<span jwcid="@Export"
+				    id="exportFile"
+					name="exportFile" 
+					serviceName="1026" 
+					config="export/querygroupinfo/IPLaterPayQuery.xml"
+					fileName="IP后付费固定电话号码查询"
+					cond="queryForm"
+					ftpSite="groupserv"
+					action="">
+				</span>
+				<!--</button>-->
+			</span>
+		</div>
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>集团产品编码</th>
+						<th>集团名称</th>
+						<th>固定电话</th>
+						<th>开机状态</th>
+						<th>开户日期</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert"  value="ognl:info.SERIAL_NUMBER_A" raw="false"/></td>
+						<td><span jwcid="@Insert"  value="ognl:info.CUST_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert"  value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STATE_NAME" raw="false"/></td>
+						<td>
+                        	<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.OPEN_DATE)" raw="false" />
+                        </td>
+                        <td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td> 
+						</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<span jwcid="@NavBar" name="pageNav" cond="queryForm" listener="queryInfos" part="refreshtable" count="ognl:pageCount"/>	 
+	</div>
+	<!-- 订单信息 结束 -->
+	
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

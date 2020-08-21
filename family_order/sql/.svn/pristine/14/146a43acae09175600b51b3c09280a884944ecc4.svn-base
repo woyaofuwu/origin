@@ -1,0 +1,2 @@
+INSERT INTO ts_a_group_fee(accept_date,group_id,para_code1,feeitem_code,fee,acct_id,operate_time,operate_eparchy_code,operate_city_code,operate_depart_id,operate_staff_id)
+ VALUES(:ACCEPT_DATE,:GROUP_ID,:PARA_CODE1,TO_CHAR(:FEEITEM_CODE),TO_NUMBER(:FEE),TO_NUMBER(:ACCT_ID),sysdate,:OPERATE_EPARCHY_CODE,:OPERATE_CITY_CODE,:OPERATE_DEPART_ID,:OPERATE_STAFF_ID)

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" language="JavaScript" src="person/internetofthings/scripts/stateBatchQuery.js"></script>
+<title>物联网服务状态批量查询</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">导入查询号码</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 导入 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="SubmitQueryInfo@Part">
+	<ul class="ul">
+		<li class="li col-2">
+			<span class="label"><span>批量文件：</span></span>
+			<span class="e_elements"><!-- 替换为页面组件 -->
+				<span class="e_elements">
+						<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+								fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="yes"/>
+				</span>
+			</span>
+		</li>
+		<li class="li">
+			<span class="label">模版下载：</span>
+			<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=物联网服务状态批量查询导入模板.xls&filePath=template/bat/GiveSerialNumberImport.xls')">[点击下载]</a></span>
+		</li>	
+		<li>
+			<button type="button" class="e_button-page-ok" onclick="return importQueryData()"><i class="e_ico-import"></i><span>导入查询</span></button>
+		</li>						
+	</ul>
+
+		
+	</div>
+	 
+	<!-- 导入 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询结果</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 表格 开始 -->
+	<div jwcid="SvcStateList@Part" id="SvcStateList"  element="div">
+	<div class="c_scroll c_scroll-x style="height:500px"">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="UserSvcstateTable">
+			<thead>
+				<tr>
+						<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">服务号码</th>
+	      				<th onclick="Wade.dom.sortTable('ResultTable',2,'string')">服务ID</th>
+	      				<th onclick="Wade.dom.sortTable('ResultTable',3,'string')">服务名称</th>
+                        <th onclick="Wade.dom.sortTable('ResultTable',4,'string')">开始时间</th>
+                        <th onclick="Wade.dom.sortTable('ResultTable',5,'string')">结束时间</th>
+						<th onclick="Wade.dom.sortTable('ResultTable',6,'string')">服务状态</th>
+						<th onclick="Wade.dom.sortTable('ResultTable',7,'string')">PCRF控制策略关停状态</th>
+						<th onclick="Wade.dom.sortTable('ResultTable',8,'string')">备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_NAME"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+                       	<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WLW_SERVICE_STATE',info.STATE_CODE)"/></td>
+                       	<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WLW_PCRF_STATE',info.ServiceUsageState)"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+					</tr>
+				
+			</tbody>
+		</table>
+	</div></div>
+</div>
+
+<div jwcid="HiddenPart@Part" id="HiddenPart"  element="div">
+<input type="hidden"  jwcid="@Any"  name="SUSPEND_SERVICE" id="SUSPEND_SERVICE"/>
+<input type="hidden"  jwcid="@Any" name="SERIAL_NUMBER" id="SERIAL_NUMBER" />
+</div>
+<!-- 区域 结束 -->
+<!-- 表单 结束 -->
+
+</div></div></body>
+</html>

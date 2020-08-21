@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户订单详细信息查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/base/scripts/queryCommRecord.js"></script>
+<script language="javascript">
+	window.attachEvent("onunload",closePage);
+	function closePage()
+	{
+		ajaxSubmit('HiddenPart,SerialNumPart','closePage',null,null,null);
+	};
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户订单详细信息查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8" jwcid="QueryRecordPart@Part">
+		<ul class="ul">
+		  <!--  <li class="li">
+				<span class="label"><span class="e_required">交易码：</span></span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_TRADE_CODE" name="cond_TRADE_CODE" value="ognl:cond.TRADE_CODE"  desc="交易码" nullable="no" />
+				</span></span>
+			</li> -->
+			<li class="li">
+				<span class="label"><span class="e_required">订单号：</span></span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_ORDER_NUM" name="cond_ORDER_NUM" value="ognl:cond.ORDER_NUM"  desc="订单号"  nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">商户编号：</span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_TENANT_NUM" name="cond_TENANT_NUM" value="ognl:cond.TENANT_NUM"  desc="商户编号" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">下单日期：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="cond_BILL_TIME" name="cond_BILL_TIME" value="ognl:cond.BILL_TIME" desc="下单日期" format="yyyy-MM-dd" maxName="cond_BILL_TIME"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecord();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+		<!-- 隐藏区域 开始 -->
+   	<div jwcid="HiddenPart@Part" element="div">
+		<input jwcid="@Hidden" id="INDICTSEQ" name="INDICTSEQ" value="ognl:result.INDICTSEQ" />
+		<input jwcid="@Hidden" id="ORIGINTIME" name="ORIGINTIME" value="ognl:result.ORIGINTIME" />
+		<input jwcid="@Hidden" id="MAXRECORDNUM" name="MAXRECORDNUM" value="ognl:result.MAXRECORDNUM" />
+		<input jwcid="@Hidden" id="RSLTPAGECURRCNT" name="RSLTPAGECURRCNT" value="ognl:result.RSLTPAGECURRCNT" />
+		<input jwcid="@Hidden" id="PIGEONHOLE" name="PIGEONHOLE" value="ognl:result.PIGEONHOLE" />
+		<input jwcid="@TextArea" type="hidden" id="REPORTPAGE" name="REPORTPAGE" value="ognl:reportPage" style="display:none"/>
+	</div>
+	<div jwcid="SerialNumPart@Part" element="div">
+		<input jwcid="@Hidden" id="CALLERNO" name="CALLERNO" value="ognl:result.CALLERNO" />
+	</div>
+	<!-- 隐藏区域 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x style="height:242px"">
+	<div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>买家</th>
+					<th>商户编号</th>
+					<th>订单编号</th>
+					<th>交易时间</th>		
+					<th>交易总价</th>
+					<th>现金金额</th>
+					<th>充值卡金额</th>	
+					<th>订单失效时间</th>
+					<th>最后记账日期</th>
+					<th>代金券金额</th>
+					<th>代金券张数</th>
+					<th>商户名称</th>	
+					<th>商品名称</th>
+					<th>支付类型</th>
+					<th>订单状态</th>
+					<th>用户支付时间</th>
+					<th>支付方式</th>
+					<th>订单类型</th>
+					<th>业务受理渠道</th>
+					<th>内部订单号</th>
+					<th>充值订单号</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR0" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR7" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR8" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR9" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR10" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR11" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR12" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_PAY_PAYTYPE', info.RSRV_STR13)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_PAY_ORDERSTATE', info.RSRV_STR14)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR15" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_PAY_PAYWAY', info.RSRV_STR16)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_PAY_ORDERTYPE', info.RSRV_STR17)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_PAY_BAC_CODE', info.RSRV_STR18)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR19" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR20" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="HiddenPart,SerialNumPart" part="HiddenPart,QueryListPart" 
+	      listener="queryOtherRecord" pageSize="ognl:result.RSLTPAGECURRCNT" count="ognl:result.MAXRECORDNUM"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

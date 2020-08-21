@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: SaleActiveTrade.html,v 1.6 2013/04/10 08:33:42 anwx Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>营销活动受理</title>
+<script jwcid="@Script" language="JavaScript" src="scripts/group/saleactive/saleactivetrade.js"></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/common/tradecheck/TradeCheck.js"></script>
+
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper" id="bodyScroll"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <div class="text">客户查询</div>
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="$.SaleActiveTrade.displaySwitch(this,'custInfoPart')"><i
+				class="e_ico-unfold"></i><span>展示客户信息</span>
+			</a>
+		</div>
+    </div>
+	<div class="c_form" jwcid="GroupPart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroupBySNPopup" afterAction="$.SaleActiveTrade.selectGrpAfterAction(data)" afterErrorAction="$.SaleActiveTrade.selectGrpErrAfterAction()"/>		
+			</li>
+		</ul>
+	</div>
+     <div id="custInfoPart" jwcid="custInfoPart@Part" style="display:none">
+		<span jwcid="@saleserv:GroupCustInfo" titleLev="2"/>
+		<span jwcid="@saleserv:GroupUserInfo" titleLev="2"/>
+    </div>
+    <div class="c_title">
+		<div class="text">选择营销活动</div>
+	</div>
+	<div class="c_form" jwcid="SaleActivePart@Part" element="div">
+
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">活动类型：</span></span>
+				<div jwcid="CampTypePart@Part">
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CAMPN_TYPE" id="CAMPN_TYPE" desc="操作类型"
+							source="ognl:campTypes" textField="PRODUCT_TYPE_NAME" valueField="PRODUCT_TYPE_CODE" nullable ="no"
+							value="ognl:info.PRODUCT_TYPE_CODE" disabled="true" onchange="$.SaleActiveTrade.changeCampnType()"/>
+					</span></span></span>
+				</div>
+			</li>	
+			<li class="li">
+				<span class="label"><span class="e_required">营销活动方案：</span></span>
+				<div jwcid="ProductPart@Part">
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SALE_PRODUCT_ID" id="SALE_PRODUCT_ID" nullable="no" desc="营销活动方案" source="ognl:products" 
+							textField="PRODUCT_INFO" disabled="true" valueField="PRODUCT_ID" value="ognl:info.PRODUCT_ID"  onchange="$.SaleActiveTrade.changeCampn()"/>
+					</span></span></span>
+				</div>
+			</li>
+			
+			<li class="li" id="cancel_file1" style="display:none;">
+				<span class="label"><span>附件上传：</span></span>
+				<div jwcid="SaleFilePart@Part">
+				<span class="e_elements">
+					<input jwcid="@Upload"
+							name="SALE_FILE_LIST"
+							id="SALE_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/attach"
+							fileSize="20"
+							fileTypes="*.*"
+						/>
+					</span>
+			    </div>											
+			</li>
+			
+			<input type="text" jwcid="@TextField" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:info.TRADE_TYPE_CODE" desc="订单类型" style="display:none"/>
+			<input type="text" jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:info.USER_ID" desc="用户ID" style="display:none"/>
+			<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" desc="用户号码" style="display:none"/>
+			<input type="text" jwcid="@TextField" name="GROUP_ID" id="GROUP_ID" value="ognl:info.GROUP_ID" desc="集团ID" style="display:none"/>
+			<input type="text" jwcid="@TextField" name="GRP_PRODUCT_ID" id="GRP_PRODUCT_ID" value="ognl:info.GRP_PRODUCT_ID" desc="集团产品" style="display:none"/>
+
+			<input type="text" jwcid="@TextField" name="PACKAGE_ID" id="PACKAGE_ID" value="ognl:info.PACKAGE_ID" desc="包ID" style="display:none"/>
+		</ul>
+	</div>
+</div>
+
+<!-- 分栏 开始 -->
+<div class="l_col">
+	<!-- 第 1 栏 开始 -->
+	<div class="l_left" style="width:300px;">
+		
+		<!-- 产品列表 开始 -->
+		<div class="c_box" id="treePar">
+			<!-- 标题 -->
+			<div class="c_title c_title-2">
+				<div class="text">营销包列表</div>
+			</div>
+			<!-- 树开始 -->
+			<div class="c_scroll" style="height:280px;">
+			<div jwcid="groupPackageTree@Tree" 
+					method="loadGrpPackageTrees" 
+					clazz="com.asiainfo.veris.crm.order.web.group.saleactive.SalePackageTreeHttpHandler"
+					init = "false"
+					textAction="$.SaleActiveTrade.selectSaleActiveAction(nodedata);"
+					ShowCheckBox="false">
+			</div></div>	
+		</div>
+		<!-- 产品列表 结束 -->
+	</div>
+	<!-- 第 1 栏 结束-->
+	<!-- 第 2 栏 开始 -->
+	<div class="l_auto">
+	
+	<div class="c_box">	
+		<!-- 标题 -->
+		<div class="c_title c_title-2">
+			<div class="text">营销活动详情</div>
+		</div>
+		<div id="detailContent" jwcid="detailContent@Part"  style="display:none">
+        <div jwcid="saleactiveModule@saleserv:GrpSaleActiveModule"
+        	element="div"
+            packageId="ognl:info.PACKAGE_ID"
+        	productId="ognl:info.PRODUCT_ID" 
+        	eparchyCodeCompId="custinfo_EPARCHY_CODE"/>
+		</div>
+	</div></div>
+	<!-- 第 2 栏 结束 -->
+	
+</div>
+
+<!-- 凭证信息开始  -->
+<div class="c_box" jwcid="@Conditional" condition='ognl:condition.AUDIT_INFO_SHOW != null && condition.AUDIT_INFO_SHOW == "true"'>
+	<div class="c_title">
+		<div class="text">凭证信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">				
+				<span class="label"><span class="e_required">凭证上传：</span></span>
+				<div jwcid="VoucherFilePart@Part">
+					<span class="e_elements">
+					<input jwcid="@Upload"
+							name="VOUCHER_FILE_LIST"
+							id="VOUCHER_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/mebattach"
+							fileSize="20"
+							fileTypes="*.*"
+                       		desc="凭证信息" 
+                       		nullable="no"
+						/>
+					</span>
+			    </div>
+			</li>
+               <li class="li">
+                <span class="label"><span class="e_required">稽核人员：</span></span> 
+                <span class="e_elements">
+					<button type="button" class="e_button-right"
+						onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+						<i class="e_ico-check"></i><span></span>
+					</button> 
+                    <span class="e_input e_input-left"><span> <input
+							type="text" jwcid="@TextField"
+							name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+							value=""
+							text="" nullable="no"
+							readonly="true"/>
+					</span></span>
+				</span>
+            </li>
+		</ul>
+	</div>
+</div>
+<!-- 凭证信息结束  -->
+    
+<div jwcid="saleElementAttr@saleserv:SaleElementAttr" element="div" confirmHandler="saleactiveModule.confirmAttr(this.getAttribute('itemIndex'));"></div>
+<div class="c_box">
+	<div class="c_submit">
+		<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="$.SaleActiveTrade.onTradeSubmit()" isRender="false" isGrp="true" params="" listener="onTradeSubmit" disabledBtn="false" refreshPart="" area="" element="div"/>
+	</div>
+</div>
+<input jwcid="@Hidden" id="custinfo_EPARCHY_CODE" name="custinfo_EPARCHY_CODE" value="0898" desc="用户地州"/>
+<input type="hidden" jwcid="@TextField" name="ACCTDAY" id="ACCTDAY" desc="用户账期" value="" style="display:none"/>
+</div></div>
+</body>
+</html>

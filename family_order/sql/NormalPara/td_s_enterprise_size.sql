@@ -1,0 +1,1 @@
+SELECT enterprise_size_code paracode,enterprise_size_name paraname FROM td_s_enterprise_size where :TRADE_EPARCHY_CODE IS NOT NULL OR :TRADE_EPARCHY_CODE IS NULL

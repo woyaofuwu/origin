@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<title>融合通信业务成员号码开通信息表</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/elecagreement/script/ElecLineProtocolBase.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/elecagreement/script/ElecFusionComAccessorySec.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	
+</head>
+<body jwcid="@Body">
+	<div class="c_header" >
+		<div class="back" ontap="hidePopup(this)">合同属性填写</div>
+	</div>
+	<div class="c_scroll c_scroll-white c_scroll-float c_scroll-header">
+		<div class="l_padding l_padding-2">
+			<div class="c_article c_article-contract" id="onsubmitPart">
+				<div class="title">融合通信业务成员号码开通信息表</div>
+				<div class="c_space c_space-2"></div>
+				<div class="c_title c_title-nopadding">
+					<div class="fn">
+						<ul>
+							<li ontap="showAddPopup()"><span class="e_ico-add"></span>添加</li>
+							<li ontap="showEditPopup(true)"><span class="e_ico-edit"></span>同步修改</li>
+							<li ontap="showEditPopup(false)"><span class="e_ico-edit"></span>修改</li>
+							<li ontap="deleteData()"><span class="e_ico-cancel"></span>删除</li>
+						</ul>
+					</div>
+				</div>
+				<table jwcid="@Table" id="LINE_INFOS" name="LINE_INFOS" useScroller="true" class="c_table c_table-row-10 c_table-hasGrid c_table-lite c_table-border">
+					<thead>
+						<tr>
+							<th col="SERIAL_NUMBER">成员号码</th>
+							<th col="NUMBER_TYPE">号码类型</th>
+							<th col="SHORT_NUMBER">分配短号</th>
+							<th col="PACKAGE_MESSAGE">套餐信息</th>
+							<th col="REMARK">备注</th>
+							<th col="DELETE" class="fn" >刪除</th>
+						</tr>
+					</thead>
+					<tbody id="DataList">
+						<tr jwcid="@Foreach" source="ognl:accessoryInfo.LINE_INFOS" value="ognl:lineInfo" index="ognl:index" element="tr">
+							<td><span jwcid="@Insert" value="ognl:lineInfo.SERIAL_NUMBER"/></td>
+							<td><span jwcid="@Insert" value="ognl:lineInfo.NUMBER_TYPE"/></td>
+							<td><span jwcid="@Insert" value="ognl:lineInfo.SHORT_NUMBER"/></td>
+							<td><span jwcid="@Insert" value="ognl:lineInfo.PACKAGE_MESSAGE"/></td>
+							<td><span jwcid="@Insert" value="ognl:lineInfo.REMARK"/></td>
+							<td class="fn"><span ontap="deleteOneRowData();" class="e_ico-delete"></span></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="l_col l_col-space">
+					<div class="l_colItem">
+						<p>甲方（盖章）：<input id="A_NAME" name="A_NAME" nullable="no" desc="甲方" value="ognl:accessoryInfo.A_NAME" jwcid="@TextField" style="width:3.35rem;" placeholder="必填" class="e_input-required" /></p>
+						<p>经办人（签名）：</p>
+						<p>日期：<input jwcid="@DateField"  id="A_SIGN_DATE" desc="甲方签署日期" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',accessoryInfo.A_SIGN_DATE)" format="yyyy-MM-dd"  name="A_SIGN_DATE" dropDown="true" nullable="no"  class="e_group e_group-required" placeholder="必填" /></p>
+					</div>
+					<div class="l_colItem">
+						<p>乙方（盖章）：中国移动通信集团海南有限公司</p>
+						<p>经办人（签名）：</p>
+						<p>日期：<input jwcid="@DateField"  id="B_SIGN_DATE" desc="乙方签署日期" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',accessoryInfo.B_SIGN_DATE)" format="yyyy-MM-dd"  name="B_SIGN_DATE" dropDown="true" nullable="no"  class="e_group e_group-required" placeholder="必填" /></p>
+					</div>
+				</div>
+				<div  jwcid="HiddenPart@Part">
+					<input jwcid="@Hidden" id="AGREEMENT_ID" name="AGREEMENT_ID" value="ognl:protocolInfo.AGREEMENT_ID"/>
+					<input jwcid="@Hidden" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:protocolInfo.PRODUCT_ID"/>
+					<input jwcid="@Hidden" id="CUST_ID" name="CUST_ID" value="ognl:accessoryInfo.CUST_ID"/>
+					<input jwcid="@Hidden" id="USER_ID" name="USER_ID" value="ognl:info.USER_ID"/>
+					<input jwcid="@Hidden" id="IBSYSID" name="IBSYSID" value="ognl:info.IBSYSID"/>
+					<input jwcid="@Hidden" id="NODE_ID" name="NODE_ID" value="ognl:info.NODE_ID"/>
+					<input jwcid="@Hidden" id="AGREEMENT_DEF_ID" name="AGREEMENT_DEF_ID" value="ognl:accessoryInfo.AGREEMENT_DEF_ID"/>
+					<input jwcid="@Hidden" id="SUBMITTYPE" name="SUBMITTYPE" value="ognl:info.SUBMITTYPE"/>
+					<input jwcid="@Hidden" id="ARCHIVES_ID" name="ARCHIVES_ID" value="ognl:info.ARCHIVES_ID"/>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:info.SHOWBUTTON">
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-center">
+						<button type="button" class="e_button-r e_button-l e_button-navy" ontap="reset();">重置</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue"  style="display:none"  ontap="onPrint(this)" >打印</button>
+						<button type="button" class="e_button-r e_button-l e_button-green" ontap="onSubmit(this);">提交</button>
+					</div>
+					<div class="c_space c_space-3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div jwcid="@Popup" name="tradeTablepopup">
+		<div class="c_popupGroup">
+			<div class="tradeTablepopup_item" id="tradeTablepopup_item">
+				<div class="c_header">
+					<div class="back" ontap="backPopup(this)">返回</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div id="editPart" jwcid="editPart@Part" optimize="true">
+						<div class="l_padding">
+							<div class="c_list c_list-line c_list-border">
+								<ul>
+									<li class="link required">
+										<div class="label">成员号码</div>
+										<div class="value">
+											<input jwcid="@TextField" id="SERIAL_NUMBER" desc="成员号码" name="SERIAL_NUMBER" nullable="no"/>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">号码类型</div>
+										<div class="value">
+											<div class="value">
+												<select name="NUMBER_TYPE" id="NUMBER_TYPE"
+														jwcid="@Segment"
+														source="ognl:info.NUMBER_TYPES"
+														textField="textField" valueField="textField"
+														nullable="no" />
+											</div>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">分配短号</div>
+										<div class="value">
+											<input jwcid="@TextField" id="SHORT_NUMBER" desc="分配短号" name="SHORT_NUMBER" nullable="no"/>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">套餐信息</div>
+										<div class="value">
+											<input jwcid="@TextField" id="PACKAGE_MESSAGE" desc="套餐信息" name="PACKAGE_MESSAGE" nullable="no"/>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">备注</div>
+										<div class="value">
+											<input jwcid="@TextField" id="REMARK" desc="备注" name="REMARK"/>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="c_space"></div>
+							<div class="c_submit c_submit-full">
+								<button type="button" ontap="resetData()" class="e_button e_button-r e_button-width-m e_button-navy" >重置</button>
+								<button type="button" ontap="addData(this)" id="ADDBUTTON" class="e_button e_button-r e_button-width-m e_button-green" >确定</button>
+								<input jwcid="@Hidden" name="SYNCHUPDATE" value="false" desc="同步状态"  />
+								<input jwcid="@Hidden" name="BUTTONSTATE" value="add" desc="操作状态"  />
+							</div>
+							<div class="c_space"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

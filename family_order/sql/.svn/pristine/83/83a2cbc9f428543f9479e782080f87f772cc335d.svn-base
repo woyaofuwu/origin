@@ -1,0 +1,7 @@
+SELECT *
+  FROM TF_F_RELATION_UU t
+ WHERE 1=1 
+ 	 AND user_id_a = TO_NUMBER(:USER_ID)
+   AND relation_type_code = :RELATION_TYPE_CODE
+   AND SERIAL_NUMBER_B = :SERIAL_NUMBER_B
+   AND t.END_DATE > =sysdate

@@ -1,0 +1,71 @@
+<div id="SaleDepositDiv" class="c_list c_list-gray c_list-border c_list-line">
+    <ul>
+        <li jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+            index="ognl:rowIndex" element="li">
+            <div class="ico">
+                <span class="e_ico-money e_blue" title="预存"></span>
+            </div>
+            <div class="main">
+                <!-- （Pc/Pad 版） 开始 -->
+                <div class="title e_hide-phone">
+                    <span jwcid="@Insert"
+                          value="ognl:info.DISCNT_GIFT_ID + '|' + info.DISCNT_GIFT_NAME" />
+                </div>
+                <!-- （Phone 版） 开始 -->
+                <div class="title e_show-phone" style="overflow: auto; text-overflow: clip">
+                    <span jwcid="@Insert"
+                          value="ognl:info.DISCNT_GIFT_ID + '|' + info.DISCNT_GIFT_NAME" />
+                </div>
+                <div class="content">
+                    <span jwcid="@Insert" value="ognl:'月份数：' + info.MONTHS" />
+                </div>
+            </div>
+            <div class="side">
+                <div jwcid="@Conditional" condition="ognl:info.GIFT_USE_TAG == 1 || info.GIFT_USE_TAG == 2">
+                    <span class="e_mix e_mix-r">
+                        <input jwcid="@TextField"
+                               name="ognl:'DEPOSIT_' + rowIndex + '_DEPOSIT_USER_ID'"
+                               value="ognl:info.USER_ID"
+                               chkboxid="ognl:'DEPOSIT_CB_' + rowIndex + '_' + info.DISCNT_GIFT_ID"
+                               onenterAction="saleActiveModule.checkDepositGiftUser(this);"
+                               placeholder="输入被赠送号码" datatype="mbphone"
+                               maxLength="11" disabled="true"
+                               desc="赠送人服务号码" />
+                        <button type="button" class="e_button-blue"
+                                ontap="saleActiveModule.checkDepositGiftUser(this);">
+                            <span class="e_ico-send"></span><span>赠送</span>
+                        </button>
+                    </span>
+                </div>
+                <div jwcid="@Conditional"
+                     condition="ognl:info.GIFT_USE_TAG != 1 && info.GIFT_USE_TAG != 2">不能赠送
+                </div>
+            </div>
+            <label class="fn">
+                <input type="checkbox" jwcid="@Checkbox"
+                       value="ognl:info.DISCNT_GIFT_ID"
+                       name="ognl:'DEPOSIT_CB_' + rowIndex + '_' + info.DISCNT_GIFT_ID"
+                       id="ognl:'DEPOSIT_CB_' + rowIndex + '_' + info.DISCNT_GIFT_ID"
+                       index="ognl:rowIndex"
+                       elementId="ognl:info.DISCNT_GIFT_ID"
+                       elementName="ognl:info.DISCNT_GIFT_NAME"
+                       elementTypeCode="ognl:info.ELEMENT_TYPE_CODE"
+                       fee="ognl:info.FEE"
+                       feeMode="ognl:info.FEE_MODE"
+                       feeTypeCode="ognl:info.FEE_TYPE_CODE"
+                       payMode="ognl:info.PAY_MODE"
+                       depositType="ognl:info.DEPOSIT_TYPE"
+                       inDepositCode="ognl:info.IN_DEPOSIT_CODE"
+                       outDepositCode="ognl:info.OUT_DEPOSIT_CODE"
+                       giftUseTag="ognl:info.GIFT_USE_TAG"
+                       startDate="ognl:info.START_DATE"
+                       endDate="ognl:info.END_DATE"
+                       checked="ognl:info.MAIN_TAG == 1 || info.DEFAULT_TAG == 1 || info.FORCE_TAG == 1"
+                       disabled="ognl:info.MAIN_TAG == 1 || info.FORCE_TAG == 1"
+                       onclick="saleActiveModule.spCheckBoxOnclickAction(this.id);" />
+            </label>
+        </li>
+    </ul>
+</div>
+<input jwcid="@Hidden" name="SALEDEPOSIT_COMPONENT_ID" value="ognl:id" />
+<input jwcid="@Hidden" name="SALEDEPOSIT_EPARCHY_CODE" value="ognl:eparchyCode" />

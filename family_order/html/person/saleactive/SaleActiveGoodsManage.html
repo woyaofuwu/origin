@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>优惠活动礼品配置</title>
+<script jwcid="@Script" src="person/saleactive/scripts/SaleActiveGoodsManage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-mix" jwcid="QueryRecordPart@Part">
+		<ul class="ul c_form-col-2 c_form-label-4">
+			<li class="li" >
+					<span class="label"><span class="e_required">营销活动名称：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_SALE_PRODUCT" id="cond_SALE_PRODUCT" source="ognl:products"
+	                                    addDefault="true" value="ognl:cond.cond_SALE_PRODUCT" disabled="false" desc="营销活动名称" nullable="no" 
+	                                    textField="PRODUCT_ID_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" onchange="selectPackage()"/>
+					
+					</span></span></span>
+			</li> 
+			<li class="li" >
+						<span class="label">营销包：</span>
+						<span class="e_select" jwcid="PackagePart@Part"><span><span>
+							<select jwcid="@Select" name="cond_SALE_PACKAGE" id="cond_SALE_PACKAGE" source="ognl:packages"
+		                                    addDefault="true" value="ognl:cond.cond_SALE_PACKAGE" disabled="false" desc="营销包" nullable="yes" 
+		                                    textField="PACKAGE_ID_NAME" valueField="PACKAGE_ID" titleField="PACKAGE_NAME"  onchange="selectGoods()"/>
+						
+						</span></span></span>
+			</li>
+		</ul>
+		<ul class="ul c_form-col-3 c_form-label-6">
+			<li class="li">
+						<span class="label">实物礼品：</span>
+						<span class="e_select" jwcid="GoodsPart@Part"><span><span>
+							<select jwcid="@Select" name="cond_SALE_GOODS" id="cond_SALE_GOODS" source="ognl:goods"
+		                                    addDefault="true" value="ognl:cond.cond_SALE_GOODS" disabled="false" desc="实物礼品" nullable="yes" 
+		                                    textField="GOODS_ID_NAME" valueField="GOODS_ID" titleField="GOODS_NAME" />
+						
+						</span></span></span>
+			</li> 
+			<li class="li">
+					<span class="e_elements">
+						<span class="label"><span class="e_required">状态：</span></span>
+						<span class="e_select"><span><span>
+							<select id="cond_VILID_TAG" name="cond_VILID_TAG">
+								<option value='1' selected>正常</option>
+								<option value='0'>无效</option>
+							</select>
+						</span></span></span>
+					</span>
+			</li> 
+		</ul>  
+		<div class="submitPlace"></div>
+		<div class="submit"  >
+				<button class="e_button-form"  name="QUERY_BTN" id="QUERY_BTN" onclick="return queryInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		    	<button class="e_button-form" onclick="return resetQry();" ><i class="e_ico-reset"></i><span>重置</span></button>
+		</div>
+	</div>  
+	 
+	
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-10 ">
+		<div class="c_table">
+			<table jwcid="@Table"  id="paramTable" name="paramTable"  rowClick="tableRowClick" >
+				<thead>
+					<tr>
+						<th col="EXT_ID" style="display:none">数据ID</th> 
+						<th col="SALE_PRODUCT">营销活动编码</th> 
+						<th col="SALE_PRODUCT_NAME">营销活动名称</th> 
+						<th col="SALE_PACKAGE" style="display:none">营销包ID</th> 
+						<th col="SALE_PACKAGE_NAME">营销包名称</th> 
+						<th col="SALE_GOODS" style="display:none">礼品ID</th> 
+						<th col="SALE_GOODS_NAME">礼品名称</th>
+						<th col="ACCOUNT_ID">账户别名编码</th> 
+						<th col="ACCOUNT_NAME">账户别名</th>
+						<th col="CITY_CODE_NAME">归属业务区</th>
+						<th col="CITY_CODE" style="display:none">归属业务区ID</th> 
+						<th col="RES_ID">物料编码</th> 
+						<th col="GOODS_PROPERTY">礼品属性</th>
+						<th col="PURCHASE_TYPE">采购类型</th> 
+						<th col="PURCHASE_TYPE_ID" style="display:none">采购类型ID</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.EXT_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_PRODUCT', 'PRODUCT_ID', 'PRODUCT_NAME', info.PRODUCT_ID)" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.PACKAGE_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_PACKAGE', 'PACKAGE_ID', 'PACKAGE_NAME', info.PACKAGE_ID)" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.GOODS_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.GOODS_NAME" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCOUNT_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCOUNT_NAME" /></td>  
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CITY_CODE_GOODS', info.CITY_CODE)" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.CITY_CODE" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RES_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.GOODS_PROPERTY" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PURCHASE_TYPE', info.PURCHASE_TYPE)" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.PURCHASE_TYPE" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>
+<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">编辑区</div>
+			<div class="fn"></div>
+		</div>
+		<!-- 标题 结束 -->
+		<div class="c_form c_form-col-mix"  jwcid="editPart@Part" >
+			<ul class="ul c_form-col-2 c_form-label-4">
+				<li class="li">
+					<span class="label"><span class="e_required">营销活动名称：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SALE_PRODUCT" id="SALE_PRODUCT" source="ognl:products"
+	                                    addDefault="true" value="" disabled="true" desc="营销活动名称"  nullable="no"
+	                                    textField="PRODUCT_ID_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME"  onchange="selectEditPackage()"/>
+					
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">营销包：</span></span>
+					<span class="e_select"  jwcid="EditPackagePart@Part"><span><span>
+						<select jwcid="@Select" name="SALE_PACKAGE" id="SALE_PACKAGE" source="ognl:packages"
+	                                    addDefault="true" value="" disabled="true" desc="营销包"  nullable="no"
+	                                    textField="PACKAGE_ID_NAME" valueField="PACKAGE_ID" titleField="PACKAGE_NAME"  onchange="selectEditGOODS()"/> 
+					</span></span></span>
+				</li> 
+			</ul>
+			<ul class="ul c_form-col-3 c_form-label-6">
+				<li class="li" >
+					<span class="label"><span class="e_required">实物礼品：</span></span>
+					<span class="e_elements">
+						<button type="button" class="e_button-right" onclick="$.popupPage('popup.GiftAttrSelect1','','','实物礼品','800','700','RES_NAME','',subsys_cfg.resserv);">
+							<i class="e_ico-check"></i><span></span>
+						</button>
+						<span class="e_input e_input-left"><span>
+							<input type="text" jwcid="@TextField" name="RES_NAME" id="RES_NAME" value="" desc="实物礼品" readonly="true" nullable="no"/>
+						</span></span>
+					</span> 
+					<input jwcid="@Hidden" name="GOODS_ID" id="GOODS_ID" value="" nullable="no"  desc="GOODS_ID"/>
+				</li> 
+				<li class="li"  >
+					<span class="e_elements">
+					<span class="label"><span class="e_required">礼品属性：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="GOODS_PROPERTY" name ="GOODS_PROPERTY"  value="" desc="礼品属性" disabled="true" maxLength="20"  nullable="no"/>
+					</span></span>
+					</span>
+				</li> 
+				<li class="li">
+					<span class="label"><span class="e_required">物料编码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="RES_ID" name ="RES_ID"  value="" desc="物料编码" disabled="true" maxLength="20"  nullable="no"/>
+					</span></span>
+				</li> 
+				<li class="li">
+					<span class="e_elements">
+						<span class="label"><span class="e_required">采购类型：</span></span>
+						<span class="e_select"><span><span>
+						<select	jwcid="@Select" name="PURCHASE_TYPE" id="PURCHASE_TYPE"
+								source="ognl:pageutil.getStaticList('PURCHASE_TYPE')" value="" 
+								textField="DATA_NAME" valueField="DATA_ID"  disabled="true" 
+								desc="采购类型"/>
+					</span></span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="e_elements">
+						<span class="label">礼品数量：</span>
+						<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" id="GOODS_NUM" name ="GOODS_NUM"  value="" desc="礼品数量" disabled="true"  nullable="yes"/>
+						</span></span>
+					</span>
+				</li> 
+				
+			 	<li class="li">
+					<span class="label"><span class="e_required">账户别名：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="ACCOUNT_ID" id="ACCOUNT_ID" source="ognl:pageutil.getStaticList('DISPOSITION')"
+	                                    addDefault="true" value="" disabled="false" desc="账户别名" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span> 
+				</li> 
+				<li class="li" >
+					<span class="label"><span class="e_required">归属业务区：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CITY_CODE" id="CITY_CODE" source="ognl:pageutil.getStaticList('CITY_CODE_GOODS')"
+	                                    addDefault="true" value="ZZZZ" disabled="false" desc="归属业务区" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+				</li> 
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit"  >
+				<button class="e_button-form" id="addButton" onclick="return addItem();" disabled="true"><i class="e_ico-add"></i><span>新增</span></button>
+				<button class="e_button-form" id="editButton" onclick="return editItem();" disabled="true"><i class="e_ico-modify"></i><span>修改</span></button>
+				<button class="e_button-form" id="delButton" onclick="return delItem();" disabled="true"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="e_button-form" id="retButton" onclick="return resetEdit();" disabled="true"><i class="e_ico-reset"></i><span>清空</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<div class="c_box">
+		<div jwcid="SubmitPart@csserv:CSSubmit"  beforeAction="submitCheck()" isReset="true" area="" element="div"/>
+	</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

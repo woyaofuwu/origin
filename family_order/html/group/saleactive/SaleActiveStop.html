@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: SaleActiveStop.html,v 1.2 2014/05/07 08:29:52 sungq3 Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/saleactive/SaleActiveStop.js"></script>
+<title>营销活动业务取消</title>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">营销活动业务取消</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form c_form-col-1 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroupBySNPopup" afterAction="querySaleActive()" afterErrorAction="$.endPageLoading();" tradeTypeCode="3607"/> 
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label">取消原因：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+					<textarea
+						jwcid="@TextArea" 
+						name="CUST_NAME" 
+						id="CUST_NAME"
+						type="text"
+						value="ognl:info.CUST_NAME"
+						desc="取消原因"
+						raw="true" style="height:36px;"></textarea>
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	</div>
+	<!-- 表单结束 -->
+	
+	<!--信息展示区1-->
+	<div jwcid="RefreshPart@Part">
+	<div class="c_title c_title-2">
+		<span class="text">营销活动信息列表</span> 
+	</div>
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+		<table jwcid="@Table" name="saleactiveTable" id="saleactiveTable">
+			<thead>
+				<tr> 
+	  				<th col="PRODUCT_NAME">活动名称</th>
+	  				<th col="PACKAGE_NAME">营销包名称</th>
+					<th col="CAMPN_CODE">活动编码</th>
+					<th col="CAMPN_TYPE">活动类型</th>
+					<th col="SERIAL_NUMBER">服务号码</th>
+					<th col="START_DATE">开始时间</th>
+					<th col="END_DATE">结束时间</th> 
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:actives" value="ognl:active" element="tr" index="ognl:activeIndex">
+					
+					<td>
+						<input jwcid="@Radio" id="ognl:'active_'+activeIndex" name="actives" index="ognl:activeIndex" 
+            				campn_id="ognl:active.CAMPN_ID"
+							user_id="ognl:active.USER_ID"
+							relation_trade_id="ognl:active.RELATION_TRADE_ID"
+							partition_id="ognl:active.PARTITION_ID"
+							product_id="ognl:active.PRODUCT_ID"
+							package_id="ognl:active.PACKAGE_ID"
+							start_date="ognl:active.START_DATE"
+							value="ognl:active.CAMPN_ID"
+							end_date_name="ognl:'SALE_END_DATE' + activeIndex"
+							onclick="querySaleParams(this)" 
+           					raw="false"/>
+						<span jwcid="@Insert" value="ognl:active.PRODUCT_NAME"></span>		
+	    			</td>
+					<td><span jwcid="@Insert" value="ognl:active.PACKAGE_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:active.CAMPN_CODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('GRP_CAMPAIGN_CAMPNTYPE', active.CAMPN_TYPE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:active.SERIAL_NUMBER" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',active.START_DATE)" raw="false"/></td>
+					<td>
+						<!--span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',active.END_DATE)" raw="false"/-->
+						<input type="text" jwcid="@DatePopup" id="ognl:'SALE_END_DATE' + activeIndex" name="END_DATE" value="ognl:active.END_DATE" 
+							format="yyyy-MM-dd HH:mm:ss" time="true" disabled="true"/>
+					</td>
+					
+					
+				</tr>
+			</tbody>
+		</table>
+		<input type="hidden" name="USER_ID" id="USER_ID"></input>
+	</div></div> 
+	<!-- 表格 结束 -->
+	</div>
+	<!--信息展示区1 结束-->
+
+	
+	<!--信息展示区2-->
+	<div jwcid="ServerPart@Part" >
+	<div jwcid="@Conditional" condition="ognl:servs != null && servs.size() > 0">
+	<div class="c_title c_title-2">
+		<span class="text">服务信息列表</span> 
+	</div>
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x "><div class="c_table">
+		<table name="ServTable" id="ServTable">
+			<thead>
+				<tr> 
+					<th>终止服务</th>
+					<th>服务名称</th>
+					<th>开始时间</th>
+					<th>结束时间</th>
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:servs" value="ognl:serv" element="tr" index="ognl:serIndex">
+					<td>
+						<!-- USER_ID, PARTITION_ID, USER_ID_A, SERVICE_ID, PRODUCT_ID, PACKAGE_ID, START_DATE -->
+						<input jwcid="@Checkbox" id="servs" name="servs" value="ognl:serv.SERVICE_ID"
+							user_id="ognl:serv.USER_ID"
+							partition_id="ognl:serv.PARTITION_ID"
+							user_id_a="ognl:serv.USER_ID_A"
+							service_id="ognl:serv.SERVICE_ID"
+							product_id="ognl:serv.PRODUCT_ID"
+							package_id="ognl:serv.PACKAGE_ID"
+							start_date="ognl:serv.START_DATE"
+							end_date_name="ognl:'SERV_END_DATE' + serIndex"
+							disabled="ognl:serv.SERV_INVALID_CODE == 0"
+							onclick="activeDiscntEndDate(this)"
+							/>
+						</td>
+					<td><span jwcid="@Insert" value="ognl:serv.SERVICE_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss', serv.START_DATE)" raw="false"/></td>
+					<td>
+						<input type="text" jwcid="@DatePopup" id="ognl:'SERV_END_DATE' + serIndex" name="END_DATE" value="ognl:serv.END_DATE" 
+							format="yyyy-MM-dd HH:mm:ss" time="true" disabled="true"/>
+						<!--span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss', serv.END_DATE)" raw="false"/-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div> 
+	<!-- 表格 结束 -->
+	</div>
+	</div>
+	<!--信息展示区2 结束-->
+	
+	<!--信息展示区3-->
+	<div jwcid="DiscntPart@Part">
+	<div jwcid="@Conditional" condition="ognl:discnts != null && discnts.size() > 0">
+	<div class="c_title c_title-2">
+		<span class="text">优惠信息列表</span> 
+	</div>
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x"><div class="c_table">
+		<table name="DiscntTable" id="DiscntTable">
+			<thead>
+				<tr> 
+					<th>修改优惠</th>
+					<th>优费名称</th>
+					<th>开始时间</th>
+					<th>结束时间</th> 
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:discnts" value="ognl:discnt" element="tr" index="ognl:discntIndex">
+					
+					<td>
+						<!-- USER_ID, PARTITION_ID, USER_ID_A, DISCNT_CODE, PRODUCT_ID, PACKAGE_ID, START_DATE -->
+						<input jwcid="@Checkbox" id="discnts" name="discnts" index="ognl:discntIndex" value="ognl:discnt.DISCNT_CODE" 
+							user_id="ognl:discnt.USER_ID"
+							partition_id="ognl:discnt.PARTITION_ID"
+							user_id_a="ognl:discnt.USER_ID_A"
+							discnt_code="ognl:discnt.DISCNT_CODE"
+							product_id="ognl:discnt.PRODUCT_ID"
+							package_id="ognl:discnt.PACKAGE_ID"
+							start_date="ognl:discnt.START_DATE"
+							end_date_name="ognl:'DISC_END_DATE' + discntIndex"
+							disabled="ognl:discnt.DISCNT_INVALID_CODE == 0"
+							onclick="activeDiscntEndDate(this)"
+							/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:discnt.DISCNT_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss', discnt.START_DATE)" raw="false"/></td>
+					<td>
+						<input type="text" jwcid="@DatePopup" id="ognl:'DISC_END_DATE' + discntIndex" name="END_DATE" value="ognl:discnt.END_DATE" 
+							format="yyyy-MM-dd HH:mm:ss" time="true" disabled="true"/>
+						<!--span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',discnt.END_DATE)" raw="false"/-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div> 
+	<!-- 表格 结束 -->
+	</div>
+	
+	<input type="hidden" name="SALEACTIVE_STR" id="SALEACTIVE_STR"></input>
+	<input type="hidden" name="DISCNT_STR" id="DISCNT_STR"></input>
+	
+	</div>
+	<!--信息展示区3 结束-->
+
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="QueryCondPart,RefreshPart,ServerPart,DiscntPart" listener="onSubmitBaseTrade" beforeAction="submitSaleParams();" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+</div></div>
+</body>
+</html>

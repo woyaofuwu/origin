@@ -1,0 +1,1 @@
+insert into tf_bh_trade_ftth(TRADE_ID,DEAL_TAG) values(:TRADE_ID,:DEAL_TAG)

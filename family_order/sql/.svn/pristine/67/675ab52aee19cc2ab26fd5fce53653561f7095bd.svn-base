@@ -1,0 +1,71 @@
+SELECT NVL(P.BADNESS_INFO_PROVINCE, Q.BADNESS_INFO_PROVINCE) BADNESS_INFO_PROVINCE,
+       NVL(P.BADNESS_INFO, Q.BADNESS_INFO) BADNESS_INFO,
+       NVL(P.IN_MODE_CODE, Q.IN_MODE_CODE) IN_MODE_CODE,
+       BADNESS_INFO_SUM,
+       NVL(BLACK_SUM, 0) BLACK_SUM,
+       BADNESS_INFO_SUM - NVL(BLACK_SUM, 0) NORMAL_SUM
+  FROM (SELECT T.BADNESS_INFO_PROVINCE,
+               T.BADNESS_INFO,
+               T.IN_MODE_CODE,
+               SUM(1) BLACK_SUM
+          FROM TF_F_BADNESS_INFO T
+         WHERE 1 = 1
+           AND EXISTS
+         (SELECT 1
+                  FROM TL_B_BLACKUSER B
+                 WHERE SUBSTR(B.SERIAL_NUMBER, 3, 11) =
+                       T.REPORT_SERIAL_NUMBER
+                   AND B.EFFECT_TAG = '1'
+                   AND (SYSDATE BETWEEN B.BEGIN_DATE AND B.END_DATE))
+           AND (SUBSTR(T.SORT_RESULT_TYPE, 5, 2) = :REPORT_TYPE_CODE OR
+               :REPORT_TYPE_CODE IS NULL)
+           AND (SUBSTR(T.SORT_RESULT_TYPE, 7, 2) = :REPORT_CODE OR
+               :REPORT_CODE IS NULL)
+           AND (SUBSTR(T.SORT_RESULT_TYPE, 9, 2) =
+               SUBSTR(:CONTENT_TYPE_CODE, 3, 2) OR
+               :CONTENT_TYPE_CODE IS NULL)
+           AND (T.IN_MODE_CODE = :IN_MODE_CODE OR :IN_MODE_CODE IS NULL)
+           AND (T.BADNESS_INFO_PROVINCE = :BADNESS_INFO_PROVINCE OR
+               :BADNESS_INFO_PROVINCE IS NULL)
+           AND (T.BADNESS_INFO = :BADNESS_INFO OR :BADNESS_INFO IS NULL)
+           AND (TRUNC(T.REPORT_TIME) >=
+               TO_DATE(:REPORT_START_TIME, 'yyyy-mm-dd') OR
+               :REPORT_START_TIME IS NULL)
+           AND (TRUNC(T.REPORT_TIME) <=
+               TO_DATE(:REPORT_END_TIME, 'yyyy-mm-dd') OR
+               :REPORT_END_TIME IS NULL)
+           AND (T.STATE = :STATE OR :STATE IS NULL)
+         GROUP BY T.BADNESS_INFO_PROVINCE, T.BADNESS_INFO, T.IN_MODE_CODE) P
+  FULL OUTER JOIN (SELECT S.BADNESS_INFO_PROVINCE,
+                          S.BADNESS_INFO,
+                          S.IN_MODE_CODE,
+                          SUM(1) BADNESS_INFO_SUM
+                     FROM TF_F_BADNESS_INFO S
+                    WHERE 1 = 1
+                      AND (SUBSTR(S.SORT_RESULT_TYPE, 5, 2) =
+                          :REPORT_TYPE_CODE OR :REPORT_TYPE_CODE IS NULL)
+                      AND (SUBSTR(S.SORT_RESULT_TYPE, 7, 2) = :REPORT_CODE OR
+                          :REPORT_CODE IS NULL)
+                      AND (SUBSTR(S.SORT_RESULT_TYPE, 9, 2) =
+                          SUBSTR(:CONTENT_TYPE_CODE, 3, 2) OR
+                          :CONTENT_TYPE_CODE IS NULL)
+                      AND (S.IN_MODE_CODE = :IN_MODE_CODE OR
+                          :IN_MODE_CODE IS NULL)
+                      AND (S.BADNESS_INFO_PROVINCE = :BADNESS_INFO_PROVINCE OR
+                          :BADNESS_INFO_PROVINCE IS NULL)
+                      AND (S.BADNESS_INFO = :BADNESS_INFO OR
+                          :BADNESS_INFO IS NULL)
+                      AND (S.STATE = :STATE OR :STATE IS NULL)
+                      AND (TRUNC(S.REPORT_TIME) >=
+                          TO_DATE(:REPORT_START_TIME, 'yyyy-mm-dd') OR
+                          :REPORT_START_TIME IS NULL)
+                      AND (TRUNC(S.REPORT_TIME) <=
+                          TO_DATE(:REPORT_END_TIME, 'yyyy-mm-dd') OR
+                          :REPORT_END_TIME IS NULL)
+                    GROUP BY S.BADNESS_INFO_PROVINCE,
+                             S.BADNESS_INFO,
+                             S.IN_MODE_CODE) Q
+    ON P.BADNESS_INFO_PROVINCE = Q.BADNESS_INFO_PROVINCE
+   AND P.BADNESS_INFO = Q.BADNESS_INFO
+   AND P.IN_MODE_CODE = Q.IN_MODE_CODE
+ ORDER BY P.BADNESS_INFO_PROVINCE, P.BADNESS_INFO

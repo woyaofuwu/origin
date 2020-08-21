@@ -1,0 +1,2 @@
+INSERT INTO TF_TWO_BUSINESS_ARREARAGE_RED(group_id,group_name,offer_code,offer_name,remove_tag,insert_date,insert_staff_id,remark,red_id)
+ VALUES(:GROUP_ID,:GROUP_NAME,:OFFER_CODE,:OFFER_NAME,:REMOVE_TAG,to_date(:INSERT_DATE,'yyyy-mm-dd hh24:mi:ss'),:INSERT_STAFF_ID,:REMARK,:RED_ID)

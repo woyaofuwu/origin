@@ -1,0 +1,4 @@
+SELECT to_char(log_id) log_id,serial_number,back_type_code,eparchy_code,sim_card_no,moffice_id,code_type_code,to_char(destory_time,'yyyy-mm-dd hh24:mi:ss') destory_time,remove_tag,city_code_o,stock_id_o,to_char(user_id) user_id,to_char(back_time,'yyyy-mm-dd hh24:mi:ss') back_time,back_staff_id,back_depart_id,remark,rsrv_tag1,rsrv_tag2,rsrv_tag3,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3,rsrv_str1,rsrv_str2,rsrv_str3 
+  FROM tf_b_reuse_log
+ WHERE log_id=TO_NUMBER(:LOG_ID)
+   AND (:SERIAL_NUMBER is null or serial_number=:SERIAL_NUMBER)

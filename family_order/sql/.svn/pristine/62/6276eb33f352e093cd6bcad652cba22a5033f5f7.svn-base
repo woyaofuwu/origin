@@ -1,0 +1,6 @@
+UPDATE TF_F_USER_SVC
+   SET SERV_PARA1 = :SERV_PARA1,
+       SERV_PARA2 = :SERV_PARA2
+ WHERE USER_ID = to_number(:USER_ID)
+   AND SERVICE_ID = :SERVICE_ID
+   AND end_date >= sysdate

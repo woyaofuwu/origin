@@ -1,0 +1,23 @@
+UPDATE TF_F_GRP_PRODUCT_MANAGER
+   SET GROUP_ID         = :GROUP_ID,
+       GROUP_MGR_SN     = :GROUP_MGR_SN,
+       PRODUCT_MGR_SN   = :PRODUCT_MGR_SN,
+       PRODUCT_ID       = :PRODUCT_ID,
+       VALID_TAG        = :VALID_TAG,
+       PRODUCT_MGR_NAME = :PRODUCT_MGR_NAME,
+       DEPART_NAME      = :DEPART_NAME,
+       EMAIL            = :EMAIL,
+       START_DATE       = to_date(:START_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+       END_DATE         = to_date(:END_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+       UPDATE_DATE      = to_date(:UPDATE_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+       UPDATE_STAFF_ID  = :UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID = :UPDATE_DEPART_ID,
+       REMARK           = :REMARK,
+       RSRV_STR1        = :RSRV_STR1,
+       RSRV_STR2        = :RSRV_STR2,
+       RSRV_STR3        = :RSRV_STR3,
+       RSRV_STR4        = :RSRV_STR4,
+       RSRV_STR5        = :RSRV_STR5
+ WHERE GROUP_ID = :GROUP_ID 
+   and PRODUCT_MGR_SN = :PRODUCT_MGR_SN 
+   and VALID_TAG = '1' 

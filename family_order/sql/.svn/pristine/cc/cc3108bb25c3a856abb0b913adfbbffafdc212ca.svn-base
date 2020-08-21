@@ -1,0 +1,1 @@
+select T.* from TL_B_USER_CONSUM t where t.user_id=:USER_ID

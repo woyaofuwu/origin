@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_specialservice (trade_id,accept_date,serial_number,user_state_codeset,product_id,service_id,modify_tag,deal_tag,remark,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5)
+VALUES(TO_number(:TRADE_ID),SYSDATE,:SERIAL_NUMBER,:USER_STATE_CODESET,to_Number(:PRODUCT_iD),to_Number(:SERVICE_ID),:MODIFY_TAG,'0',NULL,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5)

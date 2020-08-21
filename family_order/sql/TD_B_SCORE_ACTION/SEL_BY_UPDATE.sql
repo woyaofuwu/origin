@@ -1,0 +1,6 @@
+--IS_CACHE=Y
+UPDATE td_b_score_action
+   SET action_code=:ACTION_CODE,exchange_type_code=:EXCHANGE_TYPE_CODE,action_name=:ACTION_NAME,score=TO_NUMBER(:SCORE),reward_limit=TO_NUMBER(:REWARD_LIMIT),action_limit=:ACTION_LIMIT,discnt_code=:DISCNT_CODE,deposit_code=:DEPOSIT_CODE,fmonths=:FMONTHS,amonths=:AMONTHS,fenabled_tag=:FENABLED_TAG,aenabled_tag=:AENABLED_TAG,class_limit=:CLASS_LIMIT,brand_code=:BRAND_CODE,start_date=TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),end_date=TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS'),action_nv1=TO_NUMBER(:ACTION_NV1),action_nv2=TO_NUMBER(:ACTION_NV2),action_nv3=TO_NUMBER(:ACTION_NV3),action_cv1=:ACTION_CV1,action_cv2=:ACTION_CV2,action_cv3=:ACTION_CV3,action_cv4=:ACTION_CV4,action_cv5=:ACTION_CV5,action_d1=TO_DATE(:ACTION_D1, 'YYYY-MM-DD HH24:MI:SS'),action_d2=TO_DATE(:ACTION_D2, 'YYYY-MM-DD HH24:MI:SS'),action_d3=TO_DATE(:ACTION_D3, 'YYYY-MM-DD HH24:MI:SS'),eparchy_code=:EPARCHY_CODE,remark=:REMARK,update_staff_id=:UPDATE_STAFF_ID,update_depart_id=:UPDATE_DEPART_ID,update_time=TO_DATE(:UPDATE_TIME, 'YYYY-MM-DD HH24:MI:SS'),right_code=:RIGHT_CODE  
+ WHERE  action_code=:ACTION_CODE
+AND start_date=TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS')
+AND eparchy_code=:EPARCHY_CODE

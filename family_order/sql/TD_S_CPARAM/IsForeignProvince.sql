@@ -1,0 +1,6 @@
+SELECT COUNT(1) recordcount
+  FROM tf_f_user
+ WHERE USER_ID = TO_NUMBER(:USER_ID)
+  and  partition_id = MOD(TO_NUMBER(:USER_ID),10000)
+   AND NET_TYPE_CODE = :NET_TYPE_CODE
+   AND REMOVE_TAG = :REMOVE_TAG

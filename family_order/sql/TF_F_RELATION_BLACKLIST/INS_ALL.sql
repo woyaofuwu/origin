@@ -1,0 +1,2 @@
+INSERT INTO tf_f_relation_blacklist(user_id_b,user_id_a,relation_type_code,start_date,end_date)
+ VALUES(TO_NUMBER(:USER_ID_B),TO_NUMBER(:USER_ID_A),:RELATION_TYPE_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'))

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: RelationInfo.html,v 1.9 2013/04/22 06:39:28 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 - 用户关系信息</title>
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:cond.EPARCHY_CODE"/>
+	</div>
+	<!-- 隐藏域 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-20">
+		<table>
+			<thead>
+				<tr>
+					<th>关系类型</th>
+					<th>A用户标识</th>
+					<th>A用户服务号码</th>
+					<th>A用户姓名</th>
+					<th>A用户角色</th>
+					<th>B用户标识</th>
+					<th>B用户服务号码</th>
+					<th>B用户角色</th>
+					<th>顺序号</th>
+					<th>短号码</th>
+					<span jwcid="@Conditional" condition='ognl:"1".equals(isCmccStaff)'>
+					<th><span>员工减免额度</span></th>
+					</span>
+					<th>开始时间</th>
+					<th>结束时间</th>
+					<th>大客户经理</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+				    <!-- modify by yijb 和朱希确认，用户关系参数使用参数表： TD_S_RELATION，TD_S_RELATION_ROLE-->
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_RELATION', new java.lang.String[]{'RELATION_TYPE_CODE'}, 'RELATION_TYPE_NAME', new java.lang.String[]{info.RELATION_TYPE_CODE})" raw="false"/></td>  		
+					<td><span jwcid="@Insert" value="ognl:info.USER_ID_A" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_A" raw="false"/></td>               
+                    <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>  		
+				  	<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_RELATION_ROLE', new java.lang.String[]{'RELATION_TYPE_CODE','ROLE_CODE_A'}, 'ROLE_A', new java.lang.String[]{info.RELATION_TYPE_CODE, info.ROLE_CODE_A})" raw="false"/></td>
+				  	<td><span jwcid="@Insert" value="ognl:info.USER_ID_B" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_RELATION_ROLE', new java.lang.String[]{'RELATION_TYPE_CODE','ROLE_CODE_B'}, 'ROLE_B', new java.lang.String[]{info.RELATION_TYPE_CODE, info.ROLE_CODE_B})" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.ORDERNO" raw="false"/></td>
+				  	<td><span jwcid="@Insert" value="ognl:info.SHORT_CODE" raw="false"/></td>
+				  	<span jwcid="@Conditional" condition='ognl:"1".equals(isCmccStaff)'>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_VALUE" raw="false"/></td></span>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',  info.START_DATE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.END_DATE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID', 'STAFF_NAME',info.CUST_MANAGER_ID)" raw="false"/></td>
+               	</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="RelationNav" id="RelationNav" cond="QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="20" count="ognl:infosCount"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div>
+</div>
+</body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onQueryRelationInfo();
+	});
+</script>
+</html>

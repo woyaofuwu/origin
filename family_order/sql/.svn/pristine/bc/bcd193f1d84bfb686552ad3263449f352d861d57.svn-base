@@ -1,0 +1,5 @@
+SELECT USER_ID, MOD(USER_ID, 10000) PARTITION_ID
+                FROM TF_B_TRADEFEE_SUB
+               WHERE TRADE_ID = :TRADE_ID
+                 AND ACCEPT_MONTH = :ACCEPT_MONTH
+                 AND FEE_MODE = '1'

@@ -1,0 +1,61 @@
+SELECT A.USER_ID,
+       A.SERVICE_ID,
+       A.BIZ_STATE_CODE,
+       A.FIRST_DATE,
+       A.FIRST_DATE_MON,
+       A.GIFT_SERIAL_NUMBER,
+       A.GIFT_USER_ID,
+       A.INST_ID,
+       A.IN_CARD_NO,
+       A.ENTITY_CARD_NO,
+       TO_CHAR(A.START_DATE, 'yyyy-MM-dd hh24:mi:ss') START_DATE,
+       TO_CHAR(A.END_DATE, 'yyyy-MM-dd hh24:mi:ss') END_DATE/*,
+       B.SERVICE_NAME,
+       B.SP_CODE,
+       B.BIZ_CODE,
+       B.BIZ_TYPE_CODE,
+       B.ORG_DOMAIN,
+       B.SERV_TYPE,
+       C.BILL_TYPE,
+       TO_CHAR(C.PRICE / 1000, 'FM9990.09') PRICE,
+       D.SP_NAME,
+       DECODE(B.RSRV_STR3,
+              '1',
+              '000000100000000000000000000000',
+              '2',
+              '000001100000000000000000000000',
+              '3',
+              '000000000000000000100000000000',
+              '4',
+              '000110100000000000000110000000',
+              '5',
+              '000110100000000000000000000000',
+              '6',
+              '000000100000000000000000000000',
+              '7',
+              '000001100110000000000000000000',
+              '8',
+              '000001110000000000000000010000',
+              DECODE(LENGTH(B.RSRV_STR3), 30, B.RSRV_STR3, E.BIZ_PROCESS_TAG)) BIZ_PROCESS_TAG,
+       B.RSRV_STR3,
+       F.ATTR_CODE*/
+  FROM TF_F_USER_PLATSVC  A/*,
+       TD_B_PLATSVC       B,
+       TD_M_SP_BIZ        C,
+       TD_M_SP_INFO       D,
+       TD_B_PLATSVC_PARAM E,
+       TD_B_ATTR_ITEMA    F*/
+ WHERE A.PARTITION_ID = MOD(:USER_ID, 10000)
+   AND A.USER_ID = :USER_ID
+   --AND A.SERVICE_ID = B.SERVICE_ID
+   AND A.END_DATE > SYSDATE
+   /*AND B.SP_CODE = C.SP_CODE
+   AND B.BIZ_CODE = C.BIZ_CODE
+   AND C.SP_CODE = D.SP_CODE
+   AND B.ORG_DOMAIN = E.ORG_DOMAIN
+   AND B.BIZ_TYPE_CODE = E.BIZ_TYPE_CODE
+   AND B.SERV_TYPE = E.SERV_TYPE
+   AND B.SERVICE_ID = F.ID(+)
+   AND (B.SERV_TYPE = '0' OR B.SERV_TYPE = '1')
+   AND F.ID_TYPE(+) = 'Z'*/
+ ORDER BY A.INST_ID

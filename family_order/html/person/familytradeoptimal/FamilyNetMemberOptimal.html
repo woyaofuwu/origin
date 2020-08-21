@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: ReserveTradeArchive.html,v 1.1 2009/12/16 20:29:05 wangmo Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>删除亲亲网成员</title>
+<script jwcid="@Script" language="JavaScript" src="person/familytradeoptimal/scripts/familynetmember.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">删除亲亲网成员</span>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="284" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+<div class="c_box" jwcid="OperInfoPart@Part">
+	<div class="c_title">
+		<span class="text">操作信息</span>
+	</div>
+	<div class="c_form c_form-col-2 c_form-label-6">
+		<ul class="ul">
+			<li class="li" id="VALID_MEMBER_NUMBER_AREA">
+				<span class="label"><span>当前生效成员数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="VALID_MEMBER_NUMBER" id="VALID_MEMBER_NUMBER" value="0" desc="当前生效成员数"
+					disabled="true" />
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span>本次删除成员数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="DELETE_MEMBER_NUMBER" id="DELETE_MEMBER_NUMBER" value="0" desc="本次新增成员数"
+					disabled="true" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="c_box">
+	<div class="c_title">
+		<span class="text">已有亲亲网成员</span>
+		<div class="fn">
+			<!--<label><input jwcid="@Checkbox" type="checkbox" id="effectNowCheckBox" class="e_checkbox" name="effectNowCheckBox"/>立即生效</label>-->
+			<button type="button" id="bDel" name="bDel" onclick="delMeb()"><i class="e_ico-delete"></i><span>立即删除</span></button>
+		</div>
+	</div>
+	<div jwcid="viceInfopart@Part" id="viceInfopart">
+		<div class="c_scroll c_scroll-table-10">
+			<div class="c_table">
+				<table jwcid="@Table" id="viceInfoTable" name="viceInfoTable">
+			      	<thead>
+					  	<tr>
+							<th col="INST_ID_B">选择</th>
+							<th col="SERIAL_NUMBER_B">成员号码</th>
+							<th col="DISCNT_CODE_B">优惠编码</th>
+							<th col="DISCNT_NAME_B">优惠名称</th>
+							<th col="SHORT_CODE_B">成员短号</th>
+							<th col="START_DATE">开始时间</th>
+							<th col="END_DATE">结束时间</th>
+							<th col="LAST_DAY_THIS_ACCT" style="display:none">本账期结束时间</th>
+							<th col="EFFECT_NOW" style="display:none">是否立即生效</th>
+						</tr>
+					</thead>
+					<tbody id="viceInfoTable_Body">
+						<tr jwcid="@Foreach" source="ognl:viceInfos" value="ognl:viceInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+								value="ognl:viceInfo.U_INST_ID" disabled="ognl:viceInfo.DISABLED"/></td>
+							<td><span jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER_B"/></td>
+							<td><span jwcid="@Insert" value="ognl:viceInfo.DISCNT_CODE"/></td>						 
+							<td><span jwcid="@Insert" value="ognl:viceInfo.DISCNT_NAME"/></td>	
+							<td><span jwcid="@Insert" value="ognl:viceInfo.SHORT_CODE"/></td>
+							<td><span jwcid="@Insert" value="ognl:viceInfo.START_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:viceInfo.END_DATE"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:viceInfo.LAST_DAY_THIS_ACCT"/></td>
+							<td style="display:none"><span jwcid="@Insert" value=""/></td>			 
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="c_form c_form-label-5 c_form-col-1">
+	    <ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK"
+	                 value=""
+					 desc="备注" disabled=""/>
+				</span></span>
+			</li>
+	    </ul>
+    </div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart,FamilyInfoPart,OperInfoPart" element="div"/>	
+</div>
+<!--受理信息结束-->
+</div></div></body>
+</html>

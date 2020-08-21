@@ -1,0 +1,115 @@
+       select * from (
+SELECT DISTINCT A.SERIAL_NUMBER,
+                A.CITY_CODE,
+                B.TITLE_NAME      CAMPN_NAME,
+                B.SALE_ACT_SCRIPT TEMPLET_CONTENT,
+                B.SMS_SCRIPT      SMS_CONTENT,
+                B.IS_ONE_KEY      MOD_NAME,
+                B.PRIORITY_LEVEL,
+                B.PRO_TYPE_CODE   CAMPN_ID,
+                B.STEP_ID         OBJECT_ID,
+                B.SALE_ACT_ID,
+                B.PRO_TYPE,
+		A.PROCESS_TAG APROCESS_TAG,
+                B.PROCESS_TAG,
+                B.RSRV_NUM1,
+                B.RSRV_NUM2,
+                A.USER_ID,
+                B.SMS_PORT,
+		B.RSRV_STR1 BUSINESS_CLASS,
+                B.TITLE_NAME, B.SALE_ACT_SCRIPT,B.RSRV_STR1,A.REQ_ID,A.ACCEPT_DATE,
+                B.SMS_SCRIPT,B.PRO_TYPE_CODE,B.STEP_ID
+
+
+  FROM TL_O_REALTIMEMARKETING A, TL_O_REALTIMEMARKETINGTRADE B
+ WHERE A.REQ_ID = B.REQ_ID
+   AND A.USER_ID = :USER_ID
+   AND A.SERIAL_NUMBER = :SERIAL_NUMBER
+   AND A.TRADE_STAFF_ID = :TRADE_STAFF_ID
+   AND A.PROCESS_TAG IN ('0', '2', '3')
+   and b.process_tag is null
+union
+SELECT DISTINCT A.SERIAL_NUMBER,
+                A.CITY_CODE,
+                B.TITLE_NAME      CAMPN_NAME,
+                B.SALE_ACT_SCRIPT TEMPLET_CONTENT,
+                B.SMS_SCRIPT      SMS_CONTENT,
+                B.IS_ONE_KEY      MOD_NAME,
+                B.PRIORITY_LEVEL,
+                B.PRO_TYPE_CODE   CAMPN_ID,
+                B.STEP_ID         OBJECT_ID,
+                B.SALE_ACT_ID,
+                B.PRO_TYPE,
+		A.PROCESS_TAG APROCESS_TAG,
+                B.PROCESS_TAG,
+                B.RSRV_NUM1,
+                B.RSRV_NUM2,
+                A.USER_ID,
+                B.SMS_PORT,
+		B.RSRV_STR1 BUSINESS_CLASS,
+                B.TITLE_NAME, B.SALE_ACT_SCRIPT,B.RSRV_STR1,A.REQ_ID,A.ACCEPT_DATE,
+                B.SMS_SCRIPT,B.PRO_TYPE_CODE,B.STEP_ID
+
+
+
+  FROM TL_O_REALTIMEMARKETING      A,
+       TL_O_REALTIMEMARKETINGTRADE B,
+       TD_S_COMMPARA               C
+ WHERE A.REQ_ID = B.REQ_ID
+   AND A.USER_ID = :USER_ID
+   AND A.SERIAL_NUMBER = :SERIAL_NUMBER
+   AND A.TRADE_STAFF_ID = :TRADE_STAFF_ID
+   AND A.PROCESS_TAG IN ('0', '2', '3')
+   AND C.SUBSYS_CODE = 'CSM'
+   AND C.PARAM_ATTR = 5211
+   AND C.PARAM_CODE = 'REALTIMEMARKETING'
+   AND C.PARA_CODE1 = B.PROCESS_TAG
+   AND B.PROCESS_TAG = '1'
+   AND C.PARA_CODE2 >= NVL(B.RSRV_NUM1, 0)
+   AND C.END_DATE > SYSDATE
+   AND (C.EPARCHY_CODE = '0898' OR C.EPARCHY_CODE = 'ZZZZ')
+union
+SELECT DISTINCT A.SERIAL_NUMBER,
+                A.CITY_CODE,
+                B.TITLE_NAME      CAMPN_NAME,
+                B.SALE_ACT_SCRIPT TEMPLET_CONTENT,
+                B.SMS_SCRIPT      SMS_CONTENT,
+                B.IS_ONE_KEY      MOD_NAME,
+                B.PRIORITY_LEVEL,
+                B.PRO_TYPE_CODE   CAMPN_ID,
+                B.STEP_ID         OBJECT_ID,
+                B.SALE_ACT_ID,
+                B.PRO_TYPE,
+		A.PROCESS_TAG APROCESS_TAG,
+                B.PROCESS_TAG,
+                B.RSRV_NUM1,
+                B.RSRV_NUM2,
+                A.USER_ID,
+                B.SMS_PORT,
+		B.RSRV_STR1 BUSINESS_CLASS,
+                B.TITLE_NAME, B.SALE_ACT_SCRIPT,B.RSRV_STR1,A.REQ_ID,A.ACCEPT_DATE,
+                B.SMS_SCRIPT,B.PRO_TYPE_CODE,B.STEP_ID
+
+
+
+  FROM TL_O_REALTIMEMARKETING      A,
+       TL_O_REALTIMEMARKETINGTRADE B,
+       TD_S_COMMPARA               C
+ WHERE A.REQ_ID = B.REQ_ID
+   AND A.USER_ID = :USER_ID
+   AND A.SERIAL_NUMBER = :SERIAL_NUMBER
+   AND A.TRADE_STAFF_ID = :TRADE_STAFF_ID
+   AND A.PROCESS_TAG IN ('0', '2', '3')
+   AND C.SUBSYS_CODE = 'CSM'
+   AND C.PARAM_ATTR = 5211
+   AND C.PARAM_CODE = 'REALTIMEMARKETING'
+   AND C.PARA_CODE1 = B.PROCESS_TAG
+   AND B.PROCESS_TAG = '2'
+   AND C.PARA_CODE2 >= NVL(B.RSRV_NUM2, 0)
+   AND C.END_DATE > SYSDATE
+   AND (C.EPARCHY_CODE = '0898' OR C.EPARCHY_CODE = 'ZZZZ')
+
+   )      ORDER BY BUSINESS_CLASS, PRIORITY_LEVEL DESC ,ACCEPT_DATE DESC
+
+
+

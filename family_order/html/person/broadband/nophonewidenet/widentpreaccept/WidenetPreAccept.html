@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>宽带预受理信息查询</title>
+	<script jwcid="@Script" type="text/javascript" src="person/broadband/nophonewidenet/widentpreaccept/scripts/widenetPreAccept.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<div class="c_form" jwcid="AuthPart@Part">
+			<ul class="ul">
+				<li class="li"> 
+					<span class="label"><span>服务号码：</span></span>
+						<span class="e_input"><span>
+							<input type="text" name="SERIAL_NUMBER" jwcid="SERIAL_NUMBER@TextField" value="ognl:commInfo.SERIAL_NUMBER" enterAction="refreshPartAtferAuth()" nullable="no" maxsize="40" desc="服务号码"/>
+						</span></span>
+				</li> 
+				<li class="li"> 
+					<span class="label"><span>预约开始时间：</span></span>
+						<span class="e_input"><span style="width:140px">
+							<input type="text" jwcid="@DateField" id="ACCEPT_START_DATE" name="ACCEPT_START_DATE" format="yyyy-MM-dd HH:mm:ss"
+								disabled= "false" value="ognl:pageutil.getSysDate() + ' 00:00:00'" desc="预约开始时间" time="true"/>
+						</span></span>
+				</li> 
+				<li class="li"> 
+					<span class="label"><span>预约结束时间：</span></span>
+						<span class="e_input"><span style="width:140px">
+							<input type="text" jwcid="@DateField" id="ACCEPT_END_DATE" name="ACCEPT_END_DATE" format="yyyy-MM-dd HH:mm:ss"
+								disabled= "false" value="ognl:pageutil.getSysDate() + ' 23:59:59'" desc="预约结束时间" time="true"/>
+						</span></span>
+				</li> 
+			</ul> 
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" onclick="refreshPartAtferAuth();" ><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+	</div>
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">基本信息</div>
+			<div class="fn">
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<div jwcid="ResultPart@Part">
+		<div class="c_scroll c_scroll-x">	
+			<div class="c_table c_table-row-10">
+				<table jwcid="@Table" id="resultTab" name="resultTab">
+					<thead>
+						<tr>
+							<th>操作</th>
+							<th col="TAB_SERIAL_NUMBER">服务号码</th>
+							<th col="TAB_CUST_NAME">客户姓名</th>
+							<th style="display:none" col="TAB_PSPT_TYPE_CODE">证件类型</th>
+							<th style="display:none" col="TAB_PSPT_ID">证件号码</th>
+							<th style="display:none" col="TAB_PSPT_ADDR">证件地址</th>
+							<th col="TAB_PHONE">联系电话</th>
+							<th col="TAB_NET_WIDE">带宽</th>
+							<th col="TAB_DISCNT_TYPE">套餐类型</th>
+							<th col="TAB_WIDENET_ADDR">宽带安装地址</th>
+							<th col="TAB_ACCEPT_DATE">预受理时间</th>
+							<th col="TAB_ACCEPT_TAG">预受理同步标记</th>
+							<th style="display:none" col="TAB_ACCEPT_TAG_NAME">预受理同步标记</th>
+							<th col="TAB_CALL_OUT_NUM">外呼次数</th>
+							<th col="TAB_TIP_TAG">外呼结果</th>
+							<th col="TAB_UPDATE_TIME">更新时间</th>
+							<th col="TAB_UPDATE_STAFF_ID">更新员工</th>
+							<th style="display:none" col="TAB_UPDATE_DEPART_ID">更新部门</th>
+							<th col="TAB_CANCEL_DATE">撤单时间</th>
+							<th col="TAB_OPEN_DATE">开户时间</th>
+							<th style="display:none" col="TAB_REMARKS">备注说明</th>
+							<th style="display:none" col="TAB_TIP_TAG">超时标记</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td class="e_center">
+								<button thisTag = "ognl:info.ACCEPT_TAG" thisSerial = "ognl:info.SERIAL_NUMBER" thisId = "ognl:info.WIDENET_SYNC_ID"
+								class="e_button-center e_button-form" jwcid="@Any"  onclick="cancelPreTrade(this);">
+								<i class="e_ico-bottom" /><span>撤单</span></button>
+								<button thisId = "ognl:info.WIDENET_SYNC_ID" thisSerial = "ognl:info.SERIAL_NUMBER" 
+								thisCallNum="ognl:info.RSRV_NUM1" rowIndex="ognl:rowIndex" thisCallResult = "ognl:info.RSRV_NUM2"
+								thisTag = "ognl:info.ACCEPT_TAG"
+								class="e_button-center e_button-form" jwcid="@Any"  onclick="showCallArea(this);">
+								<i class="e_ico-add" /><span>外呼记录</span></button>
+							</td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.PSPT_TYPE_CODE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.PSPT_ADDR" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.PHONE" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.NET_WIDE" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.DISCNT_TYPE" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.WIDENET_ADDR" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" class="ognl:info.TIP_TAG == 1 ? 'e_red' : ''" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_TAG_NAME" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.ACCEPT_TAG" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_NUM1" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_NUM2 == 1 ? '成功' : '未成功'" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.CANCEL_DATE" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.REMARKS" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.TIP_TAG" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="navt" id="navt" cond="AuthPart" part="ResultPart" listener="loadInfo" pageSize="20" count="ognl:count"></div>		
+		<!-- 翻页 结束 -->
+		</div>
+	</div>
+	<div class="c_box" jwcid="otherPart@Part">
+		<div class="c_form c_form-col-3 c_form-label-5">
+			<ul>
+				<li class="li">
+					<span class="label"><span class="e_required">撤单原因：</span></span>
+					<span class="e_select" jwcid="cancelReasonPart@Part"><span><span>
+						<select jwcid="@Select" name="CANCEL_REASON" id="CANCEL_REASON"
+								source="ognl:pageutil.getStaticList('WIDE_CANCEL_REASON')"  nullable="no"
+								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.CANCEL_REASON" 
+								desc="撤单原因" onchange="changeSecondLevelType()"/>
+					</span></span></span>
+				</li>
+				<li class="li col-3">
+					<span class="label">备注：</span>
+					<span class="e_textarea">
+						<span class="e_textareaTop"><span></span></span>
+						<span class="e_textareaContent">
+							<textarea style="height:18px;" jwcid="@TextArea" id="CANCEL_REMARK" name="CANCEL_REMARK" 
+							    value="ognl:info.CANCEL_REMARK" desc="取消备注" />
+						</span>
+						<span class="e_textareaBottom"><span></span></span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+<!-- 弹窗 开始 -->
+<div jwcid="PopupPart@Part">
+	<div class="c_popup" id="popup" style="display:none">
+		<div class="c_popupWrapper">
+			<div class="c_popupHeight"></div>
+			<div class="c_popupBox" style="width:1000px;">
+	   			<a id="templet"  href=""></a>
+				<div class="c_popupTitle">
+					<div class="text">外呼记录</div>
+					<div class="fn">
+						<a class="close" href="#nogo" onclick="$('#popup').css('display', 'none');"></a>
+					</div>
+				</div>
+				<div class="c_popupContent"><div class="c_popupContentWrapper">
+					<div class="c_form c_form-col-5 c_form-label-9" jwcid="callOutPart@Part" >
+						<ul>
+							<li class="li col-2"> 
+								<span class="label"><span class="e_required">外呼时间：</span></span>
+									<span class="e_input"><span style="width:150px">
+										<input type="text" jwcid="@DateField" id="CALL_OUT_TIME" name="CALL_OUT_TIME" format="yyyy-MM-dd HH:mm:ss"
+											disabled= "false" value="ognl:pageutil.getSysTime()" desc="外呼时间" time="true"/>
+									</span></span>
+							</li> 
+							<li class="li"> 
+								<span class="label"><span class="e_required">外呼结果：</span></span>
+								<span class="e_select"><span><span> <select
+									onchange="changeCallOutTag()"
+									name="CALL_OUT_TAG" id="CALL_OUT_TAG">
+					                <option selected="selected" value="0">请选择</option>
+					                <option value="1">成功</option>
+					                <option value="2">失败</option>
+					                <option value="3">待跟进</option>
+								</select> </span> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label">外呼次数：</span> 
+								<span class="text"><span> <input jwcid="@Insert"
+										name="CALL_OUT_NUM" id=CALL_OUT_NUM value="0"
+										desc="外呼次数" disabled="true" />
+								</span></span>
+							</li>
+							<li id="CALL_OUT_REASON_LI" style="display:none;" class="li col-4"> 
+								<span class="label"><span class="e_required">外呼不成功原因：</span></span>
+								<span class="e_select"><span><span> <select
+									name="CALL_OUT_REASON" id="CALL_OUT_REASON">
+					                <option selected="selected" value="0">请选择</option>
+					                <option value="1">咨询类：地址不明确、客户需进一步考虑、客户反馈仅咨询</option>
+					                <option value="2">资费类：资费不符合条件、不愿缴纳开户费或光猫押金、费用高、可选资费少，选择性不高</option>
+					                <option value="3">其他类：无应答、多次回拨未接通、客户选择其他渠道办理、余额不足、不配合、客户提供原因、客户无需求</option>
+								</select> </span> </span> </span>
+							</li>
+							<li class="li col-4">
+								<span class="label">其他原因：</span>
+								<span class="e_textarea">
+									<span class="e_textareaTop"><span></span></span>
+									<span class="e_textareaContent">
+										<textarea style="height:18px;" jwcid="@TextArea" id="otherReason" name="otherReason" 
+										    value="ognl:info.CANCEL_REMARK" desc="其他原因" />
+									</span>
+									<span class="e_textareaBottom"><span></span></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+				<div class="c_submit">
+					<button type="button" class="e_button-form" id="submitButton" onclick="checkOkCallOut();"><i></i><span>确认</span></button>
+				</div>
+				</div></div>
+				<!-- 提交 开始 -->
+				<!-- 提交 结束 -->
+				<div class="c_popupBottom"><div></div></div>
+				<div class="c_popupShadow"></div>
+			</div>
+		</div>
+		<iframe class="c_popupFrame"></iframe>
+		<div class="c_popupCover"></div>
+	</div>
+</div>
+<!-- 弹窗 结束 -->	
+	<!-- 隐藏域开始 -->
+	<div jwcid="HiddenPart@Part">
+		<input jwcid="@Any" id="SELECT_SERIAL" name="SELECT_SERIAL" type="hidden" />
+		<input jwcid="@Any" id="SELECT_ID" name="SELECT_ID" type="hidden" />
+	</div>
+	<!-- 隐藏域结束 -->
+	
+</div></div>
+</body>
+</html>

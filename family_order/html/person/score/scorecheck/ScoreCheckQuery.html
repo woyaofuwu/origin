@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>积分兑换日对账</title>
+<script jwcid="@Script" src="person/score/scorecheck/script/ScoreCheckQuery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">积分兑换日对账</div>
+	</div>
+	<div jwcid="ScoreQryCondPart@Part"  class="c_form" element="div">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">积分交易类型：</span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_SCORE_TRADE_TYPE" id="cond_SCORE_TRADE_TYPE" source="ognl:pageutil.getStaticList('SCORE_TRADE_TYPE')"
+	                                    addDefault="true" value="ognl:info.SCORE_TRADE_TYPE" disabled="false" desc="积分交易"  
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  "/>
+					</span></span></span>
+			</li> 
+			<li class="li">
+				<span class="label"><span>开始时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:info.START_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>结束时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_END_DATE"  id="cond_END_DATE" value="ognl:info.END_DATE" />
+				</span></span>
+			</li> 
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryScoreTrade();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form" onclick="return resetQry();" ><i class="e_ico-reset"></i><span>清空</span></button>
+		</div>
+	</div>  
+	 
+	<div class="c_title l_mt">
+		<div class="text">对账结果列表</div>
+		 
+	</div>
+	<div jwcid="ScoreQryResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" id="scoreTable" name="scoreTable"  rowDBClick="tableRowDBClick" >
+	     		<thead>
+		  			<tr>
+						<th col="CHECK_ID" >对账流水</th>
+			      		<th col="SCORE_TRADE_TYPE" >积分交易类型</th>
+			      		<th col="BUSS_TRADE_COUNT" >营业台账记录数</th>
+			      		<th col="BUSS_SCORE_COUNT" >营业台账积分交易值</th>
+			      		<th col="FINANCES_COUNT" >账务台账记录数</th>
+	                    <th col="FINANCES_INTG_COUNT" >账务台账积分交易值</th>
+			      		<th col="CHECK_DATE" >对账时间</th>
+			      		<th col="CHECK_ALL" >总量对账</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.CHECK_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCORE_TRADE_TYPE', info.SCORE_TRADE_TYPE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BUSS_TRADE_COUNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BUSS_SCORE_COUNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FINANCES_COUNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FINANCES_INTG_COUNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CHECK_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CHECK_ALL" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div> 
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="ScoreQryCondPart" part="ScoreQryResultPart" 
+	      listener="queryScoreCheck" pageSize="10" count="ognl:recordCount"></div>
+	      <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeCheck()" disabledBtn="false" area="ScoreQryResultPart" element="div" style="display:none"/>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

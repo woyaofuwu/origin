@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GIS地址查询</title>
+<script type="text/javascript">
+			//监听postMessage传参
+			if(window.addEventListener){
+				window.addEventListener('message',handleMessage);
+			}else{
+				window.attachEvent('onmessage',handleMessage);
+			}
+			//有参数传来时执行函数
+			function handleMessage(event){
+				event = event||window.event;
+				//根据计划使用event.data数据
+				if(event.origin == document.getElementById("eventUrl").value){
+					//参数，在此示例中是json字符串。
+	        		var json=$.parseJSON(event.data); //转换成json对象
+        		
+				var open_type=json.OPEN_TYPE;
+					if(open_type=="1"){
+						open_type="FTTH";
+					}else if(open_type=="2"){
+						open_type="TTFTTH";
+					}else if(open_type=="3"){
+						open_type="GPON";
+					}else if(open_type=="4"){
+						open_type="TTFTTB";
+					}else if(open_type=="5"){
+						open_type="TTADSL";
+					}
+					//参数返回父页面
+					if(document.getElementById("openTag").value=='old'){
+						setReturnValue({'DEVICE_ID':json.DEVICE_ID,'OPEN_TYPE':open_type,'STAND_ADDRESS':json.STAND_ADDRESS,'INSTALL_ADDR':json.STAND_ADDRESS,'AREA_CODE':json.AREA_CODE,'FLOOR_AND_ROOM_NUM':json.FLOOR_AND_ROOM_NUM,'ADDRESS_BUILDING_NUM':json.FLOOR_AND_ROOM_NUM},true);
+    				}else{
+    					setPopupReturnValue(this, {'DEVICE_ID':json.DEVICE_ID,'OPEN_TYPE':open_type,'STAND_ADDRESS':json.STAND_ADDRESS,'AREA_CODE':json.AREA_CODE,'INSTALL_ADDR':json.STAND_ADDRESS,'FLOOR_AND_ROOM_NUM':json.FLOOR_AND_ROOM_NUM,'ADDRESS_BUILDING_NUM':json.FLOOR_AND_ROOM_NUM})
+					}
+				} 
+
+				}
+			
+			
+			
+</script>
+
+</head>
+<body jwcid="@Body">
+<input jwcid="@Any" type="hidden" id="url" name="url" value="ognl:url"/>
+<input jwcid="@Any" type="hidden" id="eventUrl" name="eventUrl" value="ognl:eventUrl"/>
+<input jwcid="@Any" type="hidden" id="openTag" name="openTag" value="ognl:openTag"/>
+
+   <div jwcid="@Conditional" condition='ognl:openTag == "old"'>
+   		<iframe id="barframe"	width="100%" height="100%" frameborder="0"  scrolling="yes" src=""></iframe>
+   </div>
+   
+   <div jwcid="@Conditional" condition='ognl:openTag == "new"'>
+		<div id="UI-popup">
+				<div class="c_popupBg" id="UI-popup_bg"></div>
+				<div class="c_popupBox">
+					<div class="c_popupWrapper" id="UI-popup_wrapper">
+						<div class="c_popupGroup">
+							<div class="c_popupItem" id="UI-address">
+								<div class="c_header">
+									<div class="back" ontap="hidePopup(this)">GIS地图选址</div>
+								</div>
+								<div class="c_scroll c_scroll-float c_scroll-header">
+									<iframe id="barframe"	width="100%" height="100%" frameborder="0"  scrolling="yes" src=""></iframe>
+								</div>
+							</div>
+						</div>
+					</div>		
+				</div>
+		</div>		
+	</div>
+	
+<script language="javascript">
+	document.getElementById("barframe").src =document.getElementById("url").value;	
+</script>
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/ewe/timelimit/script/timeLimitTemplet.js"></script>
+	<title>时限控制模板</title>
+	<link href="css/global/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body jwcid="@Body">
+	<div class="c_header e_show-phone">
+		<div class="back">时限控制模板</div>
+		<div class="fn">
+			<button type="button" class="e_button-blue"
+				ontap="showPopup('taskPopup','qryInfo')">
+				<span class="e_ico-search"></span>
+			</button>
+			<button type="button" class="e_button-blue"
+				ontap="showFloatLayer('UI-layer','block')">
+				<span class="e_ico-menu"></span>
+			</button>
+
+		</div>
+	</div>
+	<div class="l_padding">
+	<div class="l_query" jwcid="ResultPart@Part" element="div">
+			<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left" id="UI-layer">
+					<button type="button" ontap="insertOverTimerInfos();showPopup('taskPopup','popupTaskTimerItem')">
+					<span class="e_ico-add"></span><span>新增</span>
+					</button>
+				</div>
+				<div class="right">
+					<div class="e_mix" onclick="showPopup('taskPopup','qryInfo')">
+						<input type="text" />
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+			<div class="l_queryResult">
+			<!-- 表格 开始 -->
+			<div class="c_table">
+						<table jwcid="OverTimerTable@Table" name="OverTimerTable" rowClick="overTimerTableRowClick">
+							<thead>
+								<tr>
+									<th col ="TIMER_ID">超时ID</th>
+									<th col ="TIMER_TYPE">提醒类型</th>
+									<th col ="TIMER_OBJECT">处理人</th>
+									<th col ="OFFSET_LOCATION">偏移起始时间</th>
+									<th col ="OFFSET_MODE">偏移类型</th>
+									<th col ="OFFSET_EXP">表达式</th>
+									<th col ="OFFSET_TYPE">偏移单位值</th>
+									<th col ="OFFSET_VALUE">偏移值</th>
+									<th col ="OFFSET_EXCLUDE">偏移排除表达式</th>
+									<th col ="WARN_SVC">处理服务</th>
+									<th col ="WARN_CONTENT">提醒内容</th>
+									<th col ="WARN_NUM">提醒次数</th>
+									<th col ="UPDATE_OPERATION">修改操作</th>
+									<th col ="DELETE_OPERATION">删除操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									<td><span jwcid="@Insert" value="ognl:info.TIMER_ID" raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESOP_TIMER_TYPE',info.TIMER_TYPE)"  raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESOP_TIMER_OBJECT',info.TIMER_OBJECT)"  raw="false"></span></td>	
+									<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESOP_OFFSET_LOCATION',info.OFFSET_LOCATION)"  raw="false"></span></td>	
+									<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESOP_OFFSET_MODE',info.OFFSET_MODE)"  raw="false"></span></td>	
+									<td><span jwcid="@Insert" value="ognl:info.OFFSET_EXP" raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESOP_OFFSET_TYPE',info.OFFSET_TYPE)"  raw="false"></span></td>	
+									<td><span jwcid="@Insert" value="ognl:info.OFFSET_VALUE" raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:info.OFFSET_EXCLUDE" raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:info.WARN_SVC" raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:info.WARN_CONTENT" raw="false"></span></td>
+									<td><span jwcid="@Insert" value="ognl:info.WARN_NUM" raw="false"></span></td>
+									<td><a jwcid="@Redirect" timerId="ognl:info.TIMER_ID" value="修改" onclick="updateOverTimerInfos(this);" desc="修改操作" /></td>
+									<td><a jwcid="@Redirect" timerId="ognl:info.TIMER_ID" value="删除" onclick="deleteOverTimerInfos(this);" desc="修改操作" /></td>
+								</tr>
+							</tbody>
+						</table>
+			<div class="l_queryMsg" id="queryLoading" style="display:none;">
+				<!-- 无数据提示 开始 -->
+				<div class="c_msg c_msg-loading">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="info">
+							<div class="text">
+								<div class="title">努力加载中</div>
+								<div class="content">loading</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 无数据提示 结束 -->
+			</div>
+			</div>
+			<!-- 表格 结束 -->
+		</div>
+	</div>
+	</div>
+	<div class="c_popup" jwcid="@Popup" name="taskPopup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem c_popupItem-show" id="qryInfo">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);"></div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<div class="c_list c_list-line c_list-border" jwcid="orderInfo@Part" >
+							<ul>
+								<li class="link">
+									<div class="label">超时ID</div>
+									<div class="value"><input type="text" jwcid="@TextField" id="cond_TIMER_ID"  name="cond_TIMER_ID" value="ognl:condition.TIMER_ID"  desc="超时ID"/></div>
+								</li>
+							</ul>
+						</div>
+						<div class="c_space"></div>
+						<!-- 提交 开始 -->
+						<div class="c_submit c_submit-full">
+							<button type="button" class="e_button-r e_button-l e_button-blue" ontap="queryAllOverTimer();hidePopup(this);">查询</button>
+						</div>
+						<!-- 提交 结束 -->
+						<div class="c_space"></div>
+					</div>
+				</div>
+			</div>
+				<div class="c_popupItem" id="popupTaskTimerItem">
+					<div class="c_header">
+						<div class="back" ontap="hidePopup('taskPopup','popupTaskTimerItem')">新增</div>
+					</div>
+					<div class="c_scroll c_scroll-float c_scroll-header">
+						<div class="l_padding">
+							<!-- 表单 开始 -->
+							<div class="c_list c_list-line c_list-border" jwcid="writeForm@Part">
+								<ul>
+									<li id = "LI_TIMER_ID" name="LI_TIMER_ID">
+										<div class="label">超时ID(无需填写)</div>
+										<div class="value">
+											<input jwcid="@TextField" name="TIMER_ID" disabled="disabled" value="" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">提醒类型</div>
+										<div class="value">
+											<select jwcid="@Select" name="TIMER_TYPE" source="ognl:pageutil.getStaticList('ESOP_TIMER_TYPE')" 
+											 textField="DATA_NAME" valueField="DATA_ID" onChange="timerTypeChange()" desc="提醒类型" nullable="no"/>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">处理人</div>
+										<div class="value">
+											<select jwcid="@Select" name="TIMER_OBJECT" source="ognl:pageutil.getStaticList('ESOP_TIMER_OBJECT')" 
+											 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="处理人" nullable="no"/>
+										</div>
+									</li>
+									<li id = "LI_OFFSET_LOCATION" name="LI_OFFSET_LOCATION" class="link required">
+										<div class="label">偏移起始时间</div>
+										<div class="value">
+											<select jwcid="@Select" name="OFFSET_LOCATION" source="ognl:pageutil.getStaticList('ESOP_OFFSET_LOCATION')" 
+											 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="偏移起始时间" nullable="no"/>
+										</div>
+									</li>
+									
+									<li id = "LI_OFFSET_MODE" name="LI_OFFSET_MODE">
+										<div class="label">偏移类型</div>
+										<div class="value">
+											<select jwcid="@Select" name="OFFSET_MODE" source="ognl:pageutil.getStaticList('ESOP_OFFSET_MODE')" 
+											 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="偏移类型"/>
+										</div>
+									</li>
+									<li id = "LI_OFFSET_EXP" name="LI_OFFSET_EXP">
+										<div class="label">表达式</div>
+										<div class="value">
+											<input jwcid="@TextField" name="OFFSET_EXP" value="" />
+										</div>
+									</li>
+									<li id = "LI_OFFSET_TYPE" name="LI_OFFSET_TYPE">
+										<div class="label">偏移单位值</div>
+										<div class="value">
+											<select jwcid="@Select" name="OFFSET_TYPE" source="ognl:pageutil.getStaticList('ESOP_OFFSET_TYPE')" 
+											 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="偏移单位值"/>
+										</div>
+									</li>
+									<li id = "LI_OFFSET_VALUE" name="LI_OFFSET_VALUE">
+										<div class="label">偏移值</div>
+										<div class="value">
+											<input jwcid="@TextField" name="OFFSET_VALUE" value="" desc="偏移值"/>
+										</div>
+									</li>
+									<li class="link" ontap="initExcludeInfos()" id = "LI_OFFSET_EXCLUDE" name="LI_OFFSET_EXCLUDE">
+										<div class="label">偏移排除表达式</div>
+										<div class="value">
+											<input id="OFFSET_EXCLUDE" name="OFFSET_EXCLUDE" value="" readonly="readonly"/>
+										</div>
+										<div class="more"></div>
+									</li>
+									
+									<li id = "LI_WARN_SVC" name="LI_WARN_SVC" class="link required">
+										<div class="label">处理服务</div>
+										<div class="value">
+											<input jwcid="@TextField" name="WARN_SVC" value="" nullable="no"/>
+										</div>
+									</li>
+									<li  id = "LI_WARN_CONTENT" name="LI_WARN_CONTENT">
+										<div class="label">提醒内容</div>
+										<div class="value">
+											<input jwcid="@TextField" name="WARN_CONTENT" value="" />
+										</div>
+									</li>
+									<li  id = "LI_WARN_NUM" name="LI_WARN_NUM">
+										<div class="label">提醒次数</div>
+										<div class="value">
+											<input jwcid="@TextField" name="WARN_NUM" value="" />
+										</div>
+									</li>
+							</ul>
+							</div>
+							<!-- 表单 结束 -->
+							<div class="c_space"></div>
+							<!-- 提交 开始 -->
+							<div class="c_submit c_submit-full">
+								<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveOverTimerInfos(this)">提交</button>
+							</div>
+							<!-- 提交 结束 -->
+							<div class="c_space"></div>
+						</div>
+					</div>
+				</div>
+			<div class="c_popupItem" id="popupTaskExcludeItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupTaskTimerItem', true);">剔除规则配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 偏移排除表达式 开始 -->
+					<div class="c_list c_list-line c_list-col-1 c_list-border">
+						<ul>
+							<li>
+								<div class="label">排除类型</div>
+								<div class="value">
+									<select jwcid="@Select" name="EXCLUDE_TYPE" source="ognl:pageutil.getStaticList('ESOP_OFFSET_EXCLUDE')" 
+									 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="处理类型"/>
+								</div>
+							</li>
+							<li>
+								<div class="label">排除日期(使用逗号分隔)</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="EXCLUDE_DAY" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">时间段(格式MMHH)</div>
+								<div class="value">
+								<span class="e_mix">
+									<input jwcid="@DateField" name="EXCLUDE_TIMER_START" value="" format="MM:dd:ss"/>
+									<span class="e_label">-</span>
+									<input jwcid="@DateField" name="EXCLUDE_TIMER_END" value="" format="MM:dd:ss"/>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="addExcludeTable(this)">新增</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="modExcludeTable(this)">修改</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="delExcludeTable(this)">删除</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+					<div class="l_queryResult">
+					<!-- 表格 开始 -->
+					<div class="c_table c_table-lite c_table-checkbox c_table-border">
+						<table jwcid="ExcludeTable@Table" name="ExcludeTable" id="ExcludeTable" rowClick="excludeTableRowClick">						
+							<thead>
+								<tr>
+									<th col ="EXCLUDE_TYPE">排除类型</th>
+									<th col ="EXCLUDE_DAY">排除日期</th>
+									<th col ="EXCLUDE_TIMER_START">开始时间</th>
+									<th col ="EXCLUDE_TIMER_END">结束时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							<tr jwcid="@Foreach" source="ognl:excludeInfos" value="ognl:excludeInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_TYPE"></span></td>
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_DAY"/></td>
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_TIMER_START"/></td>		
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_TIMER_END"/></td>						 
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- 表格 结束 -->
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveExcludeInfos(this)">确认</button>
+					</div>
+					<!-- 提交 结束 -->
+					
+					<!-- 偏移排除表达式  结束 -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div jwcid="hiddenItem@Part">
+		
+		<input style="display: none" jwcid="@Hidden" id="TASK_INFOS" name="TASK_INFOS" value="" />
+		<input style="display: none" jwcid="@Hidden" id="RELA_INFOS" name="RELA_INFOS" value="" />
+		<textarea jwcid="@TextArea" name="CHART_INFO" id="CHART_INFO" value="ognl:condition.CHART_INFO" style="display:none"></textarea>
+		<input style="display: none" jwcid="@Hidden" id="XML_INFO" name="XML_INFO" value="" />
+		<input style="display: none" jwcid="@Hidden" id="OPERATION" name="OPERATION" value="" />
+	</div>
+</body>
+</html>

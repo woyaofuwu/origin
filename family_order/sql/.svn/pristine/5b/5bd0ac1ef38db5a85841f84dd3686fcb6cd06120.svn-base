@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+select * from TD_MSISDN A where :SERIAL_NUMBER
+BETWEEN A.BEGIN_MSISDN AND A.END_MSISDN
+AND A.area_code = '0898'
+AND A.asp = '2'

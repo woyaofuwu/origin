@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: CustContactMgr.html,v 1.5 2013/04/22 07:09:17 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>礼包调拨回收量历史查询</title>
+
+<script jwcid="@Script"  src="person/sparkplansmgr/scripts/sparkplansmgr.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<span class="text">礼包调拨回收量历史查询</span>
+		<div class="fn" jwcid="ExportPart@Part">
+		    <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+			      <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="101994"
+					  config="export/sparkplansmgr/QueryAssignLog.xml" fileName="回收量历史查询信息" cond="QueryCondPart"/>
+			</div>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 查询条件 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			   <span class="label"><span>分公司：</span></span>
+				<input jwcid="@biz:AreaField" name="CITY_CODE" id="CITY_CODE" value="ognl:getVisit().getCityCode()"/>
+			</li>
+			<li class="li">
+			   <span class="label"><span>网点：</span></span>
+				<input jwcid="@biz:DeptField" name="DEPART_ID" id="DEPART_ID" value="ognl:getVisit().getDepartId()"/>
+			</li>
+			<li class="li">
+			   <span class="label"><span>调拨工号：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="UPDATE_STAFF_ID" id="UPDATE_STAFF_ID" value="" 
+				desc="调拨工号"/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label"><span>产品名称：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="PRODUCT_NAME" id="PRODUCT_NAME" value="" 
+				desc="产品名称"/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label"><span>礼包名称：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="PACKAGE_NAME" id="PACKAGE_NAME" value="" 
+				desc="礼包名称"/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label"><span>起始日期：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="START_DATE" id="START_DATE" value="" 
+				desc="起始日期"/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label"><span>终止日期：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="END_DATE" id="END_DATE" value="" 
+				desc="终止日期"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="query_BTN" id="query_BTN" class="e_button-form" onclick="return queryAssignLog();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!--  查询条件 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table jwcid="@Table" id="SaleActiveTable">
+				<thead>
+					<tr>
+						<th>分公司</th>
+						<th>网点名称</th>
+						<th>调出工号</th>
+						<th>调入工号</th>
+						<th>调拨量</th>
+						<th>调拨工号</th>
+						<th>产品名称</th>
+						<th>礼包名称</th>
+						<th>调拨时间</th>
+						<th>操作类型</th>
+					</tr>
+				</thead>
+				<tbody>
+	              	<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+	              		<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEPART_ID)"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.STAFF_ID_OUT"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.STAFF_ID_IN"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.ASSIGN_COUNT"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.OPER_TYPE_DESC"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="nav" id="nav" cond="QueryCondPart" part="QueryListPart" listener="queryAssignLog" pageSize="10" count="ognl:count"></div>
+		<!-- 分页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

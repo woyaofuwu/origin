@@ -1,0 +1,1 @@
+SELECT   t.servid, t.mobile,t.sysfeinnoid, t.opttype, t.payaccid, t.opentime,t.province,t.trans_id,t.reqdate FROM    TF_F_USER_FETIONINFO t  where  t.mobile=:SERIAL_NUMBER  and t.opttype=:OPTTYPE

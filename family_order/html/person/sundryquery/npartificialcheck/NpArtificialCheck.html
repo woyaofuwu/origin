@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>携出号码人工审核</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/npartificialcheck/scripts/npArtificialCheck.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/np/npapplycancel/scripts/busiTable.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">携出号码人工审核</div>
+		<div class="fn">
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 表单 开始 -->
+	<div class="c_form"  jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">所属区域:</span></span>
+				
+				<input name="AREA_CODE" jwcid="@biz:AreaField" desc="业务区" nullable="no"/>
+				
+			</li>
+			
+			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" ><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	
+	<div class="c_title c_title-2" >
+			<div class="text">信息列表</div>
+			 <div class="fn">
+			     
+				<button type="button" class="l_ml" onClick = "checkPass()"><i class="e_ico-ok"></i><span>审核通过</span></button>
+				<button type="button" class="l_ml" onClick = "checkNotPass()"><i class="e_ico-delete"></i><span>审核不通过</span></button>
+				
+			</div>
+		</div>
+	   
+		<div class="c_scroll c_scroll-x style='height:242px'">
+		<div class="c_table c_table-row-5">
+			<table jwcid="@Table" name="InfoTable">
+				<thead>
+					<tr>
+					    <th></th>
+					    <th col = "TRADE_ID">业务流水</th>
+						<th col = "SERIAL_NUMBER">手机号码</th>
+                        <th col = "CUST_NAME">客户姓名</th>
+                        <th col = "BRAND_CODE">客户品牌</th>
+                        <th col = "VIP_TYPE_CODE">客户级别</th>
+                        
+                        <th col = "AVERAGE_FEE">近半年平均话费</th>
+		  			 	<th col = "NP_SERVICE_TYPE">NP业务类型</th>
+		  			 	<th col = "PORT_OUT_NETID">携出方网络</th>
+			  			<th col = "PORT_IN_NETID">携入方网络</th>
+			  			<th col = "HOME_NETID">号码拥有方网络</th>
+			  			
+			  			<th col = "OPEN_DATE">入网时间</th>
+			  			<th col = "BOOK_SEND_TIME">默认上发时间</th>
+			  			 
+			  			<th col = "ACCEPT_DATE">业务受理时间</th>
+			  			<th col = "CITY_CODE">所属区域</th>
+			  			<th col = "ACCEPT_MONTH">业务受理月</th>
+					</tr>
+				</thead>
+				<tbody  jwcid="@Any" name="usernpva" id="usernpva">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					  
+                       <td><input type="checkbox"name="saleactive" id="saleactive" jwcid="@Any" value="ognl:info.TRADE_ID+';'+info.SERIAL_NUMBER" /></td>
+                        
+                        <td><input jwcid="@Insert" value="ognl:info.TRADE_ID"/></td>
+                        <td><input jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" /></td>
+                        <td><input jwcid="@Insert" value="ognl:info.CUST_NAME" /></td>
+                        <td><input jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_BRAND','BRAND_CODE','BRAND', info.BRAND_CODE)" raw="false"/></td>
+                        <td><input jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_VIPCLASS',new java.lang.String[]{'VIP_TYPE_CODE','CLASS_ID'}, 'CLASS_NAME', new java.lang.String[]{info.VIP_TYPE_CODE,info.VIP_CLASS_ID})" raw="false"/></td>
+                        
+                        <td><input jwcid="@Insert" value="ognl:info.AVERAGE_FEE"/></td>
+						<td><input jwcid="@Insert" value="ognl:pageutil.getStaticValue('NP_SERVICETYPE',info.NP_SERVICE_TYPE)" raw="false"/></td>
+						<td>
+							<input jwcid="@Insert" value="ognl:pageutil.getStaticValue('PORT_CARRIER',(info.PORT_OUT_NETID).substring(0,3)) 
+							+ pageutil.getStaticValue('CARRIER_NET',(info.PORT_OUT_NETID).substring(3,4)) 
+							+ '['+ info.PORT_OUT_NETID + ']' "  raw="false"/>
+						</td>
+						<td>
+							<input jwcid="@Insert" value="ognl:pageutil.getStaticValue('PORT_CARRIER',(info.PORT_IN_NETID).substring(0,3)) 
+							+ pageutil.getStaticValue('CARRIER_NET',(info.PORT_IN_NETID).substring(3,4)) 
+							+ '['+ info.PORT_IN_NETID + ']' "  raw="false"/>
+						</td>
+						<td>
+							<input jwcid="@Insert" value="ognl:pageutil.getStaticValue('PORT_CARRIER',(info.HOME_NETID).substring(0,3)) 
+							+ pageutil.getStaticValue('CARRIER_NET',(info.HOME_NETID).substring(3,4)) 
+							+ '['+ info.HOME_NETID + ']' "  raw="false"/>						
+						</td>
+						
+						<td><input jwcid="@Insert" value="ognl:info.OPEN_DATE" /></td>
+						<td><input jwcid="@Insert" value="ognl:info.BOOK_SEND_TIME" raw="false"/></td>
+						
+						<td><input jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="false"/></td>
+						<td><input jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.CITY_CODE)"/></td>	
+						
+						
+						<td><input jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+
+	 <div jwcid="@NavBar" name="infofonav" id="infofonav" cond="QueryCondPart" part="QueryListPart" listener="getInfos" pageSize="20" count="ognl:infosCount"></div> 	
+		
+	<!-- 翻页 结束 -->
+</div>
+    <!-- 区域 结束 -->
+    
+    
+<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3"  id="EditPart" name="EditPart">
+		<ul class="ul">
+			<li class="li">
+			<span class="label"><span class="">审核备注：</span></span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					
+					<span class="e_select"><span><span>
+						<select id="CHECK_REMARK" name="CHECK_REMARK">
+							<option value="客户不同意携号转网">客户不同意携号转网</option>
+							<option value="客户本人没有办理携号转网业务">客户本人没有办理携号转网业务</option>
+							</select>
+					</span></span></span>
+				</span>
+			</li>
+			
+		</ul>
+		
+		
+	</div>		
+<!-- 表单 结束-->
+
+
+</div>
+
+</div></body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="iorder/person/changeproduct/scripts/changeproduct.js"></script>
+    <script jwcid="@Script" src="iorder/person/changeproduct/scripts/changeproductextend.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/common/date/dateutils.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/offer/offerdefine.js"></script>
+    <title>产品变更</title>
+</head>
+<body jwcid="@Body">
+    <div class="c_scroll c_scroll-float" checkDOMChanges="true">
+        <div class="l_padding">
+            <!-- 认证 开始 -->
+            <div jwcid="AuthPart@icsserv:Auth" element="div"
+                 authType="ognl:info.authType"
+                 tradeTypeCode="ognl:info.TRADE_TYPE_CODE"
+                 beforeAction="changeProduct.beforeSubmitSerialNumber()"
+                 tradeAction="changeProduct.afterSubmitSerialNumber(data)">
+            </div>
+            <!-- 认证 结束 -->
+            <div class="c_space"></div>
+            <!-- 产品展示 开始 -->
+            <div id="PRODUCT_DISPLAY_DIV" style="display: none;"
+                 class="c_list c_list-line c_list-border">
+                <ul>
+                    <li id="USER_PRODUCT_LI">
+                        <div class="pic">
+                            <span class="e_ico-pic-blue e_ico-pic-r e_size-xxl">原</span>
+                        </div>
+                        <div class="main">
+                            <div class="title" id="USER_PRODUCT_NAME"></div>
+                            <div class="content" id="USER_PRODUCT_DESC"></div>
+                        </div>
+                        <div class="side e_hide-phone">
+                            <button type="button" id="PRODUCT_SELECT_BTN"
+                                    class="e_button-r e_button-blue"
+                                    ontap="ProductSelect.popupProductSelect('0000',$('#USER_EPARCHY_CODE').val(),$('#USER_PRODUCT_ID').val())">
+                                <span class="e_ico-change"></span><span>变更</span>
+                            </button>
+                        </div>
+                        <div class="space e_hide-phone"></div>
+                        <div class="fn e_show-phone" id="PRODUCT_SELECT_BTN_PHONE"
+                             ontap="ProductSelect.popupProductSelect('0000',$('#USER_EPARCHY_CODE').val(),$('#USER_PRODUCT_ID').val())">
+                            <span class="e_ico-change"></span><span>变更</span></div>
+                    </li>
+                    <li id="NEXT_PRODUCT_LI" style="display: none;">
+                        <div class="pic">
+                            <span class="e_ico-pic-green e_ico-pic-r e_size-xxl">新</span>
+                        </div>
+                        <div class="main">
+                            <div class="title" id="NEXT_PRODUCT_NAME"></div>
+                            <div class="content" id="NEXT_PRODUCT_DESC"></div>
+                        </div>
+                        <div id="DELETE_PRODUCT_BTN" class="fn"
+                             ontap="changeProduct.cleanupSelectedProduct()">
+                            <span class="e_ico-delete"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 产品展示 结束 -->
+            <div class="c_space-c"></div>
+            <div id="OTHER_DISPLAY_DIV" style="display: none;"
+                 class="c_list c_list-s c_list-col-4 c_list-phone-col-1 c_list-line c_list-border">
+                <ul>
+                    <li id="OLD_VPMN_LI" style="display: none;">
+                        <div class="label">原VPMN优惠</div>
+                        <div class="value">
+                            <input name="OLD_VPMN_DISCNT_NAME" jwcid="@TextField"
+                                   value="" readOnly="true" desc="原VPMN优惠"/>
+                        </div>
+                    </li>
+                    <li id="NEW_VPMN_LI" style="display: none;">
+                        <div class="label">新VPMN优惠</div>
+                        <div class="value" jwcid="newVpmnPart@Part">
+                            <span name="NEW_VPMN_DISCNT" jwcid="@Select"
+                                  source="ognl:vpmnDiscnt"
+                                  value="ognl:info.ELEMENT_ID"
+                                  valueField="ELEMENT_ID"
+                                  textField="ELEMENT_NAME"
+                                  titleField="ELEMENT_NAME"
+                                  nullable="yes" desc="新VPMN优惠"></span>
+                        </div>
+                    </li>
+                    <li class="merge-2" id="SHAREMEAL_LI" style="display: none;">
+                        <div class="label">共享副号</div>
+                        <div class="value">
+                            <span class="e_mix">
+                                <input jwcid="@TextField"
+                                       name="SHAREMEAL_NUMBERS"
+                                       placeholder="2个，用空格分开"
+                                       desc="共享副号"/>
+                                <button type="button" id="SHAREMEAL_CHECK_BTN"
+                                        disabled="true" class="e_button-blue"
+                                        ontap="changeProduct.checkSharePhone()">
+                                    <span class="e_ico-check"></span>
+                                    <span>校验</span>
+                                </button>
+                                <input jwcid="@Hidden" name="SHAREMEALONE_NAME"
+                                       value="" desc="共享副号一"/>
+                                <input jwcid="@Hidden" name="SHAREMEALTWO_NAME"
+                                       value="" desc="共享副号二"/>
+                                <input jwcid="@Hidden" name="SHAREMEAL_FLAG"
+                                       value="0" desc="标识"/>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 服务优惠选择组件 开始 -->
+            <div class="l_col l_col-phone-popup l_col-space">
+                <div class="l_colItem l_colItem-popup">
+                    <div jwcid="OfferListPart@icsserv:OfferList" element="div"
+                         categoryId="100000000114,100000000008"></div>
+                </div>
+                <div class="l_colItem">
+                    <div class="c_title">
+                        <div class="text">
+                            <span class="e_hide-phone">已选区</span>
+                            <span class="e_show-phone">服务 / 优惠</span>
+                        </div>
+                        <div class="fn">
+                            <ul>
+                                <li style="display: none;">
+                                    <input id="EFFECT_NOW" type="checkbox"
+                                           onclick="changeProduct.effecNowEvent(this);"
+                                           disabled="true" value="1"/> 立即生效
+                                </li>
+                                <li id="BOOKING_DATE_FIELD" class="li"
+                                    style="padding:0;">
+                                    <span class="label">预约时间</span>
+                                        <input name="BOOKING_DATE"
+                                               jwcid="@DateField"
+                                               dropDown="true"
+                                               format="yyyy-MM-dd"
+                                               onafterAction="changeProductExtend.afterBookingDate();"
+                                               desc="预约时间"
+                                               readonly="readonly"/>
+                                </li>
+                                <li id="openDefaultOp" ontap="selectedElements.changeDefaultOp(this,'1');"><span class="e_ico-show"></span>显示必选项</li>
+                                <li id="hideDefaultOp" ontap="selectedElements.changeDefaultOp(this,'2');" style="display:none;"><span class="e_ico-hide"></span>隐藏必选项</li>
+                                <li class="e_show-phone" ontap="$('#OfferListPart').parent().addClass('l_colItem-show');"><span class="e_ico-check"></span>选择服务/优惠</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div jwcid="SelectedElementsPart@icsserv:SelectedElements"
+                         renderCallSvc="CS.SelectedElementSVC.getUserElements"
+                         callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg"
+                         afterRenderAction="changeProduct.afterRenderSelectedElements(data)"
+                         basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                         basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+                         eparchyCodeComponentId="USER_EPARCHY_CODE"
+                         tradeTypeCode="ognl:info.TRADE_TYPE_CODE"
+                         element="div"></div>
+                </div>
+            </div>
+            <!-- 服务优惠选择组件 结束 -->
+            <div class="c_space"></div>
+            <div class="c_list c_list-s c_list-form">
+                <ul>
+                <li class="li" id="_INVOICE_CODE_DIV" style="display:none">
+					<span class="label"><span class="e_required">发票号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="_INVOICE_CODE"	id="_INVOICE_CODE" maxsize="15" datatype="numeric" type="text" value="" nullable="yes" desc="发票号"/>
+		            </span></span>
+				</li>
+                    <li>
+                        <div class="label">备注</div>
+                        <div class="value">
+                            <input name="REMARK" jwcid="@TextField"
+                                   nullable="yes" desc="备注"/></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="c_space"></div>
+            <div class="c_submit c_submit-center"
+                 jwcid="SubmitPart@icsserv:CSSubmit"
+                 beforeAction="changeProduct.submit()"
+                 params="" isReset="true" listener="submitChangeProduct"
+                 orderTypeCode="ognl:info.TRADE_TYPE_CODE"
+                 refreshPart="" isRender="true" area="" element="div"></div>
+            <div jwcid="ElementAttrPart@icsserv:ElementAttr" element="div"></div>
+        </div>
+    </div>
+    <!-- 产品选择组件 开始 -->
+	<div name="productSelectPopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" popupId="productSelectPopup" element="div"
+                 jwcid="ProductSelectPart@icsserv:ProductSelect"
+                 catalogId="ognl:'07'.equals(getPage().getData().getString('authType', '')) ? 'WLW0' : '0000'"
+				 afterAction="changeProduct.afterChangeProduct(productId, productName, productDesc)"
+				 monitor="USER_PRODUCT_ID"></div>
+		</div>
+	</div>
+	<!-- 产品选择组件 结束 -->
+    <input jwcid="@Hidden" name="SERIAL_NUMBER" value=""/>
+    <input jwcid="@Hidden" name="USER_ID" value=""/>
+    <input jwcid="@Hidden" name="USER_EPARCHY_CODE" value=""/>
+    <input jwcid="@Hidden" name="USER_PRODUCT_ID" value=""/>
+    <input jwcid="@Hidden" name="NEXT_PRODUCT_ID" value=""/>
+    <input jwcid="@Hidden" name="NEW_PRODUCT_ID" value=""/>
+    <input jwcid="@Hidden" name="NEW_PRODUCT_NAME" value=""/>
+    <input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" value=""/>
+    <input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" value=""/>
+    <input jwcid="@Hidden" name="STAFF_ID" value="ognl:getVisit().getStaffId()"/>
+    <input jwcid="@Hidden" name="OLD_VPMN_DISCNT_TAG" value=""/>
+    <input jwcid="@Hidden" name="OLD_VPMN_DISCNT" value=""/>
+    <input jwcid="@Hidden" name="VPMN_USER_ID_A" value=""/>
+    <input jwcid="@Hidden" name="VPMN_PRODUCT_ID" value=""/>
+    <input jwcid="@Hidden" name="VIP_CLASS_ID" value=""/>
+    <input jwcid="@Hidden" name="SYS_DATE" value="ognl:pageutil.getSysTime()"/>
+    <input jwcid="@Hidden" name="NET_TYPE_CODE" value="ognl:info.authType"/>
+    <input jwcid="@Hidden" name="PSPT_TYPE_CODE" value=""/>
+    <input jwcid="@Hidden" name="WDACTICE_ENDFLAG" id="WDACTICE_ENDFLAG" value=""/>
+    <!-- 从首页"热门套餐"和"推荐套餐"跳转URL参数 -->
+    <input jwcid="@Hidden" name="PRODUCT_ID_FROM_URL" value="ognl:getParameter('offerCode', '')" desc="从URL获取的产品编码"/>
+    <input jwcid="@Hidden" name="PRODUCT_ASSIGNED" value="0" desc="从URL获取产品参数的载入状态，0-初始化默认值，1-产品参数已载入"/>
+ <!-- 使用客户已有押金发票 -->
+    <input jwcid="@Hidden" name="INVOICE_DATA" id="INVOICE_DATA" value=""/>
+    <input jwcid="@Hidden" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" value=""/>
+</body>
+</html>

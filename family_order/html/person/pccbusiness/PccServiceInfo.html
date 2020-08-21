@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PCC业务策略信息录入</title>
+<script language="JavaScript" src="person/pccbusiness/scripts/addpccinfo.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper">
+<div class="m_wrapper2" style="height:500px">
+<!-- 区域 开始 -->
+	<div id="only">
+    	<div class="c_box">
+		<!-- 表头 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">PCC手工录入业务策略信息</div>
+				<div class="s_viewQuery"  jwcid="@Any" style="float:right">
+	     			<button type="button" name="query_BTN" id="query_BTN" class="e_button-form" onclick="showDIV(21)"><i class="e_ico-search"></i><span>批量导入数据</span></button> 
+        		</div>
+			</div>
+		</div>
+	<!-- 表头 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-4 c_form-label-8" jwcid="QueryPart@Part">
+		<ul class="ul">
+		     <li class="li">
+				<span class="label"><span class="e_required">经分流水号：</span></span>
+				<span class="e_input"><span>
+				<input id="info_BASS_FLOW_ID" name="info_BASS_FLOW_ID" value="" desc="经分流水号" class="e_input" type="text" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="info_OPERATION_TYPE" id="info_OPERATION_TYPE" source="ognl:pageutil.getStaticList('PCCOPERATIONTYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="" desc="操作类型" nullable="no" />
+				</span></span></span>
+			</li>   
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span> </span>
+				<span class="e_input"><span>
+				<input id="info_USR_IDENTIFIER" name="info_USR_IDENTIFIER" value="" datatype="pinteger" maxLength="11" 
+					desc="用户服务号码" class="e_input" type="text" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">业务策略代码：</span></span>
+				<span class="e_input"><span>
+				<input id="info_SERVICE_CODE" name="info_SERVICE_CODE" value="" datatype="pinteger" maxLength="32" 
+					desc="业务策略代码" class="e_input" type="text" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="">计费方式：</span></span>
+				<span class="e_input"><span>
+				<input id="info_SERVICE_BILLING_TYPE" name="info_SERVICE_BILLING_TYPE" value="" datatype="numeric" maxLength="2" 
+					desc="计费方式" class="e_input" type="text" nullable="yes"/>
+				</span></span>
+			</li> 
+			<li class="li">
+				<span class="label"><span >启用时间：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="info_SERVICE_START_DATE_TIME" id="info_SERVICE_START_DATE_TIME" value="" 
+					desc="启用时间" format="yyyy-MM-dd"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span >截止时间：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="info_SERVICE_END_DATE_TIME" id="info_SERVICE_END_DATE_TIME" value="" 
+					desc="截止时间" format="yyyy-MM-dd"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">配额状态：</span></span>
+				<span class="e_input"><span>
+				<input id="info_SERVICE_USAGE_STATE" name="info_SERVICE_USAGE_STATE" value="" datatype="numeric" maxLength="2" 
+					desc="配额状态" class="e_input" type="text" nullable="yes"/>
+				</span></span>
+			</li>
+		</ul>
+			<div>
+				<div class="submitPlace"></div>
+				<div class="c_submit">
+						<button type="button" class="e_button-page-ok" onclick="return addBaseInfo(2);"><i class="e_ico-ok"></i><span>添 加</span></button>
+				</div>
+			</div>  
+	</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div id="many" style="display:none;" >
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">PCC批量导入业务策略信息</div>
+		<div class="s_viewQuery"  jwcid="@Any" style="float:right">
+	     	<button type="button" name="query_BTN" id="query_BTN" class="e_button-form" onclick="showDIV(22)"><i class="e_ico-search"></i><span>手工录入数据</span></button> 
+        </div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+		<div class="c_form c_form-col-2 c_form-label-8" jwcid="BatSubmitPart@Part" element="div">
+			<ul class="ul" >
+				<li class="li">
+					<span class="label"><span class="e_required">导入文件：</span></span>
+					<span class="e_elements">
+						<input jwcid="FILE_PATH@Upload" name="FILE_PATH"  ftpSite="personserv" filePath="" fileSize="20" fileTypes="*.xlsx;*.xls"/>
+					    <input jwcid="@Hidden" name="SERVICE_TYPE" id="SERVICE_TYPE" value="2"/>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label">模版下载：</span>
+					<span class="text" ><a jwcid="@Any" name="tepID" id="tepID" href="ognl:encodeUrl('attach?action=downloadweb&filePath=template/bat/PCCSERVICE.xls')">[点击下载]</a></span>
+				</li>
+			</ul>
+			  <div>
+			   <div class="submitPlace"></div>
+				<div class="c_submit">
+						<button type="button" class="e_button-page-ok" onclick="return queryInfo();"><i></i><span>批量导入</span></button>
+				</div>
+			  </div>  
+		</div>
+	</div>
+<!-- 区域 结束 -->
+</div>
+</div>
+</body>
+</html>

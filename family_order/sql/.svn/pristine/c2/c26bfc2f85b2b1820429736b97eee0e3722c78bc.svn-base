@@ -1,0 +1,2 @@
+INSERT INTO tf_a_dayrecvlog(eparchy_code,staff_id,recv_day,recv_fee_num,cancel_num,recv_fee_cash,recv_fee_card,recv_fee_check,recv_fee_xfk,recv_fee_other,cancel_fee,invoice_num,imprest_num,rsrv_1,rsrv_2)
+ VALUES(:EPARCHY_CODE,:STAFF_ID,:RECV_DAY,TO_NUMBER(:RECV_FEE_NUM),TO_NUMBER(:CANCEL_NUM),TO_NUMBER(:RECV_FEE_CASH),TO_NUMBER(:RECV_FEE_CARD),TO_NUMBER(:RECV_FEE_CHECK),TO_NUMBER(:RECV_FEE_XFK),TO_NUMBER(:RECV_FEE_OTHER),TO_NUMBER(:CANCEL_FEE),TO_NUMBER(:INVOICE_NUM),TO_NUMBER(:IMPREST_NUM),TO_NUMBER(:RSRV_1),TO_NUMBER(:RSRV_2))

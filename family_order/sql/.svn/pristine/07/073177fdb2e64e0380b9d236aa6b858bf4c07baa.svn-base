@@ -1,0 +1,2 @@
+INSERT INTO TD_S_DISCNT_LIMIT (discnt_code_a,Discnt_Code_b,Limit_Tag,Start_Date,End_Date,Eparchy_Code)
+VALUES (:DISCNT_CODE_A,:DISCNT_CODE_B,:LIMIT_TAG,to_date(:START_DATE,'yyyy-mm-dd hh24:mi:ss'),to_date(:END_DATE,'yyyy-mm-dd hh24:mi:ss'),:EPARCHY_CODE)

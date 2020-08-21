@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>授权业务申请</title>
+<script jwcid="@Script" language="JavaScript" src="person/fastauth/fastauthapply/scripts/FastAuthApply.js"></script>
+<script language="javascript"><!--
+$(document).ready(function(){
+hideLayer('IncreateFrame');
+//debugger;
+	//document.getElementById("cond_APPLY_STATE").value = "--请选择--";
+	//document.getElementById("cond_APPLY_STATE").innerText = "--请选择--";
+});
+
+// --></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取授权业务申请清单无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">授权业务申请</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-7" jwcid="queryPart@Part">
+					<ul class="ul">
+					  <li class="li">
+							<span class="label">申请开始时间：</span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="yes" value="ognl:condition.cond_START_DATE"  desc="申请开始时间"/>
+								</span></span>
+							</span>
+					  </li>
+					  <li class="li">
+							<span class="label">申请结束时间：</span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="yes" value="ognl:condition.cond_END_DATE"  desc="申请结束时间"/>
+								</span></span>
+							</span>
+					  </li>	
+					  <li class="li">
+							<span class="label">菜单类型：</span>
+							<span class="e_select"><span><span>
+								 <select jwcid="@Select" name="cond_MENU_ID" id="cond_MENU_ID"
+													source="ognl:acceptTradeList"
+													textField="MENU_TITLE" valueField="MENU_ID" 
+													 titleField="MENU_TITLE" value="ognl:condition.cond_MENU_ID" desc="菜单类型"/>	
+							</span></span></span>
+					  </li>
+					  <li class="li">
+						<span class="label">审核状态：</span>
+						<span class="e_select"><span><span>
+						        <select jwcid="@Select" name="cond_APPLY_STATE" id="cond_APPLY_STATE" source="ognl:pageutil.getStaticList('FASTAUTH_STATE')"
+			                                    addDefault="true" value="ognl:condition.cond_APPLY_STATE" disabled="false" desc="审核状态"  
+			                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  defaultText="--请选择--"
+			                    />
+						</span></span></span>
+					  </li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryApplyTrade();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="detailPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">已申请授权的业务</div>	     
+		  	       <div class="fn">
+		  	          <div class="button" jwcid="@Conditional" condition="ognl:applyTradeList.size > 0">
+
+						 <button type="button" class="l_ml" onclick="poupApplyDialog('add');">
+								<i class="e_ico-ok"></i><span>授权申请</span>
+						 </button>
+						 <button type="button" class="l_ml" onclick="poupApplyDialog('upd');">
+								<i class="e_ico-ok"></i><span>授权修改</span>
+						 </button>
+						 <button type="button" class="l_ml" onclick="poupApplyDialog('reupd');">
+								<i class="e_ico-ok"></i><span>重新申请</span>
+						 </button>
+						 <button type="button" class="l_ml" onclick="delAuth();">
+								<i class="e_ico-delete"></i><span>删除</span>
+						 </button>
+                        <span jwcid="@Export" name="exportFilePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100963"
+							  config="export/sundryquery/other/APPLYAUTHINFOLIST.xml"  fileName="已申请的快速授权业务列表" cond=queryPart/>
+					  </div>
+				    </div>
+				 </div>
+				 <div class="c_table ">
+					<table jwcid="@Table" name="ResultTable" id="ResultTable"  sort="true">
+						<thead>
+						<tr>
+			  				<th></th>
+			  				<th>申请员工</th>
+							<th>申请时间</th>
+							<th>菜单</th>
+							<th>可使用次数</th>
+							<th>可使用开始时间</th>
+							<th>可使用结束时间</th>
+							<th>审核状态</th>
+							<th>审核员工</th>
+							<th>操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:applyTradeList" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> 
+							<td jwcid="@Any" name="ASKID" value="ognl:info.ASK_ID">
+								<span input type="radio" id="ASK_ID" name="ASK_ID" jwcid="@Radio" value="ognl:info.ASK_ID" onclick=""/>
+							</td>
+							<td jwcid="@Any" name="ASK_STAFF_ID" value="ognl:info.ASK_STAFF_ID">
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.ASK_STAFF_ID)" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="ASK_TIME" value="ognl:info.ASK_TIME">
+								<span jwcid="@Insert" value="ognl:info.ASK_TIME" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="MENU_ID" value="ognl:info.MENU_ID">
+								<span jwcid="@Insert" value="ognl:info.MENU_TITLE" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="ASK_NUM" value="ognl:info.ASK_NUM">
+								<span jwcid="@Insert" value="ognl:info.ASK_NUM" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="ASK_START_DATE" value="ognl:info.ASK_START_DATE">
+								<span jwcid="@Insert" value="ognl:info.ASK_START_DATE" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="ASK_END_DATE" value="ognl:info.ASK_END_DATE">
+								<span jwcid="@Insert" value="ognl:info.ASK_END_DATE" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="AWS_STATE" value="ognl:info.AWS_STATE">
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FASTAUTH_STATE',info.AWS_STATE)" raw="true"/>
+							</td>
+							<td jwcid="@Any" name="AWS_STAFF_ID" value="ognl:info.AWS_STAFF_ID">
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.AWS_STAFF_ID)" raw="true"/>
+							</td>
+							<td>
+								 <a jwcid="@Redirect" value="打开"  name="URL" id="URL" source="ognl:info" cols="80" urlinfo="ognl:info.URL" 
+				    			    class="e_button" onclick="openMenuByLink(this)"/>
+							</td>
+							<td jwcid="@Any"  type="hidden"  style="display:none" >
+							   <a jwcid="@Redirect" value="ognl:info.ASK_ID"   cols="80" urlinfo="ognl:info.ASK_ID" 
+				    			    onclick="openMenu(this)"/>
+							</td>
+					      </tr>                                          
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="queryPart" part="detailPart" listener="queryApplyTradeList" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+<!-- 区域 结束 -->
+
+
+
+<!--密码设置开始-->
+<div class="c_popup" id="IncreateFrame">
+	        <div class="c_popupWrapper"  >
+				<div class="c_popupHeight"></div>
+				<div class="c_popupBox" >
+					<div class="c_popupTitle">
+						<div class="text">
+							请输入随机密码
+						</div>
+						<div class="fn">
+							<a class="close" href="javascript:void(0)" onclick="hideLayer('IncreateFrame')"></a>
+						</div>
+					</div>
+					<div class="c_popupContent">
+						<div class="c_popupContentWrapper">
+							<div class="c_form c_form-label-9 c_form-col-1" jwcid="inputPWDInfoPart@Part">
+								<ul class="ul">
+									<li class="li"  id="OLDLI" >
+										<span class="label">随机密码：</span>
+                                        <input jwcid="@TextField" name="condition_PWD" id="condition_PWD" value="ognl:condition.condition_PWD" type="text" desc="业务类型" class="e_input" />
+										<input jwcid="@TextField" name="condition_ASK_ID" id="condition_ASK_ID" value="ognl:condition.condition_ASK_ID" type="text" desc="申请日志编号" class="e_input" style="display:none;"/>
+										<input type="hidden" name="OPERATE_FLAG" id="OPERATE_FLAG" value=""/>
+									</li>
+								</ul>
+							</div>
+							<!-- 表格 结束 -->
+							<!-- 提交 开始 -->
+							<div class="c_submit">
+								<button class="e_button-page-ok"   onclick="submitPwd(this);">
+									<i></i><span>确定</span>
+								</button>
+								<button class="e_button-page-cancel"
+									onclick="hideLayer('IncreateFrame')">
+									<i></i><span>取消</span>
+								</button>
+							</div>
+							<!-- 提交 结束 -->
+						</div>
+					</div>
+					<div class="c_popupBottom">
+						<div></div>
+					</div>
+					<div class="c_popupShadow"></div>
+				</div>
+			</div>
+			<iframe class="c_popupFrame"></iframe>
+			<div class="c_popupCover"></div>
+</div>
+<!--密码设置结束-->
+</div></div>
+</body>
+</html>

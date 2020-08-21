@@ -1,0 +1,723 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/phone/MBOP.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="iorder/igroup/openenterprisemember/script/OpenEnterpriseMember.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/csserv/common/validate/assurecustvalidate.js" ></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/fee/FeeMgr.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/CommLib.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+
+    <title>集团成员开户</title>
+
+</head>
+<body jwcid="@Body">
+
+<!-- 主流程开始 -->
+<div class="l_edit">
+    <div class="c_header e_show-phone">
+        <div class="back" ontap="closeNav();">集团成员开户</div>
+    </div>
+
+    <div id="chooseOfferScroll">
+
+        <div jwcid="@Scroller" name="editMainScroll" class="l_editMain" hScroll="false" hScrollbar="false" checkDOMChanges="false">
+            <div class="c_space"></div>
+            <!-- 标题 开始 -->
+            <div class="c_title">
+                <div class="text">客户信息</div>
+            </div>
+            <div jwcid="groupBasePart@Part" class="c_list c_list-form">
+                <ul>
+                    <li class="link required">
+                        <div class="label e_red">集团编码</div>
+                        <div class="value">
+                            <span class="e_mix">
+                                <input jwcid="@TextField" name="login_groupID" id="login_groupID" value="ognl:groupInfo.GROUP_ID" onkeydown="queryGroupInfo(this, event);" nullable="no" desc="集团编码"/>
+                                <span class="e_ico-search e_show-phone" ontap="queryGroupCustInfo();"></span>
+                            </span>
+                            <input jwcid="@Hidden" name="cond_CUST_ID" id="cond_CUST_ID" value="ognl:groupInfo.CUST_ID"/>
+                            <input jwcid="@Hidden" name="cond_GROUP_ID" id="cond_GROUP_ID" value="ognl:groupInfo.GROUP_ID"/>
+                            <input jwcid="@Hidden" id="cond_EC_USER_ID" name="cond_EC_USER_ID" value="" desc="集团商品的用户id"/>
+                            <input jwcid="@Hidden" name="cond_GROUP_CONTACT_PHONE" id="cond_GROUP_CONTACT_PHONE" value="ognl:groupInfo.GROUP_CONTACT_PHONE"/>
+                            <input jwcid="@Hidden" name="cond_PSPT_ID" id="cond_PSPT_ID" value="ognl:custMgrInfo.grpCustInfo.PSPT_ID"/>
+                            <input jwcid="@Hidden" name="cond_PSPT_TYPE_CODE" id="cond_PSPT_TYPE_CODE" value="ognl:custMgrInfo.grpCustInfo.PSPT_TYPE_CODE"/>
+                        </div>
+                        <div jwcid="@Any" style="display:none" id="CUST_INFO" ><span jwcid="@Insert" value="ognl:groupInfo"></span></div>
+                    </li>
+
+                    <li class="link required">
+                        <div class="label e_red">客户名称</div>
+                        <div class="value"><input jwcid="@TextField" name="cond_CUST_NAME" value="ognl:groupInfo.CUST_NAME" disabled="true"/></div>
+                    </li>
+                    <li class="link">
+                        <div class="label e_red">客户服务等级</div>
+                        <div class="value"><input jwcid="@Select" name="cond_SERV_LEVEL" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CUSTGROUP_SERV_LEVEL')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:groupInfo.SERV_LEVEL" disabled="true"/></div>
+                    </li>
+                    <li class="link required merge-2">
+                        <div class="label e_red">客户地址</div>
+                        <div class="value"><input jwcid="@TextField" name="cond_GROUP_ADDR" value="ognl:groupInfo.GROUP_ADDR" disabled="true"/></div>
+                    </li>
+                    <li class="link" ontap="showPopup('popup01','moreCustomerPopupItem',true)">
+                        <div class="label">其他客户信息</div>
+                        <div class="value"><input type="text"  readonly="readonly" /></div>
+                        <div class="more"></div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 标题 结束 -->
+
+            <div class="c_space"></div>
+
+            <!-- 标题 开始 -->
+            <div class="c_title">
+                <div class="text">商品信息</div>
+                <div class="fn">
+                    <ul>
+                        <li ontap="initOfferPopupItem();">
+                            <span class="e_ico-check"></span><span>选择</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 标题 结束 -->
+
+            <!-- 必选商品 开始 -->
+            <div jwcid="mainOfferPart@Part" class="c_list c_list-form" style="display:none">
+                <ul>
+                    <li jwcid="@Any" id="ognl:'li_'+initOffer.OFFER_ID">
+                        <div class="content link" jwcid="@Any" OFFER_ID="ognl:initOffer.OFFER_ID" ontap="openEnterpriseOfferPopupItem($(this).attr('OFFER_ID'),$(this).attr('OFFER_ID'),true,0);">
+                            <div class="main">
+                                <div class="title">
+                                    <span jwcid="@Insert" name="OFFER_NAME" value="ognl:initOffer.OFFER_NAME" />
+                                </div>
+                                <!-- 此处两个div不能换行，否则影响页面展示效果 -->
+                                <div jwcid="@Any" class="content" id="ognl:'priceOffer_'+initOffer.OFFER_ID"><div jwcid="@Foreach" source="ognl:priceOfferList" value="ognl:priceOffer" element="div" id="ognl:'div_'+priceOffer.OFFER_ID">
+                                    <span jwcid="@Insert" name="PRICE_ID_PRICE_NAME" value="ognl:'【'+priceOffer.OFFER_ID+'】'" />
+                                    <span jwcid="@Insert" name="PRICE_NAME" value="ognl:priceOffer.OFFER_NAME" />
+                                    <input jwcid="@Hidden" name="ognl:'pp_'+priceOffer.MAIN_OFFER_ID+'_PRICE_OFFER_ID'"
+                                           value="ognl:priceOffer.OFFER_ID" />
+                                </div></div>
+                            </div>
+                            <div class="side"><span class="e_tag e_tag-red">待设置</span></div>
+                            <div class="more"></div>
+                        </div>
+                        <span jwcid="@Any" element="span" id="ognl:'class_'+initOffer.OFFER_ID" class="e_SelectOfferPart" desc="商品信息" style="display: none"></span>
+                    </li>
+                </ul>
+            </div>
+            <!-- <!-- 必选商品 结束 -->
+
+            <div class="c_title">
+                <div class="text">资源信息</div>
+            </div>
+            <!-- 列表 开始 -->
+            <div jwcid="ResourcePart@Part" class="c_list c_list-form">
+                <ul>
+                    <li class="link required">
+                        <div jwcid="@Conditional" condition="ognl:condition.RES_TYPE != null && !''.equals(condition.RES_TYPE)">
+                            <div class="label"><span jwcid="@Insert" value="ognl:condition.RES_TYPE"></span></div>
+                        </div>
+                        <div jwcid="@Conditional" condition="ognl:condition.RES_TYPE == null || ''.equals(condition.RES_TYPE)">
+                            <div class="label">服务号码</div>
+                        </div>
+                        <div class="value">
+                            <input jwcid="@TextField" name="cond_SERIAL_NUMBER_INPUT" id="cond_SERIAL_NUMBER_INPUT" value="ognl:condition.RES_ID" desc="服务号码"
+                                   resId="ognl:condition.RES_ID" restypecode="ognl:condition.RES_TYPE_CODE" restype="ognl:condition.RES_TYPE"
+                                   onkeypress="if(event.keyCode==13){checkResSn(this.value,$(this).attr('restypecode'),$(this).attr('restype'))};"/>
+                            <input jwcid="@Hidden" name="cond_SERIAL_NUMBER" value="ognl:condition.RES_ID" desc="校验完的服务号码"/>
+                            <input jwcid="@Hidden" name="ACCESS_NUM_CHECKED" value="ognl:condition.RES_ID" desc="校验完的服务号码"/>
+                        </div>
+                        <div id="RES_CHECKED_OK" class="ok" style="display:none"></div>
+                        <label class="fn"><span id="checkPic" class="e_ico-check" ontap="checkResSn($('#cond_SERIAL_NUMBER_INPUT').val(),$('#cond_SERIAL_NUMBER_INPUT').attr('restypecode'),$('#cond_SERIAL_NUMBER_INPUT').attr('restype'));" ></span></label>
+                    </li>
+                </ul>
+            </div>
+            <!-- 列表 结束 -->
+
+            <div class="c_space"></div>
+
+            <div class="c_title">
+                <div class="text">集团成员开户信息</div>
+            </div>
+            <!-- 证件信息 开始 -->
+            <div class="c_list c_list-form">
+                <ul>
+                    <li id="i_contractSelPart" class="link required" ontap="showPopup('popup', 'MemCustItem', true);">
+                        <div class="label">客户信息</div>
+                        <div class="value">
+                            <span id="memCust" class="text" ></span>
+                        </div>
+                        <input type="hidden" id="MEM_CUST_INFO" value="" />
+                        <input type="hidden" id="AGENT_INFO" value="" />
+                        <input type="hidden" id="DUTY_INFO" value="" />
+                        <input type="hidden" id="USE_INFO" value="" />
+                        <div class="more"></div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 证件信息 结束 -->
+            <div class="c_space"></div>
+
+
+            <!-- 账户和密码 开始 -->
+            <div jwcid="UserAcctInfoPart@Part" class="c_list c_list-form">
+                <ul>
+                    <li class="required link">
+                        <div class="label">用户类型</div>
+                        <div class="value"><span jwcid="@Select" name="MEM_USER_INFO_USER_TYPE_CODE"  value=""
+                                                 source="ognl:pageUtil.getStaticList('USER_USERTYPECODE')" valueField="DATA_ID" textField="DATA_NAME"
+                                                 nullable="no" desc="用户类型">
+                        </span></div>
+                    </li>
+                    <li class="required link">
+                        <div class="label">账户名称</div>
+                        <div class="value">
+                            <input jwcid="@TextField" name="MEM_ACCT_INFO_PAY_NAME" id="MEM_ACCT_INFO_PAY_NAME" value="" maxsize="80" nullable="no" desc="账户名称"/>
+                        </div>
+                    </li>
+                    <li class="required link">
+                        <div class="label">账户类型</div>
+                        <div class="value"><span jwcid="@Select" name="MEM_ACCT_INFO_PAY_MODE_CODE" id="MEM_ACCT_INFO_PAY_MODE_CODE" value="0"
+                                                 source="ognl:pageUtil.getStaticList('TD_S_PAYMODE')" valueField="DATA_ID" textField="DATA_NAME"
+                                                 nullable="no" addDefault="false"  disabled="disabled" desc="账户类型">
+                        </span></div>
+                    </li>
+
+                    <li id="MEM_PREPAY_INFO" style="display:none">
+                        <div class="label">付费类型</div>
+                        <div class="value">
+                            <span jwcid="@Select" name="MEM_PREPAY_SIGN_CODE" id="MEM_PREPAY_SIGN_CODE"
+                                  source="ognl:pageutil.getStaticList('USER_USERPREPAYSIGN')" value=""
+                                  valueField="DATA_ID" textField="DATA_NAME" desc="付费类型" addDefault="true" ></span>
+                        </div>
+                    </li>
+                    <li id="IMS_CLIENT" class="required" style="display:none">
+                        <div class="label">IMS客户端</div>
+                        <div class="value" jwcid="ImsInfoPart@Part">
+                            <span jwcid="@Select" name="CUST_INFO_TELTYPE" id="CUST_INFO_TELTYPE"
+                                  source="ognl:imsTypes"  value="ognl:null==custInfo.PSPT_TYPE_CODE?'0':custInfo.PSPT_TYPE_CODE"
+                                  valueField="PARA_CODE1" textField="PARA_CODE2" addDefault="false" desc="IMS客户端" ></span>
+                        </div>
+                    </li>
+                    <li class="link">
+                        <div class="label">备注</div>
+                        <div class="value">
+                            <input jwcid="@TextField" name="REMARKS" id="REMARKS" value=""  desc="备注"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 提示 开始 -->
+            <!-- 费用组件 -->
+            <!-- <div jwcid="@ecserv:Fee" />	 -->
+            <!-- 提示 结束 -->
+            <!-- 账户和密码 结束 -->
+            <div class="c_space"></div>
+
+            <!-- 隐藏域 开始 -->
+            <div jwcid="HiddenPart@Part">
+                <input jwcid="@Hidden" id="cond_OFFER_ID" name="cond_OFFER_ID" value="" desc="选择的商品编码"/>
+                <input jwcid="@Hidden" id="cond_OFFER_CODE" name="cond_OFFER_CODE" value="" desc="原PRODUCT_ID"/>
+                <input jwcid="@Hidden" id="cond_OPER_TYPE" name="cond_OPER_TYPE" value="" desc="操作类型"/>
+                <input jwcid="@Hidden" id="ESOP_TAG" name="ESOP_TAG" value="1" />
+            </div>
+            <!-- 隐藏域 结束 -->
+
+            <div id="OpenSubmit" class="c_submit c_submit-full">
+                <button class="e_button-l e_button-r e_button-navy" type="button" ontap="window.reloadNav();">重置</button>
+                <button class="e_button-l e_button-r e_button-green" type="button" ontap="submitAll(this);">提交</button>
+            </div>
+            <div style="display:none" ><div jwcid="SubmitPart@icsserv:CSSubmit" listener="submit" element="div" isGrp="true" isShowDevelopStaff="false"></div></div>
+            <div class="c_space"></div>
+        </div>
+
+        <!-- 占位符 开始 -->
+        <div class="l_editPlace"><span class="e_ico-cmlogo"></span></div>
+        <!-- 占位符 结束 -->
+
+    </div>
+<!-- 主流程结束 -->
+
+</div>
+
+<div jwcid="@Popup" name="popup" class="c_popup c_popup-half" mask="false">
+    <!-- ===========================================第一层弹出 开始============================================ -->
+    <div class="c_popupGroup">
+
+        <!-- 成员受理集团外框登录 开始 -->
+        <div jwcid="enterpriseLoginItem@ecserv:EnterpriseLogin"></div>
+        <!-- 成员受理集团外框登录 结束 -->
+
+        <!-- 商品信息 开始 -->
+        <div jwcid="offerPopupItem@ecserv:EnterpriseCatalog" upCategoryId="7000" isEc="false"></div>
+        <!-- 商品信息 结束 -->
+
+        <!-- productPopupItem-商品设置 开始 -->
+        <div jwcid="enterpriseOfferPopupItem@ecserv:EnterpriseOffer"></div>
+        <!-- productPopupItem-商品设置 结束 -->
+
+        <!-- 证件信息 开始 -->
+        <div id="MemCustItem" class="c_popupItem">
+            <div class="c_header">
+                <div class="back" ontap="hidePopup(this)">客户信息</div>
+            </div>
+            <div class="c_scroll c_scroll-float c_scroll-header">
+                <div class="c_scrollContent l_padding">
+
+                    <!-- 用户信息 开始 -->
+                    <div jwcid="GroupUserInfoPart@Part" element="div">
+                        <div class="c_list c_list-form">
+                            <ul>
+                                <li class="required link">
+                                    <div class="label">证件类型</div>
+                                    <div class="value">
+                                        <span jwcid="@Select" id="MEM_CUST_INFO_PSPT_TYPE_CODE" name="MEM_CUST_INFO_PSPT_TYPE_CODE" value=""
+                                                             source="ognl:pageUtil.getStaticList('GRPIMS_PASSPORTTYPE')" valueField="DATA_ID" textField="DATA_NAME"
+                                                             onchange="chkPsptTypeCode('MEM_CUST_INFO_PSPT_TYPE_CODE')"
+                                                             nullable="no" desc="证件类型">
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="link required">
+                                    <div class="label">证件号码</div>
+                                    <div class="value">
+                                        <div class="e_mix">
+                                            <input jwcid="@TextField" name="MEM_CUST_INFO_PSPT_ID" id="MEM_CUST_INFO_PSPT_ID" autocomplete="off" disabled="false"
+                                                   placeholder="请填写"  nullable="no"  desc="证件号码" onchange="chkPsptId('MEM_CUST_INFO_PSPT_ID')"/>
+                                            <button onclick="clickScanPspt1()" name="ReadCardButton" tip="证件扫描" id="ReadCardButton" type="button" class="e_button-blue">
+                                                <span class="e_ico-scan e_size-s"></span>
+                                            </button>
+                                            <button onclick="identification('MEM_CUST_INFO_PIC_ID','MEM_CUST_INFO_PIC_STREAM')" name="ReadCardButton" tip="摄像" id="SHOT_IMG" type="button" class="e_button-blue">
+
+                                                <span class="e_ico-camera"></span>
+                                            </button>
+
+                                            <input jwcid="@Hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+                                            <input jwcid="@Hidden" id="REALNAME_LIMIT_CHECK_RESULT" name="REALNAME_LIMIT_CHECK_RESULT" value="false" desc="实名制验证标记"/>
+                                            <input jwcid="@Hidden" id="MEM_CUST_INFO_REAL_NAME" name="MEM_CUST_INFO_REAL_NAME" value="1" desc="实名制标识"/>
+
+
+                                            <input jwcid="@Hidden" name="MEM_CUST_INFO_PIC_ID" id="MEM_CUST_INFO_PIC_ID" desc="证件人照片ID" />
+                                            <input jwcid="@Hidden" name="MEM_CUST_INFO_PIC_STREAM" id="MEM_CUST_INFO_PIC_STREAM" desc="拍摄人像照片流" />
+                                            <input jwcid="@Hidden" name="MEM_CUST_INFO_BACKBASE64" id="MEM_CUST_INFO_BACKBASE64" desc="身份证反面照" />
+                                            <input jwcid="@Hidden" name="MEM_CUST_INFO_FRONTBASE64" id="MEM_CUST_INFO_FRONTBASE64" desc="身份证正面照" />
+                                            <input jwcid="@Hidden" name="MEM_CUST_INFO_PIC_PATH" id="MEM_CUST_INFO_PIC_PATH" desc="拍摄人像照片移动端存放路径"/>
+                                            <input jwcid="@Hidden" name="MEM_CUST_INFO_SCAN_TAG" id="MEM_CUST_INFO_SCAN_TAG" value="1" desc="客户扫描标志" />
+
+                                            <div style="display:none">
+                                                <object classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012" id="makeActiveX" desc="ActiveX控件"></object>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="required link">
+                                    <div class="label">联系电话</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_CONTACT_PHONE" id="MEM_CUST_INFO_CONTACT_PHONE" value="" maxsize="18" nullable="no" desc="联系电话"/>
+                                    </div>
+                                </li>
+                                <li class="required link">
+                                    <div class="label">客户名称</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_CUST_NAME" id="MEM_CUST_INFO_CUST_NAME" value="" maxsize="80"
+                                               onchange="chkCustName('MEM_CUST_INFO_CUST_NAME')" nullable="no" desc="客户名称"/>
+                                    </div>
+                                </li>
+                                <li class="required link">
+                                    <div class="label">证件地址</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_PSPT_ADDRESS" id="MEM_CUST_INFO_PSPT_ADDRESS" value="" maxsize="80" nullable="no" desc="证件地址"/>
+                                    </div>
+                                </li>
+                                <li class="link">
+                                    <div class="label">通信邮编</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_POST_CODE" id="MEM_CUST_INFO_POST_CODE" value="" maxsize="6" desc="通信邮编"/>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 用户信息 结束 -->
+
+                    <!-- 法人信息 开始 -->
+                    <div jwcid="EnterprisePart@Part" element="div" style="display: none;">
+                        <div class="c_list c_list-form" >
+                            <ul>
+                                <li class="link required">
+                                    <div class="label">法人</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_legalperson"  id="MEM_CUST_INFO_legalperson" desc="法人" />
+                                    </div>
+                                </li>
+                                <li class="link required">
+                                    <div class="label">营业开始日期</div>
+                                    <div class="value">
+                                        <input jwcid="@DateField" name="MEM_CUST_INFO_termstartdate" id="MEM_CUST_INFO_termstartdate" value="" desc="营业开始日期"
+                                               maxName="SUGGEST_DATE"  format="yyyy-MM-dd HH:mm:ss"  dropDown="true" />
+                                    </div>
+                                </li>
+                                <li class="link required">
+                                    <div class="label">营业结束日期</div>
+                                    <div class="value">
+                                        <input jwcid="@DateField" name="MEM_CUST_INFO_termenddate" id="MEM_CUST_INFO_termenddate" value="" desc="营业结束日期"
+                                               maxName="SUGGEST_DATE"  format="yyyy-MM-dd HH:mm:ss"  dropDown="true" />
+                                    </div>
+                                </li>
+                                <li class="link required">
+                                    <div class="label">成立日期</div>
+                                    <div class="value">
+                                        <input jwcid="@DateField" name="MEM_CUST_INFO_startdate" id="MEM_CUST_INFO_startdate" value="" desc="成立日期"
+                                               maxName="SUGGEST_DATE"  format="yyyy-MM-dd HH:mm:ss"  dropDown="true" />
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 法人信息 结束 -->
+
+                    <!-- 机构信息 开始 -->
+                    <div jwcid="OrgPart@Part" element="div" style="display: none;">
+                        <div class="c_list c_list-form">
+                            <ul>
+                                <li class="link required">
+                                    <div class="label">机构类型</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_orgtype"  id="MEM_CUST_INFO_orgtype"  desc="机构类型"/>
+                                    </div>
+                                </li>
+                                <li class="link required">
+                                    <div class="label">有效日期</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_effectiveDate" id="MEM_CUST_INFO_effectiveDate" desc="有效日期" />
+                                    </div>
+                                </li>
+                                <li class="link required">
+                                    <div class="label">失效日期</div>
+                                    <div class="value">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_expirationDate" id="MEM_CUST_INFO_expirationDate" desc="失效日期" />
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 机构信息 结束 -->
+
+                    <!-- 经办人信息 开始 -->
+                    <div class="c_list c_list-form">
+                        <ul>
+                            <li class="link">
+                                <div class="label">经办人名称</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_AGENT_CUST_NAME" id="MEM_CUST_INFO_AGENT_CUST_NAME"
+                                           autocomplete="off" placeholder="请填写" onchange="chkCustName('MEM_CUST_INFO_AGENT_CUST_NAME')"
+                                           nullable="no" linkclass="link required" desc="经办人名称" />
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">经办人证件类型</div>
+                                <div class="value">
+                                    <input jwcid="@Select" name="MEM_CUST_INFO_AGENT_PSPT_TYPE_CODE" id="MEM_CUST_INFO_AGENT_PSPT_TYPE_CODE"
+                                           source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GRPIMS_PASSPORTTYPE_NEW')"
+                                           textField="DATA_NAME" valueField="DATA_ID" addDefault="true" value=""
+                                           onchange="chkPsptTypeCode('MEM_CUST_INFO_AGENT_PSPT_TYPE_CODE');"
+                                           nullable="no" desc="经办人证件类型" />
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">经办人证件号码</div>
+                                <div class="value">
+                                    <div class="e_mix">
+                                        <input jwcid="@TextField" name="MEM_CUST_INFO_AGENT_PSPT_ID" id="MEM_CUST_INFO_AGENT_PSPT_ID"
+                                               autocomplete="off" placeholder="请填写" onchange="chkPsptId('MEM_CUST_INFO_AGENT_PSPT_ID')"
+                                               disabled="false"  nullable="no" linkclass="link required" desc="经办人证件号码" class="" />
+                                        <button onclick="clickScanPspt2()" name="ReadCardButton" tip="经办人证件扫描" id="ReadCardButton" type="button"
+                                                class="e_button-blue">
+                                            <span class="e_ico-scan e_size-s"></span>
+                                        </button>
+                                        <button onclick="identification('MEM_CUST_INFO_AGENT_PIC_ID','MEM_CUST_INFO_AGENT_PIC_STREAM')"
+                                                name="ReadCardButton" tip="经办人摄像" id="MEM_CUST_INFO_AGENT_SHOT_IMG" type="button"
+                                                class="e_button-blue">
+                                            <span class="e_ico-camera"></span>
+                                        </button>
+                                        <input jwcid="@Hidden" name="MEM_CUST_INFO_AGENT_PIC_ID" id="MEM_CUST_INFO_AGENT_PIC_ID" desc="经办人照片ID" />
+                                        <input jwcid="@Hidden" name="MEM_CUST_INFO_AGENT_PIC_STREAM" id="MEM_CUST_INFO_AGENT_PIC_STREAM" desc="拍摄经办人人像照片流" />
+                                        <input jwcid="@Hidden" name="MEM_CUST_INFO_AGENT_BACKBASE64" id="MEM_CUST_INFO_AGENT_BACKBASE64" desc="经办人身份证反面照" />
+                                        <input jwcid="@Hidden" name="MEM_CUST_INFO_AGENT_FRONTBASE64" id="MEM_CUST_INFO_AGENT_FRONTBASE64" desc="经办人身份证正面照" />
+                                        <input jwcid="@Hidden" name="MEM_CUST_INFO_AGENT_PIC_PATH" id="MEM_CUST_INFO_AGENT_PIC_PATH" desc="拍摄经办人人像照片移动端存放路径"/>
+                                        <input jwcid="@Hidden" name="MEM_CUST_INFO_AGENT_SCAN_TAG" id="MEM_CUST_INFO_AGENT_SCAN_TAG" value="1" desc="客户扫描标志" />
+                                        <div style="display:none">
+                                            <object classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012" id="makeActiveX"></object>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">经办人证件地址</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_AGENT_PSPT_ADDR" id="MEM_CUST_INFO_AGENT_PSPT_ADDR"
+                                           autocomplete="off" placeholder="请填写" onchange="checkAddr('MEM_CUST_INFO_AGENT_PSPT_ADDR')"
+                                           nullable="no" linkclass="link required" desc="经办人证件地址" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 经办人信息 结束 -->
+
+                    <!-- 责任人信息 开始 -->
+                    <div class="c_list c_list-form">
+                        <ul>
+                            <li class="link">
+                                <div class="label">责任人姓名</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_RSRV_STR2" id="MEM_CUST_INFO_RSRV_STR2" autocomplete="off"
+                                           placeholder="请填写" onchange="chkCustName('MEM_CUST_INFO_RSRV_STR2')"  nullable="no"
+                                           linkclass="link required" desc="责任人姓名" />
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">责任人证件类型</div>
+                                <div class="value">
+                                    <input jwcid="@Select" name="MEM_CUST_INFO_RSRV_STR3" id="MEM_CUST_INFO_RSRV_STR3" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GRPIMS_PASSPORTTYPE_NEW')"
+                                           textField="DATA_NAME" valueField="DATA_ID" addDefault="true"
+                                           onchange="chkPsptTypeCode('MEM_CUST_INFO_RSRV_STR3')" nullable="no" desc="责任人证件类型" />
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">责任人证件号码</div><div class="value">
+                                <div class="e_mix">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_RSRV_STR4" id="MEM_CUST_INFO_RSRV_STR4"
+                                           autocomplete="off" placeholder="请填写" onchange="chkPsptId('MEM_CUST_INFO_RSRV_STR4')"
+                                           nullable="no" linkclass="link required" desc="责任人证件号码" disabled="false" />
+                                    <span onclick="clickScanPspt3()" id="SCAN_PSPT4" class="e_ico-scan"></span>
+                                </div></div>
+                            </li>
+                            <li class="link">
+                                <div class="label">责任人证件地址</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_RSRV_STR5" id="MEM_CUST_INFO_RSRV_STR5"
+                                           autocomplete="off" placeholder="请填写" onchange="checkAddr('MEM_CUST_INFO_RSRV_STR5')"
+                                           nullable="no" linkclass="link required" desc="责任人证件地址" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 责任人信息 结束 -->
+
+                    <!-- 使用人信息 开始 -->
+                    <div class="c_list c_list-form">
+                        <ul>
+                            <li class="link">
+                                <div class="label">使用人姓名</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_USE" id="MEM_CUST_INFO_USE"
+                                           autocomplete="off" placeholder="请填写" onchange="chkCustName('MEM_CUST_INFO_USE')"
+                                           nullable="no" linkclass="link required" desc="使用人姓名" />
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">使用人证件类型</div>
+                                <div class="value">
+                                    <input jwcid="@Select" name="MEM_CUST_INFO_USE_PSPT_TYPE_CODE"  id="MEM_CUST_INFO_USE_PSPT_TYPE_CODE"
+                                           source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GRPIMS_PASSPORTTYPE_NEW')"
+                                           textField="DATA_NAME" valueField="DATA_ID" addDefault="true" value=""
+                                           nullable="no" desc="使用人证件类型" />
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label">使用人证件号码</div><div class="value">
+                                <div class="e_mix">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_USE_PSPT_ID" id="MEM_CUST_INFO_USE_PSPT_ID"
+                                           autocomplete="off" placeholder="请填写" onchange="chkPsptId('MEM_CUST_INFO_USE_PSPT_ID')"
+                                           nullable="no" linkclass="link required" desc="使用人证件号码" disabled="false" />
+                                    <span onclick="clickScanPspt4()" id="SCAN_PSPT4" class="e_ico-scan"></span>
+                                </div></div>
+                            </li>
+                            <li class="link">
+                                <div class="label">使用人证件地址</div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="MEM_CUST_INFO_USE_PSPT_ADDR" id="MEM_CUST_INFO_USE_PSPT_ADDR"
+                                           autocomplete="off" placeholder="请填写" onchange="checkAddr('MEM_CUST_INFO_USE_PSPT_ADDR')"
+                                           nullable="no" linkclass="link required" desc="使用人证件地址" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 责任人信息 结束 -->
+
+                    <div class="c_space"></div>
+                    <div class="c_submit c_submit-full">
+                        <button class="e_button-l e_button-r e_button-blue" type="button" ontap="saveMemCust();">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 证件信息 结束 -->
+    </div>
+    <!-- ===========================================第一层弹出 结束============================================ -->
+
+    <!-- ===========================================第二层弹出 开始============================================ -->
+    <div class="c_popupGroup">
+        <!-- 商品组 开始 -->
+        <div jwcid="groupOffersPopupItem@ecserv:EnterpriseGroupOffers"></div>
+        <!-- 商品组 结束 -->
+    </div>
+
+    <!-- 产品特征 开始 -->
+    <div jwcid="productChaSpecPopupItem@Part" class="c_popupItem" id="productChaSpecPopupItem">
+        <div id="ProductChaSpecHead" class="c_header">
+            <div class="back" ontap="backPopup(this);" id="productChaSpecBack">商品特征</div>
+        </div>
+
+        <!-- 动态参数页面 -->
+        <div jwcid="proParamPage@Part" id="proParamPage">
+            <div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr"/>
+        </div>
+    </div>
+    <!-- ===========================================第二层弹出 结束============================================ -->
+
+    <!-- 初始化页面隐藏参数信息 开始 -->
+    <div class="c_hidderField l_mt"  jwcid="initims@Part">
+        <input jwcid="@Hidden" name="X_PSPT_TYPE0_RIGHT" id="X_PSPT_TYPE0_RIGHT" value="" desc="员工使用身份证办理业务权限"/>
+        <input jwcid="@Hidden" name="X_AGENT_PHOTO" id="X_AGENT_PHOTO" value="" desc="身份证芯片图像"/>
+        <input jwcid="@Hidden" name="X_AGENT_SEX" id="X_AGENT_SEX" value="" desc="身份证性别"/>
+        <input jwcid="@Hidden" name="X_AGENT_NATIONAL" id="X_AGENT_NATIONAL" value="" desc="身份证名族"/>
+        <input jwcid="@Hidden" name="X_AGENT_BIRTHDAY" id="X_AGENT_BIRTHDAY" value="" desc="身份证生日"/>
+        <input jwcid="@Hidden" name="X_AGENT_ORGANS" id="X_AGENT_ORGANS" value="" desc="身份证签证机关"/>
+        <input jwcid="@Hidden" name="X_AGENT_START_DATE" id="X_AGENT_START_DATE" value="" desc="身份证生效日期"/>
+        <input jwcid="@Hidden" name="X_AGENT_END_DATE" id="X_AGENT_END_DATE" value="" desc="身份证失效日期"/>
+        <input jwcid="@Hidden" name="X_AGENT_VERIF_RESULT" id="X_AGENT_VERIF_RESULT" value="0" desc="经办人认证检索是否校验通过-1：通过；0：不通过"/>
+        <input jwcid="@Hidden" name="CHECK_ASSURE_PSPT_CODE" id="CHECK_ASSURE_PSPT_CODE" value="ognl:editInfo.CHECK_ASSURE_PSPT_CODE" desc="经办人证件校验通过标志"/>
+        <input jwcid="@Hidden" name="SYS_HANDINPUT" id="SYS_HANDINPUT"  type="hidden" value="ognl:hasPriv('SYS_HANDINPUT','1')" encode="false" datatype="text"/>
+        <input jwcid="@Hidden" name="CRM_SENDTRADEVERIFY" id="CRM_SENDTRADEVERIFY" value="ognl:hasPriv('CRM_SENDTRADEVERIFY','1')" desc="是否有跳过人证比对的权限"/>
+        <input jwcid="@Hidden" name="BRAND_CODE" id="BRAND_CODE" />
+    </div>
+
+</div>
+<!-- 员工组件 开始 -->
+<div jwcid="@icsserv:StaffPopup" name="STAFF_POPUP" ></div>
+<!-- 员工组件 结束 -->
+
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup01">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" id="moreCustomerPopupItem">
+            <div class="c_header">
+                <div class="back" ontap="hidePopup(this)">其他客户信息</div>
+            </div>
+            <div class="c_scroll c_scroll-float c_scroll-header">
+                <div jwcid="@Part" id="moreCustPart" class="l_padding">
+                    <!-- 集团客户基本信息 开始 -->
+                    <div class="c_param c_param-border c_param-label-6">
+                        <ul>
+                            <li>
+                                <span class="label">客户级别：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CLASS_ID"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户联系人：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.RSRV_STR2"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户联系电话：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.GROUP_CONTACT_PHONE"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户邮编：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.POST_CODE"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户邮箱：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.EMAIL"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户服务等级：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTGROUP_SERV_LEVEL', groupInfo.SERV_LEVEL)"></span></span>
+                            </li>
+                            <input jwcid="@Hidden" name="cond_CITY_CODE" id="cond_CITY_CODE" value="ognl:groupInfo.CITY_CODE" desc="集团地市归属"/>
+                        </ul>
+                    </div>
+                    <!-- 集团客户基本信息 结束 -->
+                    <!-- 集团客户附加信息 开始 -->
+                    <div class="c_param c_param-border c_param-label-6">
+                        <ul>
+                            <li>
+                                <span class="label">客户所属地州：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.EPARCHY_NAME"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户所属市县：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CITY_NAME"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">集团客户行业：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CALLING_TYPE_NAME"></span></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 集团客户附加信息 结束 -->
+                    <!-- 集团客户经理信息 开始 -->
+                    <div class="c_param c_param-border c_param-label-6">
+                        <ul>
+                            <li>
+                                <span class="label">客户经理：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.CUST_MANAGER_NAME"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户经理工号：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.CUST_MANAGER_ID"></span></span>
+                            </li>
+                            <li>
+                                <span class="label">客户经理电话：</span>
+                                <span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.SERIAL_NUMBER"></span></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 集团客户经理信息 结束 -->
+                    <div class="c_space"></div>
+                    <!-- 提交 开始 -->
+                    <div class="c_submit c_submit-full">
+                        <button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+                    </div>
+                    <!-- 提交 结束 -->
+                    <div class="c_space"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+    var enterpriseGroupOffers;
+    var enterpriseCatalog;
+
+    $(function(){
+
+        enterpriseGroupOffers = new EnterpriseGroupOffers('groupOffersPopupItem');
+        enterpriseCatalog = new EnterpriseCatalog('offerCategoryPopupItem');
+
+        if($.enterpriseLogin && $.enterpriseLogin.isLogin())
+        {
+            var loginGroupId = $.enterpriseLogin.getInfo().get("GROUP_INFO").get("GROUP_ID");
+            if($("#login_groupID").val() == "" && loginGroupId != null && loginGroupId != '')
+            {//如果外框进行了认证，并且集团组件GROUP_ID为空，则将认证集团带入组件
+                queryGroup(loginGroupId, null);
+            }
+            else
+            {
+                if(loginGroupId != $("#login_groupID").val() && $.isFunction(window["refreshEnterpriseLogin"]))
+                {
+                    refreshEnterpriseLogin($("#login_groupID").val());
+                }
+            }
+        }
+    });
+</script>
+</html>

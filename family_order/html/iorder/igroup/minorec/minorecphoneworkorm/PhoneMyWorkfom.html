@@ -1,0 +1,121 @@
+﻿<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>工单查询</title>
+    <script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/minorecphoneworkorm/script/PhoneMyWorkfom.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll c_scroll-float">
+
+	<div class="c_header e_show-phone">
+		<div class="back">工单查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('qryPopup2','infoItem');"></span>
+		</div>
+	</div>
+	<div class="l_query" jwcid="queryPart@Part">
+		<div class="l_queryResult">
+			<!-- 表格 开始 -->
+			<div class="c_table c_table-hasGrid">
+				<table jwcid="@Table" name="myTable" id="myTable">
+					<thead>
+					<tr>
+						<th class="e_center" col="IBSYSID">订单号</th>
+						<th class="e_center" col="RSRV_STR4">工单主题</th>
+						<th class="e_center" col="TEMPLET_NAME">业务流程</th>
+						<th class="e_center" col="CUST_NAME">集团名称</th>
+						<th class="e_center" col="GROUP_ID">集团编码</th>
+						<th class="e_center" col="ACCEPT_TIME">发起时间</th>
+						<th class="e_center" col="">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.IBSYSID"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR4"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.TEMPLET_NAME"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CUST_NAME"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.GROUP_ID"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME"　raw="false"/></td>
+						<td class="e_center">
+							<Button name="DEAL_BUTTON" class="e_button-blue" jwcid="@Button" onClick="cancelWorkform(this)" busiformId="ognl:info.BUSIFORM_ID">
+								<i class="e_ico-ok"></i>
+								<span>撤单</span>
+							</Button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 表格 结束 -->
+		</div>
+		<div jwcid="@Conditional" condition="ognl:infos == null || infos.size() == 0">
+			<div class="l_queryMsg" id="queryMsg">
+				<!-- 无数据提示 开始 -->
+				<div class="c_msg">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="info">
+							<div class="text">
+								<div class="title">暂时没有数据</div>
+								<div class="content">请输入查询条件</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 无数据提示 结束 -->
+			</div>
+		</div>
+		<div class="l_queryPage">
+			<!-- 分页 开始 -->
+			<div jwcid="@NavBar"
+				 name="navbar1"
+				 cond="QueryInfo"
+				 count="ognl:infoCount"
+				 listener="queryInfos"
+				 part="queryPart"
+				 pageSize="50"
+			></div>
+			<!-- 分页 结束 -->
+		</div>
+	</div>
+
+</div>
+<div class="c_popup" jwcid="@Popup" name="qryPopup2" id="qryPopup2">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="infoItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">返回</div>
+			</div>
+
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding l_padding-u">
+					<div class="c_space"></div>
+					<div jwcid="QueryInfo@Part" class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link">
+								<div class="label">集团编码</div>
+								<div class="value"><input id="cond_GROUP_ID" name="cond_GROUP_ID" jwcid="@TextField" desc="集团编码"/></div>
+							</li>
+							<li class="link">
+								<div class="label">订单号</div>
+								<div class="value"><input id="cond_IBSYSID" name="cond_IBSYSID" jwcid="@TextField" desc="订单号" /></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-center" id="queryInfo">
+						<button type="button" class="e_button-r e_button-l e_button-blue"  ontap="queryInfos(this)">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>

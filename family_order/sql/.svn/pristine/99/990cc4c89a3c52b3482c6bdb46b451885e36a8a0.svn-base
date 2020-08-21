@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'StaffName' KEY, STAFF_ID VALUE1, '-1' VALUE2, STAFF_NAME VRESULT
+  FROM td_m_staff
+ WHERE 'StaffName' = :KEY

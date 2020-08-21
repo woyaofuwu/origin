@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>集团高级付费关系管理</title>
+  	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/modifymemdata/script/payrelaAdvChg.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>	
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/group/grprule/grprule.js"></script> 
+	<script jwcid="@Script" type="text/javascript" src="scripts/group/modifypayrelation/modifypayrelation.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="l_edit">
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">集团成员付费关系变更</div>
+	</div>
+	<!-- 滚动 开始 -->
+	<div id="editMainScroll">
+		<!-- 主流程 开始 -->
+		<div class="l_editMain">
+			<div jwcid="QryCondPart@Part" element="div"> 
+				<div class="c_space"></div>
+									
+				<!-- 变更账期开始(暂时无效) -->
+				<div class="c_box" id="acctDayBox" style="display:none">
+					<div class="c_tip" id="diverTip" style="display:none"></div>
+					<div class="c_form" id="bookingcheckbox" style="display:none">
+						<ul class="ul">
+							<li class="li">
+								<div class="label">是否下账期生效</div>
+								<div class="value" >
+									<input type="checkbox" class="e_checkbox" name="divEffectNow" id="divEffectNow" jwcid="@Checkbox" checked="true" disabled="true" />
+									<input jwcid="@Any" id="bookingDate" name="bookingDate" value="" style="display:none;" encode="false" />
+									<a jwcid="@Redirect" id="changeAcctDay" name="changeAcctDay"
+					 					 onclick="$.popupPageExternal('changeacctday.ChangeAcctDay','onInitTrade', '&DISABLED_AUTH=true&ISGRP=TRUE&SERIAL_NUMBER='+$('#cond_SERIAL_NUMBER').val() + '&REMARK='+encodeURIComponent('办理集团产品需要变更账期为自然月'),'调账期变更页面','820','650',null,null,'/personserv/personserv',false)"/>
+								</div>
+							</li>
+						</ul>
+					 </div>
+				</div>
+				<!-- 变更账期结束(暂时无效) -->
+		
+				<!-- (查询条件)成员服务号码 开始 -->
+				<div class="c_list c_list-form">
+			        <ul>
+		                <li class="link required">
+			                 <div class="label">成员服务号码</div>
+			                  <div class="value">
+			                  	<div class="e_mix">
+					               <input jwcid="@TextField" name="cond_SERIAL_NUMBER_INPUT" id="cond_SERIAL_NUMBER" value=""  nullable="no" desc="成员服务号码"/>
+					               <button type="button" class="e_button-blue" ontap="querygroupinfoBysn()"><span class="e_ico-search"></span><span>查询</span></button>
+				                </div>
+			                 </div>
+		                 </li>
+	                  </ul>
+                  </div>
+                  <!-- (查询条件)成员服务号码 结束 -->
+                  
+                  <!-- 成员信息开始 -->
+				  <div class="c_title">
+				      <div class="text">成员信息</div>
+				  </div>		                 
+                  <div jwcid="UserInfoPart@Part" element="div" style="display:none">	                  	  
+					  <div class="c_list c_list-form">
+						 <ul>
+							<li class="link">
+								<div class="main"><div class="content">
+									<div>
+										<ul>
+										   <li>
+										       <span class="label">用户标识：</span>
+											   <span class="value"><span jwcid="@Insert" value="ognl:Userinfo.USER_ID" encode="false" /></span>
+										   </li>
+										   <li>
+											   <span class="label">服务号码：</span>
+											   <span class="value"><span jwcid="@Insert" value="ognl:Userinfo.SERIAL_NUMBER" encode="false" /></span>
+										   </li>
+										   <li>
+											   <span class="label" >成员品牌：</span>
+											   <span class="value"><span jwcid="@Insert"  value="ognl:Userinfo.BRAND_NAME" encode="false" /></span>
+										   </li>
+										   <li>
+											   <span class="label" >开户时间：</span>
+											   <span class="value"><span jwcid="@Insert"  value="ognl:Userinfo.DEVELOP_DATE" encode="false" /></span>
+										   </li>
+										</ul>
+									</div>
+								</div></div>
+							</li>
+						</ul>
+					  </div>
+					  <input jwcid="@Hidden" id="MEB_BRAND_CODE" name="MEB_BRAND_CODE" value="ognl:Userinfo.BRAND_CODE"/>
+				      <input jwcid="@Hidden" id="MEB_EPARCHY_CODE" name="MEB_EPARCHY_CODE" value="ognl:Userinfo.EPARCHY_CODE"/>
+				      <input jwcid="@Hidden" id="MEB_USER_ID" name="MEB_USER_ID" value="ognl:Userinfo.USER_ID"/>
+				      <input jwcid="@Hidden" id="MEB_SERIAL_NUMBER" name="MEB_SERIAL_NUMBER" value="ognl:Userinfo.SERIAL_NUMBER"/>					
+				 </div>
+				 <!-- 成员信息结束 -->
+		
+				 <!-- 集团信息开始 -->
+				 <div class="c_title">
+					<div class="text">集团信息</div>
+				 </div>					
+				 <div jwcid="GroupInfoPart@Part" element="div" style="display:none">
+				 	 <div class="c_list c_list-form">
+						 <ul>
+							<li class="link">
+								<div class="main"><div class="content">
+									<div>
+										<ul>
+											<li>
+												<span class="label">客户标识：</span>
+												<span class="value"><span jwcid="@Insert"  value="ognl:GrpProInfo.CUST_ID" encode="false" /></span>
+											</li>
+											<li>
+												<span class="label">服务号码：</span>
+												<span class="value"><span jwcid="@Insert" id="gronumber" value="ognl:GrpUserinfo.SERIAL_NUMBER" encode="false" /></span>
+											</li>
+											<li>
+												<span class="label" >产品标识：</span>
+												<span class="value"><span jwcid="@Insert" id="procode" value="ognl:GrpUserinfo.PRODUCT_ID" encode="false" /></span>
+											</li>
+											<li>
+												<span class="label" >产品名称：</span>
+												<span class="value"><span jwcid="@Insert" id="proname" value="ognl:GrpUserinfo.PRODUCT_NAME" encode="false" /></span>
+											</li>
+										</ul>
+									</div>
+								</div></div>
+							</li>
+						</ul>
+					</div>						
+				    <input jwcid="@Hidden" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:GrpUserinfo.PRODUCT_ID"/>
+					<input jwcid="@Hidden" id="GROUP_ID" name="GROUP_ID" value="ognl:GrpProInfo.GROUP_ID"/>
+					<input jwcid="@Hidden" id="CUST_ID" name="CUST_ID" value="ognl:GrpProInfo.CUST_ID"/>
+					<input jwcid="@Hidden" id="GRP_USER_ID" name="GRP_USER_ID" value="ognl:GrpUserinfo.USER_ID"/>
+				</div>
+				<!-- 集团信息结束 -->
+				
+				<!-- 付费方式选择  开始-->
+			 	<div class="c_title">
+			 		<div class="text">付费方式选择</div> 				 	
+			 	</div>
+			 	<div jwcid="payInfoPart@Part" element="div">
+				<!-- 列表 开始 -->
+				<div class="c_list c_list-border c_list-line  c_list-col-2">
+				  <ul>
+				    <li jwcid="@Foreach" source="ognl:payTypeSet" value="ognl:payPlan" element="li"  >
+				        <label class="group link" ontap="selectPayPlan(this)">
+					        <div class="content">
+					        <div class="main">
+					            <div class="title">
+					               <span jwcid="@Insert" value="ognl:payPlan.PAY_TYPE"  id="PLAN_SEL_PLAN_TYPE" name="PLAN_SEL_PLAN_TYPE" />
+					            </div>
+					        </div>
+					        <div class="fn"><input jwcid="@Radio" id="PAY_PLAN_SEL_PLAN_TYPE" value="ognl:payPlan.PLAN_TYPE_CODE" name="PAY_PLAN_SEL_PLAN_TYPE"   /></div>
+					        </div> 
+				        </label>       
+				      </li>
+				  </ul>
+				</div>
+				<!-- 列表 结束 -->
+					<input jwcid="@Hidden" id="PAYPLAN_SEL_AFTER_ACTION" name="PAYPLAN_SEL_AFTER_ACTION" value="ognl:afterAction"  />
+					<input jwcid="@Hidden" id="PAYPLAN_SEL_STYLE_MODE" name="PAYPLAN_SEL_STYLE_MODE" value="ognl:styleMode"  />
+					<input jwcid="@Hidden" name="grpPayRels" id="grpPayRels" desc="变化的付费计划"/>
+					<input jwcid="@Hidden" name="oldPayPlanSet" id="oldPayPlanSet"   desc="集团已选择的付费计划"/>
+					<input jwcid="@Hidden" name="oldMemPay" id="oldMemPay" desc="成员已经选择的付费计划"/>	
+					
+				</div>
+				<!-- 付费方式选择  结束-->
+
+			</div>		
+			
+			<div class="c_space"></div>
+			
+			<!-- 备注区域开始 -->
+			<div class="c_list c_list-border c_list-line" id="remark">
+				<ul>
+					<li id="remarkInfo" class="link">
+						<div class="label">备注</div>
+						<div class="value">
+							<input type="text" jwcid="@Any" name="param_REMARK" id="param_REMARK" value="ognl:info.REMARK" desc="备注"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 备注区域结束 -->
+			<div class="c_space"></div>
+			 
+			<div class="c_submit c_submit-full">
+				<button class="e_button-l e_button-r e_button-navy" type="button" ontap="clean()">重置</button>
+				<button class="e_button-l e_button-r e_button-green" id="submitButton" type="button" ontap="submit()">提交</button>
+			</div>
+			
+			<div class="c_space"></div>
+		</div>
+		<!-- 主流程 结束 -->
+		
+		<!-- 占位符 开始 -->
+		<div class="l_editPlace"><span class="e_ico-cmlogo"></span></div>
+		<!-- 占位符 结束 -->
+		
+	
+	</div>
+	<!-- 滚动 结束 -->
+</div>
+
+<div jwcid="@Popup" name="mypop" class="c_popup c_popup-half" mask="false">
+	<div class="c_popupBg" ontap="hidePopup('mypop')"></div>
+	<div class="c_popupGroup">
+		<!-- 选择产品开始 -->
+		<div class="c_popupItem" id="offerCatalogPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">成员集团产品选择</div>
+			</div>
+			<!-- 滚动（替换为 java 组件） 开始 -->
+			<div jwcid="@Scroller" name="offerCataScroll" class="c_scroll c_scroll-float c_scroll-header">
+				<!-- 列表 开始 -->
+				<div jwcid="ProducListPart@Part" class="c_list c_list-line c_list-col-1">
+					<ul id="OFFER_LIST_UL">
+						<li jwcid="@Foreach" source="ognl:GrpProInfos" value="ognl:GrpProInfo" element="li">
+							<div class="main">
+								<span jwcid="@Insert" value="ognl:GrpProInfo.PRODUCT_NAME" raw="true"></span>
+								<div class="content">
+									用户标识：<span jwcid="@Insert" value="ognl:GrpProInfo.USER_ID" raw="true"></span>
+								</div>
+								<div class="sub">
+									<div clss="main">
+										<div class="title"></div>
+										<div class="content">
+											服务号码：<span jwcid="@Insert" value="ognl:GrpProInfo.SERIAL_NUMBER" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="side">
+								<button jwcid="@Any" class="e_blue e_button-r"  SERIAL_NUMBER="ognl:GrpProInfo.SERIAL_NUMBER"  PRODUCT_ID="ognl:GrpProInfo.PRODUCT_ID" PRODUCT_NAME="ognl:GrpProInfo.PRODUCT_NAME" USER_ID="ognl:GrpProInfo.USER_ID" ontap="chooseOffer(this);">选择</button>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- 列表 结束 -->
+			</div>
+		<!-- 滚动 结束 -->
+		</div>
+				<!-- 付费账目列表 -->
+		<div class="c_popupItem" id="noteItemList">
+			<div class="c_header">
+				<div class="back" ontap="backPopup(this)">付费账目列表 </div>
+			</div>
+			<!-- 滚动 开始 -->
+			<div class="c_scroll c_scroll-float c_scroll-header" >
+				<div class="c_scrollContent ">
+					<!-- 表格 开始 -->
+					<div jwcid="PayPart@Part" class="c_list c_list-form">
+						<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+							<table>
+								<thead>
+									<tr>
+										<th>付费帐目编码</th>
+										<th>付费帐目名称</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:payItemSet" value="ognl:noteItem" index="ognl:rowIndex" element="tr">
+										<td><span jwcid="@Insert" value="ognl:noteItem.PARA_CODE1" raw="true"/></td>
+								        <td><span jwcid="@Insert" value="ognl:noteItem.NOTE_ITEM" raw="true"/></td>
+							     	</tr>
+								</tbody>
+							</table>
+					    </div></div>
+				    </div>
+				    <!-- 表格 结束 -->
+			     </div>
+			     <div class="c_line"></div>
+		    </div>
+		    <!-- 滚动 结束 -->
+		</div>	 		
+							
+	</div>
+	
+</div>
+
+
+
+
+<script>
+$(function(){   
+	$("#cond_PAY_PLAN").val("0");
+    choosePayPlan();
+   // $.enterpriseLogin.islogin(true);
+});
+$(document).ready(function(){ 
+	checkChg();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+SELECT T.DETAIL_ID,
+       T.ORDER_ID,
+       T.BUSI_CONTENT_1,
+       T.BUSI_CONTENT_2,
+       T.BUSI_CONTENT_3,
+       T.BUSI_CONTENT_4,
+       T.BUSI_CONTENT_5,
+       T.BUSI_CONTENT_6,
+       T.BUSI_CONTENT_7,
+       T.BUSI_CONTENT_8,
+       T.BUSI_CONTENT_9,
+       T.BUSI_CONTENT_10，
+       T.CREATE_DATE,
+       T.DONE_DATE,
+       T.OP_ID,
+       T.ORG_ID,
+       T.REGION_ID,
+       T.STATE,
+       T.REMARKS
+  FROM TP_ORDER_DETAIL T
+ WHERE 1 = 1
+   AND T.DETAIL_ID = :DETAIL_ID
+   AND T.ORDER_ID = :ORDER_ID

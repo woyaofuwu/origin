@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>校园宽带产品变更</title>
+<script jwcid="@Script" src="person/broadband/widenet/changeproduct/scripts/changewidenetproduct.js"></script>
+<script jwcid="@Script" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/product/productdata.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" authType="04"  element="div" tradeTypeCode="631" tradeAction="changeWidenetProduct.afterSubmitSerialNumber(data)"></div>
+		<!-- 认证 结束 -->
+	</div>
+
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">资料查询</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 参数列表 开始 -->
+		<div class="c_form c_form-col-2" jwcid="UCAViewPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME"  value="ognl:custInfoView.CUST_NAME"
+							desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">开户时间：</span>
+					<span class="text" jwcid="@Insert" name="OPEN_DATE" id="OPEN_DATE" value="ognl:userInfoView.OPEN_DATE"
+							desc="客户名称"/>
+				</li>
+				
+				<li class="li">
+					<span class="label">原产品：</span>
+					<span class="text" id="USER_PRODUCT_NAME"></span>
+				</li>
+				<li class="li">
+					<span class="label">新产品：</span>
+					<span class="text" id="NEXT_PRODUCT_NAME"></span>
+				</li>
+				
+				<li class="li" jwcid="productTypePart@Part" element="li">
+					<span class="label">产品：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PRODUCT_ID" id="PRODUCT_ID" source="ognl:productList"
+                        		textField="PRODUCT_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" desc="产品类型"
+                        		 onchange="changeWidenetProduct.afterChangeProduct()"/>
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+	</div>
+    <div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:49%;">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+                <div class="c_title">
+					<div class="text">待选区</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 分栏 开始 -->
+				<div class="l_col l_col-close">
+					<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width:45%;">
+						<!-- 标题 开始 -->
+                        <div jwcid="packageList@csserv:PackageList" 
+                            element="div"
+                            callSvc="CS.PackageSVC.getPackagesByProduct"></div>
+						<!-- 列表 结束 -->
+					</div>
+					<!-- 第 1 栏 结束 -->
+					<!-- 第 2 栏 开始 -->
+					<div class="l_auto">
+						<div jwcid="pkgElementList@csserv:PkgElementList" 
+                            element="div" 
+                            callSvc="CS.PackageSVC.getPackageElements"  
+                            packageId="ognl:packageId"></div>
+					</div>
+					<!-- 第 2 栏 结束 -->
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	    <div class="l_auto">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">已选区</div>
+				</div>
+                <div jwcid="selectedElements@csserv:SelectedElements" 
+                    renderCallSvc="CS.SelectedElementSVC.getUserElements" 
+                    callAddElementSvc="CS.SelectedElementSVC.dealWidenetSelectedElementsForChg" 
+                    afterRenderAction="changeWidenetProduct.afterRenderSelectedElements(data);"
+                    basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                    basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+                    eparchyCodeComponentId="USER_EPARCHY_CODE"
+                    tradeTypeCode="614"
+                    element="div"></div>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	<!-- 第 2 栏 结束 -->
+	</div>
+	
+	
+	
+	
+	<div class="c_box">		
+	
+		<div jwcid="SubmitPart@csserv:CSSubmit" 
+	        beforeAction="changeWidenetProduct.submit()" 
+	        params="" isReset="true" 
+	        listener="submitChangeProduct" 
+	        refreshPart="" 
+	        isRender="true"
+	        area="" element="div"/>
+	</div>
+	<!-- 分栏 结束 -->
+    <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+</div></div>
+<input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value=""/>
+<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="USER_PRODUCT_ID" id="USER_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="NEXT_PRODUCT_ID" id="NEXT_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+<input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" id="OLD_PRODUCT_END_DATE" value=""/>
+<input jwcid="@Hidden" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value=""/>
+<input jwcid="@Hidden" name="GG_CHECK_TAG" id="GG_CHECK_TAG" value="0"/>
+<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+SELECT INST_ID,
+       PARTITION_ID,
+       to_char(USER_ID) USER_ID,
+       to_char(USER_ID_A) USER_ID_A,
+       to_char(ACCT_ID) ACCT_ID,
+       to_char(ACCT_ID_B) ACCT_ID_B,
+       PAYITEM_CODE,
+       START_CYCLE_ID,
+       END_CYCLE_ID,
+       BIND_TYPE,
+       LIMIT_TYPE,
+       to_char(LIMIT) LIMIT,
+       COMPLEMENT_TAG,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       to_char(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME
+  FROM TF_F_USER_SPECIALEPAY
+ WHERE USER_ID = :USER_ID
+   AND PARTITION_ID = MOD(to_number(:USER_ID), 10000)
+   AND ACCT_ID = TO_NUMBER(:ACCT_ID)
+   AND PAYITEM_CODE = :PAYITEM_CODE
+   AND END_CYCLE_ID >= TO_NUMBER(TO_CHAR(SYSDATE, 'YYYYMMDD'))

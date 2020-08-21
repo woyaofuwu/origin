@@ -1,0 +1,21 @@
+SELECT DISTINCT A.SERVICE_ID,
+A.GIFT_SERIAL_NUMBER,
+TO_CHAR(A.START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+TO_CHAR(A.END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+                A.BIZ_STATE_CODE,
+                A.REMARK,
+                A.UPDATE_STAFF_ID,
+                A.UPDATE_DEPART_ID,
+                A.UPDATE_TIME,
+                A.PARTITION_ID,
+                A.USER_ID,
+                A.FIRST_DATE,
+                A.FIRST_DATE_MON,
+                A.GIFT_USER_ID
+  FROM TF_F_USER_PLATSVC  A
+   WHERE A.USER_ID = :USER_ID
+   AND A.PARTITION_ID = MOD(:USER_ID, '10000')
+   AND SYSDATE BETWEEN A.START_DATE AND A.END_DATE
+   AND (A.BIZ_STATE_CODE = 'A' OR A.BIZ_STATE_CODE = 'N' OR
+       A.BIZ_STATE_CODE = 'L')
+   AND (A.SERVICE_ID <> '98001901' OR(A.SERVICE_ID = '98001901' AND A.RSRV_STR7 <> 'PLATSMS:NOSEND'))

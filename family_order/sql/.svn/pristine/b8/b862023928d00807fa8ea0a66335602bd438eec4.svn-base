@@ -1,0 +1,19 @@
+UPDATE tf_f_accountdeposit_rc 
+   SET     partition_id=:PARTITION_ID,
+          acct_id=TO_NUMBER(:ACCT_ID),
+          deposit_code=:DEPOSIT_CODE,
+          money=TO_NUMBER(:MONEY),
+          deposit_money=TO_NUMBER(:DEPOSIT_MONEY),
+          draw_money=TO_NUMBER(:DRAW_MONEY),
+          inprint_fee=TO_NUMBER(:INPRINT_FEE),
+          outprint_fee=TO_NUMBER(:OUTPRINT_FEE),
+          realuse_fee1=TO_NUMBER(:REALUSE_FEE1),
+          realuse_fee2=TO_NUMBER(:REALUSE_FEE2),
+          owe_fee=TO_NUMBER(:OWE_FEE),
+          start_acyc_id=:START_ACYC_ID,
+          end_acyc_id=:END_ACYC_ID,
+          update_time=TO_DATE(:UPDATE_TIME, 'YYYY-MM-DD HH24:MI:SS')  
+WHERE partition_id=:PARTITION_ID
+   AND acct_id=:ACCT_ID
+   AND deposit_code=:DEPOSIT_CODE
+   AND money=:OLD_MONEY

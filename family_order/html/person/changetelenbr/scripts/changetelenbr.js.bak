@@ -1,0 +1,98 @@
+/*$Id: changetelenbr.js,v 1.1 2010/12/06 15:21:07 yangkx Exp $*/
+
+function chooseTeleNbr()
+{
+	var staffId = Wade.context.getPageVisit().staffId;
+	var deptId = Wade.context.getPageVisit().deptId;
+	//var staffId = getVisit().getStaffId();
+	var loginEpachyId = Wade.context.getPageVisit().loginEpachyId;
+	var url = "&refresh=true&cond_FOFFICE_ID="+getElementValue('userInfo_SIGN_PATH');
+	url += "&cond_STAFF_IF_IN="+staffId;
+	url += "&cond_OPER_DEPART_ID="+deptId;
+	url += "&cond_EPARCHY_CODE="+loginEpachyId;
+	
+	popupPage('brm.officeNumberSelect', 'init', url, 'Ñ¡Ôñ¹Ì»°ºÅÂë', '750', '400'); 
+}
+function afterSelectFixedPhoneNumber()
+{
+	var oldSerialNumber = getElement('userInfo_SERIAL_NUMBER').vlaue;
+	var newSerialNumber = getElement('POP_userInfo_NEW_SERIAL_NUMBER').value;
+
+	if(oldSerialNumber == newSerialNumber)
+	{
+		alert("\u65B0\u53F7\u7801\u4E0D\u80FD\u8DDF\u8001\u53F7\u7801\u76F8\u540C");
+		return false;
+	}
+	else
+	{
+		getElement('userInfo_NEW_SERIAL_NUMBER').value = getElement('POP_userInfo_NEW_SERIAL_NUMBER').value;
+		getElement('userInfo_RES_TYPE_CODE').value = getElementValue('res_type_code');
+		getElement('userInfo_RES_KIND_CODE').value = getElementValue('res_kind_code');
+		getElement('userInfo_SWITCH_ID').value = getElementValue('SWITCH_ID');
+		getElement('userInfo_SWITCH_TYPE').value = getElementValue('SWITCH_TYPE');
+	}
+	
+	/*getElement('userInfo_NEW_SERIAL_NUMBER').value = '089832226437';
+	getElement('userInfo_RES_TYPE_CODE').value = 'N';
+	getElement('userInfo_RES_KIND_CODE').value = 'N';
+	getElement('userInfo_SWITCH_ID').value = '106';
+	getElement('userInfo_SWITCH_TYPE').value = 'xx';*/
+}
+
+function chooseNotice()
+{
+	var chgTeleNbrNotice = getElement("CHGTELENBR_NOTICE").value;
+	var feeMode = getElement("FEE_MODE").value;
+	var feeTypeCode = getElement("FEE_TYPE_CODE").value;
+	var fee = getElement("FEE").value;
+
+	if(chgTeleNbrNotice != '' && feeMode == '')
+	{
+		ajaxDirect(this, 'ajaxChooseNotice', '', '', false, afterAjaxChooseNotice);
+	}
+	else if(chgTeleNbrNotice != '' && feeMode != '')
+	{
+		var obj =new Wade.DataMap();
+		obj.put("FEE_MODE",feeMode);
+		obj.put("FEE_TYPE_CODE", feeTypeCode);
+		obj.put("FEE", parseInt(fee)*parseInt(chgTeleNbrNotice));
+		obj.put("FACT_PAY_FEE", parseInt(fee)*parseInt(chgTeleNbrNotice));
+		removeFee(obj);
+		insertFee(obj);
+	}
+	else if(chgTeleNbrNotice == '')
+	{
+		var obj =new Wade.DataMap();
+		obj.put("FEE_MODE",feeMode);
+		obj.put("FEE_TYPE_CODE", feeTypeCode);
+		obj.put("FEE", parseInt(fee)*parseInt(chgTeleNbrNotice));
+		obj.put("FACT_PAY_FEE", parseInt(fee)*parseInt(chgTeleNbrNotice));
+		removeFee(obj);
+	}
+	else
+	{
+	}
+}
+
+function afterAjaxChooseNotice()
+{
+	if(this.ajaxDataset.length>0)
+	{
+		getElement("FEE_MODE").value = this.ajaxDataset.get(0,"FEE_MODE");
+		getElement("FEE_TYPE_CODE").value = this.ajaxDataset.get(0,"FEE_TYPE_CODE");
+		getElement("FEE").value = this.ajaxDataset.get(0,"FEE");
+		
+		var feeMode = this.ajaxDataset.get(0,"FEE_MODE");
+		var feeTypeCode = this.ajaxDataset.get(0,"FEE_TYPE_CODE");
+		var fee = this.ajaxDataset.get(0,"FEE");
+		var chgTeleNbrNotice = getElement("CHGTELENBR_NOTICE").value;
+
+		var obj =new Wade.DataMap();
+		obj.put("FEE_MODE",feeMode);
+		obj.put("FEE_TYPE_CODE", feeTypeCode);
+		obj.put("FEE", parseInt(fee)*parseInt(chgTeleNbrNotice));
+		obj.put("FACT_PAY_FEE", parseInt(fee)*parseInt(chgTeleNbrNotice));
+		removeFee(obj);
+		insertFee(obj);
+	}
+}

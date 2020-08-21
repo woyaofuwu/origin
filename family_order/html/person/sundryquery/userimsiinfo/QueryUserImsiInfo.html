@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户IMSI信息查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/userimsiinfo/scripts/QueryUserImsiInfo.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取用户IMSI信息无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">用户IMSI信息查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li" id="AREA_CODE">
+							<span class="label"><span class="e_required">查询选择：</span></span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_QUERY_MODE"  id="cond_QUERY_MODE" 
+									source="ognl:qryModes" textField="DATA_NAME" valueField="DATA_ID"
+									value="ognl:condition.cond_QUERY_MODE" desc="查询选择"  nullable="no" />
+								</span></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryUserImsiInfo(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100972"
+								  config="export/sundryquery/other/QueryUserImsiInfo.xml" fileName="用户IMSI信息" cond=QueryCondPart/>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	     
+				 <div class="c_table ">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>IMSI</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.IMSI"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUserImsiInfo" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

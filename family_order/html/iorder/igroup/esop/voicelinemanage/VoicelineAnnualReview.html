@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>语音专线年度复核信息管理</title>
+	
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/voicelinemanage/script/voicelineAnnualReview.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">语音专线年度复核信息管理</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<!-- 查询模版 开始 -->
+		<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left">
+						<span class="e_space"></span>
+						<button type="button" jwcid="@Export" name="myExport"
+							cond="queryForm" taskId="2019050317"
+							configFile="export/bat/group/VOICELINEANNUALREVIEW.xml"
+							ftpCode="eosdata" fileName="语音专线业务监督检查.xls">
+							<span class="e_ico-export" /><span>导出</span>
+						</button>
+						<!-- <span class="e_space"></span>
+						<button type="button" class="l_ml"
+							onclick="javascript:$.printArea('refreshtable','打印预览','90%')">
+							<i class="e_ico-print"></i><span>打印</span>
+						</button> -->
+				</div>
+				<div class="right">
+					<div class="e_mix" onclick="showPopup('qryPopup','qryPopupItem',true)">
+						<input type="text" />
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+		<div class="l_queryResult c_table" id="refreshtable" jwcid="refreshtable@Part" style="height:auto;" >
+			<!-- 表格 开始 -->
+			<!-- <div class="c_table"> -->
+				<table jwcid="@Table" name="myTable">
+					<thead>
+						<tr>
+							<th>集团客户编码</th>
+	                        <th>集团名称</th>
+	                        <th>订购ID</th>
+	                        <th>年度复核检查结果</th>
+	                        <th>年度复核检查时间</th>
+	                        <th>违规问题记录</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID"  raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.ANNUAL_REVIEW_RESULT" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ANNUAL_REVIEW_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.VIOLATION_RECORD" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			<!-- </div> -->
+			<!-- 表格 结束 -->
+			<div class="l_queryPage">
+				<!-- 分页 开始 -->
+				<div class="c_page c_page-border"
+	            	jwcid="@NavBar"
+	                 name="myNavbar"
+	                 id="myNavbar" 
+	                 cond="queryForm"
+	                 count="ognl:totalCount"
+	                 listener="queryByCondition"
+	                 part="refreshtable"
+	                 pageSize="20">
+				</div> 
+				<!-- 分页 结束 -->
+			</div>
+		</div>
+		<div class="e_space"></div>
+	<!-- 查询模版 结束 -->
+	<!--新增业务监督检查信息区 开始  -->
+	<div id="checkRecordPart" jwcid="checkRecordPart@Part">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">年度复核信息填写区</div>
+						</div>
+						<div class="right">
+							<button type="button" jwcid="@Import" name="myImport"
+								cond="checkRecordPart" taskId="2019050316"
+								configFile="import/bat/group/VOICELINEANNUALREVIEW.xml"
+								templateFile="template/bat/group/VOICELINEANNUALREVIEW.xls"
+								ftpCode="eosdata" fileName="语音专线年度复核信息管理导入.xls">
+								<span class="e_ico-import" /><span>导入</span>
+							</button>
+						</div> 
+					</div>
+			</div>
+			<div class="l_queryResult c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+					<ul>
+					<li class="link required">
+						<div class="label">集团客户编码</div>
+						<div class="value">
+							<input jwcid="@TextField" name="parr_GROUP_ID" value="ognl:annualReviewInfo.GROUP_ID" nullable="no" desc="集团客户编码"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">集团名称</div>
+						<div class="value">
+							<input jwcid="@TextField" name="GROUP_NAME" value="ognl:annualReviewInfo.GROUP_NAME" nullable="no" desc="集团名称"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">订购ID</div>
+						<div class="value">
+							<input jwcid="@TextField" name="parr_ORDER_ID" value="ognl:annualReviewInfo.ORDER_ID"  nullable="no" desc="订购ID"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">年度复核结果</div>
+						<div class="value">
+							<input jwcid="@TextField" name="ANNUAL_REVIEW_RESULT" value="ognl:annualReviewInfo.ANNUAL_REVIEW_RESULT" nullable="no" desc="年度复核结果"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">年度复核时间</div>
+						<div class="value">
+							<input jwcid="ANNUAL_REVIEW_DATE@DateField" now="true" dropDown="true" format="yyyy-MM-dd HH:mm:ss"  name="AUTH_DATE" value="ognl:annualReviewInfo.ANNUAL_REVIEW_DATE" nullable="no" desc="鉴权实施时间"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">违规问题记录</div>
+						<div class="value">
+							<input jwcid="@TextField" name="VIOLATION_RECORDS" value="ognl:annualReviewInfo.VIOLATION_RECORDS"  nullable="no" desc="违规问题记录"/>
+						</div>
+					</li>
+					
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="if(confirmAll('checkRecordPart')){addOrUpdateCheckRecord();}">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+	</div>
+	<!--新增业务监督检查信息区 结束  -->
+	</div>
+	<!-- 滚动（替换为 java 组件） 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="qryPopupItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">条件查询</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth"  class="c_scroll c_scroll-float c_scroll-header">
+							<div class="l_padding" jwcid="queryForm@Part">
+								<div class="c_list c_list-line c_list-border">
+									<ul>
+										
+										<li class="link">
+											<div class="label">订购ID</div>
+											<div class="value"><input type="text" jwcid="@TextField" id="ORDER_ID"  name="ORDER_ID" value="ognl:condition.ORDER_ID"  desc="订购ID" /></div>
+										</li>
+										<li class="link">
+											<div class="label">集团客户编码</div>
+											<div class="value"><input type="text" jwcid="@TextField" id="GROUP_ID"  name="GROUP_ID" value="ognl:condition.GROUPID"  desc="集团客户编码" /></div>
+										</li>
+									</ul>
+								</div>
+								<div class="e_space"></div>
+								<div class="c_submit c_submit-full">
+									<button class="e_button-l e_button-r e_button-blue" onclick="queryAll();hidePopup('qryPopup')"><span class="e_ico-search"></span><span>查询</span></button>
+								</div>
+							</div>
+				</div>
+		</div>
+		</div>
+		
+	</div>
+	<!-- 弹窗 结束 -->
+	
+	<script>
+		Wade.setRatio();
+	</script>
+
+
+
+
+</body>
+</html>

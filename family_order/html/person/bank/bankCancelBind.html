@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: QueryUserPurchase.html,v 1.3 2012/08/30 06:45:18 hef Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>手机号码与银联卡解绑</title>
+<script jwcid="@Script" language="JavaScript" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/bank/scripts/bankCancelBind.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeTypeCode="512" tradeAction="refreshPartAtferAuth(data)"  element="div"></div>
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">绑定资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 刷新2区域  开始 -->
+	<div  jwcid="BankBindPart@Part">
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="bankBindTable@Part">
+			<table jwcid="@Table" id="DeptTable" name="DeptTable" rowClick="tableRowClick" >
+				<thead>
+					<tr>
+						<th col="TBL_USER_ID">用户ID</th>
+						<th col="TBL_BANK_NAME">银行名称</th>
+						<th col="TBL_BANK_CARD_NO">银行卡号</th>
+						<th col="TBL_START_DATE">绑定开始时间</th>
+						<th col="TBL_END_DATE">绑定结束时间</th>
+						<th col="TBL_UPDATE_TIME">更新时间</th>
+						<th col="TBL_UPDATE_STAFF_ID">更新员工</th>
+					</tr>
+				</thead>
+				<tbody name="DeptTableValues" id="DeptTableValues">
+					<tr jwcid="@Foreach" source="ognl:bankBinds" value="ognl:bankBind" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:bankBind.USER_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:bankBind.RSRV_STR2" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:bankBind.RSRV_STR1" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:bankBind.START_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:bankBind.END_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:bankBind.UPDATE_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:bankBind.UPDATE_STAFF_ID" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 表格 结束 -->
+		
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-2 c_form-label-5" id="EditPart" name="EditPart">
+			<ul class="ul">
+				<li class="li">
+				    <span class="label">银行名称：</span>
+					<span class="e_input" ><span>
+						<input type="text" jwcid="@TextField"  id="BANK_NAME" name="BANK_NAME" value="ognl:commInfo.BANK_NAME" disabled="true" desc="银行名称"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">银行卡号：</span>
+					<span class="e_input" ><span>
+						<input type="text" jwcid="@TextField"  id="BANK_CARD_NO" name="BANK_CARD_NO" value="ognl:commInfo.BANK_CARD_NO" disabled="true" desc="银行名称"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">备注：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField"  id="REMARK" name="REMARK" value="ognl:commInfo.REMARK" desc="银行名称"/>
+					</span></span>
+				</li>
+			</ul>
+			
+		</div>
+		<!-- 表单 结束 -->
+		
+	</div>
+	<!-- 刷新2区域  结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitDepts()" isReset="true" area="AuthPart,BankBindPart"  element="div"/>
+	<!-- 提交 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

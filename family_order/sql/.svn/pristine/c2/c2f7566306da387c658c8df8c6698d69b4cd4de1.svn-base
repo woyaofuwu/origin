@@ -1,0 +1,2 @@
+INSERT INTO td_s_assigntag(eparchy_code,res_type_code,assign_tag,assign_tag_name,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:EPARCHY_CODE,:RES_TYPE_CODE,:ASSIGN_TAG,:ASSIGN_TAG_NAME,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

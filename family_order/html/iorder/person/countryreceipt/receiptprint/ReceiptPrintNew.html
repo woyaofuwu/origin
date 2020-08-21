@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/countryreceipt/receiptprint/scripts/receiptprint.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<div class="">
+				<div class="c_form c_form-label-5 c_form-col-3 c_form-submit c_form-border" jwcid="submit_part@Part">
+					<ul>
+						<li>
+							<div class="label">服务号码：</div>
+							<div class="value">
+								<span class="e_mix">
+									<input jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER" nullable="yes" value="ognl:condition.SERIAL_NUMBER" onchange="setNeedCheck()" desc="服务号码" disabled="false" />
+									<button class="e_button-blue" onclick="checkSerailNumber()">
+										<span>验证</span>
+									</button>
+									<div jwcid="@icsserv:UserCheck" fieldName="cond_SERIAL_NUMBER" authType="02" tradeAction="checkFinish();" />
+								</span>
+							</div>
+						</li>
+						<li>
+							<div class="label">业务流水号：</div>
+							<div class="value">
+								<input type="text" jwcid="@TextField" name="cond_TRADE_ID" value="ognl:condition.cond_TRADE_ID" desc="业务流水号" nullable="yes" />
+							</div>
+						</li>
+						<li>
+							<div class="label">受理日期：</div>
+							<div class="value">
+								<input type="text" jwcid="@DateField" name="cond_ACCEPT_TIME" value="ognl:condition.cond_ACCEPT_TIME" desc="受理日期" format="yyyy-MM" nullable="no" dropDown="true" />
+							</div>
+						</li>
+						<li>
+							<div class="label">员工工号：</div>
+							<div class="value">
+								<input type="text" jwcid="@TextField" name="cond_TRADE_STAFF_ID" value="ognl:condition.cond_TRADE_STAFF_ID" desc="员工工号" nullable="yes" />
+							</div>
+						</li>
+					</ul>
+					<div class="submit">
+						<button class="e_button-blue" id="qryTradeBtn" onclick="return queryTradeReceipt();">
+							<span class="e_ico-search"></span>
+							<span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 查询结果开始 -->
+				<div class="c_title">
+					<div class="text">查询结果</div>
+				</div>
+				<div jwcid="result_Table@Part" optimize="true">
+					<div id="recordarea">
+						<!-- 表格开始 -->
+						<table jwcid="@Table" id="DeptTable" name="DeptTable" class="c_table c_table-row-8 c_table-lite c_table-border">
+							<thead>
+								<tr>
+									<th>补打</th>
+									<th>服务号码</th>
+									<th>业务名称</th>
+									<th>业务流水号</th>
+									<th>费用总额</th>
+									<th>费用类别</th>
+									<th>用户名称</th>
+									<th>受理时间</th>
+									<th>受理员工</th>
+									<th>受理部门</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									<td class="e_center">
+										<input name="checkvalue" jwcid="checkvalue@Radio" value="ognl:info.TRADE_ID+','+info.FEE_MODE" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE',info.TRADE_TYPE_CODE)" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:info.TRADE_ID" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:info.FEE/100" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:info.FEE_MODE_NAME" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:info.CUST_NAME" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.TRADE_STAFF_ID)" />
+									</td>
+									<td class="e_center">
+										<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.TRADE_DEPART_ID)" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<!-- 表格结束 -->
+					</div>
+				</div>
+
+				<input jwcid="@Any" id="POP_FIELD_NAME" type="hidden" name="POP_FIELD_NAME" value="" />
+				<!-- 查询结果结束 -->
+				<div class="c_space"></div>
+				<!-- 提交开始 -->
+				<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" isReset="true" area="result_Table" disabledBtn="false" element="div" submitText="发票补打" beforeAction="printreceipt()" listener="submitPrintReceipt" />
+				<!-- 提交结束 -->
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

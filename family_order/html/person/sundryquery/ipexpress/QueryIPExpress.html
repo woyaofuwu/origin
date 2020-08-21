@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IP直通车查询</title>
+<script jwcid="@Script"  src="person/sundryquery/ipexpress/scripts/queryipexpress.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">IP直通车查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form"  jwcid="QueryIPExpressCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			    <span class="label"><span class="e_required">手机号码或固定号码：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.cond_SERIAL_NUMBER" 
+				nullable="no" desc="服务号码"/>
+				</span></span>
+			</li>
+			<li class="li">
+			<div class="submitPlace"></div>
+			<div class="submit">
+			 <button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryIPExpress();"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryIPExpressListPart@Part" element="div">
+
+		    <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:cond.EXPORT=='false'">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100980"
+								  config="export/sundryquery/other/IPExpressList.xml" fileName="IP直通车查询" cond=QueryIPExpressCondPart/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	 </div>	 
+		 <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+			<table jwcid="@Table" name="IpExpressTable" >
+				<thead>
+					<tr>
+						<th>固定号码</th>
+						<th>移动号码</th>
+						<th>品牌</th>
+						<th>产品</th>
+						<th>积分</th>
+						<th>开户时间</th>
+						<th>业务区</th>
+						<th>客户名称</th>
+						<th>当前状态</th>
+						<th>最后停机时间</th>
+						<th>办理工号</th>
+						<th>办理部门</th>
+						<th>办理时间</th>
+					</tr>
+				</thead>
+				
+				<tbody  jwcid="@Any" name="IpExpressTableValues" id="IpExpressTableValues">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_A" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BRAND_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SCORE_VALUE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.X_SVCSTATE_EXPLAIN" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LAST_STOP_TIME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IN_STAFF_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID', 'DEPART_NAME', info.IN_DEPART_ID)"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IN_DATE"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="paginNav" id="paginNav" cond="QueryIPExpressCondPart" part="QueryIPExpressListPart" listener="queryIpExpress" pageSize="10" count="ognl:count"></div>	
+		<!-- 分页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

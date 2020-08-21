@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/phone/MBOP.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/assign/script/assign.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<style>
+	.c_scroll-form-top{ top:6em;}
+	.s_phone .c_scroll-form-top{ top:19.5em;}
+</style>
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">指派</div>
+		<div class="fn">
+			<button class="e_button-blue" ontap="showPopup('UI-popup','UI-search',true)"><span class="e_ico-search"></span></button>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 表单 开始 -->
+	<div class="l_padding">
+		<div jwcid="CondPart@Part" class="c_form c_form-col-3 c_form-submit-h c_form-border c_form-phone-col-1">
+			<div class="submit">
+				<button type="button" class="e_button-blue" ontap="queryStaffList();">查询</button>
+			</div>
+			<ul>
+				<li>
+					<div class="label">员工姓名：</div>
+					<div class="value">
+						<input jwcid="@TextField" name="cond_STAFF_NAME" value="ognl:cond.cond_STAFF_NAME" desc="员工姓名"/>
+					</div>
+				</li>
+				<li class="required">
+					<div class="label">归属地州：</div>
+					<div class="value">
+						<span jwcid="@Select" name="cond_EPARCHY_CODE" value="ognl:cond.cond_EPARCHY_CODE" 
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AREA_CODE')" 
+							textField="DATA_NAME" valueField="DATA_ID" nullable="no" desc="归属地州" addDefault="false"/>
+					</div>
+				</li>
+				<li>
+					<div class="label">部门：</div>
+					<div class="value">
+						<input jwcid="@Select" name="cond_DEPART_ID" value="ognl:cond.cond_DEPART_ID" 
+							source="ognl:cond.DEPART_ID_LIST" textField="DEPART_NAME" valueField="DEPART_ID"
+							nullable="no" desc="部门" />
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div jwcid="@Scroller" name="mainScroller" class="c_scroll c_scroll-float c_scroll-header c_scroll-form-top c_scroll-submit">
+		<div class="l_padding">
+			<!-- 列表 开始 -->
+			<div jwcid="ResultPart@Part" class="c_list c_list-border c_list-line c_list-col-3 c_list-phone-col-1">
+				<ul id="STAFF_LIST_UL">
+					<li class="link" jwcid="@Foreach" source="ognl:staffList" value="ognl:staff" element="li" ontap="chooseStaff(this);">
+						<div class="pic"><span class="e_ico-user e_ico-pic"></span></div>
+						<div class="main">
+							<div class="title"><span jwcid="@Insert" value="ognl:staff.STAFF_NAME" /></div>
+							<div class="content">员工工号：<span jwcid="@Insert" value="ognl:staff.STAFF_ID" /></div>
+							<div class="content">部门编号：<span jwcid="@Insert" value="ognl:staff.DEPART_ID" /></div>
+							<div class="content">部门名称：<span jwcid="@Insert" value="ognl:staff.DEPART_NAME" /></div>
+							<div class="content">联系电话：<span jwcid="@Insert" value="ognl:staff.SERIAL_NUMBER1" /></div>
+						</div>
+						<div class="side">海南.<span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('AREA_CODE',staff.EPARCHY_CODE)" /></div>
+						<div jwcid="@Any" name="ognl:'STAFF_DATA_'+rowIndex" style="display:none;"><span jwcid="@Insert" value="ognl:staff"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 列表 结束 -->
+			<div class="e_hide-phone">
+				<div class="c_space"></div>
+				<!-- 提交 开始 -->
+				<div class="c_submit c_submit-center">
+					<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitAssign();">提交</button>
+				</div>
+				<!-- 提交 结束 -->
+				<div class="c_space"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 滚动 结束 -->
+	<div class="l_bottom e_show-phone">
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-full">
+			<button type="button" class="e_button-l e_button-green" ontap="submitAssign();">提交</button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	
+	<input jwcid="@Hidden" name="BUSIFORM_NODE_ID" value="ognl:cond.BUSIFORM_NODE_ID" />
+	<input jwcid="@Hidden" name="EOS_ROLE_ID" value="ognl:cond.EOS_ROLE_ID" />
+	
+</body>
+</html>

@@ -1,0 +1,26 @@
+INSERT INTO TF_R_VALUECARD_SANYOU
+      (VALUE_CARD_NO,
+       CARD_PASSWD,
+       QUERY_COUNT,
+       QUERY_STAFF_ID,
+       QUERY_TIME,
+       QUERY_TAG,
+       QUERY_RESULT,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5) 
+    values
+      (:VALUE_CARD_NO,
+       :CARD_PASSWD,
+       to_number(:QUERY_COUNT),
+       :QUERY_STAFF_ID,
+       sysdate,
+       :QUERY_TAG,
+       :QUERY_RESULT,
+       :RSRV_STR1,
+       :RSRV_STR2,
+       :RSRV_STR3,
+       :RSRV_STR4,
+       :RSRV_STR5)

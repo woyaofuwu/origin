@@ -1,0 +1,5 @@
+INSERT INTO tf_b_trade_iagw(trade_id,user_id,serial_number,sp_id,sp_name,biz_code,biz_desc,book_date,start_date,end_date,contract_id,price,billing_type,eparchy_code,staff_id,update_time,subscribe_id,expect_time,err_code,oper_type_code,in_mode,deal_tag,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,rsrv_str11,rsrv_str12,rsrv_str13,rsrv_str14,rsrv_str15,rsrv_str16,rsrv_str17,rsrv_str18,rsrv_str19,rsrv_str20)
+select :TRADE_ID,USER_ID,SERIAL_NUMBER,SP_ID,SP_NAME,BIZ_CODE,BIZ_DESC,BOOK_DATE,START_DATE,END_DATE,CONTRACT_ID,PRICE,BILLING_TYPE,:EPARCHY_CODE,STAFF_ID,SYSDATE,SUBSCRIBE_ID,EXPECT_TIME,'00',:OPER_TYPE_CODE,'2','0',RSRV_STR1,RSRV_STR2,RSRV_STR3,RSRV_STR4,RSRV_STR5,RSRV_STR6,RSRV_STR7,RSRV_STR8,RSRV_STR9,RSRV_STR10,'','','','','','','','','',''
+from tf_f_user_sign 
+where serial_number = :SERIAL_NUMBER
+and user_id = :USER_ID

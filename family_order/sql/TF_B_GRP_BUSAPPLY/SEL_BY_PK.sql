@@ -1,0 +1,1 @@
+SELECT * FROM TF_B_GRP_BUSAPPLY t where t.APPLY_ID=to_number(:APPLY_ID)

@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_groupstruct(trade_id,cust_id,group_depart_id,group_depart_name,depart_function,order_no,node_info,node_site,node_scope,primary_master,main_duty,update_time,update_staff_id,update_depart_id,rsrv_str1,rsrv_str2,rsrv_str3,remark)
+ VALUES(TO_NUMBER(:TRADE_ID),TO_NUMBER(:CUST_ID),:GROUP_DEPART_ID,:GROUP_DEPART_NAME,:DEPART_FUNCTION,:ORDER_NO,:NODE_INFO,:NODE_SITE,:NODE_SCOPE,:PRIMARY_MASTER,:MAIN_DUTY,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:REMARK)

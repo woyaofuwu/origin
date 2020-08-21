@@ -1,0 +1,1 @@
+select t.* from TL_B_CUST_REALNAME_REASON t where t.user_id=:USER_ID

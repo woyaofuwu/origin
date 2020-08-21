@@ -1,0 +1,21 @@
+SELECT A.ACCEPT_MONTH,
+       A.IN_TIME,
+       A.SERIAL_NUMBER,
+       A.USER_ID,
+       A.PROCESS_TAG,
+       A.DATA_TYPE,       
+       A.EXEC_TIME,
+       A.BEGIN_DATE,
+       A.END_DATE,
+       A.EFFECT_TAG,
+       A.RSRV_STR1,
+       A.RSRV_STR2,
+       A.RSRV_STR3,
+       A.RSRV_DATE1,
+       A.RSRV_DATE2,
+       A.RSRV_DATE3,
+       A.REMARK
+  FROM TL_B_BLACKUSER A
+ WHERE A.USER_ID = TO_NUMBER(:USER_ID)
+   AND A.BEGIN_DATE < A.END_DATE
+   AND A.END_DATE > SYSDATE

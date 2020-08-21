@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>改号</title>
+<script jwcid="@Script"  src="person/changephone/scripts/modifyphonecode.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_tip"  style="display: none;"  name="ALERT_INFO_DIV" id="ALERT_INFO_DIV">
+		<span  name="ALERT_INFO" id="ALERT_INFO" > </span>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户资料</div>
+	</div>
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"   tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="143" element="div"></div>
+	
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		
+	</div>
+</div>
+<div class="c_box" style="display:none" id="changeSn" name="changeSn">
+	<!-- 参数列表 开始 -->
+	<div class="c_title">
+		<div class="text">改号资料</div>
+		</div>
+	<div class="c_form c_form-label-6 c_form-col-2" jwcid="phoneInfoPart@Part">
+	
+		<ul class="ul">
+			 
+			<li class="li" >
+				<span class="label"><span class="e_required">新服务号码：</span></span>
+				<span class="e_elements">
+					<!-- <span class="e_label e_label-right">
+						<button  type="button" onclick="checkResource(0)" id="OLD_SN_BTN" name="OLD_SN_BTN"   ><i class="e_ico-check"></i><span>校验</span></button>
+					</span> -->
+						<button class="e_button-right" type="button" onclick="showLayer('serchPhone')"><span><i class="e_ico-search"></i></span></button>
+					<span class="e_input e_input-left"><span>
+						<input   jwcid="@Any" name="NEW_SERIAL_NUMBER" id="NEW_SERIAL_NUMBER"  nullable="no" enterAction="" onkeyup="if(window.event.keyCode==13){checkResource(0)}" />
+					</span></span>
+				</span>
+		
+
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="REMARK" id="REMARK" value="" maskType="start" maskPosition="1" 
+									maskLength="100" desc="备注" disabled="false"  />
+				</span></span>
+			</li>
+			
+			
+						<!-- 一卡多号表单 开始 20140918 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="ConditionalPart@Part" optimize="true" >
+		<input jwcid="@Any" type="hidden" name="IS_ONE_CARD" id="IS_ONE_CARD" value="ognl:userInfo.isOneCard"/>
+		<span jwcid="@Conditional" condition="ognl:userInfo.isOneCard>0">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">一卡多号副号：</span></span>
+					<div class="c_fn">
+						<ul>
+						<li><label><input type="radio" class="e_radio" id="INHERIT" name="INHERIT" value="0" desc="继承" " checked="true"/>继承</label></li>
+						<li><label><input type="radio" class="e_radio" id="INHERIT" name="INHERIT" value="1" desc="取消" />取消</label></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</span>
+	</div>
+	<!-- 一卡多号表单 结束 20140918 -->
+			<div id="showSimCard" name="showSimCard">
+				<li class="li" disabled="true">
+					<span class="label" ><span	class="e_required">原SIM卡号：</span></span>
+					<span class="e_input" ><span>
+						<input jwcid="@TextField" name="OLD_SIM_CARD_NO" id="OLD_SIM_CARD_NO" value="" desc="原SIM卡号" nullable="no"    />
+					</span></span>
+				</li>
+				<li class="li" disabled="true">
+					<span class="label" ><span	class="e_required">原IMSI号：</span></span>
+					<span class="e_input" ><span>
+						<input jwcid="@TextField" name="OLD_IMSI" id="OLD_IMSI" value="" desc="原IMSI号"  nullable="no" />
+					</span></span>
+				</li>
+				<li></li>
+				<li class="li">
+					<span class="label"><span	class="e_required">新SIM卡号：</span></span>
+					<span class="e_elements">
+						<button class="e_button-right" type="button" onclick="checkResource(1)"><span><i class="e_ico-check"></i>校验</span></button>
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField" name="NEW_SIM_CARD_NO" id="NEW_SIM_CARD_NO" value="" desc="新SIM卡号"  onkeyup="if(window.event.keyCode==13){checkResource(1)}" nullable="no"   />
+					</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span	class="e_required">新IMSI号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="NEW_IMSI" id="NEW_IMSI" value="" desc="新IMSI号"  nullable="no" />
+					</span></span>
+				</li>
+			</div>
+		</ul>
+		<input style="display:none" jwcid="@TextField" id="PHONE_CHECK" name="PHONE_CHECK" value=""/>
+		<input style="display:none" jwcid="@TextField" id="SIM_CARD_CHECK" name="SIM_CARD_CHECK" value=""/>	
+		
+	</div>
+	
+	<!-- 提交 开始 -->
+  <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="beforeSubmit()" params=""    area="AuthPart,userInfoPart,phoneInfoPart" element="div"/> 
+	
+	<!-- 提交 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+
+
+	
+
+<!-- 区域 结束 -->
+
+<!--设置开始-->
+<div class="c_popup" id="serchPhone" style="display: none;"  >
+	<div class="c_popupWrapper"  >
+				<div class="c_popupHeight"></div>
+				<div class="c_popupBox" >
+					<div class="c_popupTitle">
+						<div class="text">
+							查询网上已选号码
+						</div>
+						<div class="fn">
+							<a class="close" href="#nogo" onclick="hideLayer('serchPhone')"></a>
+						</div>
+					</div>
+					<div class="c_popupContent">
+						<div class="c_popupContentWrapper">
+							<!--?a? -->
+							<div class="c_form" jwcid="NetChooseInputPart@Part">
+								<ul class="ul">
+									<li class="li" >
+										<span class="e_required" >身份证号码：</span>
+										<span class="e_input"   ><span> 
+											<input jwcid="@TextField" id="NETCHOOSE_PSPT_ID"  value=""
+												 name="NETCHOOSE_PSPT_ID"    desc="身份证号码" /> 
+										</span> </span>
+									</li>
+									
+									 <li class="li">
+										<span class="e_required">选号来源：</span>
+										<div class="c_fn">
+											<ul>
+												<li><label><input	jwcid="@Radio"	
+							                     name="NETCHOOSE_TYPE" id="NET_CHOOSE" value="1"   onclick=""
+							                     checked="true"/>网上选号</label></li>
+												<li><label><input	jwcid="@Radio"	
+							                     name="NETCHOOSE_TYPE" id="SELF_CHOOSE" value="3"  onclick="" 
+							                     checked="false"/>自助选号</label></li>
+											</ul>
+										</div>
+									</li>
+									
+								</ul>
+								<div class="submitPlace"></div>
+								<div class="submit">
+									<button id="addButtom" name="addButtom"   class="e_button-form"  onclick="queryNetchoosePhone()"><i class="e_ico-import"></i><span>查询</span></button>
+								</div>
+							</div>
+							<!-- 表格 结束 -->
+							<!-- table start -->
+								<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table"  jwcid="netchoosePart@Part">
+									<table id="choseTable" jwcid="@Table"  name="choseTable"  >
+										<thead>
+											<tr>
+												<!--<th col="SELECT_PHONE">选择</th>-->
+												<th col="SERIAL_NUMBER">手机号码</th>
+												<th col="PSPT_ID">身份证号码</th>
+											</tr>
+										</thead>
+										<tbody  jwcid="@Any" name="chooseTableValue" id="chooseTableValue">
+												<tr jwcid="@Foreach" source="ognl:chooseInfos" value="ognl:chooseInfo" index="ognl:rowIndex" element="tr">
+													<!--<td><input type="radio" name="CHOOSE_PHONE"   /></td>-->
+													<td><span jwcid="@Insert" value="ognl:chooseInfo.RES_NO" raw="false"/></td>
+													<td><span jwcid="@Insert" value="ognl:chooseInfo.RANDOM_NO" raw="false"/></td>
+												</tr>
+										</tbody>
+									</table>
+								</div></div>
+							<!-- table end -->
+							
+							<!-- 提交 开始 -->
+							<div class="c_submit">
+								<button class="e_button-page-ok"   onclick="setNewPhone()">
+									<i></i><span>确定</span>
+								</button>
+								<button class="e_button-page-cancel"
+									onclick="hideLayer('serchPhone')">
+									<i></i><span>取消</span>
+								</button>
+							</div>
+							<!-- 提交 结束 -->
+						</div>
+					</div>
+					<div class="c_popupBottom">
+						<div></div>
+					</div>
+					<div class="c_popupShadow"></div>
+				</div>
+			</div>
+			<iframe class="c_popupFrame"></iframe>
+			<div class="c_popupCover"></div>
+</div>
+<!--设置结束-->
+
+
+</div></div>
+<script>
+//页面关闭时调用释放资源流程
+window.onunload=function(){
+	var newSerialNumber =  $("#NEW_SERIAL_NUMBER").val();
+	var newSimCardNo = $("#NEW_SIM_CARD_NO").val();
+	$.ajax.submit(null, 'releaseSingleRes', '&SERIAL_NUMBER='+newSerialNumber+'&SIM_CARD_NO='+newSimCardNo, null, function(data) {
+	   return true;
+	});
+} 
+</script>
+</body>
+</html>

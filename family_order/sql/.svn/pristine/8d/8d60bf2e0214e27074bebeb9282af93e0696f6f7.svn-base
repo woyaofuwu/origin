@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'DepartIdToCode' KEY, DEPART_ID VALUE1, '-1' VALUE2, DEPART_CODE VRESULT
+ FROM td_m_depart
+ WHERE 'DepartIdToCode' = :KEY

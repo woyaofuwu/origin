@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="order" default="all" basedir=".">
+	<property environment="env" />
+	<property file="build.properties" />
+	<path id="soa.class.path">
+		<fileset dir="${WADELIB_HOME}/common/lib">
+				<include name="*.jar" />
+			</fileset>
+			
+			<fileset dir="${WADELIB_HOME}/applib/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${publib}">
+				<include name="**/*.jar" />
+				<!--<exclude name="**/*bcf*.jar" />-->
+			</fileset>
+	</path>
+	<path id="web.class.path">
+		<fileset dir="${WADELIB_HOME}/common/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${WADELIB_HOME}/weblib/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${publib}">
+				<include name="**/*.jar" />
+			</fileset>
+	</path>
+    <path id="ext.class.path">
+        <fileset dir="${EXTLIB_HOME}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+	
+	<target name="all" depends="clean,compile-web,compile-app,copy"/>
+	
+	<target name="clean" description="removes intermediate files">
+		<mkdir dir="${PROJECT_HOME}/src/web" />
+		<mkdir dir="${PROJECT_HOME}/src/pub" />
+		<mkdir dir="${PROJECT_HOME}/src/soa" />
+		
+		<mkdir dir="${classes}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${classes}" />
+		</delete>
+		<mkdir dir="${classes}" />
+		
+		<mkdir dir="${source}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+		<mkdir dir="${source}" />
+		
+	</target>
+	
+	<target name="compile-app" description="compile web files">
+		<mkdir dir="${source}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+		<mkdir dir="${source}" />
+		<copy overwrite="true" todir="${source}">
+			<fileset dir="${PROJECT_HOME}/src/soa">
+				<include name="**/*.*" />
+				<exclude name="**/*.svn/**/*.*" />
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src/pub">
+				<include name="**/*.*" />
+				<exclude name="**/*.svn/**/*.*" />
+			</fileset>
+		</copy>
+		<javac encoding="utf-8" debug="on" fork="yes" source="1.6" target="1.6" 
+			memoryInitialSize="512m" memoryMaximumSize="1024m"
+			srcdir="${source}" 
+			destdir="${classes}" 
+			includes="**/*.*">
+			<compilerarg value="-J-Duser.language=en" />
+			<classpath refid="soa.class.path" />
+            <classpath refid="ext.class.path" />
+		</javac>
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+	</target>
+	
+	<target name="compile-web" description="compile web files">
+		<mkdir dir="${source}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+		<mkdir dir="${source}" />
+		<copy overwrite="true" todir="${source}">
+			<fileset dir="${PROJECT_HOME}/src/web">
+				<include name="**/*.*" />
+				<exclude name="**/*.svn/**/*.*" />
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src/pub">
+				<include name="**/*.*" />
+				<exclude name="**/*.svn/**/*.*" />
+			</fileset>
+		</copy>
+		<javac encoding="utf-8" debug="on" fork="yes" source="1.6" target="1.6" 
+			memoryInitialSize="512m" memoryMaximumSize="1024m"
+			srcdir="${source}" 
+			destdir="${classes}" 
+			includes="**/*.*">
+			<compilerarg value="-J-Duser.language=en" />
+			<classpath refid="web.class.path" />
+		</javac>
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+	</target>
+	
+	<target name="copy" description="removes intermediate files">
+		<delete includeemptydirs="true">
+			<fileset dir="${PROJECT_HOME}/html/WEB-INF/lib" />
+		</delete>
+	
+		<copy overwrite="true" todir="${classes}">
+			<fileset dir="${PROJECT_HOME}/config">
+				<include name="**/*.*" />
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src/pub">
+				<include name="**/*.*" />
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src/soa">
+				<include name="**/*.*" />
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src/web">
+				<include name="**/*.*" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${PROJECT_HOME}/html/WEB-INF/lib">
+					<fileset dir="${CRMLIB_HOME}/common/lib">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+				
+					<fileset dir="${CRMLIB_HOME}/applib/lib">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+					<fileset dir="${CRMLIB_HOME}/weblib/lib">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+					<fileset dir="${WADELIB_HOME}/common/lib">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+					<fileset dir="${WADELIB_HOME}/applib/lib">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+					<fileset dir="${WADELIB_HOME}/weblib/lib">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+					<fileset dir="${publib}">
+						<include name="*.jar" />
+						<exclude name="**/CVS/**/*.*" />
+						<exclude name="**/**/*#*.*" />
+					</fileset>
+				
+
+		</copy>
+		<copy overwrite="true" todir="${PROJECT_HOME}/html">
+				<fileset dir="${WADELIB_HOME}/weblib/html/">
+					<include name="**/**/*.*" />
+					<!--<exclude name="**/desktop/**/*.*" />-->
+					<exclude name="**/webframe/**/*.*" />
+					<exclude name="**/CVS/**/*.*" />
+					<exclude name="**/**/*#*.*" />
+				</fileset>
+			</copy>
+		
+	</target>
+
+</project>

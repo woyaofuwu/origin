@@ -1,0 +1,1 @@
+SELECT ADD_MONTHS(to_date(:RSRV_DATE1,'yyyy-mm-dd'),-1) RSRV_DATE1 FROM DUAL

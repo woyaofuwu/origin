@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="UTF-8" />
+<meta name="viewpoint"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<script jwcid="@Script"
+	src="merch/merchsaleactive/scripts/merchhotList.js"></script>
+<title>热门活动</title>
+</head>
+<body jwcid="@Body">
+	<div class="c_header">
+		<div id="failCheckPro" class="back" onclick="backPopup(this)">选择营销活动</div>
+		<div class="fn">
+        <span class="e_mix e_mix-search">
+            <input jwcid="@TextField" name="SEARCH_CONTENT" onkeyup="filterByPackageName();"/>
+            <button type="button"><span class="e_ico-search"></span></button>
+        </span>
+    </div>
+		
+	</div>
+
+<!-- 校验活动产品老用户手机号 开始 -->
+		<div id="checkProdOldCustSnItemHot" jwcid="@Part" element="div" style="ognl:isNeed ? '' : 'display:none'" >
+			<div class="c_form c_form-label-4 c_form-submit-h">
+			<div class="submit">
+					<button type="button" class="e_button-blue" ontap="popupCheckProdOldCustSn()">
+						<span class="e_ico-check"></span><span>校验</span>
+					</button>
+			</div>
+				<ul>
+					<li>
+						<div class="label">手机号码：</div>
+						<div class="value">
+							<input name="oldCustSnForProd" jwcid="@TextField"
+								onenterAction="popupCheckProdOldCustSn()" placeholder="请输入校验用户手机号码" nullable="no"
+								datatype="mbphone" desc="校验活动产品老用户手机号码" />
+						</div>
+					</li>
+				</ul>
+				<!--  <input jwcid="@Hidden" name="IF_NEW_USER_ACTIVE" />-->
+			</div>
+		</div>
+   <!-- 校验活动产品老用户手机号 结束 -->
+		
+   <!-- 校验活动包老用户手机号码 开始 -->
+	<div id="checkPackOldCustSn" jwcid="checkPackOldCustSn@Part" element="div" style="display: none">
+		<div class="c_form c_form-label-4 c_form-submit-h">
+			<div class="submit">
+				<button type="button" class="e_button-blue"
+					ontap="popupHotCheckPackOldCustSn()">
+					<span class="e_ico-check"></span><span>校验</span>
+				</button>
+
+				<button type="button" class="e_button-blue" id="backBtn" ontap="backcheckPackOldCustSn()">
+					<i class="e_ico-back"></i><span>返回</span>
+				</button>
+
+			</div>
+			<ul>
+				<li>
+								<div class="label">手机号码：</div>
+								<div class="value">
+									<input name="oldCustSnForPack" jwcid="@TextField"
+										onenterAction="popupHotCheckPackOldCustSn()"
+										placeholder="请输入校验用户手机号码" nullable="no" datatype="mbphone"
+										desc="校验活动包老用户手机号码" />
+								</div>
+
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 校验活动包老用户手机号码结束 -->
+
+
+    <!-- 发送验证码弹窗 开始 -->
+           <div id="sendSMSCodePopup" jwcid="sendSMSCodePopup@Part" element="div" style="display: none">
+                <div class="c_form c_form-label-3 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="popupqueryProdRedMoney()">
+                            <span class="e_ico-check"></span><span>确定</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">验证码：</div>
+                            <div class="value">
+                                <input name="RED_SMS_CODE"
+                                       jwcid="@TextField"
+                                       placeholder="请输入验证码"
+                                       nullable="no" desc="校验验证码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="RED_SMS_CODE"/>
+                    <input jwcid="@Hidden" name="CHECK_RED_SMS_CODE_PARAMS"/>
+                </div>
+              </div>
+    <!-- 发送验证码弹窗 结束 -->
+
+
+
+	<div name="hotSaleActiveListScroller" id="hotSaleActiveListScroller" jwcid="@Scroller" class="c_scroll c_scroll-float c_scroll-header c_scroll-white"  style="ognl:isNeed ? 'display:none' : ''" >
+		<div class="c_list c_list-line c_list-border">
+			<ul id="saleActiveListUl">
+				<li jwcid="@Foreach" class="link" source="ognl:saleActives"
+					value="ognl:saleActive" index="ognl:rowIndex" element="li"
+					packageId="ognl:saleActive.PACKAGE_ID"
+					packageName="ognl:saleActive.PACKAGE_NAME"
+					productId="ognl:saleActive.PRODUCT_ID"
+					campnType="ognl:saleActive.CAMPN_TYPE"
+					ontap="checkByPackageId(this);">
+					<div class="main">
+						<span jwcid="@Insert"
+							class="ognl:1==saleActive.ERROR_FLAG ? 'e_delete' : ''"
+							value="ognl:saleActive.PACKAGE_NAME"></span> <input
+							jwcid="@Hidden" name="SALEACTIVE_ERROR_FLAG"
+							value="ognl:saleActive.ERROR_FLAG" />
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+   <div jwcid="@Conditional" condition='ognl:("Y".equals(info.NO_SALE) )'>
+		<div class="c_msg c_msg-error">
+			<div class="wrapper">
+				<div class="emote"></div>
+				<div class="info">
+					<div class="text">
+						<div class="title">没有查到符合条件的营销包</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	   <div jwcid="@Conditional" condition='ognl:("Y".equals(info.ERROR_TAG) )'>
+		<div class="c_msg c_msg-error">
+			<div class="wrapper">
+				<div class="emote"></div>
+				<div class="info">
+					<div class="text">
+						<div class="title">
+						    <span jwcid="@Insert"
+							value="ognl:info.ERROR_INFO"></span> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+	<input jwcid="@Hidden" name="SALEACTIVE_USER_ID" value="ognl:info.SALEACTIVE_USER_ID" />
+	<input jwcid="@Hidden" name="SALEACTIVE_CUST_ID" value="ognl:info.SALEACTIVE_CUST_ID" />
+	<input jwcid="@Hidden" name="DEVICE_MODEL_CODE" value="ognl:info.DEVICE_MODEL_CODE" />
+	<input jwcid="@Hidden" name="SALE_SERIAL_NUMBER" value="ognl:info.SALE_SERIAL_NUMBER" />
+	<input jwcid="@Hidden" name="SALE_EPARCHY_CODE" value="ognl:info.SALE_EPARCHY_CODE" />		
+   	<input jwcid="@Hidden" name="IF_NEED" value="ognl:info.IF_NEED" />
+	<input jwcid="@Hidden" name="IF_NEW_USER_ACTIVE" value="ognl:info.IF_NEW_USER_ACTIVE" />
+    <input jwcid="@Hidden" name="SALE_PRODUCT_ID" value="ognl:info.SALE_PRODUCT_ID" />
+    <input jwcid="@Hidden" name="SALE_CAMPN_TYPE" value="ognl:info.SALE_CAMPN_TYPE" />
+    <input jwcid="@Hidden" name="SALE_PACKAGE_ID" value="" />
+    <input jwcid="@Hidden" name="SALE_PACKAGE" value="" />
+    <input jwcid="@Hidden" name="SMS_CODE" value="" />
+    <input jwcid="@Hidden" name="SALEACTIVE_NEED_CHECK" value="true"/>
+    <input jwcid="@Hidden" name="TRADE_TYPE_CODE" value="240"/>
+    <input jwcid="@Hidden" name="ACTIVE_TYPE" value="CM"/>
+    <input jwcid="@Hidden" name="DEVICE_BRAND" value="ognl:info.DEVICE_BRAND" />
+    <input jwcid="@Hidden" name="DEVICE_MODEL" value="ognl:info.DEVICE_MODEL" />
+    <input jwcid="@Hidden" name="BATTERY" value="ognl:info.BATTERY" />
+    <input jwcid="@Hidden" name="COLOR" value="ognl:info.COLOR" />
+    <input jwcid="@Hidden" name="SALEACTIVE_IMEI" value="ognl:info.SALEACTIVE_IMEI" />
+            				   		
+</body>
+</html>

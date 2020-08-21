@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>免拦截号码信息查询界面</title>
+<script jwcid="@Script" language="JavaScript" src="person/monitorinfo/scripts/queryallwhite.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+		<div class="text">免拦截号码信息查询界面</div>
+	</div>
+	
+	<div jwcid="QueryCondPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="HeadQueryPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询方式：</span></span>
+					<span class="e_select"><span><span>
+               		<select jwcid="@Select" name="QUERY_TYPE" id="QUERY_TYPE"
+							source="ognl:pageutil.getStaticList('QUERYMONITORINFO_QUERYTYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="QUERY_TYPE"
+                			value="1"
+                			onchange="changeQueryType()"
+							desc="查询方式"
+                			nullable="no"
+                       />
+                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">归属省份：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PROV_CODE" id="PROV_CODE"
+							source="ognl:pageutil.getStaticList('BAD_PROVINCE_CODE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="PROV_CODE"
+                			value="ognl:editInfo.PROV_CODE"
+                			default="1"
+							desc="归属省份"
+                       />
+                </span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="NormalQueryPart@Part" style="display:''">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">开始号码：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="START_SERIAL_NUMBER" name="START_SERIAL_NUMBER"  nullable="no" datatype="mbphone"
+						desc="开始号码"	value="ognl:editInfo.START_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="END_SERIAL_NUMBER" name="END_SERIAL_NUMBER"  nullable="no" datatype="mbphone"
+						desc="结束号码"	value="ognl:editInfo.END_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="DayQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_REPORT" name="DATE_REPORT"  
+						desc="查询日期"	value="ognl:editInfo.DATE_REPORT" />
+				</span></span>
+				</li>
+				<!-- 
+				<li class="li">
+					<span class="label">违规原因：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REASON_CODE_DAY" id="REASON_CODE_DAY" 
+						source="ognl:pageutil.getStaticList('MONITORFILE_REASONCODE')" 
+						value="ognl:editInfo.REASON_CODE_DAY" textField="DATA_NAME" valueField="DATA_ID"  desc="违规原因"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+				 -->
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="TimeQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">开始日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_START" name="DATE_START"  
+						desc="开始日期"	value="ognl:editInfo.DATE_START" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束日期：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="DATE_END" name="DATE_END"  
+						desc="结束日期"	value="ognl:editInfo.DATE_END" />
+				</span></span>
+				</li>
+				<!-- 
+				<li class="li">
+					<span class="label">违规原因：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REASON_CODE_TIME" id="REASON_CODE_TIME" 
+						source="ognl:pageutil.getStaticList('MONITORFILE_REASONCODE')" 
+						value="ognl:editInfo.REASON_CODE_TIME" textField="DATA_NAME" valueField="DATA_ID"  desc="违规原因"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+				 -->
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<div class="c_submit">
+		<div class="right">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryWhiteInfos()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="remarkPart">
+	<div class="c_submit">
+		<div class="left">
+			<button type="button" id="unchecked" name="unchecked" onclick="return checkedOther('monitorInfoCheckBox')"><i class="e_ico-unselect"></i><span>反选</span></button>
+		</div>
+		<div class="right">
+			<button type="button" id="addBtn" name="addBtn" onclick="popupPage('monitorinfo.ManageAllWhite','','&flag=0','新增免拦截号码','650', '400')"><i class="e_ico-add"></i><span>新增</span></button>
+			<button class="l_ml" type="button" id="delBtn" name="delBtn" onclick="return delWhiteUser()"><i class="e_ico-delete"></i><span>删除</span></button>
+			
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92104"
+						  config="export/monitorinfo/AllWhiteList.xml" fileName="白名单信息" beforeAction="exportBeforeAction"
+						 cond="QueryCondPart" params="ognl:'TAG_PARAM=3&&STAFF_ID=' + getVisit().getStaffId()"/>
+		</div>
+		
+	</div>
+    <!-- 表格 开始 -->
+	<div jwcid="MonitorInfoPart@Part" id="MonitorInfoPart" style="display:''">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" id="MonitorInfoTable" name="MonitorInfoTable">
+			<thead>
+				<tr>
+					<th col="CHECK_TAG" style="width:5px;"><input type="checkbox" class="e_checkbox" onclick="checkedAll('monitorInfoCheckBox', checked)" /></th>
+					<th col="ACCEPT_MONTH">处理月份</th>
+					<th col="IN_TIME">入库时间</th>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="USER_ATTR">名单属性</th>
+					<th col="USER_LEVEL">用户级别</th>
+					<th col="PROVINCE_CODE">省份编码</th>
+				</tr>
+			</thead>
+			<tbody id="MonitorInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td class="e_center">
+						<input jwcid="@Checkbox" name="monitorInfoCheckBox" id="monitorInfoCheckBox" value=ognl:info.SERIAL_NUMBER />
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.IN_TIME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WHITE_USERATTR', info.USER_ATTR)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WHITE_USERLEVEL', info.USER_LEVEL)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', info.PROVINCE_CODE)"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+		<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" name="queryNav" id="queryNav" cond="QueryCondPart" part="MonitorInfoPart" listener="queryWhiteInfos" pageSize="10" count="ognl:count"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

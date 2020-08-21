@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>POS刷卡退费</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/print/PrintMgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/PosTrade.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/PosCostClear.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<object classid="clsid:E083E848-B477-4F16-BCD5-72D74BC1E2AF" id="PosDeviceOcx" width="0" height="0"></object>
+<form jwcid="@Form">
+<!-- 输入 开始 -->
+	<div class="c_box" jwcid="SearchPosPart@Part" element="div">
+		<div id="tipInfo" class="c_tip">根据条件查询到POS刷卡记录，请勾选需要撤销的记录进行退费</div>
+		<div class="c_form c_form-label-5 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">退费原因：</span>
+					<span class="e_select"><span><span>
+						<select id="CANCEL_REASON" name="CANCEL_REASON">
+							<option value="1">业务提交失败</option>
+							<option value="2">业务返销退费</option>
+						</select>		
+					</span></span></span>
+				</li>
+				<li id="SnPart" class="li">
+					<span class="label"><span class="e_required">服务号码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" 
+							 desc="服务号码"  datatype="mbphone" nullable="no"/>
+					</span></span>
+				</li>
+				<li id="TradePart" class="li" style="display:none">
+					<span class="label"><span class="e_required">业务流水：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="TRADE_ID" value="ognl:info.TRADE_ID" desc="业务流水" type="text"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit e_right">
+				<input jwcid="@Hidden" name="OPER_STAFF_ID" value="ognl:getVisit().getStaffId()" desc="操作员工ID" />
+				<button type="button" id="queryBtn" class="e_button-form"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+	</div>
+	<div class="c_box">
+		<div class="submit e_left">
+			<button id="TodayBackBtn" type="button" class="e_button" style="display:none"><i class="e_ico-ok"></i><span>当日撤销</span></button>
+			<button id="BackBtn" type="button" class="e_button" style="display:none"><i class="e_ico-ok"></i><span>隔日退货</span></button>
+			<button id="ManualBtn" type="button" class="e_button" style="display:none"><i class="e_ico-ok"></i><span>手工调账</span></button>
+			<button id="SignInBtn" type="button" class="e_button"><i class="e_ico-ok"></i><span>签到</span></button>
+			<input id="POS_RECEIPT" name="POS_RECEIPT" type="hidden" value="" afterAction="printPosReceipt()"/>
+		</div>
+	    <div class="submitPlace"></div>  
+		<div jwcid="PosListPart@Part" class="c_scroll c_table-row-20"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>选择</th>
+						<th>刷卡流水</th>
+						<th>业务流水</th>
+						<th>用户标识</th>
+						<th>服务号码</th>
+						<th>缴费金额</th>
+						<th>已走人工流程</th>
+						<th>银联销售终端号</th>
+						<th>用户卡号</th>						
+						<th>凭证号</th>
+						<th>参考号</th>
+						<th>批次号</th>
+						<th>交易时间</th>
+						<th>发卡行</th>						
+						<th>操作员号</th>				
+						<th>授权号</th>
+						<th>终端IP</th>
+						<th>交易应答码</th>
+						<th>交易应答描述</th>
+						<th>有效期</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:posInfo" value="ognl:pos" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><input name="posTrade" type="radio" jwcid="@Any" class="e_radio" amount="ognl:pos.AMOUNT" certNo="ognl:pos.CERT_NO" 
+						value="ognl:pos.POS_TRADE_ID" refNo="ognl:pos.REF_NO" todayPay="ognl:pos.TODAY_PAY" canCancel="ognl:pos.CAN_CANCEL" 
+						 userId="ognl:pos.USER_ID"  serialNumber="ognl:pos.SERIAL_NUMBER"  tradeId="ognl:pos.TRADE_ID" tradeTime="ognl:pos.TRANS_YYYYMMDD"  onclick="selectPosTrade(this)"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.POS_TRADE_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.TRADE_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value='ognl:formatDecimal("0.00", pos.AMOUNT/100)'  raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.PRINT_RECEIPTS" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.POS_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.CARD_NO" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.CERT_NO" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.REF_NO" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.BATCH_NO" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pos.TRANS_DATE_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.BANK_NO" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.OPER_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pos.AUTH_NO" raw="false" /></td>	
+						<td><span jwcid="@Insert" value="ognl:pos.LOCAL_ADDR" raw="false" /></td>		
+						<td><span jwcid="@Insert" value="ognl:pos.S_RESP" /></td>
+						<td><span jwcid="@Insert" value="ognl:pos.S_RESP_INFO" /></td> 
+						<td><span jwcid="@Insert" value="ognl:pos.EXP_DATE" raw="false" /></td>
+					</tr>				
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="SearchPosPart" part="PosListPart" 
+	      listener="queryNonBossFeeLog" pageSize="20" count="ognl:recordCount"></div>	    
+	</div>
+<!-- 输入 结束 --> 
+</form>
+
+</div></div>
+</body>
+</html>

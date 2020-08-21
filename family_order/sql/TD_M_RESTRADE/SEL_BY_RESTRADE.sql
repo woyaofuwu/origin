@@ -1,0 +1,7 @@
+--IS_CACHE=Y
+select a.res_trade_id
+from td_m_restrade a 
+where 1=1
+and (:RES_TRADE_CODE IS NULL OR A.RES_TRADE_CODE=:RES_TRADE_CODE)
+AND (:RES_TYPE_CODE IS NULL OR A.RES_TYPE_CODE=:RES_TYPE_CODE )
+AND VALID_TAG='0'

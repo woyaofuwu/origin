@@ -1,0 +1,82 @@
+<div class="">
+	<div class="c_table">
+		<table id="SaleScoreTable" name="SaleScoreTable">
+			<colgroup>
+				<col style="width:50px;"></col>
+				<col style="width:24px;"></col>
+				<col></col>
+				<col style="width:190px;"></col>
+				<col style="width:190px;"></col>
+			</colgroup>
+			<tbody>
+				<tr class="even">
+					<td class="e_center" rowspan="10"><strong>积分</strong></td>
+					<td class="e_center">选择</td>
+					<td class="e_center"><span>兑换/扣减积分</span></td>
+					<td class="e_center"><span>用户当前积分</span></td>
+					<td class="e_center"><span>预存金额</span></td>
+				</tr>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="ognl:'SCORE_PARAM_AREA'+rowIndex" rowIndex="ognl:rowIndex" element="tr">
+					<td class="e_center">
+						<input type="checkbox" jwcid="@Checkbox" class="e_checkbox"
+							name="ognl:'SCORE_'+rowIndex+'_'+info.SCORE_DEDUCT_ID" 
+							id="ognl:'SCORE_'+rowIndex+'_'+info.SCORE_DEDUCT_ID" 
+							input_id="ognl:'INPUT_SCORE_'+rowIndex+'_'+info.SCORE_DEDUCT_ID"
+							value="ognl:info.SCORE_DEDUCT_ID"
+							package_id="ognl:packageId"
+							package_name="ognl:info.PACKAGE_NAME"
+							element_id="ognl:info.ELEMENT_ID"
+							element_name="ognl:info.GOODS_NAME"
+							element_type_code="ognl:info.ELEMENT_TYPE_CODE"
+							start_date="ognl:info.START_DATE"
+							end_date="ognl:info.END_DATE"
+							flag="ognl:info.FLAG"
+							flag_source_id="ognl:info.FLAG_SOURCE_ID"
+							elements_area="ognl:'SCORE_PARAM_AREA'+rowIndex"
+							fee_mode="ognl:info.FEE_MODE"
+							fee_type_code="ognl:info.FEE_TYPE_CODE"
+							fee="ognl:info.FEE"
+							pay_mode="ognl:info.PAY_MODE"
+							payment_id="ognl:info.PAYMENT_ID"
+							in_deposit_code="ognl:info.IN_DEPOSIT_CODE"
+							out_deposit_code="ognl:info.OUT_DEPOSIT_CODE"
+							default_start_date="ognl:info.DEFAULT_START_DATE"
+							user_score="ognl:userScore"
+							score_value="ognl:info.SCORE_VALUE"
+							deposit_rate="ognl:info.DEPOSIT_RATE"
+							deposit_value="ognl:info.DEPOSIT_VALUE"
+							score_changed="ognl:info.SCORE_VALUE"
+							checked="ognl:info.MAIN_TAG == 1 || info.DEFAULT_TAG == 1 || info.FORCE_TAG == 1"
+							disabled="ognl:info.FORCE_TAG == 1 || info.MAIN_TAG == 1"
+							onclick="saleactiveModule.spCheckBoxOnclickAction(this.id);"/>
+					</td>
+					<td class="e_center">
+						<span jwcid="@Insert" value="ognl:info.SCORE_VALUE" raw="false"/>
+                    </td>
+					<td id="ognl:'TITLE_'+rowIndex+'_'+info.SCORE_DEDUCT_ID" class="e_center">
+						<span jwcid="@Insert" value="ognl:userScore" raw="false" />
+					</td>
+					<!-- 预存金额 -->
+					<td class="e_center">
+						<div jwcid="@Conditional" condition="ognl:info.DEPOSIT_TAG != 1">不允许预存补积分</div>
+						<div jwcid="@Conditional" condition="ognl:info.DEPOSIT_TAG == 1">
+							<input jwcid="@Any"
+							name="ognl:'SCORE_'+rowIndex+'_DEPOSIT_VALUE_DISPLAY'" 
+							id="ognl:'SCORE_'+rowIndex+'_DEPOSIT_VALUE_DISPLAY'"
+							value="ognl:info.DEPOSIT_VALUE_DISPLAY"
+							deduct_low="ognl:info.DEDUCT_LOW" 
+							datatype="pinteger" 
+							maxLength="5" 
+							title="请输入预存金额" 
+							desc="预存金额" 
+							class="e_input"
+							disabled="true"/>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!-- 表格 结束 -->
+<input jwcid="@TextField" name="SALESCORE_EPARCHY_CODE" id="SALESCORE_EPARCHY_CODE" value="ognl:eparchyCode"  style="display:none"/>

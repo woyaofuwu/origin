@@ -1,0 +1,2 @@
+INSERT INTO td_m_tempdataright(staff_id,data_code,data_type,start_date,end_date,update_time,update_staff_id,update_depart_id)
+ VALUES(:STAFF_ID,:DATA_CODE,:DATA_TYPE,sysdate,TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),sysdate,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

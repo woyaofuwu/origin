@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/ocs/ocsuserimport.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量导入号码OCS处理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="SubmitCondPart@Part">
+		<div jwcid="ReInit@Part">
+		<ul class="ul">
+			<li class="li col-3">
+				<div jwcid="NewBatchId@Part">
+				<span class="label"><span class="e_required">批次号：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" readonly="true" name="BATCH_ID" id="BATCH_ID" desc="批次号码" value="ognl:batchId.BATCH_ID" nullable="no"/></span></span>
+				</div>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span class="e_required">批量文件：</span></span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					<span class="e_elements">
+							<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+									fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+					</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">模版下载：</span>
+				<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=OCS用户导入模板.xls&filePath=template/bat/OcsUserImport.xls')">[点击下载]</a></span>
+			</li>
+			<li class="li col-3">
+				<span class="label">备注：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent"><textarea  type="text" jwcid="@TextArea" name="REMARK" id="REMARK" value="" style="height:36px;"></textarea></span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">签约模式：</span></span>
+				<div class="c_fn">
+					<ul>
+						<li><label><input name="cond_RADIO_CODE" type="radio" class="e_radio" value="0" checked onclick="return initQianYue()"/>签约</label></li>
+						<li><label><input name="cond_RADIO_CODE" type="radio" class="e_radio" value="1" onclick="return initQianYue()"/>去签约</label></li>
+					</ul>
+				</div>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">生效期限：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_SXQX_CODE" id="cond_SXQX_CODE" 
+						source="ognl:pageutil.getStaticList('ENABLE_TAG_OCS')" 
+						value="DATA_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" nullable="no"/>
+				</span></span></span>
+			</li>
+			<!--  
+			<li class="li" id='BIZTYPE' style="">
+				<span class="label"><span class="e_required">OCS类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="BIZ_TYPE" id="BIZ_TYPE" 
+						source="ognl:pageutil.getStaticList('BIZ_TYPE')" 
+						value="DATA_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" nullable="no"/>
+				</span></span></span>
+			</li>
+			-->
+			<li class="li" id='JKBZ' style="">
+				<div jwcid="QueryCondPart@Part">
+				<span class="label"><span class="e_required">监控标志：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_JKBZ_CODE" id="cond_JKBZ_CODE" 
+						source="ognl:pageutil.getStaticList('MONITOR_FLAG')" 
+						value="DATA_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" nullable="no" onchange="changeMonitorFlag(this.value);"/>
+				</span></span></span>
+				</div>
+			</li>
+			
+			<li class="li" id='JKGZ' style="">
+				<span class="label">监控规则：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_JKGZ_CODE" id="cond_JKGZ_CODE" 
+						source="ognl:pageutil.getStaticList('MONITOR_RULE_CODE')" 
+						value="DATA_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li col-3" id='CHOOSEBIZTYPE' style="">
+				<span class="label"></span>
+				<div class="c_fn">
+					<ul>
+						<!-- 
+						<li><label><input jwcid="@Checkbox" name="voiceBusi" id="voiceBusi" type="checkbox" class="e_checkbox" value="1"/>语音业务</label></li>
+						<li><label><input jwcid="@Checkbox" name="smsBusi" id="voiceBusi" type="checkbox" class="e_checkbox" value="2"/>短信业务</label></li>
+						 -->
+						<li><label><input jwcid="@Checkbox" name="gprsBusi" id="voiceBusi" type="checkbox" class="e_checkbox" value="3"/>GPRS业务</label></li>
+						<!-- 
+						<li><label><input jwcid="@Checkbox" name="wapBusi" id="voiceBusi" type="checkbox" class="e_checkbox" value="4"/>梦网业务</label></li>
+						-->
+					</ul>
+				</div>
+			</li>
+		
+		</ul>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return importOcsData()"><i class="e_ico-import"></i><span>导入</span></button>
+		<button type="button" class="e_button-page" onclick="return resetPage()"><i class="e_ico-reset"></i><span>重置</span></button>
+		<button type="button" class="e_button-page" onclick="return initBatchId()"><i class="e_ico-download"></i><span>获取批次号</span></button>
+	</div>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

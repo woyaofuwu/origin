@@ -1,0 +1,23 @@
+SELECT T.RSRV_STR1,
+       T.RSRV_STR2,
+       T.RSRV_STR3,
+       T.RSRV_STR4,
+       T.RSRV_STR5,
+       T.RSRV_STR6,
+       T.RSRV_STR7,
+       T.RSRV_STR8,
+       T.RSRV_STR9,
+       T.RSRV_STR10,
+       T.RSRV_STR11,
+       T.RSRV_STR12,
+       T.RSRV_STR13,
+       T.RSRV_STR14,
+       T.RSRV_STR15,
+       T.RSRV_STR16,
+       T.RSRV_NUM15,
+       T.RSRV_DATE1,
+       T.EXTEND_VALUE
+  FROM TF_F_CUST_GROUP_EXTEND T
+ WHERE 1 = 1
+   AND LOWER(T.EXTEND_TAG) = 'keym'
+   AND T.EXTEND_VALUE = :CUST_ID

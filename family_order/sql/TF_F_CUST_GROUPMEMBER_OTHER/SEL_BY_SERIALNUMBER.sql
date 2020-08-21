@@ -1,0 +1,11 @@
+SELECT to_char(a.cust_id) cust_id,a.group_id,a.vpmn_id,to_char(a.member_cust_id) member_cust_id,a.cust_name,a.pspt_id,a.pspt_addr,a.age,a.pspt_post_code,a.vip_type_code,a.class_id,a.short_number,a.member_kind,a.pay_for_way,a.pay_limit,a.write_off_flag,a.write_off_limit,a.cust_manager_id,a.chkoff_id,a.important_flag,a.member_belong,a.member_status,a.sex,to_char(a.birthday,'yyyy-mm-dd') birthday,a.work_name,a.work_depart,a.job,a.marrige,
+a.educate_degree_code,a.revenue_level_code,a.contact_phone,a.fax_nbr,a.email,a.company_address,a.bill_address,a.post_code,a.vip_no,a.owe_level,a.alarm_status,a.in_mode_code,a.pay_mode_code,a.bank_account_no,to_char(a.in_date,'yyyy-mm-dd') in_date,
+a.in_type,a.consume,to_char(a.create_date,'yyyy-mm-dd') create_date,to_char(a.destroy_date,'yyyy-mm-dd') destroy_date,a.remove_tag,a.consume_habit,to_char(a.score_value) score_value,to_char(a.credit_value) credit_value,a.cust_manager_appr,a.brand_code,a.register_name,a.register_pspt_id,f_sys_getcodename('class_id',class_id,'9',null) vip_tag,a.duty,a.technical_post,a.folk_code,
+a.political,a.religion_code,a.home_phone,a.other_contact_mode,to_char(a.become_vip_date,'yyyy-mm-dd') become_vip_date,a.family_card_flag,a.specical_demand,a.value_book_number,a.communion_habit,a.remark,
+to_char(a.open_date,'yyyy-mm-dd') open_date,a.is_high_value,a.score_level,a.vipcard_post_way,to_char(a.update_time,'yyyy-mm-dd') update_time,a.update_staff_id,a.update_depart_id,f_sys_getcodename('staff_id',cust_manager_id,null,null) prevaluec2,
+a.prevaluec1,a.prevaluec3,a.prevaluec4,a.rsrv_1,a.rsrv_2,to_char(a.prevalued1,'yyyy-mm-dd') prevalued1,
+to_char(a.prevalued2,'yyyy-mm-dd') prevalued2,to_char(a.prevaluen1) prevaluen1,to_char(a.prevaluen2) prevaluen2,to_char(a.prevaluen3) prevaluen3,a.open_limit,a.develop_depart_id,a.develop_staff_id,a.pspt_type_code,to_char(a.pspt_end_date,'yyyy-mm-dd') pspt_end_date,to_char(a.user_id) user_id,a.nationality_code,a.local_native_code,a.population,a.language_code,
+a.post_address,a.contact,a.home_address,a.character_type_code,a.webuser_id,a.web_passwd,a.contact_type_code,a.community_id,a.serial_number
+from tf_f_cust_groupmember_other a
+where (serial_number=:SERIAL_NUMBER or serial_number='0898'||:SERIAL_NUMBER)
+and remove_tag='0'

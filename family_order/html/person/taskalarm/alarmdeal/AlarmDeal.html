@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>业务信息查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/taskalarm/alarmdeal/scripts/AlarmDeal.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取业务风险处理无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">业务风险处理</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+                      <li class="li">
+							<span class="label"><span class="e_required">开始时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_TIME" id="cond_START_TIME" nullable="no" value="ognl:alarmData.START_TIME"  desc="开始时间"/>
+								</span></span>
+							</span>
+					  </li>
+					  <li class="li">
+							<span class="label"><span class="e_required">失效时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_END_TIME" id="cond_END_TIME" nullable="no" value="ognl:alarmData.END_TIME"  desc="失效时间"/>
+								</span></span>
+							</span>
+					  </li>
+					  <li class="li">
+						<span class="label">风险状态：
+						</span>
+						<span class="e_select"><span><span> <select
+										name="cond_HANDLE_STATE" id="ALARM_STATE">
+										<option value="">--请选择--</option>
+						                <option value="0">未处理</option>
+						                <option value="1">已通知</option>
+						                <option value="2">已处理</option>
+									</select> </span> </span> </span>
+					  </li>
+					  <li class="li">
+						<span class="label">采集方式：
+						</span>
+						<span class="e_select"><span><span> <select
+										name="cond_MESSAGE_TYPE" id="MESSAGE_TYPE">
+										<option value="">--请选择--</option>
+						                <option value="0">按月增量</option>
+						                <option value="1">全量</option>
+									</select> </span> </span> </span>
+					  </li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryAlarmByCond(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="RefreshPart@Part" optimize="true">
+				<div class="c_scroll c_scroll-table-10">
+					<div class="c_title">
+					 <div class="text">查询结果</div>
+						 <div class="fn">
+						      <div class="button" jwcid="@Conditional" condition="ognl:alarmInfos.size > 0">
+                                 <button jwcid="@Any" name="dealrule" id="dealrule" value="处理" source="ognl:alarmData"  onclick="if (queryBox(this, 'alarmInfos')){dealAlarm ();};" type="button"
+								     class="e_button-right">
+								     <i class="e_ico-ok"></i><span>处理</span>
+								 </button>
+								 <span jwcid="@Export" name="exportFilePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100969"
+											  config="export/sundryquery/other/TASKALARMLIST.xml" fileName="风险数据列表" cond=QueryCondPart/>
+								 <button jwcid="@Any" name="closedeal" id="closedeal"  value="关闭" source="ognl:alarmData"  onclick="if (queryBox(this, 'alarmInfos')){closeAlarm ();};" type="button"
+									     >
+									     <i class="e_ico-cancel"></i><span>关闭</span>
+								 </button>
+								 <a jwcid="@Redirect" value="业务风险统计"  onclick="alarmChart()" class="e_button"/>
+								 
+								  
+								 
+							  </div>
+					     </div>
+			  	     </div>	  	
+				 <div class="c_table ">
+					<table jwcid="@Table" name="ResultTable" id="ResultTable"  sort="true">
+						<thead>
+						<tr>
+			  				<th><input col="IS_CHECKED" type="checkbox" id="checkOtherDel" name="checkOtherDel" onclick="checkedAll('alarmInfos', checked)"/></th>
+			  				<th col="ALARM_ID" onclick="Wade.dom.sortTable('ResultTable',0,'string')">风险编号</th>
+							<th>业务风险内容</th>
+							<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">生成时间</th>
+							<th col="HANDLE_STATE">处理状态</th>
+							<!-- 中测add -->
+							<th col="RSRV_STR2">关闭状态</th>
+						
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:alarmInfos" value="ognl:alarmInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> 
+						<td><input jwcid="@Checkbox" name="alarmInfos" id="alarmInfos" value="ognl:alarmInfo.ALARM_ID" handle_state="ognl:alarmInfo.HANDLE_STATE" /></td>
+						<td>
+                             <a jwcid="@Redirect" 
+			    			value="ognl:alarmInfo.ALARM_ID" name="ALARM_ID" id="ALARM_ID" source="ognl:alarmInfo" cols="80" alarm_id="ognl:alarmInfo.ALARM_ID" alarmcreating_time="ognl:alarmInfo.ALARMCREATING_TIME"
+			    			taskwarning_message="ognl:alarmInfo.TASKWARNING_MESSAGE" handle_state="ognl:alarmInfo.HANDLE_STATE" raw=true
+			    			onclick="popupEditAlarmDialog(this)"/>
+						</td>					
+						<td><span jwcid="@Insert" value="ognl:alarmInfo.TASKWARNING_MESSAGE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:alarmInfo.ALARMCREATING_TIME" raw="true"/></td>
+						<td>
+							<div jwcid="@Conditional" condition='ognl:"0".equals(alarmInfo.HANDLE_STATE)'>
+								<span jwcid="@Insert" value="未处理" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"1".equals(alarmInfo.HANDLE_STATE)'>
+								<span jwcid="@Insert" value="已通知" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"2".equals(alarmInfo.HANDLE_STATE)'>
+								<span jwcid="@Insert" value="已处理" raw="true"/>
+							</div>
+						</td>
+						<!-- 中测add -->
+						<td>
+							<div jwcid="@Conditional" condition='ognl:"0".equals(alarmInfo.RSRV_STR2)'>
+								<span jwcid="@Insert" value="未关闭" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"".equals(alarmInfo.RSRV_STR2)'>
+								<span jwcid="@Insert" value="未关闭" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"1".equals(alarmInfo.RSRV_STR2)'>
+								<span jwcid="@Insert" value="已关闭" raw="true"/>
+							</div>
+						</td>
+					</tr>     
+
+					                                        
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="RefreshPart" listener="queryAlarmByCond" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>
+

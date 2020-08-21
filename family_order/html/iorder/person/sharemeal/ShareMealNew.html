@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<title>流量共享</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/sharemeal/scripts/sharemeal.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<!-- 认证 开始 -->
+			<div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="275" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+			<!-- 认证 结束 -->
+			<div style="display:none;">
+				<div jwcid="discntInfopart@Part" id="discntInfopart">
+					<table jwcid="@Table" id="discntInfoTable" name="discntInfoTable" class="c_table">
+						<thead>
+							<tr>
+								<th col="DISCNT_CODE">优惠编码</th>
+								<th col="DISCNT_NAME">优惠名称</th>
+								<th col="DISCNT_EXPLAIN">优惠说明</th>
+								<th col="ITEM_TYPE">套餐类型</th>
+								<th col="HIGH_FEE">优惠总量(M)</th>
+								<th col="DISTCNT_START_DATE">开始时间</th>
+								<th col="DISTCNT_END_DATE">结束时间</th>
+
+							</tr>
+						</thead>
+						<tbody id="discntInfoTable_Body">
+							<tr jwcid="@Foreach" source="ognl:discntInfos" value="ognl:discntInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td>
+									<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_NAME" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_EXPLAIN" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SHARE_ITEM_TYPE',discntInfo.ITEM_TYPE)" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:discntInfo.HIGH_FEE" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_START_DATE" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:discntInfo.DISCNT_END_DATE" />
+								</td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				
+			</div>
+			<div class="c_title">
+				<span class="text">
+					添加成员号码
+					<span class="e_black">（以空格分开多个号码）</span>
+				</span>
+			</div>
+			<div class="c_list c_list-s c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">成员号码</div>
+						<div class="value">
+							<span class="e_mix">
+								<input jwcid="@TextField" name="FMY_SERIAL_NUMBER" id="FMY_SERIAL_NUMBER" value="" desc="成员号码" class="e_left" />
+								<button type="button" class="e_button-blue" id="bquery" name="bquery" onclick="addMember()" disabled="true">
+									<i class="e_ico-add"></i>
+									<span>新增</span>
+								</button>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div jwcid="curMemberCountPart@Part" class="c_title">
+				<div class="text">
+					共享成员号码
+				</div>
+			</div>
+		
+			  <div jwcid="otherinfohiddenpart@Part" id="otherinfohiddenpart" >
+			   <input jwcid="@Hidden" id="AddMebMaxNum" name="AddMebMaxNum" value="ognl:otherInfo.AddMebMaxNum" />				 
+			 </div>
+		
+		
+			<!-- 列表开始 -->
+			<div jwcid="viceInfopart@Part" id="viceInfopart" class="c_list c_list-s c_list-line c_list-border c_list-col-4 c_list-phone-col-1">
+				<ul>
+					<li jwcid="@Foreach" class="memberSnList" name="memberSnList" id="ognl:'memberSnList_' + rowIndex" source="ognl:viceInfos" value="ognl:viceInfo" index="ognl:rowIndex" idx="ognl:rowIndex" element="li">
+						<div class="main memberSnValue" id="ognl:'memberSnValue_' + rowIndex" jwcid="@Any">
+							<div class="title">
+								<span id="ognl:'SERIAL_NUMBER_B_T_' + rowIndex" jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER"></span>
+							</div>
+							<div class="content">开始时间：
+								<span id="ognl:'START_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', viceInfo.START_DATE)"></span>
+							</div>
+							<div class="content">结束时间：
+								<span class="ognl:viceInfo.DEAL_TAG == 1 ? 'e_red' : ''" id="ognl:'END_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', viceInfo.END_DATE)"></span>
+							</div>
+							<div class="content">是否统付：
+								<span id="ognl:'RSRV_TAG1_T_' + rowIndex" jwcid="@Insert" value="ognl:viceInfo.RSRV_TAG1"></span>
+							</div>
+							<input jwcid="@Hidden" id="ognl:'INST_ID_' + rowIndex" name="INST_ID" value="ognl:viceInfo.INST_ID" />
+							<input jwcid="@Hidden" id="ognl:'DEAL_TAG_' + rowIndex" name="DEAL_TAG" value="ognl:viceInfo.DEAL_TAG" />
+							<!-- 操作 标记tag -1未做操作，0 新增，1删除 ,2 本月末结束-->
+							<input jwcid="@Hidden" id="ognl:'tag_' + rowIndex" name="tag" value="ognl:viceInfo.DEAL_TAG == 1 ? '2' : '-1'" />
+						</div>
+						<div jwcid="@Any" class="fn" id="ognl:'delMebBt_' + rowIndex" idx="ognl:rowIndex" style="ognl:viceInfo.DEAL_TAG == 1 ? 'display:none' : 'display:'" onclick="delMeb(this);" tip="删除">
+							<span class="e_ico-delete"></span>
+						</div>
+						<div style="display:none" jwcid="@Any" class="fn" id="ognl:'resetMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="resetMeb(this);" tip="恢复">
+							<span class="e_ico-reset"></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 列表结束 -->
+
+			<div class="c_space"></div>
+			<div class="c_list c_list-s c_list-line c_list-border">
+				<ul>
+					<li class="link">
+						<div class="label">备注</div>
+						<div class="value">
+							<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK" value="" desc="备注" disabled="" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_submit c_submit-center">
+				<div jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart" element="div" />
+			</div>
+		</div>
+		<!--受理信息结束-->
+	</div>
+</body>
+
+</html>

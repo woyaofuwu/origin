@@ -1,0 +1,14 @@
+--IS CACHE=Y
+ SELECT DEPART_KIND_CODE 部门类型, TO_CHAR(ACCEPT_DATE, 'YYYYMM') 受理月份,A.TRADE_ID 台账标识
+          FROM ucr_crm1.TF_BH_TRADE A, TD_M_DEPART B, ucr_crm1.TF_B_TRADE_DISCNT C
+         WHERE A.USER_ID = TO_NUMBER(:USER_ID)
+           AND A.TRADE_ID = C.TRADE_ID
+           AND A.TRADE_TYPE_CODE IN (10, 110)
+           AND A.CANCEL_TAG = '0'
+           AND A.TRADE_DEPART_ID = B.DEPART_ID
+           AND B.DEPART_KIND_CODE NOT IN ('100', '500','201')
+           AND TRUNC(A.ACCEPT_DATE) BETWEEN TRUNC(SYSDATE - 3) AND
+                 TRUNC(SYSDATE)
+           AND C.DISCNT_CODE = '6633'
+           AND C.MODIFY_TAG = '0'
+           AND ROWNUM < 2

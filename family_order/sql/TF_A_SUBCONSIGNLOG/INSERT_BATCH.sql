@@ -1,0 +1,2 @@
+INSERT INTO tf_a_subconsignlog(consign_id,mconsign_id,integrate_item_code,integrate_item,balance,late_balance,recv_acyc_id,eparchy_code)
+ VALUES(TO_NUMBER(:CONSIGN_ID),TO_NUMBER(:MCONSIGN_ID),:INTEGRATE_ITEM_CODE,:INTEGRATE_ITEM,TO_NUMBER(:BALANCE),TO_NUMBER(:LATE_BALANCE),:RECV_ACYC_ID,:EPARCHY_CODE)

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>银行名称选择列表</title>
+<!-- <script jwcid="@Script"  src="person/changeacctinfo/scripts/modifyacctinfo.js" ></script>
+ -->
+<script language="javascript"><!--
+function queryIt(){
+	// 根据银行名称或编码模糊查询
+	$.ajax.submit('QueryBankPart', 'queryBankInfo', null, 'QueryListPart', function(data){
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+// --></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_form" jwcid="QueryBankPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">银行名称或编码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="comminfo_BANK_OR_CODE" id="comminfo_BANK_OR_CODE" value="ognl:condition.comminfo_BANK_OR_CODE" desc="银行名称或编码"/>
+				<input type="text" jwcid="@TextField" style="display:none" name="comminfo_SUPERBANK_CODE" id="comminfo_SUPERBANK_CODE" value="ognl:condition.SUPERBANK_CODE" desc="上级银行编码" />
+			   </span></span> 
+			</li>
+		</ul>
+	    <div class="submitPlace"></div>
+		<div class="submit">
+			  <button class="e_button-form" id="bquery" name="bquery"  onclick="return queryIt();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	 
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10">
+		<div class="c_table">
+			<table jwcid="@Table" name="BankTable">
+				<thead>
+					<tr>
+						<th col="BANK">银行名称</th>
+						<th col="BANK_CODE">银行编码</th>
+					</tr>
+				</thead>
+				
+				<tbody  jwcid="@Any" name="BankTableValues" id="BankTableValues">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><a jwcid="@Redirect" value="ognl:info.BANK" BANK_CODE="ognl:info.BANK_CODE" 
+    						   BANK="ognl:info.BANK" onclick="setPopupReturnValue(getAttribute('BANK_CODE'),getAttribute('BANK'));"/></td>
+						<td><a jwcid="@Redirect" value="ognl:info.BANK_CODE" BANK_CODE="ognl:info.BANK_CODE" 
+    						   BANK="ognl:info.BANK" onclick="setPopupReturnValue(getAttribute('BANK_CODE'),getAttribute('BANK'));"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+
+	</div>
+	<!-- 表格 结束 -->
+	 
+</div> 
+</body>
+</html>

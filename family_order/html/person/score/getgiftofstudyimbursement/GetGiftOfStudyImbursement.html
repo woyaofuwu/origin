@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/score/getgiftofstudyimbursement/scripts/getgiftofstudyimbursement.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" >
+<div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="336"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>  
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="refreshParts2@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">兑换列表</div>
+		<div class="fn">
+			<button id="alreadyChoose" onclick="showChoose('DeptTable');showScoreLayer('fullChoose');hideScoreLayer('alreadyChoose');"><i class="e_ico-select"></i><span>显示已选项</span></button>
+			<button id="fullChoose" style="display:none;" onclick="showFull('DeptTable');showScoreLayer('alreadyChoose');hideScoreLayer('fullChoose');"><i class="e_ico-view"></i><span>显示全部</span></button>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-5">
+		<table id="DeptTable">
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>领取数量</th>
+					<th>兑换数量</th>
+					<th>礼品名称</th>
+					<th>兑换名称</th>
+					<th>兑换流水</th>
+					<th>礼品编码</th>
+					<th>兑换编码</th>
+					<th>状态</th>
+					<th>办理时间</th>
+					<th>领取时间</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr" rowIndex="ognl:rowIndex" >
+					<td class="e_center">
+							   <input jwcid="@Checkbox" type="checkbox" name="giftId" 
+									index="ognl:rowIndex" actionCount="ognl:info.ACTION_COUNT" goodsName="ognl:info.GOODS_NAME" 
+									paraCode1="ognl:info.PARA_CODE1" paraCode3="ognl:info.PARA_CODE3"  limitCount="ognl:info.ACTION_COUNT"
+									tradeId="ognl:info.TRADE_ID" ruleId="ognl:info.RULE_ID"   resId="ognl:info.RES_ID"
+									startDate="ognl:info.START_DATE" endDate="ognl:info.END_DATE" goodsState="ognl:info.GOODS_STATE" 
+									value="ognl:info.RULE_ID" nullable="no" disabled="ognl:info.CHECK_DISABLE"
+									onclick="chkInput(this,'giftId');" /></td>	
+						<td class="edit">
+							<span class="e_input"><span><input type="text" jwcid="@TextField" name="ognl:'COUNT_'+rowIndex" id="ognl:'COUNT_'+rowIndex" min="1"
+										countIndex="ognl:rowIndex" degree="0.1" value="ognl:info.COUNT" index="ognl:rowIndex" 
+										goodsName="ognl:info.GOODS_NAME" limitCount="ognl:info.ACTION_COUNT" ruleId="ognl:info.RULE_ID" actionCount="ognl:info.ACTION_COUNT"
+										onkeyup="verifyAcount(this,'giftId');"  disabled="true" desc="兑换数量" datatype="pinteger"/></span></span>
+					    </td>
+						<td><span jwcid="@Insert" name="ACTION_COUNT" id="ACTION_COUNT" value="ognl:info.ACTION_COUNT" raw="true"/></td>
+						<td><span jwcid="@Insert" name="PARA_CODE3" id="PARA_CODE3" value="ognl:info.PARA_CODE3" raw="true"/></td>
+						<td><span jwcid="@Insert" name="GOODS_NAME" id="GOODS_NAME" value="ognl:info.GOODS_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" name="TRADE_ID" id="TRADE_ID" value="ognl:info.TRADE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" name="PARA_CODE1" id="PARA_CODE1" value="ognl:info.PARA_CODE1" raw="true"/></td>
+						<td><span jwcid="@Insert" name="RULE_ID" id="RULE_ID" value="ognl:info.RULE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" name="GOODS_STATE_NAME" id="GOODS_STATE_NAME" value="ognl:info.GOODS_STATE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" name="ACCEPT_DATE" id="ACCEPT_DATE" value="ognl:info.ACCEPT_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" name="UPDATE_TIME" id="UPDATE_TIME" value="ognl:info.UPDATE_TIME" raw="true"/></td>						
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+<!-- 提交 开始 -->
+<div class="c_box">
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit(this)" isReset="true" area="AuthPart,refreshParts2" element="div"/>
+	</div>
+	<!-- 提交 结束 -->
+<!-- 隐藏区域 开始 --> 
+  <div jwcid="hide@Part">
+   <input type="text" jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:userInfo.USER_ID" style="display:none" />
+   </div>
+<!-- 隐藏区域 结束 -->
+</div>
+</div>
+</body>
+</html>

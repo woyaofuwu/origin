@@ -1,0 +1,24 @@
+SELECT T.PRODUCT_ID,
+       T.GROUP_ID,
+       T.PRODUCT_MGR_SN,
+       T.GROUP_MGR_SN,
+       T.PRODUCT_MGR_NAME,
+       T.DEPART_NAME,
+       T.EMAIL,
+       T.VALID_TAG,
+       T.START_DATE,
+       T.END_DATE,
+       T.UPDATE_DATE,
+       T.UPDATE_STAFF_ID,
+       T.UPDATE_DEPART_ID,
+       T.REMARK,
+       T.RSRV_STR1,
+       T.RSRV_STR2,
+       T.RSRV_STR3,
+       T.RSRV_STR4,
+       T.RSRV_STR5
+  FROM TF_F_GRP_PRODUCT_MANAGER T 
+ WHERE 1 = 1 
+   AND GROUP_ID = :GROUP_ID 
+   AND PRODUCT_MGR_SN = :PRODUCT_MGR_SN 
+   AND VALID_TAG = '1' 

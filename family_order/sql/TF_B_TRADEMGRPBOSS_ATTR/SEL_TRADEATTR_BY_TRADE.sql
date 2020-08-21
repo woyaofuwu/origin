@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+select ATTR_CODE,SEQ,ATTR_NAME,ATTR_VALUE 
+　from TF_B_TRADEMGRPBOSS_ATTR 
+　where trade_id = :TRADE_ID

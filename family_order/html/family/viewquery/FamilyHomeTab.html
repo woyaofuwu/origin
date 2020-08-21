@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="family/viewquery/scripts/familyhometab.js"></script>
+    <script jwcid="@Script" src="family/viewquery/scripts/familytabqueryutil.js"></script>
+    <title>首页</title>
+</head>
+<body jwcid="@Body">
+    <!-- 标题栏 开始 -->
+    <div class="c_header e_show-phone">
+        <div class="text">首页</div>
+    </div>
+    <!-- 标题栏 结束 -->
+    <div name="homeScroller" jwcid="@Scroller" checkDOMChanges="true"
+         class="c_scroll c_scroll-white c_scroll-float c_scroll-phone-header">
+        <div class="l_padding-3 l_padding-phone-1">
+            <!-- 家庭信息标题 开始 -->
+            <div class="c_title">
+                <div class="text">家庭信息</div>
+            </div>
+            <!-- 家庭信息标题 结束 -->
+            <!-- 家庭信息 开始 -->
+            <div class="c_box c_box-border l_padding-2 l_padding-n">
+                <!-- 基本信息 开始 -->
+                <div jwcid="custInfoPart@Part"
+                     class="c_param c_param-nopadding c_param-col-3 c_param-label-6 c_param-phone-col-1">
+                    <ul>
+                        <li>
+                            <span class="label">家庭名称：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.HOME_NAME"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">家庭地址：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.HOME_ADDRESS"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">家庭电话：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.HOME_PHONE"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">家庭客户ID：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.HOME_CUST_ID"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">户主姓名：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.CUST_NAME"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">户主客户ID：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.HEAD_CUST_ID"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">户主证件类型：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'TD_S_PASSPORTTYPE',familyCustInfo.HEAD_TYPE_CODE})"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">户主证件号码：</span>
+                            <span class="value">
+                                <span jwcid="@Insert" value="ognl:familyCustInfo.HEAD_PSPT_ID"></span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 基本信息 结束 -->
+            </div>
+            <div class="c_space"></div>
+            <div name="subFamilyInfoTab" jwcid="@Tabset" class="c_tab c_tab-sp fn" slidable="false">
+            	<div class="fn" style="padding-top:15px; ">
+                     <input name="memberRelationCheckbox" id="memberRelationCheckbox"  type="checkbox" /> 查询所有信息
+            	</div>
+            	<div title="家庭成员关系" class="content">
+					<div class="c_msg c_msg-border c_msg-loading" id="memberRelationLoading">
+                        <div class="wrapper">
+                            <div class="emote"></div>
+                            <div class="info">
+                                <div class="text">
+                                    <div class="title">家庭成员信息查询中</div>
+                                    <div class="content">请稍候...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="c_msg c_msg-border c_msg-however" id="memberRelationError" style="display: none;">
+                        <div class="wrapper">
+                            <div class="emote"></div>
+                            <div class="info">
+                                <div class="text">
+                                    <div class="title">家庭成员信息查询失败</div>
+                                    <div class="content">请重试</div>
+                                </div>
+                                <div class="fn">
+                                    <button type="button"
+                                            class="e_button-blue e_button-r"
+                                            ontap="refreshMemberRelationTab();">
+                                        <span class="e_ico-refresh"></span><span>刷新</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div jwcid="memberRelationTab@Part" name="memberRelationTab" style="display: none;">
+	                	<table name="memberRelationTable" jwcid="@Table" editMode="false"  class="c_table c_table-lite c_table-border">
+	                    <thead>
+	                        <tr>
+	                            <th>成员号码</th>
+	                            <th>成员角色</th>
+	                            <th>成员类型</th>
+	                            <th>开始时间</th>
+	                            <th>结束时间</th>
+	                            <th class="green-1">代付关系</th>
+	                            <th class="green-2">共享关系</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                         <tr jwcid="@Foreach"
+	                         	 source="ognl:familyMemberInfos"
+	                         	 value="ognl:familyMemberInfo"
+	                         	 index="ognl:rowIndex"
+	                         	 element="tr"
+	                         	 memberUserId="ognl:familyMemberInfo.MEMBER_USER_ID"
+	                         	 memberSerialNumber="ognl:familyMemberInfo.MEMBER_SERIAL_NUM"
+	                         	 ontap="queryFamilyMemberInfo(this);">
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.MEMBER_SERIAL_NUM">
+	                                <span jwcid="@Insert" value="ognl:familyMemberInfo.MEMBER_SERIAL_NUM"></span>
+	                                <span jwcid="@Conditional"
+                             			condition="ognl:formatDate('yyyy-MM-dd HH:mm:ss', familyMemberInfo.END_DATE).compareTo(pageutil.getSysTime()) < 0">
+                            			<span class="e_size-s" style="background:#e40077;color:#fff;position:absolute;width: 3em;transform:rotate(45deg);left: 10.43em;">已失效</span>
+                        			</span>
+	                             </td>
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.MEMBER_ROLE_CODE">
+	                                <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'FAMILY_MEMBER_ROLE_CODE',familyMemberInfo.MEMBER_ROLE_CODE})"></span>
+	                             </td>
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.MEMBER_ROLE_TYPE">
+	                             	<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'FAMILY_MEMBER_ROLE_TYPE',familyMemberInfo.MEMBER_ROLE_TYPE})"></span>
+	                             </td>
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.START_DATE">
+	                                <span jwcid="@Insert" value="ognl:familyMemberInfo.START_DATE"></span>
+	                             </td>
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.END_DATE">
+	                                <span jwcid="@Insert" value="ognl:familyMemberInfo.END_DATE"></span>
+	                             </td>
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.PAY_RELATION">
+	                                <span jwcid="@Insert" class="e_red"  value="ognl:familyMemberInfo.PAY_RELATION"></span>
+	                             </td>
+	                             <td jwcid="@Any" data-title="ognl:familyMemberInfo.SHARE_RELATION">
+	                                <span jwcid="@Insert" class="e_green" value="ognl:familyMemberInfo.SHARE_RELATION"></span>
+	                             </td>
+                        		</tr>
+                    		</tbody>
+                		</table>
+            		</div>
+            	</div>
+
+            	<div name="subMemberInfoTab" jwcid="@Tabset" class="c_tab c_tab-sp fn" slidable="false" style="display: none;">
+
+					<div class="fn" style="padding-top:15px; " ontap="queryAllFamilyMemberInfo();">
+                        <input id="queryAllFamilyMemberInfoCheckbox" type="checkbox"/> 查询所有信息
+					</div>
+
+					<!-- 产品开始 -->
+	                <div title="成员产品" class="content">
+	                    <div jwcid="productTab@Part"  class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border c_list-hasStatu">
+							<ul>
+			                    <li jwcid="@Foreach" source="ognl:productInfos"
+			                        value="ognl:productInfo" element="li">
+			                        <div jwcid="@Conditional"
+			                             condition="ognl:formatDate('yyyy-MM-dd HH:mm:ss', productInfo.END_DATE).compareTo(pageutil.getSysTime()) < 0">
+			                            <div class="statu statu-right statu-red e_size-s">已失效</div>
+			                        </div>
+			                        <div class="group">
+			                            <div class="content">
+			                                <div class="main">
+			                                    <div class="title" jwcid="@Any"
+			                                         title="ognl:productInfo.PRODUCT_NAME">
+			                                        <span jwcid="@Insert" value="ognl:productInfo.PRODUCT_ID + ' | ' + productInfo.PRODUCT_NAME"></span>
+			                                    </div>
+			                                    <div class="content" jwcid="@Any"
+			                                         title="ognl:productInfo.PRODUCT_EXPLAIN">
+			                                        <span jwcid="@Insert" value="ognl:productInfo.PRODUCT_EXPLAIN"></span>
+			                                    </div>
+			                                    <div class="content">
+			                                        <span jwcid="@Insert" value="ognl:'有效期：' + formatDate('yyyy-MM-dd HH:mm:ss', productInfo.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss', productInfo.END_DATE)"></span>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <div class="side" jwcid="@Conditional" element="div"
+			                             condition="ognl:1 == productInfo.MAIN_TAG">
+			                            <span class="e_tag e_tag-blue">主产品</span>
+			                        </div>
+			                    </li>
+			                </ul>
+	                    </div>
+	                </div>
+	                <!-- 产品结束 -->
+
+					<!-- 优惠 开始 -->
+	                <div title="成员优惠" class="content">
+	                    <div jwcid="discntTab@Part"
+	                         class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border c_list-hasStatu">
+	                        <ul>
+	                            <li jwcid="@Foreach" source="ognl:discntInfos"
+	                                value="ognl:discntInfo" element="li">
+	                                <div jwcid="@Conditional"
+	                                     condition="ognl:formatDate('yyyy-MM-dd HH:mm:ss', discntInfo.END_DATE).compareTo(pageutil.getSysTime()) < 0">
+	                                    <div class="statu statu-right statu-red e_size-s">已失效</div>
+	                                </div>
+	                                <div class="group">
+	                                    <div class="content">
+	                                        <div class="main">
+	                                            <div class="title" jwcid="@Any"
+	                                                 title="ognl:discntInfo.DISCNT_NAME">
+	                                                <span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE + ' | ' + discntInfo.DISCNT_NAME"></span>
+	                                            </div>
+	                                            <div class="content">
+	                                                <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', discntInfo.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss', discntInfo.END_DATE)"></span>
+	                                            </div>
+	                                            <div class="content" jwcid="@Any"
+	                                                 title="ognl:discntInfo.DISCNT_EXPLAIN">
+	                                                <span jwcid="@Insert" value="ognl:discntInfo.DISCNT_EXPLAIN==null?'':discntInfo.DISCNT_EXPLAIN"></span>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="side"
+                                     	jwcid="@Conditional" element="div"
+                                     	condition="ognl:1 == discntInfo.SPEC_TAG || 2 == discntInfo.SPEC_TAG">
+                                    	<span class="e_tag e_tag-blue">
+                                        	<span jwcid="@Insert" value="ognl:1 == discntInfo.SPEC_TAG ? '特殊优惠' : '关联优惠'"></span></span>
+                                	</div>
+                                	<div class="side e_hide-phone"
+                                     	jwcid="@Conditional" element="div"
+                                     	condition='ognl:!"".equals(discntInfo.REMARK) && null != discntInfo.REMARK'>
+                                    	<span jwcid="@Any"
+                                          tip="ognl:discntInfo.REMARK"
+                                          class="e_tag e_tag-navy">备注</span>
+                                	</div>
+                            	</li>
+                       	 </ul>
+                    	</div>
+                	</div>
+                	<!-- 优惠 结束 -->
+                	<!-- 服务 开始 -->
+	                <div title="成员服务" class="content">
+	                    <div jwcid="svcTab@Part"
+	                         class="c_list c_list-col-3 c_list-phone-col-1 c_list-line c_list-border c_list-hasStatu">
+	                        <ul>
+	                            <li jwcid="@Foreach" source="ognl:svcInfos"
+	                                value="ognl:svcInfo" element="li">
+	                                <div jwcid="@Conditional"
+	                                     condition="ognl:formatDate('yyyy-MM-dd HH:mm:ss', svcInfo.END_DATE).compareTo(pageutil.getSysTime()) < 0">
+	                                    <div class="statu statu-right statu-red e_size-s">已失效</div>
+	                                </div>
+	                                <div class="group">
+	                                    <div class="content">
+	                                        <div class="main">
+	                                            <div class="title" jwcid="@Any"
+	                                                 title="ognl:svcInfo.SERVICE_NAME">
+	                                                <span jwcid="@Insert" value="ognl:svcInfo.SERVICE_ID + ' | ' + svcInfo.SERVICE_NAME"></span>
+	                                            </div>
+	                                            <div class="content">
+	                                                <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', svcInfo.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss', svcInfo.END_DATE)"></span>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="side"
+	                                     jwcid="@Conditional" element="div"
+	                                     condition="ognl:1 == svcInfo.MAIN_TAG">
+	                                    <span class="e_tag e_tag-blue" title="主体服务">主体</span>
+	                                </div>
+	                                <div class="side e_hide-phone"
+	                                     jwcid="@Conditional" element="div"
+	                                     condition='ognl:!"".equals(svcInfo.REMARK) && null != svcInfo.REMARK'>
+	                                    <span jwcid="@Any"
+	                                          tip="ognl:svcInfo.REMARK"
+	                                          class="e_tag e_tag-navy">备注</span>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                </div>
+	                <!-- 服务 结束 -->
+	                <!-- 平台业务 开始 -->
+	                <div title="成员平台业务" class="content">
+	                    <div jwcid="platSvcTab@Part"
+	                         class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border c_list-hasStatu">
+	                        <ul>
+	                            <li jwcid="@Foreach" source="ognl:platInfos"
+	                                value="ognl:platInfo" element="li">
+	                                <div jwcid="@Any"
+	                                     class="ognl:platInfo.BIZ_STATE_COLOR">
+	                                    <div jwcid="@Insert" value="ognl:pageutil.getStaticValue('BIZ_STATE_CODE', platInfo.BIZ_STATE_CODE)"></div>
+	                                </div>
+	                                <div class="main">
+	                                    <div class="title e_size-s" jwcid="@Any"
+	                                         title="ognl:platInfo.SERVICE_NAME">
+	                                        <span jwcid="@Insert" value="ognl:platInfo.SERVICE_NAME"></span>
+	                                    </div>
+	                                    <div class="content">
+	                                        <span jwcid="@Insert" value="ognl:platInfo.SP_NAME"></span>
+	                                    </div>
+	                                    <div class="content">
+	                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', platInfo.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss', platInfo.END_DATE)"></span>
+	                                    </div>
+	                                </div>
+	                                <div class="side e_red e_size-m" style="width: 7em;">
+	                                    <span><span jwcid="@Insert" value="ognl:platInfo.PRICE"></span> 元</span>
+	                                </div>
+	                                <div class="side">
+	                                    <span class="e_tag e_tag-blue">
+	                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPBIZ_BILL_TYPE', platInfo.BILL_TYPE)"></span></span>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                </div>
+	                <!-- 平台业务 结束 -->
+
+            	</div>
+
+            </div>
+            <!-- 家庭信息 结束 -->
+
+            <div class="c_space-2"></div>
+
+            <!-- 家庭业务标题 开始 -->
+            <div class="c_title">
+                <div class="text">家庭业务</div>
+            </div>
+            <!-- 家庭业务标题 结束 -->
+            <!-- 家庭业务 开始 -->
+            <div jwcid="productPart@Part" class="c_list c_list-border">
+                <ul>
+                    <li>
+                        <div class="pic">
+                            <span class="e_ico-pic e_ico-package"></span>
+                        </div>
+                        <div class="main">
+                            <div class="title">
+                                <span jwcid="@Insert" value="ognl:familyProductInfo.PRODUCT_NAME"></span>
+                            </div>
+                            <div class="content content-auto">
+                                <span jwcid="@Insert" value="ognl:familyProductInfo.PRODUCT_DESC"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+			<!-- 家庭业务 结束 -->
+
+			<div class="c_space-2"></div>
+            <!-- 家庭消费标题 开始 -->
+            <div class="c_title">
+                <div class="text">家庭消费</div>
+            </div>
+            <!-- 家庭消费标题 结束 -->
+            <!-- 家庭消费 开始 -->
+            <div class="c_msg c_msg-border c_msg-loading" id="billLoading">
+                <div class="wrapper">
+                    <div class="emote"></div>
+                    <div class="info">
+                        <div class="text">
+                            <div class="title">家庭消费查询中</div>
+                            <div class="content">请稍候</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c_msg c_msg-border c_msg-however" id="billError"
+                 style="display: none;">
+                <div class="wrapper">
+                    <div class="emote"></div>
+                    <div class="info">
+                        <div class="text">
+                            <div class="title">我的消费查询无数据</div>
+                            <div class="content">请重试</div>
+                        </div>
+                        <div class="fn">
+                            <button type="button"
+                                    class="e_button-blue e_button-r"
+                                    ontap="refreshBillArea();">
+                                <span class="e_ico-refresh"></span><span>刷新</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div jwcid="billTablePart@Part" style="display: none;">
+                <table name="billTable" jwcid="@Table" editMode="false"
+                       class="c_table c_table-lite c_table-border">
+                    <thead>
+                        <tr>
+                            <th>详细</th>
+                            <th class="green-5"><span jwcid="@Insert" value="ognl:formatDate('yyyy年MM月', month.MONTH_BEFORE_LAST)"></span></th>
+                            <th class="green-3"><span jwcid="@Insert" value="ognl:formatDate('yyyy年MM月', month.LAST_MONTH)"></span></th>
+                            <th class="green-1"><span jwcid="@Insert" value="ognl:formatDate('yyyy年MM月', month.THIS_MONTH)"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr jwcid="@Foreach" source="ognl:billInfos"
+                            value="ognl:billInfo" index="ognl:rowIndex"
+                            element="tr">
+                            <td class="key" data-title="详细">
+                                <span jwcid="@Any" class="ognl:imgClassSelector(billInfo.INTEGRATE_ITEM_CODE)"></span>&nbsp;
+                                <span jwcid="@Insert" value="ognl:billInfo.INTEGRATE_ITEM"></span></td>
+                            <td jwcid="@Any" data-title="ognl:formatDate('yyyy年MM月', billInfo.MONTH_BEFORE_LAST)">
+                                <span jwcid="@Insert" value="ognl:formatDecimal('0.00', billInfo.BEFORE_LAST_FEE/100)"></span></td>
+                            <td jwcid="@Any" data-title="ognl:formatDate('yyyy年MM月', billInfo.LAST_MONTH)">
+                                <span jwcid="@Insert" value="ognl:formatDecimal('0.00', billInfo.LAST_FEE/100)"></span></td>
+                            <td jwcid="@Any" data-title="ognl:formatDate('yyyy年MM月', billInfo.THIS_MONTH)">
+                                <span jwcid="@Insert" value="ognl:formatDecimal('0.00', billInfo.NOW_FEE/100)" class="e_red"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 家庭消费 结束 -->
+
+            <!-- 家庭消费 结束 -->
+            <div class="c_space-2"></div>
+            <!-- 家庭余量标题 开始 -->
+            <div class="c_title">
+                <div class="text">家庭余量</div>
+            </div>
+            <!-- 家庭余量标题 结束 -->
+            <!-- 家庭余量 开始 -->
+            <div class="c_msg c_msg-border c_msg-loading" id="allowanceLoading">
+                <div class="wrapper">
+                    <div class="emote"></div>
+                    <div class="info">
+                        <div class="text">
+                            <div class="title">家庭余量查询中</div>
+                            <div class="content">请稍候</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c_msg c_msg-border c_msg-however" id="allowanceError"
+                 style="display: none;">
+                <div class="wrapper">
+                    <div class="emote"></div>
+                    <div class="info">
+                        <div class="text">
+                            <div class="title">家庭余量查询无数据</div>
+                            <div class="content">请重试</div>
+                        </div>
+                        <div class="fn">
+                            <button type="button"
+                                    class="e_button-blue e_button-r"
+                                    ontap="refreshAllowanceArea();">
+                                <span class="e_ico-refresh"></span><span>刷新</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div jwcid="allowancePart@Part" style="display: none;"
+                 class="c_box c_box-border l_padding-2 l_padding-phone-0">
+                <div class="c_list">
+                    <ul>
+                        <li>
+                            <div class="pic e_hide-phone">
+                                <span class="e_ico-pic-s e_ico-pic-green e_ico-nettraffic"></span>
+                                <span class="text">流量</span>
+                            </div>
+                            <div class="main">
+                                <div class="title">
+                                    <span class="e_show-phone">流量：</span>共
+                                  	<span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.GPRS_TOTAL"></span>M</span>，已使用
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.GPRS_USED"></span>M</span>，剩余
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.GPRS_BALANCE"></span>M</span>
+                                </div>
+                                <div class="content">
+                                    <span name="dataProgress" jwcid="@Progress"
+                                          color="green"
+                                          percent="ognl:usageInfo.GPRS_RATE"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="pic e_hide-phone">
+                                <span class="e_ico-pic-s e_ico-pic-blue e_ico-call"></span>
+                                <span class="text">语音</span>
+                            </div>
+                            <div class="main">
+                                <div class="title">
+                                    <span class="e_show-phone">语音：</span>共
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.CALL_TOTAL"></span>分钟</span>，已使用
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.CALL_USED"></span>分钟</span>，剩余
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.CALL_BALANCE"></span>分钟</span>
+                                </div>
+                                <div class="content">
+                                    <span name="callProgress" jwcid="@Progress"
+                                          color="blue"
+                                          percent="ognl:usageInfo.CALL_RATE"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="pic e_hide-phone">
+                                <span class="e_ico-pic-s e_ico-pic-orange e_ico-msg"></span>
+                                <span class="text">短信</span>
+                            </div>
+                            <div class="main">
+                                <div class="title">
+                                    <span class="e_show-phone">短信：</span>共
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.TEXT_TOTAL"></span>条</span>，已使用
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.TEXT_USED"></span>条</span>，剩余
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.TEXT_BALANCE"></span>条</span>
+                                </div>
+                                <div class="content">
+									<span name="textProgress" jwcid="@Progress"
+                                          color="orange"
+                                          percent="ognl:usageInfo.TEXT_RATE"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li jwcid="@Conditional" element="li"
+                            condition="ognl:null != usageInfo.WLAN_TOTAL && 0 != usageInfo.WLAN_TOTAL">
+                            <div class="pic e_hide-phone">
+                                <span class="e_ico-pic-s e_ico-pic-blue e_ico-wifi"></span>
+                                <span class="text">WLAN</span>
+                            </div>
+                            <div class="main">
+                                <div class="title">
+                                    <span class="e_show-phone">WLAN：</span>共
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.WLAN_TOTAL"></span>分钟</span>，已使用
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.WLAN_USED"></span>分钟</span>，剩余
+                                    <span class="e_size-l"><span jwcid="@Insert" value="ognl:usageInfo.WLAN_BALANCE"></span>分钟</span>
+                                </div>
+                                <div class="content">
+                                    <span name="wlanProgress" jwcid="@Progress"
+                                          color="blue"
+                                          percent="ognl:usageInfo.WLAN_RATE"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+			<!-- 家庭余量 结束 -->
+
+            <!-- 隐藏域 开始 -->
+			<input jwcid="@Hidden" name="HIDDEN_MEMBER_SERIAL_NUMBER" value=""/>
+			<input jwcid="@Hidden" name="HIDDEN_MEMBER_USER_ID" value=""/>
+            <!-- 隐藏域 结束 -->
+        </div>
+    </div>
+</body>
+</html>

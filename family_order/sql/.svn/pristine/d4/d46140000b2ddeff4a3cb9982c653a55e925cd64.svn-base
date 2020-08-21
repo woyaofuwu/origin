@@ -1,0 +1,2 @@
+INSERT INTO tf_fh_user_black(partition_id,user_id,serial_number,sp_id,sp_name,biz_code,biz_desc,start_date,end_date,staff_id,update_time,rsrv_str11,rsrv_str12,rsrv_str13,rsrv_str14,rsrv_str15)
+ VALUES(MOD(:USER_ID,10000),TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:SP_ID,:SP_NAME,:BIZ_CODE,:BIZ_DESC,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:STAFF_ID,sysdate,:RSRV_STR11,:RSRV_STR12,:RSRV_STR13,:RSRV_STR14,:RSRV_STR15)

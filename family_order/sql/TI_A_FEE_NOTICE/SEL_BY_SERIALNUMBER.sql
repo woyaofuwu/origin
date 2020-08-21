@@ -1,0 +1,4 @@
+SELECT date_id,to_char(exec_time,'yyyy-mm-dd hh24:mi:ss') exec_time,serial_number,to_char(user_id) user_id,to_char(cust_id) cust_id,cust_name,eparchy_code,city_code,product_id,brand_code,to_char(in_date,'yyyy-mm-dd hh24:mi:ss') in_date,to_char(credit_value/100) credit_value,decode(red_tag,'1','红名单用户','','非红名单用户','其他') red_tag,decode(PREPAY_TAG,'0','后付费','1','预付费','2','预付费','其他') prepay_tag,to_char(fee_avg/100) fee_avg,to_char(fee_cur/100) fee_cur,to_char(send_time,'yyyy-mm-dd hh24:mi:ss') send_time,rsrv_str1,rsrv_str2,rsrv_str3 
+  FROM ti_a_fee_notice
+ WHERE exec_time BETWEEN TO_DATE(:START_DATE,'YYYY-MM-DD hh24:mi:ss') AND TO_DATE(:END_DATE,'YYYY-MM-DD hh24:mi:ss')
+   AND serial_number=:SERIAL_NUMBER

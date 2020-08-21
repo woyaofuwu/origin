@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batdeal/batBatchDetial.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<div class="c_box" jwcid="hintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" jwcid="titlePart@Part">
+		<div class="text">批量批次明细</div>
+		<div class="fn">
+			<span jwcid="@Export" serviceName="9007" config="ognl:condition.TEMPLATE_FORMART_XML" cond="condForm"
+				  params="vpmnFlag=0"   beforeAction="" action=""
+				  defaultSuffix="xls" ftpSite="groupserv" name="fileExport" id="fileExport"/>
+			
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6" jwcid="condForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">处理状态：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_DEAL_STATE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BAT_TASK_STATE_TAG')" valueField="DATA_ID" textField="DATA_NAME"
+							value="ognl:condition.cond_DEAL_STATE"  id="cond_DEAL_STATE" desc="处理状态"  />
+				</span></span></span>
+			</li>
+			<li class="li" style="display: none;">
+				<span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" value="ognl:condition.cond_BATCH_ID" desc="成员服务号码" id="cond_BATCH_ID" name="cond_BATCH_ID"/></span></span>
+				</span>
+				<span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" value="ognl:condition.cond_BATCH_OPER_TYPE" desc="操作类型" id="cond_BATCH_OPER_TYPE" name="cond_BATCH_OPER_TYPE"/></span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">成员服务号码：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" value="ognl:condition.cond_SERIAL_NUMBER" desc="成员服务号码" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER"/></span></span>
+			</li>
+			<li class="li">&nbsp;&nbsp;</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="qryBatDealByCondition();"><i class="e_ico-search"></i><span>查询</span></button>
+			<div  jwcid="@Conditional" condition="ognl:condition.ERROR_COUNT != 0 ">
+				<button class="e_button-form" type="button" onclick="dealStateToRun(false);"><i class="e_ico-play"></i><span>失败工单重跑</span></button>
+			</div>	
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="GantPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>业务流水号</th>
+					<th>导入时间</th>
+					<th>成员服务号码</th>
+					<th>处理时间</th>
+                    <th>处理状态</th>
+					<th>导入结果</th>
+					<th class="e_left">处理结果</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:batchDetials" value="ognl:info" element="tr">
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.OPERATE_ID"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.REFER_TIME"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.DEAL_TIME"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.DEAL_STATE_NAME"/></td>
+	                <td class="e_center"><span jwcid="@Insert" value="ognl:info.DEAL_RESULT"/></td>
+	                <td class="wrap"><span jwcid="@Insert" value="ognl:info.DEAL_DESC_A!=null ? info.DEAL_DESC_A : info.DEAL_DESC " id="ognl:info.DEAL_ID" />
+	                		<span jwcid="@Conditional" condition='ognl:info.DEAL_DESC_A!=null'>
+	                			<span jwcid="@Redirect" id="ognl:info.DEAL_ID2" value="ognl:'查看详细错误信息'" deal_desc="ognl:info.DEAL_DESC" deal_desc_a="ognl:info.DEAL_DESC_A" deal_id="ognl:info.DEAL_ID" deal_id2="ognl:info.DEAL_ID2" onclick=" onclickArr($(this).attr('deal_desc'),$(this).attr('deal_desc_a'),$(this).attr('deal_id'),$(this).attr('deal_id2'));"/>
+	                		</span>
+	                </td>
+	                <td class="e_center"><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="condForm" part="GantPart" listener="batchDetialQuery" count="ognl:batchCount" pageSize="10"></div>
+	<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+
+</div></div>
+
+</body>
+</html>

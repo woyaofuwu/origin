@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>计费安全保护用户清单查询</title>
+<script jwcid="@Script" src="person/billsecprotectuserlistqry/scripts/billSecProtectUserListQry.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	 
+	<div jwcid="CondPart@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+			<li class="li"> 
+					<span class="label">手机号码</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name ="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="手机号码"  />
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label">安全保护类型</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_PROTECT_TYPE_CODE" id="cond_PROTECT_TYPE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BILLING_SECURITY_PROTECTTON')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="cond.PROTECT_TYPE_CODE" 
+							desc="安全保护类型" />
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_submit e_right">
+		<button type="button" class="e_button-form" id="SearchBtn" onclick="queryGoodsList();"><i class="e_ico-search"></i><span>查询</span></button>
+		<button type="button" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+	</div>
+	 
+	<div class="submit e_left" >
+		<!-- span jwcid="@Conditional" condition="ognl:expTag != 0"-->
+		<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201807040001"  beforeAction="exportBeforeAction"
+					 config="export/billsecprotectuserlistqry/billSecProtectUserListQry.xml" fileName="计费安全保护用户清单"   cond="CondPart" />
+		</span>
+		 
+	</div> 
+	
+	<div jwcid="ResultPart@Part">
+		<!--执行查询结果-->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="sortedTable">
+	     		<thead>
+		  			<tr>
+		  				<th >序号</th>
+		  				<th col="SERIAL_NUMBER">客户号码</th>
+						<th col="PROTECT_TYPE_CODE" >安全保护类型编码</th>
+						<th col="PROTECT_TYPE_NAME" >安全保护类型</th>			      		
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.PROTECT_TYPE_CODE" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.PROTECT_TYPE_NAME" raw="false"/></td>  
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="CondPart" part="ResultPart" 
+	      listener="qryBillSecProtectUserList" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

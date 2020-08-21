@@ -1,0 +1,2 @@
+INSERT INTO td_m_icolcomserv(olcomserv_code,olcomserv_name,server_order,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:OLCOMSERV_CODE,:OLCOMSERV_NAME,:SERVER_ORDER,:REMARK,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

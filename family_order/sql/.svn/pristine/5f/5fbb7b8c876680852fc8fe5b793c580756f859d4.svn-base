@@ -1,0 +1,2 @@
+INSERT INTO tf_o_usrinfochange(user_id,contact,contact_phone,home_address,update_time,update_staff_id,update_depart_id)
+ VALUES(TO_NUMBER(:USER_ID),:CONTACT,:CONTACT_PHONE,:HOME_ADDRESS,sysdate,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

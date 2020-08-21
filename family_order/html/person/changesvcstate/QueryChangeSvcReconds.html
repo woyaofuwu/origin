@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../../base.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="person/changesvcstate/scripts/queryChangeSvcReconds.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+   <div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" name="title" id="title">
+		<div class="text">紧急开机与客户担保开机日志查询</div>
+	</div>
+
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3" jwcid="QueryCondPart@Part">
+
+		<ul class="ul">
+			<li class="li">
+			<span class="label"><span class="e_required">业务类型：</span></span>
+			<span class="e_select"><span><span>
+			<select jwcid="@Select" name="cond_CHANGE_SVC_TYPE" id="cond_CHANGE_SVC_TYPE" value="" 
+							source="ognl:pageutil.getStaticList('CHANGE_SVC_TYPE')" addDefault="false" 
+							 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+                            disabled="false" nullable="no" desc="业务类型" />
+			</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" format="yyyy-MM-dd" desc="操作日期" nullable="no"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">终止时间：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" format="yyyy-MM-dd" desc="操作日期" nullable="no"/></span></span>
+			</li>
+			</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">用户号码：</span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">起始工号：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_START_STAFF_ID"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">终止工号：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_END_STAFF_ID"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="query();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+	
+	<div jwcid="ResultDataPart@Part" element="div">
+		<div class="c_title">
+			<div class="text">查询结果</div>
+			<!-- <div class="fn">
+			      <div class="button" jwcid="@Conditional" condition="ognl:listInfos.size > 0">
+			      	<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100890"
+						  config="export/sundryquery/userinfos/QueryChoosePhone.xml" fileName="网上选号(吉祥号码)开户查询" cond=QueryCondPart/>
+				  </div>
+				  <button class="l_ml" type="button" onclick="$.printArea('print_Table','网上选号(吉祥号码)开户查询','60%')">
+						<i class="e_ico-print"></i><span>打印</span>
+				</button> 
+			</div> -->
+		</div>
+	
+		<div jwcid="print_Table@Part" optimize="true">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+				<thead>
+					<tr>
+						<th>用户当前业务区</th>
+						<th>用户号码</th>
+						<th>业务类型</th>
+						<th>操作时间</th>
+						<th>开机时欠费金额</th>
+						<th>开机期间额度</th>
+						<th>客户星级</th>
+						<th>担保开机号码</th>
+						<th>担保开机客户星级</th>
+						<th>操作人工号</th>
+						<th>操作人姓名</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:listInfos" value="ognl:listInfo" index="ognl:rowIndex" element="tr">
+						<td><span jwcid="@Insert" value="ognl:listInfo.AREA_NAME" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.SERIAL_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.BUSI_TYPE_NAME" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.UPDATE_TIME" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.OWE_FEE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.OPEN_AMOUNT" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.CUST_STAR_LEAVE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.ASSURE_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.ASSURE_STAR_LEAVE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.STAFF_ID" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:listInfo.STAFF_NAME" raw="true" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="page" id="page" cond="QueryCondPart"  part="ResultDataPart" listener="queryIntegrateCustInvoice" pageSize="10" count="ognl:ListCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	
+
+
+</div></div></body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/queryredmember.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title"><div class="text">短信白名单查询</div></div>
+			<!-- 活动详情 开始 -->
+				<div class="c_form">
+				<div class="" jwcid="submit_part@Part" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label"  ><span class="e_required">查询方式：</span></span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="QUERY_TYPE"  source="ognl:pageutil.getStaticList('REDMEMBER_QUERYTYPE')" 
+									textField="DATA_NAME"  valueField="DATA_ID" value="condition.QUERY_TYPE"  desc="查询方式" addDefault="false" onchange="initQueryRedMember();"/>
+								</span></span></span>
+							</li>
+							<li class="li"  id="serial_number_li" >
+							<span class="label" ><span class="e_required">服务号码：</span></span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "INPUT_SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER" desc="服务号码" maxlength=11 nullable="no" />
+								</span></span>
+							</li>
+							<li class="li" style="display:none" id="start_time_li">
+								<span class="label"><span class="e_required">开始时间：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@DateField" name="START_TIME" value="ognl:condition.START_TIME" desc="开始日期" nullable="no"  /></span></span>
+							</li>
+							<li class="li" style="display:none" id="end_time_li">
+								<span class="label"><span class="e_required">结束时间：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@DateField" name="END_TIME" value="ognl:condition.END_TIME" desc="结束日期" nullable="no" /></span></span>
+							</li>
+						</ul>
+					</div>
+
+						<div class="submitPlace"></div>
+						<div class="submit e_right"  >
+							<button class="e_button-form" listener="ognl:listeners.queryRedMemberInfos"  onclick="return query();"><i class="e_ico-search"></i><span>查询</span></button>
+							<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+						</div>
+				</div>
+				
+				<div  jwcid="result_Table@Part" optimize="true">
+			    <div id="exportarea">
+			        <div class="c_title c_title-2">
+					 <div class="text">查询结果</div>
+						 <div class="fn" style="display:black">
+						  <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="5001"
+									  config="export/sundryquery/monitorinfo/RedMemberList.xml" fileName="短信白名单查询" cond="submit_part" /> 
+									  
+
+					 	</div>
+			  	    </div>
+			  	    <div class="c_scroll c_scroll-table-10">
+							<div class="c_table">
+							<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+						  			<tr>
+										<th>服务号码</th>
+							      		<th>用户标识</th>		
+							      		<th>开始时间</th>
+				                        <th>结束时间</th>
+				                        <th>备注</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.START_TIME" raw="false"/></td>               
+					                        <td><span jwcid="@Insert" value="ognl:info.END_TIME" raw="false"></span></td>   
+					                        <td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"></span></td>   
+										</tr>
+									</tbody>
+							</table>
+							<!-- end table -->
+					</div></div>
+						
+			</div>
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="10"  listener="queryRedMemberInfos" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+		  </div>		
+						
+						
+</div></div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

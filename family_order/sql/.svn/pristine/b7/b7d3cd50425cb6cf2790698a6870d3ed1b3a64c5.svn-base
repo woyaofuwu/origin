@@ -1,0 +1,21 @@
+--IS_CACHE=N
+SELECT NVL(SUM(FEE), 0) 费用
+  FROM (SELECT A.FEE
+          FROM TMP_TS_B_BILL A, TF_A_PAYRELATION B
+         WHERE A.ACCT_ID = B.ACCT_ID
+           AND B.DEFAULT_TAG = 1
+           AND A.USER_ID = B.USER_ID
+           AND B.USER_ID = :USER_ID
+           AND B.PARTITION_ID = MOD(MOD(:USER_ID, 10000), 10000)
+           AND A.PARTITION_ID = MOD(B.ACCT_ID, 10000)
+           AND a.cycle_id = TO_NUMBER(:V_MONTH)
+        UNION
+        SELECT A.FEE
+          FROM TMP_TS_BH_BILL A, TF_A_PAYRELATION B
+         WHERE A.ACCT_ID = B.ACCT_ID
+           AND B.DEFAULT_TAG = 1
+           AND A.USER_ID = B.USER_ID
+           AND B.USER_ID = :USER_ID
+           AND B.PARTITION_ID = MOD(MOD(:USER_ID, 10000), 10000)
+           AND A.PARTITION_ID = MOD(B.ACCT_ID, 10000)
+           AND a.cycle_id = TO_NUMBER(:V_MONTH))

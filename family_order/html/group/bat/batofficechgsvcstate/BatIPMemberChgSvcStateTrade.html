@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IP后付费停开机业务</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batofficechgsvcstate/BatIPMemberChgSvcStateTrade.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">查询信息</div>
+	</div>
+	
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul>
+			<li class="li">
+				<span class="label"><span class="e_required">产品服务号码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" nullable="no" desc="产品服务号码"/></span></span>
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return qryIpMemberList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	
+	<!-- 数据显示区域开始 -->
+	<div jwcid="memberPart@Part" optimize="true">
+		<div class="c_fn">
+			<ul>
+				<li><button type="button" onclick="checkedOther('members')"><i class="e_ico-select"></i><span>反选</span></button></li>
+			</ul>
+		</div>
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th><input type="checkbox" id="checkAll" name="checkAll" onclick="checkedAll('members', checked)"/></th>
+						<th>IP电话号码</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:memberList" value="ognl:member" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+			  		    <td style="display:none"></td>
+						<td class="e_center"><input id="members" name="members" jwcid="@Checkbox" value="ognl:member.SERIAL_NUMBER"/></td>
+						<td><span jwcid="@Insert"  value="ognl:member.SERIAL_NUMBER"/></td>
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<span jwcid="@NavBar" name="memberNavBar" cond="queryForm" listener="qryIpMemberList" part="memberPart" count="ognl:memberCount"/>
+	</div>
+	<!-- 数据显示区域结束 -->
+	
+	<div class="c_form c_form-col-2 c_form-label-5" jwcid="operForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="OPER_TYPE" name="OPER_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IPMENBER_CHGSVC_OPER_TYPE')" value="ognl:condition.OPER_TYPE" valueField="DATA_ID" textField="DATA_NAME" nullable="no" desc="操作类型"></select>
+				</span></span></span>
+			</li>
+			<li class="li">
+			</li>
+			<li class="li col-2">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="REMARK" value="ognl:condition.REMARK" desc="备注"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="queryForm,memberPart,operForm" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+	
+</div>
+	
+</div></div>
+</body>
+
+</html>

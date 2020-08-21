@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>工单稽核</title>
+	
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/audit/script/AuditWorkForm.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">工单稽核</div>
+	</div>
+	<!-- 标题栏 结束 --> 
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="e_space"></div>
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<input jwcid="@Hidden" id="PRODUCT_ID"
+						name="PRODUCT_ID" value="ognl:dataLineInfo.PRODUCT_ID" />
+						<input jwcid="@Hidden" name="IBSYSID" value="ognl:dataLineInfo.IBSYSID"  desc="" />
+			<input jwcid="@Hidden" name="NODE_ID" value="ognl:dataLineInfo.NODE_ID"  desc="" />
+			<input jwcid="@Hidden" name="BUSIFORM_NODE_ID" value="ognl:dataLineInfo.BUSIFORM_NODE_ID"  desc="" />
+			<input jwcid="@Hidden" name="BPM_TEMPLET_ID" value="ognl:dataLineInfo.BPM_TEMPLET_ID"  desc="" />
+			<input jwcid="@Hidden" name="BUSI_CODE" value="ognl:dataLineInfo.BUSI_CODE"  desc="" />
+			<input jwcid="@Hidden" name="BUSI_TYPE" value="ognl:dataLineInfo.BUSI_TYPE"  desc="" />
+			<input jwcid="@Hidden" name="MAIN_IBSYSID" value="ognl:dataLineInfo.MAIN_IBSYSID"  desc="" />
+			<input jwcid="@Hidden" name="RECORD_NUM" value="ognl:dataLineInfo.RECORD_NUM"  desc="" />
+			
+	<div class="e_space"></div>
+	<!--新增业务监督检查信息区 开始  -->
+	<div class="l_queryResult c_table" id="refreshtable" jwcid="refreshtable@Part" style="height:auto;" >
+			<!-- 表格 开始 -->
+			<!-- <div class="c_table"> -->
+				<table jwcid="@Table" name="myTable">
+					<thead>
+						<tr>	
+							<th>业务类型</th>
+							<th>订单号</th>
+							<th>产品名称</th>
+							<th>集团名称</th>
+							<th>集团编号</th>
+							<th>业务创建人工号</th>
+							<th>专线实例号</th>
+							<th>查看专线详情</th>
+							<!-- <th jwcid="@Conditional" condition="ognl:checkRecordInfo2.PRODUCT_ID== '7012' || PRODUCT_ID== '7011'">IP地址使用费(元)</th>
+							<th jwcid="@Conditional" condition="ognl:checkRecordInfo2.PRODUCT_ID== '7012' || PRODUCT_ID== '7011'">软件应用服务费(元)</th>
+							<th jwcid="@Conditional" condition="ognl:checkRecordInfo2.PRODUCT_ID== '7012' || PRODUCT_ID== '7011'">技术支持服务费(元)</th>
+						 -->	
+						</tr>
+					</thead>
+					<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.BPM_TEMPLET_NAME" class="center" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BI_SN" raw="false" class="center" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false" class="center" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ACCEPT_STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NO" raw="false"/></td>
+							<td data-title="查看详情" class="fn e_center"  jwcid="@Any" ontap="queryAllDatalineInfo(this);"
+                                    USER_ID="ognl:info.USER_ID" 
+									value="查看详情">
+                                    <span class="e_ico-search"></span>
+                             </td>
+                             
+							<!-- <td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.INSERT_TIME" raw="false"/></td> -->
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<div class="e_space"></div>
+	<!-- 查询模版 结束 -->
+	<div  jwcid="attachInfoPart@Part">
+		<div class="c_title">
+			<div class="text">附件</div>
+		</div>
+		<div class="c_list c_list-s">
+	      <ul jwcid="@Foreach" source="ognl:attachInfos" value="ognl:attachInfo" element="ul">
+		       <li class="link">
+		        <div class="ico">
+		         <span class="e_ico-word"></span>
+		        </div> 
+		           <a jwcid="@Any" href="ognl:'attach?action=download&fileId=' + attachInfo.FILE_ID+'&realName='+attachInfo.ATTACH_NAME"
+		          target="_blank"> <span jwcid="@Insert" value="ognl:attachInfo.ATTACH_NAME" raw="false" />
+		         </a>
+		        <div class="c_space"></div>
+		
+		       </li>
+	      	</ul>
+	     </div>
+    </div>
+	<div class="e_space"></div>
+	<div id="checkRecordPart" jwcid="checkRecordPart@Part">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">审核信息</div>
+						</div>
+					</div>
+			</div>
+			<div class="l_queryResult c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">集团名称是否一致</div>
+						<div class="value">
+							<span jwcid="@Select" name="GROUPNME" id="GROUPNME" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AUDIT_ISPASS')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID"></span>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">专线类型录入是否正确</div>
+						<div class="value">
+							<span jwcid="@Select" name="LINE_TYPE" id="LINE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AUDIT_ISPASS')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID"></span>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">资费录入是否正确</div>
+						<div class="value">
+							<span jwcid="@Select" name="DISCNT" id="DISCNT" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AUDIT_ISPASS')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID" ></span>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">带宽录入是否正确</div>
+						<div class="value">
+							<span jwcid="@Select" name="WIDTH" id="WIDTH" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AUDIT_ISPASS')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID" ></span>
+						</div>
+					</li>
+					<li class="link required ">
+						<div class="label">整改措施与结果</div>
+							<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:dataLineInfo.AUDIT_TEXT"  desc="整改措施与结果"  readonly="readonly"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">稽核意见</div>
+						<div class="value">
+							<input jwcid="@TextField" name="REMARK" value=""  desc="备注" nullable="no"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy" ontap="window.reloadNav();">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitHAuditInfo()">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+	</div>
+	
+	</div>
+	<!-- 滚动（替换为 java 组件） 结束 -->
+	
+	<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup09" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="datalinePopupItem">
+			<div id="auditHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" >专线信息</div>
+			</div>
+			<div class="c_fn">
+				<div class="left">
+					<div class="text"></div>
+				</div>
+			</div>
+				<div class="l_queryFn" jwcid="dataLineInfoPart@Part" element="div">
+					<div class="l_queryResult">		
+						<div class="c_table">
+						<table name="dataLineTable" id="dataLineTable" class="c_table c_table-checkbox" jwcid="@Table">
+							<thead>
+								<tr>
+				                	<th>专线实例号</th>
+				                    <th>专线带宽（兆）</th>
+				                    <th>月租费</th>
+				                    <th>安装调试费（元）</th>
+				                    <th>软件应用服务费</th>
+				                    <th>技术支持服务费</th>
+				                    <div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97011">
+				                    	<th>IP地址使用费</th>
+									</div>
+									<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97012">
+				                    	<th>SLA服务费（元/月）</th>
+									</div>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:dataLineInfos" value="ognl:dataLineInfo" element="tr">
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_LINE_NO" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR1"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR2"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR3"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR11"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR12"  raw="false"></span></td>
+									<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97011">
+				                    	<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR10"  raw="false"></span></td>
+									</div>
+									<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97012">
+				                    	<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR16"  raw="false"></span></td>
+									</div>
+								</tr>
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 弹窗结束 -->
+	<script>
+		Wade.setRatio();
+	</script>
+
+
+
+
+</body>
+</html>

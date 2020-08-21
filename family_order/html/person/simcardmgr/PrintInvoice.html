@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>跨区补卡打印</title>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/print/PrintMgr.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/simcardmgr/scripts/printinvoice.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<form jwcid="@Form">
+	<div class="c_box" jwcid="SearchCondPart@Part" element="div">
+		<div id="tipInfo" class="c_tip">【开始、结束】日期时间段不能超过31天。</div>
+		<div class="c_form c_form-label-5 c_form-col-4">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"> 服务号码：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+							 desc="服务号码" class="e_input" type="text" datatype="mbphone" nullable="yes"/>
+					</span></span>
+				</li>
+				<!--  
+				<li class="li">
+					<span class="label">员工工号：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="STAFF_ID" value="ognl:cond.STAFF_ID" desc="员工工号"
+							class="e_input" type="text" maxlength="8" onkeyup="inputCtrlForStaff()" />
+					</span></span>
+				</li>
+				 -->
+				<li class="li">
+					<span class="label"><span class="e_required">开始时间：</span></span>
+	                   <span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="START_DATE" value="ognl:cond.START_DATE" datatype="date" desc="开始时间" maxName="END_DATE" format="yyyy-MM-dd" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束时间：</span></span>
+	                   <span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="END_DATE" value="ognl:cond.END_DATE" datatype="date" desc="结束时间" format="yyyy-MM-dd" minName="START_DATE" nullable="no"/>
+					</span></span>
+				</li>
+				<!-- <li style='ognl:cond.IS_SHOW=="Y" ? "": "display:none" '> -->
+				<li style="display:none">
+				<span class="label"><span class="e_required"> 邮箱地址：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="POST_EMAIL" value="ognl:cond.POST_EMAIL" 
+							 desc="邮箱地址" class="e_input" type="text" maxsize="64" datatype="email"  nullable='ognl:cond.IS_SHOW=="Y" ? "no": "yes" '/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit e_right">
+				<input jwcid="@Hidden" name="PRINT_TRADE_ID" value="" />
+				<input jwcid="@Hidden" name="PRINTED_TAG" value="" />
+				<button type="button" name="queryBtn" class="e_button-form" onclick="chkSearchForm()"><i class="e_ico-search"></i><span>查询</span></button>
+				<!-- 
+				<button type="button" name="makeBtn" class="e_button-form" onclick="makePrintInfo()"><i class="e_ico-search"></i><span>生成免填单数据</span></button>
+				 -->
+				<button type="reset" name="resetBtn" class="e_button-form"><i class="e_ico-reset"></i><span>重置</span></button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid="SearchResultPart@Part" element="div">
+		<div class="c_title">
+			<div class="text">查询信息</div>
+			<div class="fn">
+				<input jwcid="@Hidden" name="CUR_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" />
+				<button type="button" name="printBtn" class="e_button" onclick="printTrade()"><i class="e_ico-print"></i><span>打印免填单</span></button>
+				<div style="display:none;"><span jwcid="SubmitPart@csserv:CSSubmit" isRender="false" element="span"/></div>
+				<button type="button" name="printBtn" class="e_button" onclick="printreceipt()"><i class="e_ico-print"></i><span>打印发票</span></button>
+				<!-- 
+				<div jwcid="@Conditional" condition="ognl:infos.size>0">
+					<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="8898" 
+					 config="export/batprintinvoice/BatPrintInvoice.xml" fileName="免填单批量打印" beforeAction="checkExport" cond="SearchCondPart" />
+				</div>
+				 -->
+			</div>
+		</div>
+
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table  c_table-row-10">
+			<table id="printTable">
+      			<thead>
+		  			<tr>
+		  				<th>选择</th>		  				
+		  				<th>业务流水号</th>
+		  				<th>客户证件号</th>
+						<th>客户名称</th>
+						<th>客户星级</th>
+						<th>补卡号码</th>
+						<th>ICCID</th>
+						<th>服务费</th>
+						<th>卡费</th>	
+						<th>白卡号</th>
+						<th>登录员工工号</th>
+						<th>员工所属渠道</th>
+						<th>受理时间</th>
+						<th>全网流水号</th>
+						<th>第三方流水号</th> 
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td ><input name="checkvalue" jwcid="checkvalue@Radio" value="ognl:info.TRADE_ID+','+info.IS_INVOICE_PRINTED"/></td>			
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.CUST_CERT_NO" raw="true"/></td>									
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CREDIT_LEVEL"/></td>			
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ICCID"/></td>			
+						<td><span jwcid="@Insert" value='ognl:formatDecimal("0.00", info.CHARGE_FEE/100)' raw="true"/></td>	
+						<td><span jwcid="@Insert" value='ognl:formatDecimal("0.00", info.CARD_FEE/100)' raw="true"/></td>				
+						<td><span jwcid="@Insert" value="ognl:info.EMPTY_CARD_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CHANNEL_ID" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.TRANSACTION_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ORD_CODE" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="SearchCondPart" part="SearchResultPart" 
+	      listener="queryPrintInfo" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+</form>
+
+</div></div>
+</body>
+</html>

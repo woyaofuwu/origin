@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/custinfomgr/scripts/CustPsptLimitInfo1.js"></script>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+		<div class="c_title  c_title-1">
+				<div class="text">查询条件</div>
+		</div>
+		<div class="c_form" jwcid="QueryCondPart@Part">
+					<div class=""  jwcid="queryPart@Part" >
+							<ul class="ul ">
+								<li class="li">
+									<span class="label" >证件：</span>
+									<span>
+										<span>
+										   <select id="cond_PSPT_TAG"  name="cond_PSPT_TAG" >
+												  <option value="">---请选择---</option>
+												  <option value="0">个人证件类型</option>
+												  <option value="1">单位证件类型</option>
+											</select>
+										</span>
+									</span>
+								</li>
+								<li class="li">
+									<span class="label" >证件号码：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name = "cond_PSPT_ID"    value="ognl:condition.PSPT_ID" desc="证件号码" maxLength="18"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label">客户姓名：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name = "cond_CUST_NAME"   value="ognl:condition.CUST_NAME" desc="客户姓名"  maxLength="50"/>
+									</span></span>
+								</li>
+							</ul>
+							<div class="submitPlace" ></div>
+							<div class="submit"  >
+								<button class="e_button-form" onclick="return queryData();" ><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+							<!-- 员工部门 -->
+						<input jwcid="@Hidden" name="cond_DEPART_ID" id="cond_DEPART_ID" value="ognl:param.DEPART_ID"/>
+			 	</div>
+			</div>
+			<div class="c_box">
+				<div class="c_title">
+					<div class="text">查询结果</div>	
+					<!-- 导出-->
+					<div class="fn">
+						<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201610271045" 
+								 config="export/custpspt/CustPsptLimitInfo.xml" fileName="实名制开户阀值调整"   cond="QueryCondPart"
+								 beforeAction="checkPsptTypeToExport"/>
+					</div>
+				</div>
+			<!-- 活动详情 开始 -->
+			     <div jwcid="refresh_table@Part">
+					<div class="c_scroll c_scroll-table-10 c_scroll-x">
+						<div class="" >
+								<div class="c_table">
+								<table jwcid="@Table"  name="paramTable"  rowClick="tableRowClick" 	>
+									<thead>
+										<tr>
+											<th col="PSPT_TYPE_CODE"  id="col_PSPT_TYPE_CODE" style="display:none">证件类型CODE</th>
+											<th col="PSPT_TYPE_NAME"  id="col_PSPT_TYPE_NAME" >证件类型</th>
+											<th col="PSPT_ID"  id="col_PSPT_ID" >证件号码</th>
+											<th col="CUST_NAME" id="col_CUST_NAME" >客户姓名</th>
+											<th col="ADJUST_TYPE_CODE"  id="col_ADJUST_TYPE_CODE" style="display:none">调整类型CODE</th>
+											<th col="ADJUST_TYPE_NAME" id="col_ADJUST_TYPE_NAME" >调整类型</th>
+					                        <th col="ALREADY_COUNT" id="col_ALREADY_COUNT" >在网数目</th>
+											<th col="LIMIT_COUNT" id="col_LIMIT_COUNT" >入网阀值</th>
+											<th col="RSRV_STR4"  id="col_RSRV_STR4" >集团客户编码</th>
+											<th col="RSRV_STR5"  id="col_RSRV_STR5" >集团名称</th>
+											<th col="RSRV_STR6"  id="col_RSRV_STR6" >客户经理</th>
+											<th col="RSRV_STR7"  id="col_RSRV_STR7" >客户经理工号</th>
+											<th col="REMARK"  id="col_REMARK" >备注</th>
+										</tr>
+									</thead>
+									<tbody >
+											<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"	element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.PSPT_TYPE_CODE" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', new java.lang.String[]{'PSPT_TYPE_CODE','EPARCHY_CODE'}, 'PSPT_TYPE', new java.lang.String[]{info.PSPT_TYPE_CODE,'0898'})" raw="true"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="true"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ADJUST_TYPE',info.RSRV_STR1)" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.ALREADY_COUNT" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.LIMIT_COUNT" raw="true"/></td>
+					                        <td ><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="false"/></td>
+					                        <td ><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="false"/></td>
+					                        <td ><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="false"/></td>
+					                        <td ><span jwcid="@Insert" value="ognl:info.RSRV_STR7" raw="false"/></td>
+					                        <td ><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+											</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 翻页（替换为页面组件） 开始 -->
+			         <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="refresh_table" pageSize="10"  listener="queryCustPsptLimitInfo"  count="ognl:pageCount"/>
+			       <!-- 翻页 结束 -->
+			       </div>
+				 </div>
+				<div class="c_form c_form-col-3">
+					<div class="" jwcid="editPart@Part" >
+						<ul class="ul ">
+							<li class="li">
+								<span class="label"><span class="e_required">证件类型：</span></span>
+								<span class="e_select"><span><span>
+                                        <select jwcid="@Select" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" addDefault="false"  source="ognl: pageutil.getList('TD_S_PASSPORTTYPE','PSPT_TYPE_CODE', 'PSPT_TYPE', 'EPARCHY_CODE', '0898')"
+                                           textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE" desc="证件类型" onchange="changeSelectByPsptTypeCode('');"/>
+								    </span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">证件号码：</span></span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name = "PSPT_ID"    value="ognl:tempcust.PSPT_ID" desc="证件号码" maxLength="20" datatype="pspt"  nullable="no" onchange="checkPsptId()"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">客户姓名：</span></span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name = "CUST_NAME"   value="ognl:tempcust.CUST_NAME" desc="客户姓名" nullable="no" maxLength="100" 	datatype="text"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">入网阀值：</span></span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField"  name = "LIMIT_COUNT"   value="ognl:tempcust.LIMIT_COUNT" desc="入网阀值" nullable="no"  maxsize="30"  maxLength="6" datatype="pinteger"/>
+								</span></span>
+							</li>
+						</ul>
+						<span class="label"></span>
+						<!-- 集团客户基本信息    开始 -->
+						<div class="c_box" style="display:none;" id="group_info_id" >
+							<div class="c_form" jwcid="QueryGrpCondPart@Part">
+					            <ul class="ul">
+					                <li class="li">
+					                	<span class="label">集团客户编码：</span>
+											<span class="e_input"><span>											
+												<input type="text" jwcid="@TextField" id="cond_RSRV_STR4" name="cond_RSRV_STR4" value="" desc="集团客户编码"/>
+												<input jwcid="@TextField" type="hidden" id="TRADE_TYPE_CODE" name="TRADE_TYPE_CODE" value="2481"/>	
+											</span></span> 		 
+					                </li>
+					                <li class="li">
+					                    <span class="label"></span>
+					         			<button class="e_button-form" onclick="return queryCustInfos();" ><i class="e_ico-search"></i><span>查询</span></button>
+					                </li>
+					            </ul>
+					        </div>
+					        	<div jwcid="UCAViewPart@Part">
+									<div class="c_form c_form-label-6 c_form-col-3">
+										<ul class="ul">
+											<li class="li">
+												<span class="label e_required">调整类型：</span>
+												<span class="e_select"><span><span>
+													<select  jwcid="@Select"  name="ADJUST_TYPE_CODE" id="ADJUST_TYPE_CODE" addDefault="false" source="ognl:pageutil.getStaticList('ADJUST_TYPE')"
+														textField="DATA_NAME" valueField="DATA_ID" title="TEXT" desc="调整类型"/>
+												</span></span></span>
+											</li>
+											<li class="li">
+												<span class="label e_required">集团客户编码：</span>
+												<span class="e_input"><span>
+													<input jwcid="@TextField"  name="RSRV_STR4" id="RSRV_STR4" value="ognl:custPsptLimtInfoView.GROUP_ID" disabled="true"
+														nullable="no" desc="集团客户编码"/>
+												</span></span>
+											</li>
+											<li class="li">
+												<span class="label e_required">集团名称：</span>
+												<span class="e_input"><span>
+													<input jwcid="@TextField"  name="RSRV_STR5" id="RSRV_STR5" value="ognl:custPsptLimtInfoView.CUST_NAME" disabled="true"
+														desc="集团名称"/>
+												</span></span>
+											</li>
+											<li class="li">
+												<span class="label e_required">客户经理：</span>
+												<span class="e_input"><span>
+													<input jwcid="@TextField"  name="RSRV_STR6" id="RSRV_STR6" value="ognl:custPsptLimtInfoView.CUST_MANAGER_NAME" disabled="true"
+														desc="客户经理"/>
+												</span></span>
+												
+											</li>
+											<li class="li">
+												<span class="label e_required">客户经理工号：</span>
+												<span class="e_input"><span>
+													<input jwcid="@TextField"  name="RSRV_STR7" id ="RSRV_STR7" disabled="true" value="ognl:custPsptLimtInfoView.CUST_MANAGER_ID"
+														desc="客户经理工号"/>
+												</span></span>
+											</li>
+											<li class="li">
+												<span class="label e_required">备注：</span>
+												<span class="e_input"><span>
+													<input jwcid="@TextField"  name="REMARK" id ="REMARK" value="ognl:tempcust.REMARK"
+														desc="备注"/>
+												</span></span>
+											</li>
+										</ul>
+									</div>
+								</div> 
+						  </div>
+						<!-- 集团客户基本信息    结束 -->
+						
+							<div class="submitPlace"></div>
+							<div class="submit">
+								<button class="e_button-form" onclick="return addLimit();" ><i class="e_ico-add"></i><span>新增</span></button>
+								<button class="e_button-form" onclick="return editLimit();" ><i class="e_ico-modify"></i><span>修改</span></button>
+								<button class="e_button-form" onclick="return delLimit();" ><i class="e_ico-delete"></i><span>删除</span></button>
+								<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+							</div>
+						</div>
+				</div>
+	<div class="c_submit">
+			<button class="e_button-page-ok" onclick="return submitDepts();" ><i class="e_ico-ok"></i><span>提交</span></button>
+	</div>
+			
+</div>
+<!-- 提交 开始 -->
+<input jwcid="@Hidden" name="privateFlag" value="ognl:privateFlag"/>
+<input jwcid="@Hidden" name="privateFlag_50" value="ognl:privateFlag_50"/>
+<input jwcid="@Hidden" name="privateFlag_100" value="ognl:privateFlag_100"/>
+<input jwcid="@Hidden" name="exportFlag" id="exportFlag" value="ognl:exportFlag"/>
+<!-- 提交 结束 -->
+<div class="" jwcid="submit_part@Part" >
+	<input jwcid="@Hidden" name="edit_table" value=""/>
+</div>
+</div></div>
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+</html>

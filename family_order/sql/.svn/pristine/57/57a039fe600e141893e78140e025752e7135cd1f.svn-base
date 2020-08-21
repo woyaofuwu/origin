@@ -1,0 +1,5 @@
+INSERT INTO tf_f_user_purchase(user_id,serial_number,purchase_attr,purchase_desc,purchase_mode,purchase_info,trade_id,rpay_deposit_code,left_deposit,mrtn_fee,rtn_type,rtn_months,left_months,gpay_deposit,gpay_deposit_code,left_gdeposit,mgift_fee,gift_type,gtotal_months,gleft_months,process_tag,staff_id,depart_id,start_date,end_date,rsrv_str2,remark)
+SELECT TO_NUMBER(:USER_ID),:SERIAL_NUMBER,purchase_attr,purchase_desc,purchase_mode,purchase_info,trade_id,rpay_deposit_code,0,0,'0',0,0,rpay_foregift,foregift_code,rpay_foregift,rpay_mpfee,'0',rsrv_str1,rsrv_str1,'0',:STAFF_ID,:DEPART_ID,DECODE(discnt_emode,'0',ADD_MONTHS(TRUNC(SYSDATE,'mm'),1),TRUNC(SYSDATE)),ADD_MONTHS(TRUNC(DECODE(discnt_emode,'0',ADD_MONTHS(TRUNC(SYSDATE,'mm'),1),TRUNC(SYSDATE)),'mm'),rsrv_str1)-1/24/3600,rsrv_str2,decode(rsrv_str2,NULL,NULL,'开户递延赠送金额'||rsrv_str2||'元')
+  FROM tf_b_trade_purchase
+ WHERE trade_id = TO_NUMBER(:TRADE_ID)
+   AND purchase_attr = 'GPAY'

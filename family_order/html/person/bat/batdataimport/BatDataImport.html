@@ -1,0 +1,545 @@
+﻿﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/batdeal/batdataimport.js"></script>
+<script language="javascript" src="scripts/csserv/component/print/PrintMgr.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+	<div class="c_box">
+		<div class="c_tip">
+			批量数据导入功能提供基于批量任务上的待处理目标数据生成，请先选择【批量任务名称】查询出指定的任务
+		</div>
+	</div>
+	
+	<div class="c_box">
+		<div class="c_title">
+			<div class="text">任务查询区</div>
+		</div>
+		<div class="c_form c_form-col-1 c_form-label-7" jwcid="TaskInfoPart@Part">
+		<input jwcid="@Hidden" name="TERM_IP" id="TERM_IP" value="ognl:condition.TERM_IP"/>
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span id="brand">批量任务名称：</span></span>
+					<span class="e_elements">
+						<button type="button" class="e_button-right" id="btBatchTask" onclick="javascript:popupPage('bat.battaskquery.BatTaskQuery','initPage','&IS_POP=DATAIMPORT','批量任务信息查询',1000,600,'cond_BATCH_TASK_ID')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="ognl:condition.cond_BATCH_TASK_ID" 
+						text="ognl:condition.cond_BATCH_TASK_NAME" 
+						name="cond_BATCH_TASK_ID" id="cond_BATCH_TASK_ID" 
+						afterAction="querytaskinfo()"
+						desc="批量任务名称"/>
+						</span></span>
+					</span>	
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_box">
+		<div class="c_title">
+			<div class="text">任务信息显示区</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-8" jwcid="TaskDataPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">批量任务标识：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="BATCH_TASK_ID" name="BATCH_TASK_ID" value="ognl:taskInfo.BATCH_TASK_ID" nullable="yes" desc="批量任务标识" class="e_input" disabled="true"/>
+						<input jwcid="@TextField" id="BATCH_OPER_CODE" name="BATCH_OPER_CODE" value="ognl:taskInfo.BATCH_OPER_CODE" nullable="yes" desc="批量任务标识" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">批量任务名称：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="cond_BATCH_TASK_NAME" name="cond_BATCH_TASK_NAME" value="ognl:taskInfo.BATCH_TASK_NAME" nullable="yes" desc="批量任务名称" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">批量处理类型名称：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="cond_BATCH_OPER_NAME" name="cond_BATCH_OPER_NAME" value="ognl:taskInfo.BATCH_OPER_NAME" nullable="yes" desc="批量处理类型名称" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">任务起始时间：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="START_DATE" name="START_DATE" value="ognl:taskInfo.START_DATE" nullable="yes" desc="任务起始时间" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">任务终止时间：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="END_DATE" name="END_DATE" value="ognl:taskInfo.END_DATE" nullable="yes" desc="任务终止时间" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">创建时间：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="CREATE_TIME" name="CREATE_TIME" value="ognl:taskInfo.CREATE_TIME" nullable="yes" desc="创建时间" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">核批文号：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="AUDIT_NO" name="AUDIT_NO" value="ognl:taskInfo.AUDIT_NO" nullable="yes" desc="核批文号" class="e_input" disabled="true"/>
+					</span></span>
+				</li>
+				<li class="li col-3">
+				<span class="label">备注：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent"><textarea jwcid="@TextArea" name="REMARK" id="REMARK" value="ognl:taskInfo.REMARK" style="height:36px;" disabled="true"></textarea></span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+			</ul>
+		</div>
+	</div>
+
+<div jwcid="DataImportPart@Part">
+	<div class="c_title">
+		<div class="text">批量数据导入区</div>
+	</div>
+	<div  class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE != "GRPDISCNTCHGSPEC" && taskInfo.BATCH_OPER_CODE != "CREATEPREUSER" && taskInfo.BATCH_OPER_CODE != "BATACTIVECREATEUSER" && taskInfo.BATCH_OPER_CODE != "CREATEPRETDUSER" && taskInfo.BATCH_OPER_CODE != "BATCREATETRUNKUSER" && taskInfo.BATCH_OPER_CODE != "BATAPPENDTRUNKUSER" && taskInfo.BATCH_OPER_CODE != "MODIFYACYCINFO" && taskInfo.BATCH_OPER_CODE != "CREATEPREUSER_PWLW" && taskInfo.BATCH_OPER_CODE != null'>
+		<div  class="c_form c_form-col-1 c_form-label-11" >
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+						<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+		
+	</div>
+	
+	
+	<div class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE == "GRPDISCNTCHGSPEC" '>
+		
+		<div  class="c_form c_form-col-1 c_form-label-11" >
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+						<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div> 
+		 
+		<!-- 凭证信息开始  -->
+	    <div class="c_box">
+			<div class="c_title">
+				<div class="text">凭证信息</div>
+			</div>
+			<div class="c_form c_form-col-3 c_form-label-6">
+				<ul class="ul">
+					<li class="li col-3">				
+						<span class="label"><span class="e_required">凭证上传：</span></span>
+						<div jwcid="VoucherFilePart@Part">
+							<span class="e_elements">
+							<input jwcid="@Upload"
+									name="MEB_VOUCHER_FILE_LIST"
+									id="MEB_VOUCHER_FILE_LIST"
+									ftpSite="groupserv"
+									filePath="upload/mebattach"
+									fileSize="20"
+									fileTypes="*.*"
+	                        		desc="凭证信息" 
+	                        		nullable="no"
+								/>
+							</span>
+					    </div>
+					</li>
+	                <li class="li">
+		                <span class="label"><span class="e_required">稽核人员：</span></span> 
+		                <span class="e_elements">
+							<button type="button" class="e_button-right"
+								onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+								<i class="e_ico-check"></i><span></span>
+							</button> 
+		                    <span class="e_input e_input-left"><span> <input
+									type="text" jwcid="@TextField"
+									name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+									value=""
+									text="" nullable="no"
+									readonly="true"/>
+							</span></span>
+						</span>
+		            </li>
+				</ul>
+			</div>
+		</div>
+    <!-- 凭证信息结束  -->
+		
+		
+	</div>
+	
+	<div class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE == "CREATEPREUSER" || taskInfo.BATCH_OPER_CODE == "BATACTIVECREATEUSER"'>
+		<div  class="c_form c_form-col-1 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">导入方式选择：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="IMPORT_MODE" name="IMPORT_MODE" source="ognl:pageutil.getStaticList('OPENUSER_IMPORT_MODE')" 
+						valueField="DATA_ID" textField="DATA_NAME" value="ognl:taskInfo.IMPORT_MODE"
+						titleField="DATA_NAME" 
+						onchange="changePreMode()" nullable="no" desc="导入方式选择" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" >
+			<ul class="ul">
+				<li class="li col-1">
+					<span class="label"><span class="e_required">批开号码类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="NUMBER_TYPE" id="NUMBER_TYPE"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BAT_CREATEUSER_TYPE')"
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.NUMBER_TYPE"
+								desc="批开号码类型"  onchange="changeNumberType()"  nullable="no"/>
+					</span></span></span>
+				</li>
+			
+				<li class="li col-1">
+					<span class="label"><span id="span_number_type">副号码类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="MSISDN_TYPE" id="MSISDN_TYPE"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MOSP_MSISDN_TYPE')"
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.MSISDN_TYPE"
+								desc="副号码类型" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" id="PRENUM" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">起始号：</span></span>
+					<span class="e_input"><span>
+					<input name="BEGIN_NUM" id="BEGIN_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.BEGIN_NUM" equsize="11" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止号：</span></span>
+					<span class="e_input"><span>
+					<input name="END_NUM" id="END_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.END_NUM" equsize="11" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li"></li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-1 c_form-label-11" id="PREFILE" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+					<span class="text">
+						<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+						href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+							<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+						</a>
+					</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE == "CREATEPREUSER_PWLW"'>
+		<div  class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">导入方式选择：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="PWLW_IMPORT_MODE" name="PWLW_IMPORT_MODE" source="ognl:pageutil.getStaticList('OPENUSER_IMPORT_MODE')" 
+						valueField="DATA_ID" textField="DATA_NAME" value="ognl:taskInfo.PWLW_IMPORT_MODE"
+						titleField="DATA_NAME" 
+						onchange="changePwlwMode()" nullable="no" desc="导入方式选择" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-3 c_form-label-7" id="PWLWNUM" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">起始号：</span></span>
+					<span class="e_input"><span>
+					<input name="PWLW_BEGIN_NUM" id="PWLW_BEGIN_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.BEGIN_NUM" equsize="13" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止号：</span></span>
+					<span class="e_input"><span>
+					<input name="PWLW_END_NUM" id="PWLW_END_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.END_NUM" equsize="13" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li"></li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-1 c_form-label-11" id="PWLWFILE" style="display:none">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+						<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE == "BATCREATETRUNKUSER" || taskInfo.BATCH_OPER_CODE == "BATAPPENDTRUNKUSER" '>
+		<div  class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">导入方式选择：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="TRUNK_IMPORT_MODE" name="TRUNK_IMPORT_MODE" source="ognl:pageutil.getStaticList('TRUNKUSER_IMPORT_MODE')" 
+						valueField="DATA_ID" textField="DATA_NAME" value="ognl:taskInfo.TRUNK_IMPORT_MODE"
+						titleField="DATA_NAME" 
+						onchange="changeTrunkMode()" nullable="no" desc="导入方式选择" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-3 c_form-label-7" id="TRUNKNUM" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">起始号：</span></span>
+					<span class="e_input"><span>
+					<input name="TRUNK_BEGIN_NUM" id="TRUNK_BEGIN_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.BEGIN_NUM" equsize="8" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止号：</span></span>
+					<span class="e_input"><span>
+					<input name="TRUNK_END_NUM" id="TRUNK_END_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.END_NUM" equsize="8" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li"></li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-1 c_form-label-11" id="TRUNKFILE" style="display:none">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+						<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE == "CREATEPRETDUSER"'>
+		<div  class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">导入方式选择：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="TD_IMPORT_MODE" name="TD_IMPORT_MODE" source="ognl:pageutil.getStaticList('OPENUSER_IMPORT_MODE')" 
+						valueField="DATA_ID" textField="DATA_NAME" value="ognl:taskInfo.TD_IMPORT_MODE"
+						titleField="DATA_NAME" 
+						onchange="changeTdMode()" nullable="no" desc="导入方式选择" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-3 c_form-label-7" id="TDNUM" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">起始号：</span></span>
+					<span class="e_input"><span>
+					<input name="TD_BEGIN_NUM" id="TD_BEGIN_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.BEGIN_NUM" equsize="8" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止号：</span></span>
+					<span class="e_input"><span>
+					<input name="TD_END_NUM" id="TD_END_NUM" jwcid="@TextField" type="text" value="ognl:taskInfo.END_NUM" equsize="8" datatype="numeric" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li"></li>
+			</ul>
+		</div>
+		<div  class="c_form c_form-col-1 c_form-label-11" id="TDFILE" style="display:none">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+						<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid='@Conditional' condition='ognl:taskInfo.BATCH_OPER_CODE == "MODIFYACYCINFO"'>
+		<div  class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">导入方式选择：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="MODIFYACYCINFO_IMPORT_MODE" name="MODIFYACYCINFO_IMPORT_MODE" source="ognl:pageutil.getStaticList('MODIFYACYCINFO_IMPORT_MODE')" 
+						valueField="DATA_ID" textField="DATA_NAME" value="ognl:taskInfo.MODIFYACYCINFO_IMPORT_MODE"
+						titleField="DATA_NAME" 
+						onchange="changeActMode()" nullable="no" desc="导入方式选择" />
+					</span></span></span>
+				</li>
+				<li class="li"></li>
+				<li class="li"></li>
+			</ul>
+		</div>
+		<!-- 
+		<div  class="c_form c_form-col-3 c_form-label-7" id="ACTNUM" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<div jwcid="SelectListA@Part">
+					<span class="label"><span id="bname" class="e_required">银行名称：</span></span>
+		            	<span class="e_elements">
+							<button type="button" class="e_button-right" id="btBatchTask" onclick="popupPage('bat.batbankquery.BankPopupQry','initPage','&IS_POP=BANKQRY','银行信息查询',900,490,'BANK_CODE')">
+							<i class="e_ico-check"></i><span></span></button>
+							<span class="e_input e_input-left"><span>
+							<input type="text" jwcid="@Popup" readOnly="true" 
+							value="" 
+							text="" 
+							name="BANK_CODE" id="BANK_CODE" 
+							afterAction=""
+							desc="银行名称" nullable="no"
+							/>
+							</span></span>
+							
+						</span>
+		            </div>
+				</li>
+				<li class="li col-1">
+					<span class="label"><span id="baname" class="e_required">银行帐号：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid=@TextField id="BANK_ACCT_NO" name="BANK_ACCT_NO" value="" desc="银行帐号" nullable="no"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		 -->
+		<div  class="c_form c_form-col-1 c_form-label-11" id="ACTFILE" style="display:none">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName='+taskInfo.TEMPLATE_DATA_XLS+'&filePath='+taskInfo.DOWN_URL)">
+						<span jwcid="@Insert" value="ognl:taskInfo.TEMPLATE_DATA_XLS==null?'下载模板文件地址为空，请确认是否选择了【批量任务名称】，如已选择，则请和系统管理员联系':'[点击下载]'"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">批量文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return importData()"><i class="e_ico-import"></i><span>导入</span></button>
+	</div>
+	
+	<!-- 隐藏区域开始 -->
+	<div jwcid="hiddenPart@Part">
+		<!-- 4A金库验证标记 -->
+		<input type="hidden" id="4APARIS_TAG" name="4APARIS_TAG" value="0" />
+	    <div style="display: none">
+	        <object id="MakeBillActiveX" classid="clsid:5144a5b7-b206-4e79-8ee2-9df3973d6527">
+	        </object>
+	    </div>
+	    <!-- 是否点击电子打印工单按钮 -->
+	    <input type="hidden" id="PRINT_TAG" name="PRINT_TAG" value="0" />
+	</div>
+	<!-- 隐藏区域结束 -->
+</div>
+	
+	
+</div></div>
+<script jwcid="@Script" src="/treasury/scripts/treasury.js" outer="true" type="text/javascript"></script> 
+
+</body>
+</html>

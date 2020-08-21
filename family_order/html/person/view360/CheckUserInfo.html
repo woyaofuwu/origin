@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: AccountInfo.html,v 1.7 2013/04/22 08:16:44 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择用户信息</title>
+<script jwcid="@Script" src="person/view360/scripts/checkuserinfo.js"></script>
+ 
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:condition.USER_ID"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:condition.EPARCHY_CODE"/>
+		<input jwcid="@TextField" name="USER360VIEW_VALIDTYPE" id="USER360VIEW_VALIDTYPE" value="ognl:condition.USER360VIEW_VALIDTYPE"/>
+		<input jwcid="@TextField" name="SERVICE_NUMBER" id="SERVICE_NUMBER" value="ognl:condition.SERVICE_NUMBER"/>
+		<input jwcid="@TextField" name="PSPT_NUMBER" id="PSPT_NUMBER" value="ognl:condition.PSPT_NUMBER"/>
+	</div>
+	<!-- 隐藏域 结束 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>开户客户</th>
+					<th>归属地州</th>
+					<th>归属业务区</th>
+					<th>状态标识</th>
+					<th>开户时间</th>
+					<th>注销时间</th>
+				</tr>
+			</thead>
+			<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Redirect" custid="ognl:info.CUST_ID" userid="ognl:info.USER_ID" serial_number="ognl:info.SERIAL_NUMBER" caption="用户360视图" 
+								   onclick="redirectMyself($(this).attr('custid'),$(this).attr('serial_number'),$(this).attr('userid'))" 
+								   value="ognl:info.CUST_NAME" /></td>  		
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'USER_REMOVETAG',info.REMOVE_TAG})" raw="false"/></td>
+                		
+                		<td>
+                			<div jwcid="@Conditional" condition='ognl:!"".equals(info.OPEN_DATE) && info.OPEN_DATE!=null'>
+                				<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.OPEN_DATE)" raw="false"/>	
+                			</div>
+                			<div jwcid="@Conditional" condition='ognl:"".equals(info.OPEN_DATE)'>
+                				<span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false"/>	
+                			</div>
+                		</td>
+                		<td>
+                			<div jwcid="@Conditional" condition='ognl:!"".equals(info.DESTROY_TIME) && info.DESTROY_TIME != null'>
+                				<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.DESTROY_TIME)" raw="false"/>
+                			</div>
+                			<div jwcid="@Conditional" condition='ognl:"".equals(info.DESTROY_TIME)'>
+                				<span jwcid="@Insert" value="ognl:info.DESTROY_TIME" raw="false"/>
+                			</div>
+                		</td>	
+                	</tr>
+				</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 分页 开始 -->
+	<div jwcid="@NavBar" name="CheckUserInfoNav" id="CheckUserInfoNav" cond="QueryCondPart" part="QueryListPart" listener="getCheckUserInfo" pageSize="10" count="ognl:count"></div>
+	<!-- 分页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+</div>
+</div>
+</body>
+</html>

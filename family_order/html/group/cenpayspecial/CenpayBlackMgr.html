@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/cenpayspecial/CenpayBlackMgr.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div><ul></ul></div>
+
+<!-- 开始-->
+<div class="c_box" jwcid="addForm@Part">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="AddDelPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>产品编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER"
+					 enterAction="queryCenpayList()" value="ognl:condition.SERIAL_NUMBER" desc="产品编码"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_STATUS" name="cond_STATUS"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IS_BLACK_TAG')" 
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.STATUS" desc="状态"/>
+				</span></span></span>
+			</li>
+  		</ul>
+  		
+  		<div class="submitPlace"></div>
+  		<div class="submit">
+			<button class="e_button-form" onclick="return queryCenpayList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 数据显示区域开始 -->
+	<div jwcid="ratioPart@Part" element="div">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table jwcid="@Table" name="ratioTable"  rowClick="tableRatioClick"  scroll="true">
+				<thead>
+					<tr>
+						<th col="USER_ID_SUB"><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox2" name="viceCheckBox2"
+								onclick="checkedAll('viceCheckBox',checked)" />选择</th>	
+						<th col="USER_ID">用户标识</th>
+						<th col="SERIAL_NUMBER">产品编码</th>
+						<th col="PRODUCT_NAME">产品名称</th>
+						<th col="CUST_ID">集团客户标识</th>
+						<th col="GROUP_ID">集团客户编码</th>
+						<th col="CUST_NAME">集团客户名称</th>
+						<th col="BLACK_TAGNAME">状态</th>
+						<th col="BLACK_TAG" style="display:none;"></th>
+						<th col="INSERT_DATE">创建时间</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:cenpayList" value="ognl:cenpay" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+			  			<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+								value="ognl:cenpay.USER_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.PRODUCT_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.CUST_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.GROUP_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.CUST_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('IS_BLACK_TAG',cenpay.BLACK_TAG)" raw="false"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:cenpay.BLACK_TAG" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.INSERT_DATE" raw="false"/></td>
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<div jwcid="@NavBar" id="ratioNavBar"  name="ratioNavBar"  cond="addForm" 
+			 part="ratioPart,EditPart"  listener="queryCenpayBlackList"  pageSize="12"  count="ognl:cenpayCount">
+		</div>
+	</div>
+	<!-- 数据显示区域结束 -->
+	
+</div>
+<!-- 结束-->
+
+<!-- 返还比例修改删除 开始-->
+<div class="c_box" jwcid="editForm@Part">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">黑名单用户资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="EditPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>用户标识：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="EUSER_ID@TextField" value="" name="EUSER_ID" type="text" 
+						nullable="no" maxsize="16" desc="用户标识" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>产品编码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="ESERIAL_NUMBER@TextField" value="" name="ESERIAL_NUMBER" type="text" 
+						nullable="no" maxsize="40" desc=" 产品编码" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">状态：</span></span>
+				<span>
+					<span class="e_select">
+						<select jwcid="@Select" name="EBLACK_TAG" id="EBLACK_TAG" desc="状态"
+        	                source="ognl:infos"	textField="BLACK_NAME" valueField="BLACK_TAG" 
+					        value="" />
+					</span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 提交 -->
+	<div class="c_submit">
+		<button type="button" id="btadd" name="btadd" 
+			onclick="javascript:openNav('自由充黑名单用户新增', 'group.cenpayspecial.CenpayBlackAdd', 'onInitTrade')">
+			<i class="e_ico-change"></i><span>新增</span>
+		</button>
+		<button type="button" id="btchange" name="btchange" onclick="updateCenpayBlack()">
+			<i class="e_ico-change"></i><span>修改</span>
+		</button>
+		<button type="button" id="btdelete" name="btdelete" onclick="delCenpayBlack()">
+			<i class="e_ico-delete"></i><span>删除</span>
+		</button>
+		<button type="button" id="btclear" name="btclear" onclick="clearCenpayBlack()">
+			<i class="e_ico-delete"></i><span>清除</span>
+		</button>
+	</div>
+		
+</div>
+	
+	<!-- 隐藏区域 开始 -->
+    <div jwcid="hiddenPart@Part">
+    </div>
+	<!-- 隐藏区域 结束 -->
+	
+</div></div>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+
+</body>

@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_svcstate(partition_id,user_id,service_id,main_tag,state_code,start_date,end_date,update_time)
+ VALUES(MOD(TO_NUMBER(:USER_ID),10000),TO_NUMBER(:USER_ID),:SERVICE_ID,:MAIN_TAG,:STATE_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'))

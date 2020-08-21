@@ -1,0 +1,20 @@
+UPDATE TS_A_TRADE_INFORMAL
+   SET TRADE_ID = to_number(:TRADE_ID),
+       TRADE_DEPART_ID = :TRADE_DEPART_ID,
+       TRADE_STAFF_ID = :TRADE_STAFF_ID,
+       ACCEPT_DATE = to_date(:ACCEPT_DATE,'yyyy-mm-dd hh24:mi:ss'),
+       TRADE_TYPE_CODE = :TRADE_TYPE_CODE,
+       TRADE_NUMBER = :TRADE_NUMBER,
+       REMARK = :REMARK,
+       UPDATE_STAFF_ID = :UPDATE_STAFF_ID,
+       UPDATE_TIME = to_date(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss'),
+       AUDIT_TAG = :AUDIT_TAG,
+       RSRV_STR1 = :RSRV_STR1,
+       RSRV_STR2 = :RSRV_STR2,
+       RSRV_STR3 = :RSRV_STR3,
+       RSRV_STR4 = :RSRV_STR4,
+       RSRV_STR5 = :RSRV_STR5,
+       RSRV_STR6 = :RSRV_STR6,
+       RSRV_STR7 = :RSRV_STR7,
+       RSRV_STR8 = :RSRV_STR8
+ WHERE TRADE_ID = to_number(:TRADE_ID)

@@ -1,0 +1,2 @@
+INSERT INTO tl_o_credit_manualdeal(trade_id,deal_type,run_tag,process_tag,process_time,update_time,update_staff_id,update_depart_id,remark,eparchy_code,city_code)
+ VALUES(TO_NUMBER(:TRADE_ID),:DEAL_TYPE,:RUN_TAG,:PROCESS_TAG,decode(sign(TO_DATE(:PROCESS_TIME,'YYYY-MM-DD HH24:MI:SS')-sysdate),-1,SYSDATE,TO_DATE(:PROCESS_TIME,'YYYY-MM-DD HH24:MI:SS')),SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK,:EPARCHY_CODE,:CITY_CODE)

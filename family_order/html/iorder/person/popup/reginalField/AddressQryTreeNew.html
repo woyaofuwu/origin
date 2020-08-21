@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script jwcid="@Script" src="iorder/person/popup/reginalField/scripts/AddressQryTree.js" language="JavaScript"/>
+    <title>标准地址树状查询</title> 
+</head>
+<body jwcid="@Body">
+	<div id="UI-popup">
+		<div class="c_popupBg" id="UI-popup_bg"></div>
+		<div class="c_popupBox">
+			<div class="c_popupWrapper" id="UI-popup_wrapper">
+				<div class="c_popupGroup">
+					<div class="c_popupItem" id="UI-address">
+						<div class="c_header">
+							<div class="back" ontap="hidePopup(this)">标准地址树状查询</div>
+							<div class="fn e_hide-phone">
+								<button type="button" ontap="openBlind();" class="e_button-blue"><span class="e_ico-search"></span><span>盲点小区信息</span></button>
+							</div>
+						</div>
+						<div class="c_scroll c_scroll-float c_scroll-header" >
+							    <div class="c_list c_list-col-5 c_list-phone-col-1 c_list-s c_list-line c_list-border" jwcid="QueryCond@Part" element="div" >
+							        <ul>
+							             <li class="link" >
+							                <div class="label">地州</div>
+							                <div class="value">
+								                <span name="eparchy" jwcid="eparchy@Select" id="eparchy"
+									       			source="ognl:getAreaCode()" value="ognl:condition.AREA_CODE" 
+									       			onchange="submitEparchy()"		       			
+									       			textField="ADDR_NAME" valueField="ADDR_ID" />
+							                </div> 
+							            </li>
+							            <li class="link merge-2" jwcid="@Any">
+											<div class="label">定位乡镇/街道</div>	
+											<div class="value">		
+												<input jwcid="treeSearch@TextField" name="treeSearch" onenterAction="TreeSearch();" id="treeSearch"/>
+											</div>
+										</li> 
+										<li class="link merge-2" jwcid="@Any">
+											<div class="label">定位小区</div>
+											<div class="value">	
+												<span class="e_mix">
+													<input jwcid="houseSearch@TextField"  onenterAction="TreeSearch();" name="houseSearch" id="houseSearch"/>
+									       			<button type="button" class="e_button-green" ontap="TreeSearch();"><i class="e_ico-search"></i><span>定位</span></button>
+												</span>		
+											   	<span>
+													<input type="text" jwcid="@Any" name="AUTH_SERIAL_NUMBER" id="AUTH_SERIAL_NUMBER" value="ognl:condition.AUTH_SERIAL_NUMBER"style="display:none"  />
+												</span>			
+											  		<span class="e_input e_input-left">
+													<input type="text" jwcid="@Any"  name="CUST_NAME" id="CUST_NAME" value="ognl:condition.CUST_NAME" style="display:none" />
+												</span>
+											  		<span class="e_input e_input-left">
+													<input type="text" jwcid="@Any" name="CONTACT_SN" id="CONTACT_SN" value="ognl:condition.CONTACT_SN" style="display:none"/>
+												</span> 
+												<!-- duhj_fk -->
+												<span class="e_input e_input-left">
+													<input type="text" jwcid="@Any" name="IS_FAMILY_WIDE" id="IS_FAMILY_WIDE" value="ognl:condition.IS_FAMILY_WIDE" style="display:none"/>
+												</span>												
+												
+											</div>
+										</li> 
+							        </ul>
+							 </div>
+							 
+							 <div class="e_space e_hide-phone"></div>
+							 <div class="l_col l_col-line l_col-phone-split-2" id="addressCol">
+								<div class="l_colContent">
+									<div class="l_colItem" style="width:20em;background:#fff">
+										<div id="tree" jwcid="addressTreePart@Part" element="div" class="c_scroll c_scroll-float">
+											<div jwcid="addressTree@Tree" name="addressTree" listener="ognl:listeners.loadTreeData"
+												checkBoxType="radio"  async="true" init="false" class="c_tree">
+											</div>
+										</div>
+									</div>
+									<div class="l_colItem">
+										<div class="c_line"></div>
+										<div class="c_title e_show-phone"  style="background:#fff">
+											<div ontap="$('#addressCol').removeClass('l_col-cur-2');" class="text"><span class="e_ico-back"></span>返回列表</div>
+										</div>
+										<!-- 表格 开始 -->
+										<div id="QueryCond2">
+											<div id="refreshPart" jwcid="refreshPart@Part" element="div"  class="">
+												<div id="detail" jwcid="detail@Part" element="div" class="c_list c_list-col-1 c_list-phone-col-1 c_list-s c_list-line c_list-border" >
+													<ul>
+														<li class="link">
+															<div class="value">
+																<span class="e_mix">
+																	<input type="text" jwcid="@TextField" name="DETAILGIS" id="DETAILGIS" value="ognl:condition.address" style="text-align:left;"
+																		title="请尽量使用左侧地址树进行标准地址快速查询，同时可以使用关键字间加“空格”为通配符查询结果，如“金龙”+空格+“移动”+空格+“10层”，但速度较慢。" />
+																	<input type="text" jwcid="@Hidden" name="nodeIds" id="nodeIds" value="" />
+																	<input type="text" jwcid="@Hidden" name="address" id="address" value="" />
+																	<input type="text" jwcid="@Hidden" name="GIS1" id="GIS1" value="" />
+																	<input type="text" jwcid="@Hidden" name="GIS2" id="GIS2" value="" />										
+																	<button class="e_button-blue" ontap="queryAddressBtn();" >
+																		<i class="e_ico-search"></i><span>查询</span>
+																	</button>
+																</span>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="c_line"></div>
+										<div id="DataTablePart" jwcid="DataTablePart@Part" optimize="true">
+											<input jwcid="cond_NUM@TextField" name="cond_NUM" value="ognl:condition.DATACOUNT" encode="false" datatype="text" style="display:none"/>
+										    <table name="mytable" class="c_table c_table-lite c_table-hasGrid c_table-row-10" jwcid="@Table">
+							      				<thead>
+									  				<tr>
+														<th style="display:none">设备ID</th>
+														<th>选择</th>							    
+														<th>地址名称</th>
+														<th>地址类型</th>
+														<th>宽带制式</th>
+														<th>可用端口</th>
+														<th>设备名称</th>												
+													</tr>
+												</thead>
+												<tbody>
+													<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" 
+													class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+														<td style="display:none"><span jwcid="@Insert" value="ognl:info.DEVICE_ID" raw="false"/></td>
+														<td><a href="javascript:void(0)" title="选择"
+															id="select" jwcid="@Any" 
+															DEVICE_ID="ognl:info.DEVICE_ID" REGION_NAME="ognl:info.REGION_NAME" CAPACITY_CANUSED="ognl:info.CAPACITY_CANUSED"									
+															GIS8="ognl:info.GIS8" OPEN_TYPE="ognl:info.OPEN_TYPE" AREA_CODE="ognl:info.AREA_CODE" 
+															ontap="confirmReginalDate(this)">选择</a></td>
+														<td><span jwcid="@Insert" value="ognl:info.REGION_NAME" raw="false" /></td>
+														<td><span jwcid="@Insert" value="ognl:info.CLIME_KIND" raw="false" /></td>
+														<td><span jwcid="@Insert" value="ognl:info.OPEN_TYPE" raw="false" /></td>
+														<td><span jwcid="@Insert" value="ognl:info.CAPACITY_CANUSED" raw="false" /></td>
+														<td><span jwcid="@Insert" value="ognl:info.DEVICE_NAME" raw="false" /></td>
+													</tr>
+													<span jwcid="@Conditional" condition="ognl:count == 0">
+							     						<tr style="color:red"><td style="width:100px"></td><td rowspan="2" align="center"> 该地址没有开通宽带的能力,请确认!</td></tr>
+							     	      			</span>
+							   	      			</tbody>
+											</table>
+								        	<div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCond2,ExtraField" pageSize="20" listener="queryAddress" part="DataTablePart"
+														count="ognl:count"></div>
+											<div id="ExtraField" style="display:none">
+												<input name="tempCount" jwcid="tempCount@Hidden" value="ognl:condition.tempCount" />
+											</div>
+										</div>
+								 	</div>
+								 </div>
+							 </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+</body>
+</html>

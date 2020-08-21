@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<title>商务宽带开户信息查询 </title>
+	<script jwcid="@Script" src="iorder/person/broadband/widenet/ftthbusimodemapply/script/FTTHBusiMemQuery.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<div class="c_form c_form-label-6 c_form-col-3 c_form-submit c_form-border" jwcid="CondPart@Part" element="div">
+				<ul>
+					<li>
+						<div class="label" style="width:auto;">集团产品编码或手机号码：</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="集团产品编码或手机号码" onchange="checkData()" nullable="no" />
+						</div>
+					</li>
+					<li>
+						<div class="label">办理开始时间：</div>
+						<div class="value">
+							<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:cond.START_DATE" dropDown="true" />
+						</div>
+					</li>
+					<li>
+						<div class="label">办理结束时间：</div>
+						<div class="value">
+							<input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" value="ognl:cond.END_DATE" dropDown="true" />
+						</div>
+					</li>
+					<li>
+						<div class="label">工号：</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="cond_STAFF_ID" name="cond_STAFF_ID" value="ognl:cond.STAFF_ID" desc="工号" />
+						</div>
+					</li>
+					<li>
+						<div class="label">网点：</div>
+						<div class="value">
+							<span class="e_mix">
+								<input jwcid="@TextField" value="ognl:info.AGENT_DEPART_ID1" name="AGENT_DEPART_ID1" id="AGENT_DEPART_ID1" desc="网点" readOnly="true" />
+								<button type="button" class="e_button-blue" onclick="popupPage('代理商', 'createusertrade.ChooseAgentNew', null, null, null, 'c_popup c_popup-half c_popup-half-hasBg')">
+									<i class="e_ico-check"></i>
+									<span>网点</span>
+								</button>
+								<!-- <button type="button" class="e_button-blue" onclick="popupPage('createusertrade.ChooseAgent', null, '', '网点', '600', '500');">
+								<i class="e_ico-check"></i><span>网点</span></button> -->
+							</span>
+						</div>
+					</li>
+				</ul>
+				<div class="submit">
+					<button type="button" class="e_button-navy" onclick="return reset();"><span class="e_ico-reset"></span><span>重置</span></button>
+					<button type="button" class="e_button-blue" id="SearchBtn" onclick="queryInfoList();"><span class="e_ico-search"></span><span>查询</span></button>
+				</div>
+			</div>
+			<div class="c_title">
+				<div class="text">查询结果</div>
+				<span jwcid="@Conditional" condition="ognl:expTag != 0">
+					<span class="fn">
+						<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="9111" taskId="9111" configFile="export/ftthbusi/FTTHBusiMemQuery.xml" fileName="商务宽带开户信息查询 " cond="CondPart" />
+					</span>
+				</span>
+			</div>
+			<div id="showInfos" style="display:none;">
+				<div jwcid="ResultPart@Part">
+					<!-- 执行查询结果 -->
+					<table jwcid="@Table" id="sortedTable" name="sortedTable" rowClick="tableRowClick" class="c_table c_table-border c_table-lite c_table-row-10">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th col="FTTH_ACOUNT">账号</th>
+								<th col="PRODUCT_NAME">宽带产品</th>
+								<th col="ACCEPT_DATE2">办理时间</th>
+								<th col="TRADE_STAFF_ID">办理工号</th>
+								<th col="TRADE_DEPART_NAME">办理网点</th>
+								<th col="STAND_ADDRESS">安装地址</th>
+								<th col="CONTACT">联系人信息</th>
+								<th col="CONTACT_PHONE">联系电话</th>
+								<th col="MODEM_TAG">是否已申领光猫</th>
+								<th col="SUBSCRIBE_STATE" style="display:none">办理进度</th>
+								<th col="CUST_ID" style="display:none">USER_ID</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td>
+									<a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.FTTH_ACOUNT" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.ACCEPT_DATE2" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.TRADE_DEPART_NAME" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.STAND_ADDRESS" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.CONTACT" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.CONTACT_PHONE" raw="false" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.MODEM_TAG" raw="false" />
+								</td>
+								<td style="display:none">
+									<span jwcid="@Insert" value="ognl:info.SUBSCRIBE_STATE" />
+								</td>
+								<td style="display:none">
+									<span jwcid="@Insert" value="ognl:info.CUST_ID" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="c_space-c"></div>
+					<div class="c_page c_page-border" jwcid="@NavBar" name="recordNav" id="recordNav" cond="CondPart" part="ResultPart" listener="queryInfoList" pageSize="10" count="ognl:recordCount"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

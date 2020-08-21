@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<title>携号转网申请撤消</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/np/npapplycancel/scripts/InNpApplyCancelNew.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/np/npapplycancel/scripts/BusiTableNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">携号转网申请撤消</div>
+		<div class="fn">
+			<span class="e_ico-search"
+				ontap="showPopup('UI-popup','UI-advance');"></span> <span
+				class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 区域 开始 -->
+	<div jwcid="QueryPart@Part" class="l_query l_query-submit l_query-nopage">
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">携号转网申请撤消</div>
+				</div>
+				<div class="right">
+					<span class="label">手机号码：</span> <input type="text"
+						jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" onenterAction="queryNpCancel();"
+						value="ognl:condition.SERIAL_NUMBER" desc="手机号码" maxsize="11"
+						nullable="no" datatype="mbphone" />
+					<span class="e_space"></span>
+					<button type="button" class="e_button-blue"
+						onclick="queryNpCancel();">
+						<span class="e_ico-search"></span><span>查询</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div jwcid="netNpPart@Part" class="l_queryResult">
+			<!-- 表格 开始 -->
+			<table name="tradeTable" id="tradeTable" class="c_table" useScroller="true" jwcid="@Table">
+				<thead>
+					<tr>
+						<th col="TRADE_ID">业务流水号</th>
+						<th col="SERIAL_NUMBER">服务号码</th>
+						<!--  <th>缴费金额(元)</th>-->
+						<th col="TRADE_TYPE_CODE">业务类型</th>
+						<th col="SUBSCRIBE_STATE">当前工单状态</th>
+						<th col="CUST_NAME">客户姓名</th>
+						<th col="ACCEPT_DATE">受理时间</th>
+						<th col="TRADE_STAFF_ID">员工</th>
+						<th col="TRADE_DEPART_ID">部门</th>
+						<th col="FEE" style="display:none"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+						element="tr" index="ognl:rowIndex">
+						<td data-title="业务流水号" class="key"><span jwcid="@Insert"
+							value="ognl:info.TRADE_ID" raw="true" />
+						</td>
+						<td data-title="服务号码"><span jwcid="@Insert"
+							value="ognl:info.SERIAL_NUMBER" raw="true" />
+						</td>
+						<!--  <td><span jwcid="@Insert" value="ognl:info.FEE" raw="true"/></td>	-->
+						<td data-title="业务类型"><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)"
+							raw="true" />
+						</td>
+						<td data-title="当前工单状态"><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE', info.SUBSCRIBE_STATE)"
+							raw="true" />
+						</td>
+						<td data-title="客户姓名"><span jwcid="@Insert"
+							value="ognl:info.CUST_NAME" raw="true" />
+						</td>
+						<td data-title="受理时间"><span jwcid="@Insert"
+							value="ognl:info.ACCEPT_DATE == null ? '' : formatDate('yyyy-MM-dd hh:mm:ss', info.ACCEPT_DATE)"
+							raw="true" />
+						</td>
+						<td data-title="员工"><span jwcid="@Insert"
+							value="ognl:info.TRADE_STAFF_ID" raw="true" />
+						</td>
+						<td data-title="部门"><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.TRADE_DEPART_ID)"
+							raw="true" />
+						</td>
+						<input jwcid="@Any" id="FEE" type="hidden" name="FEE"
+							value="ognl:info.FEE" />
+					</tr>
+				</tbody>
+			</table>
+			<!-- 表格 结束 -->
+		</div>
+		<!-- 提交 开始 -->
+		<div class="l_querySubmit">
+			<div jwcid="SubmitPart@icsserv:CSSubmit" area="QueryPart"
+				class="c_submit c_submit-center" beforeAction="checkBeforeSubmit()"
+				element="div" />
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	<!-- 区域 开始 -->
+</body>
+</html>

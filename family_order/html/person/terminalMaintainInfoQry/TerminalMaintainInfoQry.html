@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/terminalMaintainInfoQry/scripts/TerminalMaintainInfoQry.js"></script>
+</head>
+<body jwcid="@Body" >
+<div class="m_wrapper">
+<div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li" >
+				<span class="label">用户手机号码：</span>
+					<span class="e_input">
+					  <span>
+						<input type="text"  jwcid="@TextField" name = "cond_MobilePhone" id="cond_MobilePhone"
+						 value="ognl:condition.cond_MobilePhone"  
+						  desc="用户手机号码" maxsize="13" />
+				      </span>
+				   </span>
+			</li>	
+			<li class="li" >
+				<span class="label">手机串号：</span>
+					<span class="e_input">
+					  <span>
+						<input type="text"  jwcid="@TextField" name = "cond_IMEI" id="cond_IMEI"
+						 value="ognl:condition.cond_IMEI"  
+						  desc="手机串号" />
+				      </span>
+				   </span>
+			</li>
+			<li class="li" >
+				<span class="label">受理网点：</span>
+					<span class="e_input">
+					  <span>
+						<input type="text"  jwcid="@TextField" name = "cond_strSiteCode" id="cond_strSiteCode"
+						 value="ognl:condition.cond_strSiteCode"  
+						  desc="受理网点" />
+				      </span>
+				   </span>
+			</li>											
+			<li class="li">
+					<span class="label"><span >受理开始时间：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="cond_strApplyBeginDate" id="cond_strApplyBeginDate"   format="yyyy-MM-dd"  readOnly="true"
+							   afterAction="checkStartDate()" value="ognl:condition.cond_strApplyBeginDate"  nullable="yes" 
+							   desc="受理开始时间" maxName="cond_END_DATE"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span >受理结束时间：</span></span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="cond_strApplyEndDate" id="cond_strApplyEndDate"  format="yyyy-MM-dd"  readOnly="true"
+									afterAction="getEndDate()"	value="ognl:condition.cond_strApplyEndDate"  nullable="yes" 
+									desc="受理结束时间" mixName="cond_END_DATE"/>
+					</span></span>
+			</li>
+			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="terminalMaintainInfoQry()">
+				<i class="e_ico-search"></i><span>查询</span>
+			</button>
+		</div>
+	</div>
+	</div>
+	<!-- 条件结束-->
+	
+  <!-- 表格 开始 -->
+  <div class="c_box">
+	<div class="c_title">
+		<div class="text">查询结果</div>
+	</div>
+
+	<div jwcid="QueryDataPart@Part" element="div">
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" name="QueryListTable" id="QueryListTable" scroll="true">
+				<thead>
+					<tr>
+                        <th col="SERVICENO">维修单号</th>
+						<th col="PERSONNAME">客户姓名</th>
+						
+						<th col="MOBILEPHONE" >客户手机号码</th>
+						<th col="BRAND">品牌</th>
+						<th col="MODEL">型号</th>
+						<th col="IMEI">串号</th>
+						
+						<th col="FCODE" >故障现象</th>
+						<th col="REPAIROTHERDEAL1" >处理方式</th>
+						<!-- 网点名称 -->
+						<th col="SITENAME" >受理网点</th>
+						
+						<th col="APPLYDATE">受理日期</th>
+						
+						<th col="RETURNDATE" >完成时间</th>
+						<th col="STATUS" >单据状态</th>
+						<th col="PAYPRICE" >收费金额</th>
+						
+						<th col="MATERIALDISRATE" >折扣比例</th>
+						<th col="VIPTYPE" >客户星级</th>
+						<th col="COUPONDENOMINATION" >电子券赠送金额</th>
+						<th col="OFFSETAMOUNT" >电子券使用金额</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					
+						<td><span jwcid="@Insert" value="ognl:info.SERVICENO" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PERSONNAME" raw="true" /></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.MOBILEPHONE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BRAND" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.MODEL" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IMEI" raw="false"/></td>					
+						
+						
+						<td><span jwcid="@Insert" value="ognl:info.FCODE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.REPAIROTHERDEAL1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SITENAME" raw="true" /></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.APPLYDATE" raw="true" /></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.RETURNDATE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STATUS" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PAYPRICE" raw="true" /></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.MATERIALDISRATE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.VIPTYPE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.COUPONDENOMINATION" raw="true" /></td>	
+						<td><span jwcid="@Insert" value="ognl:info.OFFSETAMOUNT" raw="true" /></td>	
+																			
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域结束 -->
+</div>
+</div>
+</div>
+</body>
+</html>

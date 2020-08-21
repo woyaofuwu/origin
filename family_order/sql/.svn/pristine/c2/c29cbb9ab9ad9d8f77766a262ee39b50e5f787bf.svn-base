@@ -1,0 +1,3 @@
+SELECT 'JuristicType' KEY,JURISTIC_TYPE_CODE VALUE1,'-1' VALUE2,JURISTIC_TYPE VRESULT
+      FROM td_s_juristic_type
+WHERE SYSDATE BETWEEN start_date AND end_date AND 'JuristicType'=:KEY

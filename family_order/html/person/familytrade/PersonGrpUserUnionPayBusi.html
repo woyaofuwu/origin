@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团产品包融合订购</title>
+<script language="JavaScript" src="person/familytrade/scripts/PersonGrpUserUnionPayBusi.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">资料查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div></div>
+	<div class="c_form">
+		<span class="label"><span class="e_required">集团产品包：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="GROUP_PRODUCT_PACK" id="GROUP_PRODUCT_PACK" 
+							source="ognl:pageutil.getList('TD_S_COMMPARA', 'PARAM_CODE', 'PARAM_NAME', new java.lang.String[]{'SUBSYS_CODE','PARAM_ATTR'}, new java.lang.String[]{'CSM','1698'})"
+									 textField="PARAM_NAME" valueField="PARAM_CODE" titleField="PARAM_NAME" value="" desc="集团产品包" 
+									 nullable="no"/>
+	    </span></span></span>
+    </div>
+	<div jwcid="AuthPart@csserv:Auth"  tradeTypeCode="327" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+	</div> 
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" jwcid="curMemberCountPart@Part">
+		<div class="text">已统付集团产品用户[<span id="FMY_CUR_COUNT"><span jwcid="@Insert" value="ognl:commInfo.FMY_CUR_COUNT" raw="false"/></span>]</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="memberSnPart@Part">
+				<table jwcid="@Table" id="memberTable" name="memberTable">
+					<thead>
+						<tr>
+							<th col="CHECK_BOX">&nbsp;</th>
+                            <th col="GROUP_ID">集团编码</th>
+							<th col="SERIAL_NUMBER_B">集团产品编码</th>
+							<th col="START_DATE">开始时间</th>
+							<th col="END_DATE">结束时间</th>
+							<th col="RSRV_TAG1" style="display:none">是否共享</th>
+							<th col="MODIFY_TAG" style="display:none">修改标志</th>
+							<th col="SELF_START_DATE" style="display:none">SELF_START_DATE</th>
+							<th col="NOW_ACCT_DAY" style="display:none">NOW_ACCT_DAY</th>
+						</tr>
+					</thead>
+					<tbody id='fmymembers'>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><input jwcid="@Checkbox" type="checkbox" id="familyCheckBox" name="familyCheckBox"  onclick="isCanChecked(this);" value="ognl:info.END_DATE" disabled="ognl:1==info.DEAL_TAG"/></td>
+                            <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+							<!-- <td style="display:none"><span jwcid="@Insert" value="ognl:info.RSRV_TAG1NAME" raw="false"/></td> -->
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.MODIFY_TAG" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.SELF_START_DATE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.ACCT_DAY" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<!-- 表单 开始 -->
+		<div class="c_form e_dis"  jwcid="EditPart@Part" disabled="true">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">集团产品用户：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@Any"  id="SERIAL_NUMBER_B" name="SERIAL_NUMBER_B" value="" nullable="no" desc=""/>
+						 <div jwcid="@csserv:UserCheck" isAuth="false" tradeAction="addOrModifyMember()" fieldName="SERIAL_NUMBER_B"/>
+					</span></span>
+				</li>
+				<li style="display:none;">
+					<span class="e_input">
+						<input type="text" jwcid="@Any"  id="START_CYCLE_ID" name="START_CYCLE_ID" value="ognl:commInfo.START_CYCLE_ID"  desc=""/>
+						<input type="text" jwcid="@Any"  id="END_CYCLE_ID" name="END_CYCLE_ID" value="ognl:commInfo.END_CYCLE_ID"  desc=""/>
+						<input type="text" jwcid="@Any"  id="END_DATE_THIS_ACCT" name="END_DATE_THIS_ACCT" value="ognl:commInfo.END_DATE_THIS_ACCT"  desc=""/>
+						<input type="text" jwcid="@Any"  id="COMM_START_DATE" name="START_DATE" value="ognl:commInfo.START_DATE"  desc=""/>
+						<input type="text" jwcid="@Any"  id="COMM_END_DATE" name="END_DATE" value="ognl:commInfo.END_DATE"  desc=""/>
+						<input type="text" jwcid="@Any"  id="MAIN_ACCT_DAY" name="END_DATE" value="ognl:commInfo.MAIN_ACCT_DAY"  desc=""/>
+						<input type="text" jwcid="@Any"  id="LAST_TIME_THIS_MONTH" name="LAST_TIME_THIS_MONTH" value="ognl:commInfo.LAST_TIME_THIS_MONTH"  desc=""/>
+						<input type="text" jwcid="@Any"  id="MEB_LIM" name="MEB_LIM" value="ognl:commInfo.MEB_LIM"  desc="限制数量"/>
+					</span>
+				</li>
+			</ul>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreate" name="bcreate" disabled="true" onclick="$.userCheck.checkUser('SERIAL_NUMBER_B');"><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="bdelete" name="bdelete" disabled="true" onclick="return delMember(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitTrade()" area="AuthPart,EditPart"  isReset="true" element="div"/>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<title>单卡号异地补换卡</title> 
+<script jwcid="@Script" language="JavaScript" src="person/interboss/remotewritecard/scripts/remotewritecardsingle.js"></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	 <!-- 标题 开始 -->
+	   <div class="c_title">
+		 <div class="text">路由信息</div>
+	   </div>
+	   <!-- 标题 结束 -->
+	 	   <!-- 表单 开始 -->
+	   <div class="c_form c_form-label-5 c_form-col-3" jwcid="AddrCondPart@Part">
+	      <ul class="ul">
+	         <li class="li" style="display:none">
+	            <span class="label"><span class="e_required">路由类型：</span></span>
+		            <span class="e_select"><span><span>
+							<select jwcid="@Select" id="ROUTETYPE" name="ROUTETYPE" 
+								source="ognl:pageutil.getStaticList('ROUTERTYPE1')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.ROUTETYPE"
+								titleField="DATA_NAME" addDefault ="false"  desc="路由类型" />
+				</span></span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label"><span class="e_required">手机号码：</span></span>
+	            <span class="e_input"><span>
+	               <input jwcid="@TextField" id="MOBILENUM" name="MOBILENUM" value="ognl:condition.MOBILENUM" desc="手机号码" nullable="no"
+	               maxLength="11" onChange="changeValueBySn()"/>
+	            </span></span>
+	         </li>
+	         <li class="li" id="recardtypes">
+				<span class="label"><span class="e_required">补卡/换卡：</span></span> 
+				<span jwcid="@Select"
+							name="RECARD_TYPE_K" id="RECARD_TYPE_K"
+							source="ognl:pageutil.getStaticList('RECARD_TYPE_K')" value=""
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+							desc="补卡/换卡"></span>
+			</li>
+	         <li class="li">
+				<span class="label"><span class="e_required">是否吉祥号码：</span></span>
+				<span class="value">
+					<input jwcid="@TextField" id="ISJXH" name="ISJXH" desc="是否吉祥号码" value="" nullable="no" disabled="disabled"/>
+				</span>	
+			 </li>
+	         
+	         
+	         
+	         <li class="li" style="display:none">
+	            <span class="label"><span class="wrapper">省代码：</span></span>
+	            <span class="e_select">
+						<select jwcid="@Select" id="PROVINCE_CODE" name="PROVINCE_CODE" 
+							source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')" 
+							valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.PROVINCE_CODE"
+							titleField="DATA_NAME"   desc="省代码"/>
+				</span>
+	        </li>
+	     </ul>
+	     <div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="qryCardType()"><i class="e_ico-search"></i><span>查询卡类型</span></button>
+		</div>
+	</div>
+	   <!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<!-- <div class="c_title">
+		<div class="text">客户查询</div>
+	</div> -->
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="CustCondPart@Part">
+		<ul class="ul">
+			<li class="li" style="display:none">
+				<span class="label"><span class="e_required">客户标识类型：</span></span>
+				<span class="e_select"><span><span>
+				<select name="IDTYPE" id="IDTYPE" type="select-one" desc="客户标志类型" >
+				<option value="01" title="手机号">手机号</option>
+				</select> 
+		        </span></span></span>
+			</li>
+			<li class="li" style="display:none">
+				<span class="label"><span class="e_required">客户标识号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="ID_ITEM_RANGE" name="ID_ITEM_RANGE" value="ognl:condition.cond_ID_ITEM_RANGE" desc="客户标志号码"
+					maxLength="11"  readonly="true" />
+				</span></span>
+			</li>
+			<li class="li" id="checkMode1">
+                <span class="label"><span class="e_required">服务密码：</span></span>
+                <span class="e_elements">
+
+                    <button class="e_button-right" id="IMG_cond_USER_PASSWD" name="IMG_cond_USER_PASSWD" title="密码小键盘输入" onclick="return inputPassWD(this);"><span>小键盘</span></button>
+					<span class="e_input e_input-left"><span>
+							<input jwcid="@Password" name="USER_PASSWD" id="USER_PASSWD" value="ognl:editInfo.USER_PASSWD" 
+									 desc="服务密码" nullable="no"/>
+					</span></span>
+                <!--
+                    <span class="e_input e_input-left"><span><input type="password" id="USER_PASSWD" name="USER_PASSWD" value="" datatype="pinteger" desc="服务密码"  nullable="no" /></span></span>
+                    -->
+                </span>
+            </li>	
+            		
+			<li class="li">
+				<span class="label"><span class="e_required">客户名称：</span></span> 
+				<span class="value">
+					<input jwcid="@TextField"  name="CUST_NAME" id="CUST_NAME" nullable='no'
+							desc="客户名称"/>
+				</span>
+			</li>
+			
+					
+			<li class="li" id="idcardtype">
+				<span class="label"><span class="e_required">证件类型：</span></span> 
+				<span class="e_select"><span><span>
+					<select name="IDCARDTYPE" id="IDCARDTYPE" type="select-one" desc="证件类型">
+					<option value="0" title="身份证">身份证</option>
+					</select>						
+
+					<!--<select jwcid="@Select" id="IDCARDTYPE" name="IDCARDTYPE" 
+								source="ognl:pageutil.getStaticList('IBOSS_PSPT_TYPE_CODE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.IDCARDTYPE"
+								titleField="DATA_NAME" desc="证件类型" />
+				    -->	
+				
+				</span></span></span>
+			</li>
+			
+           <li class="li col-2">
+			  
+                    <span class="label"><span id="span_PSPT_ID" class="e_required">证件号码：</span></span>
+                     <span class="e_elements">     
+
+                     <button type="button" class="e_button-right"  id="SHOT_IMG" name="ReadCardButton"   onclick="identification('PIC_ID','PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>                                                	 
+                     <button type="button" class="e_button-right"  id="SCAN_PSPT" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>                        
+                     
+                     <span class="e_input e_input-left">
+                         <span>
+                            <input jwcid="@TextField" id="IDCARDNUM" name="IDCARDNUM" value=""  maxsize="32" nullable="no"  desc="证件号码"/>
+                         </span>
+                    </span>
+                     
+                     <div style="display:none">                         
+                        <input jwcid="@Hidden" id="PIC_ID" name="PIC_ID" value="" desc="客户照片ID"/>                       
+                        <input jwcid="@Hidden" id="PIC_STREAM" name="PIC_STREAM" value="" desc="客户人像照片流"/>
+                        <input jwcid="@Hidden" id="BACKBASE64" name="BACKBASE64" value="" desc="身份证背面照"/>
+                        <input jwcid="@Hidden" id="FRONTBASE64" name="FRONTBASE64" value="" desc="身份证正面照"/>
+                        <input jwcid="@Hidden" id="SCAN_TAG" name="SCAN_TAG" value="1" desc="客户扫描标志"/>
+                     </div>
+                     <div style="display:none">
+                     <object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+                     </div>
+                     <input class="e_input" type="hidden" id="custinfo_PhoneFlag" name="custinfo_PhoneFlag" value="0" desc="身份证件扫描和人像比对是否通过"/>
+                     <input class="e_input" type="hidden" id="custinfo_RemoteVerifyFlag" name="custinfo_RemoteVerifyFlag" value="0" desc="鉴权标记"/>
+                     <input class="e_input" type="hidden" id="custinfo_CheckPhone" name="custinfo_CheckPhone" value="" desc=""/>                                                             
+                    </span>
+
+                </li>
+
+		</ul>
+		<div class="c_title"  id="PhoneCheckTitle" style="display: none;">
+			<div class="text">好友号码验证</div>
+		</div>
+		<div jwcid="PhoneCheckPart@Part" class="c_form c_form-text c_form-col-5 c_form-label-6" >
+			<ul id="THREENUMBER" style="display: none;">
+			  	<li class="li">
+					<span class="label"><span class="e_required">好友个数：</span></span>
+					<span class="value">
+						<input jwcid="@TextField" id="NUMBERCOUNT3" name="NUMBERCOUNT3" desc="好友个数" value="" disabled="disabled"/>
+					</span>	
+				 </li>
+				<li class="li">
+					<span class="label"><span class="e_required">号码1：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="PHONE1" name="PHONE1" value="" desc="号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">号码2：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PHONE2" id="PHONE2" 
+							value= ""  desc="号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">号码3：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PHONE3" id="PHONE3" 
+							value= ""  desc="号码"/>
+					</span></span>
+				</li>
+			</ul>
+			<ul id="TWONUMBER" style="display: none;">	
+				<li class="li">
+					<span class="label"><span class="e_required">好友个数：</span></span>
+					<span class="value">
+						<input jwcid="@TextField" id="NUMBERCOUNT2" name="NUMBERCOUNT2" desc="好友个数" value="" disabled="disabled"/>
+					</span>	
+				 </li>
+				<li class="li">
+					<span class="label"><span class="e_required">号码1：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PHONE4" id="PHONE4" 
+							value= ""  desc="号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">号码2：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PHONE5" id="PHONE5" 
+							value= ""  desc="号码"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<div class="submitPlace"></div>
+		<div class="submit" id="authQueryButton">
+			<button type="button" class="e_button-form" onclick="checkUserNum()"><i class="e_ico-search"></i><span>鉴权查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+				<div jwcid="custInfoPart@Part" >
+  				 <!--  <ul class="ul">			
+  				
+						<li class="li">
+							<span class="label">客户名称：</span>
+							<span class="text" jwcid="@Insert" name="CUST_NAME_DISPLAY" id="CUST_NAME_DISPLAY" value="ognl:info.CUST_NAME"></span> 
+						</li>
+						<li class="li">
+							<span class="label">证件号码：</span>
+							<span class="text" jwcid="@Insert" name="IDCARDNUM_DISPLAY" id="IDCARDNUM_DISPLAY" value="ognl:info.IDCARDNUM"></span> 
+						</li> 
+						
+						<li class="li">
+							<span class="label">证件类型：</span>
+							<span class="text" jwcid="@Insert" name="IDCARDTYPE_DISPLAY" id="IDCARDTYPE_DISPLAY"
+								value="ognl:info.ICARDSTYPES"
+								desc="证件类型" />
+						</li>			
+						
+												
+						
+						<li class="li">
+							<span class="label">证件地址：</span>
+							<span class="text" jwcid="@Insert" name="PSPT_ADDR" id="PSPT_ADDR" value="ognl:info.PSPT_ADDR"></span>
+						</li>
+						
+						<li class="li">
+							<span class="label">帐户余额：</span> 
+							<span class="text" jwcid="@Insert"   value="ognl:info.BALANCE" desc="帐户余额"/>
+						</li>
+						<li class="li">
+							<span class="label">实时出账费用：</span> 
+							<span class="text" jwcid="@Insert"   value="ognl:info.DEBT_BALANCE" desc="实时出账费用"/>
+						</li>
+						
+						<li class="li">
+							<span class="label">用户星级：</span>
+							<span class="text" jwcid="@Insert" value="ognl:info.LEVELS" desc="用户星级"></span>
+						</li>
+						<li class="li">
+							<span class="label">用户当前余额：</span> 
+							<span class="text" jwcid="@Insert"   value="ognl:info.ACNTBALANCE" desc="帐户余额"/>
+						</li>
+						<li class="li">
+							<span class="label">客户经理姓名：</span> 
+							<span class="text" jwcid="@Insert"   value="ognl:info.USER_MGR" desc="经理姓名"/>
+						</li>
+						<li class="li">
+							<span class="label">客户经理电话：</span> 
+							<span class="text" jwcid="@Insert"   value="ognl:info.USER_MGR_NUM" desc="联系电话"/>
+						</li>
+						<li class="li">
+							<span class="label">是否是吉祥号码：</span> 
+							<span class="text" jwcid="@Insert" id="ISJXH" value="ognl:info.ISJXH" desc="是否是吉祥号码"/>
+						</li>
+					</ul> -->
+						<input style="display:none" jwcid="@TextField" id="COP_SI_PROV_CODE_NAME" name="COP_SI_PROV_CODE_NAME" value="ognl:info.COP_SI_PROV_CODE_NAME"/> 
+						<input style="display:none" jwcid="@TextField" id="IDVALUES" name="IDVALUES" value="ognl:info.IDVALUE"/> 
+						<input style="display:none" jwcid="@TextField" id="FEE" name="FEE" value=""/>
+						<input style="display:none" jwcid="@TextField" id="NEW_SIM_CARD" name="NEW_SIM_CARD" value=""/>
+						<input style="display:none" jwcid="@TextField" id="NEW_IMSI" name="NEW_IMSI" value=""/>
+						<input style="display:none" jwcid="@TextField" id="EMPTY_CARD_ID" name="EMPTY_CARD_ID" value=""/>
+						<input style="display:none" jwcid="@TextField" id="SIM_FEE_TAG" name="SIM_FEE_TAG" value="ognl:newCard.SIM_FEE_TAG"/>	
+						<input style="display:none" jwcid="@TextField" id="M2M_FLAG" name="M2M_FLAG" value="ognl:newCard.M2M_FLAG"/>	
+						<input style="display:none" jwcid="@TextField" id="RECORDID" name="RECORDID" value="ognl:info.RECORDID"/>	<!-- 读写卡完标记 -->	
+						<input style="display:none" jwcid="@TextField" id="LEVEL" name="LEVEL" value="ognl:info.LEVEL"/>   <!-- 用户星级 --> 
+						<input style="display:none" jwcid="@TextField" id="HIDDEN_CUST_NAME" name="HIDDEN_CUST_NAME" value="ognl:info.CUST_NAME"/>
+                        <input style="display:none" jwcid="@TextField" id="HIDDEN_IDCARDNUM" name="HIDDEN_IDCARDNUM" value="ognl:info.IDCARDNUM"/>  	
+                        <input style="display:none" jwcid="@TextField" id="AUTH_CUST_INFO" name="AUTH_CUST_INFO" value=""/>  	
+				</div>
+				
+			</div>
+
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">	
+	<div class="c_title">
+		<div class="text">业务信息</div>		
+	</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-9" jwcid="simcardInfoPart@Part" >
+					<ul class="ul">			
+						<!--<li class="li">
+							<span class="label">服务号码：</span> 
+							<span class="text" name="IDVALUE" id="IDVALUE"><span>
+								<input jwcid="@Insert"  value="ognl:info.IDVALUE" 
+										desc="服务号码"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">省代码：</span>
+							<span class="text" name="SPROVINCE_CODE" id="SPROVINCE_CODE"><span>
+								<input jwcid="@Insert"  value="ognl:condition.PROVINCE_CODE" 
+										desc="用户品牌"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">客户名称：</span> 
+							<span class="text" name="SCUST_NAME" id="SCUST_NAME"><span>
+								<input jwcid="@Insert"  value="ognl:info.CUST_NAME" 
+										desc="客户名称"/>
+							</span></span>
+						</li>
+
+						--><li class="li">
+							<span class="label">IMSI号：</span>							
+                            <input jwcid="@TextField" id="IMSI" name="IMSI" value=""  readonly="true" disabled />							
+							<span class="text" name="IMSI1" id="IMSI1"><span>
+								<input jwcid="@Insert"  value="ognl:newCard.IMSI" 
+										desc="用户品牌"/>
+							</span></span> 
+						</li>
+						
+						<li class="li">
+							<span class="label">SIM卡号：</span> 
+							<input jwcid="@TextField" id="SIM_CARD_NO" name="SIM_CARD_NO" value="" readonly="true"/>
+							<span class="text" name="SIM_CARD_NO1" id="SIM_CARD_NO1"><span>
+								<input jwcid="@Insert"  value="ognl:newCard.SIM_CARD_NO" 
+										desc="SIM卡号"/>
+							</span></span>
+						</li>
+						<li class="li" style="display: none" id="auth_number1">
+								<input jwcid="@TextField" id="AUTH_NUMBER_K" name="AUTH_NUMBER_K"  maxLength="6" value="" desc="验证码"/>
+								<button class="e_button-form" onclick="simpleCardNotice();"><span>获取验证码</span></button>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit" style="display: none" id="recard_auth_button">
+						<button type="button" class="e_button-form" onclick="checkUserNum();"><span>换卡鉴权</span></button>
+					</div>
+					<input style="display:none" jwcid="@TextField" id="CSSubmitID" name="CSSubmitID" value="0"/>	<!-- 读写卡完标记 -->	
+					
+					<input style="display:none" jwcid="@TextField" id="ICCID" name="ICCID"  value=""/>
+					<input style="display:none" jwcid="@TextField" id="SMSP" name="SMSP" value=""/>	
+					<input style="display:none" jwcid="@TextField" id="PIN1" name="PIN1" value=""/>
+					<input style="display:none" jwcid="@TextField" id="PIN2" name="PIN2" value=""/>
+					<input style="display:none" jwcid="@TextField" id="PUK1" name="PUK1" value=""/>
+					<input style="display:none" jwcid="@TextField" id="PUK2" name="PUK2" value=""/>
+					<input style="display:none" jwcid="@TextField" id="ReqSeq" name="ReqSeq" value=""/>
+				
+	</div>
+</div>
+<div style="display: none;" id="tips_info">
+	<span class="label"><span class="e_required" style="font-size: 14px ">提示：请先读成卡再做换卡鉴权，然后再读空白卡</span></span>
+</div>											
+		
+		<input  jwcid="@Any"  type="hidden" id="BeautifulFlag" name="BeautifulFlag" value="0" desc="吉祥号码标志"/>					
+		<input  jwcid="@Any"  type="hidden" id="PHONECHECK" name="PHONECHECK" value="0" desc="好友号码校验标志"/>	
+		<input  jwcid="@Any"  type="hidden" id="queryCardTag" name="queryCardTag" value="0" desc="卡查询标记"/>
+		<input  jwcid="@Any"  type="hidden" id="FRIENDCOUNTS" name="FRIENDCOUNTS" value="" desc="好友号码个数"/>
+		<input  jwcid="@Any"  type="hidden" id="IDENT_CODE" name="IDENT_CODE" value="" desc="身份凭证"/>
+				  
+	<!-- 提交 开始 -->
+	<!-- 读写卡组件  -->
+		<div class="c_submit">
+			<div jwcid="WriteCardPart@csserv:WriteCard" mode="1" writeBeforeAction="beforeWriteCard()" readBeforeAction="checkRealName()" readAfterAction ="afterReadCard(data)" writeAfterAction ="afterWriteCard(data)"  beforeWriteSVC="SS.RemoteWriteCardSVC.beforeWriteCard"  afterWriteSVC="SS.RemoteWriteCardSVC.afterWriteCard" tradeTypeCode="141"/>
+			<span jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" isReset="true" isRender="false" print="false"  submitText="激活提交" area="AddrCondPart,CustCondPart,custInfoPart,REALNAME_PART,RealNameCustInfoPart,simcardInfoPart" element="span"/>			
+		</div>
+	</div>
+	<!-- 提交 结束 -->
+</div>
+						
+<object id="LittleKey" classid="CLSID:11AF41BD-EFFF-462C-94A5-EDC27B737FC0" codebase="/tools/LittleKey.cab"></object>
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+
+
+</script>
+</html>

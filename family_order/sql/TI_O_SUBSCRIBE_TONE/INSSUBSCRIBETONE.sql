@@ -1,0 +1,3 @@
+INSERT INTO ti_o_subscribe_tone(order_id,user_id,serial_number,user_id_b,phone_code,buss_type,tone_code,tone_flag,tone_month,tone_price,tone_type,singer,sp_name,deal_type,tone_date,refer_time,refer_staff_id,refer_depart_id,deal_cout,deal_time,deal_staffid,deal_departid,order_status,rsp_code,rsp_desc,remark,seq)
+
+ VALUES(TO_NUMBER(:ORDER_ID),TO_NUMBER(:USER_ID),:SERIAL_NUMBER,TO_NUMBER(:USER_ID_B),:PHONE_CODE,:BUSS_TYPE,:TONE_CODE,:TONE_FLAG,:TONE_MONTH,TO_NUMBER(:TONE_PRICE),:TONE_TYPE,:SINGER,:SP_NAME,:DEAL_TYPE,TO_DATE(:TONE_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:REFER_TIME,'YYYY-MM-DD HH24:MI:SS'),:REFER_STAFF_ID,:REFER_DEPART_ID,:DEAL_COUT,sysdate,:DEAL_STAFFID,:DEAL_DEPARTID,:ORDER_STATUS,:RSP_CODE,:RSP_DESC,:REMARK,:SEQ)

@@ -1,0 +1,4 @@
+SELECT COUNT(*) RECORDCOUNT
+  FROM TF_B_TRADE_RELATION
+ WHERE TRADE_ID = :TRADE_ID
+  and  accept_month = to_number(substr(:TRADE_ID, 5, 2))

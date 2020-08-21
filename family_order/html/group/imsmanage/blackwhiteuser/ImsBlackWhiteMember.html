@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IMS集团黑白名单管理</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/imsmanage/blackwhiteuser/imsblackwhitemember.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">IMS集团黑白名单管理</div>
+	</div>	
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form " jwcid="ImsInfoPart@Part" id="ImsInfoPart" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">黑白名单属性：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="USER_TYPE_CODE" id="USER_TYPE_CODE" nullable="no" desc="黑白名单属性"
+						source="ognl:pageutil.getStaticList('IMS_BWATTR')" textField=DATA_NAME valueField="DATA_ID"  
+						value="ognl:condition.USER_TYPE_CODE" onchange="changeblackwhite();"/>
+				</span></span></span>
+			</li>
+			<li class="li" jwcid="ImsUserPart@Part" element="li">
+				<span class="label"><span class="e_required">集团编码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" onclick="$.popupPageExternal('csserv.component.group.selectgroup.SelectGroupPopupPage',null,null,'集团客户查询',680,480,'cond_GROUP_ID')">
+					<i class="e_ico-check"></i><span></span>
+					</button>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup"  name="cond_GROUP_ID" id="cond_GROUP_ID" desc="集团编码"  nullable="no" readOnly="false" afterAction="getGroupInfo()" enterAction="getGroupInfo()"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li" jwcid="ImsUserPart2@Part" element="li">
+				<span class="label"><span class="e_required">IMS用户：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="IMS_USER_ID" id="IMS_USER_ID" nullable="no" desc="IMS用户"
+						source="ognl:userInfos" textField=IMS_NAME valueField="USER_ID" 
+						value="ognl:condition.USER_ID" onchange="queryblackwhite();"/>
+					<input type="text" jwcid="@TextField" name="GRP_USER_ID" id="GRP_USER_ID" value="ognl:condition.GRP_USER_ID" desc="IMS用户ID" style="display:none"/>									
+				</span></span></span>
+			</li>		
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="GroupInfoPart@Part" element="div" >
+		<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo"/>
+	</div>
+
+	<!-- 参数列表 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-10" jwcid="BlackWhitePart@Part" element="div">
+		<table jwcid="@Table" name="DeptTable" rowClick="tableRowClick" >
+			<thead>
+				<tr>
+					<th col="X_TAG" style="display:none">TAG</th>
+	      			<th col="SERIAL_NUMBER">服务号码</th>
+					<th col="BIZ_CODE" style="display:none">呼叫属性值</th>
+					<th col="BIZ_CODE_NAME">呼叫属性</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+					<td style="display:none">1</td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.BIZ_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.BIZ_CODE == 0 ? '主叫' : '被叫'" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+		<input jwcid="@TextField" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value="ognl:userEparchyCode" style="display:none"/>	
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="EditPart@Part" id="EditPart" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">服务号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER" desc="服务号码" nullable="no" datatype="mbphone" />
+				</span></span>
+			</li>
+			<!-- 隐藏域开始 -->
+			<input type="hidden" jwcid="@TextField" name="BIZ_CODE_NAME" id="BIZ_CODE_NAME" value="ognl:condition.BIZ_CODE_NAME" desc="呼叫限制属性名"  style="display: none"/>
+			<input type="hidden" jwcid="@TextField" name="BIZ_CODE" id="BIZ_CODE" value="ognl:condition.BIZ_CODE" desc="黑白名单属性" style="display: none"/>
+			<input type="text" jwcid="@TextField" name="OPER_CODE" id="OPER_CODE" value="ognl:condition.OPER_CODE" desc="操作类型"   style="display:none"/>
+			<input type="hidden" jwcid="@TextField" name="X_TAG" id="X_TAG" value="ognl:condition.X_TAG" desc="TAG"  style="display: none"/>
+			<input type="text" jwcid="@TextField" name="BW_LISTS" id="BW_LISTS" value="ognl:condition.BW_LISTS" desc="黑白名单串"   style="display:none"/>								
+			<!-- 隐藏域结束 -->
+		</ul>		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="bcreate" name="bcreate" onclick="createDept();">
+				<i class="e_ico-add"></i><span>新增</span>
+			</button>
+			<button class="e_button-form" id="bdelete" name="bdelete" onclick="deleteDept();">
+				<i class="e_ico-delete"></i><span>删除</span>
+			</button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="ImsInfoPart,BlackWhitePart" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" submitText="提交" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

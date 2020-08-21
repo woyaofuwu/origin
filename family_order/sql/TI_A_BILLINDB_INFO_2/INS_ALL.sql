@@ -1,0 +1,2 @@
+INSERT INTO ti_a_billindb_info_2(user_id,partition_id,acyc_id,info_item_code,fee,update_time,update_depart_id,update_staff_id)
+ VALUES(TO_NUMBER(:USER_ID),:PARTITION_ID,:ACYC_ID,:INFO_ITEM_CODE,TO_NUMBER(:FEE),TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_DEPART_ID,:UPDATE_STAFF_ID)

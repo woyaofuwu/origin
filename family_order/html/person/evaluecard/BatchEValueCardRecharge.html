@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script language="JavaScript" src="person/evaluecard/scripts/ECBatRecharge.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">客户查询</div>
+    </div>
+    <!-- 标题 结束 -->
+    <!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="5433" element="div" />
+    <!-- 认证 结束 -->
+    <!-- 参数列表 开始 -->
+    <div class="c_form c_form-label-5 c_form-col-2 c_form-text" jwcid="freshPart@Part">
+        <ul class="ul">
+            <li class="li">
+                <span class="label">客户名称：</span>
+                <span class="text" jwcid="@Insert"   value="ognl:editInfo.CUST_NAME" desc="客户名称："/>
+            </li>
+            
+            <li class="li">
+                <span class="label">证件号码：</span>
+                <span class="text" jwcid="@Insert"  value="ognl:editInfo.PSPT_ID" desc="证件号码"/>
+                
+            </li>
+            <li class="li">
+                <span class="label">证件类型：</span>
+                <span class="text" jwcid="@Insert"  
+                                                value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',editInfo.PSPT_TYPE_CODE)"></span>
+            </li>
+            <li class="li">
+                <span class="label">证件地址：</span>
+                <span class="text" jwcid="@Insert"   value="ognl:editInfo.PSPT_ADDR" desc="证件地址"/>
+                
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="c_box">
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">操作类型</div>
+    </div>
+    <div jwcid="SelOperTypePart@Part">
+         <ul class="ul">
+             <li class="li" id="isweather">
+             <!-- 
+                <span class="label"><span class="e_required">操作：</span></span>
+             -->
+                <div class="c_fn">
+                    <ul>
+                        <li><label><input type="radio" name="cond_OPERTYPE" id="cond_OPERTYPE1" checked class="e_radio" value="1" onclick="return initDisplayDiv()"/>批量充值受理</label></li>
+                        <li><label><input type="radio" name="cond_OPERTYPE" id="cond_OPERTYPE0" class="e_radio" value="0" onclick="return initDisplayDiv()"/>批量充值查询</label></li>
+                    </ul>
+                </div>
+            </li>
+         </ul>
+    </div>
+    
+    
+</div>
+<div class="c_box e_dis" id="BatchRechargeReqALLPart" >
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">批量充值受理</div>
+    </div>
+    <!-- 标题 结束 -->
+    
+ <!--  
+    <h4 class="fold"  style="display:none">
+                <div class="text" >
+                    编辑区：
+                    <span  onmouseover="fn_MouseOver(this);" onmouseout="fn_MouseOut(this);" onclick="getElement('X_GETMODE_1').click();">
+                            <input type="radio" name="X_GETMODE" id="X_GETMODE_1"  value="1"
+                                    disPart="impPart" onclick="changePartsDis(this)" />
+                                导入入库</span>
+                </div>
+    </h4>  
+    --> 
+    <div jwcid="InfoImportPart@Part">
+        <div class="c_form c_form-col-2 c_form-label-7" jwcid="TypePart@Part" >
+            <ul class="ul" id="datapart">
+                <li class="li" jwcid="Info@Part">
+                    <span class="label"><span  class="e_required">受理渠道：</span></span>
+                    <span class="e_select" ><span><span>                    
+                         <select jwcid="@Select" name="CHANNEL_TYPE" id="CHANNEL_TYPE"
+                            source="ognl:pageutil.getStaticList('EVALUECARD_CHANNEL_TYPE')" addDefault="true"
+                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                            desc="受理渠道" nullable="no" />
+                    </span></span></span>
+                </li>  
+                <li class="li col-2">
+					<span class="label">模版下载：</span>
+					<span class="text" ><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&filePath=template/bat/ECBATRECH.xls')">[点击下载]</a></span>
+				</li>                
+	            <li class="li col-4">
+	             <span class="label"><span class="e_required">导入文件：</span></span>
+	             <span class="text">
+	             <span jwcid="@Import" name="FILE_ID"
+	                         ftpSite="EValueCardSite" fileSize="1" fileTypes="excel"
+	                         serviceName="20170116"  beforeAction="importBeforeAction" afterAction="importAfterAction"
+	                         config="import/bat/ECBATRECH_TEMPLETE.xml" cond="Info,hiddenCondPart"
+	                         desc="导入文件" nullable="no" /> </span>
+	            </li>        
+                <li class="li col-2" >
+                    <span class="label">备注信息：</span>
+                    <span class="e_textarea">
+	                    <span class="e_textareaTop"></span>                    
+	                    <span class="e_textareaContent"><textarea jwcid="@TextArea" id="REMARK" name="REMARK" rows="3" maxsize="100" value="ognl:condition.REMARK" style="height:30px;"></textarea></span>
+	                    <span class="e_textareaBottom"><span></span></span>
+                    </span>
+            </li>                       
+           </ul>           
+        </div> 
+       <div class="submitPlace"></div>
+        <div class="submit">
+    <!--    <button type="button" class="e_button-page-ok" onclick="return savaData()"><i class="e_ico-import"></i><span>导入</span></button> -->
+        <!--<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return savaData();"><i class="e_ico-search"></i><span>提交</span></button> -->
+        </div>
+            </div>  
+    <!-- 刷新2区域  结束 -->
+     
+    <!-- 提交 开始 -->
+    <!--
+    <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitSellReqs()" affirmAction="toQueryTrans()" area="BatchSellReqALLPart,AuthPart,QueryCondPart,hiddenPart"  element="div"/>
+    -->
+    <!-- 提交 结束 -->
+     
+</div>
+    
+<div class="c_box e_dis" id="QueryBatchRechargeReqPart" style="display:none;">
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">批量充值查询</div>
+        <!-- 
+        <div class="fn">
+            <button type="button" onclick="$('#popup-add').css('display','')"><i class="e_ico-add"></i><span>新增</span></button>
+        </div>
+         -->
+    </div>
+    <!-- 标题 结束 -->
+    <div id="tipInfo" class="c_tip">请输入业务流水号或时间查询，要求【开始、结束】日期时间段不能超过31天。</div>
+    <!-- 表单 开始 -->
+    <div class="c_form" jwcid="QueryCondPart@Part">
+        <ul class="ul">
+            <li class="li">
+                <span class="label">业务流水号：</span>
+                <span class="e_input"><span>
+                    <input type="text" jwcid="@TextField" name="cond_TRADE_ID" id="cond_TRADE_ID"  value="ognl:condition.cond_TRADE_ID" desc="业务流水号"/>
+                </span></span>              
+            </li>
+            <li class="li">
+                    <span class="label"><span class="e_required">开始时间：</span></span>
+                    <span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" 
+                    value="ognl:(condition.cond_START_DATE == null) ? @com.ailk.bizcommon.util.SysDateMgr@getYesterdayDate() : condition.cond_START_DATE"
+                                    nullable="no"  desc="开始时间"   /></span></span>
+             </li>
+             <li class="li">
+                 <span class="label"><span class="e_required">结束时间：</span></span>
+                 <span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" 
+                 value="ognl:(condition.cond_END_DATE == null) ? @com.ailk.bizcommon.util.SysDateMgr@getTomorrowDate() : condition.cond_END_DATE"
+                                 nullable="no"  desc="结束时间"   /></span></span>
+             </li>             
+          </ul>
+        <div class="submitPlace"></div>
+        <div class="submit">
+            <button type="button" class="e_button-form" onclick="queryBatchReqInfo()" disabled><i class="e_ico-search"></i><span>查询</span></button>
+        </div>
+    </div>
+    <!-- 表单 结束 -->
+    <!-- 表格 开始 -->
+    <div id="refreshtable"  jwcid="refreshtable@Part" optimize="true">
+    <div class="c_scroll c_scroll-table-15"><div class="c_table">
+        <table jwcid="@Table" id="QueryListTable" name="QueryListTable">
+            <thead>
+                <tr>
+                    <th>操作</th>
+                    <th col="FILE_ID" style="display:none"></th>
+                    <th col="FILE_NAME" style="display:none"></th>
+                    <th>交易流水号</th>                    
+                    <th>手机号码</th>                                       
+                    <th>受理渠道</th>
+                    <th>受理时间</th>
+                    <th>执行情况</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody id="MaterialList">
+                <tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                    <td class="e_center"><a jwcid="@Redirect" disabled="ognl:(info.STATUS==2?false:true)" value="下载反馈文件" onclick="downLoadFile(this.parentNode.parentNode.rowIndex)"/></td> 
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.FILE_NAME" raw="false"/></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:pageutil.getFtpFile(info.FILE_NAME).FILE_NAME" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>                    
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_CHANNEL_TYPE',info.CHANNEL_TYPE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('EVALUECARD_BATSELL_STATUS',info.STATUS)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+                </tr>
+            </tbody>
+        </table>
+    </div></div>
+    <!-- 表格 结束 -->
+    <!-- 翻页（替换为页面组件） 开始 -->
+    <span jwcid="@NavBar" name="pageNav" cond="queryForm" listener="queryBatchReqInfo" pageSize="15"  part="refreshtable" count="ognl:pageCount"/>
+    <!-- 翻页 结束 -->
+   </div>
+</div>
+
+<!-- 区域 结束 -->
+
+<!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenCondPart@Part" style="display:none;">
+     <input jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="操作人手机号码" nullable="no"/>
+     <input jwcid="@TextField" name="cond_INIT_TRADE_ID" value="ognl:condition.cond_INIT_TRADE_ID" desc="业务流水号"/>
+     <input jwcid="@TextField" name="TRADE_STAFF_ID" value="ognl:editInfo.TRADE_STAFF_ID"/>
+     <input jwcid="@TextField" name="TRADE_DEPART_ID" value="ognl:editInfo.TRADE_DEPART_ID"/>
+     <input jwcid="@TextField" name="TRADE_CITY_CODE" value="ognl:editInfo.TRADE_CITY_CODE"/>
+     <input jwcid="@TextField" name="TRADE_EPARCHY_CODE" value="ognl:editInfo.TRADE_EPARCHY_CODE"/>
+   </div>
+<!-- 隐藏区域 结束 -->
+</div></div>
+
+</body>
+</html>

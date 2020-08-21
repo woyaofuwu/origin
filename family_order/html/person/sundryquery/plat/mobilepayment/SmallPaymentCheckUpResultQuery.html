@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: PlatOrder.html,v 1.3 2014/03/18 13:53:09 xiekl Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手机支付通信账户对账结果查询</title>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">手机支付通信账户对账结果查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-4" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				  <span class="label"><span class="e_required"> 账务开始时间：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="cond_START_TIME@DateField"
+							name="cond_START_TIME"
+							format="yyyy-MM-dd"
+							readonly="true"
+							desc="账务开始时间"
+							maxName = "cond_END_TIME"
+							nullable="no"
+						/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label"><span class="e_required">账务结束时间</span></span>
+					<span class="e_input"><span>
+						<input jwcid="cond_END_TIME@DateField"
+							name="cond_END_TIME"
+							format="yyyy-MM-dd"
+							readonly="true"
+							desc="账务结束时间"
+							minName="cond_START_TIME"
+							nullable="no"
+						/>
+						</span></span>
+			</li>
+			<li class="li">
+				  <span class="label">对帐状态：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_RECON_STATE" id=cond_RECON_STATE
+								source="ognl:pageutil.getStaticList('RECON_STATE')"
+								nullable="yes"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.RECON_STATE"	desc="对账状态" />
+  					</span></span></span>
+			</li>
+			<li class="li">
+					<span class="e_select"><span><span>
+				  	<select jwcid="@Select" name="cond_CANCEL_FLAG" id=cond_CANCEL_FLAG
+								source="ognl:pageutil.getStaticList('CANCEL_FLAG')"
+								nullable="yes"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.cond_CANCEL_FLAG"	desc="对帐处理状态" />
+					</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return querySmallPaymentCheckUpResult();"><i class="e_ico-search"></i><span>查询</span></button>
+	
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	 
+  <!-- 区域开始 -->
+	<div class="c_title c_title-2">
+		 <div class="text">查询结果</div>
+  	</div>
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+  	  <div class="fn">
+  	  				<button  class="e_button-center" onClick="exportCheckUpResult()"><i class="e_ico-export"></i><span>导出</span> </button>
+  	  						
+	 </div>
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+			<table>
+      			<thead>
+		  			<tr>
+						<th>手机号码</th>
+						<th>交易的流水号</th>
+						<th>消费金额(元)</th>
+						<th>账务日期</th>
+						<th>实际交易时间</th>
+						<th>对账状态</th>
+						<th>对账时间</th>
+						<th>对账处理状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.INTF_TRADE_ID" raw="true" /></td>							
+						<td><span jwcid="@Insert" value="ognl:info.PAY_FEE" raw="true" /></td>
+						<td class="timemode"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)" raw="false"/></td>
+						<td class="timemode"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.OPER_TIME)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('RECON_STATE',info.RECON_STATE)" raw="true" /></td>
+						<td class="timemode"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CANCEL_FLAG',info.CANCEL_FLAG)" raw="true" /></td>				
+					</tr>
+				</tbody>
+			</table>
+			</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+<div jwcid="@NavBar" needCount="false" name="queryNav" id="queryNav" cond="QueryCondPart" part="QueryListPart" listener="querySmallPaymentCheckUpResult" pageSize="10" count="ognl:pageCount"></div>		
+	
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</body>
+<script language="javascript">
+function querySmallPaymentCheckUpResult()
+{
+	
+	if(!$.validate.verifyAll("QueryCondPart")) {
+		return false;
+	}
+	
+	$.beginPageLoading("正在查询数据...");
+	
+	ajaxSubmit('QueryCondPart', 'querySmallPaymentCheckUpResult', null, 'QueryListPart', function(data){
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		MessageBox.alert("提示",error_info);
+	}
+	 );
+}
+
+
+function exportCheckUpResult()
+{
+	if(!$.validate.verifyAll("QueryCondPart")) {
+		return false;
+	}
+	$.beginPageLoading("正在导出数据...");
+	
+	ajaxSubmit('QueryCondPart', 'exportDatas', null, null, function(data){
+		window.location = data.get("URL");
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		MessageBox.alert("提示",error_info);
+	}
+	 );
+}
+</script>
+</html>
+ 
+ 

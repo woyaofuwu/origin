@@ -1,0 +1,2 @@
+select * from tf_b_ctrm_gerlsuborder T where T.state='FA' AND T.NUMBER_OPRTYPE IN('20','21','22','23')
+AND T.UPDATE_TIME BETWEEN TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS') AND TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS')

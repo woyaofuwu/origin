@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>  
+  <head jwcid="@Head">
+    <title>代理商买断套卡清单查询</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script jwcid="@Script"  src="person/sundryquery/agentBackBillId/scripts/AgentBIllIdListQry.js" />
+  </head>
+       
+  <body jwcid="@Body">
+  	<div class="m_wrapper"><div class="m_wrapper2">
+    <div class="c_box">
+    	<div class="c_title">
+    		<div class="text">代理商买断套卡清单查询</div>
+    	</div>
+    	<div class="c_form c_form-col-3 c_form-label-10" jwcid="QueryCondPart@Part">
+			<ul class="ul">
+			 <li class="li">
+				<span class="label"><span class="e_required">市县：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="CITY_CODE" id="CITY_CODE" 
+					source="ognl:pageutil.getList('TD_M_AREA','AREA_CODE','AREA_NAME',new java.lang.String[]{'AREA_LEVEL','PARENT_AREA_CODE'},new java.lang.String[]{'30',getVisit().getStaffEparchyCode()})" 
+					  textField="AREA_NAME" valueField="AREA_CODE"
+					  titleField="AREA_NAME" value="ognl:condition.CITY_CODE" desc="市县"    nullable="no"/>
+				</span></span></span>
+			</li>
+				<li class="li" id="LI_BEGIN_TIME" name="LI_BEGIN_TIME">
+				<span class="label"><span class="e_required">开始买断时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" 
+						name="BEGIN_TIME" id="BEGIN_TIME"
+						value="ognl:condition.BEGIN_TIME" nullable="no" desc="开始买断时间：" /> </span></span>
+			    </li>
+			    <li class="li" id="LI_END_TIME" name="LI_END_TIME">
+				<span class="label"><span class="e_required">结束买断时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" 
+						name="END_TIME" id="END_TIME"
+						value="ognl:condition.END_TIME" nullable="no" desc="结束买断时间：" /> </span></span>
+			    </li>
+			
+				<li class="li">
+					<span class="label"><span class="e_required">起始代理商编码：</span></span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="START_AGENT_NO" id="START_AGENT_NO" nullable="no"	
+						 desc="起始代理商编码" datatype="numchar" onkeyup="this.value=this.value.toUpperCase()" maxlength="40"
+						value="ognl:condition.START_AGENT_NO"/><!-- value="HNSYK016" -->
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止代理商编码：</span></span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="END_AGENT_NO" id="END_AGENT_NO" nullable="no"	
+						 desc="终止代理商编码" datatype="numchar" onkeyup="this.value=this.value.toUpperCase()" maxlength="40"
+						value=ognl:condition.END_AGENT_NO/><!-- value="HNSYK016" -->
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" id="query" name="query" onclick="return queryAgentBillIdList()">
+					<i class="e_ico-search"></i><span>查询</span>
+				</button>
+			</div>
+		</div>
+		
+		<div class="c_title c_title-2">
+			<div class="text">查询结果    (提示：查询的结果为截止当天未激活的号码)</div>
+			<div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="99333"
+				config="export/sundryquery/AgentBillIdListQry.xml" fileName="代理商买断套卡清单查询" 
+				cond="QueryCondPart" />
+			</div>
+		</div>
+		
+		<!-- 表格区开始-->
+		<div jwcid="results@Part" element="div">
+			<div class="c_scroll c_scroll-x c_scroll-table-10">
+				<div class="c_table">
+					<table jwcid="@Table" name="resultsTable" id="resultsTable">
+						<thead>
+						<tr>
+						    <th datatype="string">市县</th>
+							<th datatype="string">渠道编码</th>
+							<th datatype="string">渠道名称</th>
+		      				<th datatype="string">渠道类型名称</th>
+							<th datatype="string">服务号码</th>
+							<th datatype="string">SIM卡号</th>		
+							<th datatype="string">买断时间</th>
+							<th datatype="string">延期操作时间</th>
+							<th datatype="string">延期操作工号</th>
+							<th datatype="string">备注</th>
+							<th datatype="string">查询时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:pageUtil.getStaticValue('TD_M_AREA',new java.lang.String[]{'AREA_CODE'},'AREA_NAME',new java.lang.String[]{info.CITY_CODE})" raw="true"/></td>						
+							<td><span jwcid="@Insert" value="ognl:info.DEPART_CODE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DEPART_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DEPART_KIND" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SIM_CARD_NO" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_DATE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.QRYTIME" raw="true"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- 翻页 开始 -->
+			<div jwcid="@NavBar" name="qryInfoNav" id="qryInfoNav" cond="QueryCondPart" part="results" listener="qryAgentBillIdListByCond" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+		  </div>
+		  <!-- 表格区结束 -->
+    </div>
+  </body>
+</html>

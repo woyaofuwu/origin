@@ -1,0 +1,1 @@
+select * from TF_B_FAMILY_OTHER a where (a.CUSTOMER_PHONE=:CUSTOMER_PHONE or a.MEM_NUMBER=:MEM_NUMBER) and a.finish_tag='1' and a.exp_time>sysdate and a.product_code='MFC999999' and a.rsrv_str10='1'

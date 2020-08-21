@@ -1,0 +1,1 @@
+select t.check_id,t.ibsysid,t.check_type,t.busi_type,t.check_staff_id,to_char(t.check_time,'yyyy-mm-dd') check_time,t.check_result,to_char(t.insert_time,'yyyy-mm-dd') insert_time,to_char(t.update_time,'yyyy-mm-dd') update_time,t.remark,t.rsrv_str1,t.rsrv_str2,t.rsrv_str3 from TF_B_EOP_BUSI_CHECK_RECORD t where t.IBSYSID=:IBSYSID and t.CHECK_TYPE=:CHECK_TYPE

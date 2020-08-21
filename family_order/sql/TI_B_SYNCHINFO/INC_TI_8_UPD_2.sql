@@ -1,0 +1,14 @@
+UPDATE TI_B_PAYRELATION a SET a.modify_tag = '2'
+        WHERE EXISTS(SELECT 1 FROM ( SELECT TRADE_ID,PARTITION_ID,USER_ID,ACCT_ID,PAYITEM_CODE,ACCT_PRIORITY,USER_PRIORITY,ADDUP_MONTHS,ADDUP_METHOD,BIND_TYPE,DEFAULT_TAG,ACT_TAG,LIMIT_TYPE,LIMIT,COMPLEMENT_TAG,INST_ID,START_CYCLE_ID,END_CYCLE_ID,UPDATE_TIME,UPDATE_STAFF_ID,UPDATE_DEPART_ID,REMARK,RSRV_STR1,RSRV_STR2,RSRV_STR3,RSRV_STR4,RSRV_STR5,RSRV_STR6,RSRV_STR7,RSRV_STR8,RSRV_STR9,RSRV_STR10
+                                     FROM TI_B_PAYRELATION
+                                     WHERE sync_sequence = to_number(:SYNC_SEQUENCE)
+                                     AND modify_tag = '9'
+                                     MINUS
+                                     SELECT TRADE_ID,PARTITION_ID,USER_ID,ACCT_ID,PAYITEM_CODE,ACCT_PRIORITY,USER_PRIORITY,ADDUP_MONTHS,ADDUP_METHOD,BIND_TYPE,DEFAULT_TAG,ACT_TAG,LIMIT_TYPE,LIMIT,COMPLEMENT_TAG,INST_ID,START_CYCLE_ID,END_CYCLE_ID,UPDATE_TIME,UPDATE_STAFF_ID,UPDATE_DEPART_ID,REMARK,RSRV_STR1,RSRV_STR2,RSRV_STR3,RSRV_STR4,RSRV_STR5,RSRV_STR6,RSRV_STR7,RSRV_STR8,RSRV_STR9,RSRV_STR10
+                                     FROM TF_B_TRADE_PAYRELATION_BAK
+                                     WHERE trade_id = to_number(:TRADE_ID)
+                                     AND accept_month = :ACCEPT_MONTH ) t1
+                     WHERE a.user_id = t1.user_id                
+                     and a.inst_id=t1.inst_id)
+        AND sync_sequence = to_number(:SYNC_SEQUENCE)
+        AND modify_tag = '9'

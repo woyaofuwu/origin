@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>垃圾短信人工审核</title>
+<script jwcid="@Script" language="JavaScript" src="person/monitorinfo/scripts/smsmonitorcheck.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+		<div class="text">垃圾短信人工审核</div>
+	</div>
+	
+	<div jwcid="QueryCondPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="HeadQueryPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询方式：</span></span>
+					<span class="e_select"><span><span>
+               		<select jwcid="@Select" name="QUERY_TYPE" id="QUERY_TYPE"
+							source="ognl:pageutil.getStaticList('QUERYMONITORINFO_QUERYTYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="QUERY_TYPE"
+                			value="1"
+                			onchange="changeQueryType()"
+							desc="查询方式"
+                			nullable="no"
+                       />
+                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">监控类型：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="DATA_TYPE" id="DATA_TYPE"
+							source="ognl:pageutil.getStaticList('MONITORFILE_DATATYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_TYPE"
+                			value="ognl:editInfo.DATA_TYPE"
+                			default="1"
+							desc="归属省份"
+                       />
+                </span></span></span>
+				</li>
+				<!-- <li class="li">
+					<span class="label">审核意见：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CHECK_TAG" id="CHECK_TAG" 
+							source="ognl:checkTags" 
+							value="B" textField="DATA_NAME" valueField="DATA_ID"  desc="审核意见"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li> -->
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="NormalQueryPart@Part" style="display:''">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">开始号码：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="START_SERIAL_NUMBER" name="START_SERIAL_NUMBER"  nullable="no" datatype="mbphone"
+						desc="开始号码"	value="ognl:editInfo.START_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="END_SERIAL_NUMBER" name="END_SERIAL_NUMBER"  nullable="no" datatype="mbphone"
+						desc="结束号码"	value="ognl:editInfo.END_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="DayQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_REPORT" name="DATE_REPORT"  
+						desc="查询日期"	value="ognl:editInfo.DATE_REPORT" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label">违规原因：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REASON_CODE_DAY" id="REASON_CODE_DAY" 
+						source="ognl:pageutil.getStaticList('HARASSPHONE_REASONCODE')" 
+						value="ognl:editInfo.REASON_CODE_DAY" textField="DATA_NAME" valueField="DATA_ID"  desc="违规原因"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="TimeQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_START" name="DATE_START"  
+						desc="查询日期"	value="ognl:editInfo.DATE_START" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">到：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="DATE_END" name="DATE_END"  
+						desc="结束日期"	value="ognl:editInfo.DATE_END" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label">违规原因：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REASON_CODE_TIME" id="REASON_CODE_TIME" 
+						source="ognl:pageutil.getStaticList('HARASSPHONE_REASONCODE')" 
+						value="ognl:editInfo.REASON_CODE_TIME" textField="DATA_NAME" valueField="DATA_ID"  desc="违规原因"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<div class="c_submit">
+		<div class="right">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryUncheckInfos()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="remarkPart">
+	<div class="c_title">
+        <span class="text">审核信息</span>
+        	 <div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92106"
+						  config="export/monitorinfo/MonitorInfoList.xml" fileName="待审核监控信息列表" beforeAction="exportBeforeAction"
+						 cond="QueryCondPart" params="ognl:'TEST_PARAM=5&&STAFF_ID=' + getVisit().getStaffId()"/>
+			</div>
+    </div>
+    <!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10" jwcid="MonitorInfoPart@Part" id="MonitorInfoPart">
+		<div class="c_table">
+			<table jwcid="@Table" name="MonitorInfoTable" id="MonitorInfoTable"  scroll="true">
+			<thead>
+				<tr>
+					<th col="MONITOR_CHECKED" style="display:none">选择</th>
+					<th col="CHECK_TAG" style="padding-left:15pt;padding-right:15pt">审核意见</th>
+					<th col="INTF_ID">流水号</th>
+					<th col="MONTH">处理月份</th>
+					<th col="IN_TIME">入库时间</th>
+					<th col="START_DATE">开始监控时间</th>
+					<th col="ENTER_DATE">超标时间</th>
+					<th col="SERIAL_NUMBER">主叫号码</th>
+					<th col="X_CALL_EDMPHONECODE">被叫号码</th>
+					<th col="DATA_TYPE">监控类型</th>
+					<th col="REASON_CODE">违规原因</th>
+					<th col="PROCESS_TAG">处理结果</th>
+					<th col="TRADE_NUMBER">超标数目</th>
+					<th col="MSG_ID">MSGID</th>
+					<th col="NOTICE_CONTENT">短信内容</th>
+					<th col="EXEC_TIME">处理时间</th>
+				</tr>
+			</thead>
+			<tbody id="MonitorInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<input jwcid="INTF_ID@Any" name="INTF_ID" type="hidden" value="ognl:info.INTF_ID" />
+					<td style="display:none">
+						<input jwcid="@Checkbox" type="checkbox" id="monitorInfoCheck" name="monitorInfoCheck" checked="true" value="ognl:info.CHECK_TAG + info.INTF_ID"/>
+					</td>
+					<td class="edit">
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CHECK_TAG" id="CHECK_TAG" addDefault="false"
+							source="ognl:pageutil.getStaticList('MONITOR_CHECKSTOPMOBILE')" value="B" textField="DATA_NAME" valueField="DATA_ID"  desc="审核意见"  titleField="DATA_NAME" />
+						</span></span></span>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.INTF_ID"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.MONTH"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.IN_TIME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.START_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.ENTER_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.X_CALL_EDMPHONECODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MONITORFILE_DATATYPE', info.DATA_TYPE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HARASSPHONE_REASONCODE', info.REASON_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HARASSPHONE_PROCESSTAG', info.PROCESS_TAG)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.MSG_ID"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.NOTICE_CONTENT"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.EXEC_TIME"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="queryNav" id="queryNav" cond="QueryCondPart" part="MonitorInfoPart" listener="queryUncheckInfos" pageSize="5" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	<div class="c_submit">
+		<button class="e_button-page-ok" id="submit" name="submit" onclick="return checkMonitoreInfo();"><i class="e_ico-ok"></i><span>提交审核</span></button>
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

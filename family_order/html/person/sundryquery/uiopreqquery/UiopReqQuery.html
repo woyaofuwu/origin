@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>UIP接口查询</title>
+<script jwcid="@Script"  src="person/sundryquery/uiopreqquery/scripts/uiopreqquery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2" jwcid="UiopReqQueryManageALLPart@Part">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">UIP接口查询</div>
+		<div class="tip"><span class="e_tip">此页面进行UIP接口查询</span></div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 --><!-- 查询框 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="UiopReqQueryCondPart@Part">
+	<ul class="ul">
+		
+		<li class="li" id="sn">
+			   <span class="label">手机号码：</span>
+				<span class="e_input" ><span>
+				<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+				desc="客户号码" nullable="no"/>
+				</span></span>
+		</li>
+		
+		<li class="li" id="in_mode_code">
+			   <span class="label">渠道：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="IN_MODE_CODE" id="IN_MODE_CODE" value="ognl:cond.IN_MODE_CODE" 
+				desc="渠道" nullable="no"/>
+				</span></span>
+		</li>
+		
+		<li class="li" id="sdate">			
+			    <span class="label"><span class="e_required">起始时间：</span></span>
+				   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="START_TIME" id ="START_TIME" value="ognl:cond.START_TIME" desc="起始日期" format="yyyy-MM-dd HH:mm:ss" maxName="END_TIME" time="true"/>
+				   </span></span>
+		</li>
+				
+		<li class="li" id="edate">			
+				 <span class="label"><span class="e_required">结束时间：</span></span>  
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="END_TIME" id ="END_TIME" value="ognl:cond.END_TIME"   desc="结束时间" format="yyyy-MM-dd HH:mm:ss" minName="START_TIME" time="true"/>
+				 </span></span>
+		</li>
+		
+		
+		</ul>
+		
+	  	<div class="submitPlace"></div>
+		<div class="button" >
+				<div jwcid="@Conditional" condition="ognl:cond.UIOP_REQQUERY_EXPORT == 1 ">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" serviceName="101999"
+								  config="export/sundryquery/uiopreqquery/UiopReqQueryExport.xml" fileName="查询结果导出" cond="UiopReqQueryCondPart" beforeAction="checkExport" />
+				</div>
+		</div> 
+		
+		<div class="submit">
+		 <button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+		
+	
+	<!-- 表格 开始 -->
+	<div jwcid="UiopReqQueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-20"><div class="c_table">
+		<table  jwcid="@Table" id="DeptTable"  name="DeptTable" rowClick="UiopReqQueryTableClick" >
+      			<thead>
+		  			<tr>
+						<th col="col_SERIAL_NUMBER" id="id_col_SERIAL_NUMBER">手机号码</th>
+						<th col="col_START_TIME" id="id_col_START_TIME">调用开始时间</th>
+						<th col="col_END_TIME" id="id_col_END_TIME">调用结束时间</th>
+						<th col="col_SVC_CODE" id="id_col_SVC_CODE">接口名</th>
+						<th col="col_RESULTCODE" id="id_col_RESULTCODE">返回编码</th>
+						<th col="col_RESULTINFO" id="id_col_RESULTINFO">返回内容</th>
+						<th col="col_ISVC_CONTENT" id="id_col_ISVC_CONTENT" >接口调用串</th>
+						<th col="col_OSVC_CONTENT" id="id_col_OSVC_CONTENT" >接口返回串</th>
+						<th col="col_IN_MODE_CODE" id="id_col_IN_MODE_CODE" >接入渠道</th>
+						<th col="col_TRADE_STAFF_ID" id="id_col_TRADE_STAFF_ID" >工号</th>
+						<th col="col_MONTH" id="id_col_MONTH" >月份</th>
+						<th col="col_TRADE_ID" id="id_col_TRADE_ID" style="display:none" >TRADE_ID</th>
+						<th col="col_PROTOCOL" id="id_col_PROTOCOL" style="display:none" >交易协议</th>
+						<th col="col_TRADE_DEPART_ID" id="id_col_TRADE_DEPART_ID" style="display:none" >部门编码</th>
+						<th col="col_TRADE_EPARCHY_CODE" id="id_col_TRADE_EPARCHY_CODE" style="display:none" >TRADE_EPARCHY_CODE</th>
+						<th col="col_TRADE_DEPART_PASSWD" id="id_col_TRADE_DEPART_PASSWD" style="display:none" >TRADE_DEPART_PASSWD</th>
+						<th col="col_TRADE_TERMINAL_ID" id="id_col_TRADE_TERMINAL_ID" style="display:none" >TRADE_TERMINAL_ID</th>
+						<th col="col_BIZ_CODE" id="id_col_BIZ_CODE" style="display:none" >BIZ_CODE</th>
+						<th col="col_TRANS_CODE" id="id_col_TRANS_CODE" style="display:none" >TRANS_CODE</th>
+						<th col="col_NEED_TIME" id="id_col_NEED_TIME" style="display:none" >NEED_TIME</th>
+						<th col="col_CALLSTART_TIME" id="id_col_CALLSTART_TIME" style="display:none" >APP调用开始时间</th>
+						<th col="col_CALLEND_TIME" id="id_col_CALLEND_TIME" style="display:none" >APP调用结束时间</th>
+						<th col="col_CALL_NEED_TIME" id="id_col_CALL_NEED_TIME" style="display:none" >APP调用时长</th>
+						<th col="col_REMOTE_IP" id="id_col_REMOTE_IP" style="display:none" >客户端请求IP</th>
+						<th col="col_LOCAL_IP" id="id_col_LOCAL_IP" style="display:none" >服务端响应IP</th>
+						<th col="col_PORT" id="id_col_PORT" style="display:none" >服务端响应端口</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">		
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SVC_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESULTCODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESULTINFO" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ISVC_CONTENT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OSVC_CONTENT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IN_MODE_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.MONTH" raw="true"/></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.PROTOCOL" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.TRADE_DEPART_ID" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.TRADE_EPARCHY_CODE" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.TRADE_DEPART_PASSWD" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.TRADE_TERMINAL_ID" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.BIZ_CODE" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.TRANS_CODE" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.NEED_TIME" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.CALLSTART_TIME" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.CALLEND_TIME" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.CALL_NEED_TIME" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.REMOTE_IP" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.LOCAL_IP" raw="true" /></td>
+						<td style="display:none" ><span jwcid="@Insert" value="ognl:info.PORT" raw="true" /></td>
+					</tr>
+				</tbody>
+			</table>
+	</div></div>
+	<div jwcid="@NavBar" name="page" id="page" cond="UiopReqQueryCondPart"  part="UiopReqQueryListPart" listener="queryList" pageSize="20" count="ognl:listCount"></div>	
+	</div>
+	<!-- 表格 结束 -->
+	
+	<div jwcid="@Conditional" condition="ognl:cond.UIOP_REQQUERY_DETAIL == 1 ">
+	<div jwcid="DetailUiopReqQueryPart@Part">
+		<div class="c_title"><div class="text">日志详情</div></div>
+		<div class="c_form c_form-col-2 c_form-label-15">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户号码：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_SERIAL_NUMBER' name='DETAIL_SERIAL_NUMBER' value="" nullable="no" desc="客户号码" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">调用开始时间：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_START_TIME' name='DETAIL_START_TIME' value="" nullable="no" desc="调用开始时间" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">调用结束时间：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_END_TIME' name='DETAIL_END_TIME' value="" nullable="no" desc="调用结束时间" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">接口名：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_SVC_CODE' name='DETAIL_SVC_CODE' value="" nullable="no" desc="接口名" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">返回编码：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_RESULTCODE' name='DETAIL_RESULTCODE' value="" nullable="no" desc="返回编码" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">返回内容：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_RESULTINFO' name='DETAIL_RESULTINFO' value="" nullable="no" desc="返回内容" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">接口调用串：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_ISVC_CONTENT' name='DETAIL_ISVC_CONTENT' value="" nullable="no" desc="接口调用串" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">接口返回串：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_OSVC_CONTENT' name='DETAIL_OSVC_CONTENT' value="" nullable="no" desc="接口返回串" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">接入渠道：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_IN_MODE_CODE' name='DETAIL_IN_MODE_CODE' value="" nullable="no" desc="接入渠道" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">工号：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_TRADE_STAFF_ID' name='DETAIL_TRADE_STAFF_ID' value="" nullable="no" desc="工号" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">月份：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_MONTH' name='DETAIL_MONTH' value="" nullable="no" desc="月份" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">TRADE_ID：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_TRADE_ID' name='DETAIL_TRADE_ID' value="" nullable="no" desc="TRADE_ID" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">交易协议：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_PROTOCOL' name='DETAIL_PROTOCOL' value="" nullable="no" desc="交易协议" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">部门编码：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_TRADE_DEPART_ID' name='DETAIL_TRADE_DEPART_ID' value="" nullable="no" desc="部门编码" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">TRADE_EPARCHY_CODE：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_TRADE_EPARCHY_CODE' name='DETAIL_TRADE_EPARCHY_CODE' value="" nullable="no" desc="TRADE_EPARCHY_CODE" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">TRADE_DEPART_PASSWD：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_TRADE_DEPART_PASSWD' name='DETAIL_TRADE_DEPART_PASSWD' value="" nullable="no" desc="TRADE_DEPART_PASSWD" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">BIZ_CODE：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_BIZ_CODE' name='DETAIL_BIZ_CODE' value="" nullable="no" desc="BIZ_CODE" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">TRANS_CODE：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_TRANS_CODE' name='DETAIL_TRANS_CODE' value="" nullable="no" desc="TRANS_CODE" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">NEED_TIME：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_NEED_TIME' name='DETAIL_NEED_TIME' value="" nullable="no" desc="NEED_TIME" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">app调用开始时间：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_CALLSTART_TIME' name='DETAIL_CALLSTART_TIME' value="" nullable="no" desc="app调用开始时间" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">app调用结束时间：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_CALLEND_TIME' name='DETAIL_CALLEND_TIME' value="" nullable="no" desc="app调用结束时间" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">app调用时长：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_CALL_NEED_TIME' name='DETAIL_CALL_NEED_TIME' value="" nullable="no" desc="app调用时长" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">客户端请求IP：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_REMOTE_IP' name='DETAIL_REMOTE_IP' value="" nullable="no" desc="客户端请求IP" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">服务端响应IP：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_LOCAL_IP' name='DETAIL_LOCAL_IP' value="" nullable="no" desc="服务端响应IP" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">服务端响应端口：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" readonly="true" id='DETAIL_PORT' name='DETAIL_PORT' value="" nullable="no" desc="服务端响应端口" /></span></span>
+					</span>
+				</li>
+				
+			</ul>
+			
+		</div>
+	</div>
+	</div>
+	
+	
+</div>
+
+
+</div></div></body>
+</html>

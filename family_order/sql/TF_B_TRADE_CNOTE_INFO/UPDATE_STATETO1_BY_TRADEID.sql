@@ -1,0 +1,6 @@
+UPDATE TF_B_TRADE_CNOTE_INFO T
+    SET T.RSRV_TAG3 = DECODE(NVL(RSRV_TAG3, '0'), '0', '1', '1', '1', '2', '3', '3', '3')
+    , T.RSRV_TAG1= :RSRV_TAG1
+        WHERE 1 = 1 
+            AND T.TRADE_ID = :TRADE_ID
+        AND T.ACCEPT_MONTH = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))

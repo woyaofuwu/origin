@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>异地写卡（异地客户资料查询）</title>
+<script language="JavaScript" src="person/interboss/mobileoperation/scripts/remotequerycustinfo.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	 <!-- 标题 开始 -->
+	   <div class="c_title">
+		 <div class="text">路由信息</div>
+	   </div>
+	   <!-- 标题 结束 -->
+	   <!-- 表单 开始 -->
+	   <div class="c_form c_form-label-5 c_form-col-3" jwcid="AddrCondPart@Part">
+	      <ul class="ul">
+	         <li class="li">
+	            <span class="label"><span class="e_required">路由类型：</span></span>
+		            <span class="e_select"><span><span>
+							<select jwcid="@Select" id="cond_ROUTETYPE" name="cond_ROUTETYPE" 
+								source="ognl:pageutil.getStaticList('ROUTERTYPE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_ROUTETYPE"
+								titleField="DATA_NAME" addDefault ="false"  nullable="no" desc="路由类型" />
+				</span></span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label">手机号码：</span>
+	            <span class="e_input"><span>
+	               <input jwcid="@TextField" id="cond_MOBILENUM" name="cond_MOBILENUM" value="ognl:condition.cond_MOBILENUM" desc="手机号码"
+	               maxLength="11" onBlur = "changeValue()"/>
+	            </span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label">省代码：</span>
+	            <span class="e_select"><span><span>
+						<select jwcid="@Select" id="cond_PROVINCE_CODE" name="cond_PROVINCE_CODE" 
+							source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')" 
+							valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_PROVINCE_CODE"
+							titleField="DATA_NAME" nullable="no" desc="省代码" disabled = "true"/>
+				</span></span></span>
+	        </li>
+	     </ul>
+	</div>
+	   <!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8"   jwcid="CustCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">客户标志类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_IDTYPE" name="cond_IDTYPE" 
+								source="ognl:pageutil.getStaticList('USER_IDTYPE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_IDTYPE"
+								titleField="DATA_NAME" nullable="no" desc="客户标志类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户标志号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_IDVALUE" name="cond_IDVALUE" value="ognl:condition.cond_IDVALUE" 
+				     desc="客户标志号码" nullable = "no"  onBlur = "changeValue1()"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">校验方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_VERIFY_TYPE" name="cond_VERIFY_TYPE" 
+								source="ognl:pageutil.getStaticList('IDENTITY_CHECK_CODE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_IDCARDTYPE"
+								titleField="DATA_NAME" nullable="no" desc="校验方式" onChange="checkVerify()"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<div  id="idcardtype">
+					<span class="label"><span id="span_IDCARDTYPE" class="e_required">证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="cond_IDCARDTYPE" name="cond_IDCARDTYPE" 
+									source="ognl:pageutil.getStaticList('IBOSS_PSPT_TYPE_CODE')" 
+									valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_IDCARDTYPE"
+									titleField="DATA_NAME"  desc="证件类型" />
+					</span></span></span>
+				</div>
+				<div  style="display:none" id = "userpasswd">
+					<span class="label"><span id="span_USER_PASSWD">客服密码：</span></span>
+					<span class="e_input"><span> 
+						<input jwcid="@Password" id="cond_USER_PASSWD"
+						name="cond_USER_PASSWD" hidden="true"  
+						maxLength="6" value="ognl:condition.cond_USER_PASSWD" desc="客服密码" /> 
+					</span></span>
+				</div>
+				
+			</li>
+			<li class="li" id = "idcardnum">
+				<span class="label"><span id="span_IDCARDNUM" class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_IDCARDNUM" name="cond_IDCARDNUM" value="ognl:condition.cond_IDCARDNUM" desc="证件号码" />
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="queryCustInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" name="QueryInfoPart" id="QueryInfoPart" jwcid="QueryInfoPart@Part">
+	<!-- 分页标签（替换为页面组件） 开始 -->
+	<div class="c_tab">
+		<div class="tab">
+			<ul>
+				<li id="baseID" name="baseID"  class="on"><a href="#nogo" onclick="refresBase();">基本资料</a></li>
+				<li id="keyAccountID" name="keyAccountID"   ><a href="#nogo" onclick="refresKeyAccount()">大客户资料</a></li>
+				<li id="scoreID" name="scoreID"   ><a href="#nogo" onclick="refresScore()">积分信息</a></li>
+				<li id="openID" name="openID"   ><a href="#nogo" onclick="refresOpen()">业务开通资料</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 分页标签 结束 -->
+	<!-- 分栏 开始 -->
+	<div class="l_col">
+		 
+		<!-- 第 1 栏 结束 -->
+		<!-- 第 2 栏 开始 -->
+		<div class="l_auto">
+	
+	
+	
+			<!-- 标题 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">查询结果</div>
+			</div>
+			<!-- 标题 结束 -->
+	 
+			<!-- 基本资料 开始 -->
+			<div   name="BaseListPart" id="BaseListPart" jwcid="BaseListPart@Part"
+									class="c_form c_form-text c_form-col-3 c_form-label-10" element="div">
+				<!-- 表格 开始 -->
+				 <ul class="ul">
+					<li class="li"> 
+						<span class="label">客户标识：</span>
+						<span class="text" jwcid="@Insert" name="CUST_ID" id="CUST_ID"
+									value="ognl:editInfo.CUST_ID" desc="客户标识" ></span> 
+					</li>
+					<li class="li">
+						<span class="label">客户姓名：</span>
+						<span class="text" jwcid="@Insert" name="CONTACTNAME" id="CONTACTNAME"
+									value="ognl:editInfo.CONTACTNAME" desc="客户姓名" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户性别：</span>
+						<span class="text" jwcid="@Insert" name="SEX" id="SEX"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SEX',editInfo.SEX)" desc="客户性别" ></span>   
+					</li>
+					<li class="li">
+						<span class="label">证件类别：</span>
+						<span class="text" jwcid="@Insert" name="JURI_PSPT_TYPE" id="JURI_PSPT_TYPE"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('IBOSS_PSPT_TYPE_CODE',editInfo.JURI_PSPT_TYPE)" desc="证件类别"  ></span>   
+					</li>
+					<li class="li">
+						<span class="label">证件号码：</span>
+						<span class="text" jwcid="@Insert" name="JURI_PSPT_CODE" id="JURI_PSPT_CODE"
+									value="ognl:editInfo.JURI_PSPT_CODE" desc="证件号码"  ></span>  
+					</li>
+					<li class="li">
+						<span class="label">联系电话：</span>
+						<span class="text" jwcid="@Insert" name="PHONE" id="PHONE"
+									value="ognl:editInfo.PHONE" desc="联系电话" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">邮政编码：</span>
+						<span class="text" jwcid="@Insert" name="POST_CODE" id="POST_CODE"
+									value="ognl:editInfo.POST_CODE"  desc="邮政编码" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">通信地址：</span>
+						<span class="text" jwcid="@Insert" name="POST_ADDRESS" id="POST_ADDRESS"
+									value="ognl:editInfo.POST_ADDRESS"  desc="通信地址" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">传真：</span>
+						<span class="text" jwcid="@Insert" name="FAX_NBR" id="FAX_NBR"
+									value="ognl:editInfo.FAX_NBR"  desc="传真"  ></span>  
+					</li>
+					<li class="li">
+						<span class="label">Email：</span>
+						<span class="text" jwcid="@Insert" name="EMAIL" id="EMAIL"
+									value="ognl:editInfo.EMAIL" desc="Email" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">联系人姓名：</span>
+						<span class="text" jwcid="@Insert" name="CONTACT" id="CONTACT"
+									value="ognl:editInfo.CONTACT" desc="联系人姓名" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">联系人电话：</span>
+						<span class="text" jwcid="@Insert" name="USEPHONE" id="USEPHONE"
+									value="ognl:editInfo.USEPHONE" desc="联系人电话" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">实居住地址：</span>
+						<span class="text" jwcid="@Insert" name="HOME_ADDRESS" id="HOME_ADDRESS"
+									value="ognl:editInfo.HOME_ADDRESS" desc="实居住地址" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">身份证地址：</span>
+						<span class="text" jwcid="@Insert" name="PSPT_ADDR" id="PSPT_ADDR"
+									value="ognl:editInfo.PSPT_ADDR" desc="身份证地址" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户积分：</span>
+						<span class="text" jwcid="@Insert" name="SCORE_VALUE" id="SCORE_VALUE"
+									value="ognl:editInfo.SCORE_VALUE" desc="客户积分" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户级别：</span>
+						<span class="text" jwcid="@Insert" name="CUST_LEVLE" id="CUST_LEVLE"
+									value="ognl:editInfo.CUST_LEVLE" desc="客户级别" ></span>  
+					</li>
+					<li class="li">
+					<span class="label">是否VIP：</span> 
+					<span class="text"><span> 
+					<input jwcid="@Checkbox" id="VIP_TAG" name="VIP_TAG" value=""
+						checked='ognl: 1 == editInfo.VIP_TAG?true:false' desc="是否VIP"  disabled="true" /> 
+					 </span></span>
+					</li>
+					<li class="li">
+						<span class="label">VIP卡号：</span>
+						<span class="text" jwcid="@Insert" name="VIP_CARD_NO" id="VIP_CARD_NO"
+									value="ognl:editInfo.VIP_CARD_NO" desc="VIP卡号" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">入网时间：</span>
+						<span class="text" jwcid="@Insert" name="REG_DATE" id="REG_DATE"
+									value="ognl:editInfo.REG_DATE" desc="入网时间" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">用户状态：</span>
+						<span class="text" jwcid="@Insert" name="USER_STATE" id="USER_STATE"
+									value="ognl:editInfo.USER_STATE" desc="用户状态" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">状态变更日期：</span>
+						<span class="text" jwcid="@Insert" name="STATUS_CHG_TIME" id="STATUS_CHG_TIME"
+									value="ognl:editInfo.STATUS_CHG_TIME" desc="状态变更日期" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">备注：</span>
+						<span class="text" jwcid="@Insert" name="REMARK" id="REMARK"
+									value="ognl:editInfo.REMARK" desc="备注" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">PUK码：</span>
+						<span class="text" jwcid="@Insert" name="RSRV_STR4" id="RSRV_STR4"
+									value="ognl:editInfo.RSRV_STR4" desc="PUK码" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">信用度：</span>
+						<span class="text" jwcid="@Insert" name="BASIC_CREDIT_VALUE" id="BASIC_CREDIT_VALUE"
+									value="ognl:editInfo.BASIC_CREDIT_VALUE" desc="信用度" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">增值业务开放情况：</span>
+						<span class="text" jwcid="@Insert" name="INCREMENT_NO" id="INCREMENT_NO"
+									value="ognl:editInfo.INCREMENT_NO" desc="增值业务开放情况" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">数据业务开放情况：</span>
+						<span class="text" jwcid="@Insert" name="SERVICE_NAME" id="SERVICE_NAME"
+									value="ognl:editInfo.SERVICE_NAME" desc="数据业务开放情况" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">归属省+地市名称：</span>
+						<span class="text" jwcid="@Insert" name="EPARCHY_CODE" id="EPARCHY_CODE"
+									value="ognl:editInfo.EPARCHY_CODE" desc="归属省+地市名称" ></span>  
+					</li>
+				</ul> 
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 基本资料 结束 -->
+			
+			<!-- 大客户资料 开始 -->
+			<div   name="KeyAccountPart" id="KeyAccountPart" style="display:none;"
+						 class="c_form c_form-text c_form-col-3 c_form-label-12"  jwcid="KeyAccountPart@Part" element="div">
+				<!-- 表格 开始 -->
+				 <ul class="ul">
+					<li class="li"> 
+						<span class="label">姓名：</span>
+						<span class="text" jwcid="@Insert" name="REGISTER_NAME" id="REGISTER_NAME"
+									value="ognl:editInfo.REGISTER_NAME" desc="姓名" ></span> 
+					</li>
+					<li class="li">
+						<span class="label">性别：</span>
+						<span class="text" jwcid="@Insert" name="SEX_NAME" id="SEX_NAME"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SEX',editInfo.SEX_NAME)" desc="性别" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">年龄：</span>
+						<span class="text" jwcid="@Insert" name="AGE" id="AGE"
+									value="ognl:editInfo.AGE" desc="年龄" ></span>   
+					</li>
+					<li class="li">
+						<span class="label">身份证件类型：</span>
+						<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('PSPT_TYPE_CODE',editInfo.PSPT_TYPE_CODE)" desc="身份证件类型"  ></span>   
+					</li>
+					<li class="li">
+						<span class="label">身份证件号码：</span>
+						<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID"
+									value="ognl:editInfo.PSPT_ID" desc="证件号码"  ></span>  
+					</li>
+					<li class="li">
+						<span class="label">婚姻状况：</span>
+						<span class="text" jwcid="@Insert" name="MARRIAGE" id="MARRIAGE"
+									value="ognl:editInfo.MARRIAGE" desc="婚姻状况" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">教育程度：</span>
+						<span class="text" jwcid="@Insert" name="EDUCATE_DEGREE_CODE" id="EDUCATE_DEGREE_CODE"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTPERSON_EDUCATEDEGREECODE',editInfo.EDUCATE_DEGREE_CODE)" desc="教育程度" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">手机号码：</span>
+						<span class="text" jwcid="@Insert" name="MOBILENUM" id="MOBILENUM"
+									value="ognl:editInfo.MOBILENUM" desc="手机号码" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">联系电话：</span>
+						<span class="text" jwcid="@Insert" name="TELPHONE" id="TELPHONE"
+									value="ognl:editInfo.TELPHONE" desc="联系电话" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">通信地址：</span>
+						<span class="text" jwcid="@Insert" name="CONTACT_POST_ADDR" id="CONTACT_POST_ADDR"
+									value="ognl:editInfo.CONTACT_POST_ADDR" desc="通信地址" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户经理工号：</span>
+						<span class="text" jwcid="@Insert" name="VIP_MANAGER_ID" id="VIP_MANAGER_ID"
+									value="ognl:editInfo.VIP_MANAGER_ID" desc="客户经理工号" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">VIP卡号：</span>
+						<span class="text" jwcid="@Insert" name="VIP_NO" id="VIP_NO"
+									value="ognl:editInfo.VIP_NO" desc="VIP卡号" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户VIP等级：</span>
+						<span class="text" jwcid="@Insert" name="LEVEL" id="LEVEL"
+									value="ognl:editInfo.LEVEL" desc="客户VIP等级" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">帐户余额：</span>
+						<span class="text" jwcid="@Insert" name="BALANCE" id="BALANCE"
+									value="ognl:editInfo.BALANCE" desc="帐户余额" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">历史标识：</span>
+						<span class="text" jwcid="@Insert" name="TAG_CODE" id="TAG_CODE"
+									value="ognl:editInfo.TAG_CODE" desc="历史标识" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户级别编码：</span>
+						<span class="text" jwcid="@Insert" name="CLASS_ID" id="CLASS_ID"
+									value="ognl:editInfo.CLASS_ID" desc="客户级别编码" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户积分(可用余额)：</span>
+						<span class="text" jwcid="@Insert" name="USERSCORE" id="USERSCORE"
+									value="ognl:editInfo.USERSCORE" desc="客户积分(可用余额)" ></span>  
+					</li>
+					
+					<li class="li">
+						<span class="label">账号：</span>
+						<span class="text" jwcid="@Insert" name="ACCT_ID" id="ACCT_ID"
+									value="ognl:editInfo.ACCT_ID" desc="账号" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">开户时间：</span>
+						<span class="text" jwcid="@Insert" name="OPEN_TIME" id="OPEN_TIME"
+									value="ognl:editInfo.OPEN_TIME" desc="开户时间" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">大客户经理联系电话：</span>
+						<span class="text" jwcid="@Insert" name="LINK_PHONE" id="LINK_PHONE"
+									value="ognl:editInfo.LINK_PHONE" desc="大客户经理联系电话" ></span>  
+					</li>
+				</ul> 
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 大客户资料 结束 -->
+			
+			
+			
+			<!-- 积分信息 开始 -->
+			<div   name="ScoreInfoPart" id="ScoreInfoPart" style="display:none;"
+						 class="c_form c_form-text c_form-col-3 c_form-label-5"  jwcid="ScoreInfoPart@Part" element="div">
+				<!-- 表格 开始 -->
+				 <ul class="ul">
+					<li class="li"> 
+						<span class="label">客户标识：</span>
+						<span class="text" jwcid="@Insert" name="CUST_CONTACT_ID" id="CUST_CONTACT_ID"
+									value="ognl:editInfo.CUST_CONTACT_ID" desc="客户标识" ></span> 
+					</li>
+					<li class="li">
+						<span class="label">客户姓名：</span>
+						<span class="text" jwcid="@Insert" name="NAME" id="NAME"
+									value="ognl:editInfo.NAME" desc="客户姓名" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">性别：</span>
+						<span class="text" jwcid="@Insert" name="X_SEX" id="X_SEX"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SEX',editInfo.X_SEX)" desc="性别" ></span>   
+					</li>
+					<li class="li">
+						<span class="label">证件类别：</span>
+						<span class="text" jwcid="@Insert" name="TYPE_CODE" id="TYPE_CODE"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('PSPT_TYPE_CODE',editInfo.TYPE_CODE)" desc="证件类别"  ></span>   
+					</li>
+					<li class="li">
+						<span class="label">证件号码：</span>
+						<span class="text" jwcid="@Insert" name="TYPE_DESC" id="TYPE_DESC"
+									value="ognl:editInfo.TYPE_DESC" desc="证件号码" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户积分：</span>
+						<span class="text" jwcid="@Insert" name="CONSUME_SCORE" id="CONSUME_SCORE"
+									value="ognl:editInfo.CONSUME_SCORE" desc="客户积分" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户级别：</span>
+						<span class="text" jwcid="@Insert" name="CUST_CLASS_TYPE" id="CUST_CLASS_TYPE"
+									value="ognl:editInfo.CUST_CLASS_TYPE" desc="客户级别" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">用户状态：</span>
+						<span class="text" jwcid="@Insert" name="USERSTATUS" id="USERSTATUS"
+									value="ognl:editInfo.USERSTATUS" desc="用户状态" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">归属省：</span>
+						<span class="text" jwcid="@Insert" name="PROVINCE_CODE" id="PROVINCE_CODE"
+									value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('COP_SI_PROV_CODE',editInfo.PROVINCE_CODE)" desc="归属省" ></span>  
+					</li>
+					<li class="li">
+						<span class="label">客户品牌：</span>
+						<span class="text" jwcid="@Insert" name="BRAND" id="BRAND"
+									value="ognl:editInfo.BRAND" desc="客户品牌" ></span>  
+					</li>
+				</ul> 
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 积分信息 结束 -->
+			
+			<!-- 业务开通资料 开始 -->
+			<div   name="OpenInfoPart" id="OpenInfoPart" style="display:none;"
+						 class="c_form c_form-text c_form-col-2 c_form-label-5"  jwcid="OpenInfoPart@Part" element="div">
+				<!-- 表格 开始 -->
+				 <ul class="ul">
+					<li class="li"><span class="label">GPRS开通：</span> <span
+					class="text"><span> <input jwcid="@Checkbox"
+					id="GPRS_TAG" name="GPRS_TAG" value=""
+					checked='ognl: 1 == editInfo.GPRS_TAG?true:false' desc="是否开通GPRS"
+					 disabled="true" /> </span></span></li>
+			    	<li class="li"><span class="label">国际漫游开通：</span> <span
+					class="text"><span> <input jwcid="@Checkbox"
+					id="ROAM_TYPE" name="ROAM_TYPE" value=""
+					checked='ognl: 1 == editInfo.ROAM_TYPE?true:false' desc="是否开通国际漫游"
+					disabled="true" /> </span></span></li>
+				</ul> 
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 业务开通资料 结束 -->
+	
+			
+		</div>
+		<!-- 第 2 栏 结束 -->
+	</div>
+	<!-- 分栏 结束 -->
+ 
+ 
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div>
+<script language="JavaScript" type="text/javascript">
+        $(document).ready(function(){
+                init();
+        });
+</script>
+</body>
+</html>

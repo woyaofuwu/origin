@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>和地图订购关系履历查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/mobilemap/scripts/queryCommRecord.js"></script>
+<script language="javascript">
+	window.attachEvent("onunload",closePage);
+	function closePage()
+	{
+		ajaxSubmit('HiddenPart,SerialNumPart','closePage',null,null,null);
+	};
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">和地图订购关系履历查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7" jwcid="QueryRecordPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">用户手机号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_PARA_CODE1" id="cond_PARA_CODE1" desc="用户手机号码" maxLength="11" nullable="no" datatype="mbphone" 
+					       value="ognl:getVisit().getInModeCode() == 1 ? getData().getString('SERIAL_NUMBER',''):cond.PARA_CODE1" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">操作开始时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE" value="ognl:cond.START_DATE" desc="操作开始时间" format="yyyy-MM-dd HH:mm:ss"  time = "true"   nullable="no" maxName="cond_END_DATE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">操作结束时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE" value="ognl:cond.END_DATE" desc="操作结束时间" format="yyyy-MM-dd HH:mm:ss"  time = "true"  nullable="no" minName="cond_START_DATE"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecord();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 隐藏区域 开始 -->
+   	<div jwcid="HiddenPart@Part" element="div">
+		<input jwcid="@Hidden" id="INDICTSEQ" name="INDICTSEQ" value="ognl:result.INDICTSEQ" />
+		<input jwcid="@Hidden" id="ORIGINTIME" name="ORIGINTIME" value="ognl:result.ORIGINTIME" />
+		<input jwcid="@Hidden" id="MAXRECORDNUM" name="MAXRECORDNUM" value="ognl:result.MAXRECORDNUM" />
+		<input jwcid="@Hidden" id="RSLTPAGECURRCNT" name="RSLTPAGECURRCNT" value="ognl:result.RSLTPAGECURRCNT" />
+		<input jwcid="@Hidden" id="PIGEONHOLE" name="PIGEONHOLE" value="ognl:result.PIGEONHOLE" />
+		<input jwcid="@TextArea" type="hidden" id="REPORTPAGE" name="REPORTPAGE" value="ognl:reportPage" style="display:none"/>
+	</div>
+	<div jwcid="SerialNumPart@Part" element="div">
+		<input jwcid="@Hidden" id="CALLERNO" name="CALLERNO" value="ognl:result.CALLERNO" />
+	</div>
+	<!-- 隐藏区域 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x style="height:242px"">
+	<div class="c_table c_table-row-10" >
+		<table>
+			<thead>
+				<tr>
+					<th>查询结果记录行号</th>
+					<th>用户手机号码</th>
+					<th>业务编码</th>
+					<th>子业务编码</th>
+					<th>套餐编码</th>
+					<th>订购方式</th>
+					<th>市编码</th>
+					<th>省编</th>
+					<th>来源</th>
+					<th>二级来源</th>
+					<th>订购发起时间</th>
+					<th>订购生效时间</th>
+					<th>动作类型</th>
+					<th>操作成功标志</th>
+					<th>操作结果码</th>
+					<th>附加信息</th>
+					<th>开发厂商</th>
+					<th>版本类别</th>
+					<th>操作时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR0" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_TRADE_CODE', info.RSRV_STR2)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="true"/></td>					 
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_ORDER_TYPE', info.RSRV_STR5)" raw="true"/></td>
+				    <td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR7" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_SOURCE', info.RSRV_STR8)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_NEXT_SOURCE', info.RSRV_STR9)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR10" raw="true"/></td>					 
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR11" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_MOVING_TYPE', info.RSRV_STR12)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_IS_SUCCESS', info.RSRV_STR13)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_OPERATE_RESULT', info.RSRV_STR14)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR15" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_DEVELOPER', info.RSRV_STR16)" raw="true"/></td>					 
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MOBILE_MAP_VERSION_TYPE', info.RSRV_STR17)" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	 <!-- 分页 开始-->
+	<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="HiddenPart,SerialNumPart" part="QueryListPart" 
+	     listener="queryOtherRecord" pageSize="ognl:result.RSLTPAGECURRCNT" count="ognl:result.MAXRECORDNUM"></div>
+     <!-- 分页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

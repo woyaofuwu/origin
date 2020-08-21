@@ -1,0 +1,349 @@
+﻿<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>热门推荐维护</title>
+	<script language="JavaScript" jwcid="@Script" src="iorder/person/popularity/scripts/PopularityManageNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">热门推荐维护</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">
+			<div jwcid="PopularityCond@Part" class="c_form c_form-border c_form-label-5 c_form-col-3 c_form-phone-col-1 c_form-submit">
+				<ul>
+					<li>
+						<div class="label">商品类型：</div>
+						<div class="value">
+							<select jwcid="QRY_POPULARITY_TRADE_TYPE@Select"
+								name="QRY_POPULARITY_TRADE_TYPE" id="QRY_POPULARITY_TRADE_TYPE"
+								source="ognl:pageutil.getStaticList('POPULARITY_TRADE_TYPE')"
+								valueField="DATA_ID" textField="DATA_NAME"
+								value="ognl:cond.POPULARITY_TRADE_TYPE" desc="商品类型"
+								addDefault="yes" />
+						</div>
+					</li>
+					<li>
+						<div class="label">商品编码：</div>
+						<div class="value">
+							<input jwcid="QRY_OFFER_CODE@TextField" id="QRY_OFFER_CODE"
+								name="QRY_OFFER_CODE" value="ognl:cond.OFFER_CODE" maxLength="12"
+								desc="商品编码" />
+						</div>
+					</li>
+					<li>
+						<div class="label">商品名称：</div>
+						<div class="value">
+							<input jwcid="QRY_OFFER_NAME@TextField" name="QRY_OFFER_NAME"
+								id="QRY_OFFER_NAME" value="ognl:cond.OFFER_NAME" desc="商品名称" />
+						</div>
+					</li>
+					<li>
+						<div class="label">生效时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="QRY_START_DATE" id="QRY_START_DATE"
+								maxName="END_DATE" format="yyyy-MM-dd HH:mm:ss" nullable="no"
+								readOnly="true" value="ognl:cond.START_DATE" desc="生效时间"
+								dropDown="true" />
+						</div>
+					</li>
+					<li>
+						<div class="label">失效时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="QRY_END_DATE" id="QRY_END_DATE"
+								minName="START_DATE" format="yyyy-MM-dd HH:mm:ss" nullable="no"
+								readOnly="true" value="ognl:cond.END_DATE" desc="失效时间"
+								dropDown="true" />
+						</div>
+					</li>
+					<li>
+						<div class="label">类型：</div>
+						<div class="value">
+							<select name="QRY_POPULARITY_TYPE" id="QRY_POPULARITY_TYPE" jwcid="QRY_POPULARITY_TYPE@Select"
+								source="ognl:pageutil.getStaticList('POPULARITY_TYPE')"
+								valueField="DATA_ID" textField="DATA_NAME"
+								value="ognl:cond.POPULARITY_TYPE" desc="类型" addDefault="yes" />
+						</div>
+					</li>
+				</ul>
+				<div class="submit">
+					<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="queryPopularity();">
+						<span class="e_ico-search"></span>
+						<span>查询</span>
+					</button>
+				</div>
+			</div>
+			<div class="c_space"></div>
+			<div jwcid="PopularityList@Part">
+				<!-- 表格 开始 -->
+				<table jwcid="@Table" id="PopularityTable" name="PopularityTable"
+					class="c_table c_table-lite c_table-border c_table-row-5">
+					<thead>
+						<tr>
+							<th col="POPULARITY_ID" style="display:none">标识</th>
+							<th col="POPULARITY_TRADE_TYPE" style="display:none">商品类型ID</th>
+							<th col="POPULARITY_TRADE_TYPE_NAME">商品类型</th>
+							<th col="POPULARITY_TYPE" style="display:none">类型ID</th>
+							<th col="POPULARITY_TYPE_NAME">类型</th>
+							<th col="OFFER_CODE">商品编码</th>
+							<th col="OFFER_NAME">商品名称</th>
+							<th col="OFFER_DESCRIPTION">商品描述</th>
+							<th col="POPULARITY_DEFAULT_ICON" style="display:none">推荐默认图标</th>
+							<th col="POPULARITY_ICON" style="display:none">推荐图标</th>
+							<th col="PRIORITY">优先级</th>
+							<th col="START_DATE">生效时间</th>
+							<th col="END_DATE">失效时间</th>
+							<th col="UPDATE_TIME">更新时间</th>
+							<th col="UPDATE_STAFF_ID">更新员工</th>
+							<th col="UPDATE_DEPART_ID">更新部门</th>
+							<th col="PRODUCT_ID" style="display:none">产品编码ID（营销活动）</th>
+							<th col="PRODUCT_NAME">产品编码（营销活动）</th>
+							<th col="CAMPN_TYPE" style="display:none">活动类型ID（营销活动）</th>
+							<th col="CAMPN_NAME">活动类型（营销活动）</th>
+							<th col="MENU_ID" style="display:none">关联菜单ID</th>
+							<th col="MENU_TITLE">关联菜单</th>
+							<th col="REMARKS">备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+							element="tr" index="ognl:rowIndex"
+							class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+							ontap="PopularityTableClick(this)">
+							<td data-title="标识" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.POPULARITY_ID" raw="true" /></td>
+							<td data-title="商品类型ID" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.POPULARITY_TRADE_TYPE"
+								raw="true" /></td>
+							<td data-title="商品类型"><span jwcid="@Insert"
+								value="ognl:pageutil.getStaticValue('POPULARITY_TRADE_TYPE',info.POPULARITY_TRADE_TYPE)"
+								raw="true" /></td>
+							<td data-title="类型ID" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.POPULARITY_TYPE" raw="true" /></td>
+							<td data-title="类型"><span jwcid="@Insert"
+								value="ognl:pageutil.getStaticValue('POPULARITY_TYPE',info.POPULARITY_TYPE)"
+								raw="true" /></td>
+							<td data-title="商品编码"><span jwcid="@Insert"
+								value="ognl:info.OFFER_CODE" raw="true" /></td>
+							<td data-title="商品名称"><span jwcid="@Insert"
+								value="ognl:info.OFFER_NAME" raw="false" /></td>
+							<td data-title="商品描述"><span jwcid="@Insert"
+								value="ognl:info.OFFER_DESCRIPTION" raw="true" /></td>
+							<td data-title="推荐默认图标" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.POPULARITY_DEFAULT_ICON" /></td>
+							<td data-title="推荐图标" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.POPULARITY_ICON" /></td>
+							<td data-title="优先级"><span jwcid="@Insert"
+								value="ognl:info.PRIORITY" raw="true" /></td>
+							<td data-title="生效时间"><span jwcid="@Insert"
+								value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.START_DATE)" raw="true" /></td>
+							<td data-title="失效时间"><span jwcid="@Insert"
+								value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.END_DATE)" raw="true" /></td>
+							<td data-title="更新时间"><span jwcid="@Insert"
+								value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)"
+								raw="true" /></td>
+							<td data-title="更新员工"><span jwcid="@Insert"
+								value="ognl:info.UPDATE_STAFF_ID" raw="true" /></td>
+							<td data-title="更新部门"><span jwcid="@Insert"
+								value="ognl:info.UPDATE_DEPART_ID" raw="true" /></td>
+							<td data-title="产品编码ID（营销活动）" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="true" /></td>
+							<td data-title="产品编码（营销活动）"><span jwcid="@Insert"
+								value="ognl:info.PRODUCT_NAME" raw="true" /></td>
+							<td data-title="活动类型ID（营销活动）" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.CAMPN_TYPE" raw="true" /></td>
+							<td data-title="活动类型（营销活动）"><span jwcid="@Insert"
+								value="ognl:info.CAMPN_NAME" raw="true" /></td>
+							<td data-title="关联菜单ID" style="display:none"><span
+								jwcid="@Insert" value="ognl:info.MENU_ID" raw="true" /></td>
+							<td data-title="关联菜单"><span jwcid="@Insert"
+								value="ognl:pageutil.getStaticValue('POPULARITY_CONNECT_MENU_ID',info.MENU_ID)"
+								raw="true" /></td>
+							<td data-title="备注"><span jwcid="@Insert"
+								value="ognl:info.REMARKS" raw="true" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div class="c_page c_page-border" jwcid="pagin@NavBar" name="pagin" cond="PopularityCond"
+					count="ognl:paginCount" listener="queryPopularity" pageSize="5"
+					part="PopularityList" />
+				<!-- 翻页 结束 -->
+			</div>
+			<div class="c_space-c"></div>
+			<div jwcid="addPart@Part" class="c_list c_list-s c_list-border c_list-line c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required" id="POPULARITY_TRADE_TYPE_LI">
+						<div class="label">商品类型</div>
+						<div class="value">
+							<select jwcid="POPULARITY_TRADE_TYPE@Select"
+								name="POPULARITY_TRADE_TYPE" id="POPULARITY_TRADE_TYPE"
+								source="ognl:pageutil.getStaticList('POPULARITY_TRADE_TYPE')"
+								valueField="DATA_ID" textField="DATA_NAME"
+								value="ognl:codeInfo.POPULARITY_TRADE_TYPE" desc="商品类型"
+								onchange="chgPopularityTradeType();" addDefault="yes" nullable="no" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">商品编码</div>
+						<div class="value">
+							<div class="e_mix">
+								<input jwcid="OFFER_CODE@TextField" id="OFFER_CODE"
+								name="OFFER_CODE" value="ognl:codeInfo.OFFER_CODE" onblur="queryCode();"
+								maxLength="12" nullable="no" desc="商品编码" />
+								<button name="QUERY_CODE_BTN" id="QUERY_CODE_BTN"
+									class="e_button-blue" ontap="queryCode();">
+									<span class="e_ico-search"></span><span>查询</span>
+								</button>
+							</div>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">商品名称</div>
+						<div class="value">
+							<input jwcid="OFFER_NAME@TextField" name="OFFER_NAME" id="OFFER_NAME"
+								value="ognl:codeInfo.OFFER_NAME" disabled="true" desc="商品名称" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">生效时间</div>
+						<div class="value">
+							<input jwcid="@DateField" name="START_DATE" id="START_DATE"
+								maxName="END_DATE" format="yyyy-MM-dd HH:mm:ss" nullable="no"
+								readOnly="true" value="ognl:codeInfo.START_DATE" desc="生效时间"
+								dropDown="true" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">失效时间</div>
+						<div class="value">
+							<input jwcid="@DateField" name="END_DATE" id="END_DATE"
+								minName="START_DATE" format="yyyy-MM-dd HH:mm:ss" nullable="no"
+								readOnly="true" value="ognl:codeInfo.END_DATE" desc="失效时间"
+								dropDown="true" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">类型</div>
+						<div class="value">
+							<select name="POPULARITY_TYPE" id="POPULARITY_TYPE" jwcid="POPULARITY_TYPE@Select"
+								source="ognl:pageutil.getStaticList('POPULARITY_TYPE')"
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:codeInfo.POPULARITY_TYPE"
+								nullable="no" desc="类型" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">关联菜单</div>
+						<div class="value">
+							<select name="MENU_ID" id="MENU_ID" jwcid="MENU_ID@Select"
+								source="ognl:pageutil.getStaticList('POPULARITY_CONNECT_MENU_ID')"
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:codeInfo.MENU_ID" 
+								nullable="no" desc="关联菜单" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">优先级</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PRIORITY" id="PRIORITY"
+								value="ognl:codeInfo.PRIORITY" maxLength="4" desc="优先级"
+								placeholder="前台展示顺序，数字越小优先级越高" nullable="no" />
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">商品描述</div>
+						<div class="value">
+							<input jwcid="@TextField" name="OFFER_DESCRIPTION"
+								id="OFFER_DESCRIPTION" value="ognl:codeInfo.OFFER_DESCRIPTION"
+								desc="商品描述" disabled="true" />
+						</div>
+					</li>
+					<li class="link" style="display:none;" id="PRODUCT_ID_LI">
+						<div class="label">营销方案</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PRODUCT_NAME" id="PRODUCT_NAME"
+								value="ognl:codeInfo.PRODUCT_NAME" disabled="true" desc="营销方案" />
+							<div style="display:none;">
+								<input jwcid="@TextField" name="PRODUCT_ID" id="PRODUCT_ID"
+									value="ognl:codeInfo.PRODUCT_ID" desc="产品编码ID（营销活动）" />
+							</div>
+						</div>
+					</li>
+					<li class="link" style="display:none;" id="CAMPN_TYPE_LI">
+						<div class="label">活动类型</div>
+						<div class="value">
+							<input jwcid="@TextField" name="CAMPN_NAME" id="CAMPN_NAME"
+								value="ognl:codeInfo.CAMPN_NAME" disabled="true" desc="活动类型" />
+							<div style="display:none;">
+								<input jwcid="@TextField" name="CAMPN_TYPE" id="CAMPN_TYPE"
+									value="ognl:codeInfo.CAMPN_TYPE" desc="活动类型ID（营销活动）" />
+							</div>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">备注</div>
+						<div class="value">
+							<input jwcid="@TextField" name="REMARKS" id="REMARKS"
+								class="e_left" value="ognl:codeInfo.REMARKS" desc="备注" />
+						</div>
+					</li>
+					<li class="link" style="display:none">
+						<div class="label">推荐默认图标</div>
+						<div class="value">
+							<input jwcid="@TextField" name="POPULARITY_DEFAULT_ICON"
+								id="POPULARITY_DEFAULT_ICON"
+								value="ognl:codeInfo.POPULARITY_DEFAULT_ICON" desc="推荐默认图标" />
+						</div>
+					</li>
+					<li class="link" style="display:none">
+						<div class="label">推荐图标</div>
+						<div class="value">
+							<input jwcid="@TextField" name="POPULARITY_ICON"
+								id="POPULARITY_ICON" value="ognl:codeInfo.POPULARITY_ICON"
+								desc="推荐图标" />
+						</div>
+					</li>
+					<li><div class="main">&nbsp;</div></li>
+					<li>
+						<div class="value">
+							<button name="ADD_BTN" id="ADD_BTN" class="e_button-blue"
+								ontap="addPopularity();">
+								<span class="e_ico-add"></span><span>新增</span>
+							</button>
+							<button name="EDIT_BTN" id="EDIT_BTN" class="e_button-blue"
+								ontap="editPopularity();">
+								<span class="e_ico-edit"></span><span>修改</span>
+							</button>
+							<button name="DELETE_BTN" id="DELETE_BTN" class="e_button-blue"
+								ontap="deletePopularity();">
+								<span class="e_ico-delete"></span><span>删除</span>
+							</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<span class="e_space"></span>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button jwcid="@Button" class="e_button-r e_button-l e_button-navy"
+					id="resetBtn" name="resetBtn" ontap="resetPage();">
+					<span>重置</span>
+				</button>
+				<button jwcid="@Button" class="e_button-r e_button-l e_button-green"
+					id="submitBtn" name="submitBtn" ontap="submitPopularity();">
+					<span>提交</span>
+				</button>
+			</div>
+			<!-- 提交 结束 -->
+			<span class="e_space"></span>
+		</div>
+	</div>
+</body>
+</html>

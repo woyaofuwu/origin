@@ -1,0 +1,1 @@
+DELETE FROM TS_AH_BILL WHERE acct_id = :ACCT_ID AND partition_id = :PARTITION_ID AND bill_id = :BILL_ID AND integrate_item_code = :INTEGRATE_ITEM_CODE

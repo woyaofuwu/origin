@@ -1,0 +1,2 @@
+INSERT INTO ti_o_credit_other_hasten(partition_id,trade_id,user_id,hasten_policy_id,in_time,manage_tag,trade_type_code,leave_real_fee,credit_value,hasten_count,finish_count,exec_time,process_tag,remark,eparchy_code)
+ VALUES(MOD(TO_NUMBER(:USER_ID),10000),TO_NUMBER(:TRADE_ID),TO_NUMBER(:USER_ID),:HASTEN_POLICY_ID,SYSDATE,:MANAGE_TAG,:TRADE_TYPE_CODE,TO_NUMBER(:LEAVE_REAL_FEE),TO_NUMBER(:CREDIT_VALUE),:HASTEN_COUNT,:FINISH_COUNT,TO_DATE(:EXEC_TIME,'YYYY-MM-DD HH24:MI:SS'),'0',:REMARK,:EPARCHY_CODE)

@@ -1,0 +1,1 @@
+SELECT * FROM TF_B_TRADE_ALTSN_PLATMRG where  serial_number = :SERIAL_NUMBER and rela_type = :RELA_TYPE and ACTIVATE_TIME is null

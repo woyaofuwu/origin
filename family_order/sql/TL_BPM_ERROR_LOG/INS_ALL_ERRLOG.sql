@@ -1,0 +1,2 @@
+INSERT INTO tl_bpm_error_log(id,bpm_id,token_id,trade_id,trade_type_code,user_id,err_code,err_desc,err_detail_desc,deal_tag,deal_desc,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(TO_NUMBER(:ID),TO_NUMBER(:BPM_ID),TO_NUMBER(:TOKEN_ID),TO_NUMBER(:TRADE_ID),:TRADE_TYPE_CODE,TO_NUMBER(:USER_ID),substr(:ERR_CODE,1,6),:ERR_DESC,substrb(:ERR_DETAIL_DESC,1,2000),'0','未处理',:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

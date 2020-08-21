@@ -1,0 +1,4 @@
+Insert into TF_F_USER_OTHER
+       (PARTITION_ID, USER_ID,   RSRV_STR1,   RSRV_STR2,   RSRV_STR3,   RSRV_STR4,  RSRV_STR5 ,  RSRV_STR6,  RSRV_STR7,  RSRV_STR8,  RSRV_VALUE_CODE,   RSRV_VALUE, TRADE_ID, START_DATE,END_DATE,                                    UPDATE_TIME, UPDATE_STAFF_ID, UPDATE_DEPART_ID,  INST_ID)
+ select PARTITION_ID, USER_ID, :RSRV_STR1, :RSRV_STR2, :RSRV_STR3, :RSRV_STR4,:RSRV_STR5, :RSRV_STR6,:RSRV_STR7,:RSRV_STR8,:RSRV_VALUE_CODE, :RSRV_VALUE, '',       sysdate   ,to_date(:END_DATE, 'yyyy-mm-dd hh24:mi:ss'), sysdate    , 'SUPERUSR',      '0000',          :INST_ID  
+     from tf_f_user where serial_number = :SERIAL_NUMBER and remove_tag='0'

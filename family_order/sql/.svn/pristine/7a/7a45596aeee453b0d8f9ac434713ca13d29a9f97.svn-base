@@ -1,0 +1,3 @@
+UPDATE td_b_product
+   SET product_id=:PRODUCT_ID,product_name=:PRODUCT_NAME,product_explain=:PRODUCT_EXPLAIN,brand_code=:BRAND_CODE,group_brand_code=:GROUP_BRAND_CODE,product_obj_type=:PRODUCT_OBJ_TYPE,res_type_code=:RES_TYPE_CODE,comp_tag=:COMP_TAG,enable_tag=:ENABLE_TAG,start_date=TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),end_date=TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS'),release_tag=:RELEASE_TAG,priority=:PRIORITY,prepay_tag=:PREPAY_TAG,tag_set=:TAG_SET,rsrv_str1=:RSRV_STR1,rsrv_str2=:RSRV_STR2,rsrv_str3=:RSRV_STR3,rsrv_str4=:RSRV_STR4,rsrv_str5=:RSRV_STR5,update_staff_id=:UPDATE_STAFF_ID,update_depart_id=:UPDATE_DEPART_ID,update_time=sysdate  
+ WHERE product_id=:PRODUCT_ID

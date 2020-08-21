@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: BatPlatDeal.html,v 1.3 2015/09/24 10:53:09 songxw Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>批量同步平台业务订购关系</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script language="JavaScript" jwcid="@Script" src="scripts/person/bat/plattask/batplatorderrelationsyn.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">同步平台业务订购关系批量导入查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-2" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				  <span class="label">导入流水号：</span>
+					<span class="e_input"><span>
+					 <input type="text" jwcid="@TextField" name="cond_IMPORT_ID" value="ognl:condition.IMPORT_ID" desc="导入标识" class="e_input" nullable="NO"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label">导入工号：</span>
+					<span class="e_input"><span>
+						  <input type="text" jwcid="@TextField" name="cond_IMPORT_STAFF_ID" value="ognl:condition.IMPORT_STAFF_ID" desc="导入工号" class="e_input"/>
+			</span></span>
+			</li>
+		    <li class="li">
+		    <span class="label">导入开始时间：</span>
+					<span class="e_input"><span> 
+					<input jwcid="cond_IMPORT_DATE_START@DateField"
+							name="cond_IMPORT_DATE_START"
+							format="yyyy-MM-dd"
+							readonly="true"
+							desc="导入开始时间"
+							maxName ="cond_IMPORT_DATE_END"
+						/>
+			      </span></span>
+		    </li>
+		     <li class="li">
+		    <span class="label">导入结束时间：</span>
+					<span class="e_input"><span> 
+						<input jwcid="cond_IMPORT_DATE_END@DateField"
+							name="cond_IMPORT_DATE_END"
+							format="yyyy-MM-dd"
+							readonly="true"
+							desc="导入结束时间"
+							minName="cond_IMPORT_DATE_START"
+						/>	
+						</span></span>
+		    </li>
+		    <li class="li">
+				<span class="label">处理结果：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_DEAL_FLAG" id="cond_DEAL_FLAG" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('BAT_PLATSYN_FLAG')" value="ognl:condition.DEAL_FLAG" desc="处理结果"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="l_ml" onclick="runBatDeal()" id="startButton"><i class="e_ico-play"></i><span>启动</span></button>
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryPlatOrderRelationBat();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form" name="RESET_BTN" id="RESET_BTN" onclick="resetUrl()"><i class="e_ico-reset"></i><span>重置</span></button>
+	
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	 
+  <!-- 区域开始 -->
+	<div class="c_title c_title-2">
+		 <div class="text">查询结果</div>
+  	</div>
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+			<table>
+      			<thead>
+		  			<tr>
+		  				<th><input jwcid="@Checkbox" name="myCheck" onclick="checkedOther('trades')"/></th>
+						<th>导入批次号</th>
+						<th>导入时间</th>
+						<th>导入工号</th>
+						<th>导入部门</th>
+						<th>处理标识</th>
+						<th>处理时间</th>
+						<th>处理结果</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><input jwcid="@Checkbox" name="trades" value="ognl:info.IMPORT_ID" disabled="ognl:info.DEAL_FLAG != 0"/></td>
+						<td><a jwcid="@Redirect" value="ognl:info.IMPORT_ID" importid="ognl:info.IMPORT_ID" source="ognl:info" columns="IMPORT_ID" onclick="javascript:openNav('平台业务订购关系同步导入结果查询','plat.platdata.PlatOrderRelationBatDetail', 'queryPlatOrderRelationBatDtl&IMPORT_ID='+$(this).attr('importid'))"/></td>	
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.IMPORT_TIME)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.IMPORT_STAFF_ID" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.IMPORT_DEPART_ID" raw="true" /></td>						
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAT_PLATSYN_FLAG',info.DEAL_FLAG)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.DEAL_TIME)" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEAL_RESULT" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true" /></td>
+					</tr>
+				</tbody>
+			</table>
+			</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+<div jwcid="@NavBar" needStat="false" name="queryNav" id="queryNav" cond="QueryCondPart" part="QueryListPart" listener="queryPlatOrderRelationBat" pageSize="10" count="ognl:pageCount"></div>		
+	
+	<!-- 翻页 结束 -->
+	
+	
+	<div class="c_title">
+			<div class="text">批量数据导入区</div>
+		</div>
+		<div class="c_form c_form-col-1 c_form-label-11" jwcid="DataImportPart@Part">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName=同步平台业务订购关系批量导入模版.xls&filePath=template/bat/PLATORDERRELATIONSYN.xls')">
+						<span jwcid="@Insert" value="[点击下载]"></span>
+					</a>
+				</span>
+				</li>
+				<li class="li" >
+					<span class="label"><span class="e_required">导入文件：</span></span>
+					<span class="text">
+					<input jwcid="@SimpleUpload" name="FILE_ID" ftpSite="personserv" filePath="" fileSize="20" fileTypes="*.xls;*.xlsx" />
+					</span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" name="IMPORT_BTN" id="IMPORT_BTN" onclick="return importPlatOrderRelation();"><i class="e_ico-import"></i><span>导入</span></button>
+			</div>
+		</div>
+</div>
+<!-- 区域 结束 -->
+
+</body>
+</html>
+ 
+ 

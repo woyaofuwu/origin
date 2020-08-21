@@ -1,0 +1,1 @@
+select * from tf_f_user_other where RSRV_STR4=:RSRV_STR4 AND SYSDATE BETWEEN START_DATE AND END_DATE

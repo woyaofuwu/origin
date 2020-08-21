@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/sundryquery/usertradescore/scripts/usertradescore.js" ></script>
+<script language="JavaScript">
+   $(document).ready(function(){
+		queryUserTradeScore();//接口接入积分兑换明细查询
+		$("#SERIAL_NUMBER").bind("keydown",serialNumberKeydown);
+   });
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" jwcid="buttonPart@Part">
+		<div class="text">积分兑换明细查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+				<input type="text"  jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" nullable="no" datatype="mbphone" desc="服务号码"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_ACCEPT_START" id="cond_ACCEPT_START" value="ognl:condition.cond_ACCEPT_START" maxName="cond_ACCEPT_END" desc="开始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_ACCEPT_END" id="cond_ACCEPT_END"  value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', condition.cond_ACCEPT_END)" minName="cond_ACCEPT_START" desc="结束时间"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return checkBeforeSubmit();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part">
+	
+	   <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100993"
+								  config="export/sundryquery/other/UserTradeScoreList.xml" fileName="积分兑换明细" cond=QueryCondPart
+								  params="ognl:'STAFF_ID=' + getVisit().getStaffId()"/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		</div>	     
+		<div jwcid="table4Print@Part" optimize="true">
+		<div class="c_scroll c_scroll-table-20">
+	        <div class="c_table c_table-row-10">
+		 <table>
+			<thead>
+				<tr>
+					<th>业务流水</th>
+					<th>手机号码</th>
+					<th>业务编码</th>
+					<th>业务名称</th>
+					<th>原分值</th>
+					<th>积分变化值</th>
+					<th>价值（元）</th>
+					<th>备注</th>
+					<th>业务手机号码</th>
+					<th>客户名称</th>
+					<th>受理时间</th>
+					<th>受理员工</th>
+					<th>受理员工名称</th>
+					<th>返销状态</th>
+					<th>返销时间</th>
+					<th>返销员工</th>
+				</tr>
+			</thead>
+			<tbody>			
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+						trValue="ognl:infos.getData(rowIndex).TRADE_ID" trValue2="ognl:infos.getData(rowIndex).SCORE" 
+						trValue3="ognl:infos.getData(rowIndex).SCORE_CHANGED"  ondblclick="showdetail(this)">
+						<td>
+							<a jwcid="@Redirect" 
+				    			value="ognl:info.TRADE_ID" name="TRADE_ID" id="TRADE_ID" source="ognl:info" columns="TRADE_ID,SERIAL_NUMBER" cols="80" 
+				    			onclick="popupPage('sundryquery.usertradescore.PopupUserTradeScore','init','&TRADE_ID='+$(this).attr('title')+'&SERIAL_NUMBER='+$('#SERIAL_NUMBER').val(),
+				    			'明细项及转预存受益号码信息', '600', '400')"/>
+		    			</td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SCORE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SCORE_CHANGED" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.VALUE_CHANGED)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE == null ? '' :formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CHNL_ACCT_CANCELTAG', info.CANCEL_TAG)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CANCEL_DATE == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.CANCEL_DATE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CANCEL_STAFF_ID" raw="true"/></td>
+					</tr>               
+			</tbody>
+		</table>
+	</div></div></div>
+		<div jwcid="@NavBar"  name="olcomnav" id="olcomnav" listener="queryUserTradeScore" pageSize="10" cond="QueryCondPart" part="QueryListPart" count="ognl:infosCount"/>
+	</div>
+	<!-- 表格 结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+
+
+
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO td_s_res_tradetype(eparchy_code,res_type_code,res_trade_type_code,res_trade_type,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:EPARCHY_CODE,:RES_TYPE_CODE,:RES_TRADE_TYPE_CODE,:RES_TRADE_TYPE,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

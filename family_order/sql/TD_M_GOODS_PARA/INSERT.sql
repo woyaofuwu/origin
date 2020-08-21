@@ -1,0 +1,2 @@
+INSERT INTO td_m_goods_para(eparchy_code,para_code1,para_code2,code_type_code,para_name,start_date,end_date,action_code,rsvalue1,rsvalue2,rsrv_tag1,rsrv_tag2,rsrv_tag3,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:EPARCHY_CODE,:PARA_CODE1,:PARA_CODE2,:CODE_TYPE_CODE,:PARA_NAME,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:ACTION_CODE,:RSVALUE1,:RSVALUE2,:RSRV_TAG1,:RSRV_TAG2,:RSRV_TAG3,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

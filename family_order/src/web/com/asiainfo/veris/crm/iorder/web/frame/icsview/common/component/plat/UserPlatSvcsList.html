@@ -1,0 +1,118 @@
+<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-line c_list-border c_list-hasStatu" id="services">
+    <ul id="servicesUl">
+        <li
+                jwcid="@Foreach"
+                id="ognl:userPlatSvc.ITEM_INDEX+'_li'"
+                source="ognl:userPlatSvcList"
+                value="ognl:userPlatSvc"
+                itemIndex="ognl:userPlatSvc.ITEM_INDEX"
+                serviceName="ognl:userPlatSvc.SERVICE_NAME"
+                ontap="userPlatSvcsList.toggleOp(this);"
+                element="li">
+            <div class="content">
+                <div class="main">
+                    <div class="title e_size-s">
+                        <a jwcid="@Any" itemIndex="ognl:userPlatSvc.ITEM_INDEX" ontap="userPlatSvcsList.showServiceDetail($(this).attr('itemIndex'))" href="#nogo">
+                            <span jwcid="@Insert" value="ognl:userPlatSvc.SERVICE_NAME"/>
+                        </a>
+                    </div>
+                    <div class="content">服务商：
+                        <span jwcid="@Insert" value="ognl:userPlatSvc.SP_NAME"/>
+                    </div>
+                    <div class="content">有效期：
+                        <span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd',userPlatSvc.START_DATE)"/>
+                        ～<span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd',userPlatSvc.END_DATE)"/>
+                    </div>
+                </div>
+                <div class="side e_red e_size-m" style="width:6em;">
+                    <span jwcid="@Insert" id="ognl:userPlatSvc.ITEM_INDEX+'_PRICE'" value="ognl:userPlatSvc.PRICE+'元/月'"/>
+                </div>
+            </div>
+            <div class="op op-float">
+                <ul>
+                    <li jwcid="@Any" id="ognl:'del'+userPlatSvc.ITEM_INDEX" itemIndex="ognl:userPlatSvc.ITEM_INDEX" class="del e_red" style="display:none" ontap="userPlatSvcsList.del(this);" >
+                        <span class="e_ico-delete"></span>&nbsp;退订
+                    </li>
+                    <li jwcid="@Any" class="delRestore" style="display: none;"  itemIndex="ognl:userPlatSvc.ITEM_INDEX" ontap="userPlatSvcsList.restore(this);">
+                        <span class="e_ico-reset"></span> &nbsp;还原
+                    </li>
+                    <li jwcid="@Any" id="ognl:'pus'+userPlatSvc.ITEM_INDEX" itemIndex="ognl:userPlatSvc.ITEM_INDEX" class="pause e_orange" style="display:none" ontap="userPlatSvcsList.pus(this);" >
+                        <span class="e_ico-pause"></span> &nbsp;暂停
+                    </li>
+                    <li jwcid="@Any" class="pauseRestore" style="display: none;"  itemIndex="ognl:userPlatSvc.ITEM_INDEX" ontap="userPlatSvcsList.restore(this);">
+                        <span class="e_ico-reset"></span> &nbsp;还原
+                    </li>
+                    <li jwcid="@Any" id="ognl:'res'+userPlatSvc.ITEM_INDEX" itemIndex="ognl:userPlatSvc.ITEM_INDEX" class="restore e_green" style="display:none" ontap="userPlatSvcsList.res(this);" >
+                        <span class="e_ico-reset"></span> &nbsp;恢复
+                    </li>
+                    <li jwcid="@Any" class="resRestore" style="display: none;"  itemIndex="ognl:userPlatSvc.ITEM_INDEX" ontap="userPlatSvcsList.restore(this);">
+                        <span class="e_ico-reset"></span> &nbsp;还原
+                    </li>
+                    <div jwcid="@Conditional"
+                         condition='ognl:userPlatSvc.SUPPORT_OPERS.toString().indexOf("03")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("08")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("11")>-1
+                         ||userPlatSvc.SUPPORT_OPERS.toString().indexOf("14")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("16")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("17")>-1
+                         ||userPlatSvc.SUPPORT_OPERS.toString().indexOf("18")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("19")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("20")>-1
+                         ||userPlatSvc.SUPPORT_OPERS.toString().indexOf("09")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("10")>-1||userPlatSvc.SUPPORT_OPERS.toString().indexOf("11")>-1
+                         ||userPlatSvc.SUPPORT_OPERS.toString().indexOf("12")>-1'>
+                        <li jwcid="@Any" itemIndex="ognl:userPlatSvc.ITEM_INDEX" serviceName="ognl:userPlatSvc.SERVICE_NAME" x-wade-float="moreFn" ontap="userPlatSvcsList.setFloatLayer(this,'moreFn','auto');userPlatSvcsList.drawMoreFnFloat(this);toggleFloatLayer('moreFn','block');"><span class="e_ico-unfold e_size-s"></span> 更多操作</li>
+                    </div>
+                    <div jwcid="@Conditional" condition='ognl:userPlatSvc.ATTR_PARAM!=null'>
+                        <li jwcid="@Any" elementId="ognl:userPlatSvc.SERVICE_ID"  elementType="Z"  itemIndex="ognl:userPlatSvc.ITEM_INDEX" serviceName="ognl:userPlatSvc.SERVICE_NAME" x-wade-float="moreFn" ontap="userPlatSvcsList.showIsView(this)"><span class="e_ico-unfold e_size-s"></span> 显示参数</li>
+                    </div>
+                </ul>
+            </div>
+            <!--pop隐藏部分(需要向后台传值)-->
+            <div style="display: none">
+                <span jwcid="@Insert" id="ognl:userPlatSvc.ITEM_INDEX+'_userPlatSvcValue'" value="ognl:userPlatSvc"/>
+
+                <input jwcid="@Hidden" name="ognl:userPlatSvc.ITEM_INDEX+'_SERVICE_STATUS'"
+                       value="ognl:getPage().pageutil.getStaticValue('BIZ_STATE_CODE', userPlatSvc.BIZ_STATE_CODE)"/>
+
+                <input jwcid="@Hidden" name="ognl:userPlatSvc.ITEM_INDEX+'_SPBIZ_BILL_TYPE'"
+                       value="ognl:getPage().pageutil.getStaticValue('SPBIZ_BILL_TYPE',userPlatSvc.BILL_TYPE)"/>
+
+                <span jwcid="@Conditional" condition='ognl:!userPlatSvc.BIZ_TYPE_CODE.equals("17")'>
+                              <input jwcid="@Hidden" name="ognl:userPlatSvc.ITEM_INDEX+'_BUS_TYPE'"
+                                     value="ognl:getPage().pageutil.getStaticValue('BIZ_TYPE_CODE', userPlatSvc.BIZ_TYPE_CODE)"/>
+                </span>
+                <span jwcid="@Conditional"
+                      condition='ognl:userPlatSvc.BIZ_TYPE_CODE.equals("17")&&userPlatSvc.ORG_DOMAIN.equals("BJDP")'>
+                              <input jwcid="@Hidden" name="ognl:userPlatSvc.ITEM_INDEX+'_BUS_TYPE'"
+                                     value="ognl:getPage().pageutil.getStaticValue('BIZ_TYPE_CODE', userPlatSvc.BIZ_TYPE_CODE)"/>
+
+                </span>
+                <span jwcid="@Conditional"
+                      condition='ognl:userPlatSvc.BIZ_TYPE_CODE.equals("17")&&userPlatSvc.ORG_DOMAIN.equals("GDDP")'>
+                              <input jwcid="@Hidden" name="ognl:userPlatSvc.ITEM_INDEX+'_BUS_TYPE'"
+                                     value="ognl:getPage().pageutil.getStaticValue('BIZ_TYPE_CODE', userPlatSvc.BIZ_TYPE_CODE)"/>
+                </span>
+
+               <span jwcid="@Select"
+                     name="ognl:userPlatSvc.ITEM_INDEX+'_OPERCODE'"
+                     itemIndex="ognl:userPlatSvc.ITEM_INDEX"
+                     source="ognl:userPlatSvc.SUPPORT_OPERS"
+                     textField="OPER_TYPE"
+                     valueField="OPER_CODE"
+                     titleField="OPER_TYPE"
+                     addDefault="false"
+                     value="ognl:userPlatSvc.INIT_OPER_CODE"
+                     initValue="ognl:userPlatSvc.INIT_OPER_CODE"
+                     onchange="userPlatSvcsList.changeOperCode(this)"
+                     desc="操作"/>
+                <div jwcid="@Conditional" condition='ognl:userPlatSvc.ATTR_PARAM!=null'>
+                    <a jwcid="@Any" href="#nogo"
+                       name="ognl:userPlatSvc.ITEM_INDEX+'_ATTRPARAM'"
+                       id="ognl:userPlatSvc.ITEM_INDEX+'_ATTRPARAM'"
+                       elementId="ognl:userPlatSvc.SERVICE_ID"
+                       elementType="Z"
+                       itemIndex="ognl:userPlatSvc.ITEM_INDEX"
+                       class="select">
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<input jwcid="@Any" type="hidden" name="USERPLATSVCSLIST_COMPONENT_ID" id="USERPLATSVCSLIST_COMPONENT_ID"
+       value="ognl:id"/>

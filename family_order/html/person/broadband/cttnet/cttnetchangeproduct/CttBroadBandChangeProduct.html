@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: ChangeProduct.html,v 1.3 2013/04/08 13:53:09 jinnian Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>宽带产品变更</title>
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" src="person/broadband/cttnet/cttnetchangeproduct/scripts/CttBroadBandChangeProduct.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" element="div" tradeTypeCode="9725" authType="11" tradeAction="changeProduct.afterSubmitSerialNumber(data)"></div>
+		<!-- 认证 结束 -->
+	</div>
+
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">用户信息</div>
+			<div class="fn">
+				<a href="#nogo" class="e_button"
+					onclick="changeProduct.displaySwitch(this,'UCAViewPart')"><i
+					class="e_ico-unfold"></i><span>显示客户信息</span>
+				</a>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 参数列表 开始 -->
+		<div class="c_form c_form-col-4 c_form-text">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">当前品牌：</span>
+					<span class="text" id="USER_BRAND_NAME"></span>
+				</li>
+				<li class="li">
+					<span class="label">当前产品：</span>
+					<span class="text" id="USER_PRODUCT_NAME"></span>
+				</li>
+			</ul>
+		</div>
+		<div class="c_form c_form-col-4 c_form-text" jwcid="UCAViewPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME"
+							desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">客户性别：</span>
+					<span class="text" jwcid="@Insert" name="SEX" id="SEX"  
+							value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SEX',custInfoView.SEX)" desc="客户性别"/>
+				</li>
+				<li class="li">
+					<span class="label">证件类型：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+					        value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)"
+							desc="证件类型" />
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" 
+							desc="证件号码"/>
+				</li>
+				<li class="li">
+					<span class="label">证件有效期：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_END_DATE" id ="PSPT_END_DATE" 
+							value="ognl:custInfoView.PSPT_END_DATE==null ? '' : getPage().formatDate('yyyy-MM-dd', custInfoView.PSPT_END_DATE)" 
+							desc="证件有效期"/>
+				</li>
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+	</div>
+	
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">产品</div>
+	</div>
+	<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">品牌：</span></span>
+					<span class="e_input"><span>铁通宽带</span></span>
+				</li>
+			</ul>
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">产品规格：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PROD_SPEC_TYPE" id="PROD_SPEC_TYPE" source="ognl:pageutil.getList('TD_S_PRODUCT_SPEC','PROD_SPEC_TYPE','PROD_SPEC_DESC','PARENT_SPEC_TYPE','10000')"
+                         textField="PROD_SPEC_DESC" valueField="PROD_SPEC_TYPE" titleField="PROD_SPEC_DESC" value="ognl:info.PROD_SPEC_TYPE" desc="产品 规格"
+                         onchange="changeProduct.getProductBySpec()" nullable="no" disabled="true"/>
+					</span></span></span>
+				</li>
+			</ul>
+			<ul class="ul">
+				<li class="li">
+				  <span jwcid="productListPart@Part">
+					<span class="label"><span class="e_required">产品：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PRODUCT_ID" id="PRODUCT_ID" source="ognl:productList"
+                         textField="PRODUCT_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" value="ognl:info.PRODUCT_ID" desc="产品 类型"
+                         onchange="changeProduct.getPackages()" nullable="no"/>
+					</span></span></span>
+				</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+		
+    <div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:49%;">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+                <div class="c_title">
+					<div class="text">待选区</div>
+					<div class="fn">
+						<span class="e_input e_input-left">
+							<span>
+								<input jwcid="elementSearch@Search"
+									name="elementSearch"
+									page="changeproduct.ChangeProduct"
+									defaultText='元素搜索'
+									dynamic="true"
+									listener="search"
+									searchCode="SEARCH_NAME"
+									valueCode="SEARCH_ID"
+									optionEnterAction="changeProduct.searchElementOptionEnter"
+									optionClickAction="changeProduct.searchElementOptionEnter"
+									width="200"/>
+							</span>
+						</span>
+						<span class="e_label e_label-right"><span>元素搜索</span></span>
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 分栏 开始 -->
+				<div class="l_col l_col-close">
+					<div jwcid="offerList@csserv:OfferList" 
+                           element="div" 
+                           categoryId="100000000114,88888888"></div>
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	    <div class="l_auto">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">已选区</div>
+				</div>
+                <div jwcid="selectedElements@csserv:SelectedElements" 
+                    renderCallSvc="CS.WidenetPackageSVC.getUserElements" 
+                    callAddElementSvc="CS.WidenetPackageSVC.dealSelectedElementsForChg" 
+                    afterRenderAction="changeProduct.afterRenderSelectedElements(data);"
+                    basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                    basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+                    eparchyCodeComponentId="USER_EPARCHY_CODE"
+                    tradeTypeCode="9725"
+                    element="div"></div>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	<!-- 第 2 栏 结束 -->
+	</div>
+	
+	<div class="c_box">
+		<div jwcid="SubmitPart@csserv:CSSubmit" 
+	        beforeAction="changeProduct.submit()" 
+	        params="" isReset="true" 
+	        listener="submitChangeProduct" 
+	        refreshPart="" 
+	        isRender="true"
+	        area="" element="div"/>
+	</div>
+	<!-- 分栏 结束 -->
+    <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+</div></div>
+
+<input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value=""/>
+<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="USER_PRODUCT_ID" id="USER_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="NEXT_PRODUCT_ID" id="NEXT_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+<input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" id="OLD_PRODUCT_END_DATE" value=""/>
+<input jwcid="@Hidden" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value=""/>
+<input jwcid="@Hidden" name="GG_CHECK_TAG" id="GG_CHECK_TAG" value="0"/>
+<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+
+</body>
+</html>

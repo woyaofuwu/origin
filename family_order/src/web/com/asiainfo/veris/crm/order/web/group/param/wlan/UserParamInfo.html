@@ -1,0 +1,152 @@
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	 <div class="text">管理员信息</div>
+</div>
+<!-- 标题 结束 -->
+	
+<!-- 表单 开始-->
+<div class="c_form c_form-col-2 c_form-label-6">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">管理员电话：</span>
+				<span class="e_input"><span>
+					 <input id="pam_DETMANAGERPHONE" name="pam_DETMANAGERPHONE" jwcid="@TextField" value="ognl:info.DETMANAGERPHONE"  desc="管理员电话" datatype="text" />
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">管理员信息：</span>
+				<span class="e_input"><span>
+					<select id="pam_DETMANAGERINFO" name="pam_DETMANAGERINFO" jwcid="@TextField" value="ognl:info.DETMANAGERINFO"  desc="管理员信息" datatype="text"/>
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>联系地址：</span></span>
+				<span class="e_input"><span>
+					<select name="pam_DETADDRESS" id="pam_DETADDRESS" jwcid="@TextField" value="ognl:info.DETADDRESS"  desc="联系地址" datatype="text" />
+				</span></span>
+			</li>
+		</ul>
+</div>
+<!-- 表单 结束-->
+
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	 <div class="text">宽带资费信息</div>
+</div>
+<!-- 标题 结束 -->
+
+	<!-- 表格开始 -->
+	<div class="c_scroll c_scroll-table-5"><div class="c_table">
+		<table jwcid="OtherTable@Table" name="OtherTable" rowClick="tableRowClick">
+			<thead>
+				<tr>
+					<th col="X_TAG" style="display:none">TAG</th>
+			  	    <th col="pam_GRP_WLAN_CODE" style="display:none">集团WLANcode</th>
+			  	    <th col="pam_GRP_WLAN">集团WLAN</th>
+				    <th col="pam_NET_LINE">带宽（兆）</th>
+				    <th col="pam_DIS_DATA">折扣</th>
+			  	    <th col="pam_PRICE">资费（元）</th>
+			  	    <th col="pam_COMPANY_NAME_CODE" style="display:none">落地分公司code</th>	
+			  	    <th col="pam_COMPANY_NAME">落地分公司</th>			  	  
+			  	    <th col="pam_REMARK">备注</th>
+			  	    <th col="INSTID" style="display:none">instid</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:info.WLAN_INFO" value="ognl:element" index="ognl:rowIndex" element="tr">
+					<td style="display:none"></td>
+				    <td style="display:none"><span jwcid="@Insert" value="ognl:element.pam_GRP_WLAN_CODE" raw="true"/></td>
+				   	<td><span jwcid="@Insert" value="ognl:element.pam_GRP_WLAN" raw="true"/></td> 
+				    <td><span jwcid="@Insert" value="ognl:element.pam_NET_LINE" raw="true"/></td>
+				    <td><span jwcid="@Insert" value="ognl:element.pam_DIS_DATA" raw="true"/></td>
+				    <td><span jwcid="@Insert" value="ognl:element.pam_PRICE" raw="true"/></td>
+				    <td style="display:none"><span jwcid="@Insert" value="ognl:element.pam_COMPANY_NAME_CODE" raw="true"/></td>
+				    <td><span jwcid="@Insert" value="ognl:element.pam_COMPANY_NAME" raw="true"/></td>
+				    <td><span jwcid="@Insert" value="ognl:element.pam_REMARK" raw="true"/></td>
+				    <td style="display:none"><span jwcid="@Insert" value="ognl:element.INSTID" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格结束 -->
+
+	<div class="c_form c_form-col-2 c_form-label-11" jwcid="DiscntsPart@Part">
+		<ul class="ul">
+		    <li class="li">
+		        <span class="label"><span class="e_required">集团WLAN：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="pam_GRP_WLAN_CODE" id="pam_GRP_WLAN_CODE" 
+						source="ognl:info.WLAN_INFOS" textField="ATTR_FIELD_NAME" valueField="ATTR_FIELD_CODE"  
+					    disabled="false" desc="集团WLAN"/>
+				</span></span></span>
+		    </li>
+		    
+		    <li class="li">
+		        <span class="label"><span class="e_required">带宽（兆：</span></span>
+				<span class="e_input"><span>
+				      <input jwcid="@TextField" name="pam_NET_LINE"  id="pam_NET_LINE"  value="ognl:info.NET_LINE" desc="带宽" datatype="pinteger" onblur="countWlanFee();"/>
+				</span></span>
+		    </li>
+		    
+		    <li class="li">
+		        <span class="label"><span class="e_required">资费（元）：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="pam_PRICE"  id="pam_PRICE" value="ognl:info.PRICE" readOnly="true" desc="资费" datatype="numeric"/>
+				</span></span>
+		    </li>
+		    
+		    <li class="li">
+		        <span class="label">折扣：</span>
+				<span class="e_select"><span><span>
+			        <!--  input type="hidden" jwcid="@Any" id="pam_DIS_DATA" name="pam_DIS_DATA" value="ognl:info.discountdata" desc="折扣" /-->
+					<!-- select id="pam_DISCOUNT" name ="pam_DISCOUNT" value="折扣"/>-->
+					<select jwcid="@Select" name="pam_DIS_DATA" id="pam_DIS_DATA" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('DISCOUNT')" textField="DATA_ID" valueField="DATA_NAME"  
+					    disabled="false" desc="折扣"/>
+				</span></span></span>
+		    </li>
+		    
+		    <li class="li">
+		        <span class="label"><span class="e_required">落地分公司：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="pam_COMPANY_NAME_CODE" id="pam_COMPANY_NAME_CODE" 
+						source="ognl:info.COMPANY_INFOS" textField="ATTR_FIELD_NAME" valueField="ATTR_FIELD_CODE" 
+					    disabled="false" desc="落地分公司"/>
+				</span></span></span>
+		    </li>
+		    
+		    <li class="li">
+		        <span class="label"><span class="e_required">备注：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="pam_REMARK" id="pam_REMARK" value="ognl:info.REMARK" datatype="text" maxsize="50" desc="备注"/>
+				</span></span>
+		    </li>
+		    <textarea jwcid="@TextArea" id="pam_WLAN" name="pam_WLAN" value="" style="display:none"></textarea>
+		    <textarea jwcid="@TextArea" id="pam_WLANINFOS" name="pam_WLANINFOS" value="" style="display:none"></textarea>
+			<textarea jwcid="@TextArea" id="pam_OLDWLAN" name="pam_OLDWLAN"  value="ognl:info.oldidc"   style="display:none"/>
+			<textarea jwcid="@TextArea" name="BANDWIDTHDATAS" id="BANDWIDTHDATAS" value="ognl:info.BANDWIDTHDATAS"  style="display:none"/>
+			<textarea jwcid="@TextArea" name="DISCOUNTDATA" id="DISCOUNTDATA" value="ognl:info.DISCOUNTDATA"  style="display:none"/>
+			<input type="hidden" jwcid="@Any" id="pam_GRP_WLAN" name="pam_GRP_WLAN" desc="集团WLAN" value="一二三"/>
+			<input type="hidden" jwcid="@Any" id="pam_COMPANY_NAME" name="pam_COMPANY_NAME" desc="落地分公司" value="一二三"/>
+			<input type="hidden" jwcid="@Any" id="INSTID" name="INSTID" desc="inst_id" value=""/>
+		</ul>
+	</div>	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button class="e_button-page" type="button" onclick=" return createData()" ><i class="e_ico-add"></i><span>新增</span></button>
+		<button class="e_button-page" type="button" onclick=" return deleteData()" ><i class="e_ico-delete"></i><span>删除</span></button>
+		<button class="e_button-page" type="button" onclick=" return updateData()" ><i class="e_ico-edit"></i><span>修改</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	
+    	
+
+
+
+
+		
+		

@@ -1,0 +1,2 @@
+INSERT INTO td_o_credit_usercluster_cond(user_cluster_id,property_id,comp_method_id,comp_svalue1,comp_svalue2,remark,update_time,update_staff_id,update_depart_id,eparchy_code)
+ VALUES(:USER_CLUSTER_ID,:PROPERTY_ID,:COMP_METHOD_ID,:COMP_SVALUE1,:COMP_SVALUE2,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:EPARCHY_CODE)

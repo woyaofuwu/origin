@@ -1,0 +1,2 @@
+INSERT INTO td_b_goodchange_type(eparchy_code,action_code,action_name,start_date,end_date,update_staff_id,update_depart_id,update_time)
+ VALUES('ZZZZ',:ACTION_CODE,:ACTION_NAME,to_date('20071101','yyyymmdd'),to_date('20501231','yyyymmdd'),:STAFF_ID,:DEPART_ID,SYSDATE)

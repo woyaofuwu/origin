@@ -1,0 +1,36 @@
+SELECT T.PARTITION_ID,
+       TO_CHAR(T.USER_ID) USER_ID,
+       T.USER_ID_A,
+       T.SERVICE_ID,
+       T.MAIN_TAG,
+       T.INST_ID,
+       T.CAMPN_ID,
+       TO_CHAR(T.START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+       TO_CHAR(T.END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+       TO_CHAR(T.UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       T.UPDATE_STAFF_ID,
+       T.UPDATE_DEPART_ID,
+       T.REMARK,
+       TO_CHAR(T.RSRV_NUM1) RSRV_NUM1,
+       TO_CHAR(T.RSRV_NUM2) RSRV_NUM2,
+       TO_CHAR(T.RSRV_NUM3) RSRV_NUM3,
+       TO_CHAR(T.RSRV_NUM4) RSRV_NUM4,
+       TO_CHAR(T.RSRV_NUM5) RSRV_NUM5,
+       T.RSRV_STR1,
+       T.RSRV_STR2,
+       T.RSRV_STR3,
+       T.RSRV_STR4,
+       T.RSRV_STR5,
+       TO_CHAR(T.RSRV_DATE1, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1,
+       TO_CHAR(T.RSRV_DATE2, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2,
+       TO_CHAR(T.RSRV_DATE3, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE3,
+       T.RSRV_TAG1,
+       T.RSRV_TAG2,
+       T.RSRV_TAG3
+  FROM TF_F_USER_SVC T
+ WHERE T.USER_ID = :USER_ID
+   AND T.PARTITION_ID = MOD(:USER_ID, 10000)
+   AND T.USER_ID_A = :USER_ID_A
+   AND T.SERVICE_ID = :SERVICE_ID
+   AND T.END_DATE >= SYSDATE
+   AND T.START_DATE <= SYSDATE 

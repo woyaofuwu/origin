@@ -1,0 +1,8 @@
+DELETE FROM tf_b_resdaystat_log
+ WHERE res_type_code=:RES_TYPE_CODE
+   AND (:CARD_TYPE_CODE IS NULL OR (:CARD_TYPE_CODE IS NOT NULL AND para_value2=:CARD_TYPE_CODE))
+   AND depart_id||''=:DEPART_ID
+   AND staff_id=:STAFF_ID
+   AND (:RSRV_TAG1 IS NULL OR (:RSRV_TAG1 IS NOT NULL AND rsrv_tag1=:RSRV_TAG1))
+   AND (:RSRV_TAG2 IS NULL OR (:RSRV_TAG2 IS NOT NULL AND rsrv_tag2=:RSRV_TAG2))
+   AND para_value1=:PARA_VALUE1

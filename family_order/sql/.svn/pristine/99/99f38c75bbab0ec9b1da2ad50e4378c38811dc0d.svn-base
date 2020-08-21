@@ -1,0 +1,5 @@
+select max(TRADE_ID) TRADE_ID
+  from TF_B_TRADE A
+ where A.SERIAL_NUMBER = :SERIAL_NUMBER
+   and A.TRADE_TYPE_CODE = '600'
+   and TRUNC(A.ACCEPT_DATE) + 0 >= TRUNC(sysdate) - TO_NUMBER(:MAX_DAY)

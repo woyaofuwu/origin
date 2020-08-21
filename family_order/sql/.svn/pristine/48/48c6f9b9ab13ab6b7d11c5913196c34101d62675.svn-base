@@ -1,0 +1,2 @@
+INSERT INTO td_b_bank(bank_code,bank,eparchy_code,city_code,super_bank_code,bank_inner_code,contact,contact_phone,remark,update_staff_id,update_depart_id,update_time)
+ VALUES(:BANK_CODE,:BANK,:EPARCHY_CODE,:CITY_CODE,:SUPER_BANK_CODE,:BANK_INNER_CODE,:CONTACT,:CONTACT_PHONE,:REMARK,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

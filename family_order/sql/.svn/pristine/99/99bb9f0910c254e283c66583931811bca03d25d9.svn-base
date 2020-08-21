@@ -1,0 +1,12 @@
+--IS_CACHE=Y
+SELECT A.PAGE_ID,
+       A.PAGE_NAME,
+       A.PAGE_DESC,
+       A.LISTENER,
+       A.RULESET_ID,
+       A.IS_GET_PAGE_DATA,
+       A.IS_DATA_MUST,
+       A.DATA_PARSER
+  FROM TD_B_PAGE A
+ WHERE A.STATE = '1'
+   AND A.PAGE_ID = :PAGE_ID

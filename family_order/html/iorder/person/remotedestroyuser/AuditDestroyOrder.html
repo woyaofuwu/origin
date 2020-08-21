@@ -1,0 +1,311 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>归属省跨区销户审核</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/person/remotedestroyuser/scripts/auditdestroyorder.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">归属省跨区销户审核</div>
+	</div>
+	<!-- 标题栏结束 -->
+	<!-- 主流程 开始 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">	
+			<div jwcid="QueryPart@Part">
+				<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border">
+					 <ul class="ul">
+						<!--<li class="link">-->
+							<!--<div class="label">服务号码</div>-->
+							<!--<div class="value">-->
+								<!--<div class="e_mix">-->
+									<!--<input jwcid="@TextField" id="SERIAL_NUMBER" name="SERIAL_NUMBER" value="" datatype="mphone" desc="手机号码" nullable="no"-->
+										   <!--maxLength="11"/>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</li>-->
+						<li class="link required">
+							<div class="label">订单流水号</div>
+							<div class="value">
+								<div class="e_mix">
+									<input jwcid="@TextField" id="ORDER_ID" name="ORDER_ID" value="ognl:receiptOrder.ORDER_ID" datatype="mphone" desc="订单流水号" nullable="no" />
+									<button type="button" class="e_button-blue" value="查询" id="bt_search" name="bt_search"
+											desc="查询" onclick="qryCustInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title">
+				<div class="text">实名制信息</div>
+			</div>
+			<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border" jwcid="psptCheckPart@Part">
+				<ul class="ul">
+					<li class="label">
+						<div class="label">服务号码：</div>
+						<div class="value">
+							<div class="e_right">
+								<div jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" nullable='no'
+									 disabled="disabled" desc="服务号码" value="ognl:receiptOrder.SERIAL_NUMBER"></div>
+							</div>
+						</div>
+					</li>
+					<li class="label">
+							<div class="label">客户名称：</div>
+							<div class="value">
+								<div class="e_right">
+								<div jwcid="@TextField" name="CUST_NAME" id="CUST_NAME" nullable='no'
+									  disabled="disabled" desc="客户名称" value="ognl:receiptOrder.CUST_NAME"></div>
+								</div>
+							</div>
+					</li>
+					<li class="label">
+						<div class="label">客户人像：</div>
+						<div class="value">
+							<div class="e_right">
+								<button type="button" class="e_button-blue" value="查看" id="bt_lookCustPic" name="bt_lookCustPic"
+										desc="查看" disabled="true" onclick="showPopup('myDialog1');"><i class="e_ico-search"></i><span>查看</span></button>
+							</div>
+						</div>
+					</li>
+					<li class="label">
+						<div class="label">证件照片</div>
+						<div class="value">
+						<div class="e_right">
+							<button type="button" class="e_button-blue" value="查看" id="bt_lookIdPicOne" name="bt_lookIdPicOne"
+									desc="查看" disabled="true" onclick="showPopup('myDialog2');"><i class="e_ico-search"></i><span>正面</span></button>
+							<button type="button" class="e_button-blue" value="查看" id="bt_lookIdPicTwo" name="bt_lookIdPicTwo"
+									desc="查看" disabled="true" onclick="showPopup('myDialog3');"><i class="e_ico-search"></i><span>反面</span></button>
+						</div>
+					</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title">
+				<div class="text">用户相关信息</div>
+			</div>
+			<div class="c_list c_list-col-2 c_list-phone-col-2 c_list-line c_list-border" jwcid="userInfoPart@Part">
+				<ul>
+					<li>
+						<div class="label">联系人电话：</div>
+						<div class="value"><div jwcid="@TextField" id="CONTACT_PHONE" name="CONTACT_PHONE"
+												 disabled="disabled" value="ognl:receiptOrder.CONTACT_PHONE" desc="联系电话"></div>
+						</div>
+				  	</li>
+				    <li>
+						<div class="label">联系人姓名：</div>
+						<div class="value"><div jwcid="@TextField" id="CONTACT_NAME" name="CONTACT_NAME"
+												 disabled="disabled" value="ognl:receiptOrder.CONTACT_NAME" desc="联系姓名"></div>
+						</div>
+				  	</li>
+				</ul>
+				<ul>
+					<li>
+						<div class="label">现金转费号码：</div>
+						<div class="value"><div jwcid="@TextField"  maxLength="11" id="GIFT_SERIAL_NUMBER" name="GIFT_SERIAL_NUMBER"
+												 disabled="disabled" value="ognl:receiptOrder.GIFT_SERIAL_NUMBER" desc="现金转费号码"></div>
+						</div>
+				 	</li>
+					<li>
+						<div class="label">现金转费号码客户姓名：</div>
+						<div class="value"><div jwcid="@TextField" id="GIFT_CUST_NAME" name="GIFT_CUST_NAME"
+												 disabled="disabled" value="ognl:receiptOrder.GIFT_CUST_NAME" desc="非现金转费号码客户姓名"></div>
+						</div>
+				 	</li>
+				 </ul>
+				 <ul>
+				 	<li>
+						<div class="label">非现金转费号码：</div>
+						<div class="value"><div jwcid="@TextField" maxLength="11" id="GIFT_SERIAL_NUMBER_B" name="GIFT_SERIAL_NUMBER_B"
+												 disabled="disabled" value="ognl:receiptOrder.GIFT_SERIAL_NUMBER_B" desc="非现金转费号码"></div>
+						</div>
+				 	</li>
+					<li>
+						<div class="label">非现金转费号码客户姓名：</div>
+						<div class="value"><div jwcid="@TextField" id="GIFT_CUST_NAME_B" name="GIFT_CUST_NAME_B"
+												 disabled="disabled" value="ognl:receiptOrder.GIFT_CUST_NAME_B" desc="非现金转费号码客户姓名"></div>
+						</div>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<div class="label">建单人姓名：</div>
+						<div class="value"><div jwcid="@TextField" id="CREATE_CONTACT" name="CREATE_CONTACT"
+												 disabled="disabled" value="ognl:receiptOrder.CREATE_CONTACT" desc="建单人姓名"></div>
+						</div>
+				 	</li>
+				 	<li>
+						<div class="label">建单人联系方式：</div>
+						<div class="value"><div jwcid="@TextField" maxLength="11" id="CREATE_PHONE" name="CREATE_PHONE"
+												 disabled="disabled" datatype="mphone" value="ognl:receiptOrder.CREATE_PHONE" desc="建单人联系方式"></div>
+						</div>
+				 	</li>
+				</ul>
+				<ul>
+				 	<li>
+						<div class="label">建单营业厅台名称：</div>
+						<div class="value"><div jwcid="@TextField" id="CREATE_ORG_NAME" name="CREATE_ORG_NAME"
+												 disabled="disabled" value="ognl:receiptOrder.CREATE_ORG_NAME" desc="建单营业厅台名称"></div>
+						</div>
+				 	</li>
+					<li class="label">
+						<div class="label">电子免填单</div>
+						<div class="value">
+							<div class="e_right">
+								<button type="button" class="e_button-blue" value="查看" id="bt_lookEOrder" name="bt_lookEOrder"
+										desc="下载" onclick="downloadEOrder();"><i class="e_ico-search"></i><span>下载</span></button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title" id="transferAmountTitle">
+				<div class="text">预估转账金额</div>
+			</div>
+			<div class="c_list c_list-col-2 c_list-phone-col-2 c_list-line c_list-border" jwcid="transferPart@Part">
+				<ul>
+					<li>
+						<div class="label">现金转费金额：</div>
+						<div class="value"><div jwcid="@TextField"  maxLength="11" id="GIFT_AMOUNT" name="GIFT_SERIAL_NUMBER"
+												 disabled="disabled" value="ognl:transferAmount.TRANS_MONEY" desc="现金转费金额"></div>
+						</div>
+					</li>
+					<li>
+						<div class="label">非现金转费金额：</div>
+						<div class="value"><div jwcid="@TextField" maxLength="11" id="GIFT_AMOUNT_B" name="GIFT_SERIAL_NUMBER_B"
+												 disabled="disabled" value="ognl:transferAmount.TRANS_PAY" desc="非现金转费金额"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title" id="AuditDestroyUserTitle">
+				<div class="text">跨区销户审核</div>
+			</div>
+			<div class="c_list c_list-col-3 c_list-phone-col-3 c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">审核结果</div>
+						<div class="value">
+							<input name="AUDIT_RESULT" type="radio" value="1" />允许销户
+							<input name="AUDIT_RESULT" type="radio" value="0" />不可销户
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">不可销户原因</div>
+						<div class="value">
+							<span jwcid="@Select"
+								name="CHECKRESULT" id="CHECKRESULT"
+								source="ognl:pageutil.getStaticList('DESTROY_CHECK_RESULT')" value=""
+								textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								desc="不可销户原因"></span>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">原因</div>
+						<div class="value">
+							<input jwcid="@TextField" id="AUDIT_REASON" name="AUDIT_REASON" value="ognl:receiptOrder.RSRV_STR1" placeholder="不可销户时必填" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title" id="DestroyDealUserInfoTitle">
+				<div class="text">销户处理人信息</div>
+			</div>
+			<div jwcid="DealUserInfoPart@Part" class="c_list c_list-col-3 c_list-phone-col-3 c_list-line c_list-border">
+				<ul>
+					<li class="link">
+						<div class="label">销户处理人：</div>
+						<div class="value"><div jwcid="@TextField" id="DESTROY_DEAL_USER" name="DESTROY_DEAL_USER"
+												  value="ognl:receiptOrder.DESTROY_DEAL_USER" desc="销户处理人"></div>
+						</div>
+					</li>
+					
+					<li class="link">
+						<div class="label">销户处理人联系方式：</div>
+						<div class="value"><div jwcid="@TextField" id="DESTROY_DEALUSER_TEL" name="DESTROY_DEALUSER_TEL"
+												  value="ognl:receiptOrder.DESTROY_DEALUSER_TEL" desc="销户处理人联系方式"></div>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">最迟销户时间：</div>
+						<div class="value"><div jwcid="@TextField" id="LATE_TIME" name="LATE_TIME"
+												 disabled="disabled" value="ognl:receiptOrder.LATE_TIME" desc="最迟销户时间"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 提交 开始 -->
+			<div jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="checkBeforeSubmit();" isReset="true"  class="c_submit c_submit-center" area="QueryPart" element="div"></div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+	</div>
+	</div>
+	<div jwcid="@Dialog"
+		 name="myDialog1"
+		 width="40"
+		 closeable="true"
+		 title="客户人像">
+		<!-- 内容开始 -->
+		<div class="c_msg c_msg-border">
+			<div class="wrapper">
+				<div class="info">
+					<div class="text">
+						<img src="" style="height: 100%;width: 100%" id="PIC_NAME_R" name="PIC_NAME_R"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 内容结束 -->
+	</div>
+	<div jwcid="@Dialog"
+		 name="myDialog2"
+		 width="40"
+		 closeable="true"
+		 title="正面证件照片">
+		<!-- 内容开始 -->
+		<div class="c_msg c_msg-border">
+			<div class="wrapper">
+				<div class="info">
+					<div class="text">
+						<img src="" style="height: 100%;width: 100%" id="IDEN_HEAD" name="IDEN_HEAD"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 内容结束 -->
+	</div>
+	<div jwcid="@Dialog"
+		 name="myDialog3"
+		 width="40"
+		 closeable="true"
+		 title="背面证件照片">
+		<!-- 内容开始 -->
+		<div class="c_msg c_msg-border">
+			<div class="wrapper">
+				<div class="info">
+					<div class="text">
+						<img src="" style="height: 100%;width: 100%" id="IDEN_BACK" name="IDEN_BACK"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 内容结束 -->
+	</div>
+	<div class="c_list c_list-col-2 c_list-phone-col-2 c_list-line c_list-border" jwcid="HidePart@Part">
+		<input jwcid="@Hidden" id="PIC_CNOTE" name="PIC_CNOTE" value="ognl:receiptOrder.PIC_CNOTE"
+			   desc="电子免填单文件名"/>
+		<input jwcid="@Hidden" id="PIC_CNOTE_BASE" name="PIC_CNOTE_BASE" value="ognl:receiptOrder.PIC_CNOTE_BASE"
+			   desc="电子免填单"/>
+		<a id="downloadUrl" href=""></a>
+	</div>
+</body>
+</html>

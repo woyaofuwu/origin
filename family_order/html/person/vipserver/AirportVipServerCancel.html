@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>易登机服务受理</title>
+<script language="JavaScript" src="person/vipserver/scripts/AirportVipServer.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+	<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 认证 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3 c_form-text">
+		<div class="" jwcid="submit_part@Part" >
+			<ul class="ul">
+					<li class="li">
+						<span class="label"><span class="e_required">VIP查询类别：</span></span> 
+						<span class="e_select"><span><span>
+						<select 
+							jwcid="@Select" 
+							name="cond_QUERY_VALUE"
+							source="ognl:getAuthType()" 
+							valueField="QUERY_VALUE"
+							textField="QUERY_NAME"
+							titleField="QUERY_NAME"
+							value="ognl:info.QUERY_VALUE"
+						/>
+						</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">号码：</span></span>
+							<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:info.auth_SERIAL_NUMBER" 
+									desc="号码" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">是否使用了免费次数：</span>
+							<span class="e_select"><span><span>
+								<select 
+									jwcid="@Select" 
+									name="cond_IS_FREE"
+									source="ognl:getFreeNum()" 
+									valueField="FREE_VALUE"
+									textField="FREE_NAME"
+									titleField="FREE_NAME"
+									value="ognl:info.FREE_VALUE"
+								/>
+							</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label">开始时间：</span>
+							<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" name="cond_START_DATE" value="ognl:info.cond_START_DATE" 
+									afterAction="chgEndDateSynStartDate(this, 'cond_START_DATE');" desc="结束日期" nullable="no" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">结束时间：</span>
+							<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" name="cond_END_DATE" value="ognl:info.cond_END_DATE" 
+									afterAction="chgEndDateSynStartDate(this, 'cond_START_DATE');" desc="结束日期" nullable="no" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">是否返销：</span>
+							<span class="e_select"><span><span>
+								<select 
+									jwcid="@Select" 
+									name="cond_IS_RETURN"
+									source="ognl:getCancel()" 
+									valueField="CANCEL_VALUE"
+									textField="CANCEL_NAME"
+									titleField="CANCEL_NAME"
+									value="ognl:info.CANCEL_VALUE"
+								/>
+							</span></span></span>
+						</li>
+			</ul>
+		</div>
+			<div class="submitPlace"></div>
+				<div class="submit e_right"  >
+				<button type="button" class="e_button-right" name="auth_BQQUERY" id="auth_BQQUERY" onclick="return queryAirportCancel(this);">
+					<i class="e_ico-search"></i><span>查询</span>
+				</button>
+			</div>
+			</div>
+					
+				
+			
+	</div>
+	<!-- 认证 结束 -->
+	<!-- 表单 结束 -->
+	<!-- 标题 开始 -->
+	
+	<!-- 参数列表 结束 -->
+	<!-- 标题 开始 -->
+	<div class="c_box">
+	<div class="c_title c_title-2">
+		<div class="text">返销</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-5 c_scroll" jwcid="showCancelInfos@Part" style="height:200px;">
+		<table jwcid="@Table" name="sceneTable" id="sceneTable" >
+			<thead>
+				<tr>
+					<th col="col_X_TAG"></th>
+					<th col="CANCEL_TAG">是否返销</th>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="CUST_NAME">客户名称</th>
+					<th col="VIP_NO">VIP卡号</th>
+					<th col="AIRDROME_NAME">机场名称</th>
+					<th col="PLANE_LINE">航班号</th>
+					<th col="FOLLOW_NUM">随行人数</th>
+					<th col="RSRV_STR2">使用免费次数</th>
+					<th col="SERVICE_TYPE">服务类型</th>
+					<th col="SERVICE_CONTENT">服务内容</th>
+					<th col="OLD_SCORE_VALUE">客户积分</th>
+					<th col="CONSUME_SCORE">扣减积分</th>
+					<th col="HANDING_CHARGE">手续费(元)</th>
+					<th col="SERVICE_CHARGE">服务费(元)</th>
+					<th col="STATE">状态</th>
+					<th col="SERVICE_STAFF">服务受理人</th>
+					<th col="SERVICE_DATE">受理日期</th>
+					<th col="TRADE_ID" style="display:none">流水号</th>
+					<th col="USER_ID" style="display:none">用户ID</th>
+					<th col="RETURN_EXPLAIN" style="display:none">返销说明</th>
+					<th col="REMARK" style="display:none">备注</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="SceneTableInfos" id="SceneTableInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><input jwcid="@Checkbox" name="revcIdCheckBox" id="revcIdCheckBox" value=ognl:info.IS_CHECKED /></td>
+						<div  jwcid="@Conditional" condition="ognl:info.CANCEL_TAG != 0">
+							<td><span jwcid="@Insert"  raw="true"/>是</td>
+						</div>
+						<div  jwcid="@Conditional" condition="ognl:info.CANCEL_TAG == 0">
+							<td><span jwcid="@Insert"  raw="true"/>否</td>
+						</div>
+						<!--<td><span jwcid="@Insert" value="ognl:info.CANCEL_TAG" raw="true"/></td>-->
+						<td><span jwcid="@Insert" name="commd_SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.VIP_NO" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.AIRDROME_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PLANE_LINE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FOLLOW_NUM" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_TYPE" raw="true"/></td>
+						
+						<!--<div  jwcid="@Conditional" condition="ognl:info.SERVICE_TYPE == 1">
+							<td><span jwcid="@Insert"  raw="true"/>第一类服务(国内)</td>
+						</div>
+						<div  jwcid="@Conditional" condition="ognl:info.SERVICE_TYPE == 2">
+							<td><span jwcid="@Insert"  raw="true"/>第二类服务(国内)</td>
+						</div>
+						<div  jwcid="@Conditional" condition="ognl:info.SERVICE_TYPE == 3">
+							<td><span jwcid="@Insert"  raw="true"/>第一类服务(国际)</td>
+						</div>
+						<div  jwcid="@Conditional" condition="ognl:info.SERVICE_TYPE == 4">
+							<td><span jwcid="@Insert"  raw="true"/>第二类服务(国际)</td>
+						</div>-->
+						
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_CONTENT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OLD_SCORE_VALUE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CONSUME_SCORE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.HANDING_CHARGE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_CHARGE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STATE" raw="true"/></td>
+						<!--
+						<div  jwcid="@Conditional" condition="ognl:info.STATE == 0">
+							<td><span jwcid="@Insert"  raw="true"/>已受理</td>
+						</div>
+						<div  jwcid="@Conditional" condition="ognl:info.STATE == 1">
+							<td><span jwcid="@Insert"  raw="true"/>已返销</td>
+						</div>-->
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_STAFF" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_DATE" raw="true"/></td>
+						<td style="display:none"><span jwcid="@Insert" name="commd_TRADE_ID" value="ognl:info.TRADE_ID" raw="true"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID" raw="true"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.RETURN_EXPLAIN" raw="true"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+
+<div class="c_box">
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div class="submitPlace"></div>
+			<div class="c_submit"  >
+				<button type="button"  class="e_button-page-ok" name="submitButton" id="submitButton" onclick="return submitButton(this);">
+					<i ></i><span>返销</span>
+				</button>
+			</div>
+	<div>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

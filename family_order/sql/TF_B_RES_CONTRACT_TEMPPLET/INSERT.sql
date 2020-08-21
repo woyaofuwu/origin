@@ -1,0 +1,4 @@
+INSERT INTO TF_B_RES_CONTRACT_TEMPPLET
+(eparchy_code,contract_id,version,code_type_code,code_state_code,time_in,staff_id_in,start_date,end_date,update_time,update_staff_id,update_depart_id,remark,rsrv_tag1,rsrv_tag2,rsrv_tag3,rsrv_date1,rsrv_date2,rsrv_date3,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_num1,rsrv_num2,rsrv_num3) 
+ VALUES 
+(:EPARCHY_CODE,:CONTRACT_ID,:VERSION,:CODE_TYPE_CODE,:CODE_STATE_CODE,SYSDATE,:STAFF_ID_IN,TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS'),SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK,:RSRV_TAG1,:RSRV_TAG2,:RSRV_TAG3,TO_DATE(:RSRV_DATE1,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:RSRV_DATE2,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:RSRV_DATE3,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:RSRV_STR6,:RSRV_STR7,:RSRV_NUM1,:RSRV_NUM2,:RSRV_NUM3)

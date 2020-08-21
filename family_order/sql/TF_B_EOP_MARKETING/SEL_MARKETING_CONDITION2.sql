@@ -1,0 +1,33 @@
+SELECT IBSYSID_MARKETING,
+       MARKETING_NAME,
+       IBSYSID_AUDIT,
+       CUSTOMNO,
+       CUSTOMNAME,
+       APPLY_STAFF_ID,
+       AUDIT_STAFF_ID,
+       MARKETING_IS_SUCC,
+       MARKETING_MONTH,
+       to_char(MARKETING_START_DATE, 'yyyy-MM-dd') MARKETING_START_DATE,
+       to_char(MARKETING_END_DATE, 'yyyy-MM-dd') MARKETING_END_DATE,
+       to_char(AUDIT_START_DATE, 'yyyy-MM-dd') AUDIT_START_DATE,
+       HANDLE_CODE,
+       HANDLE_INFO,
+       to_char(HANDLE_DATE, 'yyyy-MM-dd HH24:mi:ss') HANDLE_DATE,
+       to_char(AUDIT_DATE, 'yyyy-MM-dd HH24:mi:ss') AUDIT_DATE,
+       RESULT_CODE,
+       RESULT_INFO,
+       to_char(ACCEPT_DATE, 'yyyy-MM-dd HH24:mi:ss') ACCEPT_DATE,
+       UPDATE_DATE,
+       ENCLOSURE,
+       CITY_NAME
+  FROM TF_B_EOP_MARKETING
+ WHERE 1 = 1
+   AND (IBSYSID_MARKETING = :IBSYSID_MARKETING or
+       :IBSYSID_MARKETING is null)
+   AND (APPLY_STAFF_ID = :APPLY_STAFF_ID or :APPLY_STAFF_ID is null)
+   AND (MARKETING_END_DATE >= to_date(:MARKETING_END_DATE, 'yyyy-MM-dd HH24:mi:ss') or :MARKETING_END_DATE is null)
+   AND (HANDLE_CODE = :HANDLE_CODE or :HANDLE_CODE is null)
+   AND (RESULT_CODE = :RESULT_CODE or :RESULT_CODE is null)
+   AND (MARKETING_IS_SUCC = :MARKETING_IS_SUCC or :MARKETING_IS_SUCC is null)
+   AND (CUSTOMNO = :CUSTOMNO or :CUSTOMNO is null)
+   AND (ACCEPT_DATE >= to_date(:ACCEPT_DATE, 'yyyy-MM-dd HH24:mi:ss') or :ACCEPT_DATE is null)

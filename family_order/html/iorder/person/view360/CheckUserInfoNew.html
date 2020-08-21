@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="iorder/person/view360/scripts/checkuserinfo.js"></script>
+    <title>选择用户信息</title>
+</head>
+<body jwcid="@Body">
+    <div class="c_header">
+        <div class="back" ontap="backPopup(this)">客户列表</div>
+    </div>
+    <!-- 隐藏域 开始 -->
+    <div jwcid="QueryCondPart@Part">
+        <input jwcid="@Hidden" name="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"/>
+        <input jwcid="@Hidden" name="EPARCHY_CODE" value="ognl:condition.EPARCHY_CODE"/>
+        <input jwcid="@Hidden" name="USER360VIEW_VALIDTYPE" value="ognl:condition.USER360VIEW_VALIDTYPE"/>
+        <input jwcid="@Hidden" name="SERVICE_NUMBER" value="ognl:condition.SERVICE_NUMBER"/>
+        <input jwcid="@Hidden" name="PSPT_NUMBER" value="ognl:condition.PSPT_NUMBER"/>
+        <input jwcid="@Hidden" name="NORMAL_USER_CHECK" value="ognl:condition.NORMAL_USER_CHECK"/>
+    </div>
+    <!-- 隐藏域 结束 -->
+    <div jwcid="QueryListPart@Part"
+         class="c_scroll c_scroll-float c_scroll-header">
+        <!-- 表格 开始 -->
+        <table name="checkUserInfoTable" jwcid="@Table"
+               class="c_table c_table-lite c_table-border c_table-min-5 c_table-hover">
+            <thead>
+                <tr>
+                    <th>开户客户</th>
+                    <th>归属地州</th>
+                    <th>归属业务区</th>
+                    <th>状态标识</th>
+                    <th>开户时间</th>
+                    <th>注销时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+                    class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+                    index="ognl:rowIndex" element="tr">
+                    <td data-title="开户客户" class="key">
+                        <a jwcid="@Redirect" custid="ognl:info.CUST_ID"
+                           userid="ognl:info.USER_ID" caption="用户360视图"
+                           normalusercheck='ognl:null == info.DESTROY_TIME || "".equals(info.DESTROY_TIME) ? "on" : "off"'
+                           onclick="redirectToHomeTab(this)"
+                           value="ognl:info.CUST_NAME"></a>
+                    </td>
+                    <td data-title="归属地州">
+                        <span jwcid="@Insert"
+                              value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',info.EPARCHY_CODE)"></span>
+                    </td>
+                    <td data-title="归属业务区">
+                        <span jwcid="@Insert"
+                              value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',info.CITY_CODE)"></span>
+                    </td>
+                    <td data-title="状态标识">
+                        <span jwcid="@Insert"
+                              value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'USER_REMOVETAG',info.REMOVE_TAG})"></span>
+                    </td>
+                    <td data-title="开户时间">
+                        <span jwcid="@Insert"
+                              value="ognl:null == info.OPEN_DATE ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.OPEN_DATE)"></span>
+                    </td>
+                    <td data-title="注销时间">
+                        <span jwcid="@Insert"
+                              value="ognl:null == info.DESTROY_TIME ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.DESTROY_TIME)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 表格 结束 -->
+        <!-- 分页 开始 -->
+        <div jwcid="@NavBar" name="CheckUserInfoNav" cond="QueryCondPart"
+             part="QueryListPart" listener="getCheckUserInfo" pageSize="10"
+             count="ognl:count"></div>
+        <!-- 分页 结束 -->
+    </div>
+</body>
+</html>

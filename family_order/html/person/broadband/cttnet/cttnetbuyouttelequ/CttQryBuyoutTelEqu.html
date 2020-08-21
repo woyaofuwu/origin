@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnetbuyouttelequ/scripts/cttbuyouttelequ.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">TD话机买断查询(铁通)</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-8" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">营业部：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="DEPART_ID" id="DEPART_ID"
+								source="ognl:departs" 
+								textField="DEPART_NAME" valueField="DEPART_ID" value="ognl:cond.DEPART_ID"
+								desc="营业部" nullable="no" disabled="ognl:cond.FLAG"/>
+					</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="chnl">代理商：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" id="chnlFld" onclick="javascript:popupPage('broadband.cttnet.cttnetbuyouttelequ.CttQryChl','initQryChl','&multi=true&DEPART_ID=' +$('#DEPART_ID').val(),'选择代理商',750,400,'CHNL_ID')">
+					<i class="e_ico-check"></i><span></span></button>
+					<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@Popup"  readOnly="true" value="ognl:cond.CHNL_NAME" text="ognl:cond.CHNL_NAME" name="CHNL_ID" id="CHNL_ID" desc="代理商"/>
+					</span></span>
+				</span>	
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">受理日期(起始)：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="START_REG_DATE" id="START_REG_DATE" value="ognl:cond.START_REG_DATE" desc="登记日期(起始)"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">受理日期(终止)：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="END_REG_DATE" id="END_REG_DATE" value="ognl:cond.END_REG_DATE" desc="登记日期(终止)"/></span></span>
+			</li>
+			</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return qryBuyoutTelEqu()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="ResultDataPart@Part">
+		<div class="c_scroll c_scroll-x">
+			<div class="c_table c_table-row-10">
+				<table>
+					<thead>
+						<tr>
+							<th>流水</th>
+							<th>营业部</th>
+							<th>受理部门</th>
+							<th>受理员工</th>
+							<th>受理日期</th>
+							<th>代理商名称</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>总计</th>
+							<th>备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >	
+							<td><span jwcid="@Insert" value="ognl:info.LOG_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARENT_DEPART_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.REG_DEPART_ID)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.REG_STAFF_ID)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.REG_DATE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CHNL_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TELEQU_PRICE', info.TELEQU_PRICE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TELEQU_COUNT" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDecimal ('0.00',info.TELEQU_FEE_TOTLE/100)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+							</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="pageinfo" id="pageinfo" listener="qryBuyoutTelEqu" pageSize="10" cond="QueryPart" part="ResultDataPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+</div></div>
+</body>
+</html>

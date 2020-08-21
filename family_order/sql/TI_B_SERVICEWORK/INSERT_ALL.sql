@@ -1,0 +1,2 @@
+INSERT INTO ti_b_servicework(trade_id,trade_type_code,in_mode_code,product_id,brand_code,user_id,serial_number,trade_eparchy_code,accept_date,service_id,serv_para1,serv_para2,serv_para3,serv_para4,serv_para5,serv_para6,serv_para7,serv_para8,modify_tag,cancel_tag)
+ VALUES(TO_NUMBER(:TRADE_ID),:TRADE_TYPE_CODE,:IN_MODE_CODE,:PRODUCT_ID,:BRAND_CODE,TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:TRADE_EPARCHY_CODE,TO_DATE(:ACCEPT_DATE,'YYYY-MM-DD HH24:MI:SS'),:SERVICE_ID,:SERV_PARA1,:SERV_PARA2,:SERV_PARA3,:SERV_PARA4,:SERV_PARA5,:SERV_PARA6,:SERV_PARA7,:SERV_PARA8,:MODIFY_TAG,:CANCEL_TAG)

@@ -1,0 +1,340 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>企业宽带实名制信息补录</title>
+	<script jwcid="@Script"  src="iorder/person/widerealnamesupplement/scripts/WideRealnameSupplement.js"></script>
+	<script jwcid="@Script"  src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js" ></script>
+	<script jwcid="@Script"  src="scripts/iorder/icsserv/component/person/CommLib.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">企业宽带实名制信息补录</div>
+</div>
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding"> 
+	
+		<!-- 认证开始 -->
+			<!--<div jwcid="AuthPart@icsserv:Auth" authType="ognl:info.authType" tradeTypeCode="826"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>-->
+		<!-- 认证结束 -->
+		
+		<div jwcid="WideRealInfoPart@Part">
+			<!-- 表单 开始 -->
+			<div class="c_space"></div>
+			<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">集团产品编码</div>
+						<div class="value">
+							<span class="e_mix" id="SERIAL_NUMBER_INPUT">
+								<input jwcid="@TextField"   name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:custInfo.SERIAL_NUMBER"
+									   desc="集团产品编码" nullable="no" />
+								<button type="button" class="e_button-blue" onclick="refreshPartAtferAuth();"><i class="e_ico-search"></i><span>查询</span></button>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+		</div>
+		
+	<div jwcid="WideInfoPart@Part">
+		
+        <!-- 客户资料区域 开始 -->
+        <div jwcid="CustInfoPart@Part">
+        		<div class="c_title">
+						<div class="text">集团客户信息</div>
+				</div>
+			<!-- 客户信息 开始 -->
+	        <div id="CustFieldPart">
+	            <div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+	                <ul>
+	                    <li class="link" id="span_CUST_NAME">
+	                        <div class="label">集团客户名称</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="CUST_NAME"
+	                            	   id="CUST_NAME"
+	                            	   onchange="chkCustName('CUST_NAME')"
+	                                   value="ognl:custInfo.CUST_NAME" maxsize="48"
+	                                   disabled="true"
+	                                   desc="集团客户名称"/>
+	                        </div>
+	                    </li>
+	                   <li class="link">
+	                    	<div class="label">证件类型</div>
+	                    	<div class="value">
+								<span jwcid="@Select" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" 
+									source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CUSTGROUP_BUSILICENCETYPE')" 
+									textField="DATA_NAME" valueField="DATA_ID" 
+									value="ognl:custInfo.PSPT_TYPE_CODE" nullable="no"
+									optionWidth="30" optionColumn="2"
+                           			optionAlign="right"
+                           			disabled="true"
+		                            desc="证件类型" onchange="chkPsptTypeCode('PSPT_TYPE_CODE')"></span>
+		                    </div>
+							</li>
+	                    <li class="link">
+	                        <div class="label">证件号码</div>
+	                        <div class="value">
+	                            <div class="e_mix">
+	                                <input jwcid="@TextField" name="PSPT_ID"
+	                                 	   id="PSPT_ID"
+	                                       value="ognl:custInfo.PSPT_ID" maxsize="32"
+	                                       disabled="true"
+	                                       desc="证件号码" onchange="chkPsptId('PSPT_ID')"/>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="link">
+	                        <div class="label">证件地址</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="CUST_PSPT_ADDR"
+	                            	   id="CUST_PSPT_ADDR"
+	                                   value="ognl:custInfo.CUST_PSPT_ADDR" maxsize="128"
+	                                   disabled="true"
+	                                   desc="证件地址"
+	                                   onchange="checkAddr('CUST_PSPT_ADDR')"/>
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+	        </div>
+	        <!-- 客户信息 结束 -->
+		        
+			<!-- 经办人信息 开始 -->
+	        <div id="AgentFieldPart" style="display: none;">
+	        	<div class="c_title">
+						<div class="text">其他信息</div>
+				</div> 
+	            <div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+	                <ul>
+	                    <li class="link" id="span_AGENT_CUST_NAME">
+	                        <div class="label">经办人名称</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="AGENT_CUST_NAME"
+	                            	   id="AGENT_CUST_NAME"
+	                            	   onchange="chkCustName('AGENT_CUST_NAME')"
+	                                   value="ognl:custInfo.AGENT_CUST_NAME" 
+	                                   maxsize="48"
+	                                   desc="经办人名称"/>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_AGENT_PSPT_TYPE_CODE">
+	                        <div class="label">经办人证件类型</div>
+	                        <div class="value">
+	                            <span jwcid="@Select" name="AGENT_PSPT_TYPE_CODE" id="AGENT_PSPT_TYPE_CODE"
+	                                  source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE','EPARCHY_CODE','0894')"
+	                                  textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE"
+	                                  value="ognl:custInfo.AGENT_PSPT_TYPE_CODE"
+	                                  onchange="chkPsptTypeCode('AGENT_PSPT_TYPE_CODE')"
+	                                  desc="经办人证件类型"></span>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_AGENT_PSPT_ID">
+	                        <div class="label">经办人证件号码</div>
+	                        <div class="value">
+	                            <div class="e_mix">
+	                                <input jwcid="@TextField" name="AGENT_PSPT_ID"
+	                                	   id="AGENT_PSPT_ID"
+	                                       value="ognl:custInfo.AGENT_PSPT_ID" maxsize="32"
+	                                       desc="经办人证件号码" onchange="chkPsptId('AGENT_PSPT_ID')"/>
+	                                
+	                            <button type="button" class="e_button-blue" id="ReadCardButton" name="ReadCardButton" 
+									onclick="clickScanPspt2()" tip="经办人证件扫描"><span class="e_ico-scan e_size-s"></span></button>
+								<button type="button" class="e_button-blue"  id="AGENT_SHOT_IMG" name="ReadCardButton" 
+									onclick="identification('custInfo_AGENT_PIC_ID','custInfo_AGENT_PIC_STREAM')" 
+									tip="经办人摄像"><span class="e_ico-camera"></span></button>
+								<input jwcid="@Hidden" id="custInfo_AGENT_PIC_ID" name="custInfo_AGENT_PIC_ID" 
+									value="ognl:custInfo.custInfo_AGENT_PIC_ID" desc="经办人照片ID"/>						
+								<input jwcid="@Hidden" id="custInfo_AGENT_PIC_STREAM" name="custInfo_AGENT_PIC_STREAM" 
+									value="ognl:custInfo.custInfo_AGENT_PIC_STREAM" desc="拍摄经办人人像照片流"/>
+								<input jwcid="@Hidden" id="custInfo_AGENT_BACKBASE64" name="custInfo_AGENT_BACKBASE64" 
+									value="ognl:custInfo.custInfo_AGENT_BACKBASE64" desc="经办人身份证反面照"/>
+								<input jwcid="@Hidden" id="custInfo_AGENT_FRONTBASE64" name="custInfo_AGENT_FRONTBASE64" 
+									value="ognl:custInfo.custInfo_AGENT_FRONTBASE64" desc="经办人身份证正面照"/>
+								<input jwcid="@Hidden" id="custInfo_AGENT_SCAN_TAG" name="custInfo_AGENT_SCAN_TAG" 
+											value="1" desc="客户扫描标志"/>
+								<div style="display:none">
+									<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+								</div>
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_AGENT_PSPT_ADDR">
+	                        <div class="label">经办人证件地址</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="AGENT_PSPT_ADDR"
+	                            	   id="AGENT_PSPT_ADDR"
+	                                   value="ognl:custInfo.AGENT_PSPT_ADDR" maxsize="128"
+	                                   desc="经办人证件地址"
+	                                   onchange="checkAddr('AGENT_PSPT_ADDR')"/>
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+	        </div>
+	        <!-- 经办人信息 结束 -->
+	        <!-- 责任人信息 开始 -->
+	        <div id="RsrvFieldPart" style="display: none;">
+	            <div class="c_space"></div>
+	            <div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+	                <ul>
+	                    <li class="link" id="span_RSRV_STR2">
+	                        <div class="label">责任人姓名</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="RSRV_STR2"
+	                            	   id="RSRV_STR2"
+	                            	   onchange="chkCustName('RSRV_STR2')"
+	                                   value="ognl:custInfo.RSRV_STR2"
+	                                   desc="责任人姓名"/>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_RSRV_STR3">
+	                        <div class="label">责任人证件类型</div>
+	                        <div class="value">
+	                            <span jwcid="@Select" name="RSRV_STR3" id="RSRV_STR3"
+	                                  source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE','EPARCHY_CODE','0894')"
+	                                  textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE"
+	                                  value="ognl:custInfo.RSRV_STR3"
+	                                  onchange="chkPsptTypeCode('RSRV_STR3')"
+	                                  disabled="false" desc="责任人证件类型"></span>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_RSRV_STR4">
+	                        <div class="label">责任人证件号码</div>
+	                        <div class="value">
+	                            <div class="e_mix">
+	                                <input jwcid="@TextField" name="RSRV_STR4"
+	                                	   id="RSRV_STR4"
+	                                       value="ognl:custInfo.RSRV_STR4"
+	                                       maxsize="20" maxLength="20"
+	                                       disabled="false" desc="责任人证件号码"
+	                                       onchange="chkPsptId('RSRV_STR4')"/>
+	                                 <button type="button" class="e_button-blue" id="SCAN_PSPT4" name="SCAN_PSPT4" 
+									onclick="clickScanPspt3()" tip="责任人证件扫描"><span class="e_ico-scan e_size-s"></span></button> 
+	                            </div>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_RSRV_STR5">
+	                        <div class="label">责任人证件地址</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="RSRV_STR5"
+	                            	   id="RSRV_STR5"
+	                                   value="ognl:custInfo.RSRV_STR5"
+	                                   maxLength="128" maxsize="128"
+	                                   desc="责任人证件地址"
+	                                   onchange="checkAddr('RSRV_STR5')"/>
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+	        </div>
+	        <!-- 责任人信息 结束 -->
+	        <!-- 法人信息 开始 -->
+        	<div id="EnterprisePart" style="display: none;">
+            <div class="c_space"></div>
+	            <div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+	                <ul>
+	                    <li class="link" id="span_legalperson">
+	                        <div class="label">法人</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="legalperson"
+	                            	   id="legalperson"
+									   value="ognl:custInfo.legalperson"
+	                            	   onchange="verifyEnterpriseCard()"
+	                                   desc="法人" />
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_termstartdate">
+	                        <div class="label">营业开始日期</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="termstartdate"
+	                            	   id="termstartdate"
+									   value="ognl:custInfo.termstartdate"
+	                            	   onchange="verifyEnterpriseCard()"
+	                                   desc="营业开始日期" />
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_termenddate">
+	                        <div class="label">营业结束日期</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="termenddate"
+	                            	   id="termenddate"
+									   value="ognl:custInfo.termenddate"
+	                            	   onchange="verifyEnterpriseCard()"
+	                                   desc="营业结束日期" />
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_startdate">
+	                        <div class="label">成立日期</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="startdate"
+	                            	   id="startdate"
+									   value="ognl:custInfo.startdate"
+	                            	   onchange="verifyEnterpriseCard()"
+	                                   desc="成立日期"  />
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+        	</div>
+        	<!-- 法人信息 结束 -->
+        	<!-- 机构信息 开始 -->
+        	<div id="OrgPart" style="display: none;">
+            <div class="c_space"></div>
+	            <div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+	                <ul>
+	                    <li class="link" id="span_orgtype">
+	                        <div class="label">机构类型</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="orgtype"
+	                            	   id="orgtype"
+									   value="ognl:custInfo.orgtype"
+	                            	   onchange="verifyOrgCard()"
+	                                   desc="机构类型"/>
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_effectiveDate">
+	                        <div class="label">有效日期</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="effectiveDate"
+	                             	   id="effectiveDate"
+									   value="ognl:custInfo.effectiveDate"
+	                             	   onchange="verifyOrgCard()"
+	                                   desc="有效日期" />
+	                        </div>
+	                    </li>
+	                    <li class="link" id="span_expirationDate">
+	                        <div class="label">失效日期</div>
+	                        <div class="value">
+	                            <input jwcid="@TextField" name="expirationDate"
+	                            	   id="expirationDate"
+									   value="ognl:custInfo.expirationDate"
+	                            	   onchange="verifyOrgCard()"
+	                                   desc="失效日期" />
+	                        </div>
+	                    </li>
+	                </ul>
+	            </div>
+        	</div>
+        	<!-- 机构信息 结束 -->
+        </div>
+        <!-- 客户资料区域 结束 -->
+	</div>
+        <!-- 隐藏域开始 -->
+        <div jwcid="hiddenPart@Part">
+        	<input jwcid="@Hidden" name="checkGlobalMorePsptIdFlag" id="checkGlobalMorePsptIdFlag" value="true" desc="是否进行全国1证5号校验"/>
+	   	 	<input jwcid="@Hidden" name="INPUT_PERMISSION" id="INPUT_PERMISSION" value="ognl:initInfo.INPUT_PERMISSION" desc="是否具有手动输入证件号码权限"/>
+	   	 	<input jwcid="@Hidden" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="826" />
+		</div>
+        <!-- 隐藏域结束-->
+        
+        <div class="c_space"></div>
+		<!-- 提交区域 开始 -->
+		<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit"  listener="onTradeSubmit" blackTradeType="826"
+			 beforeAction="onTradeSubmit()"  isReset="true" area="WideInfoPart,WideRealInfoPart,hiddenPart" element="div">
+		</div>
+		<!-- 提交区域 结束 -->
+
+</body>
+</html>

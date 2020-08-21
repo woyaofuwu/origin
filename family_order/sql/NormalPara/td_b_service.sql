@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+SELECT SERVICE_ID paracode,SERVICE_NAME paraname FROM td_b_service WHERE sysdate BETWEEN start_date and end_date and (:TRADE_EPARCHY_CODE IS NULL OR :TRADE_EPARCHY_CODE IS NOT NULL) ORDER BY 1

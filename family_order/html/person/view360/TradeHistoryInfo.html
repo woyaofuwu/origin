@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: TradeHistoryInfo.html,v 1.24 2013/05/06 09:21:26 xiaolu Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 - 业务历史信息信息</title>
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/thpage.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/tradehistoryinfo.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">业务历史查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart1@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"/>
+
+	</div>
+	<!-- 隐藏域 结束 -->
+	<!-- 表单 开始 -->
+	
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">业务类型：</span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE"
+								source="ognl:tradeTypeCode"
+								textField="TRADE_TYPE" valueField="TRADE_TYPE_CODE" value="ognl:condition.TRADE_TYPE_CODE"
+								desc="业务类型"  nullable="no" titleField="TRADE_TYPE"/>
+						<input  type="hidden" name="USER_ID" id="USER_ID" jwcid="@TextField" value="ognl:condition.USER_ID" encode="false"/>
+						<input type="hidden" name="CUST_ID" id="CUST_ID" jwcid="@TextField" value="ognl:condition.CUST_ID" encode="false"/>
+						<input type="hidden" name="EPARCHY_CODE" id="EPARCHY_CODE" jwcid="@TextField" value="ognl:condition.EPARCHY_CODE" encode="false"/>
+						<input type="hidden" id="TRADE_ID" value="" encode="false"/>
+						<input type="hidden" id="TRADE_TYPE_CARD_CODE" value="" encode="false"/>
+						<input type="hidden" name="TRADE_FLAG" id="TRADE_FLAG" jwcid="@TextField" value="ognl:condition.TRADE_FLAG" encode="false"/>
+						<input type="hidden" name="TRADE_TYPE_CODE_T" id="TRADE_TYPE_CODE_T" jwcid="@TextField" value="ognl:condition.TRADE_TYPE_CODE_T" encode="false"/>
+						<input type="hidden" name="TIME_CHECK_T" id="TIME_CHECK_T" jwcid="@TextField" value="ognl:condition.TIME_CHECK_T" encode="false"/>
+						<input type="hidden" name="START_DATE_T" id="START_DATE_T" jwcid="@TextField" value="ognl:condition.START_DATE" encode="false"/>
+						<input type="hidden" name="END_DATE_T" id="END_DATE_T" jwcid="@TextField" value="ognl:condition.END_DATE" encode="false"/>		
+				</span></span></span>
+			</li>
+			<li class="li">
+			<span class="label"><input type="checkbox" class="e_checkbox" id="TIME_CHECK" name="TIME_CHECK" onclick="timeCheck();" title="启用时间查询条件" checked="true"/>起始日期：</span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					
+					<span class="e_input e_input-left"><span>
+					<input type="text" value="ognl:condition.START_DATE" name="START_DATE" id="START_DATE"
+									   jwcid="@DateField" format="yyyy-MM-dd"
+									   desc="开始日期" datatype="date"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">终止日期：</span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					
+					<span class="e_input e_input-left"><span>
+					<input type="text" value="ognl:condition.END_DATE" name="END_DATE" id="END_DATE"
+									   jwcid="@DateField" format="yyyy-MM-dd"
+									   desc="结束日期" datatype="date"/> 
+					</span></span>
+				</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			   <div class="fn">
+					<label for="SelectTag"><input type="checkbox" id="BOOK_CHECK" name="BOOK_CHECK" class="e_checkbox" onclick="bookCheck()"/>查询预约业务</label>
+				</div>
+			<button jwcid="@Any" name="query_BTN" id="query_BTN" class="e_button-form" onclick="return thQuery();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10">
+	<div class="c_table">
+		<table  jwcid="@Table" name="historyInfoTable">
+			<thead>
+				<tr>
+					<th>业务流水号</th>
+					<th>客户名称</th>
+					<th>接入方式</th>
+					<th>受理时间</th>
+					<th>受理工号</th>
+					<th>受理员工</th>
+					<th>受理部门</th>
+					<th>受理部门名称</th>
+					<th>业务类型</th>
+					<th>返销标识</th>
+					<th>备注</th>
+					<th>订单号</th>
+					<th>服务号码</th>
+					<th>品牌</th>
+					<th>产品名称</th>
+					<th>营业费用（元）</th>
+					<th>发票号码</th>
+					<th>预付话费（元）</th>
+					<th>押金金额</th>
+					<th>收费标志</th>
+					<th>收费时间</th>
+					<th>收费员工</th>
+					<th>定单类型</th>
+					<th>定单状态</th>
+					<th>后续处理状态</th>
+					<th>执行时间</th>
+					<th>完工时间</th>
+					<th>归属业务区</th>
+					<th>用户标识</th>
+					<th>客户标识</th>
+					<th>账户标识</th>
+					<th>受理月份</th>
+					<th>受理地州</th>
+					<th>受理业务区</th>
+					<th>优先级</th>
+					
+				</tr>
+			</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<span jwcid="@Conditional" condition='ognl:info.CANCEL_TAG=="返销"'>
+                        <td><a class="mycolor" jwcid="@Redirect" value = "ognl:info.TRADE_ID"  caption = "受理信息" 
+                        	cust_id="ognl:condition.CUST_ID" 
+                        	user_id="ognl:condition.USER_ID" 
+                        	trade_flag="ognl:condition.TRADE_FLAG" 
+                        	trade_id='ognl:info.TRADE_ID'
+							trade_type = "ognl:info.TRADE_TYPE_CODE"	
+							onclick="contorlRedirect(getAttribute('cust_id'),getAttribute('user_id'),getAttribute('trade_flag'),getAttribute('trade_id'),getAttribute('trade_type'));"/>
+						</td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_INMODE', info.IN_MODE_CODE)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.TRADE_STAFF_ID)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_CODE', info.TRADE_DEPART_ID)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.TRADE_DEPART_ID)" raw="false" /></font></td>
+						
+						<span jwcid="@Conditional" condition="ognl:info.TAG_110==1">
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.PROCESS_TAG_SET" raw="false" /></font></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.TAG_110!=1">
+						
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE', new java.lang.String[]{'EPARCHY_CODE', 'TRADE_TYPE_CODE'}, 'TRADE_TYPE', new java.lang.String[]{info.EPARCHY_CODE,info.TRADE_TYPE_CODE})" raw="false" /></font></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.CANCEL_TAG==0">
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', info.CANCEL_TAG)" raw="false" /></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.CANCEL_TAG!=0">
+							<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', info.CANCEL_TAG)" raw="false" /></font></td>
+						</span>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.REMARK" raw="false" /></font></td> 
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SMS_BRANDCODE', info.BRAND_CODE)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_PRODUCT','PRODUCT_ID','PRODUCT_NAME', info.PRODUCT_ID)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:formatDecimal('0.00', info.OPER_FEE / 100)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.INVOICE_NO" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:formatDecimal('0.00', info.ADVANCE_PAY / 100)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:formatDecimal('0.00', info.FOREGIFT / 100)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.FEE_STATE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.FEE_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.FEE_TIME)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.FEE_STAFF_ID)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.SUBSCRIBE_TYPE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE', info.SUBSCRIBE_STATE)" raw="false" /></font></td>  
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_NEXTDEAL', info.NEXT_DEAL_TAG)" raw="false" /></font></td> 
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.EXEC_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.EXEC_TIME)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.FINISH_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.FINISH_DATE)" raw="false" /></font></td>
+						<!--MODIFY BY YIJB -->  
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.CITY_CODE)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.CITY_CODE" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.CUST_ID" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="false" /></font></td>   
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.TRADE_EPARCHY_CODE)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.TRADE_CITY_CODE)" raw="false" /></font></td>
+						<td><font color="red"><span jwcid="@Insert" value="ognl:info.PRIORITY" raw="false" /></font></td>
+						     
+					</span>
+					<span jwcid="@Conditional" condition='ognl:info.CANCEL_TAG!="返销"'>
+                        <td><a jwcid="@Redirect" cust_id="ognl:condition.CUST_ID" user_id="ognl:condition.USER_ID" trade_flag="ognl:condition.TRADE_FLAG" trade_id='ognl:info.TRADE_ID'
+							   trade_type = "ognl:info.TRADE_TYPE_CODE"	
+							   value = "ognl:info.TRADE_ID"  caption = "受理信息"  
+							   onclick="contorlRedirect(getAttribute('cust_id'),getAttribute('user_id'),getAttribute('trade_flag'),getAttribute('trade_id'),getAttribute('trade_type'));"/>
+						 </td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_INMODE', info.IN_MODE_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.TRADE_STAFF_ID)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_CODE', info.TRADE_DEPART_ID)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.TRADE_DEPART_ID)" raw="false" /></td>
+						
+						<span jwcid="@Conditional" condition="ognl:info.TAG_110==1">
+						<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG_SET" raw="false" /></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.TAG_110!=1">
+					
+						<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE', new java.lang.String[]{'EPARCHY_CODE', 'TRADE_TYPE_CODE'}, 'TRADE_TYPE', new java.lang.String[]{info.EPARCHY_CODE,info.TRADE_TYPE_CODE})" raw="false" /></font></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.CANCEL_TAG==0">
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', info.CANCEL_TAG)" raw="false" /></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:info.CANCEL_TAG!=0">
+							<td><font color="red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', info.CANCEL_TAG)" raw="false" /></font></td>
+						</span>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false" /></td> 
+						<td><span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BRAND_NAME" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00', info.OPER_FEE / 100)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.INVOICE_NO" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00', info.ADVANCE_PAY / 100)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00', info.FOREGIFT / 100)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.FEE_STATE" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.FEE_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.FEE_TIME)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.FEE_STAFF_ID)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SUBSCRIBE_TYPE" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE', info.SUBSCRIBE_STATE)" raw="false" /></td>  
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_NEXTDEAL', info.NEXT_DEAL_TAG)" raw="false" /></td> 
+						<td><span jwcid="@Insert" value="ognl:info.EXEC_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.EXEC_TIME)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.FINISH_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss', info.FINISH_DATE)" raw="false" /></td>
+						<!--MODIFY YIJB-->  
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.CITY_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_ID" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="false" /></td>  
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.TRADE_EPARCHY_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME', info.TRADE_CITY_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRIORITY" raw="false" /></td>  
+						      
+					</span>
+                   </tr>
+		</tbody>
+		</table>
+	</div></div>
+   		<!-- 翻页（替换为页面组件） 开始  -->
+			<div jwcid="@NavBar" name="ThInfonav" id="ThInfonav" cond="QueryCondPart1,QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="10" count="ognl:infosCount"></div>
+	 	<!--  翻页 结束  -->
+	 </div>
+	<!-- 表格 结束 -->
+	<div jwcid="mytabPart@Part">
+	<!-- 分页标签（替换为页面组件） 开始 -->
+	<div jwcid="mytab@Tabset" name="mytab" switchAction="myTabSwitchAction(ptitle,title);" >
+		<iframe jwcid="@TabsetFrame" title="基本信息"
+			frameborder="0"  id="thBaseInfoPage" name="thBaseInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&USER_ID='+init.USER_ID+'&CUST_ID='+init.CUST_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThBaseInfo" listener="queryInfo" scrolling="no">
+		</iframe>  
+		<iframe jwcid="@TabsetFrame" title="受理信息" 
+			frameborder="0"  id="thAcceptInfoPage" name="thAcceptInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&USER_ID='+init.USER_ID+'&CUST_ID='+init.CUST_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThAcceptInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="平台业务" 
+			frameborder="0"  id="thPlatSvcInfoPage" name="thPlatSvcInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&USER_ID='+init.USER_ID+'&CUST_ID='+init.CUST_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThPlatSvcInfo" listener="qryThPlatSvcInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="积分交易明细" 
+			frameborder="0"  id="thScoreInfoPage" name="thScoreInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThScoreInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="产品变化" 
+			frameborder="0"  id="thProductInfoPage" name="thProductInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThProductInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="优惠变化" 
+			frameborder="0"  id="thDiscntInfoPage" name="thDiscntInfoPage"  params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThDiscntInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="服务变化" 
+			frameborder="0"  id="thSvcInfoPage" name="thSvcInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThSvcInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="服务状态变化" 
+			frameborder="0"  id="thSvcStatusInfoPage" name="thSvcStatusInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThSvcStatusInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="资源变化" 
+			frameborder="0"  id="thResInfoPage" name="thResInfoPage"  params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThResInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="关系变化" 
+			frameborder="0"  id="thRelationInfoPage" name="thRelationInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThRelationInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="联系信息" 
+			frameborder="0"  id="thContactInfoPage" name="thContactInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&USER_ID='+init.USER_ID+'&CUST_ID='+init.CUST_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThContactInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="国际漫游一卡多号" 
+			frameborder="0"  id="thCardInfoPage" pname="thCardInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&TRADE_TYPE_CODE='+init.TRADE_TYPE_CODE+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThCardInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="短信炸弹受理信息" 
+			frameborder="0"  id="ThSmsBoomInfoPage" pname="ThSmsBoomInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&TRADE_TYPE_CODE='+init.TRADE_TYPE_CODE+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThSmsBoomInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="其他信息" 
+			frameborder="0"  id="thOtherInfoPage" name="thOtherInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.ThOtherInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="其他台帐信息" 
+			frameborder="0"  id="tradeOtherInfoPage" name="tradeOtherInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.TradeOtherInfo" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="预约宽带营销活动" 
+			frameborder="0"  id="thPreSaleActiveInfoPage" name="thPreSaleActiveInfoPage" params="ognl:'TRADE_ID='+init.TRADE_ID+'&SERIAL_NUMBER='+init.SERIAL_NUMBER"
+			page="userview.THTradePreSaleActive" listener="queryInfo" scrolling="no" 
+			style="width:100%;height:450px;">
+		</iframe>
+	</div>
+	</div>
+	<!-- 分页标签 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div>
+</div>
+</body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onTradeHistoryInfo();
+	});
+</script>
+</html>

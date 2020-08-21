@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>甩单工单查询</title>
+    <script jwcid="@Script" language="JavaScript" src="iorder/person/tp/scripts/QueryTpOrder.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll">
+    <div class="l_padding">
+        <div class="c_box c_box-white c_box-border">
+            <div class="l_padding l_padding-u">
+                <div class="c_title">
+                    <div class="text">甩单工单查询</div>
+                    <div class="fn">
+                    </div>
+                </div>
+                <div class="c_form c_form-submit c_form-submit-nopadding c_form-label-6 c_form-col-3" id="QueryPart">
+                    <ul>
+                        <li class="link">
+                            <div class="label">工单号：</div>
+                            <div class="value" >
+                                <input jwcid="@TextField" id="ORDER_ID" name="ORDER_ID" value="ognl:cond.ORDER_ID"
+                                       desc="工单号" maxLength="50" nullable="yes"/>
+                            </div>
+                        </li>
+                        <li class="link ">
+                            <div class="label ">用户手机号码：</div>
+                            <div class="value" >
+                                <input jwcid="@TextField" id="ACCESS_NUM" name="ACCESS_NUM"
+                                       value="ognl:cond.ACCESS_NUM"
+                                       desc="手机号码" maxLength="30" nullable="yes" datatype="mbphone" />
+                            </div>
+                        </li>
+                        <li class="link ">
+                            <div class="label ">业务类型：</div>
+                            <div class="value" >
+					            <span jwcid="@Select" name="IN_TRADE_TYPE_CODE" id="IN_TRADE_TYPE_CODE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                                      source="ognl:pageutil.getStaticList('IN_TRADE_TYPE_CODE')" value="ognl:cond.IN_TRADE_TYPE_CODE" desc="业务类型">
+								</span>
+                            </div>
+                        </li>
+                        <li class="link">
+                            <div class="label">工单状态：</div>
+                            <div class="value" >
+                                <span jwcid="@Select" name="STATE" id="STATE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                                      source="ognl:pageutil.getStaticList('TP_STATE')" value="ognl:cond.STATE" desc="状态">
+								</span>
+                            </div>
+                        </li>
+                        <li class="link">
+                            <div class="label">审核状态：</div>
+                            <div class="value" >
+                                <span jwcid="@Select" name="IS_AUDIT" id="IS_AUDIT" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                                      source="ognl:pageutil.getStaticList('TP_IS_AUDIT')" value="ognl:cond.IS_AUDIT" desc="分配状态">
+								</span>
+                            </div>
+                        </li>
+                        <li class="link">
+                            <div class="label">创建开始时间：</div>
+                            <div class="value">
+                                <input type="text" jwcid="@DateField" dropDown="true"
+                                       id="START_DATE" name="START_DATE"
+                                       value="ognl:cond.START_DATE" maxName="END_DATE"
+                                       format="yyyy-MM-dd" desc="创建开始时间" nullable="yes" />
+                            </div>
+                        </li>
+                        <li class="link">
+                            <div class="label">创建结束时间：</div>
+                            <div class="value">
+                                <input type="text" jwcid="@DateField" dropDown="true"
+                                       id="END_DATE" name="END_DATE"
+                                       value="ognl:cond.END_DATE" minName="START_DATE"
+                                       format="yyyy-MM-dd" desc="创建结束时间" nullable="yes" />
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="submit">
+                        <button class="e_button-blue" type="button" ontap="queryTpOrderInfos('QueryPart')"><span class="e_ico-search"></span><span>查询</span></button>
+                    </div>
+                </div>
+                <div class="c_space"></div>
+                <div class="l_padding l_padding-u" jwcid="QueryListPart@Part">
+                    <table name=resSelBoxTable jwcid="resSelBoxTable@Table" class="c_table c_table-row-5 c_table-lite c_table-border">
+                        <thead>
+                        <tr>
+                            <th col="CHECK" class="e_center">
+                                <input type="checkbox" ontap="checkedAll('TAB_CHECK', this.checked)"/>
+                            </th>
+                            <th col="INDEX">序号</th>
+                            <th col="ORDER_ID">工单号</th>
+                            <th col="ACCESS_NUM">服务号码</th>
+                            <th col="IN_TRADE_TYPE_CODE">业务类型</th>
+                            <th col="IN_TRADE_TYPE_NAME">业务名称</th>
+                            <th col="STATE">工单状态</th>
+                            <th col="IS_AUDIT">审核状态</th>
+                            <th col="CREATE_DATE">工单创建时间</th>
+                            <th col="OP_ID">工单创建员工</th>
+                            <th col="ORG_ID">工单创建组织</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+                            <td class="e_center">
+                                <input type="checkbox" jwcid="@Checkbox" id="TAB_CHECK" name="TAB_CHECK" value="info.rowIndex"/>
+                            </td>
+                            <td><span jwcid="@Insert" value="ognl:rowIndex+1" raw="true" /></td>
+                            <td>
+                                <a jwcid="@Redirect" ontap="openDetail($(this).attr('tableIndex'));" tableIndex="ognl:rowIndex">
+                                    <span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false"/>
+                                </a>
+                            </td>
+                            <!--<td><span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="true" /></td>-->
+                            <td><span jwcid="@Insert" value="ognl:info.ACCESS_NUM" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:info.IN_TRADE_TYPE_CODE" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:info.IN_TRADE_TYPE_NAME" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:info.STATE" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:info.IS_AUDIT" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.CREATE_DATE)" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:info.OP_ID" raw="true" /></td>
+                            <td><span jwcid="@Insert" value="ognl:info.ORG_ID" raw="true" /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="c_page c_page-border" name="NavBar" id="NavBar" jwcid="@NavBar" cond="QueryPart" count="ognl:count" listener="queryTpOrderInfos" part="QueryListPart" pageSize="5"></div>
+                </div>
+                <div class="c_title">
+                    <div class="text">操作区</div>
+                </div>
+                <div class="c_list c_list-submit c_list-s c_list-col-3 c_list-line c_list-border" id="editCond">
+                    <ul>
+                        <li class="link required">
+                            <div class="label">操作类型</div>
+                            <div class="value">
+                                <span jwcid="@Select" name="ACTION_TYPE" id="ACTION_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                                      source="ognl:pageutil.getStaticList('TP_ACTION_TYPE')" value="ognl:cond.ACTION_TYPE" desc="操作类型" nullable="no">
+								</span>
+                            </div>
+                        </li>
+                        <li class="link required">
+                            <div class="label">备注</div>
+                            <div class="value">
+                                <input jwcid="@TextField" name="REMARKS" id="REMARKS" nullable="no"
+                                       value="ognl:cond.REMARKS" maxlength="180" desc="备注"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="c_space"></div>
+                <div class="c_submit c_submit-center">
+                    <button class="e_button-r e_button-l e_button-green" type="button" ontap="submitAction('editCond');"><span>提交</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" src="scripts/group/vpmnprintinvoice/VpmnPrintInvoice.js"></script>   
+</head>
+<title>集团业务免填单补录</title>
+<body jwcid="@Body">
+<div class="m_wrapper">
+	<div class="m_wrapper2">
+		<div class="c_box">
+			<!-- 提示区 --> 
+			<div class="c_tip" jwcid="refreshHintBar@Part">
+				<span jwcid="@Insert" value="ognl:hintInfo" raw="true"/>
+			</div>	
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">查询条件</div> 
+			</div>
+			<!-- 标题 结束 -->
+			
+			<!-- 表单 开始 -->
+			
+		<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+			<div class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul"> 
+			<li class="li">
+					<span class="label" id="ConditionLabel"><span class="e_required">成员服务号码：</span></span>
+					<span class="e_input"><span> 
+						<input jwcid="@TextField" type="text" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER"  value="ognl:condition.cond_SERIAL_NUMBER" desc="成员服务号码" maxsize="20"/>	
+						<input jwcid="@TextField" type="hidden"  id="queryed_SERIAL_NUMBER" name="queryed_SERIAL_NUMBER"  value="ognl:condition.cond_SERIAL_NUMBER" encode="false"/>
+						 
+					</span></span>
+			</li>
+			
+			<li class="li">
+					<span class="label" id="ConditionLabel">员工工号：</span>
+					<span class="e_input"><span> 
+						<input jwcid="@TextField" type="text" id="cond_STAFF_ID" name="cond_STAFF_ID"  value="ognl:condition.cond_STAFF_ID" desc="员工工号" maxsize="20"/>	 
+					</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">加入起始时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no"  value="ognl:condition.cond_START_DATE" desc="加入起始时间"/>
+					</span></span>
+				</span>
+			</li> 
+			
+			<li class="li">
+				<span class="label"><span class="e_required">加入结束时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" type="text" name="cond_END_DATE" id="cond_END_DATE" nullable="no" value="ognl:condition.cond_END_DATE" desc="加入结束时间"/>
+					</span></span>
+				</span>
+			</li> 
+			</ul>
+			<div class="submit">
+			<button class="e_button-form" id="bquery" onclick="return qryClick('QueryCondPart')" ><i class="e_ico-search"></i><span>查询</span></button>
+			<button class="e_button-form" id="breset" onclick="return reset()" ><i class="e_ico-reset"></i><span>重置</span></button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 表单 结束 -->
+	
+	
+	<!-- 功能 开始 --> 
+	<div class="c_fn">
+		<ul class="ul">
+			<div class="submit">
+			<button class="e_button-form" id="breset" onclick="return batprintfast()" ><i class="e_ico-import"></i><span>补录</span></button>
+			</div>
+		</ul>
+	</div>
+	</div> 
+		
+				
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<!-- 导出开始 -->
+	<div class="fctTop e_clear">
+			<div align="right">
+				<div class="button">
+					<ul>
+					 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="8807" 
+						config="export/querygroupinfo/VpmnPrintInvoice.xml"
+						fileName="集团业务免填单补录" cond="QueryCondPart"
+						ftpSite="groupserv" beforeAction="" action="" /> 
+					</ul>
+				</div>
+			</div> 
+	</div>
+	<!-- 导出结束 -->
+	
+	<div jwcid="groupNetInfo@Part" >
+	<div class="c_scroll c_scroll-x c_scroll-table-15" >
+	<div class="c_table" >
+		<table jwcid="cancelBookTradeTable@Table" name="cancelBookTradeTable" >
+			<thead>
+				<tr>
+						<th id="col_X_TAG" >选择</th>		  				
+		  				<th id="col_TRADE_ID">业务流水号</th>
+						<th id="col_TRADE_TYPE">业务类型</th>
+						<th id="col_STAFF_ID">受理员工工号</th>
+						<th id="col_STAFF_NAME">受理员工</th>
+						<th id="col_DEPART_ID">受理部门编码</th>
+						<th id="col_DEPART_NAME">受理部门</th>
+						<th id="col_BRAND">受理时间</th>
+						<th id="col_RSRV_STR1">业务受理方式</th>  
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                		<td ><input id="cond_bindInfos" name="cond_bindInfos" jwcid="cond_bindInfos@Radio" value="ognl:info.TRADE_ID"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)" raw="true"/></td>									
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID', 'STAFF_NAME', info.STAFF_ID)"/></td>			
+						<td><span jwcid="@Insert" value="ognl:info.DEPART_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_DEPART','DEPART_ID', 'DEPART_NAME', info.DEPART_ID)"/></td>			
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd', info.ACCEPT_DATE)" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.VIP_CLASS" raw="true"/></td>			
+                </tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+		<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" id="pageNav" name="pageNav" cond="QueryCondPart" part="groupNetInfo" listener="queryPrints" pageSize="15" count="ognl:infoCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>	
+</div>
+</div>
+</body>
+</html> 

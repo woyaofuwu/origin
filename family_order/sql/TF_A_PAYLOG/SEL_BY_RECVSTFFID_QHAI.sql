@@ -1,0 +1,1 @@
+select * from tf_a_paylog WHERE recv_staff_id=:RECV_STAFF_ID and cancel_tag= '0' and TO_NUMBER(recv_fee) >= 0 and charge_source_code not in (15,16,30) and recv_time =(select max(recv_time) from tf_a_paylog WHERE recv_staff_id=:RECV_STAFF_ID and cancel_tag= '0' and TO_NUMBER(recv_fee) >= 0 and charge_source_code not in (15,16,30))

@@ -1,0 +1,1 @@
+select * from TF_F_WIDENET_BOOK t where t.HOME_ADDR = :HOME_ADDR  ORDER BY t.REG_DATE ASC

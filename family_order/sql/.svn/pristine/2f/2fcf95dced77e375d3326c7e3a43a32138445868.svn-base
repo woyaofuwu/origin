@@ -1,0 +1,28 @@
+insert into tf_F_feereg
+(log_id,
+ fee_type_code,
+ fee_money,
+ reg_date,
+ reg_staff_id,
+ reg_depart_id,
+ state,
+ update_time,
+ update_staff_id,
+ update_depart_id,
+ remark,
+ RSRV_NUM1,
+ RSRV_NUM2)
+ values
+(:LOG_ID,
+ :FEE_TYPE_CODE,
+ :FEE_MONEY,
+ to_date(:REG_DATE,'yyyy-mm-dd hh24:mi:ss'),
+ :REG_STAFF_ID,
+ :REG_DEPART_ID,
+ :STATE,
+ to_date(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss'),
+ :UPDATE_STAFF_ID,
+ :UPDATE_DEPART_ID,
+ :REMARK,
+ :RSRV_NUM1,
+ :RSRV_NUM2)

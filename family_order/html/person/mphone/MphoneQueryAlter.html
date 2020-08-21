@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>号码匹配查询修改</title>
+<script language="JavaScript" src="person/mphone/scripts/mphone.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">号码匹配</div>
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!-- 认证 开始 -->
+		<div class="c_form">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+							<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name="AUTH_SERIAL_NUMBER"
+														id="AUTH_SERIAL_NUMBER"
+														value="ognl:condition.AUTH_SERIAL_NUMBER" nullable="no"
+														desc="服务号码："/> </span></span>
+					<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="queryAuthInfo();"><i class="e_ico-search"></i><span>查询</span></button>												
+				</li>
+			</ul>	
+		</div>
+	</div>
+	
+	<!-- 认证 结束 -->
+	<div class="c_box">
+	<div class="c_title">
+		<span class="text">业务信息</span>
+	</div>
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+	<ul class="ul">
+		<li class="li">
+		<span class="label"><span class="e_required">老服务号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="SERIAL_NUMBER_A"
+												id="SERIAL_NUMBER_A"
+												value="ognl:condition.SERIAL_NUMBER_A" nullable="no"
+												desc="服务号码：" disabled="true"/> </span></span>
+		</li>
+		
+		<li class="li">
+		<span class="label"><span class="e_required">客户姓名：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="CUST_NAME"
+												id="CUST_NAME"
+												value="ognl:condition.CUST_NAME" nullable="no"
+												desc="客户姓名："  disabled="true"/> </span></span>
+		</li>
+	</ul>	
+	<ul class="ul">	
+		
+		<li class="li">
+		<span class="label"><span class="e_required">已匹配号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="SERIAL_NUMBER_B"
+												id="SERIAL_NUMBER_B"
+												value="ognl:condition.SERIAL_NUMBER_B" nullable="no"
+												desc="已匹配号码："  disabled="true"/> </span></span>
+		</li>
+		
+		<li class="li">
+			<span class="label"><span class="e_required">新匹配号码：</span></span>
+			<span class="e_elements">
+				<button class="e_button-right" type="button" id="check" name="check" onclick="checkMphone()"><i class="e_ico-check"></i><span>校验</span></button>
+				<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@TextField" name="SERIAL_NUMBER_C"
+											id="SERIAL_NUMBER_C"
+											value="ognl:condition.SERIAL_NUMBER_C" nullable="no"
+											desc="新匹配号码：" disabled="true" />
+				</span></span>
+			</span>
+		</li>
+	</ul>
+	</div>	
+		<!-- 提交开始 -->
+		<div class="c_submit">
+			<button type="button" class="e_button-form" name="query" id="query" onclick="queryMphone()"><i class="e_ico-search"></i><span>查询新号码</span></button>
+		</div>
+		<!-- 提交 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="infoListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table ">
+		<table jwcid="@Table" name="SnTable" id="SnTable" scroll="true" rowClick="setSN" >
+			<thead>
+				<tr>
+					<th col = "SERIAL_NUMBER">可选择号码</th>
+					<th col = "col_CODE_STATE_CODE" >号码状态</th>
+					<th col = "col_STOCK_LEVEL">库存级别</th>
+					<th col = "col_END_DATE" >失效日期</th>
+				</tr>
+			</thead>
+			<tbody  id="SnTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">								
+					    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.CODE_STATE_CODE" raw="false"></span></td>
+                 		<td><span jwcid="@Insert" value="ognl:info.STOCK_LEVEL" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+			<!--<div jwcid="@NavBar" name="navt" id="navt" cond="infoListPart" part="infoListPart" listener="refreshClick" source="ognl:editList" pageSize="10" count="ognl:count"></div>-->		
+	<!-- 翻页 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+			<!--<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" isReset="true" area="infoListPart" element="div"/>-->
+			<button class="e_button-page-ok" id="submitBTN" name="submitBTN" onclick="checkBeforeSubmit()" disabled="true"><i></i><span>提交</span></button>
+			<button type="button" class="e_button-page-cancel" onclick="resetUrl()"><i class="e_ico-reset"></i><span>取消</span></button>
+	</div>		
+	<!-- 提交 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

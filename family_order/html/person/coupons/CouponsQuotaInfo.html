@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手机维修电子券配额审批</title>
+<script jwcid="@Script" src="person/coupons/scripts/CouponsQuotaInfo.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+		<div class="fn">
+		    <span class="fn"><!-- 配置表ucr_cen1.td_m_asynctask -->
+					<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="20170104" 
+					 	config="export/coupons/couponsQuotaInfoList.xml" fileName="手机维修电子券配额审批工单配置"   cond="QueryCondPart" />
+					<button jwcid="@Any" name="ADD_BTN" id="ADD_BTN" onclick="return openCouponsQuotaConfigInfo('','');"><i class="e_ico-add"></i><span>新增配置</span></button>
+					</span>
+			
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">分公司：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="cond_AREA_CODE" name="cond_AREA_CODE" source="ognl:cityList" 
+									value="ognl:getVisit().getCityCode()" valueField="AREA_CODE" textField="AREA_NAME" nullable="no" desc="分公司"></select>
+					</span></span></span>
+					
+			</li>
+			<li class="li">
+					<span class="label">审批工单号：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_AUDIT_ORDER_ID" id="cond_AUDIT_ORDER_ID" value="ognl:condition.cond_AUDIT_ORDER_ID" desc="审批工单号"/>
+					</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span>开始时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_START_TIME" id="cond_START_TIME" value="ognl:condition.START_TIME" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>结束时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_END_TIME"  id="cond_END_TIME" value="ognl:condition.END_TIME" />
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return qryCouponsQuotaInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10">
+		<div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						  <th>分公司</th>
+	                      <th>审批工单号</th>
+                          <th>配额(元)</th>
+                          <th>余额(元)</th>
+                          <th>配置工号</th>
+                          <th>开始时间</th>
+                          <th>结束时间</th>		
+	                      <th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+						TRADE_ID="ognl:info.TRADE_ID">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',info.AREA_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.AUDIT_ORDER_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.TOTAL_AMOUNT/100)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.BALANCE/100)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPERA_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_TIME" raw="true"/></td>
+						<td style="width:130px" class="edit">
+							<a jwcid="@Any" href="#nogo" class="e_button" audit_order_id="ognl:info.AUDIT_ORDER_ID" row_id="ognl:info.ROW_ID" 
+									onclick="openCouponsQuotaConfigInfo(this.getAttribute('audit_order_id'),this.getAttribute('row_id'))"><i class="e_ico-edit"></i><span>修改</span></a>
+							<a jwcid="@Any" href="#nogo" class="e_button"  audit_order_id="ognl:info.AUDIT_ORDER_ID" row_id="ognl:info.ROW_ID"
+									onclick="deleteCouponsQuotaConfigInfo(this.getAttribute('audit_order_id'),this.getAttribute('row_id'))"><i class="e_ico-delete"></i><span>删除</span></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 表格 结束 -->
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart" part="QueryListPart" 
+		      listener="queryCouponsQuotaInfos" pageSize="10" count="ognl:pageCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+<!--  -->
+<div class="c_popup" id="popup" style="display:none;">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox">
+			<div class="c_popupTitle">
+				<div class="text">手机维修电子券配额处理</div>
+				<div class="fn"><a href="#nogo" class="close" onclick="$('#popup').css('display','none');qryCouponsQuotaInfo();")></a></div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-6 c_form-col-1" jwcid="editPart@Part">
+					<ul class="ul">
+						<li class="li">
+								<span class="label"><span class="e_required">分公司：</span></span>
+								<span class="e_select"><span><span>
+									<select jwcid="@Select" id="AREA_CODE" disabled="true" readOnly="true" name="AREA_CODE" source="ognl:cityList" 
+												value="ognl:info.AREA_CODE" valueField="AREA_CODE" textField="AREA_NAME" nullable="no" desc="分公司"></select>
+								</span></span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">审批工单号：</span></span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" disabled="true" readOnly="true" id="AUDIT_ORDER_ID" name="AUDIT_ORDER_ID" value="ognl:info.AUDIT_ORDER_ID" desc="审批工单号"  nullable="no" maxlength="30"/>
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">配额：</span></span>
+								<span class="e_elements">
+									<span class="e_label e_label-right"><span>元</span></span>
+									<span class="e_input e_input-left"><span>
+										<input jwcid="@TextField" id="TOTAL_AMOUNT" name="TOTAL_AMOUNT" datatype="numeric"
+										value="ognl:info.TOTAL_AMOUNT" desc="配额"  nullable="no"/>
+									</span></span>
+								</span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">开始时间：</span></span>
+			                <span class="e_input"><span>
+								<input type="text" jwcid="@DateField"  name="START_TIME" id="START_TIME" value="ognl:info.START_TIME" desc="开始时间" nullable="no"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">结束时间：</span></span>
+			                <span class="e_input"><span>
+								<input type="text" jwcid="@DateField"  name="END_TIME"  id="END_TIME" value="ognl:info.END_TIME" desc="结束时间" nullable="no"/>
+							</span></span>
+						</li>											
+						<li class="li" style="display:none;">
+							<input jwcid="@TextField" id="ROW_ID" name="ROW_ID" 
+									value="ognl:info.ROW_ID" desc="ROW_ID" />
+					
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button type="button" class="e_button-page-ok" id="addButton" onclick="updateCouponsQuotaConfigInfo('ADD');"><i class="e_ico-ok"></i><span>新增</span></button>
+					<button type="button" class="e_button-page-ok" id="updateButton" onclick="updateCouponsQuotaConfigInfo('UPDATE');"><i class="e_ico-ok"></i><span>修改</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!--  -->
+</html>

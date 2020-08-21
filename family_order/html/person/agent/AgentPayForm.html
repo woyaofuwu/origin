@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>代理商银行账户信息添加</title>
+<script jwcid="@Script" language="JavaScript" src="person/agent/scripts/agentpay.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	redoSelect();
+});
+</script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<form jwcid="@Form">
+	<div class="c_box" jwcid="AgentPayInfoPart@Part" element="div">
+		<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">分公司：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CITY_CODE" source="ognl:cityInfo" titleField="AREA_NAME" nullable="no"
+							textField="AREA_NAME" valueField="AREA_CODE" value="ognl:cond.CITY_CODE"  desc="分公司" addDefault="false" 
+							disabled="ognl:(cond.AGENT_ID!=null && cond.AGENT_ID!='')? true : false"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">手机号码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="手机号码" maxsize="11" datatype="mbphone" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">代理商编码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="AGENT_CODE" value="ognl:cond.AGENT_CODE" desc="代理商编码" maxsize="8" nullable="no"
+							disabled="ognl:(cond.AGENT_ID!=null && cond.AGENT_ID!='')? true : false"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">代理商名称：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="AGENT_NAME" value="ognl:cond.AGENT_NAME" desc="代理商名称" nullable="no"
+							disabled="ognl:(cond.AGENT_ID!=null && cond.AGENT_ID!='')? true : false"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">回缴银行账号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="ACCOUNT_CODE" value="ognl:cond.ACCOUNT_CODE" desc="回缴银行账号" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">账户名：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="ACCOUNT_NAME" value="ognl:cond.ACCOUNT_NAME" desc="账户名" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">银行名称：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="BANK_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_COMMPARA','PARA_CODE1','PARAM_NAME',new java.lang.String[]{'SUBSYS_CODE','PARAM_ATTR','PARAM_CODE'},new java.lang.String[]{'CSM','9767','AGENT_PAYFOR_BANK_INFO'})" 
+						titleField="PARAM_NAME" nullable="no" textField="PARAM_NAME" valueField="PARA_CODE1" value="ognl:cond.BANK_CODE"  desc="银行名称" onchange="redoSelect()"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">回缴渠道：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PAY_CHANNEL" source="ognl:pageutil.getStaticList('AGENT_PAYFOR_CHANNEL_INFO')" 
+							titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.PAY_CHANNEL" nullable="no" desc="回缴渠道"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">账户类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="RSRV_STR1" source="ognl:pageutil.getStaticList('ACCT_TYPE_STATIC')" 
+							titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.RSRV_STR1"  nullable="no" desc="账户类型"/>
+					</span></span></span>
+				</li>
+				<div jwcid="@Conditional" condition="ognl:cond.AGENT_ID!=null && cond.AGENT_ID!=''">
+				<li class="li">
+					<span class="label"><span>是否生效：</span></span>
+					<span class="e_select"><span><span>
+						<input jwcid="@Hidden" name="AGENT_ID" value="ognl:cond.AGENT_ID" />
+						<input jwcid="@Hidden" name="OLD_REMOVE_TAG" value="ognl:cond.REMOVE_TAG" />
+						<select jwcid="@Select" name="REMOVE_TAG" source="ognl:pageutil.getStaticList('AGENT_PAYFOR_YES_NO')" 
+							titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.REMOVE_TAG"  desc="是否生效"/>
+					</span></span></span>
+				</li>
+				</div>
+			</ul>
+		</div>
+	</div>
+
+	<div class="c_submit">
+		<button type="button" name="closeBtn" class="e_button e_button-page" onclick="closeNav();"><i class="close"></i><span>关闭</span></button>
+	</div>
+
+	<!--<div class="c_submit">-->
+		<!--<span jwcid="SubmitPart@csserv:CSSubmit" isRender="false" beforeAction="submitBeforeCheck()" disabledBtn="false" area="AgentPayInfoPart" element="span"/>-->
+		<!--<button type="reset" name="resetBtn" class="e_button e_button-page"><i class="e_ico-reset"></i><span>重置</span></button>-->
+    <!--</div>  -->
+</form>
+</div></div>
+</body>
+</html>

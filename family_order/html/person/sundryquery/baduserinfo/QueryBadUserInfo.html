@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>不良信息用户资料查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/baduserinfo/scripts/QueryBadUserInfo.js"></script>
+<script language="JavaScript">
+   $(document).ready(function(){
+		initQueryBadUserInfo();
+   });
+</script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取不良信息用户资料无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">不良信息用户资料查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"  id="sn"><span class="e_required">服务号码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+									value="ognl:cond.cond_SERIAL_NUMBER" desc="服务号码" datatype="mbphone" /></span></span>
+						</li>
+						<li class="li"  id="batchid" style="display:none"><span class="label">是否有数据：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_BATCH_ID" id="cond_BATCH_ID"
+									value="ognl:cond.cond_BATCH_ID" desc="是否有数据"/></span></span>
+						</li>
+						<li class="li"  id="hasdata" style="display:none"><span class="label">是否有数据：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_HAS_DATA" id="cond_HAS_DATA"
+									value="ognl:cond.cond_HAS_DATA" desc="是否有数据"/></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryBadUserInfo(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="ResultPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					        <div class="button">
+				    		  <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+							      <span jwcid="@Export" name="export1" id = "export1" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100988"
+									  config="export/sundryquery/other/BadUserList.xml" fileName="不良信息用户" cond=QueryCondPart/>
+							  </div>
+						    </div>
+				     </div>
+		  	     </div>	  	     
+		  	     
+				 <div class="c_table ">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>服务号码</th>
+				      		<th>开户渠道（代理商名称/自办营业厅）</th>		
+				      		<th>代理商编码</th>
+	                        <th>开户时间</th>
+	                        <th>激活时间</th>
+	                        <th>品牌</th>
+	                        <th>产品</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>          
+	                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEVELOP_DEPART_ID)" raw="false"></span></td>
+	                        <td><span jwcid="@Insert" value="ognl:info.DEVELOP_STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.IN_DATE" raw="false"/></td>
+	                        <td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false"/></td>
+	                        <td><span jwcid="@Insert" value="ognl:info.BRAND_NAME" raw="false"></span></td>
+	                        <td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"></span></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="ResultPart" listener="queryBadUserInfo" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+	<div class="c_box">
+		<div class="c_title">
+			<div class="text">批量数据导入区</div>
+		</div>
+		<div class="c_form c_form-col-2 c_form-label-11" jwcid="DataImportPart@Part">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">上传前请查看模板格式：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&filePath='+'template/person/baduserinfo/BadUserInfoImport.xls')">
+						<span jwcid="@Insert" value="[点击下载]"></span>
+					</a>
+				</span>
+				</li>
+				<li jwcid="@Any" class="li">
+					<span class="label"><span class="e_required">导入文件：</span></span>
+					<span class="text">
+					<span jwcid="@Import" name="FILE_ID" 
+					ftpSite="personserv" fileSize="10" fileTypes="excel" serviceName="100987" 
+					config="import/baduserinfo/BadUserInfoImport.xml"
+					desc="导入文件" nullable="no" cond="" params="" afterAction="queryBadUserInfo4Import(this)"/>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+insert into tf_bh_shopping_cart
+  (SHOPPING_CART_ID,
+   SHOPPING_ORDER_ID,
+   CUST_ID,
+   USER_ID,
+   DISCNT_RULE_ID,
+   PAY_MODE_CODE,
+   OLDFEE,
+   FREE_FEE,
+   FEE,
+   STATE,
+   IN_MODE_CODE,
+   TRADE_STAFF_ID,
+   TRADE_DEPART_ID,
+   ACCEPT_DATE,ACCEPT_MONTH)
+  select SHOPPING_CART_ID,
+         SHOPPING_ORDER_ID,
+         CUST_ID,
+         USER_ID,
+         DISCNT_RULE_ID,
+         PAY_MODE_CODE,
+         OLDFEE,
+         FREE_FEE,
+         FEE,
+         STATE,
+         IN_MODE_CODE,
+         TRADE_STAFF_ID,
+         TRADE_DEPART_ID,
+         ACCEPT_DATE,TO_CHAR(SYSDATE, 'MM')
+    from tf_b_shopping_cart
+   where SHOPPING_CART_ID = :SHOPPING_CART_ID

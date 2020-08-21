@@ -1,0 +1,1 @@
+select * from tf_b_trade_svc where trade_id = :TRADE_ID and service_id in (13,14,15) -- CT

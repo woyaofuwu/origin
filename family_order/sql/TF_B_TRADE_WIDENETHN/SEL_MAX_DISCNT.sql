@@ -1,0 +1,1 @@
+select trunc(ADD_MONTHS(min(end_date),1),'MM') END_DATE  from tf_b_trade_discnt t where t.trade_id=:TRADE_ID

@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html class="s_noside" size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" src="merch/changeproduct/scripts/merchchangeproduct.js"></script>
+<script jwcid="@Script" src="merch/changeproduct/scripts/changeproductextend.js"></script>
+<!-- 
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/merch/offerlist/merchdefine.js"></script>
+ -->
+<title>产品变更</title>
+
+</head>
+<body jwcid="@Body">
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">产品变更</div>
+	</div>
+	
+	<div class="c_scroll c_scroll-float c_scroll-phone-header" id="PAGE_CONTENT">
+		<div class="l_padding">
+			<div jwcid="AuthPart@merch:MerchAuth" element="div" authColNum="2" authType="00" tradeTypeCode="110" 
+				tradeAction="changeProduct.refreshPartAfterAuth(data)" style="display:none;" ></div>
+
+			<div class="c_space-c" ></div>
+			<div jwcid="userProduct@merch:UserProduct" element="div" effectAction="changeProduct.effect(this)" />
+			<div class="c_space-c"></div>
+			<div id="VPMN_TITLE" class="c_title" style="display: none;">
+				<div class="text">VPMN优惠</div>
+			</div>
+            <div id="OTHER_DISPLAY_DIV" style="display: none;" class="c_list c_list-s c_list-col-4 c_list-phone-col-1 c_list-line c_list-border">
+                <ul>
+                    <li id="OLD_VPMN_LI" style="display: none;">
+                        <div class="label">原VPMN优惠</div>
+                        <div class="value">
+                            <input name="OLD_VPMN_DISCNT_NAME" jwcid="@TextField"
+                                   value="" readOnly="true" desc="原VPMN优惠"/>
+                        </div>
+                    </li>
+                    <li id="NEW_VPMN_LI" style="display: none;">
+                        <div class="label">新VPMN优惠</div>
+                        <div class="value" jwcid="newVpmnPart@Part">
+                            <span name="NEW_VPMN_DISCNT" jwcid="@Select"
+                                  source="ognl:vpmnDiscnt"
+                                  value="ognl:info.ELEMENT_ID"
+                                  valueField="ELEMENT_ID"
+                                  textField="ELEMENT_NAME"
+                                  titleField="ELEMENT_NAME"
+                                  nullable="yes" desc="新VPMN优惠"></span>
+                        </div>
+                    </li>
+                    <li class="merge-2" id="SHAREMEAL_LI" style="display: none;">
+                        <div class="label">共享副号</div>
+                        <div class="value">
+                            <span class="e_mix">
+                                <input jwcid="@TextField"
+                                       name="SHAREMEAL_NUMBERS"
+                                       placeholder="2个，用空格分开"
+                                       desc="共享副号"/>
+                                <button type="button" id="SHAREMEAL_CHECK_BTN"
+                                        disabled="true" class="e_button-blue"
+                                        ontap="changeProduct.checkSharePhone()">
+                                    <span class="e_ico-check"></span>
+                                    <span>校验</span>
+                                </button>
+                                <input jwcid="@Hidden" name="SHAREMEALONE_NAME"
+                                       value="" desc="共享副号一"/>
+                                <input jwcid="@Hidden" name="SHAREMEALTWO_NAME"
+                                       value="" desc="共享副号二"/>
+                                <input jwcid="@Hidden" name="SHAREMEAL_FLAG"
+                                       value="0" desc="标识"/>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+			<div jwcid="selectedElements@merch:SelectedElements"
+				renderCallSvc="CS.SelectedElementSVC.getUserElements"
+				callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg"
+				afterRenderAction="changeProduct.afterRenderSelectedElements(data);"
+				basicStartDateControlId="NEW_PRODUCT_START_DATE"
+				basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+				tradeTypeCode="110" element="div"
+				attrComponent="elementAttr"
+				itemComponent="itemList" />
+				
+			<!-- 
+			<div jwcid="selectedElements@imerch:SelectedElements"
+				renderCallSvc="CS.SelectedElementSVC.getUserElements"
+				callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg"
+				afterRenderAction="changeProduct.afterRenderSelectedElements(data);"
+				basicStartDateControlId="NEW_PRODUCT_START_DATE"
+				basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+				tradeTypeCode="110" element="div"
+				addOfferList="addOfferList" ></div>
+			 -->
+			<div class="c_space"></div>
+			
+			<div class="c_list c_list-line c_list-col-1 c_list-border c_list-phone-col-1">
+			    <ul>
+<!-- 				    <li class="link required" id="checkTermiID" style="display:none">
+						<div class="label">终端串码：</div>
+						<div class="value">
+						    <span class="e_mix">
+						        <input jwcid="@TextField" name="TERMINAL_ID" id="TERMINAL_ID" value="" desc="终端串码" nullable="yes"/>
+						        <button class="e_button e_button-blue" id="checkTerminalBtn" onclick="checkTerminalInfo()"><span id="checkTerminalBtn_CH" class="e_ico-check"></span><span>校验</span></button>
+						    </span>
+						</div>	
+				     </li> -->
+			
+			        <li class="link"><div class="label">备注：</div>
+				<div class="value"><input jwcid="@TextField" name="REMARK"	id="REMARK" type="text" value="" nullable="yes" desc="备注"/></div></li>
+			    </ul>
+			</div>
+				
+			<div class="c_space"></div>
+			
+			<div jwcid="MerchSubmitPart@merch:MerchSubmit" isShoppingCart="true" beforeAction="changeProduct.submitBeforeAction()" affirmAction="closeNav();"
+				element="div" isRender="true" class="c_submit c_submit-center" ></div>
+		        
+		</div>
+	</div>
+	
+	
+	<!-- <div jwcid="productSelect@merch:ProductSelect" catalogId="0000"  element="div" 
+		afterAction="changeProduct.afterChangeProduct(productId,productName,brandCode,brandName,productDesc,selectElements)" /> -->
+	
+	<div jwcid="itemList@merch:ItemList" element="div"  bindedComponent="selectedElements" ></div>
+	
+	<div jwcid="elementAttr@merch:ElementAttr" element="div" bindedComponent="selectedElements" scrollId ="PAGE_CONTENT" />
+	<!-- 
+	<div jwcid="elementAttr@imerch:ElementAttr" element="div" scrollId ="PAGE_CONTENT" />
+	<div name="offerListPopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" popupId="offerListPopup" element="div"
+                 jwcid="offerListPart@imerch:OfferList"
+                 catalogId="ognl:'07'.equals(getPage().getData().getString('authType', '')) ? 'WLW0' : '0000'"
+				 afterAction="changeProduct.afterChangeProduct(productId, productName, productDesc)"
+				 monitor="USER_PRODUCT_ID"></div>
+		</div>
+	</div>
+	 -->
+	<input jwcid="@Hidden" name="USER_INFO_FLAG" id="USER_INFO_FLAG" value="" />
+ 	<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value="" />
+ 	<input jwcid="@Hidden" name="OLD_PRODUCT_START_DATE" id="OLD_PRODUCT_START_DATE" value="" />
+	<input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" id="OLD_PRODUCT_END_DATE" value="" />
+	<input jwcid="@Hidden" name="NET_TYPE_CODE" value="00"/>
+	
+	<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value="ognl:getData().NEW_PRODUCT_ID" />
+	<input jwcid="@Hidden" name="NEW_PRODUCT_NAME" id="NEW_PRODUCT_NAME" value="" />
+	<input jwcid="@Hidden" name="SYS_DATE" id="SYS_DATE"  value=""/>
+	
+	<input jwcid="@Hidden" name="USER_PRODUCT_ID" value=""/>
+	<input jwcid="@Hidden" name="OLD_VPMN_DISCNT_TAG" value=""/>
+    <input jwcid="@Hidden" name="OLD_VPMN_DISCNT" value=""/>
+    <input jwcid="@Hidden" name="VPMN_USER_ID_A" value=""/>
+    <input jwcid="@Hidden" name="VPMN_PRODUCT_ID" value=""/>
+    <input jwcid="@Hidden" name="VIP_CLASS_ID" value=""/>
+    <input jwcid="@Hidden" name="PSPT_TYPE_CODE" value=""/>
+	<input jwcid="@Hidden" name="WDACTICE_ENDFLAG" id="WDACTICE_ENDFLAG" value=""/>
+<!-- 	<input jwcid="@Hidden" name="TERMINAL_ID_CHK_FLAG" id="TERMINAL_ID_CHK_FLAG" value="0" desc="特定产品校验标志0校验未通过1校验通过"/>
+	<input jwcid="@Hidden" name="CHECKED_TERMINAL_ID" id="CHECKED_TERMINAL_ID" value="0" desc="特定产品校验通过的终端串码"/> -->
+</body>
+</html>

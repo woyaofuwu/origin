@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/changeuserelement/BaseInfo.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpactpaymgr/GroupAcctPayEdit.js"></script>
+<title>集团统付管理</title>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	<div class="c_title">
+		<div class="text">集团客户编码</div>
+	</div>
+	
+	<div>
+		<div class="c_form c_form-col-2 c_form-label-7">
+			<div class="fctLeft">
+				<label for="GROUP"><input type="radio" id="GROUP" name="USERTYPE" jwcid="@Radio" value="0" onclick="changeUserType()"/><B>集团用户</B></label>
+				<label for="PSERSON"><input type="radio" id="PSERSON" name="USERTYPE" jwcid="@Radio" value="1" onclick="changeUserType()"/><B>个人用户</B></label>			
+        	</div>
+		</div>
+	</div>
+	
+	<div class="wrapper" id="QueryTypeOne" style="display:none" >
+		<div class="c_form">
+			<ul class="ul">
+				<li class="li">
+					<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterActionByEdit();" afterAction="selectGroupAfterActionByEdit(data);"/>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="QueryTypeTwo">
+		<div class="c_form c_form-col-4 c_form-label-7">
+			<ul class="ul"> 
+				<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" nullable="no" value="ognl:info.serialNumber" enterAction="getAcctInfoBySn()" desc="手机号码"/>
+					</span></span>
+				</span>
+				</li> 
+			</ul>
+		</div>
+	</div>	
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-5" jwcid="groupAccountInfo@Part">
+	<div class="c_table" >
+		<table jwcid="groupAccountTable@Table" name="groupAccountTable" >
+			<thead>
+				<tr>
+					<th><span class="">账户标识</span></th>
+					<th><span class="">账户名称</span></th>
+					<th><span class="">账户类型</span></th>	
+					<th><span class="">产品编码</span></th>
+					<th><span class="">产品名称</span></th>		
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:groupAccountList" value="ognl:groupAccount" element="tr" index="ognl:rowIndex" >
+					<td><a jwcid="@Redirect" value="ognl:groupAccount.ACCT_ID"  source="ognl:groupAccount" class="e_strong3" EPARCHY_CODE ="ognl:groupAccount.EPARCHY_CODE" ACCT_ID="ognl:groupAccount.ACCT_ID"
+						onclick="getNoteItemList(this)"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:groupAccount.PAY_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE',groupAccount.PAY_MODE_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:groupAccount.PRODUCT_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:groupAccount.PRODUCT_NAME" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<div jwcid="RefreshTable@Part">
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">付费方式</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 付费账目区 开始 -->
+		
+		<!-- 表单 开始 --> 
+		<div class="c_form c_form-col-2 c_form-label-5">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">费用类别：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="pam_NOTINFEE_TYPE" id="pam_NOTINFEE_TYPE"
+						        source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAYRELA_FEE_TYPE')" 
+						        value="ognl:condition.FEE_TYPE" 
+						        textField="DATA_NAME"
+						        nullable="no"
+						        valueField="DATA_ID"
+					            titleField="DATA_NAME"
+					            addDefault="false"
+						        desc="费用类别" /> 
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">限定方式：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="pam_NOTIN_LIMIT_TYPE" id="pam_NOTIN_LIMIT_TYPE"
+						        source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAYRELA_LIMIT_TYPE')" 
+						        value="ognl:condition.LIMIT_TYPE" 
+						        textField="DATA_NAME"
+						        nullable="no"
+						        valueField="DATA_ID"
+					            titleField="DATA_NAME"
+						        onchange="changelimit()" 
+						        addDefault="false"
+						        desc="限定方式" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">限定值：</span></span>
+					<span class="e_input">
+					<span><input jwcid="@TextField" name="pam_NOTIN_LIMIT" id="pam_NOTIN_LIMIT" value="ognl:condition.LIMIT" desc="限定值" maxsize="10"  nullable="no" datatype="pinteger"/></span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>	 
+		<!-- 表单 结束 -->
+		
+		
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">明细帐目列表</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	
+	<!-- 表单 结束 -->
+		<!-- 功能 开始 --> 
+		<div class="c_fn">
+			<ul class="ul">
+				<li class="li"><label><input jwcid="@Checkbox" id="newSnInfo_CheckAll" name="newSnInfo_CheckAll" onclick="" value="0" class="e_checkbox"/>明细帐目全选</label></li>
+				<li class="li"><button class="e_button-right" onclick="checkedOther('itemcodes'); $('#newSnInfo_CheckAll').attr('checked',false)" type="button"><i class="e_ico-unselect"></i><span>反选</span></button></li>
+				<li class="li" ><button class="e_button-right" onclick="checkedAll('itemcodes', false)" type="button"><i class="e_ico-cancel"></i><span>清空</span></button></li>
+				<!--<li><button class="e_button-right" onclick="checkedAll('itemcodes',checked)" type="button"><i class="e_ico-delete"></i><span>清空</span></button></li>-->
+			</ul>
+		</div> 
+		<!-- 功能 结束 -->
+		
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">明细帐目过滤(帐目名称模糊匹)</div>
+			<div class="fn">
+				<span class="e_elements" style="width:200px;">
+					<button class="e_button-right" type="button" onclick="filterNoteItems();"><i class="e_ico-search"></i><span>过滤</span></button>
+					<span class="e_input e_input-left"><span><input type="text" jwcid="newSnInfo_NOTE_ITEM@TextField" name="newSnInfo_NOTE_ITEM" value=""  maxsize="40"  desc="综合帐目过滤" /></span></span>
+				</span>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-5"jwcid="groupAccountPayInfo@Part">
+	<div class="c_table" >
+		<table jwcid="groupAccountPayTable@Table" name="groupAccountPayTable" >
+			<thead>
+				<th><input type="checkbox" id="noteitem" name="noteitem" onclick="checkedAll('itemcodes', checked)" style="display:none"/></th>
+				<th><span class="">编码</span></th>
+				<th><span class="">综合帐目名称</span></th>
+			</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:noteItemList" value="ognl:noteItem" element="tr" index="ognl:rowIndex2" class="ognl:rowIndex2 % 2 == 0 ? '' : 'odd'">
+				<td><input type="checkbox" id="itemcodes" name="itemcodes" jwcid="@Any" value="ognl:noteItem.NOTE_ITEM_CODE"/></td>
+				<td><span jwcid="@Insert" value="ognl:noteItem.NOTE_ITEM_CODE" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:noteItem.NOTE_ITEM" raw="false"/></td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button class="e_button-page" type="button" onclick=" return createRelationAA()" ><i class="e_ico-add"></i><span>账户绑定</span></button>
+		<button class="e_button-page" type="button" onclick=" return cancel()" ><i class="e_ico-cancel"></i><span>取消</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	<textarea jwcid="@TextArea" id="pam_NOTIN_ACCT_ID_A" name="pam_NOTIN_ACCT_ID_A" value="ognl:condition.ACCT_ID_A" style="display:none"></textarea>
+	<textarea jwcid="@TextArea" id="pam_NOTIN_ACCT_ID" name="pam_NOTIN_ACCT_ID" value="" style="display:none"></textarea>
+	<textarea jwcid="@TextArea" id="pam_NOTIN_CUST_ID" name="pam_NOTIN_CUST_ID" value="ognl:condition.CUST_ID" style="display:none"></textarea>
+	
+	<input jwcid="@TextField"  id="pam_USER_TYPE"   value=""  name="pam_USER_TYPE"  style="display:none"   />
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+   select A.TRADE_ID,
+          'A' ELEMENT_TYPE_CODE,
+          A.DISCNT_GIFT_ID   ELEMENT_ID,
+          '' ELEMENT_NAME,
+          A.MODIFY_TAG,
+          'TF_B_TRADE_SALE_DEPOSIT' TRADE_TAB_NAME,
+          A.RSRV_TAG3 DETAIL_STATE_CODE
+     from TF_B_TRADE_SALE_DEPOSIT A
+    where A.TRADE_ID = :TRADE_ID
+      and A.MODIFY_TAG IN ('0')

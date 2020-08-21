@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/batdeal/battaskstart.js"></script>
+</head>
+<body jwcid=@Body><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量任务启动</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	
+	<div jwcid="TaskInfoPart@Part" class="c_form c_form-label-7 c_form-col-2">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">批量任务名称：</span></span>
+				<span class="e_elements">
+						<button type="button" class="e_button-right" id="btBatchTask" onclick="javascript:popupPage('bat.battaskquery.BatTaskQuery','initPage','&IS_POP=DATAIMPORT','批量任务信息查询',1000,600,'cond_BATCH_TASK_ID')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="ognl:condition.cond_BATCH_TASK_ID" 
+						text="ognl:condition.cond_BATCH_TASK_NAME" 
+						name="cond_BATCH_TASK_ID" id="cond_BATCH_TASK_ID" 
+						afterAction="querytaskinfo()"
+						desc="批量任务名称"/>
+						</span></span>
+				</span>
+			</li>
+		</ul>
+		<!-- 
+		<div class="submitPlace"></div>
+			<div class="c_submit">
+				<button type="button" class="e_button-page-ok" name="chooseOthser" id="chooseOthser" onclick="checkedOther('idList')"><i></i><span>反选</span></button>
+				<button type="button" class="e_button-page-ok" name="nowsubmit" id="nowsubmit" onclick="submit()"><i></i><span>立即执行</span></button>
+			</div>
+		 -->
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="TaskDataPart@Part"  element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+			<thead>
+				<tr>
+					<th col="CHECK_ID"><input type="checkbox" class="e_checkbox" onclick="checkedAll('idList', checked)"/></th>
+					<th col="BATCH_ID">批次号</th>
+					<th col="BATCH_TASK_ID">归属批量任务标识</th>
+					<th col="BATCH_COUNT">导入数量</th>
+		<!-- 		<th>查看导入信息</th> -->
+					<th col="ACCEPT_DATE">导入时间</th>
+					<th col="DEPART_ID">导入部门</th>
+					<th col="STAFF_ID">导入员工</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:taskInfos" value="ognl:taskInfo" index="ognl:rowIndex" element="tr" >
+					<td><input type="checkbox" id = "idList" name="idList" jwcid="@Any" value="ognl:taskInfo.BATCH_ID"  raw="true" class="e_checkbox" onclick="DealMark($(this));"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.BATCH_ID" raw="true" /></td>
+					<td><span jwcid="@Redirect" value="ognl:taskInfo.BATCH_TASK_ID" battaskid = "ognl:taskInfo.BATCH_TASK_ID" onclick="popupPage('bat.battaskaudit.BatTaskInfo','queryBatTask','&BATCH_TASK_ID='+$(this).attr('battaskid'),'查看批量任务信息',1000,600);" /></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.BATCH_COUNT" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.ACCEPT_DATE" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',taskInfo.DEPART_ID)" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',taskInfo.STAFF_ID)" raw="true" /></td>
+
+				</tr>
+			</tbody>
+		</table>
+		</div></div>
+		<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="TaskInfoPart"  part="TaskDataPart" listener="queryBatTaskStart" pageSize="10" count="ognl:batchTaskListCount"></div>	 
+    <!-- 批量类型 -->
+    <input jwcid="@Hidden" id="BATCH_OPER_TYPE" name="BATCH_OPER_TYPE" value="ognl:condition.BATCH_OPER_TYPE" desc="批量类型"/>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<!-- 翻页 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" name="chooseOthser" id="chooseOthser" onclick="checkedOther('idList')"><i></i><span>反选</span></button>
+		<button type="button" class="e_button-page-ok" name="nowsubmit" id="nowsubmit" onclick="submit()"><i></i><span>立即执行</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	<div class="text">
+		<span class="label"><span class="e_required">温馨提示：您办理的批量业务后台已增加流量限制，业务量大时可能执行较慢，请耐心等待。</span></span>
+	</div>
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

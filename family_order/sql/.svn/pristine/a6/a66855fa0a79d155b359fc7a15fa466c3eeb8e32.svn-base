@@ -1,0 +1,18 @@
+SELECT A.USER_ID,
+       A.BRAND_CODE,
+       A.EPARCHY_CODE,
+       A.USER_PASSWD,
+       A.USER_STATE_CODESET,
+       A.NET_TYPE_CODE,
+       A.SERIAL_NUMBER,
+       A.SCORE_VALUE,
+       A.CITY_CODE,
+       A.REMOVE_TAG,
+       A.DESTROY_TIME
+  FROM TF_F_USER A
+ WHERE SERIAL_NUMBER = :SERIAL_NUMBER
+   AND REMOVE_TAG != '0'
+   AND DESTROY_TIME = (SELECT MAX(DESTROY_TIME)
+                         FROM TF_F_USER
+                        WHERE SERIAL_NUMBER = :SERIAL_NUMBER
+                          AND REMOVE_TAG != '0')

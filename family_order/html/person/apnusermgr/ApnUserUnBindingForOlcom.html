@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>用户专用APN绑定IP删除(发指令)</title>
+<script jwcid="@Script" language="JavaScript" src="person/apnusermgr/scripts/ApnUserUnBindingForOlcom.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="1156"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+</div>
+<!-- 区域 结束 -->
+	
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="refreshParts1@Part">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户专用APN绑定信息</div>
+	</div>
+	
+	<!-- 标题 结束 -->
+	<div jwcid="BalancePart@Part">
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-5" >
+		<table  jwcid="@Table" id="BalanceTable" name="BalanceTable">
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th style="width:20em;">APN名称</th>
+					<th style="width:20em;">APN描述</th>
+					<th style="width:20em;">APN的CNTXID</th>
+					<th style="width:20em;">APNQOS的模板ID</th>
+					<th style="width:20em;">PDN IPV4ADD类型</th>
+					<th style="width:20em;display:none;">PDN IPV4ADD类型值</th>
+					<th style="width:20em;">PDN IPV4ADD类型地址</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr jwcid="@Foreach" source="ognl:userApnInfos" value="ognl:userApnInfo" index="ognl:rowIndex" element="tr" rowIndex="ognl:rowIndex" >
+					<td class="e_center">
+					   <input type="radio" name="RAINST_ID" jwcid="@Any" value="ognl:userApnInfo.INST_ID" onclick="chkApnSelect(this);" />
+					</td>
+					<td><span jwcid="@Insert" value="ognl:userApnInfo.APN_NAME"/></td>
+					<td><span jwcid="@Insert" value="ognl:userApnInfo.APN_DESC"/></td>
+					<td><span jwcid="@Insert" value="ognl:userApnInfo.APN_CNTXID"/></td>
+					<td><span jwcid="@Insert" value="ognl:userApnInfo.APN_TPLID"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',
+						new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',
+						new java.lang.String[]{'APN_IPV4ADD_TYPE',userApnInfo.APN_TYPE})"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:userApnInfo.APN_TYPE"/></td>						
+					<td><span jwcid="@Insert" value="ognl:userApnInfo.APN_IPV4ADD"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="AuthPart" part="BalancePart,ApnSubmitPart" 
+	      listener="qryUserApnInfo" pageSize="10" count="ognl:recordCount"></div>
+	<!-- 表格 结束 -->
+	</div>
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="ApnSubmitPart@Part" style="display:none">
+		<input jwcid="@TextField" name="APN_NAME" id="APN_NAME" value="" desc="APN名称" />
+		<input jwcid="@TextField" name="APN_DESC" id="APN_DESC" value="" desc="APN描述"/>
+		<input jwcid="@TextField" name="APN_CNTXID" id="APN_CNTXID" value="" datatype="pinteger" desc="APN的CNTXID"/>
+		<input jwcid="@TextField" name="APN_TPLID" id="APN_TPLID" value="" datatype="pinteger" desc="APNQOS的模板ID" />
+		<input jwcid="@TextField" name="APN_TYPE" id="APN_TYPE" value="" desc="PDN IPV4ADD类型" />
+        <input jwcid="@TextField" name="APN_IPV4ADD" id="APN_IPV4ADD" value="" desc="PDN IPV4ADD类型地址"/>
+        <input jwcid="@TextField" name="APN_INST_ID" id="APN_INST_ID" value=""/>
+	</div>
+	<!-- 参数列表 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitTrade(this)" area="AuthPart,ApnSubmitPart"  element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div>
+</div>
+</body>
+</html>

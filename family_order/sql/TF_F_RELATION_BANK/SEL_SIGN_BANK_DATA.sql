@@ -1,0 +1,28 @@
+
+SELECT TO_CHAR(USER_ID) USER_ID,
+       PARTITION_ID,
+       SERIAL_NUMBER,
+       SUB_ID,
+       BANK_ID,
+       USER_ACCOUNT,
+       PAY_TYPE,
+       ACCOUNT_CAT,
+       SUB_TIME,
+       TO_CHAR(RECH_AMOUNT) RECH_AMOUNT,
+       TO_CHAR(RECH_THRESHOLD) RECH_THRESHOLD,
+       TO_CHAR(INST_ID) INST_ID,
+       TO_CHAR(START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+       TO_CHAR(END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+       TO_CHAR(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5
+  FROM TF_F_RELATION_BANK T
+       
+ WHERE PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+   AND USER_ID = TO_NUMBER(:USER_ID)
+   AND SYSDATE < END_DATE + 0

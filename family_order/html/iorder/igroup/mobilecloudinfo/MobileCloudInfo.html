@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/mobilecloudinfo/script/MobileCloudInfo.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">移动云信息查询</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="l_query" jwcid="queryPart@Part">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="left">
+				<button type="button" jwcid="@Export" name="myExport1"
+					cond="qryInfo" taskId="202003021601"
+					configFile="export/querygroupinfo/MobileCloudInfo.xml"
+					fileName="移动云配置导出数据.xls" ftpCode="groupserv" >
+					<span class="e_ico-export" /><span>导出</span>
+				</button>
+				<span class="e_space"></span>
+				<span id="myExport2" name="myExport2" 
+					taskId="202003021602" 
+					cond="qryInfo"
+					jwcid="@Import" 
+					configFile="import/bat/group/MobileCloudInfo.xml" 
+					templateFile="template/bat/group/MobileCloudInfo.xls" 
+					fileName="移动云配置导入模板.xls"
+					ftpCode="groupserv"
+				/>
+				
+			</div>
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('mypop','chooseOfferItem')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div class="l_queryResult">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" name="myTable" id="myTable">
+				<thead>
+					<tr>
+						<th class="e_center" col="TYPE_CODE">类别编码</th>
+						<th class="e_center" col="OFFER_CODE">产品编码</th>
+						<th class="e_center" col="OFFER_NAME">产品名称</th>
+						<th class="e_center" col="CATEGORY_ID">产品大类</th>
+						<th class="e_center" col="CATEGORY_NAME">产品大类名称</th>
+                        <th class="e_center" col="INSERT_TIME">插入时间</th>
+                        <th class="e_center" col="UPDATE_TIME">修改时间</th>
+                        <th class="e_center" col="UPDATE_DEPARTID">修改部门</th>
+                        <th class="e_center" col="UPDATE_STAFF_ID">修改员工</th>
+                        <th class="e_center" col="REMARK">备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:pattrs" value="ognl:pattr" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.TYPE_CODE==null?'':pageutil.getStaticValue('MOBILECLOUD_TYPECODE',pattr.TYPE_CODE)" raw="true"/></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.OFFER_CODE" raw="false"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.OFFER_NAME" raw="false"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.CATEGORY_ID" raw="false"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.CATEGORY_NAME" raw="false"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.INSERT_TIME"  raw="false"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.UPDATE_TIME"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.UPDATE_DEPARTID==null?'':pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', pattr.UPDATE_DEPARTID)" raw="true"/></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.UPDATE_STAFF_ID"></span></td>
+						<td class="e_center" ><span jwcid="@Insert" value="ognl:pattr.REMARK" raw="false"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 表格 结束 -->
+	</div>
+	<div jwcid="@Conditional" condition="ognl:pattrs == null || pattrs.size() == 0">
+	<div class="l_queryMsg" id="queryMsg">
+		<!-- 无数据提示 开始 -->
+		<div class="c_msg">
+			<div class="wrapper">
+				<div class="emote"></div>
+				<div class="info">
+					<div class="text">
+						<div class="title">暂时没有数据</div>
+						<div class="content">请输入查询条件</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 无数据提示 结束 -->
+	</div>
+	</div>
+
+	<div class="l_queryPage">
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar"
+			name="navbar1"
+			cond="qryInfo"  
+			count="ognl:infoCount" 
+			listener="qryMobileCloudInfos" 
+			part="queryPart" 
+			pageSize="20" 
+		></div>
+		<!-- 分页 结束 -->
+	</div>
+	</div>
+	
+	<div jwcid="@Popup" id="mypop" name="mypop" class="c_popup c_popup-fixed">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="chooseOfferItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">查询专线</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="qryInfo@Part" class="l_padding">
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link">
+								<div class="label">类别编码</div>
+								<div class="value"><select id="cond_TYPE_CODE" name="cond_TYPE_CODE" jwcid="@Select" source="ognl:pageutil.getStaticList('MOBILECLOUD_TYPECODE')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.TYPE_CODE"/></div>
+							</li>
+							<li class="link">
+								<div class="label">产品编码</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_OFFER_CODE"  name="cond_OFFER_CODE" value="ognl:info.OFFER_CODE"  desc="产品编码" /></div>
+							</li>
+							<li class="link">
+								<div class="label">产品名称</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_OFFER_NAME"  name="cond_OFFER_NAME" value="ognl:info.OFFER_NAME"  desc="产品名称" /></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" id="qryButton" class="e_button-r e_button-l e_button-blue" ontap="qryMobileCloudInfos(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		//Wade.setRatio();
+		//window["UI-popup01"] = new Wade.Popup("UI-popup01");
+		//window["UI-popup02"] = new Wade.Popup("UI-popup02");
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo.map.GROUP_ID);
+		}
+	</script>
+
+</body>
+</html>

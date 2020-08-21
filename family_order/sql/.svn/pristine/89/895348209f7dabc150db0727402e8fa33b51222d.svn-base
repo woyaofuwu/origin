@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_span_apply_detail(apply_id_sub_1,apply_id_detail,detail_info_tag,relation_id,rsrv_str21,rsrv_str22,rsrv_str23,rsrv_str24,rsrv_str25,rsrv_str26,rsrv_str27,rsrv_str28,rsrv_str29,rsrv_str30)
+ VALUES(:APPLY_ID_SUB_1,:APPLY_ID_DETAIL,:DETAIL_INFO_TAG,:RELATION_ID,:RSRV_STR21,:RSRV_STR22,:RSRV_STR23,:RSRV_STR24,:RSRV_STR25,:RSRV_STR26,:RSRV_STR27,:RSRV_STR28,:RSRV_STR29,:RSRV_STR30)

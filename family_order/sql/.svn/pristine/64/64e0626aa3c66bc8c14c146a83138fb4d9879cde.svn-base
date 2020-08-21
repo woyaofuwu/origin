@@ -1,0 +1,1 @@
+UPDATE tf_b_trade SET INTF_ID=:INTF_ID WHERE trade_id=TO_NUMBER(:TRADE_ID)

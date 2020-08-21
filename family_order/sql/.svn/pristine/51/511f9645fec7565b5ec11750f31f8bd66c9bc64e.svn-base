@@ -1,0 +1,33 @@
+SELECT A.EMPLOYEE_ID STAFF_ID,
+       C.CUMU_NBR,
+       C.CUMU_ID,
+       C.CUMU_NAME,
+       C.ADDRESS,
+       C.MOBILE_NUM,
+       C.AREA_CODE,
+       C.CUMU_DEPART_ID,
+       C.PERSON_ID,
+       C.CU_PASS,
+       C.CUMU_TYPE,
+       C.CUMU_ATTR,
+       C.BAD_FLAG,
+       C.UPDATE_STAFF_ID,
+       TO_CHAR(C.UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       C.UPDATE_STATE,
+       C.UPDATE_REF_ID,
+       C.BANK_ACCT_NAME,
+       C.BANK_ACCT,
+       C.REMARK,
+       C.PRECHAR1,
+       C.PRECHAR2,
+       C.PRENUM1,
+       C.PRENUM2,
+       C.RESV_STR1,
+       C.RESV_STR2,
+       C.RESV_STR3,
+       C.RESV_STR4
+  FROM TF_CHL_EMPLOYEE A, CHNL_CU_CUMUINFO C
+ WHERE A.EMPLOYEE_ID = :EMPLOYEE_ID
+   AND A.EMPLOYEE_STATE = '0'
+   AND TO_CHAR(A.SCORE_ID) = C.CUMU_ID
+   AND C.UPDATE_STATE = '1'

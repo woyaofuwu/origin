@@ -1,0 +1,2 @@
+UPDATE tf_b_trade_mbmp
+   SET modify_tag=:MODIFY_TAG,BIZ_STATE_CODE=:BIZ_STATE_CODE WHERE trade_id=TO_NUMBER(:TRADE_ID)

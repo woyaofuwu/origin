@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" type="text/javascript" src="scripts/person/bat/batdeal/bankpopupqry.js"></script>
+</head>
+<body jwcid=@Body>
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 表单 开始 -->
+	<div jwcid="QueryCondPart@Part" class="c_form c_form-col-8 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">银行名称：</span></span>
+	            	<span class="e_elements">
+						<button type="button" class="e_button-right" id="btBatchTask" onclick="javascript:popupPage('bat.batbankquery.BankPopupQry','initPage','&IS_POP=BANKQRY','银行信息查询',700,430,'cond_BANK_CODE')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="" 
+						text="" 
+						name="cond_BANK_CODE" id="cond_BANK_CODE" 
+						afterAction=""
+						desc="银行名称"
+						/>
+						</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">银行账号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_BANK_ACCT_NO" name="cond_BANK_ACCT_NO" value="ognl:info.cond_BANK_ACCT_NO" text="ognl:info.cond_BANK_ACCT_NO" rows="1" maxsize="150"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="queryUsersByBank()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" rowDBClick="utableRowDBClick">
+			<thead>
+				<tr>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="BANK_CODE" style="display:none">银行</th>
+					<th col="BANK" style="display:none">银行名称</th>
+					<th col="BANK_ACCT_NO" style="display:none">银行账号</th>
+					<th col="IMPORT_COND" style="display:none">导入参数</th>
+					<th col="PAY_NAME">账户名称</th>
+					<th col="ACCT_ID">账户标识</th>
+					<th col="PAY_MODE">账户类别</th>
+					<th col="PAY_MODE_CODE" style="display:none">账户类别</th>
+					<th col="POST_CODE">邮政编码</th>
+					<th col="POST_ADDRESS">邮政地址</th>
+					<th col="CONTRACT_NO">合同号</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td>
+						<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+					</td>
+					<td style="display:none">
+						<span jwcid="@Insert" value="ognl:info.BANK_CODE" />
+					</td>
+					<td style="display:none">
+						<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_BANK','BANK_CODE','BANK',info.BANK_CODE)" />
+					</td>
+					<td style="display:none">
+						<span jwcid="@Insert" value="ognl:info.BANK_ACCT_NO" />
+					</td>
+					<td style="display:none">
+						<span jwcid="@Insert" value="ognl:info.BANK_CODE+';'+info.BANK_ACCT_NO" />
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:info.PAY_NAME" raw="true"/>
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="true"/>
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE',info.PAY_MODE_CODE)" />
+					</td>
+					<td style="display:none">
+						<span jwcid="@Insert" value="ognl:info.PAY_MODE_CODE" style="display:none" />
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:info.POST_CODE" raw="true"/>
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:info.POST_ADDRESS" raw="true"/>
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:info.CONTRACT_NO" raw="true"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="QueryCondPart" part="QueryListPart" listener="queryUsersByBank" pageSize="10" count="ognl:batchTaskListCount"></div>
+	</div>
+	
+	<!-- 表格 结束 -->
+</div>
+
+</div></div></body>
+</html>

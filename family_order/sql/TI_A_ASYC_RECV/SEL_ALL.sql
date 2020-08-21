@@ -1,0 +1,7 @@
+SELECT to_char(asycrecv_id) asycrecv_id,eparchy_code,city_code,trade_type_code,discnt_code,to_char(acct_id) acct_id,charge_source_code,pay_fee_mode_code,acyc_id,to_char(spay_fee) spay_fee,deposit_code,to_char(all_money) all_money,to_char(all_new_balance) all_new_balance,to_char(allbowe_fee) allbowe_fee,to_char(allrowe_fee) allrowe_fee,to_char(recv_fee) recv_fee,recover_tag,to_char(operate_id) operate_id,operate_type,to_char(input_time,'yyyy-mm-dd hh24:mi:ss') input_time,to_char(deal_time,'yyyy-mm-dd hh24:mi:ss') deal_time,deal_tag,result_code,result_info,round_tag,recv_eparchy_code,recv_city_code,recv_depart_id,recv_staff_id,to_char(user_id) user_id,out_deposit_code,partition_id,rsrv_attr,rsrv_info,rsrv_char,to_char(rsrv_date,'yyyy-mm-dd hh24:mi:ss') rsrv_date,usecust_name,bank_name,bank_acct,buddy_address,contact,link_phone,purpose_declare,dealinfo,prevalue1,prevalue2,to_char(prevaluen1) prevaluen1,to_char(prevaluen2) prevaluen2,to_char(prevalued1,'yyyy-mm-dd hh24:mi:ss') prevalued1,rsrv_1  
+  FROM ti_a_asyc_recv
+ WHERE MOD(acct_id,10000)>=TO_NUMBER(:START_ID)
+   AND MOD(acct_id,10000)<=TO_NUMBER(:END_ID)
+   AND eparchy_code=:EPARCHY_CODE
+   AND trade_type_code=:TRADE_TYPE_CODE
+   AND deal_tag='0'

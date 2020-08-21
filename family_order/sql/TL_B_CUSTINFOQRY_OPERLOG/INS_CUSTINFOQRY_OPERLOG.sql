@@ -1,0 +1,4 @@
+INSERT INTO tl_b_custinfoqry_operlog
+  (oper_id, accept_month, serial_number, user_id, cust_name, query_mode, check_mode, query_cause, audit_flag, query_time, query_staff_id, query_depart_id, audit_time, audit_staff_id, audit_depart_id, subsys_code, remark, rsrv_str1, rsrv_str2, rsrv_str3, rsrv_str4, rsrv_str5, rsrv_date1, rsrv_date2, rsrv_date3, rsrv_tag1, rsrv_tag2, rsrv_tag3)
+VALUES
+  (:OPER_ID, to_number(to_char(SYSDATE,'mm')), :SERIAL_NUMBER, to_number(:USER_ID), :CUST_NAME, :QUERY_MODE, :CHECK_MODE, :QUERY_CAUSE, :AUDIT_FLAG, SYSDATE, :QUERY_STAFF_ID, :QUERY_DEPART_ID, NULL, NULL, NULL, :SUBSYS_CODE, :REMARK, :RSRV_STR1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)

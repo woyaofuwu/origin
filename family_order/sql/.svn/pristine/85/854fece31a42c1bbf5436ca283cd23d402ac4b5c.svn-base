@@ -1,0 +1,2 @@
+INSERT INTO tl_i_paycardlog(serial_number,card_serial,pps_card_pin,stream_no,rsp_retn,rsp_desc,stat_code,stat_desc,requst_time,remark)
+ VALUES(:SERIAL_NUMBER,:CARD_SERIAL,:PPS_CARD_PIN,:STREAM_NO,:RSP_RETN,:RSP_DESC,:STAT_CODE,:STAT_DESC,TO_DATE(:REQUST_TIME,'YYYY-MM-DD HH24:MI:SS'),:REMARK)

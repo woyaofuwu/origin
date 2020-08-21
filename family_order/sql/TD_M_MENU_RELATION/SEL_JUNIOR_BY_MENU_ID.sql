@@ -1,0 +1,6 @@
+--IS_CACHE=Y
+select r.CURRENT_MENU_ID MENU_ID from TD_M_MENU_RELATION r
+ where  1=1
+ and r.RELATION_TYPE = '0'
+ and r.RELATION_MENU_ID= :MENU_ID
+ order by r.CURRENT_MENU_ID

@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/valuecard/scripts/giveValueCardNotPhone.js"></script>
+</head>
+<body jwcid="@Body" >
+<div class="m_wrapper">
+<div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryCondPart@Part">
+			<ul class="ul">
+			<li class="li">
+				<span class="label">分公司：</span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE" source="ognl:pageutil.getList('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', 'AREA_LEVEL', '30')"
+	                            textField="AREA_NAME"  valueField="AREA_CODE" titleField="AREA_NAME" value="ognl:condition.cond_CITY_CODE"
+	                            desc="分公司"   disabled="ognl:condition.cityDisabledFlag"
+	                            />
+					</span></span></span>
+			</li>
+			<li class="li" >
+			<span class="label"><span >部门编码：</span></span>
+				<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_UPDATE_DEPART_ID" value="ognl:condition.cond_UPDATE_DEPART_ID" 
+						desc="部门编码"  nullable="yes" disabled="ognl:condition.departDisabledFlag"
+						/>
+				</span></span>
+			</li>
+			<li class="li" >
+				<span class="label"><span>审批工单号：</span></span>
+					<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_STAFF_ID" value="ognl:condition.cond_STAFF_ID"  
+						  desc="审批工单号"  nullable="yes"  />
+				   </span></span>
+			</li>
+			<!--			
+			<li class="li" >
+			<span class="label"><span >客户号码：</span></span>
+				<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_RSRV_STR7" value="ognl:condition.cond_RSRV_STR7" 
+						desc="客户号码"  maxsize="12" nullable="yes"/>
+				</span></span>
+			</li>
+			-->
+			<li class="li">
+					<span class="label"><span >销售开始日期：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"   format="yyyy-MM-dd"  readOnly="true"
+							   afterAction="checkStartDate()" value="ognl:condition.cond_START_DATE"  nullable="yes" 
+							   desc="补录操作开始日期" maxName="cond_END_DATE"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span >销售结束日期：</span></span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  format="yyyy-MM-dd"  readOnly="true"
+									afterAction="getEndDate()"	value="ognl:condition.cond_END_DATE"  nullable="yes" 
+									desc="补录操作结束日期" mixName="cond_END_DATE"/>
+					</span></span>
+			</li>
+		</ul>
+		
+		
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryValueCardInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+	<!-- 条件结束-->
+    
+  <!-- 表格 开始 -->
+  <div class="c_box">
+	<div class="c_title">
+		<div class="text">查询结果</div>
+	</div>
+	<div jwcid="QueryDataPart@Part" element="div">
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" name="QueryListTable" id="QueryListTable" scroll="true">
+				<thead>
+					<tr>
+					    <th>操作</th>
+                        <th col="CARD_NUMBER" id='CARD_NUMBER' >卡号</th>
+						<th col="KIND_NAME" >卡类型</th>
+						
+						<th col="DEVICE_PRICE" >面值</th>
+						<th col="VALID_DATA">有效日期</th>
+						<th col="SALE_TAG">销售标识</th>
+						<th col="LOCATION">归属库存位置</th>
+						
+						<th col="RSRV_STR5" >卡销售时间</th>
+						<th col="TRADE_STAFF_ID" >卡销售工号</th>
+						<th col="RSRV_STR6" >卡销售部门</th>
+						<th col="SALE_PRICE" >销售金额</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:listInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td>
+						<input type="checkbox" name="checkbox_list" id="checkbox_list"  
+						 jwcid="@Checkbox" value="ognl:info.RULE_ID"/>
+						</td>
+						<td><span jwcid="@Insert" value="ognl:info.CARD_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.KIND_NAME" raw="true" /></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.DEVICE_PRICE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.VALID_DATA" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALE_TAG" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LOCATION" raw="false"/></td>					
+						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALE_PRICE" raw="true" /></td>
+						
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart"  part="QueryDataPart" listener="queryValueCardInfo" pageSize="10" count="ognl:pageCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域结束 -->
+</div>
+</div>
+<!-- 表单 开始 -->
+	<div class="c_form  c_form-label-5 c_form-col-4" jwcid="paramsPart@Part">
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label e_required">客户号码：</span>
+				<span class="e_input"><span><input type="text" id="custPhone" name="custPhone" maxsize="11" nullable="no"/></span></span>		
+			</li>
+			<li class="li col-2">
+				<span class="label"><span>客户姓名：</span></span>
+				<span class="e_input">
+					<span>
+						<input type="text"
+							id="customerName" name="customerName"
+							enterAction="" 
+							desc="客户姓名"
+							value="" />
+					</span>
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span>集团名称：</span></span>
+				<span class="e_input">
+					<span>
+						<input type="text"
+							id="groupName" name="groupName"
+							enterAction="" 
+							desc="对应的集团名称"
+							value=""/>
+					</span>
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span>赠送人姓名：</span></span>
+				<span class="e_input">
+					<span>
+						<input type="text"
+							id="giveName" name="giveName"
+							enterAction=""
+							desc="赠送人姓名"
+							value=""/>
+					</span>
+				</span>
+			</li>				
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 导入 -->
+	<div class="c_form c_form-col-3" jwcid="SubmitImportValueCardinfo@Part" >				
+	   <!-- 导入 -->
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label"><span>批量文件：</span></span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					<span class="e_elements">
+							<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+									fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="yes"/>
+					</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">模版下载：</span>
+				<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=有价卡赠送补录信息.xls&filePath=template/bat/GiveValueCardNotPhoneImport.xls')">[点击下载]</a></span>
+			</li>							
+		</ul>
+		<ul>
+			<li></li>
+			<li>
+				<button type="button" class="e_button-page-ok" onclick="return importCardData()"><i class="e_ico-import"></i><span>导入</span></button>
+			</li>
+		</ul>
+    </div>	
+	<!-- 封装选择后的数据 -->
+	<div class="" jwcid="submit_part@Part" >
+		<input jwcid="@Hidden" name="checkbox_table" value=""/>
+	</div>
+	<!-- 提交 开始 today 提交-->
+   <div class="c_submit">
+		<button class="e_button-page-ok" onclick="return onNotPhoneSubmit();" ><i class="e_ico-ok"></i><span>提交</span></button>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+SELECT DISTINCT B.USER_ID
+          FROM TF_B_TRADE_ATTR B
+         WHERE B.TRADE_ID = :TRADE_ID
+           AND B.ACCEPT_MONTH = :ACCEPT_MONTH
+           AND B.INST_TYPE = 'S'
+           AND B.ATTR_VALUE IS NOT NULL
+           AND B.MODIFY_TAG IN ('0', '1', '2', 'U')

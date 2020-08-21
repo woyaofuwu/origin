@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>跨区密码重置</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/person/remoteresetpswd/scripts/remoteresetpswd.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+</head>
+<body jwcid="@Body">
+		<!-- 标题栏开始 -->
+		<div class="c_header e_show-phone">
+			<div class="back" ontap="closeNav();">跨区密码重置</div>
+		</div>
+		<!-- 标题栏开始 -->
+		<!-- 主流程 开始 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">	
+			<div jwcid="QueryPart@Part">
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-2 c_list-phone-col-1">
+					 <ul class="ul">
+						<li>
+						<div class="label required">服务号码</div>
+						<div class="value">
+							<span class="e_mix">
+								<input jwcid="@TextField" id="MOBILENUM" name="MOBILENUM" value="" desc="手机号码" nullable="no"
+							               maxLength="11"/>
+								<button type="button" class="e_button-blue" value="查询" id="bt_search" name="bt_search"
+								desc="查询" onclick="qryCardType();"><i class="e_ico-search"></i><span>查询卡类型</span></button> 
+							</span>
+						</div>	
+						</li>
+						<li>
+						<div class="label required">是否为吉祥号码</div>
+						<div class="value">
+							<input jwcid="@TextField" id="ISJXH" name="ISJXH" desc="是否吉祥号码" value="" nullable="no" disabled="disabled"/>
+						</div>	
+						</li>
+					</ul> 
+				</div>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title">
+				<div class="text">人像比对</div>
+			</div>
+			<div class="c_list c_list-col-2 c_list-phone-col-1 c_list-line c_list-border" jwcid="psptCheckPart@Part">
+				<ul class="ul">			
+					<li>
+							<div class="label required">客户名称</div>
+							<div class="value">
+								<input jwcid="@TextField"  name="CUST_NAME" id="CUST_NAME" nullable='no'
+										desc="客户名称"/>
+							</div>
+					</li>
+					<li class="li col-2">
+			  
+                    <div class="label"><span id="span_PSPT_ID" class="e_required">证件号码：</span></div>
+                     <span class="e_elements">     
+
+                     <button type="button" class="e_button-right"  id="SHOT_IMG" name="ReadCardButton"   onclick="identification('PIC_ID','PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>                                                	 
+                     <button type="button" class="e_button-right"  id="SCAN_PSPT" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>                        
+                     
+                     <span class="e_input e_input-left">
+                         <span>
+                            <input jwcid="@TextField" id="IDCARDNUM" name="IDCARDNUM" value=""  maxsize="32" nullable="no" disabled desc="证件号码" readonly="true"/>
+                         </span>
+                    </span>
+                     
+                     <div style="display:none">                         
+                        <input jwcid="@Hidden" id="PIC_ID" name="PIC_ID" value="" desc="客户照片ID"/>                       
+                        <input jwcid="@Hidden" id="PIC_STREAM" name="PIC_STREAM" value="" desc="客户人像照片流"/>
+                        <input jwcid="@Hidden" id="BACKBASE64" name="BACKBASE64" value="" desc="身份证背面照"/>
+                        <input jwcid="@Hidden" id="FRONTBASE64" name="FRONTBASE64" value="" desc="身份证正面照"/>
+                        <input jwcid="@Hidden" id="SCAN_TAG" name="SCAN_TAG" value="1" desc="客户扫描标志"/>
+                     </div>
+                     <div style="display:none">
+                     <object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+                     </div>
+                     <input class="e_input" type="hidden" id="custinfo_PhoneFlag" name="custinfo_PhoneFlag" value="0" desc="身份证件扫描和人像比对是否通过"/>
+                     <input class="e_input" type="hidden" id="custinfo_RemoteVerifyFlag" name="custinfo_RemoteVerifyFlag" value="1" desc="远程身份证和界面身份证件是否一致"/>
+                     <input class="e_input" type="hidden" id="custinfo_CheckPhone" name="custinfo_CheckPhone" value="" desc=""/>                                                             
+                    </span>
+
+                </li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div jwcid="QueryFriend@Part">
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-2 c_list-phone-col-1">
+					 <ul class="ul">
+						<li>
+						<div class="label required">好友号码个数</div>
+						<div class="value">
+							<input jwcid="@TextField" id="FRIENDCOUNTS" name="FRIENDCOUNTS" desc="好友号码个数" value="" disabled="disabled"/>
+						</div>	
+						</li>
+					</ul> 
+				</div>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title" id="CHECKFRIENDPART" style="display: none;">
+				<div class="text">好友号码验证</div>
+			</div>
+			<div jwcid="PhoneCheckPart@Part" class="c_list c_list-col-3 c_list-phone-col-2 c_list-line c_list-border">
+				<ul id="THREENUMBER" style="display: none;">
+					<li>
+						<div class="label required">号码1</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PHONE1" id="PHONE1" 
+								value= ""  desc="号码1" /> 
+						</div>
+					</li>
+					<li>
+						<div class="label required">号码2</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PHONE2" id="PHONE2" 
+								value= ""  desc="号码2" /> 
+						</div>
+					</li>
+					<li>
+						<div class="label required">号码3</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PHONE3" id="PHONE3" 
+								value= ""  desc="号码3" /> 
+						</div>
+					</li>
+				</ul>
+				<ul id="TWONUMBER" style="display: none;">
+					<li>
+						<div class="label required">号码1</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PHONE4" id="PHONE4" 
+								value= ""  desc="号码1"/> 
+						</div>
+					</li>
+					<li>
+						<div class="label required">号码2</div>
+						<div class="value">
+							<input jwcid="@TextField" name="PHONE5" id="PHONE5" 
+								value= ""  desc="号码2"/> 
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_submit e_hide-phone c_submit-center">
+					<button class="e_button-blue e_button-l e_button-r e_button-center" jwcid="@Any"
+						type="button" ontap="checkUserNum();" name="check" id="check">鉴权</button>
+			</div>
+			<div class="c_space"></div>
+			<div class="c_title">
+				<div class="text">密码重置</div>
+			</div>
+			<div class="c_list c_list-col-2 c_list-phone-col-2 c_list-line c_list-border" jwcid="inputPWDInfoPart@Part">
+				<ul>			  
+				  <li>
+						<div class="label required">请输入新密码</div>
+						<div class="value">
+							<span class="e_mix">
+								<input  jwcid="@Password" type="passwd" id="PASSWORD" equsize="8" name="PASSWORD"   
+									datatype="numeric"	maxLength="8" value="" desc="请输入新密码 "/>
+								<button class="e_button-blue" id="IMG_cond_USER_PASSWD" name="IMG_cond_USER_PASSWD" title="密码小键盘输入" onclick="inputPasswd1();">
+									<span>小键盘</span>
+								</button>
+							</span>
+						</div>
+				  </li>
+				  <li>
+						<div class="label required">请再次输入新密码</div>
+						<div class="value">
+							<span class="e_mix">
+								<input  jwcid="@Password" type="passwd" id="NEW_PASSWD_AGAIN" equsize="8" name="NEW_PASSWD_AGAIN"   
+									datatype="numeric"	maxLength="8" value=""  desc="请再次输入新密码"/>
+								<button class="e_button-blue" id="IMG_cond_USER_PASSWD" name="IMG_cond_USER_PASSWD" title="密码小键盘输入" onclick="inputPasswd2();">
+									<span>小键盘</span>
+								</button>
+							</span>
+						</div>
+						<input  jwcid="@Any"  type="hidden" id="IDENT_CODE" name="IDENT_CODE" value="0" desc="凭证号"/>
+						<input  jwcid="@Any"  type="hidden" id="BRAND_CODE" name="BRAND_CODE" value="0" desc="产品"/>
+				 </li>			 
+				</ul>			
+			</div>
+				<input  jwcid="@Any"  type="hidden" id="UserCheckFlag" name="UserCheckFlag" value="0" desc="身份校验标志"/>
+				<input  jwcid="@Any"  type="hidden" id="BeautifulFlag" name="BeautifulFlag" value="0" desc="吉祥号码标志"/>
+				<input  jwcid="@Any"  type="hidden" id="RemoteFlag" name="RemoteFlag" value="0" desc="本省异地号码标志"/>
+			<div class="c_space"></div>
+			 <!-- 提交 开始 -->
+			<div jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="checkBeforeSubmit();" isReset="true"  class="c_submit c_submit-center" area="inputPWDInfoPart,psptCheckPart,QueryPart"  element="div"></div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+		<object style="display:none" id="LittleKey" classid="CLSID:11AF41BD-EFFF-462C-94A5-EDC27B737FC0" codebase="/tools/LittleKey.cab"></object>
+	</div>
+</body>
+</html>

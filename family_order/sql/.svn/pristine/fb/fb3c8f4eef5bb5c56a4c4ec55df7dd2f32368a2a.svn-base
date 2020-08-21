@@ -1,0 +1,1 @@
+update tf_f_user_discnt a  set  a.start_date=to_date(:START_DATE,'yyyy-MM-dd hh24:mi:ss') ,a.end_date=to_date(:END_DATE,'yyyy-MM-dd hh24:mi:ss') where a.Inst_Id=:INST_ID  and a.discnt_code =:DISCNT_CODE

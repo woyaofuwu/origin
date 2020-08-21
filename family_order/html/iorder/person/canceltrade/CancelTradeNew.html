@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="iorder/person/canceltrade/scripts/canceltrade.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+    <title>个人业务返销</title>
+    <span id="JunActOCXABC" style="display:none;" ></span>
+</head>
+<body jwcid="@Body">
+    <!-- 标题栏 开始 -->
+    <div class="c_header e_show-phone">
+        <div class="back" ontap="closeNav()">个人业务返销</div>
+    </div>
+    <!-- 标题栏 结束 -->
+    <div class="c_scroll c_scroll-float c_scroll-phone-header">
+        <div class="l_padding">
+            <!-- 查询条件 开始 -->
+            <div jwcid="QueryCondPart@Part"
+                 class="c_list c_list-s c_list-col-2 c_list-line c_list-border">
+                <ul>
+                    <li class="required">
+                        <div class="label">服务号码</div>
+                        <div class="value">
+                            <span class="e_mix">
+                                <input name="cond_SERIAL_NUMBER"
+                                       jwcid="@TextField"
+                                       value="ognl:condition.cond_SERIAL_NUMBER"
+                                       nullable="no" desc="服务号码"/>
+                                <button name="QUERY_BTN" type="button"
+                                        class="e_button-blue"
+                                        ontap="queryCancelTrade()">
+                                    <span class="e_ico-search"></span>
+                                    <span>查询</span>
+                                </button>
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">业务类型</div>
+                        <div class="value">
+                            <span name="cond_TRADE_TYPE_CODE" jwcid="@Select"
+                                  source="ognl:tradeTypeCodeList"
+                                  value="ognl:condition.cond_CANCEL_TYPE_CODE"
+                                  textField="TRADE_TYPE"
+                                  valueField="TRADE_TYPE_CODE" nullable="yes"
+                                  desc="业务类型"></span>
+                        </div>
+                    </li>
+                    <li class="required">
+                        <div class="label">开始时间</div>
+                        <div class="value">
+                            <input name="cond_START_DATE" jwcid="@DateField"
+                                   value="ognl:condition.cond_START_DATE"
+                                   dropDown="true" nullable="no"
+                                   desc="开始时间"/>
+                        </div>
+                    </li>
+                    <li class="required">
+                        <div class="label">结束时间</div>
+                        <div class="value">
+                            <input name="cond_END_DATE" jwcid="@DateField"
+                                   value="ognl:condition.cond_END_DATE"
+                                   dropDown="true" nullable="no"
+                                   desc="结束时间"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 查询条件 结束 -->
+            <div class="c_title">
+                <div class="text">返销信息</div>
+            </div>
+            <!-- 个性化资料 开始 -->
+            <div jwcid="CancelInfo@Part"
+                 class="c_list c_list-s c_list-col-2 c_list-line c_list-border">
+                <ul>
+                    <li>
+                        <div class="label">返销备注</div>
+                        <div class="value">
+                            <input name="REMARKS" jwcid="@TextField"
+                                   desc="返销备注"/>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">发票号</div>
+                        <div class="value">
+                            <input name="INVOICE_NO" jwcid="@TextField"
+                                   desc="发票号"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 个性化资料 结束 -->
+            <div class="c_title">
+                <div class="text">可返销业务</div>
+            </div>
+            <!-- 表格 开始 -->
+            <div jwcid="TradeInfoPart@Part">
+                <table name="cancelTradeTable" jwcid="@Table"
+                       class="c_table c_table-lite c_table-border c_table-min-5 c_table-checkbox c_table-hover">
+                    <thead>
+                        <tr>
+                            <th>选择</th>
+                            <th col="col_EPARCHY_CODE" style="display:none">EPARCHY_CODE</th>
+                            <th col="col_TRADE_ID">业务流水号</th>
+                            <th>返销标识</th>
+                            <th col="col_CANCEL_TAG" style="display:none">CANCEL_TAG</th>
+                            <th>业务类型</th>
+                            <th col="col_TRADE_TYPE_CODE" style="display:none">TRADE_TYPE_CODE</th>
+                            <th>受理月份</th>
+                            <th>营业费用</th>
+                            <th>押金费用</th>
+                            <th>预付费用</th>
+                            <th>收费标识</th>
+                            <th>收费员工</th>
+                            <th>受理时间</th>
+                            <th>受理员工</th>
+                            <th>受理部门</th>
+                            <th>受理地州</th>
+                            <th>受理终端</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr jwcid="@Foreach" source="ognl:validCancelTradeList"
+                            value="ognl:validCancelTrade" element="tr"
+                            index="ognl:rowIndex"
+                            ondblclick="popupTradeInfoPage(this);"
+                            tip="双击查看订单详细信息"
+                            class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                            <td>
+                                <input type="checkbox" jwcid="@Any"
+                                       name="cancelTradeBox"
+                                       tradeId="ognl:validCancelTrade.TRADE_ID"/></td>
+                            <td style="display:none">
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.EPARCHY_CODE"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.TRADE_ID"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', validCancelTrade.CANCEL_TAG)"></span></td>
+                            <td style="display:none">
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.CANCEL_TAG"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE', 'TRADE_TYPE_CODE', 'TRADE_TYPE', validCancelTrade.TRADE_TYPE_CODE)"></span></td>
+                            <td style="display:none">
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.TRADE_TYPE_CODE"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.ACCEPT_MONTH"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.OPER_FEE/100"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.FOREGIFT/100"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.ADVANCE_PAY/100"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.FEE_STATE"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', validCancelTrade.FEE_STAFF_ID)"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.ACCEPT_DATE"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', validCancelTrade.TRADE_STAFF_ID)"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', validCancelTrade.TRADE_DEPART_ID)"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', validCancelTrade.TRADE_EPARCHY_CODE)"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.TERM_IP"></span></td>
+                            <td>
+                                <span jwcid="@Insert"
+                                      value="ognl:validCancelTrade.REMARK"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 表格 结束 -->
+            <div class="c_space"></div>
+            <!-- 提交 开始 -->
+            <div class="c_submit c_submit-center"
+                 jwcid="SubmitPart@icsserv:CSSubmit"
+                 listener="cancelTradeSubmit" beforeAction="commitCheck();"
+                 isReset="true" cancelRule="true" area="" element="div"></div>
+            <!-- 提交 结束 -->
+        </div>
+    </div>
+    <!-- 隐藏区域 开始 -->
+    <div jwcid="hiddenPart@Part">
+        <!-- 4A金库验证标记 -->
+        <input jwcid="@Hidden" name="4APARIS_TAG" value="0"/>
+    </div>
+    <!-- 隐藏区域 结束 -->
+    <script jwcid="@Script" src="/treasury/scripts/treasury.js" outer="true"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+select  
+  ORDER_ID,      
+  SUBORDER_ID,   
+  SERIAL_NUMBER, 
+  ORDER_STATU,   
+  ORDER_TYPE,    
+  PREV_STATU,    
+  OPRTIME,       
+  UPDATE_DESC,   
+  LOGISTID,      
+  SHIP_SEQ,      
+  SHIP_ADDR,     
+  SHIP_DATE,     
+  SHIP_REMARK,   
+  DELIV_PERSON,  
+  REC_TIME,     
+  REC_PERSON,    
+  REC_REMARK,    
+  PROC_STATU
+  from  TI_B_SCORE_ORDER_STATUS_SYN
+  where ORDER_ID = :ORDER_ID
+  and  SUBORDER_ID = :SUBORDER_ID 
+  and  ORDER_STATU = :ORDER_STATU

@@ -1,0 +1,82 @@
+<div class="l_col s_iframe-close">
+	<!-- 第 1 栏 开始 -->
+	<div class="l_left" style="width:35%;">
+       	<!-- 产品列表 开始 -->
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">产品列表</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 树开始 -->
+		<div class="c_scroll" style="height:434px;">
+			<div jwcid="groupPackageTree@Tree" 
+					method="loadGrpPackageTrees" 
+					clazz="com.asiainfo.veris.crm.order.web.frame.csview.common.component.group.product.groupproductstree.GroupProductsTreeHttpHandler"
+					params="ognl:treeParam"
+					async="true"
+					init="ognl:treeParam.INIT_TAG"
+					textAction="ognl:treeTextAction"
+					ShowCheckBox="false">
+			</div>
+		</div>
+		<!-- 树结束 -->
+		<!-- 产品列表 结束 -->
+	</div>
+	<div class="l_left" style="width:30%;">
+		<div class="c_title c_title-2">
+		    <div class="text">可选元素信息</div>
+		</div>
+		<!-- 表格 开始 -->
+		<div jwcid="elementListPart@Part" element="div">
+		<div class="c_scroll" style="height:434px;">
+			<div class="c_list c_list-table c_list-col-1">
+				<ul id="qryGrpPackageList">
+					<li jwcid="@Foreach" source="ognl:elementList" value="ognl:elementInfo" element="li" title="ognl:elementInfo.ELEMENT_NAME">
+						<button type="button" jwcid="@Any" elementId="ognl:elementInfo.ELEMENT_ID" elementIdDetail="ognl:packageInfo.PRODUCT_ID+'^'+packageInfo.PACKAGE_ID+'^'+elementInfo.ELEMENT_ID+'^'+elementInfo.ELEMENT_TYPE_CODE" elementTypeCode="ognl:elementInfo.ELEMENT_TYPE_CODE" elementName="ognl:elementInfo.ELEMENT_NAME"  style="display:none" onmouseover="this.style.display='';" onmouseout="this.style.display = 'none';" onclick="addUserGrpElement($(this).attr('elementId'),$(this).attr('elementTypeCode'),$(this).attr('elementName'),$(this).attr('elementIdDetail'));"><i class="e_ico-next"></i><span>添加</span></button>
+						<label class="text" onmouseover="$(this).prev().css('display','');" onmouseout="$(this).prev().css('display','none');" ><span jwcid="@Insert" value="ognl:'['+elementInfo.ELEMENT_ID+']'+elementInfo.ELEMENT_NAME"　raw="false"></span></label>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+	</div>
+    <div class="l_auto">
+		<!-- 标题 开始 -->
+		
+        <div class="c_title c_title-2">
+			<div class="text">已选区</div>
+		</div>  
+		
+		<!-- 标题 结束 -->
+		<!-- 表格 开始 -->
+		<div class="c_scroll" style="height:434px;">
+			<div class="c_list c_list-table c_list-col-1">
+				<ul id="selectedGrpPackageList">
+					<li jwcid="@Foreach" source="ognl:grpPackageList" value="ognl:grpPackageInfo" element="li" title="ognl:grpPackageInfo.ELEMENT_NAME" >
+						<span jwcid="@Conditional" condition="ognl:grpPackageInfo.ELEMENT_FORCE_TAG != 1">	
+							<label class="text" ondblclick="delUserGrpElement(this);" >
+								<input id="usercheck" style="display:none" name="usercheck" type="text" jwcid="@Any" value="ognl:grpPackageInfo.PRODUCT_ID+'^'+grpPackageInfo.PACKAGE_ID+'^'+grpPackageInfo.ELEMENT_ID+'^'+grpPackageInfo.ELEMENT_TYPE_CODE+'^'+grpPackageInfo.ELEMENT_NAME" ></input>
+								<span><span jwcid="@Insert" value="ognl:'['+grpPackageInfo.ELEMENT_ID+']'+grpPackageInfo.ELEMENT_NAME"　raw="false"></span></span>
+							</label>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:grpPackageInfo.ELEMENT_FORCE_TAG == 1">
+							<label class="text" ondblclick="alert('必选元素,不允许取消！')">
+								<input id="usercheck" style="display:none" name="usercheck" type="text" jwcid="@Any" value="ognl:grpPackageInfo.PRODUCT_ID+'^'+grpPackageInfo.PACKAGE_ID+'^'+grpPackageInfo.ELEMENT_ID+'^'+grpPackageInfo.ELEMENT_TYPE_CODE+'^'+grpPackageInfo.ELEMENT_NAME" ></input>
+								<span><span jwcid="@Insert" value="ognl:'['+grpPackageInfo.ELEMENT_ID+']'+grpPackageInfo.ELEMENT_NAME"　raw="false"></span></span>
+							</label>
+						</span>
+					</li>
+				</ul>
+			</div>
+		</div> 
+		<!-- 表格 结束 -->
+	</div>
+<!-- 第 2 栏 结束 -->
+</div>
+<input jwcid="@Hidden" name="USERGRPPACKAGE_COMPONENT_ID" id="USERGRPPACKAGE_COMPONENT_ID" value="ognl:id"/>
+<input jwcid="@Hidden" name="USERGRPPACKAGE_EPARCHY_CODE" id="USERGRPPACKAGE_EPARCHY_CODE" value="ognl:grpUserEparchyCode"/>
+<input type="text" name="USERGRPPACKAGE_PRODUCT_ID" id="USERGRPPACKAGE_PRODUCT_ID" value="" style="display:none"/>
+<input type="text" name="USERGRPPACKAGE_PACKAGE_ID" id="USERGRPPACKAGE_PACKAGE_ID" value="" style="display:none"/>
+<input type="text" jwcid="@Any" name="SELECTED_GRPPACKAGE_LIST" id="SELECTED_GRPPACKAGE_LIST" value="" style="display:none"/>
+<textarea jwcid="@TextArea" name="OLD_GRPPACKAGE_LIST" id="OLD_GRPPACKAGE_LIST" value="ognl:oldGrpPackageList" style="display:none"></textarea>
+<textarea jwcid="@TextArea" name="FORCE_PACKAGE_LIST" id="FORCE_PACKAGE_LIST" value="ognl:forcePkgList" style="display:none"></textarea>

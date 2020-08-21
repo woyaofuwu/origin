@@ -1,0 +1,5 @@
+DELETE FROM td_s_productlimit
+WHERE PRODUCT_ID_A = :PRODUCT_ID_A
+AND PRODUCT_ID_B = :PRODUCT_ID_B
+AND LIMIT_TAG = :LIMIT_TAG
+AND START_DATE = to_date(:START_DATE,'yyyy-mm-dd hh24:mi:ss')

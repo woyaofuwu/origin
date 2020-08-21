@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: SaleActiveTrade.html,v 1.6 2013/04/10 08:33:42 anwx Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>营销活动办理规则预校验</title>
+<script jwcid="@Script" language="JavaScript" src="person/saleactive/scripts/saleactiverulecheck.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper" id="bodyScroll"><div class="m_wrapper2">
+<div class="c_box">
+	<div jwcid="myTips@Tips" content="提示：用户只能办理蓝色字体的营销包！" showLink="false" showClose="false"/>
+	<div class="c_title">
+        <div class="text">客户查询</div>
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="displaySwitch(this,'UCAViewPart')"><i
+				class="e_ico-unfold"></i><span>展示客户信息</span>
+			</a>
+		</div>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth"   tradeTypeCode="520" tradeAction="refreshPartAtferAuth(data)" ></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part" style="display:none">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	
+</div>
+<div class="c_box"> 
+	<input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value=""/>
+	<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+	<div class="c_title">
+		<div class="text">活动信息</div>
+	</div>
+	<!-- 标题 结束  -->
+	<div id="listContent">
+		<!--表单 开始 -->
+		<div class="c_form c_form-col-2 c_form-label-6" jwcid="QueryRecordPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">活动类型：</span></span>
+	                <span class="e_select"><span><span>
+	               		<select jwcid="@Select" name="SALE_CAMPN_TYPE" id="SALE_CAMPN_TYPE"
+								source="ognl:batcampnTypes"
+								textField="LABEL_NAME" valueField="LABEL_ID" titleField="LABEL_ID"
+	                			value=""
+								desc="活动类型"
+	                			nullable="no"
+	                			onchange="queryProductByType()"
+                           		disabled=""
+                           />
+	                </span></span></span>	
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">营销方案：</span></span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="SALE_PRODUCT_ID" id="SALE_PRODUCT_ID"
+								source="" 
+	                			value=""
+	                			onchange="checkByProduct()"
+								desc="营销方案"
+                    />
+	                </span></span></span>
+				</li>
+				
+				<li class="li col-2">
+					<span class="label"><span class="e_required">产品包：</span></span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="SALE_PACKAGE_ID" id="SALE_PACKAGE_ID"
+								source="" 
+	                			value=""
+								desc="产品包" 
+								nullable="no"
+                    />
+	                </span></span></span>
+				</li>
+			</ul> 
+			<div class="submitPlace"></div>
+			<div class="submit"  >
+					<button class="e_button-form"  name="QUERY_BTN" id="QUERY_BTN" onclick="checkRule()"><i class="e_ico-search"></i><span>校验</span></button>
+			</div>
+		</div> 
+		
+		<!-- 表格 开始 -->
+		<div jwcid="QueryListPart@Part" >
+			<div class="c_scroll c_scroll-x">		
+				<div class="c_table c_table-row-10"> 
+					<table  id="sortedTable"  >
+						<thead>
+							<tr>
+								<th col="ROW_NUM">序号</th> 
+								<th col="ERR_NUM">返回编码</th> 
+								<th col="ERR_INFO">返回信息</th> 
+								<th col="DEAL_LINK">业务办理链接</th> 
+								<th col="DEAL_DESC" style="display:none">解决方案描述</th>
+							</tr>
+						</thead>
+						<tbody>
+						
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.ERR_NUM" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.ERR_INFO" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.DEAL_LINK" /></td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:info.DEAL_DESC" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div> 
+			<div jwcid="@NavBar" name="listnav" id="listnav" cond="QueryRecordPart" part="QueryListPart" listener="queryCardStorage" pageSize="10" count="ognl:recordCount"></div>
+		</div>  
+		
+	</div> 
+</div>
+<!--受理信息结束-->
+</div></div></body>
+</html>

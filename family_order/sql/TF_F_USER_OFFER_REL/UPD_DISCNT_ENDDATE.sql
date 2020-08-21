@@ -1,0 +1,1 @@
+update TF_F_USER_OFFER_REL a  set  a.end_date=sysdate where a.REL_OFFER_INS_ID=:REL_OFFER_INS_ID  and a.rel_offer_code =:DISCNT_CODE

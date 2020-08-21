@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="../../../js/jcl.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batupgprelation/BatUnifyPayRelation.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+
+<!-- 区域 开始 -->
+<div class="c_scroll c_scroll-mix" style="ognl:'height:' + condition.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+	<!-- 非ESOP系统链接 开始-->
+	<div jwcid="@Conditional" condition="ognl:condition.ESOP_TAG != 'ESOP'">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="CondGroupPart@Part" element="div">
+		<div class="c_form">
+			<ul class="ul">
+				<li class="li">
+					<span jwcid="@saleserv:SelectGroup" refreshPart="acctArea,createMebArea,createArea2,NoteItemArea,GroupInfoPart" afterErrorAction="selectGroupErrorAfterAction();" selectGroupListener="getGroupBaseInfo" afterAction="insertGroupCustInfo(data);"/>
+				</li>
+	  		</ul>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+	<!-- 非ESOP系统链接 结束-->	
+	
+	<!-- 集团客户 开始 -->
+	<div jwcid="GroupInfoPart@Part" element="div">
+		 <input type="text" hasTitle="false" jwcid="@saleserv:GroupCustInfo" refreshPart="mytab" groupUserInfo="ognl:groupInfo"/>
+	</div>
+	<!-- 集团客户信息 结束 -->
+	
+	
+	<!-- 主区域 开始 -->
+	<div class="c_box">
+		<div jwcid="tabPart@Part" element="div">
+		<div jwcid="mytab@Tabset">
+			<!-- 集团账户信息开始  -->
+			<div jwcid="@TabsetContent" id ="groupacctinfotabset" title="集团账户信息">
+				<div class="c_form c_form-label-7 c_form-col-2">
+					<div>
+						<ul class="ul">
+							<li class="li col-2">
+								<span class="label"><span class="e_required">集团账户：</span></span>
+								<span class="e_select"><span><span>
+									<div jwcid="acctArea@Part" optimize="true">
+									<select jwcid="@Select"
+										name="acct_ACCT_ID" id="acct_ACCT_ID"	
+										source="ognl:acctInfos" 
+										nullable="no"
+										onchange="dealAcctInfo();" 
+										textField="DISPLAY_NAME"
+										valueField="ACCT_ID"
+										value="ognl:acctInfo.ACCT_ID"
+										/>
+									</div>
+								</span></span></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div jwcid="createArea2@Part" optimize="true">
+					<div class="c_form c_form-label-7 c_form-col-2">
+							<div>
+								<ul class="ul">
+									<li class="li">
+										<span class="label">归属地市：</span>
+										<span class="e_select"><span><span>
+											<select id="acctInfo_EPARCHY_CODE" name="acctInfo_EPARCHY_CODE" jwcid="@Select"
+											
+											disabled="true"
+											addDefault="false" 
+											textField="DATA_NAME" 
+											valueField="DATA_ID"
+											source="ognl:pageutil.getStaticList('AREA_CODE')"
+											 desc="归属地市"/>
+										</span></span></span>
+									</li>
+									<li class="li">
+										<span class="label">账户名称：</span>
+										<span class="e_input"><span>
+											<input type="text" name="acctInfo_PAY_NAME" jwcid="@TextField" value="ognl:condition.PAY_NAME" datatype="text" disabled="true" desc="账户名称"/>
+										</span></span>
+									</li>
+									<li class="li">
+										<span class="label">用户标识：</span>
+										<span class="e_input"><span>
+											<input type="text" id="acctInfo_USER_ID" name="acctInfo_USER_ID" jwcid="@TextField" value="ognl:condition.USER_ID" datatype="text" disabled="true"  desc="用户标识"/>
+										</span></span>
+									</li>
+									<li class="li">
+										<span class="label">集团产品编码：</span>
+										<span class="e_input"><span>
+											<input type="text" jwcid="@TextField" id="acctInfo_PRODUCT_ID" name="acctInfo_PRODUCT_ID" value="ognl:condition.PRODUCT_ID" datatype="text" disabled="true" desc="集团产品编码" />
+										</span></span>
+									</li>
+									<li class="li">
+										<span class="label">帐户类型：</span>
+										<span class="e_select"><span><span>
+											<select jwcid="@Select" source="ognl:pageutil.getStaticList('TD_S_PAYMODE')" textField="DATA_NAME" valueField="DATA_ID" id="acctInfo_PAY_MODE_CODE" disabled="true" name="acctInfo_PAY_MODE_CODE" value="ognl:condition.PAY_MODE_CODE" desc="账户类别" />
+										</span></span></span>
+									</li>
+									<li class="li">
+										<span class="label">银行账号：</span>
+										<span class="e_input"><span>
+											<input type="text" id="acctInfo_BANK_ACCT_NO" name="acctInfo_BANK_ACCT_NO" jwcid="@TextField" value="ognl:condition.BANK_ACCT_NO" datatype="text" disabled="true" desc="银行帐号"/>
+										</span></span>
+									</li>
+									<li class="li">
+										<span class="label">上级银行：</span>
+										<span class="e_input"><span>
+											<input name="acctInfo_SUPER_BANK_CODE" jwcid="@TextField" value="ognl:condition.SUPER_BANK_CODE" desc="上级银行" disabled="true" datatype="text" />
+										</span></span>
+									</li>
+									<li class="li">
+										<span class="label">银行名称：</span>
+										<span class="e_input"><span>
+											<input name="acctInfo_BANK_CODE" jwcid="@TextField" type="text" datatype="text" value="ognl:condition.BANK_CODE" disabled="true" desc="银行名称"/>
+										</span></span>
+									</li>
+									<li class="li">
+										<span class="label">合同号：</span>
+										<span class="e_input"><span>
+											<input name="acctInfo_CONTRACT_ID" jwcid="@TextField" value="ognl:condition.CONTRACT_ID" type="text" datatype="text" disabled="true" desc="合同号"/>
+										</span></span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				
+				<!-- 附件信息 开始 -->
+				<div class="c_box" jwcid="@Conditional" condition='ognl:condition.MEB_FILE_SHOW != null && condition.MEB_FILE_SHOW == "true"'>
+					<div class="c_title">
+						<div class="text">附件信息</div>
+					</div>
+					<div class="c_form c_form-col-3 c_form-label-6">
+						<ul class="ul">
+							<li class="li col-3">				
+								<span class="label"><span>附件上传：</span></span>
+								<div jwcid="MebFilePart@Part">
+								<span class="e_elements">
+									<input jwcid="@Upload"
+											name="MEB_FILE_LIST"
+											id="MEB_FILE_LIST"
+											ftpSite="groupserv"
+											filePath="upload/mebattach"
+											fileSize="20"
+											fileTypes="*.*"
+										/>
+									</span>
+							    </div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- 附件信息 结束 -->
+			
+			</div>
+			<!-- 集团账户信息结束  -->
+			
+			<!-- 付费客户信息开始  -->
+			<div jwcid="@TabsetContent" id ="paycustinfotabset" title="付费客户信息">
+				
+				<div jwcid="createMebArea@Part" class="c_form c_form-col-2 c_form-label-7" >
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">生效账期：</span></span>
+							<span class="e_elements"> 
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField"
+										name="START_CYCLE_ID"
+										value="ognl:acctotherInfo.START_CYCLE_ID"
+										format="yyyyMM" 
+										nullable="no"
+										readonly="true"
+										desc="起始账期"
+									/> 
+		                   		</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">结束账期：</span></span>
+							<span class="e_elements"><span class="e_input e_input-left"><span>
+								<input jwcid="@DateField"
+									name="END_CYCLE_ID"
+									nullable="no"
+									value="ognl:acctotherInfo.END_CYCLE_ID"
+									format="yyyyMM"
+									readonly="true"
+									desc="结束账期"
+								/>
+							</span></span></span>
+						</li>
+						<li class="li" style="display:none">
+							<!-- 分散账期修改 新增账期变更隐藏按钮-->
+							<span class="label"><a jwcid="@Redirect"  id="changeAcctDay" name="changeAcctDay" value="账期变更" style="display:none"
+		 					 onclick="$.popupPageExternal('changeacctday.ChangeAcctDay','onInitTrade', '&DISABLED_AUTH=true&ISGRP=TRUE&SERIAL_NUMBER='+$('#cond_SERIAL_NUMBER').val() + '&REMARK='+encodeURIComponent('办理集团产品需要变更账期为自然月'),'调账期变更页面','820','650',null,null,'/personserv/personserv',false)"/>
+							</span>
+						</li>
+						<li class="li">
+							<span class="label">下发订购短信提醒：</span>
+							<input jwcid="@Checkbox" id="crmSmsOrder" name="crmSmsOrder" onclick="checkSelectMesInfo(this)" value="0" class="e_checkbox" desc="订购短信提醒"/>
+						</li>
+						<li class="li">
+							<span class="label">下发月初话费提醒短信：</span>
+							<input jwcid="@Checkbox" id="acctSmsOrder" name="acctSmsOrder" onclick="checkSelectMesInfo(this)"  value="0" class="e_checkbox" desc="月初话费短信提醒"/>
+						</li>
+					</ul>
+				</div>
+				
+				<div jwcid="RefreshTable@Part">
+				<!-- 标题 开始 -->
+				<div class="c_title c_title-2">
+					<div class="text">付费方式</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 付费账目区 开始 -->
+				
+				<!-- 表单 开始 --> 
+				<div class="c_form c_form-col-2 c_form-label-5">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">费用类别：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="FEE_TYPE" id="FEE_TYPE"
+								        source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAYRELAMEBCHG_FEE_TYPE')" 
+								        value="ognl:memacctinfo.LIMIT_TYPE==null?'0':memacctinfo.LIMIT_TYPE" 
+								        textField="DATA_NAME"
+								        nullable="no"
+								        addDefault="false" 
+								        valueField="DATA_ID"
+							            titleField="DATA_NAME"
+								        desc="费用类别" /> 
+							</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label">限定方式：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="LIMIT_TYPE" id="LIMIT_TYPE"
+								        source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAYRELAMEBCHG_LIMIT_TYPE')" 
+								        value="ognl:memacctinfo.LIMIT_TYPE==null?'0':memacctinfo.LIMIT_TYPE" 
+								        textField="DATA_NAME"
+								        nullable="no"
+								        addDefault="false" 
+								        valueField="DATA_ID"
+							            titleField="DATA_NAME"
+								        onchange="changelimit()" 
+								        desc="限定方式" />
+							</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label">限定值：</span>
+							<span class="e_input">
+							<span><input jwcid="@TextField" name="LIMIT" id="LIMIT" value="ognl:memacctinfo.LIMIT" desc="限定值" maxsize="10"  nullable="no" disabled="true"/></span>
+							</span>
+						</li>
+						<li class="li">
+							<span class="label">是否补足：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="COMPLEMENT_TAG" id="COMPLEMENT_TAG"
+								        source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAYRELAMEBCHG_COMPLEMENT_TAG')" 
+								        value="ognl:memacctinfo.COMPLEMENT" 
+								        textField="DATA_NAME"
+								        nullable="no"
+								        addDefault="false" 
+								        valueField="DATA_ID"
+								        desc="是否补足" />
+							</span></span></span>
+						</li>
+					</ul>
+				</div>
+				 
+				<!-- 表单 结束 -->
+				<!-- 功能 开始 --> 
+				<div class="c_fn">
+					<ul>
+						<li><label><input jwcid="@Checkbox" id="newSnInfo_CheckAll" name="newSnInfo_CheckAll" onclick="checkedAll('itemcodes',checked)" value="0" class="e_checkbox"/>综合账目全选</label></li>
+						<li><button class="e_button-right" onclick="checkedOther('itemcodes'); $('#newSnInfo_CheckAll').attr('checked',false)" type="button"><i class="e_ico-unselect"></i><span>反选</span></button></li>
+					</ul>
+				</div> 
+				<!-- 功能 结束 -->
+				<!-- 标题 开始 -->
+				<div class="c_title c_title-2">
+					<div class="text">付费帐目列表</div>
+					<div class="fn">
+						<span class="e_elements" style="width:200px;">
+							<button class="e_button-right" type="button" onclick="filterNoteItems();"><i class="e_ico-search"></i><span>过滤</span></button>
+							<span class="e_input e_input-left"><span><input type="text" jwcid="newSnInfo_NOTE_ITEM@TextField" name="newSnInfo_NOTE_ITEM" value=""  maxsize="40"  desc="综合帐目过滤" /></span></span>
+						</span>
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="NoteItemArea@Part" optimize="true">
+				<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th></th>
+								<th>付费帐目编码</th>
+								<th>付费帐目名称</th>
+								<th>查看明细</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:noteItemList" value="ognl:noteItem"   index="ognl:rowIndex"   element="tr">
+								<td><input type="checkbox"  name="itemcodes" jwcid="@Any"   value="ognl:noteItem.NOTE_ITEM_CODE" raw="true"  /></td>
+								<td><span jwcid="@Insert" value="ognl:noteItem.NOTE_ITEM_CODE" raw="true"/></td>
+						        <td><span jwcid="@Insert" value="ognl:noteItem.NOTE_ITEM" raw="true"/></td>
+		                        <td> <span>
+		                          	 <a jwcid="@Redirect" note_item_code="ognl:noteItem.NOTE_ITEM_CODE"  note_item = "ognl:noteItem.NOTE_ITEM"
+									  onclick="$.popupPageExternal('group.modifypayrelation.PayrelaDetItem','queryPayrelaAdvChgDetItem', '&PARENT_NOTE_ITEM_CODE=' + $(this).attr('note_item_code') + '&PARENT_NOTE_ITEM=' + $(this).attr('note_item'),'综合账目明细',680,480,'cond_ACCT_ID')">明细</a>
+								</span> 
+								</td>
+					     	</tr>
+						</tbody>      
+					</table>
+				</div></div>
+				</div>
+				<!-- 表格 结束 -->
+				
+		 		<!-- 付费账目区 结束 -->
+				</div>
+			
+			</div>
+			<!-- 付费客户信息结束  -->
+            <!-- 凭证信息开始  -->
+			<div jwcid="@TabsetContent" id ="voucher" title="凭证信息">
+				<div class="c_form c_form-col-3 c_form-label-6">
+					<ul class="ul">
+						<li class="li col-3">				
+							<span class="label"><span class="e_required">凭证上传：</span></span>
+							<div jwcid="VoucherFilePart@Part">
+								<span class="e_elements">
+								<input jwcid="@Upload"
+										name="MEB_VOUCHER_FILE_LIST"
+										id="MEB_VOUCHER_FILE_LIST"
+										ftpSite="groupserv"
+										filePath="upload/mebattach"
+										fileSize="20"
+										fileTypes="*.*"
+	                            		desc="凭证信息" 
+	                            		nullable="no"
+									/>
+								</span>
+						    </div>
+						</li>
+                        <li class="li">
+			                <span class="label"><span class="e_required">稽核人员：</span></span> 
+			                <span class="e_elements">
+								<button type="button" class="e_button-right"
+									onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+									<i class="e_ico-check"></i><span></span>
+								</button> 
+			                    <span class="e_input e_input-left"><span> <input
+										type="text" jwcid="@TextField"
+										name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+										value=""
+										text="" nullable="no"
+										readonly="true"/>
+								</span></span>
+							</span>
+			            </li>
+					</ul>
+				</div>
+			</div>
+        	<!-- 凭证信息结束  -->
+		</div>
+		
+		<!--隐藏区域开始-->
+		<div>
+			<input type="text" id="selectItemcodes" name="selectItemcodes" jwcid="@TextField" value="" style="display:none"/>
+			<input type="text" id="PAYITEM_CODE" name="PAYITEM_CODE" jwcid="@TextField" value="" style="display:none"/>
+			<input jwcid="@TextField" name="NEW_LIMIT" id="NEW_LIMIT" value="" style="display:none" maxsize="15"/> 
+			<input jwcid="@TextField" id="MEB_FILE_SHOW" name="MEB_FILE_SHOW" value="ognl:condition.MEB_FILE_SHOW" style="display:none" />
+	    </div>
+		<!--隐藏区域结束-->
+		</div>
+	</div>
+	<!-- 主区域 结束 -->
+	
+</div>
+
+
+<!-- 提交 开始 -->
+<div class="c_submit" style="border-top:1px solid #979797; margin-top:-1px;">
+	<button  type="button" class="e_button-page-ok" onclick="if(!checkAdvChgSubmit())return false;concatString();"><i></i><span>确定</span></button>
+	<button  type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+</div>
+<!-- 提交 结束 -->
+
+
+
+</div></div>
+</body>
+</html>
+
+
+
+
+
+	
+

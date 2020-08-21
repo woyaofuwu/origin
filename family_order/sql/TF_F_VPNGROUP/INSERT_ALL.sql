@@ -1,0 +1,2 @@
+INSERT INTO tf_f_vpngroup(user_id_a,user_id_b,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5)
+ VALUES(TO_NUMBER(:USER_ID_A),TO_NUMBER(:USER_ID_B),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5)

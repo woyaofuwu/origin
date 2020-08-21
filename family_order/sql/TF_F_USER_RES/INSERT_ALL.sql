@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_res(partition_id,user_id,res_type_code,res_code,start_date,end_date,update_time)
+ VALUES(MOD(TO_NUMBER(:USER_ID),10000),TO_NUMBER(:USER_ID),:RES_TYPE_CODE,:RES_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),SYSDATE)

@@ -1,0 +1,27 @@
+SELECT TO_CHAR(trade_id) trade_id,
+       trade_type_code,
+       serial_number,
+       net_type_code,
+       eparchy_code,
+       city_code,
+       product_id,
+       intf_id,
+       TO_CHAR(accept_date,'YYYY-MM-DD HH24:MI:SS') accept_date,
+       trade_staff_id,
+       trade_depart_id,
+       trade_city_code,
+       trade_eparchy_code,
+       TO_CHAR(fee_time,'YYYY-MM-DD HH24:MI:SS') fee_time,
+       fee_staff_id,
+       TO_CHAR(cancel_date,'YYYY-MM-DD HH24:MI:SS') cancel_date,
+       cancel_staff_id,
+       cancel_depart_id,
+       cancel_city_code,
+       cancel_eparchy_code,
+       TO_CHAR(update_time,'YYYY-MM-DD HH24:MI:SS') update_time,
+       update_staff_id,
+       update_depart_id,
+       remark
+FROM tf_bh_trade
+WHERE batch_id = TO_NUMBER(:BATCH_ID)
+and serial_number = TO_CHAR(:SERIAL_NUMBER)

@@ -1,0 +1,1 @@
+SELECT 'PurchaseName' KEY,PURCHASE_MODE VALUE1,'-1' VALUE2,PURCHASE_NAME VRESULT FROM td_b_purchasetype WHERE 'PurchaseName'=:KEY

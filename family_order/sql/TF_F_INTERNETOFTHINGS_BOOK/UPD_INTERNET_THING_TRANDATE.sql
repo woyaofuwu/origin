@@ -1,0 +1,6 @@
+UPDATE TF_F_INTERNETOFTHINGS_BOOK
+   SET TRAN_DATE = to_date(:TRAN_DATE, 'yyyy-mm-dd hh24:mi:ss')
+ WHERE USER_ID = to_number(:USER_ID)
+   AND OLD_STATE_CODE = '0'
+   AND NEW_STATE_CODE = '1'
+   AND DEAL_TAG = '0'

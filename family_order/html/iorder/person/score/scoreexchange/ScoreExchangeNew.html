@@ -1,0 +1,481 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" src="iorder/person/score/scoreexchange/scripts/scoreexchange.js"></script>
+	<style type="text/css">
+		.c_table table td input[type="text"] {
+			width: 30%
+		}
+	</style>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<!-- 认证 开始 -->
+			<div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="330" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+			<!-- 认证 结束 -->
+			<!-- 参数列表 开始 -->
+			<div class="c_list c_list-s c_list-list-5 c_list-col-3 c_list-line c_list-border" jwcid="refreshParts@Part">
+				<ul>
+					<li style="display:none;">
+						<div class="label">客户名称</div>
+						<div class="value">
+							<span jwcid="@Insert" value="ognl:commInfo.CUST_NAME" raw="true" />
+						</div>
+					</li>
+					<li style="display:none;">
+						<div class="label">品牌名称</div>
+						<div class="value">
+							<input jwcid="@Insert" value="ognl:commInfo.BRAND_NAME" />
+						</div>
+					</li>
+					<li style="display:none;">
+						<div class="label">地市</div>
+						<div class="value">
+							<span jwcid="@Insert" value="ognl:commInfo.EPARCHY_NAME" raw="true" />
+						</div>
+					</li>
+					<li style="display:none;">
+						<div class="label">客户级别</div>
+						<div class="value">
+							<span jwcid="@Insert" value="ognl:commInfo.CLASS_NAME" raw="true" />
+						</div>
+					</li>
+					<li style="display:none;">
+						<div class="label">用户积分</div>
+						<div class="value">
+							<input jwcid="@TextField" name="SCORE" id="SCORE" value="ognl:commInfo.SCORE" desc="用户积分" readOnly="readonly" />
+						</div>
+					</li>
+					<li style="display:none;">
+						<div class="label">
+							<span class="e_orange">总消费积分</span>
+						</div>
+						<div class="value">
+							<input jwcid="@TextField" name="RSRV_NUM2" value="ognl:commInfo.RSRV_NUM2" desc="总消费积分" disabled="true" />
+						</div>
+					</li>
+					<li style="display:none;">
+						<div class="label">
+							<span class="e_orange">兑换资格</span>
+						</div>
+						<div class="value">
+							<input jwcid="@TextField" name="EXCHANGE_RIGHT" value="ognl:commInfo.EXCHANGE_RIGHT" desc="兑换资格" disabled="true" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 参数列表 结束 -->
+
+			<!-- 区域 开始 -->
+			<div jwcid="refreshParts2@Part">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">兑换列表</div>
+					<div class="fn">
+						<ul>
+							<li>
+								<button id="alreadyChoose" onclick="showChoose('DeptTable');showScoreLayer('fullChoose');hideScoreLayer('alreadyChoose');">
+									<span class="e_ico-select"></span>
+									<span>显示已选项</span>
+								</button>
+							</li>
+							<li>
+								<button id="fullChoose" style="display:none;" onclick="showFull('DeptTable');showScoreLayer('alreadyChoose');hideScoreLayer('fullChoose');">
+									<span class="e_ico-view"></span>
+									<span>显示全部</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div id="showScoreArea">
+					<div class="c_filter c_filter-border c_filter-label-4">
+						<ul>
+							<li>
+								<div class="label">兑换类型：</div>
+								<div class="more">
+									<button class="e_button-s e_button-r" type="button"
+										ontap="showMoreType();" id="unfoldButton">
+										<span class="e_ico-unfold"></span>
+										<span>更多</span>
+									</button>
+									<button class="e_button-s e_button-r" type="button" style="display:none;" 
+										ontap="hideMoreType();" id="foldButton">
+										<span class="e_ico-fold"></span>
+										<span>收起</span>
+									</button>
+								</div>
+								<div class="option option-fold" id="moreTypes">
+									<ul>
+										<li class="link e_center on" ontap="chooseExType(this,'EXCHANGE_TYPE_CODE','DeptTable','custs');changeTypes(this);" LinkIndex="No0">
+											<div class="main">
+												<div jwcid="@Insert" value="不限"></div>
+												<span jwcid="@Any" name="EXCHANGE_TYPE_CODENo0" id="EXCHANGE_TYPE_CODENo0" value=""></span>
+											</div>
+										</li>
+										<li jwcid="@Foreach" ontap="chooseExType(this,'EXCHANGE_TYPE_CODE','DeptTable','custs');changeTypes(this);" class="link e_center" source="ognl:exchangtype" value="ognl:type" element="li" index="ognl:rowIndex" LinkIndex="ognl:rowIndex">
+											<div class="main">
+												<div jwcid="@Insert" value="ognl:type.EXCHANGE_TYPE"></div>
+												<span jwcid="@TextField" type="hidden" value="ognl:type.EXCHANGE_TYPE_CODE" name="ognl:'EXCHANGE_TYPE_CODE' + rowIndex" id="ognl:'EXCHANGE_TYPE_CODE' + rowIndex"></span>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<div class="label">积分区间：</div>
+								<div class="value" id="scoreTypes" name="scoreTypes">
+									<ul>
+
+									</ul>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="c_space-c"></div>
+				<!-- 表单 结束 -->
+				<div jwcid="DeptTablePart@Part">
+					<!-- 表格 开始 -->
+					<table jwcid="@Table" id="DeptTable" name="DeptTable" class="c_table c_table-lite c_table-border c_table-checkbox" style="height:22em;">
+						<thead>
+							<tr>
+								<th style="width:3em" class="" col="TABLE_CHECK" id="TABLE_CHECK">选择</th>
+								<th style="width:8em" class="e_center" col="TABLE_NUM">数量</th>
+								<th style="width:8em" class="e_center" col="TABLE_LIMIT">次数限制</th>
+								<th style="width:8em" class="" col="RULE_ID">编码</th>
+								<th col="TABLE_NAME1">兑换名称</th>
+								<th class="" col="TABLE_SCORE">所需积分</th>
+								<th style="display:none;">兑换类型</th>
+								<th col="TABLE_NAME2">兑换类型名称</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr" rowIndex="ognl:rowIndex">
+								<td class="e_center">
+									<input type="checkbox" name="custs" index="ognl:rowIndex" count="0" exchangetype="ognl:info.EXCHANGE_TYPE_CODE" score="ognl:info.SCORE" gifttype="ognl:info.RULE_ID" jwcid="@Checkbox" limit="ognl:info.EXCHANGE_LIMIT" reward="ognl:info.REWARD_LIMIT" fmonths="ognl:info.FMONTHS" gifttypecode="ognl:info.GIFT_TYPE_CODE" deposit="ognl:info.DEPOSIT_CODE" amonths="ognl:info.AMONTHS" rsrv_str3="ognl:info.RSRV_STR3" value="ognl:info.RULE_ID" nullable="no" onclick="checkExchangeTypeLimit(this,'custs');chkInput(this,'custs');" />
+								</td>
+								<td data-title="数量">
+									<div class="e_mix e_mix-r" style="width:8em">
+										<span class="e_ico-reduce" jwcid="@Any" ontap="reduceCount(this,'custs')" index="ognl:rowIndex" id="ognl:'REDUCE_'+rowIndex" value=""></span>
+										<input type="text" jwcid="@TextField" name="ognl:'COUNT_'+rowIndex" id="ognl:'COUNT_'+rowIndex" min="1" score="ognl:info.SCORE" countIndex="ognl:rowIndex" degree="1" value="ognl:info.COUNT" index="ognl:rowIndex" onkeyup="verifyScore(this,'custs');" disabled="true" desc="兑换数量" datatype="pinteger" />
+										<span class="e_ico-add" jwcid="@Any" ontap="addCount(this,'custs')" index="ognl:rowIndex" id="ognl:'ADD_'+rowIndex" value=""></span>
+									</div>
+								</td>
+								<td data-title="次数限制">
+									<span jwcid="@Insert" name="EXCHANGE_LIMIT" id="EXCHANGE_LIMIT" value="ognl:info.EXCHANGE_LIMIT" raw="true" />
+								</td>
+								<td data-title="编码">
+									<span jwcid="@Insert" name="RULE_ID" id="RULE_ID" value="ognl:info.RULE_ID" raw="true" />
+								</td>
+								<td class="key">
+									<span jwcid="@Insert" name="RULE_NAME" id="RULE_NAME" value="ognl:info.RULE_NAME" raw="true" />
+								</td>
+								<td data-title="所需积分">
+									<span jwcid="@Insert" name="SCORE" id="SCORE" value="ognl:info.SCORE" raw="true" />
+								</td>
+								<td style="display:none;">
+									<span jwcid="@Insert" name="EXCHANGE_TYPE_CODE1" id="EXCHANGE_TYPE_CODE1" value="ognl:info.EXCHANGE_TYPE_CODE" raw="true" />
+								</td>
+								<td data-title="兑换类型名称">
+									<span jwcid="@Insert" name="EXCHANGE_TYPE" id="EXCHANGE_TYPE" value="ognl:info.EXCHANGE_TYPE" raw="true" />
+									<span class="e_space"></span>
+									<div jwcid="@Conditional" condition='ongl:"@com.ailk.privm.CheckPriv@checkFieldPermission(getVisit().getStaffId(),"SYS_SCORECHGSEND","1")'>
+										<button jwcid="@Any" class="e_button-r e_button-s e_blue" id="ognl:'buttonSet_'+rowIndex" style="display: none;" thisCode="ognl:info.EXCHANGE_TYPE_CODE" thisGifttypecode="ognl:info.GIFT_TYPE_CODE" thisLimit="ognl:info.REWARD_LIMIT" onclick="showMyPopu(this)">编辑</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<div class="c_space-c"></div>
+				<div class="c_box c_box-border e_center">
+					<div class="l_padding">
+						所需积分：
+						<span class="e_red e_strong" jwcid="@Insert" name="SHOW_SCORE_NEED" id="SHOW_SCORE_NEED" value="0" desc="所需积分" disabled="true"></span>
+						<span class="e_space"></span>
+						剩余积分：
+						<span class="" jwcid="@Insert" name="SHOW_SCORE_SUR" id="SHOW_SCORE_SUR" value="ognl:commInfo.SCORE" desc="剩余积分" disabled="true"></span>
+					</div>
+				</div>
+				<!-- 参数列表 开始 -->
+				<div class="c_list c_list-label-4 c_list-col-4 c_list-line c_list-border" style="display:none;">
+					<ul>
+						<li style="display:none;">
+							<div class="label">兑换总数</div>
+							<div class="value  e_red e_strong">
+								<input jwcid="@TextField" name="TATLE" id="TATLE" value="ognl:commInfo.TATLE" disabled="true" desc="兑换总数" />
+							</div>
+						</li>
+						<li>
+							<div class="label">所需积分</div>
+							<div class="value e_red e_strong">
+								<input jwcid="@TextField" name="SCORE_NEED" id="SCORE_NEED" value="ognl:commInfo.SCORE_NEED" disabled="true" desc="所需积分" />
+							</div>
+						</li>
+						<li style="display:none;">
+							<div class="label">可兑积分</div>
+							<div class="value">
+								<input jwcid="@TextField" name="SCORE_TOTLE" id="SCORE_TOTLE" value="ognl:commInfo.SCORE" desc="可兑积分" disabled="true" />
+							</div>
+						</li>
+						<li>
+							<div class="label">剩余积分</div>
+							<div class="value">
+								<input jwcid="@TextField" name="SCORE_SUR" id="SCORE_SUR" value="ognl:commInfo.SCORE" desc="剩余积分" disabled="true" />
+							</div>
+						</li>
+						<li class="link merge-4" style="display:none;">
+							<div class="label">备注</div>
+							<div class="value">
+								<textarea jwcid="@TextField" name="REMARK" id="REMARK" value="ognl:commInfo.REMARK" disabled="false" desc="备注" />
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- 参数列表 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+			<!-- 区域 开始 -->
+			<!-- 兑换海航金鹏里程 开始 -->
+			<div class="" style="display:none;" jwcid="HH_CARD@Part">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">请输入海航会员信息</div>
+				</div>
+				<div class="c_list c_list-s c_list-label-2 c_list-col-2 c_list-line" id="hhcard">
+					<ul>
+						<li class="link required">
+							<div class="label">会员卡号</div>
+							<div class="value">
+								<input type="text" jwcid="@TextField" name="HH_CARD_ID" id="HH_CARD_ID" value="ognl:changecust.HH_CARD_ID" desc="会员卡号" nullable="yes" />
+							</div>
+						</li>
+						<li class="link required">
+							<div class="label">会员姓名</div>
+							<div class="value">
+								<input type="text" jwcid="@TextField" name="HH_CARD_NAME" id="HH_CARD_NAME" value="ognl:changecust.HH_CARD_NAME" desc="会员姓名" nullable="yes" />
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 兑换海航金鹏里程 结束 -->
+			<!-- 区域 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="onTradeSubmit(this)" isReset="true" area="AuthPart,refreshParts2,otherinfo" element="div" />
+			<!-- 提交 结束 -->
+			<!-- 区域 结束 -->
+			<!-- 隐藏区域 开始 -->
+			<div jwcid="hide@Part">
+				<input type="text" jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:userInfo.USER_ID" style="display:none" />
+				<input type="text" jwcid="@TextField" name="CUST_ID" id="CUST_ID" value="ognl:custInfo.CUST_ID" style="display:none" />
+				<input type="text" jwcid="@TextField" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfo.CUST_NAME" style="display:none" />
+				<input type="text" jwcid="@TextField" name="USER_SCORE" id="USER_SCORE" value="ognl:commInfo.SCORE" style="display:none" />
+				<input type="text" jwcid="@TextField" name="ACCT_ID" id="ACCT_ID" value="ognl:acctInfo.ACCT_ID" style="display:none" />
+				<input type="text" jwcid="@TextField" name="PRODUCT_ID" id="PRODUCT_ID" value="ognl:userInfo.PRODUCT_ID" style="display:none" />
+				<input type="text" jwcid="@TextField" name="BRAND_CODE" id="BRAND_CODE" value="ognl:userInfo.BRAND_CODE" style="display:none" />
+				<input type="text" jwcid="@TextField" name="otherinfo_CHECK_BOXVALUE" id="otherinfo_CHECK_BOXVALUE" value="ognl:condition.CHECK_BOXVALUE" style="display:none" />
+				<input type="text" jwcid="@TextField" name="otherinfo_X_CARD_CODE" id="otherinfo_X_CARD_CODE" value="ognl:condition.X_CARD_CODE" style="display:none" />
+				<input type="text" jwcid="@TextField" name="POPUP_COUNT1" id="POPUP_COUNT1" value="1" style="display:none" />
+				<input type="text" jwcid="@TextField" name="POPUP_COUNT2" id="POPUP_COUNT2" value="1" style="display:none" />
+				<input type="text" jwcid="@TextField" name="CENT_TYPES" id="CENT_TYPES" value="0" style="display:none" />
+				<input type="text" jwcid="@TextField" name="CENT_TYPESbefore" id="CENT_TYPESbefore" value="00" style="display:none" />
+				<input type="text" jwcid="@TextField" name="EXCHANGE_TYPE_CODES" id="EXCHANGE_TYPE_CODES" value="" style="display:none" />
+				<!-- 兑换类型限制 -->
+				<input type="text" jwcid="@TextField" name="GOODS_COUNT" id="GOODS_COUNT" value="ognl:commInfo.GOODS_COUNT" style="display:none" />
+				<input type="text" jwcid="@TextField" name="DISCNT_COUNT" id="DISCNT_COUNT" value="ognl:commInfo.DISCNT_COUNT" style="display:none" />
+				<input type="text" jwcid="@TextField" name="CARD_COUNT" id="CARD_COUNT" value="ognl:commInfo.CARD_COUNT" style="display:none" />
+				<input type="text" jwcid="@TextField" name="FEE_COUNT" id="FEE_COUNT" value="ognl:commInfo.FEE_COUNT" style="display:none" />
+				<!-- 已选RULE_ID -->
+			</div>
+			<input type="text" jwcid="@TextField" name="SELECTED_RULE_ID" id="SELECTED_RULE_ID" value="ognl:getParameter('offerCode')" style="display:none" />
+			<!-- 隐藏区域 结束 -->
+		</div>
+	</div>
+	<!-- 有价卡弹窗区域 开始 -->
+	<div style="display:none;" jwcid="VALUE_CARD@Part" id="VALUE_CARD">
+		<div jwcid="@Popup" id="myPopupValueCard" name="myPopupValueCard" class="c_popup c_popup-half c_popup-half-hasBg">
+			<div class="c_popupGroup">
+				<div id="myPopup_item_valueCard" class="c_popupItem">
+					<div class="c_header">
+						<div class="back" ontap="hidePopup(this)">有价卡查询</div>
+					</div>
+					 <div class="c_form c_form-label-4 c_form-submit-h c_form-col-2 c_form-phone-col-1" id="card">
+					 	<div class="submit">
+					 		<button class="e_button e_button-blue e_button-r" onclick="cardAjaxRefesh()">查询</button>
+					 	</div>
+					 	<ul>
+							<li class="required">
+								<div class="label">有价卡：</div>
+								<div class="value">
+									<input type="text" jwcid="@TextField" name="CARD_ID" id="CARD_ID" value="ognl:changecust.CARD_ID" desc="有价卡开始号" nullable="yes" onkeyup="synCardID('CARD_ID','CARD_END')" />
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">至：</div>
+								<div class="value">
+									<span class="e_mix">
+										<input type="text" jwcid="@TextField" name="CARD_END" id="CARD_END" value="ognl:changecust.CARD_END" desc="有价卡结束号" nullable="yes" />
+									</span>
+								</div>
+							</li>
+						</ul>
+					 </div>
+					 <div class="c_line"></div>
+					 <div class="c_scroll c_scroll-submit c_scroll-sp c_scroll-float c_scroll-header">
+					 	<style>
+			                  .c_scroll-sp { top: 8.6em;}
+			                  .s_phone .c_scroll-sp { top: 15.3em;}
+			            </style>
+			            <!-- 改成list形式，便于展示及手机端适配 -->
+			             <div class="c_list c_list-line" jwcid="cardArea@Part">
+			             	<ul>
+			             		<li jwcid="@Foreach" source="ognl:cards" value="ognl:card" element="li" index="ognl:rowIndex">
+                                    <div class="main">
+                                    	<div class="content">
+                                    		<span jwcid="@Insert" value="ognl:card.CARD_TYPE"/> | 
+                                    		<span jwcid="@Insert" value="ognl:card.CARD_ID"/>
+                                    	</div>
+                                   	</div>
+                                    <div class="side">
+                                    	<div class="content">
+                                    	 	面值 <span jwcid="@Insert" value="ognl:card.CARD_NAME"/> 元
+                                    	</div>
+                                   	</div>
+                                    <label class="fn">
+                                    	<input type="checkbox" jwcid="@Checkbox" name="cardDelList" thisIndex="ognl:rowIndex" value="ognl:card.CARD_ID" ontap="checkTab(this)"/>
+                                    </label>
+                              </li>
+			             	</ul>
+			             	<!-- 隐藏table后台js校验取值用 -->
+			             	<div style="display:none;">
+			             		<table jwcid="@Table" class="c_table c_table-row-5" id="CardPart" name="CardPart">
+									<thead>
+										<tr>
+											<th col="rowIndex">选择</th>
+											<th col="CARD_TYPE">卡类型</th>
+											<th col="CARD_ID">卡号</th>
+											<th col="CARD_VALUE" style="display:none">面分</th>
+											<th col="CARD_NAME">面值</th>
+											<th col="CARD_COUNT">数量</th>
+											<th col="CARD_TYPE_CODE" style="display:none">卡类型CODE</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:cards" value="ognl:card" element="tr" index="ognl:rowIndex">
+											<td class="e_center">
+												<input jwcid="@Checkbox" type="checkbox" name="cardDel" id="ognl:'cardDel_'+rowIndex" value="ognl:card.CARD_ID" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:card.CARD_TYPE" raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:card.CARD_ID" raw="true" />
+											</td>
+											<td style="display:none">
+												<span jwcid="@Insert" name="CARD_VALUE" id="CARD_VALUE" value="ognl:card.CARD_VALUE" raw="true" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:card.CARD_NAME" raw="true" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:card.CARD_COUNT" raw="true" />
+											</td>
+											<td style="display:none">
+												<span jwcid="@Insert" value="ognl:card.CARD_TYPE" raw="true" />
+											</td>
+
+										</tr>
+									</tbody>
+								</table>
+			             	</div>
+			             </div>
+			             <div class="c_line"></div>
+					 </div>
+					 
+					<div class="l_bottom">
+			            <div class="c_submit c_submit-full">
+			                  <button type="button" ontap="if(validateValueCard() == false) return flase; hidePopup(this);" class="e_button-l e_button-blue">确定</button>
+			            </div>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 区域 结束 -->
+	<!-- 预存转赠弹窗区域 开始 -->
+	<div class="" id="DONATE_OBJECT" style="display:none;">
+		<!-- 标题 开始 -->
+		<!-- 工号权限控制是否可以转赠 -->
+		<div jwcid="@Conditional" condition='ongl:"@com.ailk.privm.CheckPriv@checkFieldPermission(getVisit().getStaffId(),"SYS_SCORECHGSEND","1")'>
+			<div class="c_title" jwcid="phone@Part" style="display:none;">
+				<div class="text">
+					<label>
+						<input id="CHNAGE_PHONE" name="CHANGE_PHONE" type="checkbox" jwcid="@Checkbox" disabled="true" onclick="donatePenson(this);" />预存赠送他人</label>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div jwcid="@Popup" id="myPopup" name="myPopup" class="c_popup c_popup-half c_popup-half-hasBg">
+				<div class="c_popupGroup">
+					<div id="myPopup_item" class="c_popupItem">
+						<div class="c_header">
+							<div class="back" ontap="hidePopup(this)">预存赠送他人</div>
+						</div>
+						<div class="c_scroll c_scroll-float c_scroll-header">
+							<div class="c_scrollContent l_padding">
+								<div class="c_list c_list-s c_list-line c_list-border">
+									<ul>
+										<li class="link required">
+											<div class="label">目标号码</div>
+											<div class="value">
+												<span class="e_mix">
+													<input jwcid="@TextField" name="otherinfo_OBJECT_SERIAL_NUMBER" id="otherinfo_OBJECT_SERIAL_NUMBER" value="ognl:changecust.OBJECT_SERIAL_NUMBER" desc="目标号码" nullable="yes" datatype="mbphone" />
+													<button class="e_button-blue" onclick="return isSamePhone();">
+														<i class="e_ico-search"></i>
+														<span>查询</span>
+													</button>
+												</span>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div class="c_list c_list-s c_list-line c_list-border" jwcid="otherinfo@Part">
+									<ul>
+										<li class="link">
+											<div class="label">客户名称</div>
+											<div class="value">
+												<span jwcid="@TextField" name="otherinfo_OBJECT_NAME" id="otherinfo_OBJECT_NAME" desc="客户名称" readOnly="true" nullable="yes" value="ognl:changecust.OBJECT_NAME" />
+												<input type="text" jwcid="@TextField" name="otherinfo_OBJECT_USER_ID" id="otherinfo_OBJECT_USER_ID" value="ognl:changecust.USER_ID" style="display:none" />
+												<input type="text" jwcid="@TextField" name="otherinfo_OBJECT_ACCT_ID" id="otherinfo_OBJECT_ACCT_ID" value="ognl:changecust.ACCT_ID" style="display:none" />
+											</div>
+										</li>
+									</ul>
+								</div>
+
+								<div class="c_space"></div>
+								<div class="c_submit c_submit-full">
+									<button ontap="if(validateCustName() == false) return flase; hidePopup(this);" class="e_button-l e_button-r e_button-blue" type="button">确定</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 参数列表 结束 -->
+	</div>
+</body>
+
+</html>

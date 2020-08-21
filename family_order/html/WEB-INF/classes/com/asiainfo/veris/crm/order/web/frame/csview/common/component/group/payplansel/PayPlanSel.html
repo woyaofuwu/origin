@@ -1,0 +1,73 @@
+<div jwcid="@Conditional" condition="ognl:!styleMode.equals('simple')">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title" id="PAYPLANSEL_TITLE">
+		<div class="text">付费方式选择</div>
+	</div>
+	
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7">
+		
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">付费方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" 	
+						name="PAY_PLAN_SEL_PLAN_TYPE" id="PAY_PLAN_SEL_PLAN_TYPE"	
+						source="ognl:payTypeSet"
+						valueField="PAY_TYPE_CODE"	textField="PAY_TYPE"
+						onchange="selectPayPlan($(this))"
+						value="ognl:payPlan.PLAN_TYPE_CODE" 
+						/>
+				</span></span></span>
+			</li>
+				
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div id="PAYPLANSEL_PAYITEM_PART" style="display:none">
+		<div class="c_title c_title">
+			<div class="text">付费账目信息</div>
+		</div>
+		
+		<!-- 表格 开始 -->
+		<div class="c_scroll"><div class="c_table" >
+			<table>
+				<thead>
+					<tr>    
+		      			<th>费用编码</th>
+		      			<th>综合付费帐目</th>
+					</tr>
+				</thead>
+				<tbody id="payplansel_payitem_body">
+					<tr jwcid="@Foreach" source="ognl:payItemSet" value="ognl:payItem" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:payItem.PARA_CODE1" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:payItem.NOTE_ITEM" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+	</div>
+</div>
+<div jwcid="@Conditional" condition="ognl:styleMode.equals('simple')">
+	<li class="li">
+				<span class="label"><span class="e_required">付费方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" 	
+						name="PAY_PLAN_SEL_PLAN_TYPE" id="PAY_PLAN_SEL_PLAN_TYPE"	
+						source="ognl:payTypeSet"
+						valueField="PAY_TYPE_CODE"	textField="PAY_TYPE"
+						onchange="selectPayPlan($(this))"
+						value="ognl:payPlan.PLAN_TYPE_CODE" 
+						
+						/>
+				</span></span></span>
+			</li>
+</div>
+<input type="hidden" jwcid="@Any" id="PAYPLAN_SEL_AFTER_ACTION" name="PAYPLAN_SEL_AFTER_ACTION" value="ognl:afterAction"  />
+<input type="hidden" jwcid="@Any" id="PAYPLAN_SEL_STYLE_MODE" name="PAYPLAN_SEL_STYLE_MODE" value="ognl:styleMode"  />
+<input type="hidden" jwcid="@Any" name="grpPayRels" id="grpPayRels" desc="变化的付费计划"/>
+<input type="hidden" jwcid="@Any" name="oldPayPlanSet" id="oldPayPlanSet"   desc="集团已选择的付费计划"/>
+<input type="hidden" jwcid="@Any" name="oldMemPay" id="oldMemPay"  desc="成员已经选择的付费计划"/>

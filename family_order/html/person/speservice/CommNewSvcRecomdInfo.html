@@ -1,0 +1,28 @@
+<ul>
+	<span jwcid="@Foreach" source="ognl:infos" value="ognl:info"  index="ognl:rowIndex">
+			<li><a class="text" value="ognl:info.NAME" jwcid="@Any"
+					href="#nogo"	urlPush="ognl:info.URL" 
+					sn="ognl:info.SERIAL_NUMBER" title_name="ognl:info.NAME"  
+					onclick="openPage(this)">
+					<input jwcid="@Insert" name="push_names" value="ognl:info.NAME" desc="" />
+			</a></li>
+	</span>
+	<!-- 保存接入方式 -->
+	<input jwcid="@Hidden" id="IN_MODE_CODE" name="IN_MODE_CODE" value="" inModeCode="ognl:getVisit().getInModeCode()"/>
+</ul>
+<script language="JavaScript" type="text/javascript">
+	function openPage(obj)
+	{
+		var inModeCode = $("#IN_MODE_CODE").attr("inModeCode");
+		var url = $(obj).attr('urlPush');
+		var sn = $(obj).attr('sn');
+		url+='&SERIAL_NUMBER='+sn;
+		var title = '新业务推荐受理';// $(obj).attr('title_name');
+		if(inModeCode == 1 && typeof(eval(top.openCsPageFormCrm))=='function'){
+			top.openCsPageFormCrm(title,url);
+		}else{
+			$.nav.openByUrl(title,url);
+		}
+		return false;
+	}
+</script>

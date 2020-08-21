@@ -1,0 +1,2 @@
+DELETE FROM td_o_credit_usergroup
+ WHERE user_group_id=:USER_GROUP_ID

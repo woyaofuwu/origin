@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/specqry/scripts/specqry.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="l_col">
+			<!-- 活动详情 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-7">
+				<div class="" jwcid="submit_part@Part" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label e_required"  >起始服务号码：</span>
+									<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "cond_PHONE_CODE_A_START"  value="ognl:condition.cond_PHONE_CODE_A_START" 
+											onblur="completeEndSn(this, 'cond_PHONE_CODE_A_END');" 
+											onkeyup="synOnKeyup(this, 'cond_PHONE_CODE_A_END');" 
+											desc="起始服务号码" maxsize="11" nullable="no" datatype=""/>
+								</span></span>
+							</li>
+							<li class="li"  id="monitor_type_li">
+								<span class="label e_required" >终止服务号码：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField"  name = "cond_PHONE_CODE_A_END" 
+									value="ognl:condition.cond_PHONE_CODE_A_END" desc="终止服务号码" maxsize="11" 
+									nullable="no" datatype=""/>
+								</span></span>
+							</li>
+							<li class="li"></li>
+
+						</ul>
+						<span class="e_elements"><span>
+							<div class="submit e_right">
+								<button class="e_button-form" listener="ognl:listeners.queryMonitorInfos"  onclick="return queryUserPostinfo();"><i class="e_ico-search"></i><span>查询</span></button>
+								<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+							</div>
+						</span></span>
+					</div>
+				</div>
+				
+				<div jwcid="result_Table@Part" optimize="true">
+			    <div id="exportarea"  class="c_scroll c_scroll-x style='height:auto'">
+			        <div class="c_title c_title-2">
+						 <div class="text">查询结果</div>
+						 <div class="fn">
+							<div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      	<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100889"
+									  config="export/sundryquery/other/QueryUserPostInfoList.xml" fileName="UserPostInfo" cond="submit_part"/>
+							 </div>
+							<button class="l_ml" type="button" onclick="$.printArea('print_Table','邮寄信息查询','60%')">
+								<i class="e_ico-print"></i><span>打印</span>
+							</button>
+						</div>
+			  	    </div>
+		  	    	<div jwcid="print_Table@Part" optimize="true">
+						<div class="c_table">
+						<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+					  			<tr>
+									<th>服务号码</th>
+									<th>邮寄名称</th>
+									<th>邮寄内容</th>
+									<th>邮寄方式</th>
+									<th>邮寄周期</th>
+									<th>邮寄地址</th>
+									<th>邮寄邮编</th>
+									<th>EMAIL地址</th>
+									<th>传真号码</th>
+									<th>起始时间</th>
+									<th>终止时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									<td><span jwcid="@Insert" value="ognl:info.ID"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.POST_NAME"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.POST_CONTENT_TEXT"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.POST_TYPESET_TEXT"/></td>
+									<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('POSTINFO_POSTCYC',info.POST_CYC)"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.POST_ADDRESS"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.POST_CODE"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.EMAIL"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.FAX_NBR"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+								</tr>
+							</tbody>
+						</table>
+						<!-- end table -->
+				</div>
+				</div>
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="20" listener="queryUserPostInfo" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+			</div>
+		</div>						
+						
+</div></div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

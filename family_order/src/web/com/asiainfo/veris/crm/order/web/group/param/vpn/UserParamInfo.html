@@ -1,0 +1,301 @@
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	<div class="text">重要参数</div>
+</div>
+<!-- 标题 结束 -->
+<!-- 表单 开始 -->
+<div class="c_form c_form-label-7 c_form-col-2">
+	<div>
+		<ul class="ul">
+			<span jwcid="@Any" style="ognl:info.PRODUCTPARAM_METHOD_NAME=='ChgUs' ? 'display:none' : ''">  
+			<li class="li">
+				<span class="label"><span class="e_required">集团属性：</span></span>
+				<span class="e_select"><span><span>
+					<select id="pam_VPN_GRP_ATTR" name="pam_VPN_GRP_ATTR" jwcid="@Select"						 
+						source="ognl:getAttrItemSource('VPN_GRP_ATTR')"
+						value="ognl:getAttrItemValue('VPN_GRP_ATTR','ATTR_VALUE')" 
+						onchange="querySCPInfos();" 
+						valueField="VALUE" textField="TEXT"
+						desc="产品参数[集团属性]" disabled="false" />
+						 
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">SCP代码：</span></span> 
+				<span class="e_select"><span><span> 
+					<select name="pam_SCP_CODE" id="pam_SCP_CODE" jwcid="@Select" 
+						source="ognl:info.SCPInfos" textField="DATA_NAME" valueField="DATA_VALUE" 
+						value="ognl:getAttrItemValue('SCP_CODE','ATTR_VALUE')" desc="产品参数[SCP代码]"  disabled="true" />
+				</span></span></span> 
+			</li>
+			</span>
+			<span jwcid="@Any" style="ognl:info.PRODUCTPARAM_METHOD_NAME=='CrtUs'?'display:none':''">
+			<li class="li">
+				<span class="label"><span class="e_required">统一付费优惠：</span></span>
+				<span class="e_select"><span><span>
+					<select id="pam_GRP_PAY_DISCNT" name="pam_GRP_PAY_DISCNT" jwcid="@Select" 
+						source="ognl:getAttrItemSource('GRP_PAY_DISCNT')"
+						value="ognl:getAttrItemValue('GRP_PAY_DISCNT','ATTR_VALUE')"
+						valueField="VALUE" textField="TEXT"
+						desc="产品参数[统一付费优惠]"  
+						addDefault="false"
+						disabled="ognl:info.IS_MODIFY=='YES'?'true':'false'"/>
+				</span></span></span> 
+			</li>
+			</span>
+			<li class="li">
+				<span class="label"><span class="e_required">VPMN集团类型：</span></span>
+				<span class="e_select"><span><span>
+					<select name="pam_WORK_TYPE_CODE" id="pam_WORK_TYPE_CODE" jwcid="@Select" 
+						source="ognl:getAttrItemSource('WORK_TYPE_CODE')" 
+						valueField="VALUE" textField="TEXT" 
+						value="ognl:getAttrItemValue('WORK_TYPE_CODE','ATTR_VALUE')" desc="产品参数[VPMN集团类型]" nullable="no"
+						disabled="ognl:info.PRODUCTPARAM_METHOD_NAME=='CrtUs' ? 'false' : 'true'" onchange="createserialnumber();" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">VPMN类别：</span></span>
+				<span class="e_select"><span><span>
+					<select name="pam_VPN_CLASS" id="pam_VPN_CLASS" jwcid="@Select" 
+						source="ognl:getAttrItemSource('VPN_CLASS')" 
+						valueField="VALUE" textField="TEXT"  
+						value="ognl:getAttrItemValue('VPN_CLASS','ATTR_VALUE')" desc="产品参数[VPMN类别]" nullable="no" /> 
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">分管客户经理：</span></span>
+				<span class="e_select"><span><span>
+					<select name="pam_CUST_MANAGER" id="pam_CUST_MANAGER" jwcid="@Select" 
+						source="ognl:info.managerInfos" textField="CUST_MANAGER_NAME" valueField="CUST_MANAGER_ID" 
+						value="ognl:getAttrItemValue('CUST_MANAGER','ATTR_VALUE')" desc="产品参数[分管客户经理]" nullable="no" />
+				</span></span></span>
+			</li> 
+		    <li class="li">
+				<span class="label"><span class="text">客户经理过滤：</span></span>
+				<span class="e_elements" style="width:200px;">
+					<button class="e_button-right" type="button" onclick="filterCustManagers();"><i class="e_ico-search"></i><span>过滤</span></button>
+					<span class="e_input e_input-left"><span><input type="text" jwcid="pam_NOTIN_CUST_MANAGER@TextField" 
+						name="pam_NOTIN_CUST_MANAGER" value="" desc="分管客户经理过滤" /></span></span>
+				</span>
+			</li>
+			 
+		 </ul>
+	 </div>
+</div>
+<!-- 表单 结束 -->
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	<div class="text">其他参数</div>
+</div>
+<!-- 标题 结束 -->
+<!-- 表单 开始 -->
+<div class="c_form c_form-label-7 c_form-col-2">
+	<div>
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">集团范围属性：</span>
+				<span class="e_select"><span><span>
+					<select id="pam_VPN_SCARE_CODE" name="pam_VPN_SCARE_CODE" jwcid="@Select"						 
+						source="ognl:getAttrItemSource('VPN_SCARE_CODE')"
+						value="ognl:getAttrItemValue('VPN_SCARE_CODE','ATTR_VALUE')" 
+						onChange="checkVpnScare()" 
+						valueField="VALUE" textField="TEXT" 
+						desc="产品参数[集团范围属性]"/>
+						 
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">语种：</span>
+				<span class="e_select"><span><span>
+					<select id="pam_SINWORD_TYPE_CODE" name="pam_SINWORD_TYPE_CODE" jwcid="@Select"						 
+						source="ognl:getAttrItemSource('SINWORD_TYPE_CODE')"
+						value="ognl:getAttrItemValue('SINWORD_TYPE_CODE','ATTR_VALUE')" 
+						onChange="checkVpnScare()" 
+						valueField="VALUE" textField="TEXT" 
+						desc="产品参数[语种]"  /> 
+				</span></span></span>
+			</li>
+			<span id='dialtype'>
+			<li class="li"> 
+				<span class="label">VPN号：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="pam_VPN_NO" name="pam_VPN_NO"						 
+						source="ognl:info.vpnInfos" textField="DISPLAY_NAME" valueField="RSRV_STR1" 
+						value="ognl:getAttrItemValue('VPN_NO','ATTR_VALUE')"  
+						desc="产品参数[VPN号]"  /> 
+				</span></span></span>
+				<input jwcid="@Any" id="VPN_NO_LIST" name="VPN_NO_LIST" value="info.vpnInfos" style="display:none" />
+			</li>
+			<li class="li">
+				<span class="label">拨打方式：</span>
+				<span class="e_select"><span><span>
+					<select id="pam_DIAL_TYPE_CODE" name="pam_DIAL_TYPE_CODE" jwcid="@Select"						 
+						source="ognl:getAttrItemSource('DIAL_TYPE_CODE')"
+						value="ognl:getAttrItemValue('DIAL_TYPE_CODE','ATTR_VALUE')"  
+						valueField="VALUE" textField="TEXT" 
+						desc="产品参数[拨打方式]"  disabled="true" /> 
+				</span></span></span>
+			</li>
+			</span>
+			 
+			<span id="defaultDiscnt" style="display:none" >
+			<li class="li">
+				<span class="label">成员升级资费：</span>
+				<span class="e_select"><span><span>
+					<select id="pam_DEFAULT_DISCNTCODE" name="pam_DEFAULT_DISCNTCODE" jwcid="@Select"						 
+						source="ognl:info.defualtDiscntset"
+						value="ognl:getAttrItemValue('DEFAULT_DISCNTCODE','ATTR_VALUE')"  
+						valueField="PARA_CODE1" textField="PARAM_NAME"
+						desc="产品参数[成员升级资费]" /> 
+					<input jwcid="@Any" name="pam_DEFAULT_PRODUCT_ID" id="pam_DEFAULT_PRODUCT_ID" value="" style="display:none"/>
+					<input jwcid="@Any" name="pam_DEFAULT_PACKAGE_ID" id="pam_DEFAULT_PACKAGE_ID" value="" style="display:none"/>
+				</span></span></span>
+			</li> 
+			</span>
+			<li class="li">
+				<span class="label">呼叫超出限额处理标记：</span>
+				<span class="e_select"><span><span>
+					<select id="pam_OVER_FEE_TAG" name="pam_OVER_FEE_TAG" jwcid="@Select"						 
+						source="ognl:getAttrItemSource('OVER_FEE_TAG')"
+						value="ognl:getAttrItemValue('OVER_FEE_TAG','ATTR_VALUE')"  
+						valueField="VALUE" textField="TEXT" 
+						desc="产品参数[呼叫超出限额处理标记]"   disabled="false"/> 
+				</span></span></span>
+			</li> 
+			<li class="li">
+				<span class="label">呼叫区域类型：</span>
+				<span class="e_select"><span><span>
+					<select id="pam_CALL_AREA_TYPE" name="pam_CALL_AREA_TYPE" jwcid="@Select"						 
+						source="ognl:getAttrItemSource('CALL_AREA_TYPE')"
+						value="ognl:getAttrItemValue('CALL_AREA_TYPE','ATTR_VALUE')"  
+						valueField="VALUE" textField="TEXT" 
+						desc="产品参数[呼叫区域类型]"   disabled="false"/> 
+				</span></span></span>
+			</li>  
+			<li class="li col-2">
+				<span class="label">呼叫网络类型：</span>
+				<div class="c_fn">
+					<ul>
+						<li><label><input type="checkbox" class="e_checkbox" id="pam_CALL_NET_TYPE1" name="pam_CALL_NET_TYPE1" jwcid="@Checkbox" checked='ognl:"1".equals(getAttrItemValue("CALL_NET_TYPE1","ATTR_VALUE"))' disabled="false"/>网内</label></li>
+						<li><label><input type="checkbox" class="e_checkbox"  id="pam_CALL_NET_TYPE2" name="pam_CALL_NET_TYPE2" jwcid="@Checkbox" checked='ognl:"1".equals(getAttrItemValue("CALL_NET_TYPE2","ATTR_VALUE"))' disabled="false"/>网间</label></li>
+						<li><label><input type="checkbox" class="e_checkbox"  id="pam_CALL_NET_TYPE3" name="pam_CALL_NET_TYPE3" jwcid="@Checkbox" checked='ognl:"1".equals(getAttrItemValue("CALL_NET_TYPE3","ATTR_VALUE"))' disabled="false"/>网外</label></li>
+						<li><label><input type="checkbox" class="e_checkbox"  id="pam_CALL_NET_TYPE4" name="pam_CALL_NET_TYPE4" jwcid="@Checkbox" checked='ognl:"1".equals(getAttrItemValue("CALL_NET_TYPE4","ATTR_VALUE"))' disabled="false"/>网外号码组</label></li>
+					</ul>
+				</div>
+			</li> 
+			<li class="li">
+				<span class="label">网内用户最大数：</span>
+				<span class="e_elements">
+					<select id="pam_MAX_INNER_NUM" name="pam_MAX_INNER_NUM" jwcid="@Flip" value="ognl:getAttrItemValue('MAX_INNER_NUM','ATTR_VALUE')" 
+							desc="产品参数[网内用户最大数]" minsize="0" nullable="no" readonly="false"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">网外用户最大数：</span>
+				<span class="e_elements">
+					<select id="pam_MAX_OUTNUM" name="pam_MAX_OUTNUM" jwcid="@Flip" value="ognl:getAttrItemValue('MAX_OUTNUM','ATTR_VALUE')" 
+							desc="产品参数[网外用户最大数]" minsize="0" nullable="no" readonly="false" />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">闭合用户最大数：</span>
+				<span class="e_elements">
+					<select id="pam_MAX_CLOSE_NUM" name="pam_MAX_CLOSE_NUM" jwcid="@Flip" value="ognl:getAttrItemValue('MAX_CLOSE_NUM','ATTR_VALUE')" 
+							desc="产品参数[闭合用户最大数]" minsize="0" readonly="false" nullable="no" />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">单个闭合用户群最大用户数：</span>
+				<span class="e_elements">
+					<select id="pam_MAX_NUM_CLOSE" name="pam_MAX_NUM_CLOSE" jwcid="@Flip" value="ognl:getAttrItemValue('MAX_NUM_CLOSE','ATTR_VALUE')"  
+							desc="产品参数[单个闭合用户群最大用户数]"  minsize="0" readonly="false"   maxsize="100"  nullable="no" />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">单个用户最多可加入闭合群：</span>
+				<span class="e_elements">
+					<select id="pam_PERSON_MAXCLOSE" name="pam_PERSON_MAXCLOSE" jwcid="@Flip" value="ognl:getAttrItemValue('PERSON_MAXCLOSE','ATTR_VALUE')"  
+							desc="产品参数[单个用户最多可加入闭合群]" minsize="0" readonly="false"   maxsize="5"   nullable="no" />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">话务员最大数：</span>
+				<span class="e_elements">
+					<select id="pam_MAX_TELPHONIST_NUM" name="pam_MAX_TELPHONIST_NUM" jwcid="@Flip" value="ognl:getAttrItemValue('MAX_TELPHONIST_NUM','ATTR_VALUE')"  
+							desc="产品参数[话务员最大数]" minsize="0" readonly="false"   nullable="no" />
+				</span>
+			</li> 
+			<li class="li">
+				<span class="label">集团分机号码长度：</span>
+				<!-- 替换为页面组件 -->
+				<span class="e_elements">
+					<select id="pam_SHORT_CODE_LEN" name="pam_SHORT_CODE_LEN" jwcid="@Flip" 
+						value="ognl:getAttrItemValue('SHORT_CODE_LEN','ATTR_VALUE')"  desc="产品参数[集团分机号码长度]" min="3" max="6" nullable="no" disabled="true" />
+				</span>	
+			</li> 
+			<li class="li">
+				<span class="label">集团最大用户数：</span>
+				<span class="e_elements">
+					<select id="pam_MAX_USERS" name="pam_MAX_USERS" jwcid="@Flip" value="ognl:getAttrItemValue('MAX_USERS','ATTR_VALUE')" 
+							desc="产品参数[集团最大用户数]" minsize="0" readonly="false" disabled="ognl:info.PRODUCTPARAM_METHOD_NAME=='ChgUs'?'false':'true'" />
+				</span>
+			</li> 
+			<!--<li class="li">
+			<span class="e_elements">
+			<input type="text" jwcid="@Any" id="pam_VPN_TAG_SET" name="pam_VPN_TAG_SET" value="info.vpnInfos"  />
+			</span>
+			</li>
+		-->
+		</ul>
+	 </div>
+</div>
+<!-- 表单 结束 --> 
+<div jwcid="refreshtable@Part"> 
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table jwcid="@Table"  name="VpmnParams" id="VpmnParams">
+			<thead>
+				<tr> 
+					<th col="X_TAG" style="display:none">TAG</th>
+					<th col="SEQ"><span>序号</span></th>
+					<th col="TAG_NAME" width="50%"><span>标志名称</span></th>
+					<th col="TAG_VALUE"><span>标志值</span></th>
+					<th col="TAG_CODE" style="display:none"><span>标志编码</span></th>
+				</tr>
+			</thead>     
+			<tbody>
+			   <tr jwcid="@Foreach" source="ognl:info.userParamInfos" value="ognl:condition" element="tr" index="ognl:rowIndex">
+						<td style="display:none">0</td>
+						<td><span jwcid="@Insert" value="ognl:rowIndex+1" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:condition.CHA_SPEC_NAME" raw="true"/></td> 
+						<td>
+							<span class="e_select"><span><span>
+								<select id="ognl:'SELECT_TAG_VALUE_'+rowIndex" name="ognl:'SELECT_TAG_VALUE_'+rowIndex" jwcid="@Select"						 
+									source="ognl:getAttrItemSource(condition.FIELD_NAME)"
+									value="ognl:condition.DEFAULT_VALUE"  
+									valueField="VALUE" textField="TEXT" 
+									onchange="changeTagValue(this);"
+									desc="标志值"   disabled="false"/> 
+							</span></span></span>
+						</td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:condition.FIELD_NAME" raw="true"/></td> 
+					</tr>
+			</tbody>
+		</table>
+	</div>
+	</div> 
+	<!-- 表格 结束 -->
+
+</div>
+<!-- 表单 结束 -->
+<div style="display:none"> 
+	<input jwcid="@TextField" name="pam_OLD_VPN_SCARE_CODE" id="pam_OLD_VPN_SCARE_CODE" value="ognl:getAttrItemValue('VPN_SCARE_CODE','ATTR_VALUE')" encode="true" style="display:none" />
+    <input jwcid="@TextField" name="METHOD_NAME" id="METHOD_NAME" value="ognl:info.PRODUCTPARAM_METHOD_NAME" encode="true" style="display:none"/>
+	<input jwcid="@TextField" name="RIGHT_CODE" id="RIGHT_CODE" value="ognl:info.RIGHT_CODE" encode="true" style="display:none"/>
+	<input jwcid="@TextField" name="OLD_PARAM" id="OLD_PARAM" value="ognl:attrItemSet" encode="true" style="display:none"/>
+    <input type="text" jwcid="@Any" id="pam_NOTIN_VPN_TAG_SET" name="pam_NOTIN_VPN_TAG_SET" value="" style="display:none"/>
+    <input type="text" jwcid="@Any" id="PROVICE_VPN_DISCNT" name="PROVICE_VPN_DISCNT" value="ognl:getAttrItemValue('PROVICE_VPN_DISCNT','ATTR_VALUE')" style="display:none"/>
+	<input jwcid="@Any" name="GRP_SN" id="GRP_SN" value="ognl:info.GRP_SN" style="display:none"/>
+	<input jwcid="@Any" name="CAN_ORDER_DIS" id="CAN_ORDER_DIS" value="ognl:info.canOrderDis" style="display:none"/>
+</div>
+

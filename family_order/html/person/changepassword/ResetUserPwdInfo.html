@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<title>用户密码变更</title>
+<script jwcid="@Script" src="person/changepassword/scripts/modifyuserpwdinfo.js"></script>
+<script jwcid="@Script"  src="scripts/csserv/component/person/eform/CommonEForm.js" ></script>
+</head>  
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户资料</div>
+	</div>
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="73" element="div"></div>
+	<!-- 认证 结束 -->
+	
+	<!--  -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">密码设置操作</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form  " jwcid="chPWDInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">密码设置操作：</span>
+				<span class="e_select"> <span><span>
+					<select  name='pwdInfo_PASSWD_TYPE' id="pwdInfo_PASSWD_TYPE" onchange="showMe(this.value);">
+					    <div id="outDiv1"><option value="1"  selected="selected"  id="op1">修改密码</option></div>	
+           				<div id="outDiv3"><option value="3" id="op3">随机密码</option></div>
+        			</select>
+				 </span></span></span>
+			</li>
+			<li class="li">
+			   <span class="label">
+				   <div jwcid="PasswordSetPart@csserv:PasswordSet" beforeAction="beforeEvent()" afterAction="afterEvent(data)" element="div"/>
+			 	   <input jwcid="@Any"  type="hidden" id="NEW_PASSWD" name="NEW_PASSWD"/>
+			  </span>
+			</li>			
+		</ul>
+	    <!-- 携入标识   1是携入   非1 不是携入 -->
+	    <input type="hidden" id="NPTag" name="NPTag" value="0"  desc="携入标识"/>
+	    <!-- 固话标识   1是固话   非1 不是固话-->
+	    <input type="hidden" id="WXTag" name="WXTag" value="0"  desc="无线固话标识"/>
+	    <input type="hidden" id="UCA_CUST_NAME" name="UCA_CUST_NAME" value=""  desc="客户名称"/>	
+	    <input type="hidden" id="AUTH_CHECK_MODE" name="AUTH_CHECK_MODE" value=""  desc="验证方式"/>	
+	    <input type="hidden" id="UCA_PSPT_ID" name="UCA_PSPT_ID" value=""  desc="客户证件号码"/>	
+	</div>
+	<!-- 表单 开始 -->
+	<!--备注-->
+	<div class="c_form c_form-col-1 c_form-label-6" jwcid="RemarkPart@Part">
+		<!-- REQ201707060009关于补卡、密码重置、复机业务优化的需求 -->
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span >方式：</span></span>
+					<span >
+						<label><input jwcid="@Radio" name="baseinfo_radio" value="1"  onclick="changeMethod1();" checked="true"/>客户摄像</label>
+						<label class="l_ml" ><input id="agent_right_span" disabled="false" jwcid="@Radio" name="baseinfo_radio"  value="2" onclick="changeMethod2();"/>经办人摄像</label>
+	                </span>
+				</li>			
+			</ul>
+			<ul class="ul" id="span_AGENT" style="display: none">
+				<li class="li" >
+					<span class="label"><span id="span_AGENT_CUST_NAME">经办人名称：</span></span>
+					<span class="e_input">
+						<span><input type="text" jwcid="@TextField" name="custInfo_AGENT_CUST_NAME" id="custInfo_AGENT_CUST_NAME" 
+							value="" maxsize="48" maxLength="48" desc="经办人名称" disabled="true" />
+						</span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_TYPE_CODE">经办人证件类型：</span></span>
+					<span class="e_select">
+						<span>
+							<span>
+								<select jwcid="@Select" name="custInfo_AGENT_PSPT_TYPE_CODE" id="custInfo_AGENT_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+		                       		textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="" 
+		                        	desc="经办人证件类型"  disabled="false" onchange="changePsptTypeCode('AGENT_PSPT_TYPE_CODE')"
+		                        	excludeField="E,D,G,L,M"
+		                        	/>
+							</span>
+						</span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_ID">经办人证件号码：</span></span>
+					<span class="e_elements">
+					<button type="button" class="e_button-right"  id="AGENT_SHOT_IMG" name="ReadCardButton" onclick="identification('custInfo_AGENT_PIC_ID','custInfo_AGENT_PIC_STREAM')"><i class="e_ico-check"></i><span>经办人摄像</span></button>
+					<button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt2()"><i class="e_ico-check"></i><span>扫描</span></button>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_AGENT_PSPT_ID" id="custInfo_AGENT_PSPT_ID" value="" datatype="pspt" maxsize="20" maxLength="20"
+                         desc="经办人证件号码"  disabled="true" />
+					</span></span>
+					<input jwcid="@Hidden" id="custInfo_AGENT_PIC_ID" name="custInfo_AGENT_PIC_ID" value="" desc="经办人照片ID"/>						
+					<input jwcid="@Hidden" id="custInfo_AGENT_PIC_STREAM" name="custInfo_AGENT_PIC_STREAM" value="" desc="拍摄经办人人像照片流"/>
+					<input jwcid="@Hidden" id="custInfo_AGENT_BACKBASE64" name="custInfo_AGENT_BACKBASE64" value="" desc="经办人身份证反面照"/>
+					<input jwcid="@Hidden" id="custInfo_AGENT_FRONTBASE64" name="custInfo_AGENT_FRONTBASE64" value="" desc="经办人身份证正面照"/>
+                    </span>
+				</li>												
+			</ul>
+			<!-- REQ201707060009关于补卡、密码重置、复机业务优化的需求 ----zhuoyz----end-->
+			<!-- 客户摄像添加 扫描20170906 -->
+			<ul class="ul" id="span_CUST">
+				<li class="li">
+					<span class="label"><span>客户名称：</span></span>
+					<span class="e_input">
+						<span><input type="text" jwcid="@TextField" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" value="" disabled="true"
+	                                   nullable="no" desc="客户名称" />
+	                    </span>
+	                </span>
+				</li>
+				<li class="li">
+					<span class="label"><span>证件类型：</span></span>
+					<span class="e_select"><span>
+						<span>
+							<select jwcid="@Select" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+		                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value=""
+		                            desc="证件类型"  disabled="false" onchange="changePsptTypeCode('PSPT_TYPE_CODE')"/>
+						</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span>证件号码：</span></span>
+					<span class="e_elements">
+				       <button type="button" class="e_button-right" id="ShotImgButton" name="ShotImgButton" onclick="identification('custInfo_PIC_ID','custInfo_PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>
+					   <button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>
+					   <input  jwcid="@Any"  type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+					<span class="e_input">
+						<span>
+							<input type="text" jwcid="@TextField" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" value="" datatype="pspt" maxsize="20" maxLength="20"
+                        	 desc="证件号码" nullable="no" disabled="true" />
+                         </span>
+                    </span>
+                        <input jwcid="@Hidden" id="custInfo_PIC_ID" name="custInfo_PIC_ID" value="" desc="客户照片ID"/>						
+						<input jwcid="@Hidden" id="custInfo_PIC_STREAM" name="custInfo_PIC_STREAM" value="" desc="拍摄人像照片流"/>
+						<input jwcid="@Hidden" id="custInfo_BACKBASE64" name="custInfo_BACKBASE64" value="" desc="身份证反面照"/>
+						<input jwcid="@Hidden" id="custInfo_FRONTBASE64" name="custInfo_FRONTBASE64" value="" desc="身份证正面照"/>
+						<input jwcid="@Hidden" id="custInfo_SCAN_TAG" name="custInfo_SCAN_TAG" value="1" desc="客户扫描标志"/>
+						<input jwcid="@Hidden" id="is_PWLW" name="is_PWLW" value="0" desc="是否物联网"/>
+                    </span>
+				</li>				
+			</ul>
+			<!-- 客户摄像添加 扫描20170906 ----zhuoyz----end-->
+			<ul class="ul">
+				<li class="li">
+						<span class="label">备注：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="REMARK" id="REMARK"  disabled="false" value="" desc="备注"/>
+						</span></span>
+				</li>
+			</ul>
+			 <div style="display:none">
+				<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+				<input jwcid="@Hidden" id="highprivRight" name="highprivRight" value="" desc="手动输入身份证号码权限"/>
+				<input jwcid="@Hidden" id="LOAD_CUST_NAME" name="LOAD_CUST_NAME" value="" desc="客户姓名"/>
+				<input jwcid="@Hidden" id="LOAD_PSPT_ID" name="LOAD_PSPT_ID" value="" desc="客户证件号码"/>
+				<input jwcid="@Hidden" id="LOAD_PSPT_TYPE_CODE" name="LOAD_PSPT_TYPE_CODE" value="" desc="客户证件类型"/>
+			</div>
+	</div>
+	<!-- 表单 结束 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" listener="onTradeSubmit" area="AuthPart,chPWDInfoPart,inputPWDInfoPart,RemarkPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+
+</div></div></body>
+</html>

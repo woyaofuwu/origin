@@ -1,0 +1,2 @@
+INSERT INTO td_s_route(work_id,start_task_id,end_task_id,status,timeout_fault_interval,timeout_action_code,fault_action_code,fault_redoctrl_number,fault_redo_interval)
+ VALUES(:WORK_ID,:START_TASK_ID,:END_TASK_ID,to_number(:STATUS),:TIMEOUT_FAULT_INTERVAL,:TIMEOUT_ACTION_CODE,:FAULT_ACTION_CODE,:FAULT_REDOCTRL_NUMBER,:FAULT_REDO_INTERVAL)

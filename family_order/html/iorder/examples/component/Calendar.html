@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head jwcid="@Head">
+<title>Calendar</title>
+</head>
+<body jwcid="@Body">
+
+<div class="l_edit">
+
+	<!-- 主流程 开始 -->
+	<div class="l_editMain">
+		<div class="c_space"></div>
+		<div class="c_list c_list-form">
+			<ul>
+				<li class="link" ontap="showPopup('mypop', 'calendarItem');setCalendar1Value('BIRTHDAY');">
+					<div class="label">生日</div>
+					<div class="value"><input name="BIRTHDAY" jwcid="@DateField" value="1988-03-09" /></div>
+					<div class="more"></div>
+				</li>
+				<li class="link" ontap="showPopup('mypop', 'calendarItem');setCalendar1Value('START_DATE');">
+					<div class="label">开始日期</div>
+					<div class="value"><input name="START_DATE" jwcid="@DateField" value="" /></div>
+					<div class="more"></div>
+				</li>
+				<li class="link" ontap="showPopup('mypop', 'calendarItem');setCalendar1Value('END_DATE');">
+					<div class="label">结束日期</div>
+					<div class="value"><input name="END_DATE" jwcid="@DateField" value="" /></div>
+					<div class="more"></div>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_space"></div>
+		<div class="c_submit c_submit-full">
+			<button class="e_button-l e_button-r e_button-navy" type="button">重置</button>
+			<button class="e_button-l e_button-r e_button-green" type="button">提交</button>
+		</div>
+		<div class="c_space"></div>
+	</div>
+	<!-- 主流程 结束 -->
+	
+	<!-- 占位符 开始 -->
+	<div class="l_editPlace"><span class="e_ico-cmlogo"></span></div>
+	<!-- 占位符 结束 -->
+</div>
+
+<div jwcid="@Popup" name="mypop" class="c_popup c_popup-half" mask="false" >
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="calendarItem">
+			<div name="calendar1" jwcid="@Calendar" value="" ></div>
+		</div>
+	</div>
+</div>		
+
+<script language="javascript">
+//<!--
+var activeDateField;
+function setCalendar1Value(dateField){
+	var el = dateField && dateField.nodeType == 1 ? dateField : document.getElementById(dateField);
+	if(!el) return;
+	calendar1.val(el.value);
+	activeDateField = el;
+}
+
+//绑定日历选择事件
+$("#calendar1").select(function(e){
+	if(activeDateField && activeDateField.nodeType){
+		activeDateField.value = this.val();
+	}
+});
+
+//绑定日历清除事件
+$("#calendar1").clear(function(e){
+	if(activeDateField && activeDateField.nodeType){
+		activeDateField.value = "";
+	}
+});
+
+//-->
+</script>
+</body>
+</html>

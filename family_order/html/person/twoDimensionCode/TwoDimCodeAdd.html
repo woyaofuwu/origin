@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/twoDimensionCode/script/twodimcodeadd.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+			<!-- 活动详情 开始 -->
+<div class="" jwcid="submit_part@Part" >
+		<div class="c_box">
+			 <div class="c_title">
+					 <div class="text">基本信息</div>
+			  </div>
+				<div class="c_form c_form-col-mix">
+				
+						<ul class="ul  c_form-col-3">
+							<li class="li" >
+							<span class="label e_required" >二维编码名称：</span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "BARCODE_NAME" value="ognl:base.BARCODE_NAME"  
+										 desc="二维编码名称"  maxsize="25"  maxlength="25"  nullable="no"/>
+								</span></span>
+							</li>
+								<li class="li "  >
+								<span class="label e_required ">生效开始日期：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" name="START_DATE" value="ognl:base.START_DATE" desc="开始日期" nullable="no"  />
+								</span></span>
+							</li>
+							<li class="li" >
+								<span class="label e_required">生效结束日期：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" name="END_DATE" value="ognl:base.END_DATE" 
+									afterAction="chgEndDateSynStartDate(this, 'START_DATE');" desc="结束日期" nullable="no" />
+								</span></span>
+							</li>
+							<li class="li" >
+								<span class="label e_required"  >二维编码类型：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="BARCODE_TYPE"  
+									source="ognl:pageutil.getList('TD_S_BARCODE_TYPE','BARCODE_TYPE','BARCODE_NAME')" 
+									textField="BARCODE_NAME"  valueField="BARCODE_TYPE"  addDefault="false"  value="ognl:base.BARCODE_TYPE"   nullable="no"  desc="二维编码类型"  />
+								</span></span></span>
+							</li>
+							<li class="li" >
+								<span class="label e_required"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;推广渠道：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="IN_MODE_CODE"  source="ognl:inmodeinfo" 
+									textField="TEXT"  valueField="VALUE"  addDefault="false"  value="ognl:base.STATE"  desc="推广渠道" nullable="no" />
+								</span></span></span>
+							</li>
+							<li class="li" >
+								<span class="label"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;归属地州：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="EPARCHY_CODE"  source="ognl:pageutil.getStaticList('AREA_CODE')" 
+									textField="DATA_NAME"  valueField="DATA_ID"  addDefault="false"  value="ognl:base.EPARCHY_CODE"  desc="二维编码状态"  />
+								</span></span></span>
+							</li>
+							<li class="li " >
+							<span class="label " >&nbsp;&nbsp;&nbsp;&nbsp;二维码描述：</span>
+								<span class="e_input"><span>
+									<input  type="text"  jwcid="@TextField" name = "BARCODE_EXPLAIN" value="ognl:base.BARCODE_EXPLAIN" 
+										desc="描述"    maxlength="130" maxsize="130"  />
+								</span></span>
+							</li>
+							<li class="li" >
+							<span class="label " >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传图片：</span>
+							<span class="e_elements"  id ="upload" name="upload"><span>
+								 	 <input jwcid="@SimpleUpload"  id="FILE_FIELD1"  ftpSite="personserv"   name="FILE_FIELD1" value="ognl:base.FILE_ID"  fileSize="10" style="width:150px;" fileTypes="*.jpg;*.png;*.jpeg"   /> 
+								</span></span>
+							</li>
+					</ul>
+				 </div>
+				 <!-- 提交元素隐藏域 -->
+				 <input jwcid="@Hidden" name="BARCODE_ID" value="ognl:base.BARCODE_ID"  />
+				<input jwcid="@Hidden" name="edit_table" value=""/>
+		 </div>
+		 <!-- submit part -->
+	</div>	
+		 <div class="c_box">
+				  <div class="c_title">
+					 <div class="text">添加元素</div>
+			  	    </div>
+			  	  <div class="c_scroll c_scroll-x">
+						<div class="" jwcid="refresh_table@Part" >
+								<div class="c_table c_table-row-5">
+								<table jwcid="@Table"  name="paramTable"  rowClick="tableRowClick" 	>
+									<thead>
+										<tr>
+											<th col="ECONFIG_ID"  id="col_ECONFIG_ID" style="display:none">element_ID</th>
+											<th col="ELEMENT_TYPE"  id="col_ELEMENT_TYPE" style="display:none">证件类型CODE</th>
+											<th col="ELEMENT_TYPE_NAME"  id="col_ELEMENT_TYPE_NAME" >元素类型</th>
+											<th col="ELEMENT_ID"  id="col_PSPT_ID" >元素编码</th>
+											<th col="ELEMENT_EXPLAIN" id="col_CUST_NAME" >元素描述</th>
+										</tr>
+									</thead>
+									<tbody >
+											<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"	element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.ECONFIG_ID" raw="false"/></td>
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.ELEMENT_TYPE" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TWO_DIMENSION_TYPE',info.ELEMENT_TYPE)" raw="true"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.ELEMENT_ID" raw="true"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.ELEMENT_EXPLAIN" raw="true"/></td>
+											</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+				</div>
+				<div class="" jwcid="editPart@Part" >
+				 <div class="c_form c_form-col-3" id="copy_0">
+				 		<ul class="ul  c_form-col-3">
+							<li class="li" >
+								<span class="label e_required"  >元素类型：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="ELEMENT_TYPE"  source="ognl:pageutil.getStaticList('TWO_DIMENSION_TYPE')" 
+									textField="DATA_NAME"  valueField="DATA_ID"  addDefault="false"  value="ognl:base.ELEMENT_TYPE"  nullable="no"  desc="元素类型"  />
+								</span></span></span>
+							</li>
+							
+							
+							<li class="li" >
+							<span class="label e_required " >元素编码：</span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "ELEMENT_ID" value="ognl:base.ELEMENT_ID" 
+										desc="编码"   maxlength="20" maxsize="20" datatype="numeric" nullable="no"  />
+								</span></span>
+							</li>
+							<li class="li " >
+							<span class="label " >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述：</span>
+								<span class="e_input"><span>
+									<input  type="text"  jwcid="@TextField" name = "ELEMENT_EXPLAIN" value="ognl:base.ELEMENT_EXPLAIN" 
+										desc="描述"    maxlength="130" maxsize="130"  />
+								</span></span>
+							</li>
+							
+						</ul>
+							<div class="submitPlace"></div>
+								<div class="submit">
+									<button class="e_button-form"  onclick="addProductInfo()"><i class="e_ico-add"></i><span>添加</span></button>
+									<button class="e_button-form " onclick="deleteProductInfo()"><i class="e_ico-delete"></i><span>删除</span></button>
+									<button class="e_button-form"  onclick=" editProductInfo();" ><i class="e_ico-modify"></i><span>修改</span></button>
+								</div>
+					<!-- form end -->
+				</div>
+				
+			</div>
+			
+			<!-- box end -->
+		  </div>
+						<div class="c_submit">
+							<button class="e_button-page-ok"  onclick="saveTwoDimCode();"><span>生成二维码</span></button>
+						</div>
+						
+</div>
+</div>
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: ChangeProduct.html,v 1.3 2013/04/08 13:53:09 jinnian Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script jwcid="@Script" src="person/plat/scripts/platfamilymanage.js"></script>
+		<title>平台业务受理</title>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+				<!-- 区域 开始 -->
+				<div class="c_box">
+					<!-- 认证 开始 -->
+					<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data)" element="div"
+						tradeTypeCode="3700"></div>
+					<!-- 认证 结束 -->
+				</div>
+				<!-- 区域 开始 -->
+				<div class="c_box">
+					<!-- 标题 开始 -->
+					 <!-- 标题 开始 -->
+				    <div class="c_title c_title-2">
+					   <div class="text">基本信息</div>
+				    </div>
+				<!-- 标题 结束 -->
+					
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-5 c_form-col-2 c_form-text" jwcid="CustInfoPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">客户名称：</span>
+							<span class="text"><span>
+							<input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" readonly="true" desc="客户名称" value="ognl:custInfo.CUST_NAME"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">证件号码：</span>
+							<span class="text"><span>
+							<input jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" readonly="true" desc="证件号码" value="ognl:custInfo.PSPT_ID"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">证件类型：</span>
+							<span class="text"><span>
+							<input jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" readonly="true" desc="证件类型" 
+							value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE',custInfo.PSPT_TYPE_CODE)"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">证件地址：</span>
+							<span class="text"><span>
+							<input jwcid="@Insert" name="PSPT_ADDR" id="PSPT_ADDR" readonly="true" desc="证件地址"  value="ognl:custInfo.PSPT_ADDR"/>
+							</span></span>
+						</li>
+					</ul>
+					</div>
+					<div class="c_title">
+						<div class="text">
+							已绑定亲情圈成员
+						</div>
+					</div>
+					<!-- 标题 结束 -->
+					<!-- 表格 开始 -->
+					<div jwcid="PlatFamilyManagePart@Part">
+						<div class="c_scroll c_scroll-x c_scroll-table-10">
+							<div class="c_table">
+								<table>
+									<thead>
+										<tr>
+											<th>
+												<input type="checkbox" class="e_checkbox" />
+											</th>
+											<th>
+												<span style="width: 60px">序号</span>
+											</th>
+											<th>
+												户主手机号码
+											</th>
+											<th>
+												成员手机号码
+											</th>
+											<th>
+												成员称呼
+											</th>
+											<th>
+												成员角色
+											</th>
+										</tr>
+									</thead>
+									<tbody id="fmymembers">
+										<tr jwcid="@Foreach" source="ognl:familyMember"
+											value="ognl:familyMemberinfo" index="ognl:rowIndex"  element="tr">
+											<td class="e_center">
+												<!--<input type="checkbox" jwcid="@Any"
+													serviceId="ognl:familyMemberinfo.SERVICE_ID"
+													itemIndex="ognl:familyMemberinfo.ITEM_INDEX"
+													name="ognl:familyMemberinfo.ITEM_INDEX+'_USERCHECKBOX'"
+													id="ognl:familyMemberinfo.ITEM_INDEX+'_USERCHECKBOX'"
+													class="e_checkbox"
+													onclick="checkBoxAction(this)" />-->
+												<input type="checkbox" id="ognl:'checkbox' + rowIndex" name="chkbox" jwcid="@Any" value="checkbox" />
+											</td>
+											<td class="e_center">
+												<span jwcid="@Insert"
+													value="ognl:rowIndex + 1" />
+											</td>
+											<td>
+												<input jwcid="@Any" type="text" name="MAIN_MSISDN"
+													id="MAIN_MSISDN" value="ognl:familyMemberinfo.MAIN_MSISDN" disabled = "true"/>
+											</td>
+											<td>
+												<input jwcid="@Any" type="text" name="TARGET_MSISDN"
+													id="TARGET_MSISDN"
+													value="ognl:familyMemberinfo.TARGET_MSISDN"  disabled = "true"/>
+											</td>
+											<td>
+												<input jwcid="@Any" type="text" name="TARGET_NAME"
+													id="TARGET_NAME" value="ognl:familyMemberinfo.TARGET_NAME"  disabled = "true"/>
+											</td>
+											<td>
+												<input jwcid="@Any" type="text" name="TARGET_ROLE"
+													id="TARGET_ROLE" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('FAMILY_CIRCLE',familyMemberinfo.TARGET_ROLE)"  disabled = "true"/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 表格 结束 -->
+					<div class="c_submit">
+						<div class="l_right">
+							<button class="e_button-form" jwcid="@Any"
+								onclick="checkfmymember()">
+								<i class="e_ico-add"></i><span>增加</span>
+							</button>
+							<button class="e_button-form" jwcid="@Any"
+								onclick="UpdateFamily()">
+								<i class="e_ico-edit"></i><span>修改</span>
+							</button>
+							<button class="e_button-form" jwcid="@Any"
+								onclick="delfmymember()">
+								<i class="e_ico-delete"></i><span>删除</span>
+							</button>
+						</div>
+					</div>
+					<!-- 提交 开始 -->
+					<div class="c_submit">
+						<button class="e_button-form" jwcid="@Any"
+							onclick="save()">
+							<i class="e_ico-ok"></i><span>提交</span>
+						</button>
+					</div>
+					<!-- 提交 结束 -->
+				</div>
+				<!-- 区域 结束 -->
+				<input jwcid="@Hidden" name="USER_EPARCHY_CODE"
+					id="USER_EPARCHY_CODE" value="" />
+				<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value="" />
+				<input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER"
+					value="" />
+				<input jwcid="@Hidden" name="PSPT_ID" id="PSPT_ID" value="" />
+				<input jwcid="@Hidden" name="QRY_FLAG" id="QRY_FLAG" value="" />
+			</div>
+		</div>
+	</body>
+</html>

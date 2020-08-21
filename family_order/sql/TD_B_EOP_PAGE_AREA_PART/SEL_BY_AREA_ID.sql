@@ -1,0 +1,15 @@
+SELECT T.AREA_ID,
+       T.PART_ID,
+       T.SEQ,
+       T.EXTRA_ID,
+       T.PART_TYPE,
+       T.TEMPLET_ID,
+       T.VALID_TAG,
+       T.RSRV_STR1,
+       T.RSRV_STR2,
+       T.RSRV_STR3,
+       T.RSRV_STR4
+  FROM TD_B_EOP_PAGE_AREA_PART T
+ WHERE T.AREA_ID = :AREA_ID
+   AND T.VALID_TAG = :VALID_TAG
+ ORDER BY T.SEQ

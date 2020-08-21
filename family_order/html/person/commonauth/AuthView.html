@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/commonauth/scripts/authview.js" ></script>
+<script jwcid="@Script"  src="person/np/npapplycancel/scripts/busiTable.js" ></script>
+<script jwcid="@Script"  src="scripts/csserv/component/auth/Auth.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+    <!--表格 start -->
+    <div jwcid="RefreshTable@Part">
+    			<div class="c_title">
+							<div class="text">统一客户认证</div>
+							</div>
+    				<div class="c_form c_form-col-3 c_form-label-5" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label">校验方式：</span>
+								<span class="e_select"><span><span>
+									<select id='CHECK_MODE' name="CHECK_MODE" desc="校验方式" class="e_select" nullable="no" onchange="changeCheckMode(this.value);">
+										<option value="0">客户证件+证件类型</option>
+										<option value="2">固话号码+服务密码</option>
+										<option value="3">宽带帐号+服务密码</option>
+									</select>
+									</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label">归属地市：</span>
+								<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_EPACHY_NAME" id="cond_EPACHY_NAME" 
+								value="ognl:getVisit().getLoginEparchyName()" desc="归属地市" readOnly="true" disabled="true" /></span></span>
+							</li>
+							<span  id="checkMode0" >
+								<li class="li">
+									<span class="label">证件类型：</span>
+											<span class="e_select"><span><span>
+							 				<select jwcid="@Select" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" value="ognl:cond.PSPT_TYPE_CODE"  nullable="yes"     
+										textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('PSPT_TYPE_CODE')"  desc="证件类型"/>
+										</span></span></span>	
+								</li>
+								<li class="li">
+									<span class="label">证件号码：</span>
+									<span class="e_input"><span><input type="text" jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" 
+									value="ognl:cond.PSPT_ID" desc="证件号码"   nullable="yes" maxsize="40"/></span></span>
+								</li>
+							</span>
+							<span id="checkMode1" style="display:none">
+								<li class="li" id="cttId">
+									<span class="label">固话号码：</span>
+									<span class="e_input"><span><input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" 
+									value="ognl:cond.SERIAL_NUMBER" desc="固话号码"   nullable="yes" /></span></span>
+								</li>
+								<li class="li" id="wideId" style="display:none">
+									<span class="label">宽带帐号：</span>
+									<span class="e_input"><span><input type="text" jwcid="@TextField" name="SERIAL_NUMBER1" id="SERIAL_NUMBER1" 
+									value="ognl:cond.SERIAL_NUMBER1" desc="宽带帐号"   nullable="yes" /></span></span>
+								</li>
+								<li class="li">
+									<span class="label">服务密码：</span>
+									<span class="e_input"><span><input type="password" jwcid="@TextField" name="USER_PASSWORD" id="USER_PASSWORD" 
+									value="ognl:cond.USER_PASSWORD" desc="证件号码"   nullable="yes" /></span></span>
+								</li>
+							</span>
+						</ul>
+						<div class="submitPlace"></div>
+						<div class="submit">
+							<button type="button" onclick="return checkCond(this);"  class="e_button-form"><i class="e_ico-ok"></i><span>认证</span></button>
+							<button type="button" id="cancelButton" onclick="return cancelAuth(this);"style="display:none" class="e_button-form"><i class="e_ico-cancel"></i><span>取消</span></button>
+						</div>
+					</div>
+    			</div>
+    			<!-- 表格 end -->
+    	<div jwcid="custTable@Part">
+    				<div class="c_form c_form-text c_form-col-3 c_form-label-5" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span>客户名称：</span></span>
+								<span jwcid="@Insert" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" 
+								value="ognl:custInfo.CUST_NAME" desc="客户名称"  />
+							</li>
+							<li class="li">
+								<span class="label"><span>客户类型：</span></span>
+								<span jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" 
+								value="ognl:pageutil.getStaticValue('CUST_TYPE',custInfo.CUST_TYPE)" desc="客户类型"    />
+							</li>
+							<li class="li">
+								<span class="label"><span>客户标识：</span></span>
+								<span jwcid="@Insert" name="custInfo_CUST_ID" id="custInfo_CUST_ID" 
+								value="ognl:custInfo.CUST_ID" desc="客户标识"  />
+							</li>
+						</ul>
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span>证件类型：</span></span>
+								<span jwcid="@Insert" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" 
+								value="ognl:pageutil.getStaticValue('PSPT_TYPE_CODE',custInfo.PSPT_TYPE_CODE)" desc="证件类型"  />
+							</li>
+							<li class="li">
+								<span class="label"><span>证件号码：</span></span>
+								<span jwcid="@Insert" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" 
+								value="ognl:custInfo.PSPT_ID" desc="证件号码"  />
+							</li>
+							<li class="li">
+								<span class="label"><span>证件地址：</span></span>
+								<span jwcid="@Insert" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" 
+								value="ognl:custInfo.PSPT_ADDR" desc="证件号码"  />
+							</li>
+						</ul>
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span>联系电话：</span></span>
+								<span jwcid="@Insert" name="custInfo_CONTACT_PHONE" id="custInfo_CONTACT_PHONE" 
+								value="ognl:custInfo.CONTACT_PHONE" desc="联系电话"  />
+							</li>
+							<li class="li">
+								<span class="label"><span>通信地址：</span></span>
+								<span jwcid="@Insert" name="custInfo_POST_ADDRESS" id="custInfo_POST_ADDRESS" 
+								value="ognl:custInfo.POST_ADDRESS" desc="通信地址"   />
+							</li>
+							<li class="li">
+								<span class="label"><span>客户性别：</span></span>
+								<span jwcid="@Insert" name="custInfo_SEX" id="custInfo_SEX" 
+								value="ognl:pageutil.getStaticValue('SEX',custInfo.SEX)" desc="客户性别"  />
+							</li>
+						</ul>
+					</div>
+    			</div>
+    			<!-- 表格 end -->
+    			<!-- 表格 开始 -->
+	<div jwcid="ResultDataPart@Part">
+		<div class="c_scroll c_scroll-table-10">
+			<div class="c_table">
+				<table jwcid="@Table" name="userTable">
+					<thead>
+						<tr>
+							<th col="tabCheck" width="5%">选项</th>
+							<th col="CUST_ID" style="display: none">客户标识</th>
+							<th col="USER_ID" style="display: none">用户标识</th>
+							<th col="SERIAL_NUMBER" width="15%">服务号码</th>
+							<th col="PRODUCT_ID" width="10%">产品编码</th>
+							<th col="PRODUCT_NAME" width="30%">产品名称</th>
+							<th col="OPEN_DATE" width="20%">开户日期</th>
+							<th col="REMOVE_TAG" width="10%">用户在网状态</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >	
+							<td class="e_center"><input  jwcid="@Radio" onclick="save2Cookie(this);" name="tabCheck" value="ognl:info.CHECKED" checked="ognl:info.CHECKED" serialNumber="ognl:info.SERIAL_NUMBER" 
+							cust_id="ognl:info.CUST_ID" user_id="ognl:info.USER_ID"  cus_enc="ognl:info.CUST_ID_USER_ID_SN_ENC" /></td>
+							<td style="display: none"><span jwcid="@Insert" value="ognl:info.CUST_ID" raw="true"/></td>
+							<td style="display: none"><span jwcid="@Insert" value="ognl:info.USER_ID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="true"/></td>	
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('USER_REMOVETAG', info.REMOVE_TAG)" raw="true"/></td>
+							</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+
+    </div></div>
+</body>
+</html>

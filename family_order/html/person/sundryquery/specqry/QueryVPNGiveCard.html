@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/specqry/scripts/specqry.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="l_col">
+			<!-- 活动详情 开始 -->
+				<div class="c_form c_form-col-3">
+				<div class="" jwcid="submit_part@Part" >
+						<ul class="ul">
+							<li class="li"  >
+							<span class="label" >VPMN编码：</span>
+								<span class="e_input"><span>
+											<input type = "text" jwcid = "@TextField"   name = "cond_PARA_CODE1" value = "ognl:condition.cond_PARA_CODE1" desc = "VPMN编码" class="e_input"/>
+								</span></span>
+							</li>
+							<li class="li" >
+								<span class="label">月份：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField"  format="yyyy-MM" name="cond_PARA_CODE2"    value="ognl:condition.cond_PARA_CODE2" desc="月份" />
+									</span></span>
+							</li>
+							<li class="li"  id="monitor_type_li">
+								<span class="label"  >市县：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="cond_PARA_CODE3"  source="ognl:arealist" 
+									textField="AREA_NAME"  valueField="AREA_CODE" value="ognl:condition.cond_PARA_CODE3" nullable="yes"  desc="市县"  />
+								</span></span></span>
+							</li>
+						</ul>
+					</div>
+
+						<div class="submitPlace"></div>
+						<div class="submit e_right"  >
+							<button class="e_button-form" listener="ognl:listeners.queryMonitorInfos"  onclick="return queryQueryVPNGiveCard();"><i class="e_ico-search"></i><span>查询</span></button>
+							<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+						</div>
+				</div>
+				<div  jwcid="result_Table@Part" optimize="true">
+				
+			    <div id="exportarea"  class="c_scroll c_scroll-x style='height:auto'">
+			        <div class="c_title c_title-2">
+					 <div class="text">查询结果</div>
+						 <div class="fn" >
+							  <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="5004"
+									  config="export/sundryquery/specqry/QueryVPNGiveCardList.xml" fileName="VPN兑换话费卡" cond="submit_part" /> 
+									<button class="l_ml" type="button" onclick="$.printArea('print_Table','绿色田野卡基站信息查询打印','60%')">
+														<i class="e_ico-print"></i><span>打印</span>
+									</button> 
+					 	</div>
+					 	
+			  	    </div>
+			  	    		<div  jwcid="print_Table@Part" optimize="true">
+							<div class="c_table">
+							<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+						  			<tr>
+											<th>集团名称</th>
+											<th>集团编码</th>
+											<th>VPMN名称</th>
+											<th>VPMN编码</th>
+											<th>统付付费金额(元)</th>
+											<th>本月累计应兑金额(元)</th>
+											<th>本月已兑金金额(元)</th>
+											<th>客户经理</th>
+											<th>累计未兑金额(元)</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE1" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE2" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE3" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE4" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE5" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE6" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE7" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TF_F_CUST_MANAGER_STAFF','CUST_MANAGER_ID','CUST_MANAGER_NAME',info.PARA_CODE8)"  raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE9" raw="false"/></td>
+										</tr>
+									</tbody>
+							</table>
+							<!-- end table -->
+					</div>
+				</div>		
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="20"  listener="queryVPNGiveCard" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+			</div>
+		</div>
+						
+						
+</div></div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

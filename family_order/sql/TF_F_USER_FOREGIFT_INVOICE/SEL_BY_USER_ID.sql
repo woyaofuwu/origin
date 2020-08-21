@@ -1,0 +1,3 @@
+SELECT a.user_id,a.foregift_code,to_char(A.money) money,a.invoice_no,a.finishtag,to_char(b.accept_date,'yyyy-mm-dd hh24:mi:ss') accept_date,b.fee_staff_id,a.in_trade_id,to_char(b.cancel_date,'yyyy-mm-dd hh24:mi:ss') cancel_date,b.cancel_staff_id,a.trade_id
+  FROM TF_F_USER_FOREGIFT_INVOICE a,tf_b_trade b,tf_f_user c
+ WHERE a.user_id IN(select c.user_id from tf_f_user c where c.serial_number=TO_NUMBER(:SERIAL_NUMBER))

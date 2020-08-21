@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<!-- 滚动（替换为 java 组件） 开始 -->
+		<div class="c_title">
+			<div class="text">转派员工信息</div>
+		</div>
+		<div class="c_space"></div>
+		<div class="l_padding l_padding-u">
+		<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1" id="StaffTransferItem">
+			<ul>
+				<li class="link required">
+		             <div class="label">转派前员工工号：</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="pattr_oldStaffId" name="pattr_oldStaffId" value="ognl:pattr.oldStaffId"  desc="转派前员工工号" nullable="no"/>
+		             </div>
+		             <div class="value" style="display:none">
+		                 <input jwcid="@TextField" id="pattr_citycode" name="pattr_citycode" value="ognl:pattr.CITY_CODE"  />
+		             </div>
+		        </li>
+				<li class="link required" ontap="showPopup('popup08','staffPopupItem',true);">
+					<div class="label">转派后员工工号</div>
+					<div class="value">
+						<span class="e_mix">
+		                 <input jwcid="@TextField" id="pattr_newStaffId" name="pattr_newStaffId"   desc="转派后员工工号" nullable="no"   />
+   	 					<span class="e_ico-check"></span>
+		             	</span>
+		             </div>
+				</li>
+				<li >
+					<div class="label">备注</div>
+					<div class="value">
+		                 <input jwcid="@TextField" id="pattr_remark" name="pattr_remark"   desc="备注"    />
+		             </div>
+				</li>
+				<li class="link required" ontap="openNav('转派记录查询', 'igroup.esop.QueryStaffTransfer','','', '')">
+					<div class="label">转派记录查询</div>
+				</li>
+			</ul>
+		</div>	
+		<div class="c_space"></div>
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-center">
+	<!-- 				<button type="button" class="e_button-r e_button-l e_button-navy" onclick="$.nav.close();">取消</button>
+	 -->				<button type="button" class="e_button-r e_button-l e_button-green" onclick="checkConfirm(this);">提交</button>
+		</div>
+		<!-- 提交 结束 -->
+		<div class="c_space"></div>
+		</div>
+	
+	</div>
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="popup08" >
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="staffPopupItem">
+				<div id="auditHead" class="c_header">
+					<div class="back" ontap="backPopup(this);" id="staffPopupBack">选择员工</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_fn">
+					<div class="left">
+						<div class="text"></div>
+					</div>
+						<div class="right"  jwcid="staffForm@Part">
+							<span class="label">员工姓名：</span>
+							<input   jwcid="@TextField" id="cond_StaffName"  name="cond_StaffName" value=""  desc="员工姓名"/>
+							<button class="e_button-blue" onclick="staffQuery();"><span class="e_ico-search"></span><span>查询</span></button>
+						</div>
+						<div class="right"  jwcid="staffForm2@Part">
+							<span class="label">员工工号：</span>
+							<input   jwcid="@TextField" id="cond_StaffId"  name="cond_StaffId" value=""  desc="员工工号" onblur="toUpperStr()"/>
+							<button class="e_button-blue" onclick="staffIdQuery();"><span class="e_ico-search"></span><span>查询</span></button>
+						</div>
+					</div>
+					<div class="l_queryFn" jwcid="staffParts@Part" element="div">
+						<div class="l_queryResult">		
+							<div class="c_table">
+							<table name="auditTable" id="auditTable" class="c_table c_table-checkbox" jwcid="@Table">
+								<thead>
+									<tr>
+					                	<th col="AUDIT_STAFF_ID">员工工号</th>
+					                    <th col="AUDIT_STAFF_ID">员工姓名</th>
+					                    
+									</tr>
+								</thead>
+								<tbody>
+									 <tr jwcid="@Foreach" source="ognl:staffInfos" value="ognl:info" element="tr">
+										<td class="e_center" align="center"><span jwcid="@Redirect" value="ognl:info.STAFF_ID" onclick="setReturnValue(this);" staff_id="ognl:info.STAFF_ID" raw="false" ></span></td>
+										<td align="center"><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+function  checkConfirm(obj){
+	
+	if($.validate.verifyAll("StaffTransferItem")){
+		MessageBox.confirm("确认提示", "是否将"+$("#pattr_oldStaffId").val()+"工号下所有专线工单转移至"+$("#pattr_newStaffId").val()+"工号下，且操作不可逆转是否继续?", function(btn){
+			if(btn!="cancel"){
+				$.beginPageLoading("转派中，请稍后...");
+				var param="&pattr_oldStaffId="+$("#pattr_oldStaffId").val()+"&pattr_newStaffId="+$("#pattr_newStaffId").val()+"&pattr_remark="+$("#pattr_remark").val()+"&pattr_citycode="+$("#pattr_citycode").val();
+				ajaxSubmit(this,'submit',param ,null,
+				function(data){
+					$.endPageLoading();
+					MessageBox.success("转派成功！", "原工号下在途单已迁移至新工号下!",function(){
+		    		});
+				},
+				function(error_code,error_info,derror){
+					$.endPageLoading();
+					showDetailErrorInfo(error_code,error_info,derror);
+				});
+			}
+			
+			
+		}, null, null);	
+	}
+	
+}
+function staffQuery(){
+	$.beginPageLoading("数据查询中...");
+	ajaxSubmit("staffForm",'qryStaffinfo',null,'staffParts',function(data){
+		$.endPageLoading();
+	},function(error_code,error_info,derror){
+		$.endPageLoading();
+		showDetailErrorInfo(error_code,error_info,derror);
+	});
+}
+function staffIdQuery(){
+	$.beginPageLoading("数据查询中...");
+	ajaxSubmit("staffForm2",'qryStaffIdinfo',null,'staffParts',function(data){
+		$.endPageLoading();
+	},function(error_code,error_info,derror){
+		$.endPageLoading();
+		showDetailErrorInfo(error_code,error_info,derror);
+	});
+}
+
+function setReturnValue(el){
+	var staffId = $(el).attr("staff_id");
+	$("#pattr_newStaffId").val(staffId);
+	backPopup("popup08", "staffPopupItem", true);
+}
+function toUpperStr(){
+	var staffId = document.getElementById("cond_StaffId");
+	staffId.value = staffId.value.toUpperCase();
+}
+</script>
+
+</body>
+</html>

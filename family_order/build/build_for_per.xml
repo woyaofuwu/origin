@@ -1,0 +1,321 @@
+<property environment="env" />
+<property file="build.properties" />
+<property name="version.num" value="1.0" />
+
+<path id="appclass.path">
+	<pathelement path="${env.CLASSPATH}" />
+	<pathelement path="${classes}" />
+	<fileset dir="${WADELIB_HOME}/common/lib">
+		<include name="*.jar" />
+	</fileset>
+		<fileset dir="${CRMLIB_HOME}/common/lib">
+		<include name="*.jar" />
+	</fileset>
+	<fileset dir="${WADELIB_HOME}/applib/lib">
+		<include name="*.jar" />
+	</fileset>
+	<fileset dir="${PROJECT_HOME}/lib">
+		<include name="**/*.jar" />
+	</fileset>
+	<fileset dir="${publib}">
+		<include name="**/*.jar" />
+	</fileset>
+</path>
+
+<path id="webclass.path">
+	<pathelement path="${env.CLASSPATH}" />
+	<pathelement path="${classes}" />
+	<fileset dir="${WADELIB_HOME}/common/lib">
+		<include name="*.jar" />
+	</fileset>
+	<fileset dir="${WADELIB_HOME}/weblib/lib">
+		<include name="*.jar" />
+	</fileset>
+	<fileset dir="${PROJECT_HOME}/lib">
+		<include name="**/*.jar" />
+	</fileset>
+	<fileset dir="${publib}">
+		<include name="**/*.jar" />
+	</fileset>
+</path>
+
+
+<target name="clean" description="removes intermediate files">
+	<echo message="removes intermediate files"/>
+	<mkdir dir="${classes}" />
+	<delete includeemptydirs="true">
+		<fileset dir="${classes}" />
+		<fileset dir="${build}" includes="*.jar" />
+		<fileset dir="${build}" includes="*.war" />
+	</delete>
+	<mkdir dir="${classes}" />
+</target>
+
+<target name="compile_app">
+	<echo message="begin to compile app src"/>
+	<mkdir dir="${source}" />
+	<delete includeemptydirs="true">
+		<fileset dir="${source}" />
+	</delete>
+	<mkdir dir="${source}" />
+	<copy overwrite="true" todir="${source}">
+		<fileset dir="${PROJECT_HOME}/src-service">
+			<include name="**/*.java" />
+		</fileset>
+		<fileset dir="${PROJECT_HOME}/src-common">
+			<include name="**/*.java" />
+		</fileset>
+		<fileset dir="${CSSERV_HOME}/src-service">
+			<include name="**/*.java" />
+		</fileset>
+		<fileset dir="${CSSERV_HOME}/src-common">
+			<include name="**/*.java" />
+		</fileset>
+		<!-- 
+		<fileset dir="${BCF_HOME}/src-service">
+			<include name="**/*.java" />
+		</fileset>
+		<fileset dir="${BCF_HOME}/src-common">
+			<include name="**/*.java" />
+		</fileset>
+		 -->
+	        <fileset dir="${RES_HOME}/src-service">
+			<include name="**/*.java" />
+		</fileset>
+		<fileset dir="${RES_HOME}/src-common">
+			<include name="**/*.java" />
+		</fileset>
+		<fileset dir="${BRE_HOME}/src">
+			<include name="**/*.java" />
+		</fileset>
+	</copy>
+	<javac encoding="utf-8" debug="on" fork="yes"
+		source="${JDK_VERSION}" target="${JDK_VERSION}"
+		memoryInitialSize="350m" memoryMaximumSize="512m"
+		srcdir="${source}" destdir="${classes}">
+		<compilerarg value="-J-Duser.language=en" />
+		<classpath refid="appclass.path" />
+	</javac>
+
+	<copy todir="${classes}">
+        <fileset dir="${source}">
+        	<include name="**/**/*.library"/>
+        	<include name="**/**/*.html"/>
+        	<include name="**/**/*.js"/>
+        	<include name="**/**/*.jwc"/>
+        	<include name="**/**/*.properties"/>
+			<exclude name="**/CVS/**/*.*"/>
+			<exclude name="**/*.java"/>
+		</fileset>
+    </copy>
+
+    <delete includeemptydirs="true">
+		<fileset dir="${source}" />
+	</delete>
+</target>
+
+<target name="compile_web">
+		<echo message="begin to compile web src"/>
+		<mkdir dir="${source}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+		<mkdir dir="${source}" />
+		<copy overwrite="true" todir="${source}">
+			<fileset dir="${PROJECT_HOME}/src-view">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src-view">
+	        	<include name="**/**/*.library"/>
+	        	<include name="**/**/*.html"/>
+	        	<include name="**/**/*.js"/>
+	        	<include name="**/**/*.jwc"/>
+	        	<include name="**/**/*.properties"/>
+				<exclude name="**/CVS/**/*.*"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${PROJECT_HOME}/src-common">
+				<include name="**/*.java" />
+			</fileset>
+
+			<fileset dir="${CSSERV_HOME}/src-view">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${CSSERV_HOME}/src-view">
+	        	<include name="**/**/*.library"/>
+	        	<include name="**/**/*.html"/>
+	        	<include name="**/**/*.js"/>
+	        	<include name="**/**/*.jwc"/>
+	        	<include name="**/**/*.properties"/>
+				<exclude name="**/CVS/**/*.*"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${CSSERV_HOME}/src-common">
+				<include name="**/*.java" />
+			</fileset>
+             <!-- 
+			<fileset dir="${BCF_HOME}/src-view">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${BCF_HOME}/src-view">
+	        	<include name="**/**/*.library"/>
+	        	<include name="**/**/*.html"/>
+	        	<include name="**/**/*.js"/>
+	        	<include name="**/**/*.jwc"/>
+	        	<include name="**/**/*.properties"/>
+				<exclude name="**/CVS/**/*.*"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${BCF_HOME}/src-common">
+				<include name="**/*.java" />
+			</fileset>
+	         -->
+			<fileset dir="${BRE_HOME}/src">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+
+		<javac encoding="utf-8" debug="on" fork="yes"
+			source="${JDK_VERSION}" target="${JDK_VERSION}"
+			memoryInitialSize="350m" memoryMaximumSize="512m"
+			srcdir="${source}" destdir="${classes}">
+			<compilerarg value="-J-Duser.language=en" />
+			<classpath refid="webclass.path" />
+		</javac>
+
+		<copy todir="${classes}">
+	        <fileset dir="${source}">
+	        	<include name="**/**/*.library"/>
+	        	<include name="**/**/*.html"/>
+	        	<include name="**/**/*.js"/>
+	        	<include name="**/**/*.jwc"/>
+	        	<include name="**/**/*.properties"/>
+				<exclude name="**/CVS/**/*.*"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+	    </copy>
+
+		<delete includeemptydirs="true">
+			<fileset dir="${source}" />
+		</delete>
+</target>
+
+<target name="copy_config">
+
+	<echo message="copy config" />
+	<copy todir="${classes}">
+		<fileset dir="${config}">
+			<include name="**/*.xml" />
+			<include name="**/*.properties" />
+			<include name="**/**/*.*" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+			<exclude name="**/*.java" />
+		</fileset>
+	</copy>
+
+	<echo message="copy csserv config" />
+	<copy todir="${classes}" overwrite="true">
+		<fileset dir="${CSSERV_HOME}/config">
+			<include name="**/*.xml" />
+			<include name="**/*.properties" />
+			<include name="**/**/*.*" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+			<exclude name="**/*.java" />
+		</fileset>
+	</copy>
+
+	<echo message="copy bre config" />
+	<copy todir="${classes}" overwrite="true">
+		<fileset dir="${BRE_HOME}/config">
+			<include name="**/*.xml" />
+			<include name="**/*.properties" />
+			<include name="**/**/*.*" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+			<exclude name="**/*.java" />
+		</fileset>
+	</copy>
+</target>
+
+<target name="copy_lib">
+	<echo message="start copy libs" />
+	<mkdir dir="${html}/WEB-INF/lib" />
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${CRMLIB_HOME}/common/lib">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${CRMLIB_HOME}/applib/lib">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${CRMLIB_HOME}/weblib/lib">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${WADELIB_HOME}/common/lib">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${WADELIB_HOME}/applib/lib">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${WADELIB_HOME}/weblib/lib">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+	<copy overwrite="true" todir="${html}/WEB-INF/lib">
+		<fileset dir="${publib}">
+			<include name="*.jar" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+
+</target>
+
+
+<target name="copy_web_resource">
+	<echo message="start copy web resource" />
+	<copy overwrite="true" todir="${html}/">
+		<fileset dir="${WADELIB_HOME}/weblib/html/">
+			<include name="**/**/*.*" />
+			<!--<exclude name="**/desktop/**/*.*" />-->
+			<exclude name="**/webframe/**/*.*" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+
+	<copy overwrite="true" todir="${html}/">
+		<fileset dir="${CSSERV_HOME}/html/">
+			<include name="**/**/*.*" />
+			<!--<exclude name="**/desktop/**/*.*" />-->
+			<exclude name="**/WEB-INF/**/*.*" />
+			<exclude name="**/CVS/**/*.*" />
+			<exclude name="**/**/*#*.*" />
+		</fileset>
+	</copy>
+
+</target>
+

@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s" class="">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>国漫数据流量定向套餐业务</title>
+    <script jwcid="@Script" src="iorder/person/interroamday/scripts/interroamdirected.js"></script>
+
+</head>
+<body jwcid="@Body">
+<div class="c_scroll">
+    <div class="l_padding">
+        <!-- 认证 开始 -->
+        <div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="300" tradeAction="refreshPartAtferAuth(data)"
+             element="div"></div>
+        <!-- 认证 结束 -->
+
+        <!-- 三户展示组件 开始 -->
+        <!--<div jwcid="UCAViewPart@Part">-->
+        <!--<div jwcid="@icsserv:CustInfoView" custInfoView="ognl:custInfoView"/>-->
+        <!--<div jwcid="@icsserv:UserInfoView" userInfoView="ognl:userInfoView"/>-->
+        <!--</div>-->
+        <!-- 三户展示组件 结束 -->
+        <!-- 区域 结束 -->
+
+        <div jwcid="QueryListPart@Part">
+            <!-- 区域 开始 -->
+            <!-- 标题 开始 -->
+            <div class="c_title">
+                <div class="text">业务受理</div>
+            </div>
+            <!-- 标题 结束 -->
+
+            <!-- 分页1结束 -->
+            <!-- 分页2开始 -->
+            <div id="directpage" name="directpage">
+
+                <!-- 表单 开始  -->
+                <div jwcid="ChooseDiscntPart@Part">
+                    <div class="c_list c_list-s c_list-col-2 c_list-border c_list-line c_list-label-5">
+                        <ul class="ul">
+                            <li class="li required">
+                                <div class="label">开通方向</div>
+                                <div class="value">
+                                    <select jwcid="@Select" name="OPEN_AREA" id="OPEN_AREA"
+                                            source="ognl:areaInfos"
+                                            valueField="PARA_CODE1" textField="PARA_CODE2"
+                                            value=""
+                                            desc="开通方向" nullable="no" onchange="changeArea()" disabled="false"/>
+                                </div>
+                            </li>
+
+                            <li class="li required">
+                                <div class="label">优惠名称</div>
+                                <div class="value">
+                                    <div jwcid="SelectDiscntPart@Part">
+                                        <select jwcid="@Select" name="DISCNT_NAME" id="DISCNT_NAME"
+                                                source="ognl:discntInfos"
+                                                valueField="PARA_CODE1" textField="PARA_CODE2"
+                                                value=""
+                                                desc="优惠名称" nullable="no" onchange="discntInfo()" disabled="false"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 表格 结束 -->
+                <div jwcid="EuropeAera@Part" style="display:none">
+                    <div class="c_space-c"></div>
+                    <div class="c_list c_list-s c_list-col-2 c_list-border c_list-line c_list-label-5">
+                        <div class="label">区域详情</div>
+                        <div class="value">
+                            <div jwcid="@Conditional" condition="ognl:euroArea.PARA_CODE24 == null">
+                        <span class="text" jwcid="@Insert" value="ognl:euroArea.PARA_CODE23" id="Europe_Aera"
+                              raw="true"/>
+                            </div>
+                            <div jwcid="@Conditional" condition="ognl:euroArea.PARA_CODE24 != null">
+                        <span class="text" jwcid="@Insert" value="ognl:euroArea.PARA_CODE23+euroArea.PARA_CODE24"
+                              id="Europe_Aera" raw="true"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 套餐详情 -->
+                <div jwcid="DiscntInfoPart@Part" style="display:''">
+                    <div class="c_space-c"></div>
+                    <div class="c_list c_list-s c_list-col-2 c_list-border c_list-line c_list-label-5">
+                        <ul class="ul">
+                            <li class="li">
+                                <div class="label">优惠编码</div>
+                                <div class="value">
+                                <div class="text" jwcid="@Insert" type="text" name="DISCNT_CODE" id="DISCNT_CODE"
+                                     nullable="no" value="ognl:discntDetail.DISCNT_CODE"/>
+                                </div>
+                            </li>
+                            <li></li>
+                            <li class="li">
+                                <div class="label">优惠详情</div>
+                                <div class="value">
+                                <div class="text" jwcid="@Insert" name="ELEMENT_NAME" id="ELEMENT_NAME" nullable="no"
+                                     value="ognl:discntDetail.ELEMENT_NAME"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 可退订优惠 -->
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">业务退订</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div id="normalpage" name="normalpage">
+                <!-- 表格 开始 -->
+                <table class="c_table c_table-lite c_table-border c_table-row-5" jwcid="@Table" name="userDiscntTable" id="userDiscntTable" scroll="true">
+                    <thead>
+                    <tr>
+
+                        <th col="CANCEL_DISCNT_CODE"><span>优惠编码</span></th>
+                        <th col="CANCEL_DISCNT_NAME"><span>优惠名称</span></th>
+                        <th col="DISCNT_START_DATE"><span>优惠生效时间</span></th>
+                        <th col="DISCNT_END_DATE"><span>优惠失效时间</span></th>
+                        <th col="DISCNT_CODE"><span></span></th>
+                    </tr>
+                    </thead>
+                    <tr jwcid="@Foreach" source="ognl:outInfos" value="ognl:info" name="userDiscntTr"
+                        element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                        <td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE"
+                                                   raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME"
+                                                   raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/>
+                        </td>
+                        <td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true"/>
+                        </td>
+                        <td><a jwcid="@Any" discntName="ognl:info.DISCNT_NAME"
+                                                discntCode="ognl:info.DISCNT_CODE"
+                                                prodInstId="ognl:info.PROD_INST_ID"
+                                                onclick="selectChange(this);">退订</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- 表格 结束 -->
+            <!-- 分页2结束 -->
+            <!-- 区域 结束 -->
+
+        </div>
+        <!-- 提交 开始 -->
+        <div class="c_space"></div>
+        <div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="submitBeforeAction()" area="AuthPart" element="div"/>
+        <!-- 提交 结束 -->
+        <!-- 隐藏区域开始 -->
+        <div jwcid="hiddenPart@Part">
+            <input jwcid="@Any" id="DEPUTY_COUNT" name="DEPUTY_COUNT" type="hidden" value="ognl:deputyCount"/>
+        </div>
+        <!-- 隐藏区域结束 -->
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>租机结算</title>
+<script jwcid="@Script" language="JavaScript" src="person/rentmobile/scripts/rentbalance.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+	<div class="c_tip">
+		<span class="e_red">押金请到押金业务界面清退!</span>
+	</div>
+</div>
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="249"  tradeAction="refreshPartAtferAuth(data)"></div>
+    <div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	
+	<div jwcid="ResInfoPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-text c_form-col-3 c_form-label-5">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">SIM卡号：</span>
+					<span class="text" jwcid="@Insert" name="SIM_CARD_NO" id="SIM_CARD_NO" value="ognl:info.SIM_CARD_NO" 
+							desc="SIM卡号"/>
+				</li>
+				<li class="li">
+					<span class="label">IMSI号：</span>
+					<span class="text" jwcid="@Insert" name="IMSI_NO" id="IMSI_NO" value="ognl:info.IMSI_NO" 
+							desc="IMSI号"/>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+        <span class="text">租机结算</span>
+    </div>
+    <div jwcid="rentMobileInfoPart@Part">
+	<div class="c_form c_form-text c_form-col-2 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="">租机号码：</span></span>
+                <span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="RENT_SERIAL_NUMBER" id="RENT_SERIAL_NUMBER" readonly="true"
+				  	desc="租机号码"	 value="ognl:info.RENT_SERIAL_NUMBER"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">租机类型：</span></span>
+                <span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="RENT_TYPE_NAME" id="RENT_TYPE_NAME" readonly="true"
+				  	desc="租机类型"	 value="ognl:info.RENT_TYPE_NAME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">租机方式：</span></span>
+                <span class="e_select"><span><span>
+               		<select jwcid="@Select" name="RENT_MODE_CODE" id="RENT_MODE_CODE"
+							source="ognl:pageutil.getStaticList('RENT_MODE_CODE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" readonly="true" disabled="true"
+                			value="ognl:info.RENT_MODE_CODE"
+							desc="租机方式"
+                       />
+                </span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="">押金金额：</span></span>
+                <span class="e_elements">
+					<span class="e_label e_label-right"><span>元</span></span>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" id="MONEY" name="MONEY" readonly="true"
+	                     value="ognl:info.MONEY"
+						 desc="押金金额"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">结算起始日：</span></span>
+                <span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="RENT_START_DATE" id="RENT_START_DATE" readonly="true"
+				  					nullable="no"	desc="结算起始日"	 value="ognl:info.RENT_START_DATE"/>
+				</span></span>
+			</li>
+		</ul>
+		<!-- 
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" id="Jsubmit" name="Jsubmit" onclick="btnCountClick(this)"><i class="e_ico-config"></i><span>计算</span></button>
+		</div>
+		 -->
+	</div>
+	</div>
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" area="AuthPart" element="div"/>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

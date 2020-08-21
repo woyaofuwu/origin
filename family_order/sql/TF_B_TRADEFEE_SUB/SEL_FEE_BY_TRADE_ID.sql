@@ -1,0 +1,30 @@
+SELECT to_char(trade_id) trade_id,
+       accept_month,
+       USER_ID,
+       FEE_MODE,
+       FEE_TYPE_CODE,
+       OLDFEE,
+       FEE,
+       CHARGE_ID,
+       DISCNT_GIFT_ID,
+       LIMIT_MONEY,
+       MONTHS,
+       to_char(EFFICET_DATE, 'yyyy-mm-dd hh24:mi:ss') EFFICET_DATE,
+       to_char(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       REMARK,
+       rsrv_str1,
+       rsrv_str2,
+       rsrv_str3,
+       rsrv_str4,
+       rsrv_str5,
+       rsrv_str6,
+       rsrv_str7,
+       rsrv_str8,
+       rsrv_str9,
+       rsrv_str10
+  FROM TF_B_TRADEFEE_SUB
+ WHERE trade_id = TO_NUMBER(:TRADE_ID)
+   AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID, 5, 2))
+   AND FEE <> 0

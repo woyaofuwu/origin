@@ -1,0 +1,3 @@
+select partition_id,user_id,acct_id,inst_id, present_serial_number,present_money,to_char(present_date,'yyyy-mm-dd') present_date,discnt_code,discnt_inst_id,remark,rsrv_str1,decode(rsrv_str1,'0','固话号码','1','移动号码') phone_type 
+	from tf_f_present_discnt 
+	where partition_id = mod(to_number(:USER_ID),10000) and  user_id = to_number(:USER_ID) and discnt_code = :DISCNT_CODE and discnt_inst_id = :DISCNT_INST_ID

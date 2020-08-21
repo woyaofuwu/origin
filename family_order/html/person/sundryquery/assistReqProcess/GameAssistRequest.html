@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>协助处理请求</title>
+<script language="javascript">
+<!--
+function checkAndSubmit()
+{
+	//查询条件校验
+	var code=$("#cond_SERVICE_TYPE").val();
+	if(code=="72"){
+		if(!$.validate.verifyAll("wxyyPart")||!$.validate.verifyAll("assistRequestSendPart"))
+		{
+			return false;
+		}
+	}else{
+		if(!$.validate.verifyAll("assistRequestSendPart"))
+		{
+			return false;
+		}
+	}
+	$.beginPageLoading("正在查询数据...");
+	//播记录查询
+	$.ajax.submit('assistRequestSendPart,wxyyPart', 'AssistRequestSend', null, 'assistRequestSendPart,wxyyPart', function(data)
+			{
+		MessageBox.alert("提示","操作成功！服务请求标识为:"+data.get("INDICTSEQ"),function(btn)
+	{
+		if(btn=="ok")
+		{
+			window.location.href = window.location.href;
+		}
+	});
+		
+		$.endPageLoading();
+	},
+	function(error_code,error_info)
+	{
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+
+function wxyyDiv(){
+	var code=$("#cond_SERVICE_TYPE").val();  
+	var wxyy=document.getElementById("wxyyPart");
+	if(code=="72"){
+		wxyy.style.display = "block"
+	}else{
+		wxyy.style.display = "none";
+	}
+}
+
+-->
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">协助处理请求</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 分栏 开始 -->
+		<div class="c_form c_form-label-8 c_form-col-1" jwcid="assistRequestSendPart@Part">
+		  <ul class="ul">
+		  <li class="li">
+				<span class="label"><span class="e_required">业务类别：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_SERVICE_TYPE" id="cond_SERVICE_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('CSERVICE_CHANNEL_TYPE')" value="ognl:cond.SERVICE_TYPE" desc="业务类别" nullable="no" onchange="wxyyDiv();"/>
+				</span></span></span>
+				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">紧急程度：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_URGENTID" id="cond_URGENTID" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('ASSISTREQ_PROCESS_LEVEL')" value="ognl:cond.URGENTID" desc="紧急程度" nullable="no"/>
+				</span></span></span>
+				
+			</li>
+			<li class="li">
+						<span class="label"><span class="e_required">处理请求简述：</span></span>
+						<span class="e_textarea">
+						<span class="e_textareaTop"><span></span></span>
+						<span class="e_textareaContent">
+							<textarea type="text" jwcid="@TextArea" id="cond_SUBMIT_MODE1" name="cond_SUBMIT_MODE1" value="ognl:cond.cond_SUBMIT_MODE1" nullable="no" rows="4" maxsize="10000" style="height:50px;" desc="处理请求简述" />
+						</span>
+						<span class="e_textareaBottom"><span></span></span>
+						</span>
+			</li>
+			<li class="li">
+						<span class="label"><span class="e_required">处理请求内容：</span></span>
+						<span class="e_textarea">
+						<span class="e_textareaTop"><span></span></span>
+						<span class="e_textareaContent">
+							<textarea type="text" jwcid="@TextArea" id="cond_SUBMIT_MODE2" name="cond_SUBMIT_MODE2" value="ognl:cond.cond_SUBMIT_MODE2" nullable="no" rows="4" maxsize="10000" style="height:50px;" desc="处理请求内容" />
+						</span>
+						<span class="e_textareaBottom"><span></span></span>
+						</span>
+			</li>
+			<li class="li">
+						<span class="label"><span class="e_required">预处理建议：</span></span>
+						<span class="e_textarea">
+						<span class="e_textareaTop"><span></span></span>
+						<span class="e_textareaContent">
+							<textarea type="text" jwcid="@TextArea" id="cond_SUBMIT_MODE3" name="cond_SUBMIT_MODE3" value="ognl:cond.cond_SUBMIT_MODE3" nullable="no" rows="4" maxsize="10000" style="height:50px;" desc="预处理建议" />
+						</span>
+						<span class="e_textareaBottom"><span></span></span>
+						</span>
+			</li>
+			<li class="li">
+			  	<span class="label">附件：</span>
+				<span class="e_elements">
+						<input jwcid="@Upload" name="cond_ATTACH_LIST"   id="cond_ATTACH_LIST" ftpSite="personserv"  
+								fileSize="20" fileTypes="*.*" desc="上传文件" nullable="no" filePash="incoming/csvc" />
+				</span>				
+		    </li>
+		    <li class="li">
+			  	<span class="label">录音文件：</span>
+				<span class="e_elements">
+						<input jwcid="@Upload" name="cond_RECORD_LIST"   id="cond_RECORD_LIST" ftpSite="personserv"  
+								fileSize="20" fileTypes="*.*" desc="上传文件" nullable="no" filePash="incoming/csvc" />
+				</span>				
+		    </li>
+			</ul>
+			</div>
+			<div class="c_form c_form-label-8 c_form-col-2" style="display: none" jwcid="wxyyPart@Part">
+			<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">待处罚企业名称：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_COMPANYNAME" id="cond_COMPANYNAME" value="ognl:cond.COMPANYNAME"  desc="待处罚企业名称" nullable="no" />
+				</span></span>
+				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">待处罚企业编码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SPCODE" id="cond_SPCODE" value="ognl:cond.SPCODE"  desc="待处罚企业编码" nullable="no" />
+				</span></span> 
+				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">违约日期：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="cond_FELLBACKDATE" name="cond_FELLBACKDATE" value="ognl:cond.FELLBACKDATE" desc="违约日期" format="yyyy-MM-dd" nullable="no" minName="ognl:cond.FELLBACKDATE"/>
+				</span></span>
+				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">违约事实：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_FELLBACKFACT" id="cond_FELLBACKFACT" value="ognl:cond.FELLBACKFACT"  desc="违约事实" nullable="no" />
+				</span></span> 
+				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">涉及用户数量：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_REFERUSERCOUNT" id="cond_REFERUSERCOUNT" value="ognl:cond.REFERUSERCOUNT"  desc="涉及用户数量" nullable="no" />
+				</span></span> 
+				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">社会影响：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SOCIALEFFECT" id="cond_SOCIALEFFECT" value="ognl:cond.SOCIALEFFECT"  desc="社会影响" nullable="no" />
+				</span></span> 
+				
+			</li>
+			</ul>
+			</div>
+<!-- 分栏 结束 -->
+	<div class="c_submit">
+		<button class="e_button-page-ok" onclick="checkAndSubmit();"><i class="e_ico-ok"></i><span>提交</span></button>
+	</div>
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>垃圾短信查询</title>
+<script language="JavaScript" jwcid="@Script" src="person/rubbishsmsmgr/scripts/prosecutionquery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:block;">
+	<div class="c_tip">
+		请输入号码或时间查询，要求【开始、结束】日期时间段不能超过31天 
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">垃圾短信查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="QueryCondPart@Part">
+	<ul class="ul">
+			<li class="li">
+				<span class="label">举报号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER"  
+						desc="举报号码"	value="ognl:editInfo.SERIAL_NUMBER" />
+						</span></span>
+			</li> 
+			<li class="li">
+				<span class="label">被举报号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="cond_PROSECUTEE_NUM" name="cond_PROSECUTEE_NUM"  
+						desc="被举报号码"	value="ognl:editInfo.PROSECUTEE_NUM" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">举报方式：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_PROSECUTION_WAY" id="cond_PROSECUTION_WAY" desc="举报方式" 
+						source="ognl:pageutil.getStaticList('COPLAIN_TRADE_WORSION')" 
+						value="ognl:editInfo.PROSECUTION_WAY" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE"  
+						desc="用户举报时间"	value="ognl:editInfo.START_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE"  
+						desc="用户举报时间"	value="ognl:editInfo.END_DATE" />
+				</span></span>
+			</li>
+			
+			<input jwcid="@Hidden" name="cond_EXPORT_TAG" id="cond_EXPORT_TAG" value="ognl:editInfo.EXPORT_TAG" desc="标记"/>
+		</ul>
+		<div class="submitPlace"></div>
+		
+		<div class="submit">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryProsecution();" ><i class="e_ico-search"></i><span>查询</span></button>
+			<button class="e_button-form" type="button"  name="reset" id="reset" onclick="return resetArea('QueryCondPart', true);" ><i class="e_ico-reset"></i><span>重置</span></button> 
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域结束 -->
+	
+	<!-- 表格 开始 -->
+<div class="c_box">
+	<div class="c_submit">
+		<div class="right">
+			<button type="button" id="print" name="print" onclick=""><i class="e_ico-print"></i><span>打印</span></button>
+			<div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92102" 
+				config="export/badness/sundryquery/rubbishsms/ProsecutionQuery.xml" fileName="垃圾短信查询" beforeAction="exportBeforeAction"
+				cond="QueryCondPart" />
+			</div>
+		</div>
+	</div>
+	
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryInfoTable" id="QueryInfoTable">
+			<thead>
+				<tr>
+					<th col="X_TAG" style="display:none">TAG</th>		  				
+	  				<th col="PARA_CODE1">流水号</th>
+					<th col="PARA_CODE2">举报号码</th>
+					<th col="PARA_CODE3">举报人名称</th>
+					<th col="PARA_CODE4">举报人地市</th>
+					<th col="PARA_CODE23">举报人家庭地址</th>
+					<th col="PARA_CODE10">举报方式</th>
+					<th col="PARA_CODE6">被举报号码</th>
+					<th col="PARA_CODE24">垃圾短信内容</th>
+					<th col="PARA_CODE21">录入时间</th>	
+					<th col="PARA_CODE8">录入员工</th>
+					<th col="PARA_CODE9">录入部门</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="prosecutionQueryBody" id="prosecutionQueryBody">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE1" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE2" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE3" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE4" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE23" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE10" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE6" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE24" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE21" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:info.PARA_CODE8" ></span></td>
+					 <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.PARA_CODE9)"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 分页 开始 -->
+	<div jwcid="@NavBar" name="QueryNavBar" id="QueryNavBar" cond="QueryCondPart" part="QueryListPart" listener="queryProsecution" pageSize="10" count="ognl:count"></div>
+	<!-- 分页 结束 -->
+	</div>
+</div>
+<!-- 表格 结束 -->
+
+</body>
+</html>

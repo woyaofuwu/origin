@@ -1,0 +1,9 @@
+SELECT PARTITION_ID,to_char(TRADE_ID) TRADE_ID,to_char(USER_ID) USER_ID,SERIAL_NUMBER,a.BIZ_CODE BIZ_CODE,a.SP_CODE SP_CODE ,a.PRODUCT_NO PRODUCT_NO,a.BIZ_TYPE_CODE BIZ_TYPE_CODE ,a.ORG_DOMAIN ORG_DOMAIN,a.OPR_SOURCE OPR_SOURCE,a.BIZ_STATE_CODE BIZ_STATE_CODE,to_char(a.START_DATE,'yyyy-mm-dd hh24:mi:ss') START_DATE,to_char(a.END_DATE,'yyyy-mm-dd hh24:mi:ss') END_DATE,to_char(a.FIRST_DATE,'yyyy-mm-dd hh24:mi:ss') FIRST_DATE,to_char(FIRST_DATE_MON,'yyyy-mm-dd hh24:mi:ss') FIRST_DATE_MON,GIFT_SERIAL_NUMBER,GIFT_USER_ID,a.BILL_TYPE BILL_TYPE,a.PRICE PRICE,to_char(SUBSCRIBE_ID) SUBSCRIBE_ID,RSRV_NUM1,RSRV_NUM2,RSRV_NUM3,to_char(RSRV_NUM4) RSRV_NUM4,to_char(RSRV_NUM5) RSRV_NUM5,a.RSRV_STR1 RSRV_STR1,a.RSRV_STR2 RSRV_STR2,a.RSRV_STR3 RSRV_STR3,a.RSRV_STR4 RSRV_STR4,a.RSRV_STR5 RSRV_STR5,a.RSRV_STR6 RSRV_STR6,a.RSRV_STR7 RSRV_STR7,decode(oper_code,'06','定购','07','退订','11','服务赠送','14','主动暂停','15','恢复','80','分开关业务','89','SP全退订','90','总开关','99','DSMP业务全退订','其他') RSRV_STR8,c.biz_name RSRV_STR9,b.sp_name RSRV_STR10,to_char(RSRV_DATE1,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1,to_char(RSRV_DATE2,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2,to_char(RSRV_DATE3,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE3,to_char(RSRV_DATE4,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE4,to_char(RSRV_DATE5,'yyyy-mm-dd hh24:mi:ss') RSRV_DATE5,a.REMARK REMARK,a.UPDATE_STAFF_ID UPDATE_STAFF_ID,a.UPDATE_DEPART_ID UPDATE_DEPART_ID,to_char(a.UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,OPER_CODE
+  FROM TF_B_TRADE_PLAT_ORDER a,td_m_corporation_sp b,td_m_operation_sp c
+ WHERE a.BIZ_CODE=C.BIZ_CODE
+   AND A.SP_CODE=C.SP_CODE
+   AND A.SP_CODE=B.SP_ID
+   AND b.SP_STATUS='A' AND b.end_date>SYSDATE
+   AND c.biz_status='A' AND c.end_date>SYSDATE
+   AND PARTITION_ID = mod(to_number(:TRADE_ID),10000)
+   AND TRADE_ID = to_number(:TRADE_ID)

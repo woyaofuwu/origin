@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+SELECT AREA_CODE,AREA_NAME FROM td_M_area a WHERE a.parent_area_code = :PARENT_AREA_CODE

@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>PCRF策略变更受理界面</title>
+	<script language="JavaScript" src="person/internetofthings/scripts/dealpcrftactics.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+    <!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 --> 
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="ognl:tradeTypeCode" element="div" />
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+    <!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">已订购PCRF策略信息</div>
+		<div class="fn" id="buttonpart">
+			<button class="e_button-left" onclick="addPcrfinfo(this)"><i class="e_ico-add"></i><span>新增</span></button>
+			<button class="e_button-center" onclick="editPcrfInfo(this)"><i class="e_ico-edit"></i><span>变更</span></button>
+			<button class="e_button-center" onclick="deletPcrfInfo(this)"><i class="e_ico-delete"></i><span>删除</span></button>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div name='PcrfListPart' jwcid="PcrfListPart@Part"  element="div">
+		<div class="c_scroll c_scroll-x style="height:500px"">
+			<div class="c_table c_table-row-10">
+				<table jwcid="@Table" name="UserPcrfsTable">
+					<thead>
+						<tr> 
+						    <th style="display: none;" col="INST_ID">INST_ID</th>
+							<th col="SERVICE_ID">服务ID</th>
+		      				<th col="SERVICE_NAME">服务名称</th>
+		      				<th col="RELA_INST_ID">服务实例ID</th>
+		      				<th col="SERVICE_CODE">策略编码</th>
+	                        <th style="display: none;" col="BILLING_TYPE">计费类型</th>
+	                        <th col="BILLING_TYPE_text">计费类型</th>
+	                        <th style="display: none;" col="USAGE_STATE">配额状态</th>
+	                        <th col="USAGE_STATE_text">配额状态</th>
+							<th col="START_DATE">生效时间</th>
+							<th col="END_DATE">失效时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						   <td style="display: none;"><span jwcid="@Insert" value="ognl:info.INST_ID"/></td>
+						   <td><span jwcid="@Insert" value="ognl:info.SERVICE_ID"/></td>
+						   <td><span jwcid="@Insert" value="ognl:info.SERVICE_NAME"/></td>
+						   <td><span jwcid="@Insert" value="ognl:info.RELA_INST_ID"/></td>
+                           <td><span jwcid="@Insert" value="ognl:info.SERVICE_CODE"/></td>
+                           <td style="display: none;"><span jwcid="@Insert" value="ognl:info.BILLING_TYPE"/></td>
+                           <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ServiceBillingType',info.BILLING_TYPE)"/></td>
+                           <td style="display: none;"><span jwcid="@Insert" value="ognl:info.USAGE_STATE"/></td>
+                           <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ServiceUsageState',info.USAGE_STATE)"/></td>
+                           <td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+                           <td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+						</tr>
+				    </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box e_dis" id="EditPcrfPart" >
+    <!-- 标题 开始 -->
+    <div class="c_title">
+        <div class="text">PCRF策略变更业务受理</div>
+    </div>
+    <!-- 标题 结束 -->
+     <!-- 刷新2区域  开始 -->
+    <div  jwcid="PcrfReqPart@Part">
+        <!-- 表格 开始 -->
+        <div class="c_table c_table-row-5">
+            <table jwcid="@Table" id="PcrfReqTable" name="PcrfReqTable">
+                <thead>
+                    <tr>
+                        <th style="display: none;" col="INST_ID">INST_ID</th>
+                        <th col="SERVICE_ID">服务ID</th>
+                        <th col="SERVICE_NAME">服务名称</th>
+                        <th col="RELA_INST_ID">服务实例ID</th>
+                        <th col="SERVICE_CODE">策略编码</th>
+                        <th style="display: none;" col="BILLING_TYPE">计费类型</th>
+                        <th col="BILLING_TYPE_text">计费类型</th>
+                        <th style="display: none;" col="USAGE_STATE">配额状态</th>
+                        <th col="USAGE_STATE_text">配额状态</th>
+                        <th col="START_DATE">生效时间</th>
+                        <th col="END_DATE">失效时间</th> 
+                        <th col="MODIFY_TAG_text">操作类型</th>   
+                        <th style="display: none;" col="MODIFY_TAG">操作类型</th>                    
+                    </tr>
+                </thead>
+                <tbody name="PcrfReqTableValues" id="PcrfReqTableValues">
+                </tbody>
+            </table>
+        </div>
+        <!-- 表格 结束 -->
+        <!-- 表单 开始 -->
+        <div class="c_form c_form-col-3 c_form-label-5" id="EditPart" name="EditPart">
+            <input type="hidden" jwcid="@TextField" name="pam_ServiceName" id="pam_ServiceName" desc="服务名称" value=""/>
+            <input type="hidden" jwcid="@TextField" name="pam_RELA_INST_ID" id="pam_RELA_INST_ID" desc="服务实例ID" value=""/>
+            <input type="hidden" jwcid="@TextField" name="pam_INST_ID" id="pam_INST_ID" desc="PCRF实例ID" value=""/>
+            <input type="hidden" jwcid="@TextField" name="pam_MODIFY_TAG" id="pam_MODIFY_TAG" desc="操作类型" value="0"/>
+            <input type="hidden" jwcid="@TextField" name="pam_MODIFY_TAG_text" id="pam_MODIFY_TAG_text" desc="操作类型" value="新增"/>
+            <ul class="ul">
+                <li class="li">
+                    <span class="label"><span class="e_required">策略编码：</span></span>
+                    <span class="e_select"><span><span>
+                    <select jwcid="@Select" name="pam_ServiceCode" id="pam_ServiceCode"
+                            source="ognl:pageutil.getStaticList('ServiceCode')" addDefault="true"
+                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                            desc="策略编码" nullable="no" />
+                    </span></span></span>                   
+                </li>
+                <li class="li">
+                    <span class="label"><span class="e_required">计费类型：</span></span>
+                     <span class="e_select"><span><span>
+                    <select jwcid="@Select" name="pam_ServiceBillingType" id="pam_ServiceBillingType"
+                            source="ognl:pageutil.getStaticList('ServiceBillingType')" addDefault="true"
+                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                            desc="计费类型" nullable="no" />
+                    </span></span></span>    
+                </li>
+                <li class="li">
+                    <span class="label"><span class="e_required">配额状态：</span></span>
+                    <span class="e_select"><span><span>
+                        <select jwcid="@Select" name="pam_ServiceUsageState" id="pam_ServiceUsageState" onchange="changeSelect()"
+                            source="ognl:pageutil.getStaticList('ServiceUsageState')" addDefault="true"
+                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                             desc="配额状态" nullable="no" />
+                    </span></span></span>
+                </li>
+                <li class="li">
+                    <span class="label"><span class="e_required">服务ID：</span></span>
+                    <span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="pam_ServiceId" id="pam_ServiceId" desc="服务ID" onclick="queryUserSvc()"  nullable="no" />
+					</span></span>
+                </li> 
+                <li class="li">
+                    <span class="label"><span>业务启用时间：</span></span>
+                    <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="pam_ServiceStartDateTime" id="pam_ServiceStartDateTime" 
+									value="ognl:@com.ailk.bizcommon.util.SysDateMgr@getSysDateYYYYMMDDHHMMSS()" desc="业务启用时间" format="yyyy-MM-dd HH:mm:ss"  time = "true"  nullable="yes" maxName="pam_ServiceEndDateTime"/>
+					</span></span>
+                </li>
+
+                <li class="li">
+                    <span id="serv_code_class" class="label"><span>业务截止时间:</span></span>
+                    <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="pam_ServiceEndDateTime" id="pam_ServiceEndDateTime"
+                               value="ognl:@com.ailk.bizcommon.util.SysDateMgr@getTheLastTime()" desc="业务截止时间" format="yyyy-MM-dd HH:mm:ss"  time = "true"  nullable="yes" minName="pam_ServiceStartDateTime"/>
+					</span></span>
+                </li>                               
+            </ul>
+            <div class="submitPlace"></div>
+            <div class="submit">
+                <button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="return createPcrfReq(this)"><i id="ibcreate" name="ibcreate" class="e_ico-confirm"></i><span>确定</span></button>
+                <button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="return deletePcrfReq(this)"><i id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+            </div>
+        </div>
+        <!-- 表单 结束 -->
+    </div>
+     <!-- 提交 开始 -->
+    <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitPcrfReqs()"  params="" listener="submitTrade"  isReset="true" area="PcrfReqPart,AuthPart,HiddenPart" refreshPart="" element="div"/>
+    <!-- 提交 结束 -->
+</div>
+
+<div class="c_popup" id="DetailPopup" style="display:none">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox">
+			<div class="c_popupTitle">
+				<div class="text">用户服务信息</div>
+				<div class="fn"><a href="#nogo" class="close" onclick="$('#DetailPopup').css('display','none');"></a></div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div jwcid="SvcListPart@Part">
+					<div class="c_scroll c_scroll-x style="height:500px"">
+						<div class="c_table c_table-row-10">
+							<table jwcid="@Table" name="UserSvcsTable">
+								<thead>
+									<tr> 
+									    <th><span>选择</span></th>
+										<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">服务ID</th>
+					      				<th onclick="Wade.dom.sortTable('ResultTable',2,'string')">服务名称</th>
+					      				<th style="display: none;" onclick="Wade.dom.sortTable('ResultTable',3,'string')">实例ID</th>
+										<th onclick="Wade.dom.sortTable('ResultTable',6,'string')">生效时间</th>
+										<th onclick="Wade.dom.sortTable('ResultTable',7,'string')">失效时间</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:svcInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									   <td><input jwcid="@Radio" name="selCard"
+													value="ognl:info.INST_ID"  svcNo="ognl:info.SERVICE_ID" svcName="ognl:info.SERVICE_NAME" onclick="selectSvc(this)"/></td>
+									   <td><span jwcid="@Insert" value="ognl:info.SERVICE_ID"/></td>
+									   <td><span jwcid="@Insert" value="ognl:info.SERVICE_NAME"/></td>
+			                           <td style="display: none;"><span jwcid="@Insert" value="ognl:info.INST_ID"/></td>
+			                           <td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+			                           <td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+									</tr>
+							    </tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+	<!-- 隐藏区域 开始 -->
+	<div jwcid="HiddenPart@Part">
+	   <input type="hidden" jwcid="@TextField" name="USER_ID" id="USER_ID" value=""/>
+	   <input type="hidden" jwcid="@TextField" name="X_BATPCRFREQ_STR" id="X_BATPCRFREQ_STR" value=""/>
+	</div>
+	<!-- 隐藏区域 结束 -->
+</div></div>
+</body>
+</html>

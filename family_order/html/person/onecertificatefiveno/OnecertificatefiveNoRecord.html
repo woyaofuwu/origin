@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<title>一证五号数据比对结果展示界面</title>
+<script jwcid="@Script" language="JavaScript"
+	src="person/onecertificatefiveno/scripts/onecertificatefivenoRecord.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<div class="c_box">
+				<div class="c_title">
+					<div class="text">一证五号数据差异记录查询</div>
+				</div>
+				<div class="c_form c_form-label-4 c_form-col-2" jwcid="submitInfo@Part">
+					<ul class="ul">
+						<li class="li"><span class="label">手机号码：</span> <span
+							class="e_input"> <span> <input id="PHONENUMBER" name="PHONENUMBER"
+									type="text" /> </span> </span></li>
+						<li class="li"><span class="label">比对结果：</span> 
+							<span class="e_select" ><span><span>
+							<select id="COMPRESULT" name="COMPRESULT">
+								<option value="" title="请选择">请选择</option>
+								<option value="01" title="BOSS多">BOSS多</option>
+								<option value="02" title="平台多">平台多</option>
+								<option value="03" title="数据不一致">数据不一致</option>
+							</select>
+							</span></span></span>
+						</li>
+						<li class="li"><span class="label" >同步标志：</span> 
+							<span class="e_select" ><span><span>
+							<select id="SYNRESULT" name="SYNRESULT">
+								<option value="" title="请选择">请选择</option>
+								<option value="00" title="未处理">未处理</option>
+								<option value="01" title="处理成功">处理成功</option>
+								<option value="02" title="处理失败">处理失败</option>
+							</select>
+							</span></span></span>
+						</li>
+						<li class="li"><span class="label">对账日期开始时间：</span> <input
+							jwcid="@DateField" id="SRECONDATE" name="SRECONDATE"
+							format="yyyy-MM-dd" readonly="true"
+							desc="对账日期结束时间" /></li>
+						<li class="li"><span class="label">对账日期结束时间：</span> <input
+							jwcid="@DateField" id="ERECONDATE" name="ERECONDATE"
+							format="yyyy-MM-dd" readonly="true"
+							desc="对账日期结束时间" /></li>	
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button class="e_button-form" id="query" name="query"
+							onclick="queryData()">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+
+
+				</div>
+				<!-- 表格 开始 -->
+				<div jwcid="OnecertificatefiveNoTablePart@Part" id = "OnecertificatefiveNoTablePart" element="div">
+					<div class="c_title c_title-2">
+						<div class="text">查询结果</div>
+						<div class="fn"><button type="button" class="e_button"  onclick="deal()"><i class="e_ico-ok"></i><span>处理</span></button></div>
+					</div>
+					<div class="c_scroll c_scroll-x">
+						<div class="c_table c_table-row-10">
+							<table jwcid="@Table" name="OnecertificatefiveNoTable" id="OnecertificatefiveNoTable"
+								scroll="true">
+								<thead>
+									<tr>
+										<th><input type="checkbox" id="deal_ctrl" name="deal_ctrl" onclick="checkedAll('inforecvid', checked)"/></th>
+										<th col="IBSYSID">对账流水</th>
+										<th col="RECON_DATE">对账日期</th>
+										<th col="PHONE_NUMBER">手机号码</th>
+										<th col="CID_CATEGORY">证件类型</th>
+										<th col="CID_CODE">证件号码</th>
+										<th col="NAME_CODE">客户姓名</th>
+										<th col="COMP_RESULT">比对结果</th>
+										<th col="SYN_RESULT">同步标志</th>
+										<th col="FILE_NAME">文件名称</th>
+										<th col="UPDATE_TIME">更新时间</th>
+									</tr>
+								</thead>
+								<tbody jwcid=@Any name="OnecertificatefiveNoTableRow" id="OnecertificatefiveNoTableRow">
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex"  element="tr">
+                                   	<td><input jwcid="@Checkbox"type="checkbox" name="inforecvid" id="inforecvid" /></td>
+                                   	<td><span jwcid="@Insert" value="ognl:info.IBSYSID"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.RECON_DATE)"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.PHONE_NUMBER"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.CID_CATEGORY"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.CID_CODE"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.NAME_CODE"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.COMP_RESULT"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.SYN_RESULT"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:info.FILE_NAME"></span></td>
+					                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)"></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+			<!-- 翻页 开始 -->
+	   <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="submitInfo" part="OnecertificatefiveNoTablePart" listener="queryData" pageSize="10" count="ognl:count"></div>
+	        <!-- 翻页 结束 -->
+				</div>
+				<!-- 表格 结束 -->
+
+			</div>
+</body>
+</html>

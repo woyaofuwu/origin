@@ -1,0 +1,3 @@
+select flow_id,CUST_CONTACT_ID,modify_tag,modify_desc,update_staff_id,update_depart_id,update_city_code,update_eparchy_code,update_time,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,remark
+from tl_b_custcontact_tradelog
+where CUST_CONTACT_ID = :CUST_CONTACT_ID

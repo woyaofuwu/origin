@@ -1,0 +1,105 @@
+SELECT to_char(USER_ID) USER_ID,
+       PARTITION_ID,
+       VPN_NAME,
+       VPN_NO,
+       GROUP_AREA,
+       SCP_CODE,
+       VPMN_TYPE,
+       VPN_TYPE,
+       PROVINCE,
+       SUB_STATE,
+       FUNC_TLAGS,
+       FEEINDEX,
+       INTER_FEEINDEX,
+       OUT_FEEINDEX,
+       OUTGRP_FEEINDEX,
+       SUBGRP_FEEINDEX,
+       NOTDISCNT_FEEINDEX,
+       PRE_IP_NO,
+       PRE_IP_DISC,
+       OTHOR_IP_DISC,
+       TRANS_NO,
+       MAX_CLOSE_NUM,
+       MAX_NUM_CLOSE,
+       PERSON_MAXCLOSE,
+       MAX_OUTGRP_NUM,
+       MAX_OUTGRP_MAX,
+       MAX_INNER_NUM,
+       MAX_OUTNUM,
+       MAX_USERS,
+       MAX_LINKMAN_NUM,
+       MAX_TELPHONIST_NUM,
+       MAX_LIMIT_USERS,
+       to_char(PKG_START_DATE, 'yyyy-mm-dd hh24:mi:ss') PKG_START_DATE,
+       PKG_TYPE,
+       DISCOUNT,
+       to_char(LIMIT_FEE) LIMIT_FEE,
+       ZONE_MAX,
+       ZONEFREE_NUM,
+       to_char(ZONE_FEE) ZONE_FEE,
+       MT_MAXNUM,
+       AIP_ID,
+       WORK_TYPE_CODE,
+       VPN_SCARE_CODE,
+       VPN_TIME_CODE,
+       VPN_USER_CODE,
+       VPN_BUNDLE_CODE,
+       MANAGER_NO,
+       CALL_NET_TYPE,
+       CALL_AREA_TYPE,
+       OVER_FEE_TAG,
+       LIMFEE_TYPE_CODE,
+       SINWORD_TYPE_CODE,
+       MOVE_TAG,
+       TRANS_TAG,
+       LOCK_TAG,
+       CUST_MANAGER,
+       LINK_MAN,
+       to_char(MONTH_FEE_LIMIT) MONTH_FEE_LIMIT,
+       SHORT_CODE_LEN,
+       CALL_ROAM_TYPE,
+       BYCALL_ROAM_TYPE,
+       PAYITEM_CODE,
+       to_char(ITEM_FEE) ITEM_FEE,
+       to_char(OPEN_DATE, 'yyyy-mm-dd hh24:mi:ss') OPEN_DATE,
+       to_char(REMOVE_DATE, 'yyyy-mm-dd hh24:mi:ss') REMOVE_DATE,
+       to_char(USRGRP_ID) USRGRP_ID,
+       to_char(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       REMARK,
+       RSRV_NUM1,
+       RSRV_NUM2,
+       RSRV_NUM3,
+       to_char(RSRV_NUM4) RSRV_NUM4,
+       to_char(RSRV_NUM5) RSRV_NUM5,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5,
+       to_char(RSRV_DATE1, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1,
+       to_char(RSRV_DATE2, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2,
+       to_char(RSRV_DATE3, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE3,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       RSRV_TAG3
+  FROM TF_F_USER_VPN UV
+WHERE 1=1
+AND EXISTS (
+    SELECT 1 FROM TF_F_USER_VPN V
+    WHERE 1=1
+    AND V.USER_ID = :USER_ID
+    AND V.PARTITION_ID = MOD(TO_NUMBER(:USER_ID),10000)
+    AND UV.VPN_NO = V.VPN_NO 
+    AND V.REMOVE_TAG = '0'
+)
+AND EXISTS(
+    SELECT 1 FROM TF_F_USER U
+    WHERE 1=1
+    AND U.USER_ID = UV.USER_ID
+    AND U.PARTITION_ID = MOD(TO_NUMBER(UV.PARTITION_ID), 10000)
+    AND U.PRODUCT_ID = :PRODUCT_ID
+    AND U.REMOVE_TAG = '0'
+)
+AND UV.REMOVE_TAG = '0'

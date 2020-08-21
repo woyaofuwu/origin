@@ -1,0 +1,6 @@
+SELECT to_char(cust_id) cust_id,contract_id,contract_name,contract_type_code,contract_content,to_char(CONTRACT_WRITE_DATE,'yyyy-mm-dd hh24:mi:ss') CONTRACT_WRITE_DATE,to_char(contract_start_date,'yyyy-mm-dd hh24:mi:ss') contract_start_date,to_char(contract_end_date,'yyyy-mm-dd hh24:mi:ss') contract_end_date,contract_state_code,to_char(CONTRACT_END_DATE,'yyyy-mm-dd hh24:mi:ss') end_date,CONTRACT_RECV_SITE recv_addr,CONTRACT_STATE_CODE contract_statenote,contract_conman,CONTRACT_WRITER contract_writer,contract_manager,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,to_char(rsrv_num1) rsrv_num1,to_char(rsrv_num2) rsrv_num2,remark,RSRV_STR2 rsrv_2,rela_contract_id,CONTRACT_WRITE_TYPE write_type,contract_flag,to_char(CONTRACT_IN_DATE,'yyyy-mm-dd hh24:mi:ss') in_date 
+             FROM tf_f_cust_contract t
+             WHERE cust_id=TO_NUMBER(:CUST_ID)
+             AND t.contract_flag='1' -- 合同有效标志：0－无效，1－有效
+			 AND contract_end_date<add_months(sysdate,6)
+             AND contract_end_date>add_months(sysdate,-6)

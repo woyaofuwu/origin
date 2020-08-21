@@ -1,0 +1,1 @@
+delete from TF_B_PRE_TRADE where SERIAL_NUMBER = :SERIAL_NUMBER and status = '1' and RSRV_STR6 = :RSRV_STR6 and PRE_INVALID_TIME > sysdate

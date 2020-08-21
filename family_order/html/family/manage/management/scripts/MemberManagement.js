@@ -1,0 +1,4 @@
+var memberManagement = {
+    refreshPartAtferAuth: function () {
+    },
+}

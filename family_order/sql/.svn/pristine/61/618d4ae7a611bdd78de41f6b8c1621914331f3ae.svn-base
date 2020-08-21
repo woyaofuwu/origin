@@ -1,0 +1,1 @@
+select * from TF_F_WIDENET_BOOK where rsrv_tag3 = :REG_STATUS

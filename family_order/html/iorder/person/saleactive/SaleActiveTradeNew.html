@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="iorder/person/saleactive/scripts/saleactivetrade.js"></script>
+    <title>营销活动受理</title>
+</head>
+<body jwcid="@Body">
+    <div class="c_scroll c_scroll-float">
+        <div class="l_padding">
+            <!-- 认证 开始 -->
+            <div jwcid="AuthPart@icsserv:Auth" authType="ognl:info.authType"
+                 tradeTypeCode="ognl:info.TRADE_TYPE_CODE"
+                 tradeAction="saleActiveTrade.checkSaleBook(data)"
+                 element="div"></div>
+            <!-- 认证 结束 -->
+            <div jwcid="SaleActivePart@icsserv:SaleActive" element="div"
+                 needCheck="true" needUserId="true"
+                 tradeTypeCode="ognl:getParameter('TRADE_TYPE_CODE', '')"
+                 eparchyCodeCompId="custinfo_EPARCHY_CODE"></div>
+            <!-- 费用组件 开始 -->
+            <div id="FEE_PLACEHOLDER"></div>
+            <div jwcid="@icsserv:IFee"></div>
+            <!-- 费用组件 结束-->
+            <div class="c_space"></div>
+            <!-- 提交 开始 -->
+            <div class="c_submit c_submit-center"
+                 jwcid="SubmitPart@icsserv:CSSubmit"
+                 beforeAction="saleActiveTrade.onTradeSubmit()"
+                 orderTypeCode="ognl:info.TRADE_TYPE_CODE"
+                 isRender="false" params="" listener="" refreshPart=""
+                 area="AuthPart" element="div"></div>
+            <div class="c_submit c_submit-center">
+                <button type="button" id="checkSMSBtn"
+                        class="e_button-l e_button-r e_button-green"
+                        ontap="saleActiveTrade.checkSMSButton();" style="display: none;">
+                    <span>验证码</span>
+                </button>
+                <button type="button" id="AuthCodeBtn"
+                        class="e_button-l e_button-r e_button-green"
+                        ontap="saleActiveTrade.redPackPlaceOrderCall();" style="display: none;">
+                    <span class="e_ico-ok"></span><span>提交</span>
+                </button>
+                <input jwcid="@Hidden" name="RED_PACK_PARAMS"
+                       afterAction="saleActiveTrade.afterRedPackCall()"
+                       desc="弹出认证验证框关闭后触发动作"/>
+            </div>
+            <!-- 提交 结束 -->
+            <!-- 隐藏参数 开始 -->
+            <input jwcid="@Hidden" name="custinfo_EPARCHY_CODE" value="0898" desc="用户地州"/>
+            <input jwcid="@Hidden" name="LABEL_ID" value="ognl:info.LABEL_ID" desc="活动标签"/>
+            <input jwcid="@Hidden" name="NET_ORDER_ID" value="" desc="商城预约订单编码"/>
+       		<input jwcid="@Hidden" name="SMS_CODE" value="" desc="查询红包余额验证码"/>
+            <input jwcid="@Hidden" name="CHECK_SMS_VERICODE" value="" desc="验证码"/>
+            <input jwcid="@Hidden" name="LIMIT_COUNT" value="" desc="验证码限制次数"/>
+            <input jwcid="@Hidden" name="NOTICE_CONTENT" value="" desc="提示信息"/>
+            <input jwcid="@Hidden" name="SMS_VERI_SUCCESS" value="" desc="提交后需要动态验证码验证的营销活动办理，验证成功标记：1-成功"/>
+            <input jwcid="@Hidden" name="MUL_CHANNEL_TAG" id="MUL_CHANNEL_TAG" value="ognl:getParameter('MUL_CHANNEL_TAG', '0')" desc="泛渠道页面标识"/>
+            <!-- 从首页"热门产品"和"推荐产品"跳转URL参数 -->
+            <input jwcid="@Hidden" name="PRODUCT_ID_FROM_URL" value="ognl:getParameter('productId', '')" desc="从URL获取的产品编码"/>
+            <input jwcid="@Hidden" name="PACKAGE_ID_FROM_URL" value="ognl:getParameter('offerCode', '')" desc="从URL获取的活动包编码"/>
+            <input jwcid="@Hidden" name="SALEACTIVE_ASSIGNED" value="0" desc="从URL获取营销活动参数的载入状态，0-初始化默认值，1-活动参数已载入"/>
+            <!-- 隐藏参数 结束 -->
+        </div>
+    </div>
+    <div name="saleActiveListPopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <!-- 营销包选择组件 开始 -->
+            <div jwcid="SaleActiveListPart@icsserv:SaleActiveList"
+                 class="c_popupItem" popupId="saleActiveListPopup" element="div"
+                 eparchyCodeCompId="custinfo_EPARCHY_CODE"></div>
+            <!-- 营销包选择组件 结束 -->
+        </div>
+        <div class="c_popupGroup">
+            <!-- 校验活动产品老用户手机号 开始 -->
+            <div id="checkProdOldCustSnItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back"
+                         ontap="saleActiveList.afterPopupProdCheckFailure()">校验营销活动</div>
+                </div>
+                <div class="c_form c_form-label-4 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="saleActiveList.popupCheckProdOldCustSn()">
+                            <span class="e_ico-check"></span><span>校验</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">手机号码：</div>
+                            <div class="value">
+                                <input name="oldCustSnForProd"
+                                       jwcid="@TextField"
+                                       onenterAction="saleActiveList.popupCheckProdOldCustSn()"
+                                       placeholder="请输入校验用户手机号码"
+                                       nullable="no" datatype="mbphone"
+                                       desc="校验活动产品老用户手机号码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="IF_NEW_USER_ACTIVE"/>
+                </div>
+            </div>
+            <!-- 校验活动产品老用户手机号 结束 -->
+        </div>
+    </div>
+    <!-- 校验活动包老用户手机号码弹窗 开始 -->
+    <div name="checkPackOldCustSnPopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <div id="checkPackOldCustSnItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back"
+                         ontap="saleActiveList.afterPopupPackCheckFailure()">校验活动规则</div>
+                </div>
+                <div class="c_form c_form-label-4 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="saleActiveList.popupCheckPackOldCustSn()">
+                            <span class="e_ico-check"></span><span>校验</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">手机号码：</div>
+                            <div class="value">
+                                <input name="oldCustSnForPack"
+                                       jwcid="@TextField"
+                                       onenterAction="saleActiveList.popupCheckPackOldCustSn()"
+                                       placeholder="请输入校验用户手机号码"
+                                       nullable="no" datatype="mbphone"
+                                       desc="校验活动包老用户手机号码"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 校验活动包老用户手机号码弹窗 结束 -->
+    <!-- 校验绑定号码弹窗 开始 -->
+    <div name="checkBindSerialNumberBPopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <div id="checkBindSerialNumberBItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">校验绑定号码</div>
+                </div>
+                <div class="c_form c_form-label-4 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="saleActiveModule.popupCheckBindSerialNumberB()">
+                            <span class="e_ico-check"></span><span>校验</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">手机号码：</div>
+                            <div class="value">
+                                <input name="bindSerialNumberB"
+                                       jwcid="@TextField"
+                                       onenterAction="saleActiveModule.popupCheckBindSerialNumberB()"
+                                       placeholder="请输入绑定手机号码"
+                                       nullable="no" datatype="mbphone"
+                                       desc="校验绑定手机号码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="CHECK_BIND_SERIAL_NUMBER_B_PARAMS"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 校验绑定号码弹窗 结束 -->
+    <!-- 校验验证码弹窗 开始 -->
+    <div name="checkSMSCodePopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <div id="checkSMSCodeItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">校验验证码第<span id="SMS_CHECKED_COUNT"></span>次</div>
+                </div>
+                <div class="c_form c_form-label-3 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="saleActiveModule.popupCheckSMSCode()">
+                            <span class="e_ico-check"></span><span>校验</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">验证码：</div>
+                            <div class="value">
+                                <input name="SMS_SEND"
+                                       jwcid="@TextField"
+                                       onenterAction="saleActiveModule.popupCheckSMSCode()"
+                                       placeholder="请输入验证码"
+                                       nullable="no" desc="校验验证码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="SMS_RECV"/>
+                    <input jwcid="@Hidden" name="CHECK_SMS_CODE_PARAMS"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 校验验证码弹窗 结束 -->
+    <!-- 发送验证码弹窗 开始 -->
+    <div name="sendSMSCodePopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <div id="sendSMSCodeItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">验证码</div>
+                </div>
+                <div class="c_form c_form-label-3 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="saleActiveList.popupqueryProdRedMoney()">
+                            <span class="e_ico-check"></span><span>确定</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">验证码：</div>
+                            <div class="value">
+                                <input name="RED_SMS_CODE"
+                                       jwcid="@TextField"
+                                       placeholder="请输入验证码"
+                                       nullable="no" desc="校验验证码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="RED_SMS_CODE"/>
+                    <input jwcid="@Hidden" name="CHECK_RED_SMS_CODE_PARAMS"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 发送验证码弹窗 结束 -->
+</body>
+</html>

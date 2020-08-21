@@ -1,0 +1,8 @@
+SELECT eparchy_code,to_char(print_id) print_id,partition_id,to_char(batch_id) batch_id,to_char(charge_id) charge_id,note_code,note_no,to_char(acct_id) acct_id,pay_name,serial_number,to_char(user_id) user_id,to_char(min_bill_id) min_bill_id,to_char(max_bill_id) max_bill_id,to_char(score_value) score_value,to_char(credit_value) credit_value,to_char(round_fee) round_fee,to_char(last_balance) last_balance,to_char(real_fee) real_fee,to_char(present_fee) present_fee,to_char(total_fee) total_fee,to_char(late_fee) late_fee,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date,cheque_no,print_mode,to_char(print_time,'yyyy-mm-dd hh24:mi:ss') print_time,print_staff_id,print_depart_id,print_city_code,print_eparchy_code,reprint_flag,print_reason,cancel_tag,cancel_staff_id,cancel_depart_id,cancel_city_code,cancel_eparchy_code,cancel_reason,to_char(cancel_time,'yyyy-mm-dd hh24:mi:ss') cancel_time,post_tag,to_char(rsrv_fee1) rsrv_fee1,to_char(rsrv_fee2) rsrv_fee2,rsrv_info1,rsrv_info2 
+  FROM tf_a_noteprintlog
+ WHERE  print_depart_id=(select depart_id from td_m_depart where depart_code=:PRINT_DEPART_ID and validflag='0')
+   AND reprint_flag='1'
+   AND partition_id>=:START_PARTITION_ID 
+   AND partition_id<=:END_PARTITION_ID 
+   AND PRINT_TIME >=TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS') 
+   AND PRINT_TIME <=TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS')

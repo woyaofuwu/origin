@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/querygroupinfo/Power100Query.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">动力100集团产品信息查询</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+			   
+			   <span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+			   <input jwcid="@TextField" id="conn_CUST_ID" name="CUST_ID" value="ognl:condition.CUST_ID" style="display:none"/>
+			</li> 
+		</ul>
+	</div>
+	</div>	
+	<!--信息展示区-->
+	<div jwcid="RefreshPart@Part">  
+	<div class="c_title c_title-2">
+		<span class="text">已订购的组合产品包</span> 
+	</div> 
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+		<table>
+			<thead>
+				<tr> 
+					<th>产品编码</th>
+					<th>产品名称</th>
+					<th>集团产品编码</th> 
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+					<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="true"/></td>
+					<td>
+						<a jwcid="@Redirect" source="ognl:info" value="ognl:info.PRODUCT_NAME" user_id_a="ognl:info.USER_ID_A" onclick="queryProduct(this);" raw="true"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="RefreshPart" listener="queryInfos"  pageSize="20" needCoun="false" count="ognl:pageCounts"/>
+	<!-- 翻页 结束 -->
+	 
+	</div>
+	<!--信息展示区 结束-->
+	
+	<!--成员信息展示区-->
+	<div jwcid="RefreshPart1@Part">  
+	<div class="c_title c_title-2">
+		<span class="text">已订购的产品信息</span> 
+	</div> 
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+		<table>
+			<thead>
+				<tr> 
+					<th>品牌编码</th>
+					<th>产品名称</th>
+					<th>产品服务号码</th>
+					<th>订购时间</th>
+				</tr>
+			</thead>   
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:mebinfos" value="ognl:mebinfo" element="tr" index="ognl:rowIndex">
+					<td><span jwcid="@Insert" value="ognl:mebinfo.BRAND_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:mebinfo.PRODUCT_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:mebinfo.SERIAL_NUMBER" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:mebinfo.OPEN_DATE" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="pageNav2" id="pageNav2" cond="QueryCondPart" part="RefreshPart1" listener="queryInfos"  pageSize="20" needCoun="false" count="ognl:pageCounts2"/>
+	<!-- 翻页 结束 -->
+	 
+	</div>
+	<!--成员信息展示区 结束-->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script>
+function queryProduct(obj)
+{
+	var user_id_a = obj.getAttribute('user_id_a');
+	ajaxSubmit(this, 'queryProductInfos', '&USER_ID_A='+user_id_a, 'RefreshPart1,refreshHintBar');
+}
+</script>
+</body>
+</html> 
+
+
+  

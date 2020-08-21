@@ -1,0 +1,22 @@
+insert into TF_F_IOT_USER
+  (PARTITION_ID,USER_ID, SERIAL_NUMBER, IMSI, APN1, APN2, APN3, APN4, APN5,
+  OPEN_DATE, CALLING_TYPE_CODE, GROUP_NAME, PROVINCIAL_ROAM_TAG, OPRFLAG, CUST_MANAGER_NAME,IN_DATE,UPDATE_TIME)
+  values
+  (:PARTITION_ID,
+  :USER_ID,
+  :SERIAL_NUMBER,
+  :IMSI,
+  :APN1,
+  :APN2,
+  :APN3,
+  :APN4,
+  :APN5,
+  to_date(:OPEN_DATE,'yyyy-mm-dd hh24:mi:ss'),
+  :CALLING_TYPE_CODE,
+  :GROUP_NAME,
+  :PROVINCIAL_ROAM_TAG,
+  :OPRFLAG,
+  :CUST_MANAGER_NAME,
+  to_date(:IN_DATE,'yyyy-mm-dd hh24:mi:ss'),
+  to_date(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss')
+ )

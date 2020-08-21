@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="JavaScript"  src="person/sundryquery/plat/mobilepayment/scripts/accounttransactionquery.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">手机支付帐户交易查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input" style="width:130px;"><span><input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="手机号码" maxsize="11"  nullable="no" datatype="mbphone" /></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">开始时间：</span></span>
+				<span class="e_input" style="width:130px;"><span><input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE"" desc="开始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input" style="width:130px;"><span><input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" desc="结束时间"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="return queryMobilePayment()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-4 c_form-col-3 c_form-text" jwcid="tablePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.CUST_NAME"></span>
+			</li>
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:custInfo.PSPT_ID"></span>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfo.PSPT_TYPE_CODE)"></span>
+			</li>
+			<li class="li col-3">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert" value="ognl:custInfo.PSPT_ADDR"></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-10" jwcid="listPart@Part">
+		<table>
+			<thead>
+				<tr>
+					<th>交易手机号</th>
+					<th>手机支付流水号</th>
+					<th>交易日期</th>
+					<th>交易码</th>
+					<th>交易金额（元）</th>
+					<th>账户类型</th>
+					<th>资金属性</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.EX_MPAY_SEQ" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.EX_TIME" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.EX_CODE" raw="true" /></td>
+					<!-- <td><span jwcid="@Insert" value="ognl:@com.linkage.component.util.Utility@formatDecimal('0.00', info.EX_FEE/1000)" raw="true" /></td>--> 
+					<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.EX_FEE/1000)" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACC_TYPE" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.CASH_TYPE" raw="true" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+
+</div></div>
+</body>
+</html>

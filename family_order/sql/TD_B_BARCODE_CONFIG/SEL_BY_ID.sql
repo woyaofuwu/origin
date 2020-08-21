@@ -1,0 +1,5 @@
+--IS_CACHE=N
+select D.BARCODE_ID, D.ELEMENT_TYPE, D.ELEMENT_ID
+  from TD_B_BARCODE_CONFIG D
+ where D.BARCODE_ID = :BARCODE_ID
+   and sysdate between D.START_DATE and D.END_DATE

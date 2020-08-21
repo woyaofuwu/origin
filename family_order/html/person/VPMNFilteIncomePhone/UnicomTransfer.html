@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/VPMNFilteIncomePhone/scripts/UnicomTransfer.js"></script>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 用户鉴权 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="311"  disabledAuth="true"  tradeAction="refreshPartAtferAuth(data);" element="div"></div>
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+
+<!--  用户鉴权 结束 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">已转接号码</div>
+	</div>
+	<div class="c_form">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">异网服务号：</span>
+					<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" id = "PHONE_CODE_B" name = "PHONE_CODE_B" value="" datatype="mbphone" desc="联通服务号" maxlength=11 onblur="checkMphone(this);"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">开始日期：</span>
+					<span class="e_input"><span><input type="text" jwcid="@DateField" name="START_DATE" value="ognl:condition.START_DATE" desc="开始日期" disabled="true" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">结束日期：</span>
+					<span class="e_input"><span><input type="text" jwcid="@DateField" name="END_DATE" value="ognl:condition.END_DATE" desc="开始日期" disabled="true"/></span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit e_right"  >
+				<button class="e_button-form" onclick="return createDept('area');" disabled="true"><i class="e_ico-add"></i><span>新增</span></button>
+				<button class="e_button-form" onclick="return updateDept('area');" disabled="true"><i class="e_ico-modify"></i><span>修改</span></button>
+				<button class="e_button-form" onclick="return deleteDept('area');" disabled="true"><i class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+	</div>
+	<div class="c_scroll c_scroll-table-10 c_scroll-x">
+		<div class="c_table">
+			<div class="" jwcid="Phone_Table@Part" >
+				<table jwcid="@Table"  id="DeptTable" >
+					<thead>
+						<tr>
+							<th id="col_PHONE_CODE_A" >移动手机号码</th>
+							<th id="col_PHONE_CODE_B" >异网手机号码</th>		
+							<th id="col_START_DATE" >开始时间</th>
+							<th id="col_END_DATE" >结束时间</th>
+							<th id="col_UPDATE_TIME" style="display:none">更新时间</th>
+							<th id="col_PHONE_CODE_B_BAK" style="display:none">异网手机号码</th>
+						</tr>
+					</thead>
+					<tbody >
+						<tr jwcid="@Foreach"  source="ognl:otherInfos" value="ognl:otherInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td class="e_center" ><span jwcid="@Insert" value="ognl:otherInfo.PHONE_CODE_A" raw="true"/> </td>
+							<td class="e_center" id="td_serialNumberB"><span jwcid="@Insert" value="ognl:otherInfo.PHONE_CODE_B" raw="true"/></td>
+							<td class="e_center" id ="td_start_date"><span jwcid="@Insert" value="ognl:otherInfo.START_DATE" raw="true"/></td>
+							<td class="e_center" id ="td_end_date"><span jwcid="@Insert" value="ognl:otherInfo.END_DATE" raw="true"/></td>
+							<td class="e_center"style="display:none"><span jwcid="@Insert" value="ognl:otherInfo.UPDATE_TIME" raw="true"/></td>
+							<td class="e_center"style="display:none"><span jwcid="@Insert" value="ognl:otherInfo.PHONE_CODE_B" raw="true"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>	
+		</div>
+	</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitCheck()" listener="submitTrade"  isReset="true" area="AuthPart,busiSubmitPart" element="div" />
+</div>
+<div class="" jwcid="busiSubmitPart@Part">
+<input type="hidden" id="sumbmit_str" name="sumbmit_str" value=""/>
+<input  type="hidden"  id="modify_tag"  name="modify_tag" value="0" /> 
+</div>
+<!-- 提交 结束 -->
+<div class="" jwcid="Phone_List_Part@Part" >
+ 	 <input jwcid="@Hidden"  name="PHONE_CODE_A_BAK" value="ognl:condition.SERIAL_NUMBER" />
+	 <input  jwcid="@Hidden"  name="PHONE_CODE_B_BAK" value="ognl:otherInfo.PHONE_CODE_B" /> 
+	 <input jwcid="@Hidden"  name="START_DATE_BAK" value="ognl:otherInfo.START_DATE" />
+	 <input  jwcid="@Hidden"  name="END_DATE_BAK" value="ognl:otherInfo.END_DATE" /> 
+	 
+	<input jwcid="@Hidden" id="phoneBeginList" name="phoneBeginList" value="ognl:phoneBeginList"/>
+</div>
+
+</div></div>
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

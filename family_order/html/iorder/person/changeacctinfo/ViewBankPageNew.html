@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>银行名称选择列表</title>
+<script language="javascript">
+function queryIt(){
+	// 根据银行名称或编码模糊查询
+	$.ajax.submit('QueryBankPart', 'queryBankInfo', null, 'QueryListPart', function(data){
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+</script>
+</head>
+<body jwcid="@Body">
+<div class="c_popupItem" >
+	<div class="c_header">
+		<div class="back" ontap="backPopup(this);">银行查询</div>
+	</div>
+	<div class="c_scroll c_scroll-float c_scroll-header">
+		<div class="c_form c_form-padding" jwcid="QueryBankPart@Part">
+			<ul>
+				<li>
+					<div class="label">银行名称或编码：</div>
+					<div class="value">
+						<span class="e_mix">
+							<input type="text" jwcid="@TextField" name="comminfo_BANK_OR_CODE" id="comminfo_BANK_OR_CODE" value="ognl:condition.comminfo_BANK_OR_CODE" desc="银行名称或编码"/>
+							<input type="text" jwcid="@TextField" style="display:none" name="comminfo_SUPERBANK_CODE" id="comminfo_SUPERBANK_CODE" value="ognl:condition.SUPERBANK_CODE" desc="上级银行编码" />
+						    <button class="e_button-blue" id="bquery" name="bquery" onclick="return queryIt();" tip="查询"><span class="e_ico-search"></span></button>
+						</span>
+				   </div> 
+				</li>
+			</ul>
+		</div>
+		<div class="c_line"></div>
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-white c_scroll-float" style="top:5em;">
+			<div jwcid="QueryListPart@Part" element="div" class="c_list c_list-s c_list-line">
+				<ul>
+					<li class="link" BANK_CODE="ognl:info.BANK_CODE" BANK="ognl:info.BANK" 
+						jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="li"
+						ontap="setPopupReturnValue(this,{'POP_acctinfo_BANK_CODE':this.getAttribute('BANK'),'acctinfo_BANK':this.getAttribute('BANK'),'acctinfo_BANK_CODE':this.getAttribute('BANK_CODE')});">
+						<div class="main">
+							<div class="content">
+								<span jwcid="@Insert" value="ognl:info.BANK"/>
+							</div>
+						</div>
+						<div class="side">
+							<div class="content">
+								<span jwcid="@Insert" value="ognl:info.BANK_CODE"/>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_line"></div>
+		</div>
+		<!-- 表格 结束 -->
+	</div>
+</div>
+</body>
+</html>

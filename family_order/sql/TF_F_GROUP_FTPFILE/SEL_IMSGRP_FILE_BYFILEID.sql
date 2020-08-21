@@ -1,0 +1,30 @@
+SELECT A.USER_ID,
+       A.FILE_ID,
+       A.FILE_NAME,
+       A.SERIAL_NUMBER_A,
+       A.GROUP_ID,
+       A.CUST_NAME,
+       A.PRODUCT_ID,
+	   A.SERIAL_NUMBER_B,
+       A.TRADE_ID,
+       A.TRADE_TYPE_CODE,
+       A.TRADE_TYPE,
+       A.CREATE_STAFF,
+       TO_CHAR(A.CREATE_TIME, 'yyyy-mm-dd hh24:mi:ss') CREATE_TIME ,
+       A.TRADE_TAG,
+       A.TRADE_DESC,
+       A.RSRV_NUM1,
+       A.RSRV_NUM2,
+       A.RSRV_NUM3,
+       A.RSRV_STR1,
+       A.RSRV_STR2,
+       A.RSRV_STR3,
+       A.RSRV_TAG1,
+       A.RSRV_TAG2,
+       A.RSRV_TAG3
+  FROM TF_F_GROUP_FTPFILE A
+ WHERE 1=1
+   AND A.PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+   AND A.USER_ID = :USER_ID
+   AND A.FILE_ID = :FILE_ID
+   AND A.TRADE_TAG = :TRADE_TAG

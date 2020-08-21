@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+SELECT 'SvcAllowServiceName' KEY,PARA_CODE1 VALUE1,'-1' VALUE2,PARAM_NAME VRESULT FROM td_s_commpara WHERE 'SvcAllowServiceName'=:KEY and PARAM_ATTR=3021

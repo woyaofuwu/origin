@@ -1,0 +1,100 @@
+<div class="c_title">
+	<div class="text">我的平台业务</div>
+</div>
+<div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border" >
+    <ul id='userPlatSvcTable'>
+		<li jwcid="@Foreach" source="ognl:userPlatSvcList" value="ognl:userPlatSvc" element="li">
+			<div jwcid="@Any" class="group" PRICE="ognl:userPlatSvc.PRICE" BIZ_STATE_CODE_NAME="ognl:userPlatSvc.BIZ_STATE_CODE_NAME" START_DATE="ognl:userPlatSvc.START_DATE" END_DATE="ognl:userPlatSvc.END_DATE"
+				IN_CARD_NO="ognl:userPlatSvc.IN_CARD_NO" BIZ_TYPE_CODE="ognl:userPlatSvc.BIZ_TYPE_CODE" BIZ_TYPE_CODE_NAME="ognl:userPlatSvc.BIZ_TYPE_CODE_NAME" BIZ_CODE="ognl:userPlatSvc.BIZ_CODE" SP_CODE="ognl:userPlatSvc.SP_CODE" SP_NAME="ognl:userPlatSvc.SP_NAME"
+				BILL_TYPE_NAME="ognl:userPlatSvc.BILL_TYPE_NAME" SERVICE_NAME="ognl:userPlatSvc.SERVICE_NAME" RSRV_STR9="ognl:userPlatSvc.RSRV_STR9">
+				<div class="content">
+					<div class="main">
+						<div class="title">
+							<span jwcid="@Insert" value="ognl:userPlatSvc.SERVICE_NAME"/>
+						</div>
+						<div class="content e_red">价格：<span jwcid="@Insert" id="ognl:userPlatSvc.ITEM_INDEX+'_PRICE'" value="ognl:userPlatSvc.PRICE+'元/月'"/></div>
+						<div style="display:none"><span jwcid="@Insert" id="ognl:userPlatSvc.ITEM_INDEX+'_BILLTYPE'" value="ognl:userPlatSvc.BILL_TYPE_NAME"/></div>							
+						<div class="content">
+							服务商：<span jwcid="@Insert" value="ognl:userPlatSvc.SP_NAME"/>
+						</div>
+						<div class="content">
+							有效期：<span jwcid="@Insert" value="ognl:userPlatSvc.START_DATE.substring(0,10)"/>
+							～<span jwcid="@Insert" value="ognl:userPlatSvc.END_DATE.substring(0,10)"/>
+						</div>
+						<div style="display:none">
+							<span jwcid="@Conditional" condition='ognl:!userPlatSvc.BIZ_TYPE_CODE.equals("17")'>   
+								<span jwcid="@Insert" value="ognl:userPlatSvc.BIZ_TYPE_CODE_NAME"/>
+							</span>
+							<span jwcid="@Conditional" condition='ognl:userPlatSvc.BIZ_TYPE_CODE.equals("17")&&userPlatSvc.ORG_DOMAIN.equals("BJDP")'>   
+								<span jwcid="@Insert" value="ognl:'北京通用下载'"/>
+							</span>
+							<span jwcid="@Conditional" condition='ognl:userPlatSvc.BIZ_TYPE_CODE.equals("17")&&userPlatSvc.ORG_DOMAIN.equals("GDDP")'>   
+								<span jwcid="@Insert" value="ognl:'广东通用下载'"/>
+							</span>
+						</div>
+					</div>
+					<!-- <div class="more"></div> -->
+				</div>
+			</div>
+			<div jwcid="@Conditional" condition='ognl:userPlatSvc.ATTR_PARAM!=null'>
+				<div jwcid="@Any" 
+					name="ognl:userPlatSvc.ITEM_INDEX+'_PLATATTRPARAM'" 
+                  		id="ognl:userPlatSvc.ITEM_INDEX+'_PLATATTRPARAM'"
+                  		elementId="ognl:userPlatSvc.SERVICE_ID" 
+                  		elementType="Z" 
+                  		itemIndex="ognl:userPlatSvc.ITEM_INDEX" 
+					class="side link"><span class="e_tag e_tag-red">属性</span>
+				</div>
+			</div>
+			<div class="side" style="width:7em;">
+				<span jwcid="@Select"
+					name="ognl:userPlatSvc.ITEM_INDEX+'_OPERCODE'" 
+               		id="ognl:userPlatSvc.ITEM_INDEX+'_OPERCODE'"
+                   	itemIndex = "ognl:userPlatSvc.ITEM_INDEX"
+					source="ognl:userPlatSvc.SUPPORT_OPERS"
+					textField="OPER_TYPE" valueField="OPER_CODE" titleField="OPER_TYPE"
+					addDefault="false"
+           			value="ognl:userPlatSvc.INIT_OPER_CODE"
+           			initValue="ognl:userPlatSvc.INIT_OPER_CODE"
+           			onchange="userPlatSvcsList.changeOperCode(this)"
+           			class="e_select e_select-s"
+					optionWidth="7"
+					desc="操作" />
+			</div>
+			<label class="fn">
+				<!-- disabled = "ognl:disableOperation" -->
+				<input type="checkbox" jwcid="@Checkbox" 
+					serviceId="ognl:userPlatSvc.SERVICE_ID"
+					itemIndex="ognl:userPlatSvc.ITEM_INDEX"
+					name="ognl:userPlatSvc.ITEM_INDEX+'_USERCHECKBOX'" 
+					id="ognl:userPlatSvc.ITEM_INDEX+'_USERCHECKBOX'" 
+					class="e_checkbox" 
+					onclick="userPlatSvcsList.checkBoxAction(this)"
+					/>
+			</label>
+		</li>
+	</ul>
+	<!--
+	<div jwcid="platElementAttr@ElementAttr" element="div" confirmHandler="userPlatSvcsList.confirmAttr(this.getAttribute('itemIndex'));"></div>
+	 -->
+</div>
+
+<!-- 
+<div name="platSvcAttr" jwcid="@Popup" class="c_popup">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" jwcid="platElementAttr@ElementAttr" element="div" 
+        	confirmHandler="userPlatSvcsList.confirmAttr(this.getAttribute('itemIndex'));" isPlatSvc="true">
+        </div>
+    </div>
+</div>
+ -->
+<input jwcid="@Any" type="hidden" name="USERPLATSVCSLIST_COMPONENT_ID" id="USERPLATSVCSLIST_COMPONENT_ID"
+       value="ognl:id"/>
+<!-- 
+<div name="platSvcAttr" jwcid="@Popup" class="c_popup">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" element="div" jwcid="platElementAttr@icsserv:ElementAttr" isPlatSvc="true">
+        </div>
+    </div>
+</div>
+ -->

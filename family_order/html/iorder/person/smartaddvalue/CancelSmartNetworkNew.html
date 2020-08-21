@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>智能组网撤单</title>
+    <script jwcid="@Script" language="JavaScript" src="iorder/person/smartaddvalue/scripts/CancelSmartNetwork.js"></script>
+    <script jwcid="@Script" language="JavaScript" src="iorder/person/smartaddvalue/scripts/AuthNoTrade.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+    <div class="back" ontap="closeNav();">智能组网撤单(新)</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<!--滚动条 开始-->
+<div class="c_scroll c_scroll-float c_scroll-phone-header" name="scroller1" jwcid="@Scroller" checkDOMChanges="true">
+    <!--区域(边框边距) 开始-->
+    <div class="l_padding l_padding-phone-1">
+        <div>
+            <!-- 认证弹出框激活标识	authParams="弹出认证框入参数据"	value="接收认证框返回数据" -->
+            <div class="c_space"></div>
+            <input type="hidden" id="POP_AUTH_PARAMS" name="POP_AUTH_PARAMS" value=""
+                   afterAction="$.authNoTrade.onAuthCheck()" desc="弹出认证验证框关闭以后触发动作"/>
+
+            <div jwcid="ConditionPart@Part" style="width:100%">
+                <div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+                    <ul>
+                        <li class="required link">
+                            <div class="label">服务号码</div>
+                            <div class="value">
+                                <span class="e_group">
+                                    <span class="e_groupRight">
+                                        <button class="e_button-blue" id="AUTH_SUBMIT_BTN" name="AUTH_SUBMIT_BTN"
+                                                authCount="0"><span class="e_ico-search"></span><span>查询</span></button>
+                                   </span>
+                                    <span class="e_groupMain">
+                                        <input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER"
+                                               value="ognl:info.SERIAL_NUMBER"
+                                               desc="服务号码" nullable="no"/>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <input type="hidden" id="TRADE_TYPE_CODE" name="TRADE_TYPE_CODE" value="870"/>
+                    </ul>
+                </div>
+            </div>
+            <!-- 功能 结束 -->
+        </div>
+
+        <!-- 表格 开始 -->
+        <div jwcid="QueryListPart@Part">
+            <div class="c_title">
+                <div class="text">可取消业务</div>
+            </div>
+            <table id="CancelTradeTable" name="CancelTradeTable"
+                   class="c_table c_table-lite c_table-row-5 c_table-checkbox c_table-line " useScroller="false"
+                   jwcid="@Table">
+                <thead>
+                <tr>
+                    <th col="INST_ID"><input type="checkbox" disabled="true"/></th>
+                    <th col="TRADE_ID">业务流水号</th>
+                    <th col="ACCEPT_MONTH">受理月份</th>
+                    <th col="FIRSTFEE">第一类费用(元)</th>
+                    <th col="TWOFEE">第二类费用(元)</th>
+                    <th col="THREEFEE">第三类费用(元)</th>
+                    <th col="FEE_STATE">收费标志</th>
+                    <th col="TRADE_STAFF_ID">受理员工</th>
+                    <th col="TRADE_DEPART_ID">受理部门</th>
+                    <th col="TRADE_EPARCHY_CODE">受理地州</th>
+                    <th col="TERM_IP">受理终端</th>
+                    <th col="REMARK">备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr jwcid="@Foreach" source="ognl:cancelTradeList" value="ognl:cancelTrade" element="tr">
+                    <td class="e_center "><input jwcid="@Checkbox" onclick="$.BmFrame.selTrade(this);" name="monitorids"
+                                                value=""/></td>
+                    <td class="e_center e_right-phone key" data-title="业务流水号">
+                            <span jwcid="@Insert" value="ognl:cancelTrade.TRADE_ID" raw="false"/>
+                    </td>
+                    <td class="e_center" data-title="受理月份"><span jwcid="@Insert" value="ognl:cancelTrade.ACCEPT_MONTH"
+                                                                 raw="false"/></td>
+                    <td class="e_center" data-title="第一类费用(元)"><span jwcid="@Insert"
+                                                                     value="ognl:cancelTrade.FIRSTFEE" raw="false"/>
+                    </td>
+                    <td class="e_center" data-title="第二类费用(元)"><span jwcid="@Insert"
+                                                                     value="ognl:cancelTrade.TWOFEE" raw="false"/>
+                    </td>
+                    <td class="e_center" data-title="第三类费用(元)"><span jwcid="@Insert"
+                                                                     value="ognl:cancelTrade.THREEFEE"
+                                                                     raw="false"/></td>
+                    <td class="e_center" data-title="收费标志"><span jwcid="@Insert" value="ognl:cancelTrade.FEE_STATE"
+                                                                 raw="false"/></td>
+                    <td class="e_center" data-title="受理员工"><span jwcid="@Insert" value="ognl:cancelTrade.TRADE_STAFF_ID"
+                                                                 raw="false"/></td>
+                    <td class="e_center" data-title="受理部门"><span jwcid="@Insert"
+                                                                 value="ognl:cancelTrade.TRADE_DEPART_ID" raw="false"/>
+                    </td>
+                    <td class="e_center" data-title="受理地州"><span jwcid="@Insert"
+                                                                 value="ognl:cancelTrade.TRADE_EPARCHY_CODE"
+                                                                 raw="false"/></td>
+                    <td class="e_center" data-title="受理终端"><span jwcid="@Insert" value="ognl:cancelTrade.TERM_IP"
+                                                                 raw="false"/></td>
+                    <td class="e_center" data-title="备注"><span jwcid="@Insert" value="ognl:cancelTrade.REMARK"
+                                                               raw="false"/></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- 表格 结束 -->
+        <div>
+            <div class="c_title">
+                <div class="text">取消信息</div>
+            </div>
+            <div class="c_param c_param-border c_param-col-3 c_param-phone-col-1 c_param-label-4">
+                <ul>
+                    <li>
+                        <div class="label">第一类费用:  </div>
+                        <div class="value" id='FIRSTFEE_value'><input jwcid="@Insert" name="FIRSTFEE" id="FIRSTFEE"
+                                                                      value="ognl:info.FIRSTFEE" disabled=true
+                                                                      desc="第一类费用"/></div>
+                    </li>
+                    <li>
+                        <div class="label">第二类费用:  </div>
+                        <div class="value" id='TWOFEE_value'><input jwcid="@Insert" name="TWOFEE" id="TWOFEE"
+                                                                    value="ognl:info.TWOFEE" disabled=true
+                                                                    desc="第二类费用"/></div>
+                    </li>
+                    <li>
+                        <div class="label">第三类费用:  </div>
+                        <div class="value" id='THREEFEE_value'><input jwcid="@Insert" name="THREEFEE" id="THREEFEE"
+                                                                      value="ognl:info.THREEFEE" disabled=true
+                                                                      desc="第三类费用"/></div>
+                    </li>
+                    <li>
+                        <div class="label">总共退费:  </div>
+                        <div class="value" id='backFee_value'><input jwcid="@Insert" name="backFee" id="backFee"
+                                                                     value="ognl:info.backFee" disabled=true
+                                                                     desc="清退费用"/></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="c_space"></div>
+            <div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+                <ul>
+                    <li class="link required">
+                        <div class="label">撤单原因</div>
+                        <div class="value" jwcid="cancelReasonPart@Part"><span jwcid="@Select" name="CANCEL_REASON"
+                                                                               id="CANCEL_REASON"
+                                                                               source="ognl:pageutil.getStaticList('WIDE_CANCEL_REASON')"
+                                                                               nullable="no"
+                                                                               textField="DATA_NAME"
+                                                                               valueField="DATA_ID"
+                                                                               value="ognl:info.CANCEL_REASON"
+                                                                               desc="撤单原因"
+                                                                               onchange="changeSecondLevelType()"></span>
+                        </div>
+                    </li>
+                    <li class="link merge-2 required">
+                        <div class="label">二级原因</div>
+                        <div class="value" jwcid="cancelReasonSecondLevel@Part"><span jwcid="@Select"
+                                                                                      name="CANCEL_REASON_SECOND_LEVEL"
+                                                                                      id="CANCEL_REASON_SECOND_LEVEL"
+                                                                                      source="ognl:cancelReasonSecondLevel"
+                                                                                      nullable="no"
+                                                                                      value="ognl:info.CANCEL_REASON_SECOND_LEVEL"
+                                                                                      textField="DATA_NAME"
+                                                                                      valueField="DATA_ID"
+                                                                                      desc="二级原因"></span></div>
+                    </li>
+                    <li class="link merge-3">
+                        <div class="label">取消备注</div>
+                        <div class="value"><input jwcid="@TextField" id="REMARK" name="REMARK"
+                                                  value="ognl:info.REMARK" desc="取消备注"/></div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="c_space"></div>
+        <div class="c_submit c_submit-center">
+            <button type="button" name="CANCEL_CSSUBMIT_BUTTON" id="CANCEL_CSSUBMIT_BUTTON"
+                    class="e_button-l e_button-green">提交(Y)
+            </button>
+        </div>
+    </div>
+    <!--区域(边框边距) 结束-->
+</div>
+<!--滚动条 结束-->
+
+
+</body>
+</html>

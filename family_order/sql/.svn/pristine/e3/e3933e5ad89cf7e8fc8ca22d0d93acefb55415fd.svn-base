@@ -1,0 +1,1 @@
+SELECT acct_passwd,obj_code FROM tf_chl_acct WHERE obj_code = (SELECT MAX(user_id) FROM tf_f_user WHERE serial_number=:SERIAL_NUMBER) AND state='R0A'

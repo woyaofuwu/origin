@@ -1,0 +1,3 @@
+--IS_CACHE=Y
+SELECT 'FuncRightName' KEY,RIGHT_CODE VALUE1,'-1' VALUE2,RIGHT_NAME VRESULT FROM td_m_funcright
+ WHERE 'FuncRightName'=:KEY

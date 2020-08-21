@@ -1,0 +1,12 @@
+SELECT TRADE_ID,
+       USER_ID,
+       SUBS_ID,
+       PROD_INST_ID,
+       INST_TYPE,
+       PLAT_CODE,
+       CREATE_TIME,
+       REMARK,
+       RSRV_STR1,
+       RSRV_STR2
+  FROM TF_F_INSTANCE_PF A
+ WHERE A.USER_ID = :USER_ID

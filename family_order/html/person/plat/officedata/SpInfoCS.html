@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>企业服务代码信息维护(本省)</title>
+<script language="JavaScript" jwcid="@Script" src="person/plat/officedata/scripts/json2.js"></script>
+<script language="JavaScript" jwcid="@Script" src="person/plat/officedata/scripts/Utils.js"></script>
+<script language="JavaScript" jwcid="@Script" src="person/plat/officedata/scripts/spinfocs.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">企业服务代码信息维护(本省)</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				  <span class="label">服务代码：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_BIZ_CODE" id="cond_BIZ_CODE" value="ognl:condition.cond_BIZ_CODE" desc="服务代码"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label">业务名称：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_BIZ_NAME" id="cond_BIZ_NAME" value="ognl:condition.cond_BIZ_NAME" desc="业务名称"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label">企业代码：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SP_CODE" id="cond_SP_CODE" value="ognl:condition.cond_SP_CODE" desc="企业代码"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label">企业名称：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SP_NAME" id="cond_SP_NAME" value="ognl:condition.cond_SP_NAME" desc="企业名称"/>
+					</span></span>
+			</li>
+			
+			<li class="li">
+			<span class="label">代码类型：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_SP_TYPE" id="cond_SP_TYPE"
+								source="ognl:pageutil.getStaticList('SPINFO_CS_SP_TYPE')"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.cond_SP_TYPE"	desc="代码类型" />
+			</span></span></span>
+		    </li>
+		    <li class="li">
+		    <span class="label">代码接入方式：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_SP_ATTR" id="cond_SP_ATTR"
+								source="ognl:pageutil.getStaticList('SPINFO_CS_SP_ATTR')"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.cond_SP_ATTR"	desc="代码接入方式" />
+			</span></span></span>
+		    </li>
+		    <li class="li">
+		    <span class="label">记录状态：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_RECORD_STATUS" id="cond_RECORD_STATUS"
+								source="ognl:pageutil.getStaticList('SPINFO_CS_RECORD_STATUS')"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.cond_RECORD_STATUS"	desc="记录状态" />
+			</span></span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表单 开始-->
+	<div class="c_form c_form-col-5 c_form-label-6" jwcid="SubmitCondPart@Part">
+	<li class="li col-2">
+		<span class="label"><span class="e_required">批量文件：</span></span>
+		<span class="e_elements"><!-- 替换为页面组件 -->
+			<span class="e_elements">
+					<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+							fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+			</span>
+		</span>
+	</li>
+	<li class="li">
+		<span class="label">模版下载：</span>
+		<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=本省企业服务代码信息导入模板.xls&filePath=template/bat/BATSPINFOCS.xls')">[点击下载]</a></span>
+	</li>
+	<li class="li">
+		<button class="e_button-right" onclick="return importOcsData()"><i class="e_ico-import"></i><span>导入</span></button>
+	</li>
+	</div>
+	<!-- 表单 结束 -->
+	<div class="c_title c_title-2">
+		 <div class="text">查询结果</div>
+		 <div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="101001"
+						  config="export/plat/SpInfoCS.xml" fileName="企业服务代码"
+						 cond="QueryCondPart" params="ognl:'TAG_PARAM=1&&STAFF_ID=' + getVisit().getStaffId()"/>
+		</div>
+  	</div>
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" id="listFormTable" rowClick="tableRowClick">
+			<thead>
+				<tr>
+						<th col="BIZ_CODE">服务代码</th>
+						<th col="BIZ_NAME">业务名称</th>
+						<th col="SP_CODE">企业代码</th>
+						<th col="SP_NAME">企业名称</th>						
+						<th col="SP_TYPE" style="display:none;">代码类型</th>
+						<th col="SP_TYPE_DIS">代码类型</th>
+						<th col="SP_ATTR" style="display:none;">代码接入方式</th>
+						<th col="SP_ATTR_DIS">代码接入方式</th>	
+						<th col="SP_DESC">企业描述</th>	
+						<th col="SP_STATUS" style="display:none;">企业状态</th>
+						<th col="SP_STATUS_DIS">企业状态</th>	
+						<th col="PROVINCE_NO" style="display:none;">代码接入省</th>	
+						<th col="PROVINCE_NO_DIS">代码接入省</th>
+						<th col="RECORD_STATUS" style="display:none;">记录状态</th>	
+						<th col="RECORD_STATUS_DIS">记录状态</th>
+						<th col="RECORD_DATE">记录日期</th>
+						<th col="RECORDROWID" style="display:none;">RECORDROWID</th>
+						
+						<th col="OPE_CODE" style="display:none;">操作类型</th>
+						<th col="OPE_CODE_DIS" style="">操作类型</th>
+						<th col="REPORT_TIME" style="">上报时间</th>
+						<th col="TYPE" style="display:none;">代码类型</th>
+						<th col="TYPE_DIS" style="">代码类型</th>
+						<th col="TRADE_TYPE" style="display:none;">集团客户行业类别</th>
+						<th col="TRADE_TYPE_DIS" style="">集团客户行业类别</th>
+						<th col="CLIENT_GRADE" style="display:none;">客户分级</th>
+						<th col="CLIENT_GRADE_DIS" style="">客户分级</th>
+						<th col="CLIENT_ATTR" style="display:none;">客户属性</th>
+						<th col="CLIENT_ATTR_DIS" style="">客户属性</th>
+						<th col="BUSI_SCOPE" style="display:none;">业务范围</th>
+						<th col="BUSI_SCOPE_DIS" style="">业务范围</th>
+						<th col="BIZ_STATUS" style="display:none;">是否支持企业签名</th>
+						<th col="BIZ_STATUS_DIS" style="">是否支持企业签名</th>
+						<th col="CH_SIGN" style="">中文签名</th>
+						<th col="SEND_TYPE" style="display:none;">发送信息类型</th>
+						<th col="SEND_TYPE_DIS" style="">发送信息类型</th>
+				</tr>
+			</thead>
+			<tbody>
+			    <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_NAME" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.SP_TYPE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPINFO_CS_SP_TYPE',info.SP_TYPE)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.SP_ATTR" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPINFO_CS_SP_ATTR',info.SP_ATTR)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_DESC" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.SP_STATUS" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPINFO_CS_SP_STATUS',info.SP_STATUS)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.PROVINCE_NO" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SYMTHESIS_PROVINCE_CODE',info.PROVINCE_NO)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.RECORD_STATUS" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPINFO_CS_RECORD_STATUS',info.RECORD_STATUS)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RECORD_DATE" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.RECORDROWID" raw="true"/></td>
+						
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.OPE_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_OPE_CODE',info.OPE_CODE)" raw="true"/></td>
+						<td style=""><span jwcid="@Insert" value="ognl:info.REPORT_TIME" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.TYPE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_TYPE',info.TYPE)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.TRADE_TYPE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_TRADE_TYPE',info.TRADE_TYPE)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.CLIENT_GRADE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_CLIENT_GRADE',info.CLIENT_GRADE)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.CLIENT_ATTR" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_CLIENT_ATTR',info.CLIENT_ATTR)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.BUSI_SCOPE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_BUSI_SCOPE',info.BUSI_SCOPE)" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.BIZ_STATUS" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_SPBIZ_STATUS',info.BIZ_STATUS)" raw="true"/></td>
+						<td style=""><span jwcid="@Insert" value="ognl:info.CH_SIGN" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.SEND_TYPE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SP_SEND_TYPE',info.SEND_TYPE)" raw="true"/></td>
+			    </tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+<div jwcid="@NavBar" needStat="false" name="queryNav" id="queryNav" cond="QueryCondPart" part="QueryListPart" listener="queryList" pageSize="10" count="ognl:count"></div>		
+	
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div>
+<div class="c_box">
+	<div class="c_title c_title-2">
+		 <div class="text">信息维护</div>
+  	  <div class="fn">
+					<button class="e_button-left" onClick="addSpInfoCS($(this))"><i class="e_ico-add"></i><span>新增</span> </button>
+					<button  class="e_button-center" onClick="updateSpInfoCS($(this))"><i class="e_ico-edit"></i><span>修改</span> </button>
+					<button  class="e_button-right" onClick="deleteSpInfoCS($(this))"><i class="e_ico-delete"></i><span>删除</span> </button>
+		 	  </div>
+  	</div>
+  	<div class="c_form c_form-label-8 c_form-col-3" jwcid="DetailListPart@Part">
+		<ul class="ul">
+			<li class="li">
+				  <span class="label"><span class="e_required">服务代码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="BIZ_CODE" id="BIZ_CODE" nullable="no"  value="ognl:submitInfo.BIZ_CODE" desc="服务代码"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label"><span class="e_required">业务名称：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="BIZ_NAME" id="BIZ_NAME"  nullable="no" value="ognl:submitInfo.BIZ_NAME" desc="业务名称"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label"><span class="e_required">企业代码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="SP_CODE" id="SP_CODE" nullable="no" value="ognl:submitInfo.SP_CODE" desc="企业代码"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label"><span class="e_required">企业名称：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="SP_NAME" id="SP_NAME"  nullable="no" value="ognl:submitInfo.SP_NAME" desc="企业名称"/>
+					</span></span>
+			</li>
+			
+			<li class="li">
+			<span class="label"><span class="e_required">代码类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SP_TYPE" id="SP_TYPE"
+								source="ognl:pageutil.getStaticList('SPINFO_CS_SP_TYPE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.SP_TYPE"	desc="代码类型" />
+			</span></span></span>
+		    </li>
+		    <li class="li">
+		    <span class="label"><span class="e_required">代码接入方式：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SP_ATTR" id="SP_ATTR"
+								source="ognl:pageutil.getStaticList('SPINFO_CS_SP_ATTR')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.SP_ATTR"	desc="代码接入方式" />
+			</span></span></span>
+		    </li>
+		    <li>
+		    <li class="li">
+				  <span class="label"><span class="e_required">企业描述：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="SP_DESC" id="SP_DESC"  nullable="no" value="ognl:submitInfo.SP_DESC" desc="企业描述"/>
+					</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">企业状态：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SP_STATUS" id="SP_STATUS"
+								source="ognl:pageutil.getStaticList('SPINFO_CS_SP_STATUS')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.SP_STATUS"	desc="企业状态" />
+				</span></span></span>
+			</li>
+			<li class="li">
+			<span class="label"><span class="e_required">代码接入省：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PROVINCE_NO" id="PROVINCE_NO"
+								source="ognl:pageutil.getStaticList('SYMTHESIS_PROVINCE_CODE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.PROVINCE_NO"	desc="代码接入省" />
+			</span></span></span>
+		    </li>
+		    
+		    
+		    <li class="li">
+				  <span class="label"><span class="e_required">操作类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="OPE_CODE" id="OPE_CODE"
+								source="ognl:pageutil.getStaticList('SP_OPE_CODE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.OPE_CODE"	desc="操作类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">上报时间：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="REPORT_TIME" name="REPORT_TIME" value="ognl:submitInfo.REPORT_TIME" desc="上报时间" format="yyyyMMddHHmmss"   nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+			<span class="label"><span class="e_required">类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="TYPE" id="TYPE"
+								source="ognl:pageutil.getStaticList('SP_TYPE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.TYPE"	desc="类型" />
+			</span></span></span>
+		    </li>
+		    
+		    
+		    
+		    
+		    <li class="li">
+				  <span class="label"><span class="e_required">集团客户行业类别：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="TRADE_TYPE" id="TRADE_TYPE"
+								source="ognl:pageutil.getStaticList('SP_TRADE_TYPE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.TRADE_TYPE"	desc="集团客户行业类别" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户分级：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CLIENT_GRADE" id="CLIENT_GRADE"
+								source="ognl:pageutil.getStaticList('SP_CLIENT_GRADE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.CLIENT_GRADE"	desc="客户分级" />
+				</span></span></span>
+			</li>
+			<li class="li">
+			<span class="label"><span class="e_required">客户属性：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CLIENT_ATTR" id="CLIENT_ATTR"
+								source="ognl:pageutil.getStaticList('SP_CLIENT_ATTR')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.CLIENT_ATTR"	desc="客户属性" />
+			</span></span></span>
+		    </li>
+		    
+		 
+			<li class="li">
+				<span class="label"><span class="e_required">业务范围：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="BUSI_SCOPE" id="BUSI_SCOPE"
+								source="ognl:pageutil.getStaticList('SP_BUSI_SCOPE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.BUSI_SCOPE"	desc="业务范围" />
+				</span></span></span>
+			</li>
+			<li class="li">
+			<span class="label"><span class="e_required">是否支持企业签名：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="BIZ_STATUS" id="BIZ_STATUS"
+								source="ognl:pageutil.getStaticList('SP_SPBIZ_STATUS')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.BIZ_STATUS"	desc="是否支持企业签名" />
+			</span></span></span>
+		    </li>
+			<li class="li">
+			<span class="label"><span class="e_required">中文签名：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="CH_SIGN" id="CH_SIGN"   nullable="no" value="ognl:submitInfo.CH_SIGN" desc="中文签名"/>
+					</span></span>
+		    </li>
+		    
+		    <li class="li">
+			<span class="label"><span class="e_required">发送信息类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SEND_TYPE" id="SEND_TYPE"
+								source="ognl:pageutil.getStaticList('SP_SEND_TYPE')" nullable="no" 
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:submitInfo.SEND_TYPE"	desc="发送信息类型" />
+			</span></span></span>
+		    </li>
+		    <input type="hidden" id="RECORD_STATUS" name="RECORD_STATUS" value="ognl:submitInfo.RECORD_STATUS"/>
+		    <input type="hidden" id="RECORDROWID" name="RECORDROWID" value="ognl:submitInfo.RECORDROWID"/>
+		    
+		    
+		</ul>
+	</div>
+
+</div>
+
+
+</div></div>
+</body>
+</html>

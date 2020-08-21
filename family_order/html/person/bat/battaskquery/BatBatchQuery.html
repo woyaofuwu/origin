@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/batdeal/batbatchquery.js"></script>
+</head>
+<body jwcid=@Body><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量明细查询</div>
+		<div class="fn">
+		 
+		 	<button title="批次执行失败列表" class="l_ml e_button-left" id="exportButtonexportFile" style="display: block;" onclick="checkBefore()" type="button" imMode="false" timerMode="false" partId="TaskDataPartInfo" beforeAction="exportBeforeAction" afterAction="" action="" fileName="批次执行失败列表" fileType="{'.xls':'.xls'}" ftpSite="personserv" filePath="">
+			 	<i></i><span>
+			 		导出该批次失败数据
+			 	</span>
+		 	</button>
+		 	
+			<span jwcid="@Export"
+			name="exportFile" 
+			serviceName="2319" 
+			config="export/bat/BATDEALFAILDEXPORT.xml"
+			fileName="批次执行失败列表"
+			ftpSite="personserv"
+			title="批次执行失败列表"
+			beforeAction="exportBeforeAction"
+			action=""
+			fileType="{'.xls':'.xls'}"
+			 style="display:none" /> 
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="TaskInfoPart@Part" class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_SXQX_CODE" id="cond_SXQX_CODE" 
+						source="ognl:pageutil.getStaticList('BAT_QUERYTASK_TYPE')" 
+						value="ognl:condition.cond_SXQX_CODE" text="ognl:condition.cond_SXQX_NAME" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" nullable="no" onchange="changeBatQueryTaskType(this)"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">批量任务名称：</span></span>
+					<span class="e_elements">
+						<button type="button" class="e_button-right" id="btBatchTask" name="btBatchTask" onclick="queryBatTaskInfo()">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="ognl:condition.BATCH_TASK_ID" 
+						text="ognl:condition.BATCH_TASK_NAME" 
+						name="BATCH_TASK_ID" id="BATCH_TASK_ID" 
+						afterAction="queryBatchInfo()"
+						desc="批量任务名称"/>
+						</span></span>
+					</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="queryBatchInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="TaskDataPartInfo@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+			<thead>
+				<tr>
+					<th col="BATCH_ID_CHOOSE">选择</th>
+					<th col="BATCH_ID">批次号</th>
+					<th col="CANCEL_TAG">返销状态</th>
+					<th col="DEAL_STATE">处理状态</th>
+					<th col="TRADE_NUM">数量</th>
+					<th col="REMARK">明细</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:batchInfos" value="ognl:batchInfo" index="ognl:rowIndex" element="tr">
+					<td><input type="radio" id = "idList" name="idList" jwcid="@Any" value="ognl:batchInfo.BATCH_ID"  raw="true" class="e_radio" onclick="DealMark($(this));"/></td>
+					<td><span jwcid="@Insert" value="ognl:batchInfo.BATCH_ID" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BATDEAL_CANCELTAG', batchInfo.CANCEL_TAG)" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAT_TASK_STATE_TAG', batchInfo.DEAL_STATE)" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:batchInfo.TRADE_NUM" raw="true" /></td>
+					<td><span jwcid="@Redirect" value="查询批次明细" batchid = "ognl:batchInfo.BATCH_ID" cancelTag="ognl:batchInfo.CANCEL_TAG" dealState="ognl:batchInfo.DEAL_STATE" source="ognl:batchInfo" onclick="popupPage('bat.battaskquery.BatBatchDetial','initPageBatch','&BATCH_ID='+$(this).attr('batchid')+'&CANCEL_TAG='+$(this).attr('cancelTag')+'&DEAL_STATE='+$(this).attr('dealState'),'批量信息查询',1000,800);" /></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="TaskInfoPart"  part="TaskDataPartInfo" listener="queryBatchInfo" pageSize="10" count="ognl:batchInfoCount"></div>
+	</div>
+	<!-- 翻页 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

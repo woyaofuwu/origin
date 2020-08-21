@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>部门选择树</title>
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/org/org.js" ></script> 
+</head>
+<body jwcid="@Body">
+	<div class="c_header">
+		<div class="back" ontap="backPopup(this);">归属部门</div>
+	</div>	
+	<div class="c_scroll c_scroll-float c_scroll-header">
+		<div class="l_padding">
+			<!-- tab height= 28 -->
+			<div jwcid="deptTabset@Tabset" name="deptTabset" class="c_tab c_tab-level-2" switchAction="$.org.deptTreeSwitchAction(ptitle,title)">
+					<div class="content" title="归属部门">
+						<!-- checkBoxType="radio" -->	
+						<div jwcid="deptTree@Tree" 
+							name="deptTree"
+							listener="ognl:listeners.loadDeptTree" 
+							async="true" init="false" 
+							expandPath="ognl:rootDept" 
+							checkBoxType="ognl:getParameter('checkboxtype')"
+							showCheckBox="ognl:'true'.equals(getParameter('showcheckbox'))"></div>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:'grant'.equals(getParameter('clickflag'))">
+						<div class="content" title="授权部门">
+							<div jwcid="grantDeptTree@Tree" 
+								name="grantDeptTree"
+								listener="ognl:listeners.loadDeptTreeByGrant" 
+								async="true" init="false" 
+								expandPath="grantDeptTree_root" 
+								checkBoxType="ognl:getParameter('checkboxtype')"
+								showCheckBox="ognl:'true'.equals(getParameter('showcheckbox'))"></div>
+						</div>
+					</div>
+			</div>
+			
+			<div class="c_submit c_submit-full"><!--c_submit height=40px -->
+				<button href="#nogo" class="e_button e_button-r e_button-navy" ontap="backPopup(this);"><i></i><span>取消</span></button>
+				<button href="#nogo" class="e_button e_button-r e_button-blue" ontap="$.org.setDeptPopupReturnValue()"><i></i><span>确定</span></button>
+			</div>
+			<div class="c_space-3"></div>
+		</div>
+	</div>
+	<div id="treeParamArea" style="display:none">
+		<input name="datamode" jwcid="@Hidden" type="hidden" value="ognl:getParameter('datamode','')" />
+		<input name="sqlref" jwcid="@Hidden" type="hidden" value="ognl:getParameter('sqlref','')" />
+	</div>
+	<div id="deptTreeParamArea" style="display:none">
+		<input name="check_dept_kind" jwcid="@Hidden" type="hidden" value="ognl:getParameter('check_dept_kind')" />
+		
+		<input name="root_id" jwcid="@Hidden" type="hidden" value="ognl:rootDept" />
+		<input name="mode" jwcid="@Hidden" type="hidden" value="ognl:deptMode" />
+	</div>
+	<input name="field_name" jwcid="@Hidden" type="hidden" value="ognl:getParameter('field_name','')" />
+	
+	<script language="javascript">
+	<!--
+	$(function(){
+		$.org.loadDeptTree();
+	});
+	//-->	
+	</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IMS群组管理</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/imsmanage/closegrpmgr/teammanager.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">IMS群组管理</div>
+		<!-- 
+		<div class="fn">
+			<button type="button" >
+				<i class="e_ico-refresh"></i><span>刷新</span>
+			</button>
+		</div>
+		 -->
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="CondGroupPart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" selectGroupListener="getGroupBaseInfo" refreshPart="GroupInfoPart,xunhupart,daidapart,CreateAreaPart"/>		
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="GroupInfoPart@Part" element="div">
+		<input type="text" hasTitle="false" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo"/>
+		<!-- 隐藏域 开始 -->
+		<input type="text" jwcid="@Any" name="teamInfo_CUST_ID" id="teamInfo_CUST_ID" value="ognl:groupInfo.CUST_ID"  style="display:none"/>
+		<input type="text" jwcid="@Any" name="USER_ID_A" id="USER_ID_A" value="ognl:userInfo.USER_ID"  style="display:none"/>	
+		<textarea jwcid="@TextArea" id="USERINFO" name="USERINFO" value="ognl:userInfo" style="display:none" ></textarea>		
+		<!-- 隐藏域 结束 -->
+	</div>
+	<!-- 参数列表 结束 -->
+	
+	<!-- 寻呼组表格 开始 -->
+	<div class="c_table c_table-row-4" jwcid="xunhupart@Part" element="div" style="display:none;">
+		<table jwcid="@Table" name="xhTable" rowClick="tableRowClick" >
+			<thead>
+				<tr>
+                  <th col=USER_ID_B>寻呼组标识</th>
+                  <th>寻呼组类型</th>
+                  <th col="HUNT_TYPE"  style="display:none;">寻呼组类型</th>
+                  <th col="TEAM_SERIAL">寻呼组号码</th>
+                  <th>生效时间</th>
+                  <th>失效时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:xhTeamInfos" value="ognl:xhTeamInfo" element="tr">
+					<td><span jwcid="@Insert" value="ognl:xhTeamInfo.USER_ID_B" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('Hunting_Team_Type', xhTeamInfo.RSRV_STR1)"  raw="true"/></td>	
+					<td style="display:none;"><span jwcid="@Insert" value="ognl:xhTeamInfo.RSRV_STR1"  raw="true"/></td>				
+					<td><span jwcid="@Insert" value="ognl:xhTeamInfo.RSRV_STR5" raw="true"/></td>
+	                <td><span jwcid="@Insert" value="ognl:xhTeamInfo.START_DATE" raw="true"/></td>
+	                <td><span jwcid="@Insert" value="ognl:xhTeamInfo.END_DATE" raw="true"/></td>
+				</tr>			
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 代答组表格 开始 -->
+	<div class="c_table c_table-row-4" jwcid="daidapart@Part" element="div"  style="display:none;">
+		<table jwcid="@Table" name="ddTable" rowClick="tableRowClick" >
+			<thead>
+				<tr>
+                  <th col="USER_ID_B">代答组标识</th>
+                  <th col="ACCESS_CODE">代答接入码</th>
+                  <th>生效时间</th>
+                  <th>失效时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:ddTeamInfos" value="ognl:ddTeamInfo" element="tr">
+					<td><span jwcid="@Insert" value="ognl:ddTeamInfo.USER_ID_B" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:ddTeamInfo.RSRV_STR1" raw="true"/></td>
+	                <td><span jwcid="@Insert" value="ognl:ddTeamInfo.START_DATE" raw="true"/></td>
+	                <td><span jwcid="@Insert" value="ognl:ddTeamInfo.END_DATE" raw="true"/></td>
+				</tr>			
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 成员组表格 开始 -->
+	<div class="c_table c_table-row-6" jwcid="closegrpmempart@Part" element="div"  style="display:none;">
+		<table jwcid="@Table" name="memTable" rowClick="tableRowClick" >
+			<thead>
+				<tr>
+                  <th col="MEM_TEAM">群组标识</th>
+                  <th col="USER_ID_B">成员用户标识</th>
+                  <th col="MEM_NUMBER">成员服务号码</th>
+                  <th>成员客户名称</th>
+                  <th>生效时间</th>
+                  <th>失效时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:memTeamDatas" value="ognl:memTeamData" element="tr">
+				    <td><span jwcid="@Insert" value="ognl:memTeamData.USER_ID_A" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:memTeamData.USER_ID_B" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:memTeamData.SERIAL_NUMBER_B" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:memTeamData.MEM_CUST_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:memTeamData.START_DATE" raw="true"/></td>
+	                <td><span jwcid="@Insert" value="ognl:memTeamData.END_DATE" raw="true"/></td>
+				</tr>			
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="CreateAreaPart@Part" element="div" >
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="teaminfo_TEAM_TYPE" id="teaminfo_TEAM_TYPE" desc="操作类型"
+						source="ognl:pageutil.getStaticList('IMS_TEAM_TYPE')" textField=DATA_NAME valueField="DATA_ID" nullable ="no"
+						value="ognl:condition.TEAM_TYPE" disabled="false" onchange="changeTeamType()" />
+				</span></span></span>
+			</li>			
+			<li class="li" jwcid="HuntTypePart@Part" element="li" style="display:none">
+				<span class="label"><span class="e_required">寻呼组类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="teaminfo_HUNT_TYPE" id="teaminfo_HUNT_TYPE" desc="寻呼组类型"
+						source="ognl:pageutil.getStaticList('Hunting_Team_Type')" textField="DATA_NAME" valueField="DATA_ID" nullable ="no"
+						value="ognl:condition.RSRV_STR1" disabled="false"/>
+				</span></span></span>
+			</li>
+			<li class="li" jwcid="HuntCodePart@Part" element="li" style="display:none">
+				<span class="label"><span class="e_required">寻呼组号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="teaminfo_TEAM_SERIAL" id="teaminfo_TEAM_SERIAL" value="ognl:condition.RSRV_STR5" nullable ="no"
+						 onkeypress="var e=$.event.fix(event);if (e.which == 13) {checkSerial();e.stop();};" desc="寻呼组号码" disabled="false"/>
+				</span></span>
+			</li> 
+			<li class="li" jwcid="DaiDaCodePart@Part" element="li" style="display:none">
+				<span class="label">代答组接入码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="teaminfo_ACCESS_CODE" id="teaminfo_ACCESS_CODE" value="ognl:condition.RSRV_STR1" desc="代答组接入码" nullable ="no" disabled="false"/>
+				</span></span>
+			</li>
+			<li class="li" jwcid="MemPart@Part" element="li" style="display:none">
+				<span class="label"><span class="e_required">成员号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="teaminfo_MEM_NUMBER" id="teaminfo_MEM_NUMBER" value="ognl:condition.SERIAL_NUMBER_B" nullable ="no"
+						 onkeypress="var e=$.event.fix(event);if (e.which == 13) {queryMemInfo();e.stop();};" desc="成员号码"/>
+				</span></span>
+			</li> 
+			<li class="li" jwcid="MemTeamPart@Part" element="li" style="display:none">
+				<span class="label">请选择群组：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="teaminfo_MEM_TEAM" id="teaminfo_MEM_TEAM" nullable="no" desc="选择群组"
+						source="ognl:closegrplist" textField=TEAM_NAME valueField="USER_ID_B" 
+						value="ognl:condition.cond_CLOSEGRPLIST"  onchange="changeMemTeam()"/>
+				</span></span></span>
+			</li>
+			<!-- 隐藏域 开始 -->
+			<input type="text" jwcid="@TextField" name="MEM_USER_ID" id="MEM_USER_ID" value="ognl:meminfo.USER_ID" style="display:none" />
+			<input type="text" jwcid="@TextField" name="CHECK_RESULT" id="CHECK_RESULT" value="ognl:condition.RSRV_STR"  style="display:none"/>
+			<input type="text" jwcid="@TextField" name="INIT_DISCNT" id="INIT_DISCNT" value=""  style="display:none"/>
+			<!-- 隐藏域 结束 -->
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="submitTeam('1')">
+				<i class="e_ico-delete"></i><span>删除</span>
+			</button>		
+			<button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="submitTeam('0')">
+				<i class="e_ico-add"></i><span>新增</span>
+			</button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 引用组件  不显示   -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit"  listener="onSubmitBaseTrade"  isGrp="true" disabledBtn="false" style="display:none" element="div"/>
+</div></div></body>
+</html>

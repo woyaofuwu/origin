@@ -1,0 +1,2 @@
+INSERT INTO td_b_siservice_discnt(product_id,org_domain,cop_id,biz_code,discnt_code,discnt_name,discnt_mode,force_tag,rela_discnt_code,start_date,end_date,update_staff_id,update_depart_id,update_time)
+ VALUES(:PRODUCT_ID,:ORG_DOMAIN,:COP_ID,:BIZ_CODE,:DISCNT_CODE,:DISCNT_NAME,:DISCNT_MODE,:FORCE_TAG,:RELA_DISCNT_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

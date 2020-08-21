@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BBOSS成员业务</title>
+<script jwcid="@Script" type="text/javascript" src="../../../js/jcl.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batbbossmember/BatBbossMember.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+			<div class="c_scroll c_scroll-mix" style="ognl:'height:' + condition.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+			<div class="c_box" jwcid="hintPart@Part">
+				<div jwcid="@Conditional" condition="ognl:message != null && message.length() > 0 ">
+				<div class="c_tip">
+					<span jwcid="@Insert" value="ognl:message" raw="true" />
+				</div>
+				</div>
+				<input type="hidden" jwcid="@Any" id="CAN_ACCEPT" name="CAN_ACCEPT"
+					value="ognl:canAccept" desc="是否可以办理" />
+			</div>
+	<div class="c_title">
+		<div class="text">集团客户查询</div>
+	</div>
+	
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);" refreshPart="userProductPart,userDiscntPart,paramPart"/>
+			</li>
+		</ul>
+		<input type="hidden" jwcid="@Any" id="BATCH_OPER_TYPE" name="BATCH_OPER_TYPE" value="ognl:condition.BATCH_OPER_TYPE" desc="批量类型"/>
+	</div>
+	
+	<input type="text" jwcid="@saleserv:GroupCustInfo" hasTitle="false"/>
+		
+
+	<div class="l_col">
+	
+		<div class="l_left" style="width:250px;">
+			<div class="c_box" id="treePar">
+				<span jwcid="@saleserv:GroupProductsTree"
+						    parentTypeCode="1000"
+						    multiSelect="false"
+						    operType="GROUP_CREATE_USER"
+						    checkboxAction="queryProduct(nodedata);"
+						    init="false"
+						    async="false"
+						    limitType="ognl:condition.LIMIT_TYPE"
+						    limitProductTypes="ognl:condition.LIMIT_PRODUCT_TYPES"
+						    method="loadGrpTreeForOrderedOneTime"
+						    treeHight="310px;"
+						    rootName="集团已订购产品"/>
+			</div>
+		</div>
+		
+		<div class="l_auto">
+		
+			<div jwcid="userProductPart@Part" element="div">
+				<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table" >
+					<table>
+						<thead>
+							<tr>
+								<th></th>
+								<th col="SERIAL_NUMBER">集团产品编码</th>
+								<th col="PRODUCT_ID">产品编码</th>
+								<th col="PRODUCT_NAME">产品名称</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:userProductList" value="ognl:userProduct" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td class="e_center"><input id="userProductCheck" name="userProductCheck" jwcid="@Radio" USER_ID="ognl:userProduct.USER_ID" value="ognl:userProduct.PRODUCT_ID" onclick="queryDiscnt($(this))"/></td>
+								<td><span jwcid="@Insert" value="ognl:userProduct.SERIAL_NUMBER"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:userProduct.PRODUCT_ID"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:userProduct.PRODUCT_NAME" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+			</div>
+			
+						
+			<div jwcid="paramPart@Part" element="div">
+				<div jwcid="@Conditional" condition="ognl:paramList != null && paramList.size() > 0 ">
+					<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-3" >
+						<table>
+							<thead>
+								<tr>
+									<th col="PARAM_NAME">参数名称</th>
+									<th col="PARAM_CODE">参数编码</th>
+									<th col="EXECL_NAME">表格中对应的列名</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:paramList" value="ognl:param" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									<td><span jwcid="@Insert" value="ognl:param.PARAM_NAME"　raw="false"/></td>
+									<td><span jwcid="@Insert" value="ognl:param.PARAM_CODE"　raw="false"/></td>
+									<td><span jwcid="@Insert" value="ognl:param.EXECL_NAME" raw="false"/></td>
+								</tr>
+							</tbody>
+						</table>
+					</div></div>
+				</div>
+			</div>
+			
+			<div jwcid="userDiscntPart@Part" element="div">
+				<div jwcid="@Conditional" condition="ognl:userDiscntList != null && userDiscntList.size() > 0 ">
+				<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table" >
+					<table>
+						<thead>
+							<tr>
+								<th col="X_TAG" style="display:none">TAG</th>
+								<th col="IS_SELECTED">选择</th>
+								<th col="ELEMENT_ID">资费编码</th>
+								<th col="ELEMENT_NAME">资费名称</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:userDiscntList" value="ognl:userDiscnt" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td style="display:none"></td>
+								<td class="e_center"><input id="userDiscntCheck" name="userDiscntCheck" jwcid="@Checkbox" value="ognl:userDiscnt.ELEMENT_ID"/></td>
+								<td><span jwcid="@Insert" value="ognl:userDiscnt.ELEMENT_ID"　raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:userDiscnt.ELEMENT_NAME" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div></div></div></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="setReturnData()"><i></i><span>确定</span></button>
+		<button type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+	</div>
+
+</div></div>
+</body>
+
+</html>

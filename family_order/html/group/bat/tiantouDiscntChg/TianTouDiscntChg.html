@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>批量修改田头监管3G系统成员套餐</title>
+	<script jwcid="@Script" type="text/javascript" src="../../../js/jcl.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+	
+	<script type="text/javascript">
+		function returnValue(){
+			
+			var discntId = $("#DISCNT_CODE :selected").val();
+			var discntName = $("#DISCNT_CODE :selected").text();
+			
+			if( discntId == "" || discntId ==null) {
+				alert('请选择套餐')
+				return;
+			}
+			
+			var info = $.DataMap();
+			info.put("DISCNT_CODE", discntId);
+			info.put("PRODUCT_ID", "7788");
+        	//add by chenzg@20180704--begin--REQ201804280001集团合同管理界面优化需求---
+			if($('#MEB_VOUCHER_FILE_LIST')){
+				var mebVoucherFileList = $('#MEB_VOUCHER_FILE_LIST').val();
+				if( mebVoucherFileList== ""){
+					alert("请上传凭证附件！");
+					return false;
+				}else{
+					info.put('MEB_VOUCHER_FILE_LIST', mebVoucherFileList);
+				}		
+			}
+			if($('#AUDIT_STAFF_ID')){
+				var auditStaffId = $('#AUDIT_STAFF_ID').val();
+				if( auditStaffId== ""){
+					alert("请选择稽核员！");
+					return false;
+				}else{
+					info.put('AUDIT_STAFF_ID', auditStaffId);
+				}		
+			}
+			//alert(info);
+			//add by chenzg@20180704--end----REQ201804280001集团合同管理界面优化需求---
+			
+			//$.setReturnValue({'POP_CODING_STR':"优惠编码:"+discntId+" 优惠名称:"+discntName},false);
+		 	//$.setReturnValue({'CODING_STR':info},true);
+		 	
+		 	parent.$('#POP_CODING_STR').val("优惠编码:"+discntId+" 优惠名称:"+discntName);
+			parent.$('#CODING_STR').val(info);
+ 	
+			parent.hiddenPopupPageGrp();
+		}
+	</script>
+	
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_scroll c_scroll-mix" style="ognl:'height:' + info.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+		
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<div class="c_form c_form-col-2" jwcid="productInfoArea@Part">
+		<ul class="ul">
+			
+			<li class="li">
+				<span class="label"><span class="e_required">信息员套餐：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="DISCNT_CODE" source="ognl:discntLists" valueField="PARA_CODE1" nullable="no"
+							textField="PARAM_NAME"  value="ognl:info.PARA_CODE1" style="width: 100%;"   desc="信息员套餐"/>
+				</span></span></span>
+			</li>
+			
+		</ul>
+		
+	</div>
+    
+    <!-- 凭证信息开始  -->
+    <div class="c_box" jwcid="@Conditional" condition='ognl:info.MEB_VOUCHER_FILE_SHOW != null && info.MEB_VOUCHER_FILE_SHOW == "true"'>
+		<div class="c_title">
+			<div class="text">凭证信息</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li col-3">				
+					<span class="label"><span class="e_required">凭证上传：</span></span>
+					<div jwcid="VoucherFilePart@Part">
+						<span class="e_elements">
+						<input jwcid="@Upload"
+								name="MEB_VOUCHER_FILE_LIST"
+								id="MEB_VOUCHER_FILE_LIST"
+								ftpSite="groupserv"
+								filePath="upload/mebattach"
+								fileSize="20"
+								fileTypes="*.*"
+                        		desc="凭证信息" 
+                        		nullable="no"
+							/>
+						</span>
+				    </div>
+				</li>
+                <li class="li">
+	                <span class="label"><span class="e_required">稽核人员：</span></span> 
+	                <span class="e_elements">
+						<button type="button" class="e_button-right"
+							onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+							<i class="e_ico-check"></i><span></span>
+						</button> 
+	                    <span class="e_input e_input-left"><span> <input
+								type="text" jwcid="@TextField"
+								name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+								value=""
+								text="" nullable="no"
+								readonly="true"/>
+						</span></span>
+					</span>
+	            </li>
+			</ul>
+		</div>
+	</div>
+    <!-- 凭证信息结束  -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 提交 开始 -->
+<div class="c_submit">
+	<button type="button" class="e_button-page-ok" onclick="returnValue()"><i></i><span>确定</span></button>
+	<button type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+</div>
+<!-- 提交 结束 -->
+
+
+</div></div>
+</body>
+</html>

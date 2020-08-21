@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>复机</title>
+
+<script jwcid="@Script" type="text/javascript" src="person/restoreuser/scripts/restoreuser.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/scripts/simcardmgr/simcard4usim.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/scripts/simcardmgr/simcard.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/scripts/simcardmgr/getusiminfo.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/scripts/simcardmgr/rps.js"></script>
+<script jwcid="@Script"  src="scripts/csserv/component/person/eform/CommonEForm.js" ></script>
+
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<div class="c_box">
+				<div class="c_title">
+					<div class="text">客户查询</div>
+				</div>
+
+				<div jwcid="AuthPart@csserv:Auth" authType="ognl:editInfo.authType" 
+				     tradeTypeCode="ognl:editInfo.TRADE_TYPE_CODE"
+					 tradeAction="refreshPartAtferAuth(data)" moreUser="true"
+					 element="div"></div>
+				 
+				<div class="c_form c_form-col-1">
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span >方式：</span></span>
+								<span >
+									<label><input jwcid="@Radio" name="baseinfo_radio" value="1"  onclick="changeMethod1();" checked="true"/>客户摄像</label>
+									<label class="l_ml"><input id="agent_right_span" disabled="false" jwcid="@Radio" name="baseinfo_radio"  value="2" onclick="changeMethod2();"/>经办人摄像</label>
+				                </span>
+							</li>			
+						</ul>
+						<ul class="ul" id="span_AGENT" style="display: none">
+							<li class="li" >
+								<span class="label"><span id="span_AGENT_CUST_NAME">经办人名称：</span></span>
+								<span class="e_input">
+									<span><input type="text" jwcid="@TextField" name="custInfo_AGENT_CUST_NAME" id="custInfo_AGENT_CUST_NAME" 
+										value="" maxsize="48" maxLength="48" desc="经办人名称" disabled="true" />
+									</span>
+								</span>
+							</li>
+							<li class="li">
+								<span class="label"><span id="span_AGENT_PSPT_TYPE_CODE">经办人证件类型：</span></span>
+								<span class="e_select"><span>
+									<span>
+										<select jwcid="@Select" name="custInfo_AGENT_PSPT_TYPE_CODE" id="custInfo_AGENT_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+					                       		textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="" 
+					                        	desc="经办人证件类型"  disabled="false"/>
+									</span></span>
+								</span>
+							</li>
+							<li class="li">
+								<span class="label"><span id="span_AGENT_PSPT_ID">经办人证件号码：</span></span>
+								<span class="e_elements">
+								<button type="button" class="e_button-right"  id="AGENT_SHOT_IMG" name="ReadCardButton" onclick="identification('custInfo_AGENT_PIC_ID','custInfo_AGENT_PIC_STREAM')"><i class="e_ico-check"></i><span>经办人摄像</span></button>
+								<button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt2()"><i class="e_ico-check"></i><span>扫描</span></button>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name="custInfo_AGENT_PSPT_ID" id="custInfo_AGENT_PSPT_ID" value="" datatype="pspt" maxsize="20" maxLength="20"
+			                         desc="经办人证件号码"  disabled="true" />
+								</span></span>
+			                    </span>
+							</li>												
+						</ul>										
+						<ul class="ul" id="span_CUST">
+							<li class="li">
+								<span class="label"><span >摄像：</span></span>
+								<span >
+								    <button type="button" class="e_button-right" name="ShotImgButton" onclick="identification('custInfo_PIC_ID','custInfo_PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>
+				                </span>
+							</li>						
+						</ul>
+				</div>				
+			</div>
+			<div style="display:none">
+				<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+			</div>
+			<div class="c_box">
+					<div jwcid="mytab@Tabset"
+						switchAction="myTabSwitchAction('原用户信息','新用户信息')"
+						tabStyle="c_tab">
+						<div jwcid="oldUserInfo@TabsetContent" title="原用户信息">
+							<div jwcid="UCAViewPart@Part"
+								class="c_form c_form-label-7 c_form-text c_form-col-3">
+								<ul class="ul">
+
+									<li class="li"><span class="label">证件类型：</span> <span
+										class="text"> <span jwcid="@Insert"
+											value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)"
+											raw="false"> </span></span></li>
+									<li class="li col-2"><span class="label">证件号码：</span> <span
+										class="text"><input jwcid="@Insert" name="PSPT_ID"
+											id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" maskType="mid"
+											maskPosition="6" desc="证件号码" disabled="true" /></span></li>
+									<li class="li"><span class="label">证件有效期：</span> <span
+										class="text"><input jwcid="@Insert" name="PSPT_ID"
+											id="PSPT_ID" value="ognl:custInfoView.PSPT_END_DATE"
+											maskType="mid" maskPosition="6" desc="证件号码" disabled="true" /></span></li>
+									<li class="li col-2"><span class="label">证件有地址：</span> <span
+										class="text"><input jwcid="@Insert" name="PSPT_ID"
+											id="PSPT_ID" value="ognl:custInfoView.PSPT_ADDR"
+											maskType="mid" maskPosition="6" desc="证件号码" disabled="true" /></span></li>
+									<li class="li"><span class="label">开户日期：</span> <span
+										class="text"><input jwcid="@Insert" name="OPEN_DAT"
+											id="OPEN_DAT" value="ognl:userInfoView.OPEN_DATE"
+											maskType="mid" maskPosition="6" desc="开户日期" disabled="true" /></span></li>
+									<li class="li"><span class="label">开户品牌：</span> <span
+										class="text"><input jwcid="@Insert"
+											name="USER_BRAND_CODE" id="USER_BRAND_CODE"
+											value="ognl:userInfoView.BRAND_NAME"
+											maskType="mid" maskPosition="6" desc="品牌名称" disabled="true" /></span></li>
+									<li class="li"><span class="label">开户产品：</span> <span
+										class="text"><input jwcid="@Hidden"
+											name="USER_PRODUCT_ID" id="USER_PRODUCT_ID"
+											value="ognl:userInfoView.PRODUCT_ID" /> <input
+											jwcid="@Insert" name="USER_PRODUCT_NAME"
+											id="USER_PRODUCT_NAME"
+											value="ognl:userInfoView.PRODUCT_NAME"
+											maskType="mid" maskPosition="6" desc="产品名称" disabled="true" /></span></li>
+									<li class="li"><span class="label">预销时间：</span> <span
+										class="text"><input jwcid="@Insert"
+											name="PRE_DESTROY_TIME" id="PRE_DESTROY_TIME"
+											value="ognl:userInfoView.PRE_DESTROY_TIME" maskType="mid"
+											maskPosition="6" desc="预销时间" disabled="true" /></span></li>
+									<li class="li"><span class="label">销户时间：</span> <span
+										class="text"><input jwcid="@Insert" name="DESTROY_TIME"
+											id="DESTROY_TIME" value="ognl:userInfoView.DESTROY_TIME"
+											maskType="mid" maskPosition="6" desc="销户时间" disabled="true" /></span></li>
+									<li class="li"><span class="label">客户名称：</span> <span
+										class="text"><input jwcid="@Insert" name="CUST_NAME"
+											id="CUST_NAME" value="ognl:custInfoView.CUST_NAME"
+											maskType="mid" maskPosition="6" desc="客户名称" disabled="true" /></span></li>
+									<li class="li"><span class="label">用户类型：</span> <span
+										class="text"><input jwcid="@Insert"
+											name="USER_TYPE_CODE" id="USER_TYPE_CODE"
+											value="ognl:pageutil.getStaticValue('TD_B_USERTYPE','USER_TYPE_CODE','USER_TYPE',userInfoView.USER_TYPE_CODE)"
+											maskType="mid" maskPosition="6" desc="用户类型" disabled="true" /></span></li>
+									<li class="li"><span class="label">联系电话：</span> <span
+										class="text"><input jwcid="@Insert" name="PHONE"
+											id="PHONE" value="ognl:custInfoView.PHONE" maskType="mid"
+											maskPosition="6" desc="联系电话" disabled="true" /></span></li>
+
+									<li class="li"><span class="label">通信邮编：</span> <span
+										class="text"><input jwcid="@Insert" name="POST_CODE"
+											id="POST_CODE" value="ognl:custInfoView.POST_CODE"
+											maskType="mid" maskPosition="6" desc="通信邮编" disabled="true" /></span></li>
+
+									<li class="li col-3"><span class="label">通信地址：</span> <span
+										class="text"><input jwcid="@Insert" name="POST_ADDRESS"
+											id="POST_ADDRESS" value="ognl:custInfoView.POST_ADDRESS"
+											maskType="mid" maskPosition="6" desc="通信地址" disabled="true" /></span></li>
+
+									<li class="li"><span class="label">经办人名称：</span> <span
+										class="text"><input jwcid="@Insert" name="RSRV_STR7"
+											id="RSRV_STR7" value="ognl:custInfoView.RSRV_STR7"
+											maskType="mid" maskPosition="4" desc="经办人名称" disabled="true" /></span></li>
+
+									<li class="li"><span class="label">经办人证件类型：</span> <span
+										class="text"><input jwcid="@Insert" name="RSRV_STR8"
+											id="RSRV_STR8" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfoView.RSRV_STR8)"
+											maskType="mid" maskPosition="4" desc="经办人证件类型" disabled="true" /></span></li>
+
+									<li class="li"><span class="label">经办人证件号码：</span> <span
+										class="text"><input jwcid="@Insert" name="RSRV_STR9"
+											id="RSRV_STR9" value="ognl:custInfoView.RSRV_STR9"
+											maskType="mid" maskPosition="4" desc="经办人证件号码" disabled="true" /></span></li>
+
+									<li class="li col-3"><span class="label">经办人证件地址：</span> <span
+										class="text"><input jwcid="@Insert" name="RSRV_STR10"
+											id="RSRV_STR10" value="ognl:custInfoView.RSRV_STR10"
+											maskType="mid" maskPosition="8" desc="经办人证件地址" disabled="true" /></span></li>
+								</ul>
+							</div>
+						<div class="c_scroll c_scroll-table-5" jwcid="userOldDiscntPart@Part">
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">用户原优惠信息</div>
+							</div>
+							<!-- 标题 结束 -->
+							<div class="c_table">
+								<table jwcid="@Table" name="userOldDiscntTable" id="userOldDiscntTable">
+									<thead>
+										<tr>
+											<th col="col_DISCNT_CODE">优惠编码</th>
+											<th col="col_DISCNT_NAME">优惠名称</th>
+											<th col="col_START_DATE"><span>开始时间</span></th>
+											<th col="col_END_DATE"><span>结束时间</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach"
+											source="ognl:discntInfos" value="ognl:discntInfo" element="tr"
+											index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_NAME" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:discntInfo.START_DATE" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:discntInfo.END_DATE" raw="false"/></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+							<div jwcid="newUserInfo@TabsetContent" title="新用户信息">
+							<div class="s_iframe-lower">
+								<div class="c_scroll c_scroll-table-5" jwcid="userResInfosPart@Part">
+										<!-- 标题 开始 -->
+										<div class="c_title">
+											<div class="text">资源</div>
+										</div>
+										<!-- 标题 结束 -->
+									<div class="c_table">
+										<table jwcid="@Table" name="userResTable" id="userResTable">
+											<thead>
+												<tr>
+													<th col="col_X_TAG" style="display: none">TAG</th>
+													<th col="col_RES_TYPE_CODE" style="display: none">资源类型编码</th>
+													<th col="col_RES_TYPE">资源类型</th>
+													<th col="col_RES_CODE"><span>资源号码</span></th>
+													<th col="col_START_DATE"><span>开始时间</span></th>
+													<th col="col_END_DATE"><span>结束时间</span></th>
+													<th col="col_IMSI" style="display: none">IMSI</th>
+													<th col="col_KI" style="display: none">KI</th>
+													<th col="col_OLD_RES_CODE" style="display: none">原资源号码</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr onclick="tableRowClick(this)" jwcid="@Foreach"
+													source="ognl:resInfos" value="ognl:resInfo" element="tr"
+													index="ognl:rowIndex"
+													class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+													<td style="display: none"></td>
+													<td style="display: none"><span jwcid="@Insert"
+														value="ognl:resInfo.RES_TYPE_CODE" raw="false" /></td>
+													<td><span jwcid="@Insert"
+														value='ognl:"0".equals(resInfo.RES_TYPE_CODE)?"服务号码":"SIM卡号"' /></td>
+													<td><span jwcid="@Insert" value="ognl:resInfo.RES_CODE" /></td>
+													<td><span jwcid="@Insert"
+														value="ognl:resInfo.START_DATE" /></td>
+													<td><span jwcid="@Insert" value="ognl:resInfo.END_DATE" /></td>
+													<td style="display: none"><span jwcid="@Insert"
+														value="ognl:resInfo.IMSI" /></td>
+													<td style="display: none"><span jwcid="@Insert"
+														value="ognl:resInfo.KI" /></td>
+													<td style="display: none"><span jwcid="@Insert"
+														value="ognl:resInfo.RES_CODE" /></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="c_form c_form-label-6 c_form-col-2" id="EditPart" name="EditPart">
+									<ul class="ul">
+										<li class="li"><span class="label">
+											<span class="" id="_sim">资源号码：</span></span>
+											<span class="e_elements" id="SIM_CARD_INPUT">
+												<button type="button" class="e_button-right" id="checkResBt"
+													name="checkResBt" onclick="checkRes()">
+													<i class="e_ico-check"></i><span>校验</span>
+												</button> 
+												<span class="e_elements" id="SIM_CARD_WRITE">
+												<div jwcid="@csserv:WriteCard" mode="1" tradeTypeCode="ognl:editInfo.TRADE_TYPE_CODE" isRender="false" 
+												readBeforeAction="beforeReadCard()" readAfterAction="beforeCheckSimCardNo(data)"
+												writeAfterAction="afterWriteCard(data)"/> 
+												<span class="e_input e_input-left"><span> <input
+														jwcid="@TextField" name="RES_CODE" id="RES_CODE"
+														enterAction="checkRes()" value="" desc="资源号码" nullable="no" />
+												</span></span></span>
+										</span></li>
+										<li class="li">
+											<span class="label"><span class="" id="_sim_info">资源信息：</span></span> 
+											<span class="e_input"><span>
+													<input jwcid="@TextField" name="RES_INFO" id="RES_INFO"
+													value="" desc="资源信息" nullable="no" disabled="true" />
+											</span></span>
+										</li>
+									</ul>
+								</div>
+	
+								<!-- 标题 开始 -->
+								<div class="c_title">
+									<div class="text">产品</div>
+									<div class="fn">
+										<span class="e_select e_select-left"><span><span>
+													<select id="productSearchType" name="productSearchType"
+													onchange="changeSearchType(this);">
+														<option value="1">产品搜索</option>
+														<option value="2">元素搜索</option>
+												</select>
+											</span></span></span> <span class="e_input e_input-center"> <span> <input
+												jwcid="productSearch@Search" name="productSearch"
+												page="restoreuser.RestoreUser" defaultText='产品元素搜索'
+												dynamic="true" listener="search" searchCode="SEARCH_NAME"
+												valueCode="SEARCH_ID" optionEnterAction="searchOptionEnter"
+												optionClickAction="searchOptionEnter" width="200" />
+										</span>
+										</span> <span class="e_label e_label-right"><span>搜索</span></span>
+										<button class="l_ml" jwcid="@Button" name="productSelectBtn"
+											id="productSelectBtn" onclick="checkBeforeProduct();">
+											<i class="e_ico-menu"></i><span>产品目录</span>
+										</button>
+									</div>
+								</div>
+								<!-- 标题 结束 -->
+								<!-- 参数列表 开始 -->
+								<div class="c_form c_form-label-6 c_form-col-3"
+									jwcid="ProductTypePart@Part">
+									<ul class="ul">
+										<li class="li"><span class="label"><span
+												class="e_required">品牌：</span></span> <span class="e_input"><span>
+													<input jwcid="@TextField" name="BRAND" id="BRAND"
+													value="ognl:editInfo.BRAND_NAME"
+													disabled="true" desc="当前品牌" />
+											</span></span></li>
+										<li class="li"><span class="label"><span
+												class="e_required">产品类型：</span></span> <span class="e_select"><span><span>
+														<select jwcid="@Select" name="PRODUCT_TYPE_CODE"
+														id="PRODUCT_TYPE_CODE" source="ognl:productTypeList"
+														textField="PRODUCT_TYPE_NAME"
+														valueField="PRODUCT_TYPE_CODE"
+														value="ognl:editInfo.PRODUCT_TYPE_CODE" onchange=""
+														addDefault="false" desc="当前产品" />
+												</span></span></span></li>
+										<li class="li"><span class="label"><span
+												class="e_required">产品：</span></span> <span class="e_input"><span>
+													<input jwcid="@TextField" name="PRODUCT_NAME"
+													id="PRODUCT_NAME"
+													value="ognl:editInfo.PRODUCT_NAME"
+													disabled="true" />
+											</span></span></li>
+									</ul>
+								</div>
+								<!-- 参数列表 结束 -->
+								<!-- 资费  开始 -->
+								<div class="l_col">
+									<!-- 第 1 栏 开始 -->
+									<div class="l_left" style="width: 49%;" id="preChoosePart">
+										<!-- 标题 开始 -->
+										<div class="c_title">
+											<div class="text">待选区</div>
+										</div>
+										<!-- 标题 结束 -->
+										<div class="l_col l_col-close">
+											<div jwcid="offerList@csserv:OfferList" 
+						                           element="div" 
+						                           categoryId="100000000114,100000000008">
+											</div>
+										</div>
+									</div>
+									<div class="l_auto">
+										<!-- 标题 开始 -->
+										<div class="c_title">
+											<div class="text">已选区</div>
+										</div>
+										<div jwcid="selectedElements@csserv:SelectedElements"
+											renderCallSvc="CS.SelectedElementSVC.getUserOpenElements"
+											callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg"
+											afterRenderAction="disableElements(data)"
+											basicStartDateControlId="NEW_PRODUCT_START_DATE"
+											elementExtendAction="Invoice.invoicePopupOpen()"
+											tradeTypeCode="ognl:editInfo.TRADE_TYPE_CODE" element="div"></div>
+									</div>
+									<!-- 第 2 栏 结束 -->
+									
+								</div>
+								<div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+							</div>
+							<!-- 资费 结束 -->
+							<!-- 表单 开始 -->
+							<div class="c_form c_form-col-1" jwcid="openMobile@Part">
+								<ul class="ul">
+									<li class="li"><span class="label">备注：</span> <span
+										class="e_input"><span><input type="text"
+												jwcid="@TextField" name="REMARK" maxlength="100" id="REMARK"
+												value="" desc="备注" /></span></span></li>
+								</ul>
+							</div>
+							<!-- 表单 结束 -->
+							<div jwcid="SubmitPart@csserv:CSSubmit"
+								beforeAction="submitBeforeAction()" listener="onTradeSubmit"
+								area="AuthPart,hiddenPart" isReset="true" element="div" />
+						</div>
+					</div>
+				</div>
+
+				<div jwcid="productTree@csserv:ProductSelect"
+					afterAction="afterChangeProduct(productId,productName,brandCode,brandName)"
+					monitor="PRODUCT_TYPE_CODE" element="div"></div>
+				
+				<div jwcid="productInvoice@csserv:Invoice" checkSvc="CS.InvoiceCheckSVC.checkInvoice" svcId="15" element="div"></div>
+
+				<!-- 隐藏区域开始 -->
+				<div jwcid="hiddenPart@Part">
+					<input type="hidden" jwcid="@Any" id="OLD_SIM_CARD_NO" name="OLD_SIM_CARD_NO" value="ognl:editInfo.OLD_SIM_CARD_NO" desc="记录用户老sim卡" /> 
+					<input type="hidden" jwcid="@Any" id="OLD_PHONE_NO" name="OLD_PHONE_NO" value="ognl:editInfo.OLD_PHONE_NO" desc="记录用户老手机号码" />
+					<input type="hidden" jwcid="@Any" id="NEW_SIM_CARD_NO" name="NEW_SIM_CARD_NO" value="" desc="记录用户上一次新换的sim卡" />
+					<input type="hidden" jwcid="@Any" id="NEW_PHONE_NO" name="NEW_PHONE_NO" value="" desc="记录用户上一次新换的手机号码" />
+					<input type="hidden" jwcid="@Any" id="RES_TYPE_CODE" name="RES_TYPE_CODE" value="ognl:editInfo.RES_TYPE_CODE" desc="记录当前资源表格中选中行的资源类型编码" />
+					<input type="hidden" jwcid="@Any" id="START_DATE" name="START_DATE" value="ognl:editInfo.START_DATE" desc="记录当前资源表格中选中行的开始时间" />
+					<input type="hidden" jwcid="@Any" id="END_DATE" name="END_DATE" value="ognl:editInfo.END_DATE" desc="记录当前资源表格中选中行的结束时间" />
+					<input type="hidden" id="X_CODING_STR" name="X_CODING_STR" />
+					<input type="hidden" id="rowIndex" name="rowIndex" desc="保存当前资源表格中所选中的行" />
+					<input type="hidden" jwcid="@Any" id="NEED_CHANGE_PHONE" name="NEED_CHANGE_PHONE" value="ognl:editInfo.NEED_CHANGE_NUMBER" />
+					<input type="hidden" jwcid="@Any" id="NEED_CHANGE_SIM" name="NEED_CHANGE_SIM" value="ognl:editInfo.NEED_CHANGE_SIM" />
+					<input type="hidden" jwcid="@Any" id="SIM_CHECK_TAG" name="SIM_CHECK_TAG" value="0" desc="记录新sim卡校验结果" /> 
+					<input type="hidden" jwcid="@Any" id="PHONE_CHECK_TAG" name="PHONE_CHECK_TAG" value="0" desc="记录新手机号码校验结果" /> 
+					<input type="hidden" id="OLD_PHONE_CANUSE" name="OLD_PHONE_CANUSE" value="0" />
+					<input type="hidden" id="WRITE_TAG" name="WRITE_TAG" value="" />
+				    <input type="hidden" name="PRODUCT_ID" id="PRODUCT_ID" value="" />				
+					<input type="hidden" jwcid="@Any" id="NEED_REPOSSESS" name="NEED_REPOSSESS" value="ognl:editInfo.NEED_REPOSSESS" desc="原号码是否需要重新占用，可能已经被回收，此时需要重新占用" />
+					<input type="hidden" jwcid="@Any" id="SIM_FEE_TAG" name="SIM_FEE_TAG" value="ognl:editInfo.SIM_FEE_TAG" desc="是否买断卡标记" />
+					<input type="hidden" jwcid="@Any" id="SIM_CARD_SALE_MONEY" name="SIM_CARD_SALE_MONEY" value="ognl:editInfo.SIM_CARD_SALE_MONEY" desc="买断卡费用" />
+					
+					
+					<!-- REQ201705270006_关于人像比对业务优化需求 -->
+				    <!-- 携入标识   1是携入   非1 不是携入 -->
+				    <input jwcid="@Hidden" id="NPTag" name="NPTag" value="ognl:npTagAndWxTag.NPTAG"  desc="携入标识"/>
+				    <!-- 固话标识   1是固话  非1 不是固话-->
+				    <input jwcid="@Hidden" id="WXTag" name="WXTag" value="ognl:npTagAndWxTag.WXTAG"  desc="无线固话标识"/>	
+				    <input jwcid="@Hidden" id="custInfo_PIC_ID" name="custInfo_PIC_ID" value="" desc="客户照片ID"/>						
+					<input jwcid="@Hidden" id="custInfo_PIC_STREAM" name="custInfo_PIC_STREAM" value="" desc="拍摄人像照片流"/>
+					<input jwcid="@Hidden" id="custInfo_PSPT_TYPE_CODE" name="custInfo_PSPT_TYPE_CODE" value="" desc="客户证件类型"/>					
+					<input jwcid="@Hidden" id="UCA_CUST_NAME" name="UCA_CUST_NAME" value=""  desc="客户名称"/>
+				    <input type="hidden" id="AUTH_CHECK_MODE" name="AUTH_CHECK_MODE" value=""  desc="验证方式"/>	
+				    
+					<input jwcid="@Hidden" id="custInfo_AGENT_PIC_ID" name="custInfo_AGENT_PIC_ID" value="" desc="经办人照片ID"/>						
+					<input jwcid="@Hidden" id="custInfo_AGENT_PIC_STREAM" name="custInfo_AGENT_PIC_STREAM" value="" desc="拍摄经办人人像照片流"/>
+					<input jwcid="@Hidden" id="custInfo_AGENT_BACKBASE64" name="custInfo_AGENT_BACKBASE64" value="" desc="经办人身份证反面照"/>
+					<input jwcid="@Hidden" id="custInfo_AGENT_FRONTBASE64" name="custInfo_AGENT_FRONTBASE64" value="" desc="经办人身份证正面照"/>				    	    
+						 						
+				</div>
+				<!-- 隐藏区域结束 -->
+		</div>
+<script>
+//页面关闭时调用释放资源流程
+window.onunload=function(){
+	var newSimCard = $('#NEW_SIM_CARD_NO').val();//用户上一次新换的sim卡
+    var newPhone = $('#NEW_PHONE_NO').val();//用户上一次新换的号码
+    if (newSimCard=="" && newPhone=="")
+    {
+    	return true;
+    }
+    var param = '&NEW_PHONE_NO=' + newPhone + '&NEW_SIM_CARD_NO=' + newSimCard
+    	+ '&EPARCHY_CODE=' + $.auth.getAuthData().get("USER_INFO").get("EPARCHY_CODE");
+	$.ajax.submit(null, 'releaseSingleResOnClose', param, null, function(data) {
+	   return true;
+	});
+} 
+</script>	
+</body>
+</html>

@@ -1,0 +1,1 @@
+select * from tf_f_user t where t.cust_id=:CUST_ID and t.product_id IN ('7010','7011','7012','7013','7014','7015');

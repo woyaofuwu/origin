@@ -1,0 +1,8 @@
+UPDATE TF_F_USER_IMEI
+   SET END_DATE = SYSDATE
+ WHERE USER_ID = TO_NUMBER(:USER_ID)
+   AND IMEI = :IMEI
+   AND START_DATE = (SELECT MAX(START_DATE)
+                       FROM TF_F_USER_IMEI
+                      WHERE USER_ID = TO_NUMBER(:USER_ID)
+                        AND END_DATE > SYSDATE)

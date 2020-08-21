@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="family/viewquery/scripts/familytradehistorytab.js"></script>
+    <script jwcid="@Script" src="family/viewquery/scripts/familytabqueryutil.js"></script>
+    <title>家庭业务历史</title>
+</head>
+<body jwcid="@Body">
+    <!-- 标题栏 开始 -->
+    <div class="c_header e_show-phone">
+        <div class="text">业务历史</div>
+    </div>
+    <!-- 标题栏 结束 -->
+    <div name="tradeHisScroller" jwcid="@Scroller" checkDOMChanges="true" class="c_scroll c_scroll-float c_scroll-phone-header c_scroll-white">
+        <div class="l_padding-3 l_padding-phone-1 l_padding-u">
+            <div class="c_space-2 c_space-phone-1"></div>
+            <!-- 标题 开始 -->
+            <div class="c_title c_title-nopadding e_hide-phone">
+                <div class="text e_size-xl e_black">业务历史</div>
+            </div>
+            <!-- 标题 结束 -->
+			<div name="tradeHisTab" jwcid="@Tabset" class="c_tab c_tab-sp" slidable="false">
+                <div class="fn">
+                    <label id="bookCheckCheckboxLabel">
+                        <input id="bookCheckCheckbox" type="checkbox"/> 查询预约业务</label>
+                    <button id="tableViewButton" type="button" class="e_button-r e_hide-phone" style="display:none">
+                        <span class="e_ico-back"></span><span>返回表格视图</span>
+                    </button>
+                </div>
+                <!-- 最近 开始  -->
+                <div class="content" title="最近">
+                    <!-- 参数 开始 -->
+                    <div jwcid="initParamPart@Part"
+                         class="c_form c_form-col-2 c_form-phone-col-1 c_form-submit c_form-border">
+                        <input jwcid="@Hidden" name="TERMINAL" value="ognl:init.TERMINAL"/>
+                        <input jwcid="@Hidden" name="BOOK_CHECK" value=""/>
+                        <div class="submit">
+                            <button id="tradeHisQueryButton" type="button"
+                                    class="e_button-blue">
+                                <span class="e_ico-search"></span>
+                                <span>查询</span>
+                            </button>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="label">业务类型：</div>
+                                <div class="value">
+                                    <span name="TRADE_TYPE_CODE" jwcid="@Select"
+                                          source="ognl:pageutil.getStaticList('FAMILY_TRADE_TYPE_CODE')"
+                                          textField="DATA_NAME"
+                                          valueField="DATA_ID"
+                                          titleField="DATA_NAME" nullable="no"
+                                          desc="家庭业务类型"></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label">
+                                    <input id="timeCheckCheckbox" checked="on"
+                                           name="TIME_CHECK" type="checkbox"
+                                           title="启用时间条件查询"/> 起始日期：</div>
+                                <div class="value">
+                                    <input name="START_DATE" jwcid="@DateField"
+                                           dropDown="true"
+                                           value="ognl:init.START_DATE"
+                                           format="yyyy-MM-dd" datatype="date"
+                                           desc="起始日期"/>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label">终止日期：</div>
+                                <div class="value">
+                                    <input name="END_DATE" jwcid="@DateField"
+                                           dropDown="true"
+                                           value="ognl:init.END_DATE"
+                                           format="yyyy-MM-dd" datatype="date"
+                                           desc="终止日期"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 参数 结束 -->
+                    <div class="c_space-c"></div>
+                    <!-- 表格 开始 -->
+                    <div jwcid="tradeHisTablePart@Part" class="e_hide-phone">
+                        <table name="tradeHisTable" jwcid="@Table"
+                               class="c_table c_table-min-5 c_table-hover c_table-lite c_table-border">
+                            <thead>
+                                <tr>
+                                    <th>受理时间</th>
+                                    <th>业务类型</th>
+                                    <th>返销标识</th>
+                                    <th>受理部门</th>
+                                    <th>受理工号</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:infos"
+                                    value="ognl:info" index="ognl:rowIndex"
+                                    rowIndex="ognl:rowIndex" element="tr"
+                                    tradeId="ognl:info.TRADE_ID"
+                                    ontap="selectTradeFromTable(this);">
+                                    <td data-title="受理时间">
+                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)"></span></td>
+                                    <td data-title="业务类型" class="key">
+                                        <span jwcid="@Insert" value="ognl:info.TRADE_TYPE"></span></td>
+                                    <td data-title="返销标识" jwcid="@Any" class='ognl:!"0".equals(info.CANCEL_TAG) ? "e_red" : ""'>
+                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',info.CANCEL_TAG)"></span></td>
+                                    <td data-title="受理部门">
+                                        <span jwcid="@Insert" value="ognl:'[' + info.TRADE_DEPART_CODE + '] ' + info.TRADE_DEPART_NAME"></span></td>
+                                    <td data-title="受理工号">
+                                        <span jwcid="@Insert" value="ognl:'[' + info.TRADE_STAFF_ID + '] ' + info.TRADE_STAFF_NAME"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="c_space-c"></div>
+                        <!-- 表格分页 开始 -->
+                        <div name="tradeHisTableNavBar" jwcid="@NavBar"
+                             class="c_page c_page-border" cond="initParamPart"
+                             count="ognl:infoCount" listener="queryInfo"
+                             part="tradeHisTablePart,tradeHisListCol"
+                             pageSize="10" loadingTxt="翻页中。。。"></div>
+                        <!-- 表格分页 结束 -->
+                    </div>
+                    <!-- 表格 结束 -->
+                    <!-- 分列 开始 -->
+                    <div id="tradeHisListPart"
+                         class="c_box c_box-gray c_box-border e_show-phone">
+                        <div id="tradeHisCol"
+                             class="l_col l_col-phone-split-2 l_col-cur-1 l_col-line">
+                            <div class="l_colContent">
+                                <div jwcid="tradeHisListCol@Part"
+                                     class="l_colItem" style="width:16em">
+                                    <!-- 时间轴 开始 -->
+                                    <div class="c_list c_list-line">
+                                        <ul>
+                                            <li jwcid="@Foreach"
+                                                source="ognl:infos"
+                                                value="ognl:info"
+                                                index="ognl:rowIndex"
+                                                class="link" element="li"
+                                                listIndex="ognl:rowIndex"
+                                                tradeId="ognl:info.TRADE_ID"
+                                                ontap="selectTradeFromList(this);">
+                                                <div class="main">
+                                                    <div class="title e_size-s">
+                                                        <span jwcid="@Insert" value="ognl:info.TRADE_TYPE"></span>
+                                                    </div>
+                                                    <div class="content">
+                                                        <span jwcid="@Insert" value="ognl:'时间：' + formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)"></span>
+                                                    </div>
+                                                    <div class="content">
+                                                        <span jwcid="@Insert" value="ognl:'部门：' + info.TRADE_DEPART_NAME"></span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- 时间轴 结束 -->
+                                    <div class="c_space-c"></div>
+                                    <!-- 列表分页 开始 -->
+                                    <div class="c_page c_page-border c_page-lite e_hide-phone">
+                                        <div class="turn">
+                                            <div id="prevBtn" class="prev">上一页</div>
+                                            <div id="pageArea" class="page"></div>
+                                            <div id="nextBtn" class="next">下一页</div>
+                                        </div>
+                                    </div>
+                                    <div name="tradeHisListNavBar"
+                                         jwcid="@NavBar"
+                                         class="c_page c_page-border c_page-lite e_show-phone"
+                                         cond="initParamPart"
+                                         count="ognl:infoCount"
+                                         listener="queryInfo"
+                                         part="tradeHisListCol" pageSize="10"
+                                         loadingTxt="翻页中。。。"></div>
+                                    <!-- 列表分页 结束 -->
+                                </div>
+                                <div class="l_colItem">
+                                    <!-- 标题栏 开始 -->
+                                    <div class="c_header c_header-white e_show-phone">
+                                        <div class="back"
+                                             ontap="backToListViewForPhone(tradeHisTab.activeIdx);">返回列表</div>
+                                    </div>
+                                    <!-- 标题栏 结束 -->
+                                    <div class="c_box c_box-gray l_padding">
+                                        <!-- 主台账信息 开始 -->
+                                        <div jwcid="mainTradeContent@Part"
+                                             style="display:none">
+                                            <!-- 提示 开始 -->
+                                            <div jwcid="@Conditional"
+                                                 condition='ognl:null != mainTrade.REMARK && !"".equals(mainTrade.REMARK)'>
+                                                <div class="c_tip">
+                                                    <div class="content">
+                                                        <span jwcid="@Insert" value="ognl:mainTrade.REMARK"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- 提示 结束 -->
+                                            <div class="c_space-c"></div>
+                                            <!-- 列表 开始 -->
+                                            <div class="c_list c_list-border c_list-gray">
+                                                <ul>
+                                                    <li>
+                                                        <div class="content">
+                                                            <div class="main">
+                                                                <div class="content">
+                                                                    <div class="c_param c_param-col-auto c_param-label-auto">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <span class="label">流水号：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.TRADE_ID"></span></span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">订单号：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ORDER_ID"></span></span>
+                                                                            </li>
+                                                                            <li class="e_show-phone">
+                                                                                <span class="label">返销状态：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',mainTrade.CANCEL_TAG)"></span></span>
+                                                                            </li>
+                                                                            <li class="e_show-phone">
+                                                                                <span class="label">订单状态：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE',mainTrade.SUBSCRIBE_STATE)"></span></span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="side e_hide-phone">
+                                                                <span class="e_tag e_tag-red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',mainTrade.CANCEL_TAG)"></span>
+                                                                </span>
+                                                                <span class="e_tag e_tag-green"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE',mainTrade.SUBSCRIBE_STATE)"></span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="fn" ontap="toggleTradeInfo(this);"><span class="e_ico-unfold"></span></div>
+                                                        </div>
+                                                        <div class="sub" style="display:none">
+                                                            <div class="main">
+                                                                <!-- 参数 开始 -->
+                                                                <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-6">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <span class="label">定单类型：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.SUBSCRIBE_TYPE"></span></span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">后续处理状态：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_NEXTDEAL',mainTrade.NEXT_DEAL_TAG)"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">执行时间：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.EXEC_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss',mainTrade.EXEC_TIME)"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">完工时间：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.FINISH_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss',mainTrade.FINISH_DATE)"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">用户标识：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.USER_ID"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">客户标识：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.CUST_ID"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">账户标识：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ACCT_ID"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">优先级：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.PRIORITY"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <!-- 参数 结束 -->
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- 列表 结束 -->
+                                            <div class="c_space-c"></div>
+                                            <!-- 参数 开始 -->
+                                            <div class="c_box c_box-border l_padding l_padding-n">
+                                                <div class="c_param c_param-nopadding c_param-col-3 c_param-phone-col-1 c_param-label-6">
+                                                    <ul>
+                                                        <li>
+                                                            <span class="label">接入方式：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_INMODE',mainTrade.IN_MODE_CODE)"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="label">归属业务区：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.CITY_CODE)"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="label">受理工号：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.TRADE_STAFF_ID"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="label">受理员工：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',mainTrade.TRADE_STAFF_ID)"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="label">受理业务区：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.TRADE_CITY_CODE)"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="label">受理地州：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.TRADE_EPARCHY_CODE)"></span>
+                                                            </span>
+                                                        </li>
+                                                        <!-- 未返销则不显示 -->
+                                                        <span jwcid="@Conditional"
+                                                              condition='ognl:!"0".equals(mainTrade.CANCEL_TAG)'>
+                                                            <li>
+                                                                <span class="label">返销员工：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',mainTrade.CANCEL_STAFF_ID)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">返销部门：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',mainTrade.CANCEL_DEPART_ID)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">返销业务区：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.CANCEL_CITY_CODE)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">返销地州：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.CANCEL_EPARCHY_CODE)"></span>
+                                                                </span>
+                                                            </li>
+                                                        </span>
+                                                        <li>
+                                                            <span class="label">收费标志：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.FEE_STATE"></span>
+                                                            </span>
+                                                        </li>
+                                                        <!-- 未收费则不显示 -->
+                                                        <span jwcid="@Conditional"
+                                                              condition='ognl:"已收费".equals(mainTrade.FEE_STATE)'>
+                                                            <li>
+                                                                <span class="label">收费时间：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.FEE_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss',mainTrade.FEE_TIME)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">收费员工：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',mainTrade.FEE_STAFF_ID)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">发票号码：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.INVOICE_NO"></span>
+                                                                </span>
+                                                            </li>
+                                                        </span>
+                                                        <li>
+                                                            <span class="label">校验方式：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.CHECK_MOD"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="label">业务处理方式：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.PROCESS_TAG_SET_STR"></span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="e_blue">
+                                                            <span class="label"><span class="e_ico-money"></span> 营业费用：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:formatDecimal('0.00',mainTrade.OPER_FEE/100) + '元'"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li class="e_blue">
+                                                            <span class="label"><span class="e_ico-money"></span> 预付话费：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:formatDecimal('0.00',mainTrade.ADVANCE_PAY/100) + '元'"></span>
+                                                            </span>
+                                                        </li>
+                                                        <li class="e_blue">
+                                                            <span class="label"><span class="e_ico-money"></span> 押金金额：</span>
+                                                            <span class="value"><span jwcid="@Insert" value="ognl:formatDecimal('0.00',mainTrade.FOREGIFT/100) + '元'"></span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="c_space"></div>
+                                                <div style="display:none">
+                                                    <div class="c_line c_line-dashed"></div>
+                                                    <div class="c_param c_param-col-1 c_param-phone-col-1 c_param-label-5">
+                                                        <ul>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR1 && !"".equals(mainTrade.RSRV_STR1)'>
+                                                                <span class="label">预留字段1：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR1"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR2 && !"".equals(mainTrade.RSRV_STR2)'>
+                                                                <span class="label">预留字段2：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR2"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR3 && !"".equals(mainTrade.RSRV_STR3)'>
+                                                                <span class="label">预留字段3：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR3"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR4 && !"".equals(mainTrade.RSRV_STR4)'>
+                                                                <span class="label">预留字段4：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR4"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR5 && !"".equals(mainTrade.RSRV_STR5)'>
+                                                                <span class="label">预留字段5：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR5"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR6 && !"".equals(mainTrade.RSRV_STR6)'>
+                                                                <span class="label">预留字段6：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR6"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR7 && !"".equals(mainTrade.RSRV_STR7)'>
+                                                                <span class="label">预留字段7：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR7"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR8 && !"".equals(mainTrade.RSRV_STR8)'>
+                                                                <span class="label">预留字段8：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR8"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR9 && !"".equals(mainTrade.RSRV_STR9)'>
+                                                                <span class="label">预留字段9：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR9"></span></span>
+                                                            </li>
+                                                            <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR10 && !"".equals(mainTrade.RSRV_STR10)'>
+                                                                <span class="label">预留字段10：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR10"></span></span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="e_center l_padding" style="display:none">
+                                                    <a href="#nogo" ontap="toggleRsrvInfo(this);"><span class="e_ico-fold"></span> 折叠显示</a>
+                                                </div>
+                                                <div class="e_center l_padding">
+                                                    <a href="#nogo" ontap="toggleRsrvInfo(this);"><span class="e_ico-unfold"></span> 展开全部（预留字段信息）</a>
+                                                </div>
+                                            </div>
+                                            <!-- 参数 结束 -->
+                                        </div>
+                                        <!-- 主台账信息 结束 -->
+                                        <!-- 主台账提示信息 开始 -->
+                                        <div class="c_msg c_msg-loading"
+                                             id="mainTradeLoading"
+                                             style="display:none">
+                                            <div class="wrapper">
+                                                <div class="emote"></div>
+                                                <div class="info">
+                                                    <div class="text">
+                                                        <div class="title">订单信息查询中</div>
+                                                        <div class="content">请稍候</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="c_msg c_msg-however"
+                                             id="mainTradeError"
+                                             style="display:none">
+                                            <div class="wrapper">
+                                                <div class="emote"></div>
+                                                <div class="info">
+                                                    <div class="text">
+                                                        <div class="title">订单信息查询失败</div>
+                                                        <div class="content">请重试</div>
+                                                    </div>
+                                                    <div class="fn">
+                                                        <button type="button"
+                                                                class="e_button-blue e_button-r"
+                                                                ontap="refreshTradeInfo('MAIN');">
+                                                            <span class="e_ico-refresh"></span><span>刷新</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 主台账提示信息 结束 -->
+                                        <!-- 子台账信息 开始 -->
+                                        <div jwcid="subTradeContent@Part">
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.PRODUCT && subTrade.PRODUCT.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">产品</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.PRODUCT"
+                                                            value="ognl:product"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div jwcid="@Any" class="title" title="ognl:product.PRODUCT_NAME">
+                                                                    <span jwcid="@Insert" value="ognl:product.PRODUCT_ID + ' | ' + product.PRODUCT_NAME"></span>
+                                                                </div>
+                                                                <div class="content" jwcid="@Conditional" element="div" condition='ognl:!"".equals(product.PRODUCT_MODE) || null == product.PRODUCT_MODE'>
+                                                                    <span>产品模式：</span><span jwcid="@Insert" value="ognl:product.PRODUCT_MODE"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',product.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',product.END_DATE)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div jwcid="@Any" class="ognl:product.COLOR">
+                                                                <span jwcid="@Insert" value="ognl:product.MODIFY_STATE"></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.DISCNT && subTrade.DISCNT.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">优惠</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.DISCNT"
+                                                            value="ognl:discnt"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div jwcid="@Any" class="title e_size-s" title="ognl:discnt.DISCNT_NAME">
+                                                                    <span jwcid="@Insert" value="ognl:discnt.DISCNT_CODE + ' | ' + discnt.DISCNT_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',discnt.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',discnt.END_DATE)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div jwcid="@Any" class="ognl:discnt.COLOR">
+                                                                <span jwcid="@Insert" value="ognl:discnt.MODIFY_STATE"></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.SVC && subTrade.SVC.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">服务</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.SVC"
+                                                            value="ognl:svc"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div jwcid="@Any" class="title e_size-s" title="ognl:svc.SERVICE_NAME">
+                                                                    <span jwcid="@Insert" value="ognl:svc.SERVICE_ID + ' | ' + svc.SERVICE_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',svc.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',svc.END_DATE)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div jwcid="@Any" class="ognl:svc.COLOR">
+                                                                <span jwcid="@Insert" value="ognl:svc.MODIFY_STATE"></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.SVCSTATUS && subTrade.SVCSTATUS.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">服务状态</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.SVCSTATUS"
+                                                            value="ognl:svcstatus"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div class="title e_size-s">
+                                                                    <span jwcid="@Insert" value="ognl:svcstatus.SERVICE_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',svcstatus.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',svcstatus.END_DATE)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="side">
+                                                                <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:svcstatus.STATE_NAME"></span>
+                                                            </div>
+                                                            <div jwcid="@Any" class="ognl:svcstatus.COLOR">
+                                                                <span jwcid="@Insert" value="ognl:svcstatus.MODIFY_STATE"></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.PLATSVC && subTrade.PLATSVC.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">平台服务</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border c_list-hasStatu">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.PLATSVC"
+                                                            value="ognl:platsvc"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div class="title e_size-s">
+                                                                    <span jwcid="@Insert" value="ognl:platsvc.SERVICE_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:platsvc.SP_NAME + ' / ' + platsvc.BIZ_TYPE_NAME"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="side">
+                                                                <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:pageutil.getStaticValue('PLATSVCOPERCODE',platsvc.OPER_CODE)"></span>
+                                                            </div>
+                                                            <div class="e_space-4"></div>
+                                                            <div class="e_space-4"></div>
+                                                            <div jwcid="@Any" class="ognl:platsvc.BIZ_STATE_COLOR">
+                                                                <div jwcid="@Insert" value="ognl:pageutil.getStaticValue('BIZ_STATE_CODE',platsvc.BIZ_STATE_CODE)"></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.SCORE && subTrade.SCORE.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">积分</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.SCORE"
+                                                            value="ognl:score"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div class="title e_size-s">
+                                                                    <span jwcid="@Insert" value="ognl:score.ID_TYPE"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:'积分原始值：' + score.SCORE"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:'积分异动值：' + score.SCORE_CHANGED"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:'积分实际值：' + score.VALUE_CHANGED"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div jwcid="@Conditional" element="div" class="side"
+                                                                 condition='ognl:null != score.SCORE_TYPE_CODE && !"".equals(score.SCORE_TYPE_CODE)'>
+                                                                <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:score.SCORE_TYPE_CODE"></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.RESOURCE && subTrade.RESOURCE.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">资源</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.RESOURCE"
+                                                            value="ognl:resource"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div class="title e_size-s">
+                                                                    <span jwcid="@Insert" value="ognl:resource.RES_TYPE_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:resource.RES_CODE"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',resource.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',resource.END_DATE)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div jwcid="@Any" class="ognl:resource.COLOR">
+                                                                <span jwcid="@Insert" value="ognl:resource.MODIFY_STATE"></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.RELATION && subTrade.RELATION.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">用户关系</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-gray c_list-space c_list-phone-col-1 c_list-line c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.RELATION"
+                                                            value="ognl:relation"
+                                                            element="li">
+                                                            <div class="content">
+                                                                <div class="main">
+                                                                    <div class="title">
+                                                                        <span jwcid="@Insert" value="ognl:relation.RELATION_TYPE_NAME"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div jwcid="@Conditional" class="side e_center" element="div"
+                                                                     condition='ognl:null != relation.SHORT_CODE && !"".equals(relation.SHORT_CODE)'>
+                                                                    <div class="title">
+                                                                        <span jwcid="@Insert" value="ognl:relation.SHORT_CODE"></span>
+                                                                    </div>
+                                                                    <div class="content e_size-s">短号</div>
+                                                                </div>
+                                                                <div jwcid="@Conditional" element="div"
+                                                                     condition='ognl:null != relation.ORDERNO && !"".equals(relation.ORDERNO)'
+                                                                     class="side e_center">
+                                                                    <div class="title">
+                                                                        <span jwcid="@Insert" value="ognl:relation.ORDERNO"></span>
+                                                                    </div>
+                                                                    <div class="content e_size-s">顺序</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="sub sub-noline">
+                                                                <div class="main">
+                                                                    <div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <div class="main">
+                                                                                    <div class="title">
+                                                                                        <span class="e_blue">A角色</span>
+                                                                                    </div>
+                                                                                    <div class="c_space"></div>
+                                                                                    <div class="content e_size-m">
+                                                                                        <span jwcid="@Insert" value="ognl:'标识：' + relation.USER_ID_A"></span>
+                                                                                    </div>
+                                                                                    <div class="content e_size-m">
+                                                                                        <span jwcid="@Insert" value="ognl:'服务号码：' + relation.SERIAL_NUMBER_A"></span>
+                                                                                    </div>
+                                                                                    <div class="content e_size-m">
+                                                                                        <span jwcid="@Insert" value="ognl:'角色：' + relation.ROLE_A"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="main">
+                                                                                    <div class="title">
+                                                                                        <span class="e_green">B角色</span>
+                                                                                    </div>
+                                                                                    <div class="c_space"></div>
+                                                                                    <div class="content e_size-m">
+                                                                                        <span jwcid="@Insert" value="ognl:'标识：' + relation.USER_ID_B"></span>
+                                                                                    </div>
+                                                                                    <div class="content e_size-m">
+                                                                                        <span jwcid="@Insert" value="ognl:'服务号码：' + relation.SERIAL_NUMBER_B"></span>
+                                                                                    </div>
+                                                                                    <div class="content e_size-m">
+                                                                                        <span jwcid="@Insert" value="ognl:'角色：' + relation.ROLE_B"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.PREACTIVE && subTrade.PREACTIVE.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">预约宽带营销活动</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.PREACTIVE"
+                                                            value="ognl:preactive"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div class="title e_size-s">
+                                                                    <span jwcid="@Insert" value="ognl:preactive.PACKAGE_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:preactive.PRODUCT_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',preactive.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',preactive.END_DATE)"></span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:null != subTrade.CARD && subTrade.CARD.size() > 0">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">国际漫游一卡多号</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrade.CARD"
+                                                            value="ognl:card"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:'办理地区：' + pageutil.getStaticValue('MULTISN_COOPER_AREA',card.RSRV_STR2)"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:'办理网络：' + pageutil.getStaticValue('MULTISN_COOPER_NET',card.RSRV_STR3)"></span>
+                                                                </div>
+                                                                <div jwcid="@Conditional" condition="ognl:377 == subTrade.TRADE_TYPE_CODE">
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'日消费最大额：' + card.RSRV_STR5"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'消费总额限制：' + card.RSRV_STR6"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'服务类型：' + pageutil.getStaticValue('MULTISN_SVC_TYPE',card.RSRV_STR8)"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'副卡号码：' + card.RSRV_STR9"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="side">
+                                                                <span jwcid="@Conditional" condition="ognl:377 == subTrade.TRADE_TYPE_CODE">
+                                                                    <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:pageutil.getStaticValue('OPER_ORDER_TYPE',card.RSRV_STR4)"></span>
+                                                                </span>
+                                                                <span jwcid="@Conditional" condition="ognl:377 != subTrade.TRADE_TYPE_CODE">
+                                                                    <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:pageutil.getStaticValue('MULTISN_OPER_TYPE',card.RSRV_STR4)"></span>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                            <div jwcid="@Conditional" condition="ognl:(null != subTrade.CONTACT && subTrade.CONTACT.size() > 0) || (null != subTrade.ASSURE && subTrade.ASSURE.size() > 0)">
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">联系信息</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_box c_box-border">
+                                                    <div class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-6">
+                                                        <ul>
+                                                            <span jwcid="@Conditional"
+                                                                  condition='ognl:null != subTrade.CONTACT && subTrade.CONTACT.size() > 0'>
+                                                                <li>
+                                                                    <span class="label">优先联系方式：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CONTACTTYPE',subTrade.CONTACT.CONTACT_TYPE_CODE)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">联系人姓名：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.CONTACT"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">联系人电话：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.CONTACT_PHONE"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li class="merge-2">
+                                                                    <span class="label">通信地址：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.POST_ADDRESS"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">邮政编码：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.POST_CODE"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">联系电话：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.PHONE"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">传真号码：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.FAX_NBR"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">电子邮件：</span>
+                                                                    <span class="value" jwcid="@Any" title="ognl:subTrade.CONTACT.EMAIL">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.CONTACT.EMAIL"></span>
+                                                                    </span>
+                                                                </li>
+                                                            </span>
+                                                            <span jwcid="@Conditional"
+                                                                  condition='ognl:null != subTrade.ASSURE && subTrade.ASSURE.size() > 0'>
+                                                                <li class="merge-2">
+                                                                    <span class="label">担保类型：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_ASSURETYPE',subTrade.ASSURE.ASSURE_TYPE_CODE)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">担保期限：</span>
+                                                                    <span class="value">
+                                                                        <span jwcid="@Insert" value="ognl:subTrade.ASSURE.ASSURE_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss',subTrade.ASSURE.ASSURE_DATE)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <span jwcid="@Conditional" condition='ognl:null != subTrade.ASSURE.CUST_NAME && !"".equals(subTrade.ASSURE.CUST_NAME)'>
+                                                                    <li>
+                                                                        <span class="label">担保人姓名：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.ASSURE.CUST_NAME"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',subTrade.ASSURE.PSPT_TYPE_CODE) + '：'"></span></span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.ASSURE.PSPT_ID"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                </span>
+                                                            </span>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                            </div>
+                                        </div>
+                                        <!-- 子台账信息 结束 -->
+                                        <!-- 子台账提示信息 开始 -->
+                                        <div class="c_msg c_msg-loading"
+                                             id="subTradeLoading"
+                                             style="display:none">
+                                            <div class="wrapper">
+                                                <div class="emote"></div>
+                                                <div class="info">
+                                                    <div class="text">
+                                                        <div class="title">订单详情查询中</div>
+                                                        <div class="content">请稍候</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="c_msg c_msg-however"
+                                             id="subTradeError"
+                                             style="display:none">
+                                            <div class="wrapper">
+                                                <div class="emote"></div>
+                                                <div class="info">
+                                                    <div class="text">
+                                                        <div class="title">订单详情查询失败</div>
+                                                        <div class="content">请重试</div>
+                                                    </div>
+                                                    <div class="fn">
+                                                        <button type="button"
+                                                                class="e_button-blue e_button-r"
+                                                                ontap="refreshTradeInfo('SUB');">
+                                                            <span class="e_ico-refresh"></span><span>刷新</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 子台账提示信息 结束 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 分列 结束 -->
+                </div>
+                <!-- 最近 结束 -->
+                <div jwcid="@Conditional" condition="ognl:hasPriv('CRM_QUERYHISTORY')">
+                    <div class="content" title="历史（一年以前）">
+                        <!-- 参数 开始 -->
+                        <input jwcid="@Hidden" name="INIT_TRADE_HISTORY_BEFORE_TAB_FINISHED" value="0"/>
+                        <div jwcid="initHisParamPart@Part"
+                             class="c_form c_form-col-2 c_form-phone-col-1 c_form-submit c_form-border">
+                            <input jwcid="@Hidden" name="USER_ID"
+                                   value="ognl:hisInit.USER_ID"/>
+                            <input jwcid="@Hidden" name="SERIAL_NUMBER"
+                                   value="ognl:hisInit.SERIAL_NUMBER"/>
+                            <input jwcid="@Hidden" name="TERMINAL"
+                                   value="ognl:hisInit.TERMINAL"/>
+                            <input jwcid="@Hidden" name="HISTORY_QUERY_TYPE"
+                                   value="G"/>
+                            <div class="submit">
+                                <button id="tradeHisBeforeQueryButton"
+                                        type="button" class="e_button-blue">
+                                    <span class="e_ico-search"></span>
+                                    <span>查询</span>
+                                </button>
+                            </div>
+                            <ul>
+                                <li>
+                                    <div class="label">业务类型：</div>
+                                    <div class="value">
+                                        <span name="TRADE_TYPE_CODE"
+                                              id="TRADE_TYPE_CODE_HIS"
+                                              jwcid="@Select"
+                                              source="ognl:pageutil.getStaticList('FAMILY_TRADE_TYPE_CODE')"
+                                              textField="DATA_NAME"
+                                              valueField="DATA_ID"
+                                              titleField="DATA_NAME"
+                                              nullable="no"
+                                              desc="业务类型"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="label">年份：</div>
+                                    <div class="value">
+                                        <span name="QUERY_YEAR" jwcid="@Select"
+                                              source="ognl:years" textField="KEY"
+                                              valueField="VALUE" titleField="KEY"
+                                              onchange="shiftTimeWindow(this)"
+                                              desc="年份"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="label">起始日期：</div>
+                                    <div class="value">
+                                        <input name="START_DATE" id="START_DATE_HIS"
+                                               jwcid="@DateField" dropDown="true"
+                                               value="ognl:hisInit.START_DATE_HIS"
+                                               format="yyyy-MM-dd" datatype="date"
+                                               desc="起始日期"/>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="label">终止日期：</div>
+                                    <div class="value">
+                                        <input name="END_DATE" id="END_DATE_HIS"
+                                               jwcid="@DateField" dropDown="true"
+                                               value="ognl:hisInit.END_DATE_HIS"
+                                               format="yyyy-MM-dd" datatype="date"
+                                               desc="终止日期"/>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 参数 结束 -->
+                        <div class="c_space-c"></div>
+                        <!-- 表格 开始 -->
+                        <div jwcid="tradeHisBeforeTablePart@Part"
+                             class="e_hide-phone">
+                            <table name="tradeHisBeforeTable" jwcid="@Table"
+                                   class="c_table c_table-min-5 c_table-hover c_table-lite c_table-border">
+                                <thead>
+                                    <tr>
+                                        <th>受理时间</th>
+                                        <th>业务类型</th>
+                                        <th>返销标识</th>
+                                        <th>受理部门</th>
+                                        <th>受理工号</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr jwcid="@Foreach" source="ognl:hisInfos"
+                                        value="ognl:hisInfo" index="ognl:hisRowIndex"
+                                        rowIndex="ognl:hisRowIndex" element="tr"
+                                        tradeId="ognl:hisInfo.TRADE_ID"
+                                        ontap="selectTradeFromTable(this);">
+                                        <td data-title="受理时间">
+                                            <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',hisInfo.ACCEPT_DATE)"></span></td>
+                                        <td data-title="业务类型" class="key">
+                                            <span jwcid="@Insert" value="ognl:hisInfo.TRADE_TYPE"></span></td>
+                                        <td data-title="返销标识" jwcid="@Any" class='ognl:!"0".equals(hisInfo.CANCEL_TAG) ? "e_red" : ""'>
+                                            <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',hisInfo.CANCEL_TAG)"></span></td>
+                                        <td data-title="受理部门">
+                                            <span jwcid="@Insert" value="ognl:'[' + hisInfo.TRADE_DEPART_CODE + '] ' + hisInfo.TRADE_DEPART_NAME"></span></td>
+                                        <td data-title="受理工号">
+                                            <span jwcid="@Insert" value="ognl:'[' + hisInfo.TRADE_STAFF_ID + '] ' + hisInfo.TRADE_STAFF_NAME"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="c_space-c"></div>
+                            <!-- 分页 开始 -->
+                            <div name="tradeHisBeforeTableNavBar"
+                                 jwcid="@NavBar" class="c_page c_page-border"
+                                 cond="initHisParamPart"
+                                 count="ognl:hisInfoCount" listener="queryInfo"
+                                 part="tradeHisBeforeTablePart,tradeHisBeforeListCol"
+                                 pageSize="10" loadingTxt="翻页中。。。"></div>
+                            <!-- 分页 结束 -->
+                        </div>
+                        <!-- 表格 结束 -->
+                        <!-- 分列 开始 -->
+                        <div id="tradeHisBeforeListPart"
+                             class="c_box c_box-gray c_box-border e_show-phone">
+                            <div id="tradeHisBeforeCol"
+                                 class="l_col l_col-phone-split-2 l_col-cur-1 l_col-line">
+                                <div class="l_colContent">
+                                    <div jwcid="tradeHisBeforeListCol@Part"
+                                         class="l_colItem" style="width:16em">
+                                        <!-- 时间轴 开始 -->
+                                        <div class="c_list c_list-line">
+                                            <ul>
+                                                <li jwcid="@Foreach"
+                                                    source="ognl:hisInfos"
+                                                    value="ognl:hisInfo"
+                                                    index="ognl:hisRowIndex"
+                                                    class="link" element="li"
+                                                    listIndex="ognl:hisRowIndex"
+                                                    tradeId="ognl:hisInfo.TRADE_ID"
+                                                    ontap="selectTradeFromList(this);">
+                                                    <div class="main">
+                                                        <div class="title e_size-s">
+                                                            <span jwcid="@Insert" value="ognl:hisInfo.TRADE_TYPE"></span>
+                                                        </div>
+                                                        <div class="content">
+                                                            <span jwcid="@Insert" value="ognl:'时间：' + formatDate('yyyy-MM-dd HH:mm:ss',hisInfo.ACCEPT_DATE)"></span>
+                                                        </div>
+                                                        <div class="content">
+                                                            <span jwcid="@Insert" value="ognl:'部门：' + hisInfo.TRADE_DEPART_NAME"></span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- 时间轴 结束 -->
+                                        <div class="c_space-c"></div>
+                                        <!-- 列表分页 开始 -->
+                                        <div class="c_page c_page-border c_page-lite e_hide-phone">
+                                            <div class="turn">
+                                                <div id="prevHisBtn" class="prev">上一页</div>
+                                                <div id="pageHisArea" class="page"></div>
+                                                <div id="nextHisBtn" class="next">下一页</div>
+                                            </div>
+                                        </div>
+                                        <div name="tradeHisBeforeListNavBar"
+                                             jwcid="@NavBar"
+                                             class="c_page c_page-border c_page-lite e_show-phone"
+                                             cond="initHisParamPart"
+                                             count="ognl:hisInfoCount"
+                                             listener="queryInfo"
+                                             part="tradeHisBeforeListCol"
+                                             pageSize="10" loadingTxt="翻页中。。。"></div>
+                                        <!-- 列表分页 结束 -->
+                                    </div>
+                                    <div class="l_colItem">
+                                        <!-- 标题栏 开始 -->
+                                        <div class="c_header c_header-white e_show-phone">
+                                            <div class="back"
+                                                 ontap="backToListViewForPhone(tradeHisTab.activeIdx);">返回列表</div>
+                                        </div>
+                                        <!-- 标题栏 结束 -->
+                                        <div class="c_box c_box-gray l_padding">
+                                            <!-- 主台账信息 开始 -->
+                                            <div jwcid="mainTradeBeforeContent@Part"
+                                                 style="display:none">
+                                                <!-- 提示 开始 -->
+                                                <div jwcid="@Conditional"
+                                                     condition='ognl:null != mainTrade.REMARK && !"".equals(mainTrade.REMARK)'>
+                                                    <div class="c_tip">
+                                                        <div class="content">
+                                                            <span jwcid="@Insert" value="ognl:mainTrade.REMARK"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- 提示 结束 -->
+                                                <div class="c_space-c"></div>
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-border c_list-gray">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="content">
+                                                                <div class="main">
+                                                                    <div class="content">
+                                                                        <div class="c_param c_param-col-auto c_param-label-auto">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <span class="label">流水号：</span>
+                                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.TRADE_ID"></span></span>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <span class="label">订单号：</span>
+                                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ORDER_ID"></span></span>
+                                                                                </li>
+                                                                                <li class="e_show-phone">
+                                                                                    <span class="label">返销状态：</span>
+                                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',mainTrade.CANCEL_TAG)"></span></span>
+                                                                                </li>
+                                                                                <li class="e_show-phone">
+                                                                                    <span class="label">订单状态：</span>
+                                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE',mainTrade.SUBSCRIBE_STATE)"></span></span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="side e_hide-phone">
+                                                                    <span class="e_tag e_tag-red"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG',mainTrade.CANCEL_TAG)"></span>
+                                                                    </span>
+                                                                    <span class="e_tag e_tag-green"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE',mainTrade.SUBSCRIBE_STATE)"></span>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="fn" ontap="toggleTradeInfo(this);"><span class="e_ico-unfold"></span></div>
+                                                            </div>
+                                                            <div class="sub" style="display:none">
+                                                                <div class="main">
+                                                                    <!-- 参数 开始 -->
+                                                                    <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-6">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <span class="label">定单类型：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.SUBSCRIBE_TYPE"></span></span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">后续处理状态：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_NEXTDEAL',mainTrade.NEXT_DEAL_TAG)"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">执行时间：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.EXEC_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss',mainTrade.EXEC_TIME)"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">完工时间：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.FINISH_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss',mainTrade.FINISH_DATE)"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">用户标识：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.USER_ID"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">客户标识：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.CUST_ID"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">账户标识：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ACCT_ID"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                            <li>
+                                                                                <span class="label">优先级：</span>
+                                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.PRIORITY"></span>
+                                                                                </span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <!-- 参数 结束 -->
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- 列表 结束 -->
+                                                <div class="c_space-c"></div>
+                                                <!-- 参数 开始 -->
+                                                <div class="c_box c_box-border l_padding l_padding-n">
+                                                    <div class="c_param c_param-nopadding c_param-col-3 c_param-phone-col-1 c_param-label-6">
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">接入方式：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_INMODE',mainTrade.IN_MODE_CODE)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">归属业务区：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.CITY_CODE)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">受理工号：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.TRADE_STAFF_ID"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">受理员工：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',mainTrade.TRADE_STAFF_ID)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">受理业务区：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.TRADE_CITY_CODE)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">受理地州：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.TRADE_EPARCHY_CODE)"></span>
+                                                                </span>
+                                                            </li>
+                                                            <!-- 未返销则不显示 -->
+                                                            <span jwcid="@Conditional"
+                                                                  condition='ognl:!"0".equals(mainTrade.CANCEL_TAG)'>
+                                                                <li>
+                                                                    <span class="label">返销员工：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',mainTrade.CANCEL_STAFF_ID)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">返销部门：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',mainTrade.CANCEL_DEPART_ID)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">返销业务区：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.CANCEL_CITY_CODE)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">返销地州：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',mainTrade.CANCEL_EPARCHY_CODE)"></span>
+                                                                    </span>
+                                                                </li>
+                                                            </span>
+                                                            <li>
+                                                                <span class="label">收费标志：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.FEE_STATE"></span>
+                                                                </span>
+                                                            </li>
+                                                            <!-- 未收费则不显示 -->
+                                                            <span jwcid="@Conditional"
+                                                                  condition='ognl:"已收费".equals(mainTrade.FEE_STATE)'>
+                                                                <li>
+                                                                    <span class="label">收费时间：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.FEE_TIME==null?'':formatDate('yyyy-MM-dd HH:mm:ss',mainTrade.FEE_TIME)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">收费员工：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',mainTrade.FEE_STAFF_ID)"></span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="label">发票号码：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.INVOICE_NO"></span>
+                                                                    </span>
+                                                                </li>
+                                                            </span>
+                                                            <li>
+                                                                <span class="label">校验方式：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.CHECK_MOD"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">业务处理方式：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.PROCESS_TAG_SET_STR"></span>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul>
+                                                            <li class="e_blue">
+                                                                <span class="label"><span class="e_ico-money"></span> 营业费用：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:formatDecimal('0.00',mainTrade.OPER_FEE/100) + '元'"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li class="e_blue">
+                                                                <span class="label"><span class="e_ico-money"></span> 预付话费：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:formatDecimal('0.00',mainTrade.ADVANCE_PAY/100) + '元'"></span>
+                                                                </span>
+                                                            </li>
+                                                            <li class="e_blue">
+                                                                <span class="label"><span class="e_ico-money"></span> 押金金额：</span>
+                                                                <span class="value"><span jwcid="@Insert" value="ognl:formatDecimal('0.00',mainTrade.FOREGIFT/100) + '元'"></span>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="c_space"></div>
+                                                    <div style="display:none">
+                                                        <div class="c_line c_line-dashed"></div>
+                                                        <div class="c_param c_param-col-1 c_param-phone-col-1 c_param-label-5">
+                                                            <ul>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR1 && !"".equals(mainTrade.RSRV_STR1)'>
+                                                                    <span class="label">预留字段1：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR1"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR2 && !"".equals(mainTrade.RSRV_STR2)'>
+                                                                    <span class="label">预留字段2：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR2"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR3 && !"".equals(mainTrade.RSRV_STR3)'>
+                                                                    <span class="label">预留字段3：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR3"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR4 && !"".equals(mainTrade.RSRV_STR4)'>
+                                                                    <span class="label">预留字段4：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR4"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR5 && !"".equals(mainTrade.RSRV_STR5)'>
+                                                                    <span class="label">预留字段5：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR5"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR6 && !"".equals(mainTrade.RSRV_STR6)'>
+                                                                    <span class="label">预留字段6：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR6"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR7 && !"".equals(mainTrade.RSRV_STR7)'>
+                                                                    <span class="label">预留字段7：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR7"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR8 && !"".equals(mainTrade.RSRV_STR8)'>
+                                                                    <span class="label">预留字段8：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR8"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR9 && !"".equals(mainTrade.RSRV_STR9)'>
+                                                                    <span class="label">预留字段9：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR9"></span></span>
+                                                                </li>
+                                                                <li jwcid="@Conditional" element="li" condition='ognl:null != mainTrade.RSRV_STR10 && !"".equals(mainTrade.RSRV_STR10)'>
+                                                                    <span class="label">预留字段10：</span>
+                                                                    <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.RSRV_STR10"></span></span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="e_center l_padding" style="display:none">
+                                                        <a href="#nogo" ontap="toggleRsrvInfo(this);"><span class="e_ico-fold"></span> 折叠显示</a>
+                                                    </div>
+                                                    <div class="e_center l_padding">
+                                                        <a href="#nogo" ontap="toggleRsrvInfo(this);"><span class="e_ico-unfold"></span> 展开全部（预留字段信息）</a>
+                                                    </div>
+                                                </div>
+                                                <!-- 参数 结束 -->
+                                            </div>
+                                            <!-- 主台账信息 结束 -->
+                                            <!-- 主台账提示信息 开始 -->
+                                            <div class="c_msg c_msg-loading"
+                                                 id="mainTradeBeforeLoading"
+                                                 style="display:none">
+                                                <div class="wrapper">
+                                                    <div class="emote"></div>
+                                                    <div class="info">
+                                                        <div class="text">
+                                                            <div class="title">订单信息查询中</div>
+                                                            <div class="content">请稍候</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="c_msg c_msg-however"
+                                                 id="mainTradeBeforeError"
+                                                 style="display:none">
+                                                <div class="wrapper">
+                                                    <div class="emote"></div>
+                                                    <div class="info">
+                                                        <div class="text">
+                                                            <div class="title">订单信息查询失败</div>
+                                                            <div class="content">请重试</div>
+                                                        </div>
+                                                        <div class="fn">
+                                                            <button type="button"
+                                                                    class="e_button-blue e_button-r"
+                                                                    ontap="refreshTradeInfo('MAIN');">
+                                                                <span class="e_ico-refresh"></span><span>刷新</span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- 主台账提示信息 结束 -->
+                                            <!-- 子台账信息 开始 -->
+                                            <div jwcid="subTradeBeforeContent@Part">
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.PRODUCT && subTrade.PRODUCT.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">产品</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.PRODUCT"
+                                                                value="ognl:product"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div jwcid="@Any" class="title" title="ognl:product.PRODUCT_NAME">
+                                                                        <span jwcid="@Insert" value="ognl:product.PRODUCT_ID + ' | ' + product.PRODUCT_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content" jwcid="@Conditional" element="div" condition='ognl:!"".equals(product.PRODUCT_MODE) || null == product.PRODUCT_MODE'>
+                                                                        <span>产品模式：</span><span jwcid="@Insert" value="ognl:product.PRODUCT_MODE"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',product.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',product.END_DATE)"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div jwcid="@Any" class="ognl:product.COLOR">
+                                                                    <span jwcid="@Insert" value="ognl:product.MODIFY_STATE"></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.DISCNT && subTrade.DISCNT.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">优惠</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.DISCNT"
+                                                                value="ognl:discnt"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div jwcid="@Any" class="title e_size-s" title="ognl:discnt.DISCNT_NAME">
+                                                                        <span jwcid="@Insert" value="ognl:discnt.DISCNT_CODE + ' | ' + discnt.DISCNT_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',discnt.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',discnt.END_DATE)"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div jwcid="@Any" class="ognl:discnt.COLOR">
+                                                                    <span jwcid="@Insert" value="ognl:discnt.MODIFY_STATE"></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.SVC && subTrade.SVC.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">服务</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.SVC"
+                                                                value="ognl:svc"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div jwcid="@Any" class="title e_size-s" title="ognl:svc.SERVICE_NAME">
+                                                                        <span jwcid="@Insert" value="ognl:svc.SERVICE_ID + ' | ' + svc.SERVICE_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',svc.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',svc.END_DATE)"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div jwcid="@Any" class="ognl:svc.COLOR">
+                                                                    <span jwcid="@Insert" value="ognl:svc.MODIFY_STATE"></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.SVCSTATUS && subTrade.SVCSTATUS.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">服务状态</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.SVCSTATUS"
+                                                                value="ognl:svcstatus"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div class="title e_size-s">
+                                                                        <span jwcid="@Insert" value="ognl:svcstatus.SERVICE_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',svcstatus.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',svcstatus.END_DATE)"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="side">
+                                                                    <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:svcstatus.STATE_NAME"></span>
+                                                                </div>
+                                                                <div jwcid="@Any" class="ognl:svcstatus.COLOR">
+                                                                    <span jwcid="@Insert" value="ognl:svcstatus.MODIFY_STATE"></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.PLATSVC && subTrade.PLATSVC.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">平台服务</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border c_list-hasStatu">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.PLATSVC"
+                                                                value="ognl:platsvc"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div class="title e_size-s">
+                                                                        <span jwcid="@Insert" value="ognl:platsvc.SERVICE_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:platsvc.SP_NAME + ' / ' + platsvc.BIZ_TYPE_NAME"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="side">
+                                                                    <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:pageutil.getStaticValue('PLATSVCOPERCODE',platsvc.OPER_CODE)"></span>
+                                                                </div>
+                                                                <div class="e_space-4"></div>
+                                                                <div class="e_space-4"></div>
+                                                                <div jwcid="@Any" class="ognl:platsvc.BIZ_STATE_COLOR">
+                                                                    <div jwcid="@Insert" value="ognl:pageutil.getStaticValue('BIZ_STATE_CODE',platsvc.BIZ_STATE_CODE)"></div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.SCORE && subTrade.SCORE.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">积分</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.SCORE"
+                                                                value="ognl:score"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div class="title e_size-s">
+                                                                        <span jwcid="@Insert" value="ognl:score.ID_TYPE"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'积分原始值：' + score.SCORE"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'积分异动值：' + score.SCORE_CHANGED"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'积分实际值：' + score.VALUE_CHANGED"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div jwcid="@Conditional" element="div" class="side"
+                                                                     condition='ognl:null != score.SCORE_TYPE_CODE && !"".equals(score.SCORE_TYPE_CODE)'>
+                                                                    <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:score.SCORE_TYPE_CODE"></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.RESOURCE && subTrade.RESOURCE.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">资源</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.RESOURCE"
+                                                                value="ognl:resource"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div class="title e_size-s">
+                                                                        <span jwcid="@Insert" value="ognl:resource.RES_TYPE_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:resource.RES_CODE"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',resource.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',resource.END_DATE)"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div jwcid="@Any" class="ognl:resource.COLOR">
+                                                                    <span jwcid="@Insert" value="ognl:resource.MODIFY_STATE"></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.RELATION && subTrade.RELATION.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">用户关系</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-gray c_list-space c_list-phone-col-1 c_list-line c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.RELATION"
+                                                                value="ognl:relation"
+                                                                element="li">
+                                                                <div class="content">
+                                                                    <div class="main">
+                                                                        <div class="title">
+                                                                            <span jwcid="@Insert" value="ognl:relation.RELATION_TYPE_NAME"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div jwcid="@Conditional" class="side e_center" element="div"
+                                                                         condition='ognl:null != relation.SHORT_CODE && !"".equals(relation.SHORT_CODE)'>
+                                                                        <div class="title">
+                                                                            <span jwcid="@Insert" value="ognl:relation.SHORT_CODE"></span>
+                                                                        </div>
+                                                                        <div class="content e_size-s">短号</div>
+                                                                    </div>
+                                                                    <div jwcid="@Conditional" element="div"
+                                                                         condition='ognl:null != relation.ORDERNO && !"".equals(relation.ORDERNO)'
+                                                                         class="side e_center">
+                                                                        <div class="title">
+                                                                            <span jwcid="@Insert" value="ognl:relation.ORDERNO"></span>
+                                                                        </div>
+                                                                        <div class="content e_size-s">顺序</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="sub sub-noline">
+                                                                    <div class="main">
+                                                                        <div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <div class="main">
+                                                                                        <div class="title">
+                                                                                            <span class="e_blue">A角色</span>
+                                                                                        </div>
+                                                                                        <div class="c_space"></div>
+                                                                                        <div class="content e_size-m">
+                                                                                            <span jwcid="@Insert" value="ognl:'标识：' + relation.USER_ID_A"></span>
+                                                                                        </div>
+                                                                                        <div class="content e_size-m">
+                                                                                            <span jwcid="@Insert" value="ognl:'服务号码：' + relation.SERIAL_NUMBER_A"></span>
+                                                                                        </div>
+                                                                                        <div class="content e_size-m">
+                                                                                            <span jwcid="@Insert" value="ognl:'角色：' + relation.ROLE_A"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="main">
+                                                                                        <div class="title">
+                                                                                            <span class="e_green">B角色</span>
+                                                                                        </div>
+                                                                                        <div class="c_space"></div>
+                                                                                        <div class="content e_size-m">
+                                                                                            <span jwcid="@Insert" value="ognl:'标识：' + relation.USER_ID_B"></span>
+                                                                                        </div>
+                                                                                        <div class="content e_size-m">
+                                                                                            <span jwcid="@Insert" value="ognl:'服务号码：' + relation.SERIAL_NUMBER_B"></span>
+                                                                                        </div>
+                                                                                        <div class="content e_size-m">
+                                                                                            <span jwcid="@Insert" value="ognl:'角色：' + relation.ROLE_B"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.PREACTIVE && subTrade.PREACTIVE.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">预约宽带营销活动</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.PREACTIVE"
+                                                                value="ognl:preactive"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div class="title e_size-s">
+                                                                        <span jwcid="@Insert" value="ognl:preactive.PACKAGE_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:preactive.PRODUCT_NAME"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',preactive.START_DATE) + '~' + formatDate('yyyy-MM-dd HH:mm:ss',preactive.END_DATE)"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:null != subTrade.CARD && subTrade.CARD.size() > 0">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">国际漫游一卡多号</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                        <ul>
+                                                            <li jwcid="@Foreach"
+                                                                source="ognl:subTrade.CARD"
+                                                                value="ognl:card"
+                                                                element="li">
+                                                                <div class="main">
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'办理地区：' + pageutil.getStaticValue('MULTISN_COOPER_AREA',card.RSRV_STR2)"></span>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <span jwcid="@Insert" value="ognl:'办理网络：' + pageutil.getStaticValue('MULTISN_COOPER_NET',card.RSRV_STR3)"></span>
+                                                                    </div>
+                                                                    <div jwcid="@Conditional" condition="ognl:377 == subTrade.TRADE_TYPE_CODE">
+                                                                        <div class="content">
+                                                                            <span jwcid="@Insert" value="ognl:'日消费最大额：' + card.RSRV_STR5"></span>
+                                                                        </div>
+                                                                        <div class="content">
+                                                                            <span jwcid="@Insert" value="ognl:'消费总额限制：' + card.RSRV_STR6"></span>
+                                                                        </div>
+                                                                        <div class="content">
+                                                                            <span jwcid="@Insert" value="ognl:'服务类型：' + pageutil.getStaticValue('MULTISN_SVC_TYPE',card.RSRV_STR8)"></span>
+                                                                        </div>
+                                                                        <div class="content">
+                                                                            <span jwcid="@Insert" value="ognl:'副卡号码：' + card.RSRV_STR9"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="side">
+                                                                    <span jwcid="@Conditional" condition="ognl:377 == subTrade.TRADE_TYPE_CODE">
+                                                                        <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:pageutil.getStaticValue('OPER_ORDER_TYPE',card.RSRV_STR4)"></span>
+                                                                    </span>
+                                                                    <span jwcid="@Conditional" condition="ognl:377 != subTrade.TRADE_TYPE_CODE">
+                                                                        <span jwcid="@Insert" class="e_tag e_tag-blue" value="ognl:pageutil.getStaticValue('MULTISN_OPER_TYPE',card.RSRV_STR4)"></span>
+                                                                    </span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                                <div jwcid="@Conditional" condition="ognl:(null != subTrade.CONTACT && subTrade.CONTACT.size() > 0) || (null != subTrade.ASSURE && subTrade.ASSURE.size() > 0)">
+                                                    <!-- 标题 开始 -->
+                                                    <div class="c_title">
+                                                        <div class="text">联系信息</div>
+                                                    </div>
+                                                    <!-- 标题 结束 -->
+                                                    <!-- 列表 开始 -->
+                                                    <div class="c_box c_box-border">
+                                                        <div class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-6">
+                                                            <ul>
+                                                                <span jwcid="@Conditional"
+                                                                      condition='ognl:null != subTrade.CONTACT && subTrade.CONTACT.size() > 0'>
+                                                                    <li>
+                                                                        <span class="label">优先联系方式：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CONTACTTYPE',subTrade.CONTACT.CONTACT_TYPE_CODE)"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">联系人姓名：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.CONTACT"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">联系人电话：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.CONTACT_PHONE"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li class="merge-2">
+                                                                        <span class="label">通信地址：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.POST_ADDRESS"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">邮政编码：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.POST_CODE"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">联系电话：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.PHONE"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">传真号码：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.FAX_NBR"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">电子邮件：</span>
+                                                                        <span class="value" jwcid="@Any" title="ognl:subTrade.CONTACT.EMAIL">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.CONTACT.EMAIL"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                </span>
+                                                                <span jwcid="@Conditional"
+                                                                      condition='ognl:null != subTrade.ASSURE && subTrade.ASSURE.size() > 0'>
+                                                                    <li class="merge-2">
+                                                                        <span class="label">担保类型：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_ASSURETYPE',subTrade.ASSURE.ASSURE_TYPE_CODE)"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="label">担保期限：</span>
+                                                                        <span class="value">
+                                                                            <span jwcid="@Insert" value="ognl:subTrade.ASSURE.ASSURE_DATE==null?'':formatDate('yyyy-MM-dd HH:mm:ss',subTrade.ASSURE.ASSURE_DATE)"></span>
+                                                                        </span>
+                                                                    </li>
+                                                                    <span jwcid="@Conditional" condition='ognl:null != subTrade.ASSURE.CUST_NAME && !"".equals(subTrade.ASSURE.CUST_NAME)'>
+                                                                        <li>
+                                                                            <span class="label">担保人姓名：</span>
+                                                                            <span class="value">
+                                                                                <span jwcid="@Insert" value="ognl:subTrade.ASSURE.CUST_NAME"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',subTrade.ASSURE.PSPT_TYPE_CODE) + '：'"></span></span>
+                                                                            <span class="value">
+                                                                                <span jwcid="@Insert" value="ognl:subTrade.ASSURE.PSPT_ID"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                    </span>
+                                                                </span>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <!-- 列表 结束 -->
+                                                </div>
+                                            </div>
+                                            <!-- 子台账信息 结束 -->
+                                            <!-- 子台账提示信息 开始 -->
+                                            <div class="c_msg c_msg-loading"
+                                                 id="subTradeBeforeLoading"
+                                                 style="display:none">
+                                                <div class="wrapper">
+                                                    <div class="emote"></div>
+                                                    <div class="info">
+                                                        <div class="text">
+                                                            <div class="title">订单详情查询中</div>
+                                                            <div class="content">请稍候</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="c_msg c_msg-however"
+                                                 id="subTradeBeforeError"
+                                                 style="display:none">
+                                                <div class="wrapper">
+                                                    <div class="emote"></div>
+                                                    <div class="info">
+                                                        <div class="text">
+                                                            <div class="title">订单详情查询失败</div>
+                                                            <div class="content">请重试</div>
+                                                        </div>
+                                                        <div class="fn">
+                                                            <button type="button"
+                                                                    class="e_button-blue e_button-r"
+                                                                    ontap="refreshTradeInfo('SUB');">
+                                                                <span class="e_ico-refresh"></span><span>刷新</span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- 子台账提示信息 结束 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 分列 结束 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

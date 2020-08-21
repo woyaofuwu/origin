@@ -1,0 +1,1 @@
+update TF_B_IDENTCARD_MANAGE set end_date = sysdate+to_number(:EFFECTIVE_TIME)/24/60/60 where IDENT_CODE = :IDENT_CODE and end_date > sysdate

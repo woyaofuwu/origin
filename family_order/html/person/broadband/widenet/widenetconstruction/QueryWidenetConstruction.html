@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>修改宽带地址报表</title>
+		<script jwcid="@Script" language="JavaScript" src="person/broadband/widenet/widenetconstruction/scripts/querywidenetconstruction.js"></script>
+	</head>
+	<body jwcid="@Body">
+	    <div class="m_wrapper">
+		    <div class="m_wrapper2">
+			    <div class="c_box">
+				    <div class="c_title">
+					     <div class="text">修改宽带地址报表</div>
+				    </div>
+				    <div jwcid="ConditionPart@Part">
+				        <div class="c_form c_form-col-3 c_form-label-6">
+						    <ul class="ul">
+								<li class="li">
+									<span class="label"><span class="e_required">开始时间：</span></span>
+									<span class="e_elements" id="PSPT_INPUT">
+										<span class="e_input e_input-left"><span>
+										    <input jwcid="@DateField" name="START_DATE" id="START_DATE" maxName="END_DATE" format="yyyy-MM-dd" time="true" 
+										    nullable="no" readOnly="true" value="ognl:condition.START_DATE"  desc="开始时间"/>
+										</span></span>
+									</span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">结束时间：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@DateField" name="END_DATE" id="END_DATE" minName="START_DATE" format="yyyy-MM-dd" time="true"
+										 nullable="no" readOnly="true" value="ognl:condition.END_DATE" desc="结束时间"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span>稽核状态：</span></span>
+									<span class="e_select"><span><span>
+										<input type="text"  jwcid="@Select" name="DEAL_TAG" id="DEAL_TAG" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+					  source = "ognl:pageutil.getStaticList('CONSTRUCTION_STATE')"  desc="稽核状态"/>
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span>归属业务区：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="CITY_CODE" id="CITY_CODE"
+												source="ognl:pageutil.getStaticList('JOB_CALL_CITYCODE')" addDefault="true"
+												textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.CITY_CODE"
+												desc="宽带业务区" />
+									</span></span></span>
+								</li>
+						    </ul>
+						    <div class="submitPlace"></div>
+							<div class="submit">
+								<button id="queryBtn" name="queryBtn" class="e_button-form" onclick="return queryWidenetConsts();"><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+				         </div>
+				    </div>
+			    </div>
+			    
+			    <div class="c_box">
+				    <div class="c_title">
+					   <div class="text">查询结果</div>
+					   <div class="fn"> 
+	                   </div>
+				    </div>
+				    
+				    <!-- 表格 开始 -->
+					<div jwcid="QueryListPart@Part" element="div">
+						<div class="c_scroll c_scroll-x c_scroll-table-10">
+						<div class="c_table">
+							<table jwcid="@Table" name="UnfinishTrade">
+								<thead>
+									<tr>
+										<th col="TRADE_ID_SUB"><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox2" name="viceCheckBox2"
+								onclick="checkedAll('viceCheckBox',checked)" />选择</th>										
+										<th col="TRADE_ID">流水号</th>
+										<th col="SERIAL_NUMBER">宽带账号</th>
+										<th col="CITY_CODE">归属市县</th>
+										<th col="WIDENET_TYPE">宽带类型</th>
+										<th col="WIDENET_WIDE">带宽(M)</th>
+										<th col="CONSTRUCTION_ADDR2">施工地址</th>
+										<th col="CONSTRUCTION_DATE">施工完成时间</th>
+										<th col="CONST_STAFF_ID">施工人员</th>
+										<th col="CONST_PHONE">施工人员电话</th>
+										<th col="DEAL_TAG">稽核状态</th>
+										<th col="DEAL_STAFF_ID">稽核人员</th>
+										<th col="DEAL_DATE">稽核时间</th>
+										<th col="REMARK">备注</th>
+									</tr>
+								</thead>
+								<tbody  jwcid="@Any" name="UnfinishTrade_Body" id="UnfinishTrade_Body">
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+										<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+								value="ognl:info.TRADE_ID" /></td>
+										<td><a jwcid="@Insert" value="ognl:info.TRADE_ID" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:pageutil.getStaticValue('JOB_CALL_CITYCODE',info.CITY_CODE)" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.WIDENET_TYPE" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.WIDENET_WIDE" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.CONSTRUCTION_ADDR" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.CONSTRUCTION_DATE" raw="false"/></td>										
+										<td><a jwcid="@Insert" value="ognl:info.CONST_STAFF_ID" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.CONST_PHONE" raw="false"/></td>
+										
+										<td><a jwcid="@Insert" value="ognl:pageutil.getStaticValue('CONSTRUCTION_STATE', info.DEAL_TAG)" raw="true"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.DEAL_STAFF_ID" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.DEAL_DATE" raw="false"/></td>
+										<td><a jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+																			
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						</div>
+						<!-- 分页 开始 -->
+						<div jwcid="@NavBar" name="LogNav" id="LogNav" cond="ConditionPart" part="QueryListPart" listener="queryWidenetConsts" pageSize="20" count="ognl:logCount"></div>
+						<!-- 分页 结束 -->
+					</div>
+				    
+				    <div class="c_form c_form-label-5 c_form-col-1">
+				    	<div jwcid="RemarkPart@Part">
+					    <ul class="ul">
+							<li class="li">
+								<span class="label">备注：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="REMARK@TextField" id="cond_REMARK" name="cond_REMARK"
+					                 value=""
+									 desc="备注" disabled=""/>
+								</span></span>
+							</li>
+					    </ul>
+					    </div>
+				    </div>
+				    <div class="c_submit">
+						<button class="e_button-page-ok" id="dealPassBtn" name="dealPassBtn"  
+							onclick="checkDealPassOK();"><i class="e_ico-ok"></i><span>稽核通过</span></button>
+						<button class="e_button-page-ok" id="dealNoPassBtn" name="dealNoPassBtn"  
+							onclick="checkDealPassFall();"><i class="e_ico-ok"></i><span>稽核不通过</span></button>							
+					</div>
+    				
+				</div>
+				
+			</div>
+		</div>
+	</body>
+</html>

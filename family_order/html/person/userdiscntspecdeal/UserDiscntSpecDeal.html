@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" language="JavaScript"  src="person/userdiscntspecdeal/scripts/userdiscntspecdeal.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 --><!-- 替换成业务组件 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="152" tradeAction="refreshPartAtferAuth(data);" element="div"></div>
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">用户优惠特殊处理</div>
+		<div class="fn"></div>
+	</div>
+	<div jwcid="discntPartList@Part">
+	<div class="c_scroll c_table c_scroll-table-10">
+		<table jwcid="@Table" name="discntTable">
+			<thead>
+				<tr>
+					<th col="DISCNT_CODE">优惠编码</th>
+					<th col="DISCNT_NAME">优惠名称</th>
+					<th jwcid="@TableHead" col="START_DATE" type="datefield" format="yyyy-MM-dd HH:mm:ss">开始时间</th>
+					<th col="END_DATE" format="yyyy-MM-dd HH:mm:ss">结束时间</th>
+					<th jwcid="@TableHead" col="CHOOSE_TYPE" type="select">特殊终止时间</th>
+					<th col="OLD_START_DATE" style="display:none">原始开始时间</th> 
+					<th col="OLD_END_DATE" style="display:none">原始结束时间</th>
+					<th col="INST_ID" style="display:none">INST_ID</th>
+					<th col="TEMP_START_DATE" style="display:none">临时开始时间</th>
+					<th jwcid="@TableHead" col="DISCNT_REMARK" type="input">备注</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:discnt" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" raw="true"/></td>
+					<td><span jwcid="@DateField" id='ognl:rowIndex+"_START_DATE"' name='ognl:rowIndex+"_START_DATE"' format="yyyy-MM-dd HH:mm:ss" disabled='ognl:"TRUE".equals(info.START_DATE_CHG_TAG)?"true":"false"' afterAction="clickStartDate(this)" value="ognl:info.START_DATE" raw="true"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true"/></td>
+					<td><select jwcid="@Select" id='ognl:rowIndex+"_CHOOSE_TYPE"' name='ognl:rowIndex+"_CHOOSE_TYPE"' source="ognl:chooseType" value="" valueField="DATA_ID" textField="DATA_NAME" onchange="chooseType(this)"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true" /></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.INST_ID" raw="true"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+					<td><span jwcid="@TextField" id='ognl:rowIndex+"_DISCNT_REMARK"' name='ognl:rowIndex+"_DISCNT_REMARK"' value="ognl:info.REMARK"></span></td>
+				</tr>
+			</tbody>
+		</table>		
+	</div>
+	</div>
+</div>
+<div class="c_box">
+	<input jwcid="@Hidden" name="SYS_DATE" id="SYS_DATE" value=""/>
+	<input jwcid="@Hidden" name="LAST_DAY_THIS_MONTH" id="LAST_DAY_THIS_MONTH" value=""/>
+	<input jwcid="@Hidden" name="LAST_DAY_LAST_MONTH" id="LAST_DAY_LAST_MONTH" value=""/>
+	<input jwcid="@Hidden" name="END_DATE_FOREVER" id="END_DATE_FOREVER" value=""/>
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" isReset="true" area="discntPartList" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

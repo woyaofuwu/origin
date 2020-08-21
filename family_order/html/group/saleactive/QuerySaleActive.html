@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: QuerySaleActive.html,v 1.1 2014/7/29 07:07:40 SUNGQ3 Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/saleactive/QuerySaleActive.js"></script>
+<title>营销活动综合查询</title>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">营销活动综合查询</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form c_form-col-3 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroupBySNPopup" afterErrorAction="$.endPageLoading();"/> 
+			</li> 
+			<li class="li">
+				<span class="label">活动类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_CAMPN_TYPE" name="cond_CAMPN_TYPE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GRP_CAMPAIGN_CAMPNTYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_CAMPN_TYPE" desc="活动类型" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">办理工号：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_STAFF_ID" name="cond_STAFF_ID" jwcid="@TextField"  
+						value="ognl:condition.cond_STAFF_ID" datatype="text" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">起始时间：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_START_DATE" name="cond_START_DATE" jwcid="@DateField" value="ognl:condition.cond_START_DATE" 
+						format="yyyy-MM-dd HH:mm:ss" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">截止时间：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_END_DATE" name="cond_END_DATE" jwcid="@DateField" value="ognl:condition.cond_END_DATE" 
+						format="yyyy-MM-dd HH:mm:ss" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">营业区：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_DEPART_ID" name="cond_DEPART_ID" jwcid="@TextField" 
+						value="ognl:condition.cond_DEPART_ID" datatype="text" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="queryAllUser()" listener="ognl:listeners.getSaleActiveInfo"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+	<!-- 表单结束 -->
+</div>
+<div class="c_box" id="pageForm2">
+	<!-- 用户信息区域 开始 --> 
+	<div jwcid="UserInfoPart@Part">
+	<div class="c_title c_title-2">
+		<span class="text">用户信息</span> 
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">服务号码：</span>
+				<span class="text" name="userinfo_SERIAL_NUMBER"  id="userinfo_SERIAL_NUMBER">
+					<span jwcid="@Insert"  value="ognl:userinfo.SERIAL_NUMBER" encode="false" />
+				</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text" name="userinfo_CUST_NAME"  id="userinfo_CUST_NAME">
+					<span jwcid="@Insert"  value="ognl:custinfo.CUST_NAME" encode="false" />
+				</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户级别：</span>
+				<span class="text" name="userinfo_CUST_TYPE"  id="userinfo_CUST_TYPE">
+					<span jwcid="@Insert"  value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUST_TYPE', custinfo.CUST_TYPE)" encode="false" />
+				</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" name="userinfo_PSPT_TYPE"  id="userinfo_PSPT_TYPE">
+					<span jwcid="@Insert"  value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE', custinfo.PSPT_TYPE_CODE)" encode="false" />
+				</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">用户状态：</span>
+				<span class="text" name="userinfo_REMOVE_TAG"  id="userinfo_REMOVE_TAG">
+					<span jwcid="@Insert"  value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTVIP_REMOVETAG', userinfo.REMOVE_TAG)" encode="false" />
+				</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">开户日期：</span>
+				<span class="text" name="userinfo_OPEN_DATE"  id="userinfo_OPEN_DATE">
+					<span jwcid="@Insert"  value="ognl:userinfo.OPEN_DATE" encode="false" />
+				</span>
+			</li>
+		</ul>
+	</div>
+	</div>
+	<!--信息提交区域 结束 -->
+</div>
+<div class="c_box" id="pageForm3">
+	
+	<!--信息展示区-->
+	<div jwcid="RefreshPart@Part">
+	<div class="c_title c_title-2">
+		<span class="text">营销活动信息列表</span> 
+	</div> 
+	<div class="fctTop e_clear">
+		<div align="right">
+			<div class="fn">
+				<span jwcid="@Conditional" condition="ognl:condition.EXPORT=='true'">
+					 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="9023" 
+						config="export/saleactive/QuerySaleActList.xml"
+						fileName="营销活动综合查询信息导出" cond="QueryCondPart"
+						ftpSite="groupserv" beforeAction="" action="" /> 
+				</span>
+				<span jwcid="@Conditional" condition="ognl:condition.PRINT=='true'">
+					 
+					<!--span jwcid="@Print" name="print1" title="打印" url="service=page/CustDemo&listener=queryCusts&template_code=22&version=33" /-->
+						 
+				</span>
+			</div>
+		</div> 
+	</div>
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table c_table-hover">
+		<table jwcid="@Table" name="saleactiveTable" id="saleactiveTable" rowDBClick="showOtherInfo">
+			<thead>
+				<tr> 
+					<th>活动名称</th>
+					<th col="PACKAGE_ID">营销包编码</th>
+					<th>营销包名称</th>
+					<th col="START_DATE">活动开始时间</th>
+					<th col="END_DATE">活动结束时间</th>
+					<th col="RSRV_DATE1">约定在网开始时间</th>
+					<th col="RSRV_DATE2">约定在网结束时间</th>
+					<th>受理时间</th>
+					<th>返销时间</th>	
+					<th>IMEI</th>
+					<th>预存话费(元)</th>
+					<th>捆绑手机款(元)</th>
+					<th>押金(元)</th>
+					<th>活动类别</th>
+					<th>活动说明</th>
+					<th>备注</th>
+					<th col="USER_ID" style="display:none">用户标识</th>
+					<th col="RELATION_TRADE_ID" style="display:none">关联业务流水号</th>
+					<th col="PRODUCT_NAME" style="display:none">活动名称</th> 
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:activeInfos" value="ognl:activeInfo" element="tr" index="ognl:rowIndex"
+					userID="ognl:activeInfos.getData(rowIndex).USER_ID" packageID="ognl:activeInfos.getData(rowIndex).PACKAGE_ID" 
+					ralation_trade_id ="ognl:activeInfos.getData(rowIndex).RELATION_TRADE_ID"
+					>
+					
+					<td>
+
+						<a jwcid="@Redirect" value="ognl:activeInfo.PRODUCT_NAME" source="ognl:activeInfo" 
+
+							userid="ognl:activeInfo.USER_ID"
+							productid="ognl:activeInfo.PRODUCT_ID"
+							pakageid="ognl:activeInfo.PACKAGE_ID"
+							campnid="ognl:activeInfo.CAMPN_ID"
+							relationtradeid="ognl:activeInfo.RELATION_TRADE_ID"
+							startdate="ognl:activeInfo.START_DATE"
+			    			onclick="$.popupPageExternal('group.saleactive.QuerySaleActiveDetail', 'querySaleActDetail', 
+			    					'&USER_ID='+getAttribute('userid')+'&PRODUCT_ID='+getAttribute('productid')+'&PACKAGE_ID='+getAttribute('pakageid')+'&CAMPN_ID='+getAttribute('campnid')+'&RELATION_TRADE_ID='+getAttribute('relationtradeid')+'&START_DATE='+getAttribute('startdate'),'营销综合查询明细项信息',850,450)"/>
+			    			
+						<!-- a href="#nogo" jwcid="@Any" batchtaskid="ognl:info.BATCH_TASK_ID" onclick="showBatTaskInfo(this)">
+							<span jwcid="@Insert" value="ognl:info.AUDIT_REMARK"/>
+						</a -->
+	    			</td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.PACKAGE_ID" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.PACKAGE_NAME" raw="false" /></td>
+					
+					<td><span jwcid="@Insert" value="ognl:activeInfo.START_DATE" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.END_DATE" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.RSRV_DATE1" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.RSRV_DATE2" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.ACCEPT_DATE" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.CANCEL_DATE" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.RSRV_STR23" raw="false"/></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.ADVANCE_PAY" raw="false"/></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.OPER_FEE" raw="false"/></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.FOREGIFT" raw="false"/></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.ACTIVE_TYPE" raw="false"/></td>
+
+					<td><span jwcid="@Insert" value="ognl:activeInfo.PACKAGE_DESC" raw="false" /></td>
+					
+					<td><span jwcid="@Insert" value="ognl:activeInfo.REMARK" raw="false"/></td>
+
+					<td style="display:none"><span jwcid="@Insert" value="ognl:activeInfo.USER_ID" raw="false"/></td>
+
+					<td style="display:none"><span jwcid="@Insert" value="ognl:activeInfo.RELATION_TRADE_ID" raw="false"/></td>
+
+					<td style="display:none"><span jwcid="@Insert" value="ognl:activeInfo.PRODUCT_ID" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="PageNav" id="PageNav" cond="QueryCondPart" part="RefreshPart" listener="getSaleActiveInfo" needCount="false" pageSize="20" count="ognl:infosCount"></div>
+	<!-- 翻页 结束 -->
+	</div>
+	<!--信息展示区 结束-->
+</div>
+<div class="c_box" id="pageForm4">
+	<!-- tab 页面开始-->
+	<div jwcid="mytab@Tabset">
+		<!-- 优惠tab页开始 -->
+		<div jwcid="@TabsetContent" id ="DiscntPart" title="营销包优惠信息">
+			<!-- 表格 开始 --> 
+			<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">	
+				<table id="discntTable">
+					<thead>
+						<tr>
+							<th>营销包编码</th>
+
+							<th>优惠编码</th>
+
+							<th>优惠名称</th>
+
+							<th>开始时间</th>
+
+							<th>结束时间</th>
+
+							<th>备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:discntInfos" value="ognl:discntInfo" element="tr" index="ognl:rowIndex">
+						
+							<td><span jwcid="@Insert" value="ognl:discntInfo.PACKAGE_ID" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_NAME" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:discntInfo.START_DATE" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:discntInfo.END_DATE" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:discntInfo.REMARK" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table> 	
+			</div></div>
+			<!-- 表格 结束 -->
+		</div>
+		<!-- 优惠tab页结束 -->
+		
+		<!-- 实物tab页开始 -->
+		<div jwcid="@TabsetContent" id ="GoodsPart" title="营销包实物信息">
+			<!-- 表格 开始 --> 
+			<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">	
+				<table id="goodsTable">
+					<thead>
+						<tr>
+							<th>营销包编码</th>
+
+							<th>用户号码</th>
+
+							<th>实物名称</th>
+
+							<th>实物数量</th>
+
+							<th>实物状态</th>
+
+							<th>实物类型</th>
+
+							<th>实物编号</th>
+
+							<th>受理时间</th>
+
+							<th>赠送标志</th>
+
+							<th>备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:goodsInfos" value="ognl:goodsInfo" element="tr" index="ognl:rowIndex">
+						
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.PACKAGE_ID" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.SERIAL_NUMBER" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.GOODS_NAME" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.GOODS_NUM" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SALEGOODSSTATE', goodsInfo.GOODS_STATE)" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:@pageutil.getStaticValueDataSource('res','RES_TYPE', 'RES_TYPE_ID', 'RES_TYPE_NAME', goodsInfo.RES_TYPE_CODE)" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.RES_CODE" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.ACCEPT_DATE" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.RSRV_TAG1" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:goodsInfo.REMARK" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table> 	
+			</div></div>
+			<!-- 表格 结束 -->					
+		</div>
+		<!-- 实物tab页结束 -->
+		
+		<!-- 话费返还信息tab页开始 -->
+		<div jwcid="@TabsetContent" id ="ReturnsPart" title="话费返还信息">
+			<!-- 表格 开始 --> 
+			<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">	
+				<table id="returnsTable">
+					<thead>
+						<tr>
+							<th>营销包编码</th>
+
+							<th>用户号码</th>
+
+							<th>每月返还话费额(元)</th>
+
+							<th>开始时间</th>
+
+							<th>结束时间</th>
+
+							<th>需返还月数</th>
+
+							<th>已返还月数</th>
+
+							<th>返还状态</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:returnInfos" value="ognl:returnInfo" element="tr" index="ognl:rowIndex">
+						
+							<td><span jwcid="@Insert" value="ognl:returnInfo.PACKAGE_ID" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:returnInfo.SERIAL_NUMBER" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:returnInfo.X_LIMIT_MONEY" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:returnInfo.START_CYCLE_ID" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:returnInfo.END_CYCLE_ID" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:returnInfo.X_MONTHS" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:returnInfo.X_LEFT_MONTHS" raw="false"/></td>
+
+							<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('PURCHASE_USER_TYPE', returnInfo.X_USETAG)" raw="false"/></td>
+
+						</tr>
+					</tbody>
+				</table> 	
+			</div></div>
+			<!-- 表格 结束 -->					
+		</div>
+		<!-- 话费返还信息tab页结束 -->
+	</div>
+	<!-- tab 页面结束-->
+	<input type="hidden" id="X_CODING_STR" name="X_CODING_STR"/>
+	<input type="hidden" id="cond_USER_ID" name="cond_USER_ID"/>
+	<input type="hidden" id="cond_REMOVE_TAG" name="cond_REMOVE_TAG"/>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/changeuserelement/ProductInfo.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div id="productInfoPart">
+	<!-- 主区域 开始 -->
+	<div class="c_box">
+		<div jwcid="mytab@Tabset" switchAction="productTabSwitchAction(ptitle,title)">
+		 
+			<div jwcid="@TabsetContent" id ="productinfotabset" title="产品信息">
+				<div class="l_col s_iframe-lower s_iframe-close">
+					<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width:49%;">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+			                <div class="c_title">
+								<div class="text">待选区</div>
+							</div>
+							<!-- 标题 结束 -->
+							<!-- 分栏 开始 -->
+							<div class="l_col l_col-close">
+								<div jwcid="offerList@csserv:OfferList" 
+			                           element="div"
+			                           svcParam="ognl:cond"
+			                           serviceName="ognl:serviceName"
+			                           productId="ognl:productId"
+			                           categoryId="100000000017,100000000014"></div>
+							</div>
+							<!-- 分栏 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+				    <div class="l_auto">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">已选区</div>
+							</div>
+			                 <div jwcid="selectedElements@saleserv:SelectedElements" 
+			                    initCallSvc="CS.SelectedElementSVC.getGrpUserChgElements" 
+			                    initParam="ognl:cond"
+			                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElements" 
+			                    element="div"></div>
+							<!-- 表格 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+					
+				<!-- 第 2 栏 结束 -->
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!--定制信息开始  -->
+			<span jwcid="@Conditional" condition="ognl:useTag == 'true'">
+				<div jwcid="@TabsetContent" id ="grppackage" title="定制信息">
+					<span jwcid="userGrpPackage@saleserv:UserGrpPackage" element="div" grpProductId="ognl:productId" userId="ognl:cond.USER_ID" grpUserEparchyCode="ognl:cond.USER_EPARCHY_CODE"
+					treeTextAction="packageTreeTextAction(nodedata)"/>
+				</div>
+			</span>
+			<!--定制信息结束  -->
+			
+	       <!-- 产品参数 开始 -->
+			
+			<div jwcid="@Conditional" condition="ognl:productCtrlInfo.ParamInfo.ATTR_VALUE != null">
+				<div jwcid="@TabsetContent" id ="prama" title="产品参数信息" >
+					<input jwcid="@Hidden" id ="pramaPage" name="pramaPage" value="ognl:productCtrlInfo.ParamInfo.ATTR_VALUE" />
+					<input jwcid="@Hidden" name="jsFilePath" id="jsFilePath"
+					value="ognl:productCtrlInfo.jsFile.ATTR_VALUE"/>
+					<span jwcid="productParamPart@saleserv:ProductParamDynamicHtml" element="div"
+					param="ognl:cond" 
+				       />
+			    </div>
+			</div>
+		
+			<!-- 产品参数 结束 -->
+			
+			<!-- 资源参数开始  -->
+			<div jwcid="@TabsetContent" id ="source" title="资源信息">
+				<span jwcid="@saleserv:ResView" resList="ognl:resList"/>
+			</div>
+			<!-- 资源参数结束  -->
+			<!-- 稽核信息开始  -->
+            <div jwcid="@Conditional" condition="ognl:cond.AUDIT_INFO_SHOW!=null && cond.AUDIT_INFO_SHOW == 'true'">
+			<div jwcid="@TabsetContent" id ="voucher" title="稽核信息">
+				<div class="c_form c_form-col-3 c_form-label-6">
+					<ul class="ul">
+                        <li class="li">
+                            <span class="label"><span class="e_required">稽核人员：</span></span> 
+                            <span class="e_elements">
+								<button type="button" class="e_button-right"
+									onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+									<i class="e_ico-check"></i><span></span>
+								</button> 
+                                <span class="e_input e_input-left"><span><input
+										type="text" jwcid="@TextField"
+										name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+										value=""
+										text="" nullable="no"
+										readonly="true"/>
+								</span></span>
+							</span>
+                        </li>
+					</ul>
+				</div>
+			</div>
+            </div>
+            <!-- 稽核信息结束  -->
+			
+		</div>
+	</div>
+			
+	<div jwcid="elementAttr@saleserv:ElementAttr" element="div"></div>
+	<!-- 分栏 结束 --> 
+	<input jwcid="@Any" name="MERCH_DIS" id="MERCH_DIS" value="ognl:getData().getString('MERCH_DIS')" style="display:none"/>
+	<input jwcid="@Any" name="PRODUCT_ID" id="PRODUCT_ID" value="ognl:productId" style="display:none"/>
+	<input jwcid="@Any" name="PRODUCT_ELEMENTS_CHECK_FLAG" id="PRODUCT_ELEMENTS_CHECK_FLAG" value="ognl:productCtrlInfo.CheckFlag.ATTR_VALUE" desc="产品元素校验标识"  style="display:none"/>
+	<input jwcid="@Any" name="NEED_CHECK_SERVICES" id="NEED_CHECK_SERVICES" value="ognl:productCtrlInfo.NeedCheckSvc.ATTR_VALUE" desc="需要校验的服务元素"  style="display:none"/>
+	<input jwcid="@Any" name="OLD_BIZ_IN_CODE" id="OLD_BIZ_IN_CODE" value=""  desc="已经新增业务的业务接入号" style="display:none" />
+	<input jwcid="@Any" name="GRP_PRODUCT_ID" id="GRP_PRODUCT_ID" value="ognl:productId" style="display:none"/>
+	<input jwcid="@Any" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID" style="display:none"/>
+	<input jwcid="@Any" name="GRP_USER_ID" id="GRP_USER_ID" value="ognl:cond.USER_ID" style="display:none"/>
+	<input jwcid="@Any" name="BUSI_TYPE" id="BUSI_TYPE" value="ognl:info.BUSI_TYPE" style="display:none"/>
+	<input jwcid="@Any" name="CUST_ID" id="CUST_ID" value="ognl:getData().getString('CUST_ID')" style="display:none"/>
+	<input jwcid="@Any" name="GROUP_ID" id="GROUP_ID" value="ognl:getData().getString('GROUP_ID')" style="display:none"/>
+	<input jwcid="@Any" name="SELE_CONTRACTPRODUCT_CONTRACT_ID" id="SELE_CONTRACTPRODUCT_CONTRACT_ID" value="ognl:getData().getString('SELE_CONTRACTPRODUCT_CONTRACT_ID')" style="display:none"/>
+	<input jwcid="@Any" id="GRP_USER_EPARCHYCODE" name="GRP_USER_EPARCHYCODE" value="ognl:cond.USER_EPARCHY_CODE"  style="display:none"   encode="false" />
+	<input type="hidden" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value="[]"/>
+	<input jwcid="@Any" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:cond.TRADE_TYPE_CODE" style="display:none"/>
+	<textarea jwcid="@TextArea" id="POWER100_PRODUCT_INFO" name="POWER100_PRODUCT_INFO" value="ognl:infos" style="display:none"/>
+	<input type="button" id="bnext" value="下一步" class="e_button" onclick="productInfoNextCheck();return false;" style="display:none" />
+	
+</div>
+</div></div>
+</body>
+</html>

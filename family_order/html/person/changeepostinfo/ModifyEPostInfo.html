@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/changeepostinfo/scripts/modifyepostinfo.js" ></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/print/PrintMgr.js"></script>
+</head>
+<body  jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<span jwcid="refresh@Any" id="isNotUser" style='ognl:display.IS_DISPLAY == "F" ? "display:none" : "" '>
+	    <div class="c_form">
+	       <ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">服务号码：</span></span>
+					<span class="e_elements" style="width:150px;">
+						<span class="e_label e_label-right">
+							<span jwcid="TRADE_EPARCHY_NAME@Insert" value="ognl:getVisit().getStaffEparchyName()"/>
+					    </span>
+						<span class="e_input e_input-left"><span>
+							<input disabled="true" type="text" jwcid="@TextField" name="TRADE_AUTH_SERIAL_NUMBER" id="TRADE_AUTH_SERIAL_NUMBER" value="ognl:tradeInfo.SERIAL_NUMBER" desc="用户号码" onpaste="return true" nullable="no"/>
+						</span></span>
+					</span>
+				</li>
+		   </ul>
+        </div>
+	</span>
+	
+	<span jwcid="@Any" id="IsUser" style='ognl:display.IS_DISPLAY == "T" ? "display:none" : "" '>
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="2016" element="div"/>
+	<!-- 认证 结束 -->
+	</span>
+	<div jwcid="UCAViewPart@Part">
+		<div class="c_form c_form-text c_form-col-3 c_form-label-5">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME"
+						  desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">客户性别：</span>
+					<span class="text" jwcid="@Insert" name="SEX" id="SEX"
+						  value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SEX',custInfoView.SEX)" desc="客户性别"/>
+				</li>
+				<li class="li">
+					<span class="label">证件类型：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+						  value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)"
+						  desc="证件类型" />
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID"
+						  desc="证件号码"/>
+				</li>
+				<li class="li">
+					<span class="label">证件有效期：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_END_DATE" id ="PSPT_END_DATE"
+						  value="ognl:custInfoView.PSPT_END_DATE==null ? '' : getPage().formatDate('yyyy-MM-dd', custInfoView.PSPT_END_DATE)"
+						  desc="证件有效期"/>
+				</li>
+				<li class="li">
+					<span class="label">用户状态：</span>
+					<span class="text" jwcid="@Insert" name="REMOVE_TAG" id ="REMOVE_TAG"
+						  value="ognl:pageutil.getStaticValue('USER_REMOVETAG', userInfoView.REMOVE_TAG)"
+						  desc="用户状态"/>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<div jwcid="refresh2@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-9" >
+		<ul jwcid="@Part" class="ul" id="busi" style='ognl:display.IS_DISPLAY == "F" ? "display:none" : "" '>
+			<li class="li col-3" id="postContent" >
+			
+				<span class="label"><span id="span_POST_CONTENT">发票类型：</span></span>
+				<div class="c_fn">
+					<ul>
+						<li jwcid="@Foreach"
+						source="ognl:pageutil.getStaticList('MON_ELEC')"
+							value="ognl:info" element="li">
+							<input jwcid="@Checkbox" value="ognl:info.DATA_ID"
+								name="POST_TYPE_MON" id="POST_TYPE_MON"  
+								checked="true"
+								disabled="ognl:busiInfo.POST_PERMISSIONS==null?'true':'false'"							
+								onclick="setPostTypeChange(this);"/>
+							<span jwcid="@Insert" value="ognl:info.DATA_NAME" />
+						</li> 
+						<li jwcid="@Foreach"
+						source="ognl:pageutil.getStaticList('CASH_ELEC')"
+							value="ognl:info" element="li">
+							<input jwcid="@Checkbox" value="ognl:info.DATA_ID"
+								name="POST_TYPE_CASH" id="POST_TYPE_CASH" 
+								checked="true"
+								disabled="ognl:busiInfo.POST_PERMISSIONS==null?'true':'false'"								
+								onclick="setPostTypeChange(this);"/>
+							<span jwcid="@Insert" value="ognl:info.DATA_NAME" />
+						</li> 
+						<li jwcid="@Foreach"
+						source="ognl:pageutil.getStaticList('BUSINESS_ELEC')"
+							value="ognl:info" element="li">
+							<input jwcid="@Checkbox" value="ognl:info.DATA_ID"
+								name="POST_TYPE_BUSI" id="POST_TYPE_BUSI"
+								checked="true"
+								disabled="ognl:busiInfo.POST_PERMISSIONS==null?'true':'false'"	
+								onclick="setPostTypeChange(this);"/>
+							<span jwcid="@Insert" value="ognl:info.DATA_NAME" />
+						</li>
+					</ul>
+				</div>
+			</li>
+							
+			<li class="li col-3" id="postChannel">
+				<span class="label"><span id="span_POST_CHANNEL">推送方式：</span>
+				</span>
+				<div class="c_fn">
+					<ul>
+						<li jwcid="@Foreach"
+							source="ognl:pageutil.getStaticList('PUSH_CHANNEL')"
+							value="ognl:info" element="li">
+							<input jwcid="@Checkbox" value="ognl:info.DATA_ID"
+								name="POST_CHANNEL" id="POST_CHANNEL"
+								checked="ognl:(busiInfo.POST_CHANNEL==null?'no':info.DATA_ID).indexOf(busiInfo.POST_CHANNEL)==-1?'false':'true'"
+								onclick="setPostChannelChange(this);"/>
+							<span jwcid="@Insert" value="ognl:info.DATA_NAME" />
+						</li>
+					</ul>
+				</div>
+			</li>
+			<span id="postContentDiv">
+			
+			    <li class="li">
+					<span class="label"><span id="span_receive_number"><span>手机号码：</span>
+					</span>
+					</span>
+					<span class="e_input"><span><input type="text"
+								jwcid="@TextField" name="postinfo_RECEIVE_NUMBER"
+								id="postinfo_RECEIVE_NUMBER"
+								value="ognl:busiInfo.RECEIVE_NUMBER" maxsize="128"
+								datatype="mbphone" desc="手机号码" />
+					</span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span><span
+							id="span_post_adr">邮箱地址：</span>
+					</span>
+					</span>
+					
+					<span class="e_elements" style="width:210px;">
+						<span class="e_label e_label-right">
+							<span jwcid="COMADDR@Insert" value="@139.com" nullable="no" disabled="true"/>
+						</span>
+						<span class="e_input e_input-left"><span>
+							<input type="text" jwcid="@TextField" name="postinfo_POST_ADR" 
+							id="postinfo_POST_ADR" value="ognl:busiInfo.POST_ADR"
+								maxsize="64" desc="139邮箱地址" />
+						</span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label"><span><span
+							id="span_post_adr_sec">其他邮箱地址：</span>
+					</span>
+					</span>
+					<span class="e_input"><span><input type="text"
+								jwcid="@TextField" name="postinfo_POST_ADR_SEC"
+								id="postinfo_POST_ADR_SEC" value="ognl:busiInfo.POST_ADR_SEC"
+								maxsize="64" datatype="email" desc="其他邮箱地址" />
+					</span>
+					</span>
+				</li> 
+				
+
+				<li class="li col-2" id="li_post_date">
+					<span class="label"><span id="span_post_date">定期开具推送日期：</span>
+					</span>
+					<span class="e_select"><span><span> <select
+									jwcid="@Select" name="postinfo_POST_DATE_MON"
+									id="postinfo_POST_DATE_MON" textField="DATA_NAME"
+									valueField="DATA_ID" titleField="DATA_NAME"
+									source="ognl:pageutil.getStaticList('EINVOICE_DATE')"
+									value="ognl:busiInfo.POST_DATE" desc="推送日期"/>
+					</span></span></span>
+				</li>
+			</span>
+			
+		</ul>
+	</div> 
+	    <input id="NEW_FLAG" jwcid="@Hidden" type="hidden" name="NEW_FLAG" value="ognl:display.NEW_FLAG" style="display:none"/>
+	</div> 
+	
+	<!-- 隐藏数据-->                
+                <input id="OLD_RECEIVE_NUMBER" type="hidden" name="OLD_RECEIVE_NUMBER" value="ognl:commInfo.RECEIVE_NUMBER" style="display:none"/>
+                <input id="OLD_POST_ADR" type="hidden" name="OLD_POST_ADR" value="ognl:commInfo.POST_ADR" style="display:none"/>
+
+    <!--隐藏数据 结束-->
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+	<button jwcid="@Any"class="e_button-page-ok"
+	onclick="checkFinal()" name="CSSUBMIT_BUTTON" edocSecond="true"
+	style='ognl:display.IS_DISPLAY == "T" ? "display:none" : "" '
+	><i></i><span>提交(Y)</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	
+	<!-- 跳转页面提交 开始 -->
+	<div class="c_submit">
+	<button jwcid="@Any"class="e_button-page-ok"
+	onclick="checkFinal2()"
+	style='ognl:display.IS_DISPLAY == "F" ? "display:none" : "" '
+	><i></i><span>提交(Y)</span></button>
+	</div>
+	<!-- 跳转页面提交 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+	<button jwcid="@Any"class="e_button-page-ok" id="CSSUBMIT_BUTTON"  name="CSSUBMIT_BUTTON" edocSecond="true"
+	style="display:none"
+	><i></i><span>提交(Y)</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	
+</div> 
+<!-- 区域 结束 -->
+
+
+</div></div></body>
+</html>

@@ -1,0 +1,1 @@
+UPDATE ti_o_deductdata SET deal_tag='2', remark='正在处理',deal_time=sysdate WHERE user_id=TO_NUMBER(:USER_ID)

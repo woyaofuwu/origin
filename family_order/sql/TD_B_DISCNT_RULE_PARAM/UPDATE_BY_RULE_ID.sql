@@ -1,0 +1,5 @@
+
+update TD_B_DISCNT_RULE_PARAM t
+   set t.ELEMENT_TYPE_CODE = :ELEMENT_TYPE_CODE,
+       t.element_id        = :ELEMENT_ID
+ WHERE T.DISCNT_RULE_ID = :DISCNT_RULE_ID

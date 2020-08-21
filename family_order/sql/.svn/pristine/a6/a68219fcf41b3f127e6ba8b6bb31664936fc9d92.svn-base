@@ -1,0 +1,21 @@
+select P.PROXY_ID,
+      P.STAFF_ID_A,
+      P.STAFF_NAME_A,
+      P.STAFF_PHONE_A,
+      P.STAFF_PHONE_A,
+      P.STAFF_ID_B,
+      P.STAFF_NAME_B,
+      P.STAFF_PHONE_B,
+      P.PROXY_TYPE,
+      P.ROLE_ID,
+      P.INFO_LIST,
+      P.START_DATE,
+      P.END_DATE,
+      P.UPDATE_TIME,
+      P.RSRV_STR1,
+      P.RSRV_STR2,
+      P.RSRV_STR3,
+      P.RSRV_STR4,
+      P.REMARK
+ from TF_B_EOP_PROXY P
+ where P.PROXY_ID = :PROXY_ID

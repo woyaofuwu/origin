@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团统一付费产品成员删除</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/upgprelation/DesUnifyPayRelation.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_tip" jwcid="hintPart@Part">
+	<span jwcid="@Insert" value="ognl:message" raw="true"/>
+</div>
+
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">集团统一付费产品成员删除</div>
+	</div>
+	<input jwcid="@TextField" id="MEB_FILE_SHOW" name="MEB_FILE_SHOW" value="ognl:condition.MEB_FILE_SHOW" style="display:none" />
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li" id="serialNumber">
+				<span class="label"><span class="e_required">成员号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" nullable="no" desc="成员号码"/>
+				</span></span>
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return qryInfoList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+</div>
+
+<!-- 附件信息 开始 -->
+<div class="c_box" jwcid="@Conditional" condition='ognl:condition.MEB_FILE_SHOW != null && condition.MEB_FILE_SHOW == "true"'>
+	<div class="c_title">
+		<div class="text">附件信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">				
+				<span class="label"><span>附件上传：</span></span>
+				<div jwcid="MebFilePart@Part">
+				<span class="e_elements">
+					<input jwcid="@Upload"
+							name="MEB_FILE_LIST"
+							id="MEB_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/mebattach"
+							fileSize="20"
+							fileTypes="*.*"
+						/>
+					</span>
+			    </div>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- 附件信息 结束 -->
+<!-- 凭证信息 开始 -->
+<div class="c_box" jwcid="@Conditional" condition="ognl:true">
+	<div class="c_title">
+		<div class="text">凭证信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">				
+				<span class="label"><span class="e_required">凭证上传：</span></span>
+				<div jwcid="VoucherFilePart@Part">
+					<span class="e_elements">
+					<input jwcid="@Upload"
+							name="MEB_VOUCHER_FILE_LIST"
+							id="MEB_VOUCHER_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/mebattach"
+							fileSize="20"
+							fileTypes="*.*"
+                    		desc="凭证信息" 
+                    		nullable="no"
+						/>
+					</span>
+			    </div>
+			</li>
+            <li class="li">
+                <span class="label"><span class="e_required">稽核人员：</span></span> 
+                <span class="e_elements">
+					<button type="button" class="e_button-right"
+						onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+						<i class="e_ico-check"></i><span></span>
+					</button> 
+                    <span class="e_input e_input-left"><span> <input
+							type="text" jwcid="@TextField"
+							name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+							value=""
+							text="" nullable="no"
+							readonly="true"/>
+					</span></span>
+				</span>
+            </li>
+		</ul>
+	</div>
+</div>
+
+<!-- 凭证信息 结束 -->
+				
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">统付信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-9" jwcid="endType@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">失效方式：</span></span>
+				<span class="e_select"><span><span>
+					<select id = 'ACTION_FLAG' name = 'ACTION_FLAG' nullable="no" desc="查询方式">
+					<option value =''>请选择</option>
+					<option value ='1'>上月底失效</option>
+					<option value ='2'>本月底失效</option>
+					</select>
+				</span></span></span>
+			</li>				
+		</ul>
+	</div>
+	<div jwcid="infoPart@Part" element="div">
+		<div elment="div">
+			<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+				<table>
+					<thead>
+						<tr>
+							<th>选择</th>
+							<th>集团客户编码</th>
+							<th>集团客户名称</th>
+							<th>集团帐户标识</th>
+							<th>帐户名称</th>
+							<th>帐户类型</th>
+							<th>银行名称</th>
+							<th>银行行号</th>
+							<th>手机号码</th>
+							<th>统付费帐目</th> 
+							<th>统付开始时间</th>
+						</tr>
+					</thead>
+					<tbody  id="myGrpTBody">
+				  		<tr jwcid="@Foreach" source="ognl:infoList" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				  			<td class="e_center"><input jwcid="@Radio" id="infoGrpCheck" name="infoGrpCheck" value="ognl:info.ACCT_ID + ',' + info.USER_ID + ',' + info.PAYITEM_CODE + ',' + info.SERIAL_NUMBER"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"/></td>
+							<td>
+								<a jwcid="@Redirect" value="ognl:info.ACCT_ID" parameters="ognl:'&cond_ACCT_ID=' + info.ACCT_ID + '&cond_GROUP_ID=' + info.GROUP_ID"
+									onclick="$.popupPage('group.destroygroupspecialpay.SpecialPayProductInfo', 'queryAcctProductInfo', $(this).attr('parameters'), '统付产品信息', '700', '400')"/>
+							</td>
+							<td><span jwcid="@Insert" value="ognl:info.PAY_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_S_PAYMODE', 'PAY_MODE_CODE', 'PAY_MODE', info.PAY_MODE_CODE)"/></td>
+							<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_B_BANK', 'BANK_CODE', 'BANK', info.BANK_CODE)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BANK_ACCT_NO"/></td>
+	                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>  
+	                        <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_B_ITEM', 'ITEM_ID', 'ITEM_NAME', info.PAYITEM_CODE)"/></td>
+	                       	<td><span jwcid="@Insert" value="ognl:info.START_CYCLE_ID"/></td>
+						</tr>		  
+					</tbody>
+				</table>
+			</div></div>
+		</div>
+	
+		<span jwcid="@NavBar" name="pageNavInfo" cond="queryForm" listener="qryInfoList" part="infoPart" count="ognl:infoCount"/>
+		
+	</div>
+	
+	<div jwcid="SubmitPart@saleserv:CSSubmit" beforeAction="onSubmitBaseTradeCheck()" listener="onSubmitBaseTrade" isGrp="true" disabledBtn="false" submitText="注销" element="div"/>
+</div>
+	
+</div></div>
+</body>
+
+</html>

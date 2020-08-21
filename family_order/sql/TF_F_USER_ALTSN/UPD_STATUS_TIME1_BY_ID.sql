@@ -1,0 +1,1 @@
+update TF_F_USER_ALTSN set status = :TO_STATUS , rsrv_date1 = to_date( :RSRV_DATE1 , 'yyyy-mm-dd hh24:mi:ss' ) where serial_number = :SERIAL_NUMBER and status = :FROM_STATUS and RELA_TYPE = :RELA_TYPE

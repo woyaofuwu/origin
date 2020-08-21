@@ -1,0 +1,7 @@
+SELECT COUNT(*) recordcount
+  FROM TF_F_CUST_GROUPMEMBER a
+ WHERE a.USER_ID = :USER_ID
+   and a.partition_id = mod(to_number(:USER_ID), 10000)
+   AND a.REMOVE_TAG = '0'
+   AND a.MEMBER_KIND = :MEMBER_KIND
+   AND EXISTS (SELECT 1 FROM TD_M_STAFF b WHERE b.STAFF_ID = a.CUST_MANAGER_ID)

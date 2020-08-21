@@ -1,0 +1,4 @@
+SELECT partition_id,to_char(user_id) user_id,to_char(cust_id) cust_id,to_char(acct_id) acct_id,brand_code,product_id,product_name,brand,eparchy_code,city_code,city_name,serial_number,to_char(score_value) score_value,to_char(credit_value) credit_value,remove_tag,acyc_id,bcyc_id,to_char(acyc_start_time,'yyyy-mm-dd hh24:mi:ss') acyc_start_time,to_char(acyc_end_time,'yyyy-mm-dd hh24:mi:ss') acyc_end_time,pay_name,cust_name,cust_manager,cust_manager_id,to_char(fee_sum) fee_sum,to_char(adjust_fee) adjust_fee,to_char(all_new_balance) all_new_balance,to_char(all_new_money) all_new_money,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_info1,rsrv_info2,to_char(rsrv_num1) rsrv_num1,to_char(rsrv_num2) rsrv_num2,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time 
+  FROM tf_f_groupbill_user
+ WHERE serial_number=:SERIAL_NUMBER
+   AND acyc_id=:ACYC_ID

@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'SaleProject' KEY, SALE_PROJECT_ID VALUE1, '-1' VALUE2, SALE_PROJECT VRESULT
+  FROM td_b_sale_project
+ WHERE SYSDATE BETWEEN start_date AND end_date AND 'SaleProject' = :KEY

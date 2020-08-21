@@ -1,0 +1,5 @@
+UPDATE tf_b_testcard_use
+   SET imsi=:IMSI,sim_card_no=:SIM_CARD_NO,eparchy_code=:EPARCHY_CODE,city_code=:CITY_CODE,stock_id=:STOCK_ID,staff_id=:STAFF_ID,staff_name=:STAFF_NAME,use_limit=decode(:USE_LIMIT,null,use_limit,TO_NUMBER(:USE_LIMIT)),trade_func=:TRADE_FUNC,purpose_declare=:PURPOSE_DECLARE,card_kind_code=:CARD_KIND_CODE,card_state_code=:CARD_STATE_CODE,use_time=sysdate,return_time_limit=TO_DATE(:RETURN_TIME_LIMIT, 'YYYY-MM-DD HH24:MI:SS'),return_time_fact=TO_DATE(:RETURN_TIME_FACT, 'YYYY-MM-DD HH24:MI:SS'),open_time=TO_DATE(:OPEN_TIME, 'YYYY-MM-DD HH24:MI:SS'),remind_code=:REMIND_CODE,remind_date=TO_DATE(:REMIND_DATE, 'YYYY-MM-DD HH24:MI:SS'),return_staff_id=:RETURN_STAFF_ID,remark=:REMARK,rsrv_tag1=:RSRV_TAG1,rsrv_tag2=:RSRV_TAG2,rsrv_tag3=:RSRV_TAG3,rsrv_str1=:RSRV_STR1,rsrv_str2=:RSRV_STR2,rsrv_str3=:RSRV_STR3  
+ WHERE serial_number=:SERIAL_NUMBER
+   AND apply_no=:APPLY_NO
+   AND apply_batch_id=TO_NUMBER(:APPLY_BATCH_ID)

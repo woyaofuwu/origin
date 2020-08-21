@@ -1,0 +1,76 @@
+<div class="c_form">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">服务号码：</span></span>
+			<span class="e_elements" style="width:210px;">
+				<span class="e_label e_label-right">
+					<span jwcid="TRADE_EPARCHY_NAME@Insert" value="ognl:getVisit().getStaffEparchyName()"/>
+				</span>
+				<button type="button" id="PASTE_SN_BTN" class="e_button-center"><span>粘贴</span></button>
+				<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@TextField" name="AUTH_SERIAL_NUMBER" id="AUTH_SERIAL_NUMBER" value="ognl:getPage().getData().getString('SERIAL_NUMBER','')" datatype= "ognl:orderTypeCode == 2016 ? '' : 'mbphone'"  desc="用户号码" onpaste="return true" nullable="no"/>
+				</span></span>
+			</span>
+		</li>
+		<li class="li" style="display:none">
+			<span class="label"><span class="e_required">业务类型：</span></span>
+			<span class="e_elements">
+				<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@TextField" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:tradeTypeCode" orderTypeCode="ognl:orderTypeCode" desc="业务类型" nullable="no"/>
+				</span></span>
+			</span>
+		</li>
+		 
+	</ul>
+	<div class="submit">
+<!--
+	公用属性参数作为Dom属性值挂靠在查询按钮上，尽量不使用input控件，可以过滤AuthPart区块提交时无关参数传到后台
+	相关参数说明如下，后续需要扩充，可以继续增加配置项
+	moreUser="是否多用户选择"
+	userCanBeNull="支持输入的号码没有用户资料"
+	disabledAuth="支持不输入密码直接校验通过 密码变更用"
+	disabledInput="禁用服务号码输入框输入框"
+	inModeCode="接入方式"
+	noUserPasswd="用户密码为空"
+	userPasswd="用户密码"
+	autoAuth="是否自动触发认证操作"
+	checkTag="认证默认校验方式"
+	authCount="认证错误次数"
+	preSale="是否启动精准营销提示"
+	authType="认证类型:默认0=个人服务号码，1=宽带用户"
+-->
+		<button jwcid="@Any" type="button" class="e_button-form" id="AUTH_SUBMIT_BTN" name="AUTH_SUBMIT_BTN"  componentId="ognl:getId()" 
+			beforeAction="ognl:beforeAction" tradeAction="ognl:tradeAction"
+			moreUser="ognl:moreUser" userCanBeNull="ognl:userCanBeNull" 
+			disabledAuth="ognl:getPage().getParameter('DISABLED_AUTH')!=null?getPage().getParameter('DISABLED_AUTH'):disabledAuth" 
+			autoAuth="ognl:getPage().getData().getString('AUTO_AUTH', '')"
+			disabledInput="ognl:getPage().getData().getString('DISABLED_INPUT', 'false')"
+			inModeCode="ognl:inModeCode" noUserPasswd="false" checkTag="11000" authCount="0" 
+			preSale="ognl:preSale" authType="ognl:authType" userPasswd="" 
+			opCode="ognl:getPage().getData().getString('OP_CODE','')">
+			<i class="e_ico-search"></i><span>查询</span>
+		</button>
+		<div  jwcid="@Conditional"  condition="ognl:inModeCode == 1" >
+			<button jwcid="@Any"  type="button"  class="e_button-form"  onclick = "$.auth.events.onBtnValideClick();">
+				<i class="e_ico-select"></i><span>验证</span>
+			</button>
+		</div>
+	</div>
+	
+	<!-- 认证弹出框激活标识	authParams="弹出认证框入参数据"	value="接收认证框返回数据" -->
+	<input type="hidden" id="POP_AUTH_PARAMS" name="POP_AUTH_PARAMS" value="" afterAction="$.auth.onAuthCheck()" desc="弹出认证验证框关闭以后触发动作"/>
+	<!-- 多用户选择弹出框激活标识value="接收认证框返回数据" -->
+	<input type="hidden" id="SELECTED_AUTH_USER" name="SELECTED_AUTH_USER" value="" afterAction="$.auth.afterSelectMoreUser()" desc="多用户判断接收选中用户数据"/>
+	<!-- 保存客服接续页面的主叫号码或被叫号码-->
+	<input type="hidden" id="AGENT_CALL_PHONE" name="AGENT_CALL_PHONE" value=""  desc="客服接续页面的主叫号码或被叫号码"/>
+	<!-- 补换卡类型（0=补卡 1=换卡）-->
+	<input type="hidden" id="REMOTECARD_TYPE" name="REMOTECARD_TYPE" value=""  desc="补换卡类型"/>
+
+	<!-- REQ201705270006_关于人像比对业务优化需求 -->
+	<input type="hidden" id="AUTH_CHECK_PSPT_TYPE_CODE" name="AUTH_CHECK_PSPT_TYPE_CODE" value=""  desc="证件类型"/>
+    <input type="hidden" id="AUTH_CHECK_PSPT_ID" name="AUTH_CHECK_PSPT_ID" value=""  desc="证件号码"/>
+    <input type="hidden" id="AUTH_CHECK_CUSTINFO_CUST_NAME" name="AUTH_CHECK_CUSTINFO_CUST_NAME" value=""  desc="客户名称"/>
+    <input type="hidden" id="FRONTBASE64" name="FRONTBASE64" value=""  desc="身份证正面照"/>    
+    <!-- zhuoyingzhi -->	
+</div>
+

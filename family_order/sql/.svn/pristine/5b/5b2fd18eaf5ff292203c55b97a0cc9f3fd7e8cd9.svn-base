@@ -1,0 +1,2 @@
+INSERT INTO ts_a_detailbill_adjustbefore(acct_id,user_id,partition_id,acyc_id,detail_item_code,fee,b_discnt,a_discnt,adjust_before,update_time)
+ VALUES(TO_NUMBER(:ACCT_ID),TO_NUMBER(:USER_ID),:PARTITION_ID,:ACYC_ID,:DETAIL_ITEM_CODE,TO_NUMBER(:FEE),TO_NUMBER(:B_DISCNT),TO_NUMBER(:A_DISCNT),TO_NUMBER(:ADJUST_BEFORE),sysdate)

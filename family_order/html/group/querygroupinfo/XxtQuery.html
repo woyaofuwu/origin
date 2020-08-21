@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body>
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 提示区 -->
+<div class="c_box" jwcid="hintPart@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+    <div class="c_title">
+		<div class="text">和校园异网号码互查</div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 查询 开始 -->
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label" id="ConditionLabel">本网号码：</span>
+				<span class="e_input" style="width:120px;">
+					<span><input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER_B"  name="cond_SERIAL_NUMBER_B" value="ognl:condition.cond_SERIAL_NUMBER_B"  desc="本网号码"/></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label" id="ConditionLabel">异网号码：</span>
+				<span class="e_input" style="width:120px;">
+					<span><input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER_A" name="cond_SERIAL_NUMBER_A" value="ognl:condition.cond_SERIAL_NUMBER_A" desc="异网号码"/></span>
+				</span>
+			</li>
+		</ul>
+
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return query()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 查询结束-->
+
+	<!-- refreshtable数据区开始 -->
+	<div id="refreshtable" jwcid="refreshtable@Part" optimize="true">
+	<div class="c_table l_mt"><div class="nowrapOn">
+
+		<div class="table"><div class="wrapper" style="height:auto;"><div class="wrapper2">
+			<table id="dataList">
+      			<thead>
+		  			<tr>
+		  				<th>集团客户编码</th>
+						<th>集团名称</th>
+<!-- 						<th>业务名称</th> -->
+<!-- 						<th>服务代码</th> -->
+
+						<th>用户付费号码</th>
+						<th>异网号码</th>
+						<th>学生姓名</th>
+						<th>套餐编码</th>
+						<th>套餐名称</th>
+						<th>开始时间</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                        <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+<!--                         <td><span jwcid="@Insert" value="ognl:info.BIZ_NAME" raw="false"/></td> -->
+<!--                         <td><span jwcid="@Insert" value="ognl:info.SERV_CODE" raw="false"/></td> -->
+
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_A" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.POINT_CODE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.POINT_NAME" raw="false"/></td>
+                        <td>
+                        	<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.START_DATE)" raw="false" />
+                        </td>
+
+                     </tr>
+				</tbody>
+			</table>
+		</div></div></div>
+		<div class="fctBottom e_clear">
+		<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="queryForm" part="refreshtable" listener="ognl:listeners.queryInfos" count="ognl:infoCount" ></div>
+		</div>
+	</div></div>
+    </div>
+	<!-- refreshtable数据区结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+
+<script type="text/javascript">
+function query(){
+
+	var snA = $('#cond_SERIAL_NUMBER_A').val();
+	var snB = $('#cond_SERIAL_NUMBER_B').val();
+	if (snA=='' && snB==''){
+		alert('请输入查询条件!');
+		return false;
+	}
+
+	if(!$.validate.verifyAll('queryForm')) return false;
+
+	$.beginPageLoading("数据查询中......");
+	$.ajax.submit("queryForm", "queryInfos", "", "refreshtable,hintPart", function(data){
+			$.endPageLoading();
+		},
+		function(error_code,error_info, derror){
+			$.endPageLoading();
+			showDetailErrorInfo(error_code,error_info,derror);
+    	}
+    );
+}
+</script>
+
+</html>

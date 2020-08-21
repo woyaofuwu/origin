@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>补卡（写卡）</title>
+<script jwcid="@Script" src="person/simcardmgr/scripts/remotecard.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_tip"  style="display: none;"  name="ALERT_INFO_DIV" id="ALERT_INFO_DIV">
+		<span  name="ALERT_INFO" id="ALERT_INFO" > </span>
+</div>
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+<!-- 认证 开始 -->
+<div jwcid="AuthPart@csserv:Auth"  tradeTypeCode="142"  tradeAction="refreshPartAtferAuth(data)"  element="div"></div>
+<!-- 认证 结束 -->
+<div class="c_form c_form-text c_form-col-3 c_form-label-6" jwcid="userInfoPart@Part"> 
+		<ul class="ul">			
+			<li class="li">
+				<span class="label">客户名称：</span> 
+				<span class="text" jwcid="@Insert"   value="ognl:custInfo.CUST_NAME" desc="客户名称"/>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"  
+							value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfo.PSPT_TYPE_CODE)"></span>
+			</li>			
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:custInfo.PSPT_ID"></span> 
+			</li> 
+			<li class="li col-2">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:custInfo.PSPT_ADDR"></span>
+			</li> 
+		<li class="li">
+				<span class="label">产品名称：</span>
+				<span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+												value="ognl:pageutil.getStaticValue('TD_B_PRODUCT','PRODUCT_ID','PRODUCT_NAME',userInfo.PRODUCT_ID)" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">当前品牌：</span>
+				<input style="display:none" jwcid="@TextField" id="BRAND" name="BRAND" value="ognl:userInfo.BRAND_CODE"/><!-- 2013-7-6 today add --> 
+				<input style="display:none" jwcid="@TextField" id="USERID" name="USERID" value="ognl:userInfo.USER_ID"/><!-- 2013-7-8 today add -->
+				<input style="display:none" jwcid="@TextField" id="PRODUCTID" name="PRODUCTID" value="ognl:userInfo.PRODUCT_ID"/><!-- 2013-7-10 today add -->
+				<span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+							 value="ognl:pageutil.getStaticValue('TD_S_BRAND','BRAND_CODE','BRAND',userInfo.BRAND_CODE)" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">开户时间：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:userInfo.OPEN_DATE" ></span> 
+			</li> 
+			<li class="li">
+				<span class="label">开户方式：</span>
+				<span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+							 value="ognl:pageutil.getStaticValue('TD_S_CPARAM',new java.lang.String[]{'KEY','VALUE1'},'VRESULT',new java.lang.String[]{'OpenModeName',userInfo.OPEN_MODE})" ></span>
+			</li> 
+ 
+ 	 
+			
+			<!-- TD_S_RESKIND 参数从资源取，ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_S_RESKIND',new java.lang.String[]{'RES_TYPE_CODE','RES_KIND_CODE'},
+							'KIND_NAME',new java.lang.String [] {'1',oldCard.SIM_TYPE_CODE}) -->
+			<li class="li">
+				<span class="label">原SIM卡类型：</span>
+				 <span class="text" jwcid="@Insert"   
+							 value="ognl:oldCard.RES_TYPE_CODE" ></span>  
+							
+				<!--<span class="text" jwcid="@Insert"   
+							 value="ognl:pageutil.getStaticValueDataSource('res','TD_S_RESKIND',new java.lang.String [] {'EPARCHY_CODE','RES_KIND_CODE'},
+							'RES_KIND_NAME',new java.lang.String [] {'ZZZZ',oldCard.RES_TYPE_CODE}) " ></span> -->
+			</li> 
+			
+			<li class="li">
+				<span class="label">原SIM卡号：</span>
+				<span class="text" jwcid="@Insert"  
+							 value="ognl:oldCard.SIM_CARD_NO" ></span>  
+			</li> 
+			<li class="li">
+				<span class="label">原IMSI号：</span>
+				<span class="text" jwcid="@Insert"  
+							 value="ognl:oldCard.IMSI" ></span>  
+			</li>
+			<li>   
+			 <!--   <input style="display:none" jwcid="@TextField" id="OPEN_MOBILE_TAG" name="OPEN_MOBILE_TAG" value="false"/>	
+			  <input style="display:none" jwcid="@TextField" id="USER_SVC_STATE_TAG" name="USER_SVC_STATE_TAG" value="ognl:oldCard.USER_SVC_STATE_TAG"/>	-->
+			  <input style="display:none" jwcid="@TextField" id="SERVICE_ID" name="SERVICE_ID" value="ognl:oldCard.SERVICE_ID"/>	
+			  
+			  <input style="display:none" jwcid="@TextField" id="NEW_SIM_CARD_INFO" name="NEW_SIM_CARD_INFO" value=""/>	
+			<!--    <input style="display:none" jwcid="@TextField" id="OLD_SIM_CARD_INFO" name="OLD_SIM_CARD_INFO" value=""/>	-->
+			  <input style="display:none" jwcid="@TextField" id="LTE_4G" name="LTE_4G" value="4"/>	
+			  
+			</li>
+		</ul>
+</div>
+</div>
+
+<div style="display:none" jwcid="hiddenInfoPart@Part"> 
+<input style="display:none" jwcid="@TextField" id="OLD_SIM_CARD_INFO" name="OLD_SIM_CARD_INFO" value=""/><!-- 是否补换卡的时候同时开机 -->	
+<input style="display:none" jwcid="@TextField" id="OPEN_MOBILE_TAG" name="OPEN_MOBILE_TAG" value="1"/><!-- 是否补换卡的时候同时开机 -->	
+<input style="display:none" jwcid="@TextField" id="USER_SVC_STATE_TAG" name="USER_SVC_STATE_TAG" value="false"/><!-- 用户是否处于停机状态 -->	
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text"  >新SIM卡信息</div>
+	</div>
+	
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="NewCardInfo@Part" >
+	
+		<ul class="ul">
+		
+	 <li class="li">
+				<span class="label"><span class="e_required">新SIM卡号：</span></span>
+				<span class="e_elements" id="SIM_CARD_INPUT">
+			    <button type="button" class="e_button-center" onclick="$.simcardcheck.checkSimCard('SIM_CARD_NO')"><i class="e_ico-check"></i><span>校验</span></button>
+				<span class="e_input e_input-left"><span>
+					<input jwcid="@TextField" name="SIM_CARD_NO" id="SIM_CARD_NO" 
+								value= "ognl:newCard.SIM_CARD_NO" nullable="no" desc="SIM卡号" /> 
+			    </span></span>
+				</span>
+		</li>	
+ <div jwcid="@csserv:SimCardCheck" beforeAction="setSerialNumber()" tradeAction="verifySimCard(data)" fieldId="SIM_CARD_NO"/>
+ <!-- <div jwcid="simcard@csserv:SimCard"  tradeTypeCode="142"  element="div" tradeAction="checkSIM(1,data)" />	  			
+ <div jwcid="simcard@personserv:PreSimCard"    tradeTypeCode="141"  element="div"/>	 	-->
+			
+			<li class="li">
+				<span class="label">新IMSI号：</span>
+				<span class="text" jwcid="@Insert" id="IMSI" name="IMSI"
+							 value="ognl:newCard.IMSI" ></span>  
+			</li>
+		<!-- 	<li class="li">
+				<span class="label">新IMSI卡容量：</span>
+				<span class="text" jwcid="@Insert" id="CAPACITY_TYPE_CODE" name="CAPACITY_TYPE_CODE"
+							 value="ognl:newCard.CAPACITY_TYPE_CODE" ></span>  
+			</li>
+		 -->
+		 <li></li>
+		 
+		 <li class="li">
+				<span class="label">新SIM卡类型：</span>
+				<span class="text" jwcid="@Insert" id="RES_TYPE_CODE" name="RES_TYPE_CODE"
+							 value="ognl:newCard.RES_TYPE_CODE" ></span>  
+			</li>
+			<!--  
+			<li class="li">
+				<span class="label">新SIM卡类型：</span>
+				<span class="text" jwcid="@Insert"  id="RES_TYPE_CODE" name="RES_TYPE_CODE"
+							 value="ognl:pageutil.getStaticValueDataSource('res','TD_S_RESKIND',new java.lang.String [] {'EPARCHY_CODE','RES_KIND_CODE'},
+							'RES_KIND_NAME',new java.lang.String [] {'ZZZZ',newCard.RES_TYPE_CODE})" ></span> 
+			</li>
+			-->
+			<li class="li col-2"></li>
+			
+			 <li class="li col-3">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="REMARK" id="REMARK" value="" maskType="start" maskPosition="1" 
+									maskLength="100" desc="备注" disabled="false"  />
+				</span></span>
+			</li>
+			
+	
+			<input style="display:none" jwcid="@TextField" id="SIM_FEE_TAG" name="SIM_FEE_TAG" value="ognl:newCard.SIM_FEE_TAG"/>	
+			<input style="display:none" jwcid="@TextField" id="USER_SVC_STATE_TAG" name="USER_SVC_STATE_TAG" value="ognl:newCard.USER_SVC_STATE_TAG"/>
+			<input style="display:none" jwcid="@TextField" id="M2M_FLAG" name="M2M_FLAG" value="ognl:newCard.M2M_FLAG"/>	
+			<input style="display:none" jwcid="@TextField" id="VIPFC" name="VIPFC" value="ognl:newCard.VIPFC"/>	<!-- vip用户免费换卡标记 -->
+			<input style="display:none" jwcid="@TextField" id="PROFC" name="PROFC" value="ognl:newCard.PROFC"/>	<!-- 全球通用户免费换卡标记 -->
+			<input style="display:none" jwcid="@TextField" id="OCFC" name="OCFC" value="ognl:newCard.OCFC"/>	<!-- 在网三年以上免费换卡标记 -->
+		
+		</ul>
+	</div> 
+	
+	<!-- 参数列表 结束 -->
+	<!-- 提交 开始 -->
+	<!-- 读写卡组件 -->
+	<div class="c_submit">
+		<div jwcid="@csserv:WriteCard" mode="1" tradeTypeCode="142" readBeforeAction="beforeReadCard()"
+				 readAfterAction="afterReadCard(data)" writeBeforeAction="" writeAfterAction=""/>
+ 		<span jwcid="SubmitPart@csserv:CSSubmit" beforeAction="" isRender="false" area="AuthPart,userInfoPart,NewCardInfo,hiddenInfoPart" element="span"/>
+	</div>	 
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+</div></div>
+</body>
+</html>

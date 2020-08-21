@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>UIP日志查询</title>
+<script language="JavaScript" src="person/jrbank/scripts/signBank.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">UIP日志查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+		    
+			<li class="li">
+			<span class="label">手机号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="SERIAL_NUMBER"
+											id="SERIAL_NUMBER"
+											value="ognl:condition.SERIAL_NUMBER" 
+											desc="手机号码" /> </span></span>
+		    </li>
+		    
+		    <li class="li">
+			<span class="label">交易编码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="ORDER_NUMBER"
+											id="ORDER_NUMBER"
+											value="ognl:condition.ORDER_NUMBER" 
+											desc="交易编码" /> </span></span>
+		    </li>
+		    
+		    
+		     <li class="li">
+			<span class="label">交易状态：</span>
+					<span class="e_select"><span><span>
+				  <select name="TRADE_STATUS" jwcid="TRADE_STATUS@Select"
+									source="ognl:pageutil.getStaticList('BANK_DEALTYPE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="condition.TRADE_STATUS" desc="交易状态"
+									addDefault="yes"/>
+				</span></span></span>				
+		    </li>
+		  </ul>  
+		  <ul class="ul">
+		     <li class="li">
+				<span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" format="yyyyMMdd" name="START_DATE" id="START_DATE" value="ognl:condition.START_DATE" datatype="date" nullable="no" maxName="END_DATE" desc="开始时间"/></span></span>
+			</li>
+			 <li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" format="yyyyMMdd" name="END_DATE" id="END_DATE" value="ognl:condition.END_DATE" datatype="date" nullable="no" minName="START_DATE" desc="开始时间"/></span></span>
+			</li>
+		    
+		   
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryResultsInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" id="QueryListPart" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table ">
+		<table jwcid="@Table" name="FcardTable" id="FcardTable" scroll="true">
+			<thead>
+				<tr>
+					<th>UIP平台流水号</th>
+                    <th>交易方向</th>
+                    <th>发配方系统</th>
+                    <th>发起方交易日期</th>
+                    <th>接收方系统</th>
+                    <th>接收方交易日期</th>
+                    <th>标识类型</th>
+					<th>用户服务号码</th>
+					<th>业务状态</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="orderInfos" id="orderInfos">
+				<tr jwcid="@Foreach" source="ognl:orderResults" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">								
+					    <td><span jwcid="@Insert" value="ognl:info.UIPSYSID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.ACTION_CODE" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.REQ_SYS_NAME" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.REQ_DATE)" raw="false"></span></td>
+                 		<td><span jwcid="@Insert" value="ognl:info.RCV_SYS" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.RCV_DATE)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.USER_ID_TYPE" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.STATUS" raw="false"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="navt@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryResultsInfo" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

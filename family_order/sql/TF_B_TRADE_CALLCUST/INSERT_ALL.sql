@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_callcust(trade_id,user_id,serial_number,cust_name,callcust_type_code,act_tag,reason,start_date,end_date,term_ip,trade_staff_id,trade_depart_id,trade_city_code,trade_eparchy_code,trade_time,remark)
+ VALUES(TO_NUMBER(:TRADE_ID),TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:CUST_NAME,:CALLCUST_TYPE_CODE,:ACT_TAG,:REASON,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:TERM_IP,:TRADE_STAFF_ID,:TRADE_DEPART_ID,:TRADE_CITY_CODE,:TRADE_EPARCHY_CODE,SYSDATE,:REMARK)

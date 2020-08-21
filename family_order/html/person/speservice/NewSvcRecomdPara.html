@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head" >
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新业务推荐受理</title>
+<link href="../../../base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="js/jcl.js"></script>
+<script  language="JavaScript" src="person/speservice/scripts/newsvcrecomdpara.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box"> 
+ 
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-2 " jwcid="RecomdInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">品牌：</span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select"   name="cond_BRAND_CODE" id="cond_BRAND_CODE" 
+					value="ognl:condition.cond_BRAND_CODE" desc="品牌"
+					source="ognl:brandLists" 
+				    textField="TEXT" valueField="VALUE" titleField="TEXT" 
+				        onChange="getProduct()" /> 
+				</span></span></span>
+			</li>
+			<li class="li">
+				<div jwcid="ProductPart@Part">
+					<span class="label">产品：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select"   name="cond_PRODUCT_ID" id="cond_PRODUCT_ID" 
+						value="ognl:condition.cond_PRODUCT_ID" desc="产品"
+						source="ognl:productLists" 
+					    textField="PRODUCT_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" 
+					           onChange="getSvcAndDis()"/> 
+					</span></span></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box"  >
+	<!-- 分页标签（替换为页面组件） 开始 -->
+	<div class="c_tab"> 
+		<div class="tab">
+			<ul>
+				<li id="newID" name="newID"  class="on"><a href="#nogo" onclick="refresDic();">优惠信息</a></li>
+				<li id="hisID" name="hisID"   ><a href="#nogo" onclick="refresSer()">服务信息</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- 分页标签 结束 -->
+	<!-- 分栏 开始 -->
+	<div class="l_col" jwcid="QueryInfoPart@Part">
+		 
+		<!-- 第 2 栏 开始 -->
+		<div class="l_auto"> 
+			<!-- 标题 开始 -->
+			<div class="c_title c_title-2">
+				<div class="text">信息列表</div>
+			</div>
+			<!-- 标题 结束 -->
+	 
+			<!-- 新业务推荐受理 开始 -->
+			<div   name="DiscntListPart" id="DiscntListPart" jwcid="DiscntListPart@Part" element="div">
+				<!-- 表格 开始 -->
+				<div class="c_scroll c_scroll-table-10"><div class="c_table">
+					<table jwcid="@Table" name="discntTable"  rowClick="tableDiscntClick"  scroll="true" >
+						<thead>
+							<tr>
+							    <th col="X_TAG" style="display:none">TAG</th>
+							    <th col="TYPE" style="display:none">类型</th>
+								<th col="CHOICE_TAG" style="display:none">推荐项原choicetag值名称</th>
+								<th col="DISCNT_ID">优惠编码</th>
+								<th col="DISCNT_NAME">优惠名称</th>
+								<th col="DISCNT_CONTENT">用语</th>
+								<th col="OLD_DISCNT_CONTENT" style="display:none">用语</th>
+								<th col="OLD_CHOICE_TAG" style="display:none">推荐项原choicetag值名称</th>
+							</tr>
+						</thead>
+						<tbody  jwcid="@Any" name="DiscntTableValues" id="DiscntTableValues">
+							<tr jwcid="@Foreach" source="ognl:discntLists" value="ognl:discntList" index="ognl:rowIndex" element="tr" >
+								<td style="display:none"></td>
+								<td style="display:none">1</td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:discntList.CHOICETAG" /></td>
+								<td ><span jwcid="@Insert" value="ognl:discntList.DISCNT_CODE" /></td>
+								<td ><span jwcid="@Insert" value="ognl:discntList.DISCNT_NAME" /></td>
+								<td ><span jwcid="@Insert" value="ognl:discntList.RECOMM_CONTENT" /></td>
+								<td style="display:none"><input jwcid="@Insert" value="ognl:discntList.RECOMM_CONTENT" /></td>	
+								<td style="display:none"><input jwcid="@Insert" value="ognl:discntList.CHOICETAG" /></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+				<!-- 表格 结束 -->
+				
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-7" jwcid="discntInfoPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">优惠编码：</span>
+							<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name="DISCNT_ID" id="DISCNT_ID" 
+									   value="ognl:info.DISCNT_ID" maxsize="80" disabled="true" desc="优惠编码" nullable="no" datatype="text" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">优惠名称：</span>
+							<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name="DISCNT_NAME" id="DISCNT_NAME" 
+									   value="ognl:info.DISCNT_NAME" maxsize="80" disabled="true" desc="优惠名称" nullable="no" datatype="text" />
+							</span></span>
+						</li>
+						
+						<li class="li">
+							<span class="label">用语：</span>
+							<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent">
+									<textarea style="height:45px;" jwcid="@TextArea" id="DISCNT_CONTENT" name="DISCNT_CONTENT" value="ognl:info.DISCNT_CONTENT"
+										desc="推荐优惠用语" maxsize="2000" />
+								</span>
+								<span class="e_textareaBottom"><span></span></span>
+							</span>
+						</li>
+					</ul>
+				
+					<!-- 表单 开始 -->
+					<div class="submitPlace">
+					</div>
+					<div class="submit">
+						<!--<button type="button" class="e_button-form" onclick="addDiscntInfo();"><i class="e_ico-ok" ></i><span>增加</span></button>-->
+						<button type="button" class="e_button-form" onclick="upDiscntInfo();"><i class="e_ico-edit" ></i><span>修改</span></button>
+						<button type="button" class="e_button-form" onclick="delDiscntInfo();"><i class="e_ico-delete" ></i><span>删除</span></button>
+					</div>
+					<!-- 表单 结束 -->
+					
+					</div>
+					
+				<!-- 表单 结束 -->
+			</div>
+			<!-- 新业务推荐受理 结束 -->
+			
+			
+			
+			<!-- 历史推荐信息 开始 -->
+			<div name="ServiceListPart" id="ServiceListPart"  style="display:none;" jwcid="ServiceListPart@Part"  element="div">
+				<!-- 表格 开始 -->
+				<div class="c_scroll c_scroll-table-10"><div class="c_table">
+					<table jwcid="@Table" name="serviceTable" rowClick="tableServiceClick"  scroll="true">
+						<thead>
+							<tr>
+								<th col="X_TAG" style="display:none">TAG</th>
+							    <th col="TYPE" style="display:none">类型</th>
+								<th col="CHOICE_TAG" style="display:none">推荐项原choicetag值名称</th>
+								<th col="SERVICE_ID">服务编码</th>
+								<th col="SERVICE_NAME">服务名称</th>
+								<th col="SERVICE_CONTENT">用语</th>
+								<th col="OLD_SERVICE_CONTENT" style="display:none">用语</th>
+								<th col="OLD_CHOICE_TAG" style="display:none">推荐项原choicetag值名称</th>
+							</tr>
+						</thead>
+						<tbody jwcid="@Any" name="serviceTableValues" id="serviceTableValues">
+							<tr jwcid="@Foreach" source="ognl:serviceLists" value="ognl:serviceList" index="ognl:rowIndex" element="tr">
+								<td style="display:none"></td>
+								<td style="display:none">1</td>
+								<td style="display:none"><span jwcid="@Insert" value="ognl:serviceList.CHOICETAG" /></td> 
+								<td ><span jwcid="@Insert" value="ognl:serviceList.SERVICE_ID" /></td>
+								<td ><span jwcid="@Insert" value="ognl:serviceList.SERVICE_NAME" /></td>
+								<td ><span jwcid="@Insert" value="ognl:serviceList.RECOMM_CONTENT" /></td>
+								<td style="display:none"><input jwcid="@Insert" value="ognl:serviceList.RECOMM_CONTENT" /></td>	
+								<td style="display:none"><input jwcid="@Insert" value="ognl:serviceList.CHOICETAG" /></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+				<!-- 表格 结束 -->
+				
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-7" jwcid="serviceInfoPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">服务编码：</span>
+							<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name="SERVICE_ID" id="SERVICE_ID" 
+									   value="ognl:info.SERVICE_ID" maxsize="80" disabled="true" desc="优惠编码" nullable="no" datatype="text" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">服务名称：</span>
+							<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name="SERVICE_NAME" id="SERVICE_NAME" 
+									   value="ognl:info.SERVICE_NAME" maxsize="80" disabled="true" desc="优惠名称" nullable="no" datatype="text" />
+							</span></span>
+						</li>
+						
+						<li class="li">
+							<span class="label">用语：</span>
+							<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent">
+									<textarea style="height:45px;" jwcid="@TextArea" id="SERVICE_CONTENT" name="SERVICE_CONTENT" value="ognl:info.SERVICE_CONTENT"
+										desc="推荐优惠用语" maxsize="2000" />
+								</span>
+								<span class="e_textareaBottom"><span></span></span>
+							</span>
+						</li>
+					</ul>
+					
+					<!-- 表单 开始 -->
+					<div class="submitPlace">
+					</div>
+					<div class="submit">
+						<!--<button type="button" class="e_button-form" onclick="addServiceInfo();"><i class="e_ico-ok" ></i><span>新增</span></button>-->
+						<button type="button" class="e_button-form" onclick="upServiceInfo();"><i class="e_ico-edit" ></i><span>修改</span></button>
+						<button type="button" class="e_button-form" onclick="delServiceInfo();"><i class="e_ico-delete" ></i><span>删除</span></button>
+					</div>
+					<!-- 表单 结束 -->
+					
+				</div>
+				<!-- 表单 结束 -->
+				
+			</div>
+			<!-- 历史推荐信息 结束 -->
+	 
+		</div>
+		<!-- 第 2 栏 结束 -->
+	</div>
+	<!-- 分栏 结束 -->
+	
+	<!-- 隐藏区域 开始 -->
+    <div jwcid="hiddenPart@Part">
+	    <input type="hidden" id="cond_ADD_RECOMM_INFO"      name="cond_ADD_RECOMM_INFO"   />
+	    <input type="hidden"  id="cond_ADD_SMS_INFO" name="cond_ADD_SMS_INFO" desc="本次选择的发送短信信息"  />
+    </div>
+	<!-- 隐藏区域 结束 -->
+
+	<!-- 提交 开始 -->  
+	<div class="c_submit"> 
+			<button type="button" class="e_button-page" onclick="resetAll();"><i class="e_ico-reset" ></i><span>重置</span></button>
+	 		<!--  <span jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" disabledBtn="false"   isRender="false"     area="QueryInfoPart"  element="span"/>-->
+			<button type="button" class="e_button-page-ok" onclick="return onTradeSubmit();"><i></i><span>提交</span></button>
+	
+	</div>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+ 
+
+</div></div></body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+</html>

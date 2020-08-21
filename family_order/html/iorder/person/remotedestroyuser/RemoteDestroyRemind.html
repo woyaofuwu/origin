@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>跨区销户工单催单</title>
+	<script jwcid="@Script"  src="iorder/person/remotedestroyuser/scripts/RemoteDestroyRemind.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">跨区销户工单催单</div>
+</div>
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">	
+		<div jwcid="QueryCondPart@Part">
+			<div class="c_list c_list-col-2 c_list-phone-col-2 c_list-line c_list-border">
+				 <ul class="ul">
+				<li class="">
+					<div class="label">手机号码</div>
+					<div class="value">
+						<div class="e_mix">
+							<input jwcid="@TextField" id="cond_SERIAL_NUMBER"
+								name="cond_SERIAL_NUMBER" value="" desc="手机号码" maxLength="11" />
+						</div>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">状态</div>
+					<div class="value">
+						<div class="e_mix">
+							<select id="DESTROY_REMIND_TAG" name="DESTROY_REMIND_TAG" jwcid="@Select"
+								source="ognl:pageutil.getStaticList('KQXH_REMIND_TAG')"
+								textField="DATA_NAME" valueField="DATA_ID" desc="状态" />
+							<button type="button" class="e_button-blue" value="查询"
+								id="bt_search" name="bt_search" desc="查询"
+								onclick="queryRemindOrder();">
+								<i class="e_ico-search"></i><span>查询 </span>
+							</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="ul">
+				<li class="link required">
+					<div class="label">催单原因</div>
+					<div class="value">
+						<div class="e_mix">
+							<input jwcid="@TextField" id="REMIND_REASON"
+								name="REMIND_REASON" value="" desc="催单原因" nullable="no"/>
+						</div>
+					</div>
+				</li>
+			</ul>
+			</div>
+		</div>
+	<!-- 标题栏 结束 -->
+	<!-- 表格 开始 -->
+		<div jwcid="TableInfoPart@Part" id="TableInfoPart" class="c_scroll" >
+			<div jwcid="DestroyTablePart@Part">
+				<div class="c_table">
+					<table  jwcid="DestroyTable@Table" id="DestroyTable" name="DestroyTable" class="c_table c_table-full">
+						<thead>
+							<tr>
+								<th col="REMOTE_SERIAL_NUMBER"><span>办理号码</span></th>
+								<th col="REMOTE_CUST_NAME"><span>客户姓名</span></th>
+								<th col="UPDATE_TIME"><span>更新时间</span></th>
+								<th col="CONTACT_PHONE"><span>联系人号码</span></th>
+								<th col="GIFT_SERIAL_NUMBER"><span>现金转费号码</span></th>
+								<th col="GIFT_SERIAL_NUMBER_B"><span>非现金转费号码</span></th>
+								<th col="CREATE_PHONE"><span>建单人号码</span></th>
+								<th col="REMIND_STATUS"><span>催单状态</span></th>
+								<th col="DESTROY_DEAL_USER"><span>销户处理人</span></th>
+								<th col="DESTROY_DEALUSER_TEL"><span>处理人号码</span></th>
+								<th col="XH_STATUS"><span>工单当前环节</span></th>
+								<th col="LATE_TIME"><span>最迟销户时间</span></th>
+								<th col="REMOTE_ORDER_ID"><span>订单流水号</span></th>
+								<th col=""><span>操作</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:destroyInfoList"
+								value="ognl:destroyInfo" element="tr" index="ognl:rowIndex"
+								class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.REMOTE_SERIAL_NUMBER" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.REMOTE_CUST_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.UPDATE_TIME" raw="false"/></td>
+			          			<td><span jwcid="@Insert" value="ognl:destroyInfo.CONTACT_PHONE" raw="false"/></td>
+			                    <td><span jwcid="@Insert" value="ognl:destroyInfo.GIFT_SERIAL_NUMBER" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.GIFT_SERIAL_NUMBER_B" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.CREATE_PHONE" raw="false"/></td>
+								<td><span jwcid="@Insert" value='ognl:"1".equals(destroyInfo.RSRV_STR8) ? "已催单" : "未催单"' raw="false"/></td>
+								<td><span jwcid="@Insert" value='ognl:destroyInfo.RSRV_STR6' raw="false"/></td>
+								<td><span jwcid="@Insert" value='ognl:destroyInfo.RSRV_STR7' raw="false"/></td>
+			          			<td><span jwcid="@Insert" value="ognl:destroyInfo.XH_STATUS" raw="false"/></td>
+			          			<td><span jwcid="@Insert" value="ognl:destroyInfo.RSRV_STR1" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:destroyInfo.REMOTE_ORDER_ID" raw="false"/></td>
+								<td><span><button type="button" id="urgeOrderBtn" name="urgeOrderBtn" onclick="urgeOrder(this)"><span>催单</span></button></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="l_queryPage">
+				<span jwcid="@NavBar" name="nav" id="nav" cond="QueryCondPart" listener=queryRemindOrder part="TableInfoPart" pageSize="20" count="ognl:count"/>
+			</div>
+		</div>
+		<div class="c_space"></div>
+	</div>
+</div>
+</body>
+</html>

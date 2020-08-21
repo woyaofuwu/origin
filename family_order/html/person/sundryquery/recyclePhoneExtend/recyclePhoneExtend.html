@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryTwoCardFeeInfo.html,v 1.3 2013/04/17 01:57:11 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>号码回收延期</title>
+<script language="JavaScript" src="person/sundryquery/recyclePhoneExtend/scripts/recyclePhoneExtend.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">号码查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3" jwcid="QueryConditionPart@Part">
+		<ul class="ul">
+				<li class="li" id="DEPART_KIND_CODE">
+					<span class="label"><span class="e_required">渠道类型：</span></span>
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_DEPART_KIND_CODE"  id="DEPART_KIND_CODE" 
+							source="ognl:departKinds" textField="DEPART_KIND" valueField="DEPART_KIND_CODE"
+							value="ognl:cond.DEPART_KIND_CODE" desc="渠道类型"  nullable="no" />
+						</span></span></span>
+			    </li>							
+				<li class="li">
+					<span class="label"><span class="e_required">起始代理商编码：</span></span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_START_AGENT_NO" id="cond_START_AGENT_NO" nullable="no"	
+						value="ognl:cond.START_AGENT_NO" desc="起始代理商编码" datatype="numchar" onkeyup="this.value=this.value.toUpperCase()" maxlength="40"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止代理商编码：</span></span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_END_AGENT_NO" id="cond_END_AGENT_NO" nullable="no"	
+						value="ognl:cond.END_AGENT_NO" desc="终止代理商编码" datatype="numchar" onkeyup="this.value=this.value.toUpperCase()" maxlength="40"/>
+					</span></span>
+				</li>			
+			
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.cond_DEVELOP_DEPART_ID" desc="手机号码" nullable="yes" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">是否已延期：</span></span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_IS_EXTEND_TIME" id="cond_IS_EXTEND_TIME" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('RECYCLE_IS_EXTEND_TIME')" value="ognl:cond.cond_IS_EXTEND_TIME" desc="是否已延期" nullable="no" 
+					onchange="showTradeQueryArea();"/>
+				</span></span></span>
+			</li>			
+			
+			<input jwcid="@Hidden" id="cond_FORE_STAFF_DEPART_ID" name="cond_FORE_STAFF_DEPART_ID" value="ognl:cond.cond_FORE_STAFF_DEPART_ID" desc="导出使用"/>
+			<input jwcid="@Hidden" id="cond_FORE_STAFF_CITY_CODE" name="cond_FORE_STAFF_CITY_CODE" value="ognl:cond.cond_FORE_STAFF_CITY_CODE" desc="导出使用"/>
+			
+		</ul>
+		
+		<ul class="ul" id="TRADE_QUERY_AREA" style="display:none;">
+			<li class="li">
+				<span class="label">延期操作的工号：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_TRADE_STAFF_ID" id="cond_TRADE_STAFF_ID" value="ognl:cond.cond_TRADE_STAFF_ID" desc="延期操作的工号" nullable="yes" />
+				</span></span>
+			</li>
+		
+			<li class="li"  >
+					<span class="label">延期操作开始日期：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE" value="ognl:cond.cond_START_DATE" desc="延期操作开始日期" nullable="yes" 
+						/>
+					</span></span>
+			</li>
+			
+			<li class="li" >
+				<span class="label">延期操作结束日期：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE" value="ognl:cond.cond_END_DATE" desc="延期操作结束日期" nullable="yes" />
+				</span></span>
+			</li>
+			
+		</ul>
+		
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecyclePhones();"><i class="e_ico-search"></i><span>查询</span></button>
+			<span class="fn">	 
+		    <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201408272310"
+					 config="export/sundryquery/specqry/ExtendRecyclePhones.xml" fileName="回收延期号码" beforeAction="" cond="QueryConditionPart" />
+			</span>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="phoneInfos" id="phoneInfos">
+			<thead>
+	  			<tr>
+	  				<th col="X_SELECTED"><input type="checkbox" jwcid="@Any" id="chooseAllCheckBox" onclick="chooseAll(this);"/>选择</th>
+					<th col="USER_ID">用户ID</th>
+					<th col="SERIAL_NUMBER">手机号</th>
+					<th col="PRODUCT_ID">产品</th>
+					<th col="BRAND_CODE">品牌</th>
+					<th col="CITY_CODE">业务区</th>
+					<th col="STAT_MONTH">统计账期</th>
+					<th col="OPEN_DATE">开户时间</th>
+					<th col="IN_DATE">建档时间</th>
+					<th col="DEVELOP_STAFF_ID">发展员工</th>
+					<th col="DEVELOP_DEPART_CODE">发展渠道编码</th>
+					<th col="DEVELOP_DEPART_NAME">发展渠道名称</th>
+					<th datatype="string">延期操作时间</th>
+					<th datatype="string">延期操作工号</th>					
+					<th col="IS_EXTEND_TIME" style="display:none"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					    <td><input type="checkbox" jwcid="@Any" rowIndex="ognl:rowIndex" value="ognl:info.USER_ID" name="CHOOSE_PHONES" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BRAND_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',info.CITY_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAT_MONTH" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IN_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEVELOP_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_CODE',info.DEVELOP_DEPART_ID)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.DEVELOP_DEPART_ID)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.VALUEN1" raw="false"/></td>
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryConditionPart" part="QueryListPart" listener="qryUserBackPhones" pageSize="10" count="ognl:pageCount"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+	<div class="c_box" >
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">延期操作</div>
+		</div>
+		<div class="c_form" jwcid="EXTEND_TIME_AREA@Part">
+				<ul class="ul">
+					<li class="li">
+						<span class="label"><span class="e_required">延期时长：</span></span>
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="EXTEND_TIME" id="EXTEND_TIME" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+							source="ognl:pageutil.getStaticList('RECYCLE_EXTEND_TIME')" value="ognl:submitData.EXTEND_TIME" desc="延期时长" nullable="no" />
+						</span></span></span>
+					</li>
+				</ul>
+				<div class="submitPlace"></div>
+				<div class="submit">
+					<button jwcid="@Any" name="SUBMIT_DATA" id="SUBMIT_DATA" class="e_button-form" onclick="return extendRecycleTime();"><i class="e_ico-submit"></i><span>提交</span></button>
+				</div>
+			
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid="DataImportPart@Part">
+		<div class="c_title">
+			<div class="text">批量导入延期</div>
+		</div>
+		<div  class="c_form c_form-col-1">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">导入模板：</span></span>
+				<span class="text">
+					<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS" name="A_TEMPLATE_DATA_XLS" 
+					href="ognl:encodeUrl('attach?action=downloadweb&realName=ImportTemplate.xls&filePath=template/bat/USER_BACK_EXTEND.xls')">
+					文件模板
+					</a>
+				</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">导入文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls;" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return importData()"><i class="e_ico-import"></i><span>导入</span></button>
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

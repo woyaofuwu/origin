@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/group/querygroupinfo/CenpyMemberQuery.js"></script>             
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 提示区 -->
+<div class="c_box" jwcid="hintPart@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+</div>
+
+<div class="c_box">
+	
+	<div class="c_title">
+		<div class="text">流量统付用户订购关系查询</div>
+	</div>
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+					<select name="cond_QueryType" id="cond_QueryType" onchange="javascript:changeQueryType()">
+                          <option value="0" selected>按个人手机号码查询</option>
+                          <option value="1">按集团产品编码查询</option>
+					</select>
+				</span></span></span>
+			</li>
+			<li class="li" id="usersn"  >
+				<span class="label">个人手机号码：</span>
+					<span class="e_input" ><span><input type="text" jwcid="@TextField"  id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="个人手机号码"/></span>
+				</span>
+			</li>
+			<li class="li" id="ecSn" style="display:none">
+				<span class="label">集团产品编码：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField"  id="cond_EC_SERIAL_NUMBER" name="cond_EC_SERIAL_NUMBER" value="ognl:condition.cond_EC_SERIAL_NUMBER" desc="集团用户手机号码"/></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">统付类型：</span></span>
+				<span class="e_select"><span><span> 
+                     <select name="cond_CENPY_TYPE" jwcid="@Select" 
+						textField="DATA_NAME" valueField="DATA_ID" 
+						source="ognl:pageutil.getStaticList('BBOSS_CENPY_TYPE')" 
+						value="ognl:condition.CENPY_TYPE" desc="统付类型"  
+						nullable="no" addDefault="false"/>
+				</span></span></span>
+			</li>  
+			<li class="li">
+				<span class="label"><span class="e_required">开始时间：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_START_TIME" value="ognl:condition.cond_START_TIME"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_END_TIME" value="ognl:condition.cond_END_TIME"/></span></span>
+			</li>
+		</ul>
+	
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return queryInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 订单信息开始 -->
+	<div id="refreshtable" jwcid="refreshtable@Part" optimize="true">
+	
+		<div class="c_title c_title-2">
+		    <span class="text">流量统付用户订购关系查询</span>
+		</div>
+		
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>归属市县</th>
+						<th>集团编码</th>
+						<th>集团名称</th>
+						<th>集团产品编码</th>
+						<th>客户经理</th>
+						<th>订购号码</th>
+						<th>订购时间</th>
+						<th>结束时间</th>
+						<th>套餐名称</th>
+						<th>套餐编码</th>
+						<th>限量大小</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert"  value="ognl:info.CITY_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert"  value="ognl:info.GROUP_ID" raw="false"/></td>
+						<td><span jwcid="@Insert"  value="ognl:info.CUST_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.EC_SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td>
+                        	<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.START_DATE)" raw="false" />
+                        </td> 
+                        <td>
+                        	<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.END_DATE)" raw="false" />
+                        </td> 
+                        
+						<td><span jwcid="@Insert" value="ognl:info.ELEMENT_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LIMIT_FEE" raw="false"/></td>
+						</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<span jwcid="@NavBar" name="pageNav" cond="queryForm" listener="queryInfos"  pageSize="20" needCoun="false" part="refreshtable" count="ognl:pageCount"/>	 
+	</div>
+	<!-- 订单信息 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

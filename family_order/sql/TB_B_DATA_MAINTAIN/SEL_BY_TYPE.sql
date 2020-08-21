@@ -1,0 +1,15 @@
+SELECT STMT_ID,
+       STMT_TYPE,
+       STMT_NAME,
+       STMT_CONTENT,
+       START_TIME,
+       END_TIME,
+       UPDATE_DEPART_ID,
+       UPDATE_STAFF_ID,
+       UPDATE_TIME,
+       REMARK,
+       RSRV_STR1,
+       RSRV_STR2
+  FROM TB_B_DATA_MAINTAIN
+ WHERE 1 = 1
+   AND STMT_ID = :STMT_ID

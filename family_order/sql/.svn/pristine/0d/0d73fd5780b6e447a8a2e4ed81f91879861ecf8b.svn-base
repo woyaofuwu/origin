@@ -1,0 +1,1 @@
+update TF_B_TRADE_ALTSN_PLATMRG set ACTIVATE_TIME = to_date(:ACTIVATE_TIME,'yyyy-mm-dd hh24:mi:ss') where serial_number = :SERIAL_NUMBER and rela_type = :RELA_TYPE and ACTIVATE_TIME is null

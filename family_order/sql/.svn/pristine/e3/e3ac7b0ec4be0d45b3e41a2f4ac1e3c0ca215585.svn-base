@@ -1,0 +1,17 @@
+SELECT T.TEMPLET_ID,
+       T.TEMPLET_TYPE,
+       T.DATA0,
+       T.DATA1,
+       T.DATA2,
+       T.DATA3,
+       T.DATA4,
+       T.DATA5,
+       T.DATA6,
+       T.DATA7,
+       T.DATA8,
+       T.DATA9,
+       T.VALID_TAG
+  FROM TD_B_EOP_PAGE_TEMPLET T
+ WHERE T.TEMPLET_ID = :TEMPLET_ID
+   AND T.TEMPLET_TYPE = :TEMPLET_TYPE
+   AND T.VALID_TAG = :VALID_TAG

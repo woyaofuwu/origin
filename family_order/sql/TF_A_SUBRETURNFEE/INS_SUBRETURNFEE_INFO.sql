@@ -1,0 +1,2 @@
+INSERT INTO tf_a_subreturnfee(operate_id,bill_id,integrate_item_code,return_fee,encourage_fee,status_code,return_reason_code,remark,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,eparchy_code,user_id,acct_id,acyc_id,operate_type)
+ VALUES(TO_NUMBER(:OPERATE_ID),TO_NUMBER(:BILL_ID),:INTEGRATE_ITEM_CODE,TO_NUMBER(:RETURN_FEE),TO_NUMBER(:ENCOURAGE_FEE),:STATUS_CODE,:RETURN_REASON_CODE,:REMARK,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:EPARCHY_CODE,TO_NUMBER(:USER_ID),TO_NUMBER(:ACCT_ID),:ACYC_ID,:OPERATE_TYPE)

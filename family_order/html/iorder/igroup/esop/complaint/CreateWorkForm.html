@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/complaint/script/CreateWorkForm.js"></script>
+</head>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#PrintPosReceiptBtn").bind("click", function(){
+		$.setReturnValue({"POS_RECEIPT":1}, true);
+	});
+});
+</script>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">投诉申请</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+			<!-- 客户信息 开始 -->
+		     <div jwcid="@ecserv:GrpCustInfo" groupInfo="ognl:groupInfo" custMgrInfo="ognl:custMgrInfo" readonly="ognl:repInfo.IS_READONLY=='true'?'true':''" afterAction="queryProductInfos"/>
+			<!-- 客户信息 结束 -->
+			
+			
+			<div class="c_title">
+				<div class="text">已开通产品列表[投诉业务号码请点击下面的单选框进行选择！] </div>
+			</div>
+			
+			<div class="l_queryFn" jwcid="ProductInfoPart@Part" element="div">
+				<div class="l_queryResult">		
+					<div class="c_table">
+					<table name="productTable" id="productTable" class="c_table c_table-checkbox" jwcid="@Table">
+						<thead>
+							<tr>
+								<th>选择</th>
+			                	<th col="PRODUCT_ID">产品编码(PRODUCT_ID)</th>
+			                    <th col="PRODUCT_EXPLAIN">业务类型</th>
+			                    <th col="SERIAL_NUMBER">产品号码(SERIAL_NUMBER)</th>
+			                    <th col="OPEN_DATE">业务开通时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td class="e_center" align="center">
+									<input type="radio" id="SN" name="SN" value="ognl:info.SERIAL_NUMBER" jwcid="@Any" onclick="addSN(this.value);"/>
+								</td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.PRODUCT_EXPLAIN"  raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"  raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.OPEN_DATE"  raw="false"></span></td>
+							</tr>
+						</tbody>
+					</table>
+					</div>	
+				</div>
+			</div>
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">投诉内容 </div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div jwcid="contentItem@Part" class="c_popupItem" id="contentItem" class="c_list c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">投诉业务号码</div>						
+						<div class="value"><input jwcid="@TextField" readonly="true" nullable="no" name="ACCEPT_PHONE_CODE" value="ognl:condition.ACCEPT_PHONE_CODE" desc="投诉业务对应的实际号码"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">联系人电话</div>
+						<div class="value"><input jwcid="@TextField" name="LINK_PHONE_CODE" value="ognl:group.CUST_LINK_PHONE" nullable="no"  desc = "联系人电话"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">联系人姓名</div>
+						<div class="value"><input jwcid="@TextField" name="LINK_NAME" value="ognl:group.CUST_LINK_NAME" nullable="no"  desc = "联系人姓名"/></div>
+					</li>
+				</ul>
+				<ul>
+					<li class="link required">
+						<div class="label">工单标题</div>
+						<div class="value"><input jwcid="@TextField" name="WORKFORM_TITLE" nullable="no" value="ognl:condition.WORKFORM_TITLE" desc="工单标题"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">工单业务类型</div>
+						<div class="value"> <a jwcid="@Redirect" onclick="$.popupPageExternal('popuppage.BussinessTypeTree','loadTree', '&refresh=true&paramID=1','业务类型树',360,400,'TRADE_TYPE_CODE')">工单业务类型</a>
+ 						<input jwcid="@Hidden" name="TRADE_TYPE_CODE" value="ognl:condition.TRADE_TYPE_CODE" nullable="no" desc="工单业务类型"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">ESOP生成工单</div>
+						<div class="value"><input jwcid="@TextField" readonly="true" nullable="no" name="EXPLAIN_CONTENT" value="ognl:condition.EXPLAIN_CONTENT==null?'ESOP':condition.EXPLAIN_CONTENT" desc="ESOP生成工单"/></div>
+					</li>
+				</ul>
+				
+				<ul>
+					<li class="link required">
+						<div class="label">紧急程度</div>
+						<div class="value">
+							<input jwcid="DEAL_CLASS_CODE@Select" name="DEAL_CLASS_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('DEAL_CLASS_CODE')" textField="DATA_NAME" valueField="DATA_ID" 
+								addDefault="true" value="ognl:condition.DEAL_CLASS_CODE" nullable="no" desc="紧急程度"/>	
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">投诉的归属地</div>
+						<div class="value">
+							<input jwcid="ACCEPT_EPARCHY_CODE@Select" name="ACCEPT_EPARCHY_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AREA_CODE')" textField="DATA_NAME" valueField="DATA_ID" 
+								addDefault="true" value="ognl:condition.ACCEPT_EPARCHY_CODE" nullable="no" desc="投诉的归属地"/>	
+						</div>
+					</li>
+				</ul>
+				
+				<ul style = "display: none;">
+					<li class="link">
+						<div class="label">SP代码</div>
+						<div class="value"><input jwcid="@TextField" name="SP_CODE" nullable="no" value="ognl:condition.SP_CODE" desc="SP代码"/></div>
+					</li>
+					<li class="link">
+						<div class="label">SP名称</div>
+						<div class="value"> 
+							<input jwcid="@TextField" name="SP_NAME" nullable="no" value="ognl:condition.SP_CODE" desc="SP名称"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">SP是全网/本地</div>
+						<div class="value">
+							<input jwcid="GLOBAL_OR_LOCAL@Select" name="GLOBAL_OR_LOCAL" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GLOBAL_OR_LOCAL')" textField="DATA_NAME" valueField="DATA_ID" 
+								addDefault="true" value="ognl:condition.GLOBAL_OR_LOCAL" desc="SP是全网还是本地"/>	
+						</div>
+					</li>
+				</ul>
+				<ul>
+					<li class="link">
+						<div class="label">业务内容</div>
+						<div class="value" jwcid="TradeArea@Part" id="TradeArea">
+							<textarea type="text" jwcid="@TextArea" id="CONTENT" name="CONTENT" value="ognl:condition.CONTENT" nullable="no" rows="6" maxsize="3048" desc="业务内容" />
+							
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- 表单 结束 -->
+			
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button id="PrintPosReceiptBtn" type="button" class="e_button-page"><i class="e_ico-print"></i><span>打印</span></button>
+				<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitApply();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+		</div>
+	</div>
+</body>

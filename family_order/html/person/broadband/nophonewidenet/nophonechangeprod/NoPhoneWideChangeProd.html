@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>无手机宽带产品变更</title>
+<script jwcid="@Script" language="JavaScript" src="person/broadband/nophonewidenet/nophonechangeprod/scripts/NoPhoneWideChangeProd.js"></script>
+<script jwcid="@Script" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" src="scripts/csserv/common/date/dateutils.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" src="person/changeproduct/scripts/changeproductextend.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+ <div class="c_box"> 
+    <!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">资料查询</div>
+			<div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="changeWidenetProduct.displaySwitch(this,'UCAViewPart')"><i
+				class="e_ico-unfold"></i><span>展示客户基本信息</span>
+			</a>
+		</div>
+		</div>
+		<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth"  authType="04" tradeTypeCode="681" tradeAction="changeWidenetProduct.afterSubmitSerialNumber(data)"></div>
+	<!-- 认证 结束 --> 
+	<!-- 参数列表 开始 -->
+		<div class="c_form c_form-text c_form-col-2" jwcid="UCAViewPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME"  value="ognl:custInfoView.CUST_NAME"
+							desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">开户时间：</span>
+					<span class="text" jwcid="@Insert" name="OPEN_DATE" id="OPEN_DATE" value="ognl:userInfoView.OPEN_DATE"
+							desc="客户名称"/>
+				</li>
+				
+				<li class="li">
+					<span class="label">原产品：</span>
+					<span class="text" id="USER_PRODUCT_NAME"></span>
+				</li>
+				<li class="li">
+					<span class="label">新产品：</span>
+					<span class="text" id="NEXT_PRODUCT_NAME"></span>
+				</li>
+				
+			
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+	</div> 
+	<!-- 区域 开始 -->
+    <div class="c_box">	
+    <!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">宽带产品</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-8 c_form-col-3">
+		<ul class="ul">
+				<li class="li" jwcid="productHiddenPart@Part" >
+					<span class="label">宽带类型：</span>
+					<span class="text" jwcid="@Insert" name="WIDE_TYPE_NAME" id="WIDE_TYPE_NAME" value="ognl:pageutil.getStaticValue('WIDE_PRODUCT_TYPE',info.WIDE_TYPE_CODE)"
+							desc="">  
+					</span>
+					<input jwcid="@Hidden" name="WIDE_TYPE" id="WIDE_TYPE"  value="ognl:info.WIDE_TYPE_CODE"/>
+					<input jwcid="@Hidden" name="PRODUCT_YEAR" id="PRODUCT_YEAR"  value="ognl:info.PRODUCT_YEAR"/>
+					<input jwcid="@Hidden" name="PRODUCT_ACTIVE" id="PRODUCT_ACTIVE"  value="ognl:info.PRODUCT_ACTIVE"/>
+					<input jwcid="@Hidden" name="USER_YEAR_ACTIVE" id="USER_YEAR_ACTIVE"  value="ognl:info.USER_YEAR_ACTIVE"/>
+					<input jwcid="@Hidden" name="UPGRADE_SALE_ACTIVE_PRODUCT_IDS" id="UPGRADE_SALE_ACTIVE_PRODUCT_IDS"  value="ognl:info.UPGRADE_SALE_ACTIVE_PRODUCT_IDS"/>
+					<input jwcid="@Hidden" name="V_END_DATE" id="V_END_DATE" value="ognl:info.V_END_DATE"/>
+					<input jwcid="@Hidden" name="NEXT_MON_FISRTDAY" id="NEXT_MON_FISRTDAY" value="ognl:info.NEXT_MON_FISRTDAY"/>
+					<input jwcid="@Hidden" name="END_FLAG" id="END_FLAG" value="ognl:info.END_FLAG"/>
+					<input jwcid="@Hidden" name="V_BOOK_TAG" id="V_BOOK_TAG" value="ognl:info.V_BOOK_TAG"/>
+					<input jwcid="@Hidden" name="DOWN_RATE_STARTDATE" id="DOWN_RATE_STARTDATE" value=""/>
+					<input jwcid="@Hidden" name="UP_RATE_STARTDATE" id="UP_RATE_STARTDATE" value=""/>
+					<input jwcid="@Hidden" name="USER_SALE_PACKAGE_ID" id="USER_SALE_PACKAGE_ID" value="ognl:info.USER_SALE_PACKAGE_ID"/>
+					<input jwcid="@Hidden" name="USER_SALE_PRODUCT_ID" id="USER_SALE_PRODUCT_ID" value="ognl:info.USER_SALE_PRODUCT_ID"/>
+				</li>
+				<li class="li" jwcid="productTypePart@Part">
+					<span class="label">宽带产品：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PRODUCT_ID_NOPHONE" id="PRODUCT_ID_NOPHONE" 
+						source="ognl:productList"  addDefault="true"
+                        		textField="PRODUCT_NAME" valueField="PRODUCT_ID" 
+                        		titleField="PRODUCT_NAME" desc="产品类型"
+                        		hideFields="WIDE_RATE"
+                        		 onchange="changeWidenetProduct.afterChangeProductNew()"/>
+					</span></span></span>
+				</li> 
+				<li class="li" jwcid="changetimePart@Part" element="li">
+					<span class="label">生效时间：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select"  id="PACKAGE_VALID" name="PACKAGE_VALID"  
+						source="ognl:timeList" addDefault="false"
+						onchange="changeWidenetProduct.selectFirstDate(this)"
+						textField="DATA_NAME" valueField="DATA_ID"  disabled="true"/>
+					<select jwcid="@Select"  id="PACKAGE_VALID1" name="PACKAGE_VALID1"  
+						source="ognl:timeList" addDefault="false" style="display:none"
+						textField="DATA_ATTR" valueField="DATA_ID"  />
+					</span></span></span>
+					
+				</li>
+				
+				<li id="BOOKING_DATE_FIELD" class="li" style="display:none">
+				<span class="label">预约时间：</span>
+					<span class="e_input" style="width:91px"><span>
+					<input type="text" jwcid="@DateField" id="BOOKING_DATE" name="BOOKING_DATE" format="yyyy-MM-dd"
+						disabled= "false" value="ognl:pageutil.getSysDate()" desc="预约时间" min="ognl:pageutil.getSysDate()"
+						afterAction="changeProductExtend.afterBookingDate();"/>
+					</span></span>
+				</li>
+				
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+    <div class="l_col s_iframe-lower">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:49%;">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+                <div class="c_title">
+					<div class="text">待选区</div>
+					<div class="fn">
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 分栏 开始 -->
+				<div class="l_col l_col-close">
+					<div jwcid="offerList@csserv:OfferList" 
+                           element="div" 
+                           categoryId="100000000114,88888888"></div>
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	    <div class="l_auto">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">已选区</div>
+			</div>
+               <div jwcid="selectedElements@csserv:SelectedElements" 
+                   renderCallSvc="CS.SelectedElementSVC.getUserElements" 
+                   callAddElementSvc="CS.SelectedElementSVC.dealWidenetSelectedElementsForChg" 
+                   afterRenderAction="changeWidenetProduct.afterRenderSelectedElements(data);"
+                   basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                   basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+                   eparchyCodeComponentId="USER_EPARCHY_CODE"
+                   tradeTypeCode="681"
+                   element="div"></div>
+			<!-- 表格 结束 -->
+		</div>
+	<!-- 第 2 栏 结束 -->
+	</div>
+	    <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+	 	<div jwcid="SubmitPart@csserv:CSSubmit"   beforeAction="changeWidenetProduct.beforeSubmit()" isReset="true" listener="submitChangeProduct"  isRender="true" area="AuthPart" element="div"/>
+	        
+</div>
+<!-- 区域 结束 -->	 
+</div></div>
+<input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value=""/>
+<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="USER_PRODUCT_ID" id="USER_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="NEXT_PRODUCT_ID" id="NEXT_PRODUCT_ID" value=""/>
+<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+<input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" id="OLD_PRODUCT_END_DATE" value=""/>
+<input jwcid="@Hidden" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value=""/>
+<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+<input jwcid="@Hidden" name="SYS_DATE" id="SYS_DATE" value="ognl:pageutil.getSysTime()"/>
+
+<input jwcid="@Hidden" name="USER_WIDENET_RATE" id="USER_WIDENET_RATE" value=""/>
+<input jwcid="@Hidden" name="NEW_PACKAGE_ID" id="NEW_PACKAGE_ID" value=""/>
+<!-- 降档，升档标志，1=升档，2=降档，0=不变 -->
+<input jwcid="@Hidden" name="CHANGE_UP_DOWN_TAG" id="CHANGE_UP_DOWN_TAG" value="0"/>
+
+<input jwcid="@Hidden" name="WIDE_ACTIVE_PAY_FEE" id="WIDE_ACTIVE_PAY_FEE" value=""/>
+<input jwcid="@Hidden" name="YEAR_DISCNT_REMAIN_FEE" id="YEAR_DISCNT_REMAIN_FEE" value=""/>
+<input jwcid="@Hidden" name="REMAIN_FEE" id="REMAIN_FEE" value=""/>
+<input jwcid="@Hidden" name="ACCT_REMAIN_FEE" id="ACCT_REMAIN_FEE" value=""/>
+</body>
+</html>

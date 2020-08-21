@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow name="OpenGroupMember" desc="集团成员开户">
+	<step
+		name="begin"
+		desc="开始"
+		nextstep="baseInfo"
+		/> 
+	<step
+		name="baseInfo"
+		desc="基本信息"
+		page="csserv.group.opengroupmember.BaseInfo"
+		nextstep="productInfo"
+		listener="initial"
+		nextbutton="bnext"
+		monitor="POP_cond_GROUP_ID,PRODUCT_ID,MEM_CUST_INFO,MEM_ACCT_INFO,MEM_USER_INFO"
+		transdata="POP_cond_GROUP_ID,PRODUCT_ID,CUST_ID,BUSI_TYPE,MEM_CUST_INFO,MEM_ACCT_INFO,MEM_USER_INFO,CUST_INFO_TELTYPE,GRP_USER_ID,GRP_SN,EOS,GRP_USER_EPARCHYCODE" 
+		submitdata="CUST_ID,PRODUCT_ID,CUST_INFO_TELTYPE,EOS,GRP_USER_EPARCHYCODE,MEM_ACCT_INFO,MEM_USER_INFO,MEM_CUST_INFO"  		
+		/>
+	<step
+		name="productInfo"
+		desc="产品信息"
+		page="csserv.group.opengroupmember.ProductInfo"
+		nextstep="previewInfo"
+		listener="initial"
+		nextbutton="bnext"
+		monitor="PRODUCT_ID,SERIAL_NUMBER"
+		transdata="PRODUCT_CTRL_INFO,SELECTED_GRPPACKAGE_LIST,SELECTED_ELEMENTS,DYNATABLE_RES_RECORD,PMEM_CUST_INFO,PMEM_ACCT_INFO,PMEM_USER_INFO,SERIAL_NUMBER,GROUP_ID"
+		submitdata="SERIAL_NUMBER,DYNATABLE_RES_RECORD,SELECTED_GRPPACKAGE_LIST,SELECTED_ELEMENTS,productParamPart,CUST_INFO,ACCT_INFO,USER_INFO"	
+		/>
+	<step
+		name="previewInfo"
+		desc="开户确认"
+		page="csserv.group.opengroupmember.PreviewInfo"
+		listener="initial"
+		nextstep="end"
+		backbutton="bback"
+		monitor="ALL"
+		/>
+	<step
+		name="end"
+		desc="结束"
+		/>
+</flow>
+

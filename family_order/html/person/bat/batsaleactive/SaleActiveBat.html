@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/batsaleactive/batsaleactive.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量导入</div>
+	</div>
+	<div class="c_form c_form-col-mix" jwcid="SubmitCondPart@Part">
+		<ul class="ul c_form-col-3">
+			<li class="li">
+				<span class="label"><span class="e_required">营销活动名称：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_SALE_PRODUCT" id="cond_SALE_PRODUCT" source="ognl:products"
+						addDefault="true" value="ognl:cond.cond_SALE_PRODUCT" disabled="false" desc="营销活动名称" nullable="no" 
+						textField="PRODUCT_ID_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" onchange="selectPackage()"/>
+				</span></span></span>
+			</li>
+
+			<li class="li">
+				<span class="label"><span class="e_required">营销包：</span></span>
+				<span class="e_select" jwcid="PackagePart@Part"><span><span>
+					<select jwcid="@Select" name="cond_SALE_PACKAGE" id="cond_SALE_PACKAGE" source="ognl:packages"
+						addDefault="true" value="" disabled="false" desc="营销包" nullable="yes" 
+						textField="PACKAGE_ID_NAME" valueField="PACKAGE_ID" titleField="PACKAGE_NAME"  />
+				</span></span></span>
+			</li>
+			
+			<li class="li">
+				<div jwcid="NewBatchId@Part">
+					<span class="label"><span class="e_required">批次号：</span></span>
+					<span class="e_elements" id="BATCH_ID_INPUT">
+						<button type="button" class="e_button-right" onclick="return initBatchId()"><i class="e_ico-check"></i><span>更换批次号</span></button>
+						<span class="e_input e_input-left">
+							<span>
+								<input type="text" jwcid="@TextField" readonly="true" name="BATCH_ID" id="BATCH_ID" 
+									desc="批次号码" value="ognl:batchId.BATCH_ID" nullable="no"/>
+							</span>
+						</span>
+					</span>
+				</div>
+			</li>
+		</ul>
+		
+		<ul class="ul c_form-col-3">
+				
+				<li class="li">
+					<span class="label"><span class="e_required">上传文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST" id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+								
+				<li class="li">
+					<span class="label">模版下载：</span>
+					<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=营销活动批量办理导入模版.xls&filePath=template/bat/SaleActiveBatImport.xls')">[点击下载]</a></span>
+				</li>
+				<li class="li">
+				</li>
+		</ul>
+    </div>
+    <div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return importBatData()" id="importKey" ><i class="e_ico-import"></i><span>导入</span></button>
+		<button type="button" class="e_button-page-ok" onclick="checkAndSubmit()" id="submitKey"><i class="e_ico-ok"></i><span>提交</span></button>
+		<button type="button" class="e_button-page" onclick="return resetPage()"><i class="e_ico-reset"></i><span>重置</span></button>
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">导入数据查询</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryPart@Part">
+	<ul class="ul">
+			<li class="li">
+				<span class="label">批次号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_BATCH_ID" id="cond_BATCH_ID" value="ognl:cond.BATCH_ID" desc="批次号" datatype="numeric"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">受理工号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_TRADE_STAFF_ID" id="cond_TRADE_STAFF_ID" value="ognl:tradeStaffId" desc="受理工号"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">手机号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="手机号"/></span></span>
+			</li>
+	</ul>
+	<ul class="ul">
+			<li class="li">
+				<span class="label">状态：</span>
+				<span class="e_select"><span><span>
+					 <select  jwcid="@Select" name="cond_STATUS" id="cond_STATUS" 
+								 source="ognl:pageutil.getStaticList('DATA_STATUS')"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								 value="ognl:cond.STATUS" desc="状态"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_IMPORT_START" id="cond_IMPORT_START" value="" maxName="IMPORT_END" desc="开始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_IMPORT_END" id="cond_IMPORT_END" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', cond.IMPORT_END)" minName="IMPORT_START" desc="结束时间"/></span></span>
+			</li>
+	</ul>
+	<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return queryImportData()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="ImportDataPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10"><div class="c_table">
+		<table jwcid="@Table" id="ImportDataPartTable">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>批次号</th>
+					<th>用户号码</th>
+					<th>营销活动编码</th>
+					<th>营销活动名称</th>
+					<th>营销包编码</th>
+					<th>营销包名称</th>
+					<th>导入时间</th>
+					<th>营销活动受理时间</th>
+					<th>受理工号</th>
+					<th>状态</th>
+					<th>错误信息</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >
+					<td class="e_center"><span jwcid="@Insert" value="ognl:rowIndex+1"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.BATCH_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.PACKAGE_ID" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.IMPORT_TIME == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.IMPORT_TIME)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_TIME)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('DATA_STATUS', info.STATUS)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+				<div jwcid="@NavBar"  name="pagin" id="pagin" listener="queryImportData" pageSize="10" cond="QueryPart" part="ImportDataPart" count="ognl:count"/>
+		<!-- 翻页 结束 -->
+		</div>
+</div>
+</body>
+</html>

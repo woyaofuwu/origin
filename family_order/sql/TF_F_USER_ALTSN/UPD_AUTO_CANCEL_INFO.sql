@@ -1,0 +1,1 @@
+update TF_F_USER_ALTSN set EXPIRE_DEAL_TAG = :EXPIRE_DEAL_TAG , EXPIRE_DEAL_TIME = sysdate where serial_number = :SERIAL_NUMBER and status = :STATUS and ( ALT_CANCEL_TIME = to_date ( :ALT_CANCEL_TIME , 'yyyy-mm-dd hh24:mi:ss' ) or ALT_CANCEL_TIME is null ) and RELA_TYPE = :RELA_TYPE

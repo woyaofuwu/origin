@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>跨地域异常开户信息查询</title> 
+<script jwcid="@Script"  src="iorder/person/dreamNetBreakOffOrder/scripts/DreamNetBreakOffOrder.js?v=20181028"></script>
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">跨地域异常开户信息查询</div>
+	<div class="fn">
+		<span class="e_ico-search" ontap=""></span>
+	</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<!-- 滚动（替换为 java 组件） 开始 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+						
+			<div class="c_title">
+				<div class="text">梦网包月类业务暂停恢复订购</div>
+						
+			</div>
+			<div class="left" >
+						
+						<span class="e_elements">
+								
+								<button type="button" style="color: blue;">操作</button>
+								<input type="radio" name="status" value='0'/>暂停
+	                            <input type="radio" name="status" value='1'/>恢复  <br>
+								<input
+	                                jwcid="@SimpleUpload"
+	                                name="FILE_ID"
+	                                ftpCode="personserv"
+	                                filePath=""
+	                                fileTypes=".xls;.xlsx"/>
+							
+							
+                            
+							<button
+                                type="button"
+                                class="e_button-blue"
+                                name="IMPORT_BTN"
+                                id="IMPORT_BTN"
+                                ontap="batImportCaseSn();"><span class="e_ico-import"></span>导入</button>
+							<a
+                                jwcid="@Any"
+                                id="A_TEMPLATE_DATA_XLS"
+                                name="A_TEMPLATE_DATA_XLS"
+                                href="ognl:encodeUrl('attach?action=downloadweb&realName=DREAMNET_TEMPLATE.xls&filePath=template/bat/DREAMNET_TEMPLATE.xls')">
+										<span
+                                            jwcid="@Insert"
+                                            value="[下载模板]"></span>
+							</a>
+						</span>
+					</div>
+			
+			<div jwcid="ParamsPart@Part" class="c_list c_list-col-4 c_list-s  c_list-line c_list-border">
+				<ul class="ul">
+						
+					<li class="required">
+						<div class="value">
+						<span class = "e_mix">
+						<button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="queryDreamNet()"><i class="e_ico-search"></i><span>查询</span></button>
+						</span>
+						</div>
+					</li>									
+				</ul>
+			</div>
+			<div class = "c_space"></div>	
+			<!-- 查询结果显示区域开始 -->
+			<div jwcid="QueryListPart@Part">
+			<div jwcid="table4Print@Part" optimize="true" id="refreshtable">
+				<table jwcid="@Table" name="printTable" id="printTable" class="c_table c_table-row-8 c_table-border c_table-lite c_table-hover" editMode="false">
+					<thead>                                            
+						<tr>
+
+		  					
+							<th col="SP_CODE" >厂商编码</th>
+							<th col="BIZ_CODE" >业务编码</th>
+							<th col="START_DATE" >开始时间</th>
+							<th col="END_DATE" >暂停截止时间</th>
+							<th col="STATUS" >状态</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> -->
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">			
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SP_CODE" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.BIZ_CODE" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.START_DATE" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.END_DATE" raw="true" />
+							</td>
+							
+							<td >
+								<span jwcid="@Insert" value="ognl:info.STATUS == 1 ? '恢复':'暂停' " raw="true" />
+							</td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div class="c_space-c"></div>
+			<div class="c_page c_page-border" jwcid="@NavBar" source="ognl:infos" refreshParts="refreshtable" name="recordNav" id="recordNav" cond="ParamsPart" part="QueryListPart" listener="queryDreamNet" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+			
+			</div>
+			<!-- 查询结果显示区域结束 -->	
+			
+			<!-- 查询结果显示区域结束 -->	
+			
+	</div>	
+</div>
+</body>
+</html>

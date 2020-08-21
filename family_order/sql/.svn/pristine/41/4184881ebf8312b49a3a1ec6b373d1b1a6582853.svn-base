@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT STATE_CODE paracode,STATE_NAME paraname FROM td_s_servicestate
+where service_id=0
+and (:TRADE_EPARCHY_CODE IS NOT NULL OR :TRADE_EPARCHY_CODE IS NULL)

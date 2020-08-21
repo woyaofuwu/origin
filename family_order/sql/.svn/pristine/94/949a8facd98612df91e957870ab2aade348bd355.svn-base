@@ -1,0 +1,7 @@
+SELECT to_char(trade_id) trade_id,to_char(subscribe_type) subscribe_id,to_char(bpm_id) bpm_id,trade_type_code ,in_mode_code,priority,subscribe_state,next_deal_tag,product_id,brand_code,to_char(user_id) user_id,to_char(cust_id) cust_id,to_char(acct_id) acct_id,serial_number,cust_name,to_char(accept_date,'yyyy-mm-dd hh24:mi:ss') accept_date,accept_month,f_sys_getcodename('staff_id',trade_staff_id,null,null) trade_staff_id,f_sys_getcodename('depart_id',trade_depart_id,null,null) trade_depart_id,f_sys_getcodename('area_code',trade_city_code,null,null) trade_city_code,trade_eparchy_code,term_ip,eparchy_code,city_code,olcom_tag,to_char(exec_time,'yyyy-mm-dd hh24:mi:ss') exec_time,to_char(finish_date,'yyyy-mm-dd hh24:mi:ss') finish_date,to_char(oper_fee) oper_fee,to_char(foregift) foregift,to_char(advance_pay) advance_pay,invoice_no,fee_state,to_char(fee_time,'yyyy-mm-dd hh24:mi:ss') fee_time,fee_staff_id,cancel_tag,to_char(cancel_date,'yyyy-mm-dd hh24:mi:ss') cancel_date,cancel_staff_id,cancel_depart_id,cancel_city_code,cancel_eparchy_code,process_tag_set,f_sys_getcodename('trade_type_code',trade_type_code,null,null)  rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,remark 
+  FROM tf_bh_trade
+ WHERE serial_number=:SERIAL_NUMBER
+ AND trade_type_code = to_number(:TRADE_TYPE_CODE)
+ AND (user_id = TO_NUMBER(:USER_ID) or :USER_ID is NULL)
+ AND cancel_tag='0'
+ AND accept_date+0 > to_date(:ACCEPT_DATE,'yyyy-mm-dd hh24:mi:ss')

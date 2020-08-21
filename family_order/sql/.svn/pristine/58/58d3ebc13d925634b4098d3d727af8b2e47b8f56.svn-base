@@ -1,0 +1,1 @@
+select * from tf_f_user_np t where t.user_id = :USER_ID

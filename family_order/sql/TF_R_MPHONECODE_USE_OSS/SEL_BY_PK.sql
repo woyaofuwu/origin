@@ -1,0 +1,67 @@
+SELECT
+       SERIAL_NUMBER,
+       NET_TYPE_CODE,
+       IMSI,
+       SIM_CARD_NO,
+       MOFFICE_ID,
+       BRAND_TAG  BRAND_CODE,
+       CODE_STATE_CODE,
+       /*MANAGE_STATE,*/
+       '0' RES_TYPE_CODE,
+       CODE_TYPE_CODE  RES_KIND_CODE,
+       TO_CHAR(FEE_CODE_RULE_S) FEE_CODE_RULE_S,
+       TO_CHAR(FEE_CODE_RULE_E) FEE_CODE_RULE_E,
+       FEE_CODE_PAY_FLAG,
+       /*BEAUTIFUAL_TAG,*/
+       /*SELECT_MODE,*/
+       TO_CHAR(FEE_CODE_FEE) FEE_CODE_FEE,
+       PASSWD,
+       PRECODE_TAG,
+       IMSI_CODE,
+       TO_CHAR(PRECODE_TIME, 'dd-mm-yyyy hh24:mi:ss') PRECODE_TIME,
+       /*TO_CHAR(DESTROY_TIME, 'dd-mm-yyyy hh24:mi:ss') DESTROY_TIME,*/
+       PREOPEN_TAG,
+       EPARCHY_CODE,
+       CITY_CODE,
+       PART_CODE  AREA_CODE,
+       STOCK_LEVEL,
+       STOCK_ID,
+       /*RES_STORE_ID,*/
+       STOCK_ID_O  ORIGIN_STOCK,
+       POOL_CODE,
+       STAFF_ID  RECEIVER_ID,
+       AGENT_ID,
+       TO_CHAR(BACK_TIME, 'dd-mm-yyyy hh24:mi:ss') BACK_TIME,
+       BACK_STAFF_ID,
+       TO_CHAR(TIME_IN, 'dd-mm-yyyy hh24:mi:ss') IN_TIME,
+       STAFF_ID_IN  IN_STAFF_ID,
+       TO_CHAR(OCCUPY_TIME, 'dd-mm-yyyy hh24:mi:ss') OCCUPY_TIME,
+       SPECIAL_FLAG,
+       TO_CHAR(OPEN_TIME, 'dd-mm-yyyy hh24:mi:ss') OPEN_TIME,
+       TO_CHAR(CAMPN_ID) CAMPN_ID,
+       /*TO_CHAR(MAIN_PRODUCT_ID) MAIN_PRODUCT_ID,*/
+       TO_CHAR(PRODUCT_ID) PRODUCT_ID,
+       TO_CHAR(PACKAGE_ID) PACKAGE_ID,
+       CLASS_ID,
+       /*TO_CHAR(TRADE_ID) TRADE_ID,*/
+       TO_CHAR(SALE_LOG_ID) SALE_TRADE_ID,
+       BOX_CODE,
+       PACKAGE_CODE,
+       TO_CHAR(START_DATE, 'dd-mm-yyyy hh24:mi:ss') START_DATE,
+       TO_CHAR(END_DATE, 'dd-mm-yyyy hh24:mi:ss') END_DATE,
+       TO_CHAR(OPER_TIME, 'dd-mm-yyyy hh24:mi:ss') UPDATE_TIME,
+       OPER_STAFF_ID  UPDATE_STAFF_ID,
+       /*TO_CHAR(UPDATE_DEPART_ID, 'dd-mm-yyyy hh24:mi:ss') UPDATE_DEPART_ID,*/
+       REMARK,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       TO_CHAR(RSRV_NUM1) RSRV_NUM1,
+       TO_CHAR(RSRV_DATE1, 'dd-mm-yyyy hh24:mi:ss') RSRV_DATE1,
+       TO_CHAR(RSRV_DATE2, 'dd-mm-yyyy hh24:mi:ss') RSRV_DATE2,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5
+  FROM TF_R_MPHONECODE_USE_OSS T
+ WHERE T.SERIAL_NUMBER = :SERIAL_NUMBER

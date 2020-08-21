@@ -1,0 +1,43 @@
+/*需要插入 SP_CODE LIKE 'SW%' 信息以及一些必填信息*/
+INSERT INTO TF_F_USER_PLATSVC
+  (PARTITION_ID,
+   USER_ID,
+   PRODUCT_ID,
+   PACKAGE_ID,
+   SERVICE_ID,
+   SERIAL_NUMBER,
+   SP_CODE,
+   BIZ_CODE,
+   BIZ_TYPE_CODE,
+   BIZ_STATE_CODE,
+   ORG_DOMAIN,
+   OPR_SOURCE,
+   BILL_TYPE,
+   PRICE,
+   OPER_CODE,
+   START_DATE,
+   END_DATE,
+   REMARK,
+   UPDATE_TIME)
+  SELECT MOD(:USER_ID, 10000),
+         :USER_ID,
+         '50000000',
+         '50000000',
+         SERVICE_ID,
+         :SERIAL_NUMBER,
+         SP_CODE,
+         BIZ_CODE,
+         BIZ_TYPE_CODE,
+         'A',
+         ORG_DOMAIN,
+         :OPR_SOURCE,
+         '0',
+         '0',
+         '19',
+         TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+         TO_DATE('2050-12-31 23:59:59', 'YYYY-MM-DD HH24:MI:SS'),
+         '子开关或总开关关闭',
+         SYSDATE
+    FROM TD_B_PLATSVC
+   WHERE (BIZ_CODE LIKE 'SW80%' OR BIZ_CODE LIKE 'SW90%')
+     AND SYSDATE BETWEEN START_DATE AND END_DATE

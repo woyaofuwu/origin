@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询服务号码</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li" >
+				<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER" nullable="no" desc="服务号码"/></span></span>	                    
+		    </li>	
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="if($.validate.verifyAll('queryForm')){ajaxSubmit('queryForm', 'queryPersonBySerial', '', 'CustPart,refreshHintBar')};"><i class="e_ico-search"></i><span>查询</span></button>
+	    </div>
+	</div>
+	<!--表单结束-->
+	
+	<div jwcid="CustPart@Part" optimize="true">	 
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<span class="text">服务号码信息</span>		
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+					   	<th id="col_DEPART_ID">服务号码</th>
+						<th id="col_DEPART_ID1">客户名称</th>
+						<th id="col_DEPART_ID2">归属地州</th>
+					</tr>
+				</thead>
+				<tbody>
+				  	<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					    <td><a jwcid="@Redirect" 
+                            value="ognl:info.SERIAL_NUMBER" cust_name="ognl:info.CUST_NAME" serial_number="ognl:info.SERIAL_NUMBER" userId="ognl:info.USER_ID"
+                             onclick="$.setReturnValue(['acctInfo_CONTACT_PHONE',$(this).attr('serial_number'),'POP_acctInfo_CONTACT_PHONE',$(this).attr('serial_number'),'acctInfo_CONTACT',$(this).attr('cust_name'),'acctInfo_CONTACT_UID',$(this).attr('userId')],true)"/>	
+						</td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.EPARCHY_NAME" raw="true"/></td>
+					
+					</tr>		  
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 表格 结束 -->
+		<!-- 翻页 开始 -->
+		<span jwcid="@NavBar" name="pageNav" cond="queryForm" listener="queryPersonBySerial" part="CustPart" count="ognl:pageCounts"/>	 
+		<!-- 翻页 结束 -->	   
+	</div>	
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>
+	

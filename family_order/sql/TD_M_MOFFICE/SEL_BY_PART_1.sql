@@ -1,0 +1,9 @@
+--IS_CACHE=Y
+SELECT eparchy_code,moffice_id,switch_id,serialnumber_s,serialnumber_e,imsi_s,imsi_e,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time,update_staff_id,update_depart_id,remark,rsrv_tag1,rsrv_tag2,rsrv_tag3,rsrv_num1,rsrv_num2,rsrv_num3,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3,'1' rsrv_str1,(SELECT t.para_code2 FROM td_m_res_commpara t WHERE t.para_attr='1000' AND t.para_code1='BRS_KIDECRYPT_KEY' AND t.eparchy_code=eparchy_code) rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7 
+  FROM td_m_moffice 
+ WHERE (:EPARCHY_CODE is null OR eparchy_code=:EPARCHY_CODE ) AND switch_id IN (SELECT para_code2 FROM td_m_res_commpara WHERE para_attr='1000' AND para_code1='BRS_KIENCRYPT_FOR_SWICH') 
+ 
+ UNION ALL
+SELECT eparchy_code,moffice_id,switch_id,serialnumber_s,serialnumber_e,imsi_s,imsi_e,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time,update_staff_id,update_depart_id,remark,rsrv_tag1,rsrv_tag2,rsrv_tag3,rsrv_num1,rsrv_num2,rsrv_num3,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3,'0' rsrv_str1,(SELECT t.para_code2 FROM td_m_res_commpara t WHERE t.para_attr='1000' AND t.para_code1='BRS_KIDECRYPT_KEY' AND t.eparchy_code=eparchy_code) rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7 
+  FROM td_m_moffice
+ WHERE (:EPARCHY_CODE is null OR eparchy_code=:EPARCHY_CODE ) AND switch_id NOT IN (SELECT para_code2 FROM td_m_res_commpara WHERE para_attr='1000' AND para_code1='BRS_KIENCRYPT_FOR_SWICH')

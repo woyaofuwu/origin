@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_callcuststep(trade_id,callcust_item_name,callcust_item_type,callcust_item_code,step,next_id)
+ VALUES(TO_NUMBER(:TRADE_ID),:CALLCUST_ITEM_NAME,:CALLCUST_ITEM_TYPE,:CALLCUST_ITEM_CODE,:STEP,:NEXT_ID)

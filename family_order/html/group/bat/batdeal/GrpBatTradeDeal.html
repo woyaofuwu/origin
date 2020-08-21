@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团批量业务</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batdeal/grpbattradedeal.js"></script>
+<script language="javascript" src="scripts/csserv/component/print/PrintMgr.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="m_wrapper"><div class="m_wrapper2">
+<style>.c_option { white-space:normal;}</style><!-- 湖南兼容情况下使用，海南更新wade框架可以去掉 -->
+
+<div class="c_tip" jwcid="hintBar@Part">
+	<span jwcid="@Insert" value="ognl:hintInfo" raw="true"/>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box"> 
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团批量业务管理</div>
+		<div class="fn">
+			<button type="button" class="l_ml" onclick="runBatDeal()" id="startButton"><i class="e_ico-play"></i><span>启动</span></button>
+			<button type="button" class="l_ml" onclick="deleteBatDeal()" id="delButton"><i class="e_ico-delete"></i><span>删除</span></button>
+			<button type="button" class="l_ml" onclick="addBatDeal()" id="addButton"><i class="e_ico-add"></i><span>新增</span></button>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryForm@Part" >
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+				<span class="e_select"><span><span>
+					<select id="OPER_TYPE" name="OPER_TYPE" class="e_select">
+						<option value="0" selected="selected">未启动</option>
+					    <option value="1">已启动</option>
+					    <option value="2">已删除</option>
+					</select>
+					<input type="hidden" name="operType" id="operType" jwcid="@TextField" value="ognl:operType"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入起始时间：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+				    	<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" desc="起始时间"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">导入终止时间：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" value="ognl:condition.cond_END_DATE" desc="终止时间"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">导入员工：</span>
+				<span class="e_elements"><span>
+					<input jwcid="@biz:StaffField" id="cond_CREATE_STAFF_ID" name="cond_CREATE_STAFF_ID" type="text" value="ognl:condition.cond_CREATE_STAFF_ID" text="ognl:condition.POP_cond_CREATE_STAFF_ID" desc="导入员工"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入任务号：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" value="ognl:condition.cond_BATCH_TASK_ID" name="cond_BATCH_TASK_ID" id="cond_BATCH_TASK_ID"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入批次号：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" value="ognl:condition.cond_BATCH_ID" name="cond_BATCH_ID" id="cond_BATCH_ID"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">批量类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_BATCH_OPER_TYPE" source="ognl:batchOperTypes" valueField="BATCH_OPER_TYPE" textField="BATCH_OPER_NAME"
+							value="ognl:condition.cond_BATCH_OPER_TYPE"  id="cond_BATCH_OPER_TYPE" desc="操作类型"  nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">成员服务号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" value="ognl:condition.cond_SERIAL_NUMBER" desc="成员服务号码" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="return getSelectValue();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<div class="c_title c_title-2">
+		<div class="text">集团批量信息</div>
+		<div class="label"><span class="e_required">温馨提示：您办理的批量业务后台已增加流量限制，业务量大时可能执行较慢，请耐心等待。</span></div>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="GantPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10" >
+			<div class="c_table">
+				<table>
+					<thead>
+						<tr>
+							<th><input jwcid="@Checkbox" name="myCheck" onclick="checkedOther('trades')"/></th>
+							<th>导入批次号</th>
+							<th>批量任务名称</th>
+							<th>批量类型</th>
+							<th>导入数量</th>
+							<th>导入时间</th>
+							<th>导入员工</th>
+							<th>导入部门</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+							<td class="e_center"><input jwcid="@Checkbox" name="trades" value="ognl:info.BATCH_ID"/></td>
+							<td class="e_center">
+								<div jwcid="@Conditional" condition="ognl:info.BATCH_OPER_TYPE == 'BATADDVPMNMEM' || info.BATCH_OPER_TYPE == 'BATADDSUPTELMEM' ">
+									<a jwcid="@Redirect" value="ognl:info.BATCH_ID"  batch_id="ognl:info.BATCH_ID" id="batch_id" batch_oper_type="ognl:info.BATCH_OPER_TYPE"
+									   onclick="javascript:openNav('导入详情','group.bat.BatBatchDetialVPMN', 'batchDetialQueryVPMN', '&cond_BATCH_ID=' + $(this).attr('batch_id')+'&cond_BATCH_OPER_TYPE='+$(this).attr('batch_oper_type'), '');"/>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:info.BATCH_OPER_TYPE != 'BATADDVPMNMEM' && info.BATCH_OPER_TYPE != 'BATADDSUPTELMEM' ">
+									<a jwcid="@Redirect" value="ognl:info.BATCH_ID" batch_id="ognl:info.BATCH_ID" id="batch_id" batch_oper_type="ognl:info.BATCH_OPER_TYPE"
+									   onclick="javascript:openNav('导入详情','group.bat.BatBatchDetial', 'batchDetialQuery', '&cond_BATCH_ID=' + $(this).attr('batch_id')+'&cond_BATCH_OPER_TYPE='+$(this).attr('batch_oper_type'), '');"/>
+								</div>
+							</td>
+							<td class="e_center"><a href="#nogo" jwcid="@Any" batchtaskid="ognl:info.BATCH_TASK_ID" onclick="showBatTaskInfo(this)"><span jwcid="@Insert" value="ognl:info.AUDIT_REMARK"/></a></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.BATCH_OPER_TYPE==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_B_BATCHTYPE','BATCH_OPER_TYPE', 'BATCH_OPER_NAME', info.BATCH_OPER_TYPE)" raw="true"/></td>
+		                    <td class="e_center"><span jwcid="@Insert" value="ognl:info.BATCH_COUNT"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_DATE)" raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:info.STAFF_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.STAFF_ID)" raw="true"/></td>
+		                    <td class="e_center"><span jwcid="@Insert" value="ognl:info.DEPART_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEPART_ID)" raw="true"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="QueryForm" part="GantPart" listener="queryStartTaskInfo" count="ognl:infosCount" pageSize="10"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+	
+	
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+
+<!-- 弹窗 开始 -->
+<div jwcid="PopupPart@Part">
+	<div class="c_popup" id="popup" style="display:none">
+		<div class="c_popupWrapper">
+			<div class="c_popupHeight"></div>
+			<div class="c_popupBox" style="width:750px;">
+	   			<a id="templet"  href=""></a>
+				<div class="c_popupTitle">
+					<div class="text">集团批量业务新增</div>
+					<div class="fn">
+						<a class="close" href="#nogo" onclick="hiddenLayer()"></a>
+					</div>
+				</div>
+				<div class="c_popupContent"><div class="c_popupContentWrapper">
+					<!-- 标题 开始 -->
+					<div class="c_title c_title-2">
+						<div class="text">批量任务定制</div>
+					</div>
+					<!-- 标题 结束 -->
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-7 c_form-col-2" jwcid="BatCreatePart@Part">
+						<ul class="ul">
+							<li class="li col-2">
+								<span class="label"><span class="e_required">批量类型：</span></span>
+								<span class="e_select"><span><span>
+									<select jwcid="@Select" name="BATCH_OPER_CODE" id="BATCH_OPER_CODE"
+											source="ognl:batchOperTypes" valueField="BATCH_OPER_TYPE" textField="BATCH_OPER_NAME"
+											value="ognl:info.BATCH_OPER_TYPE"   desc="操作类型"  nullable="no" 
+											onclick="$('#BATCH_OPER_NAME').val(options(selectedIndex).text)" onchange="selectBatchOperType();"/>
+								</span></span></span>
+								<input type="text" id="BATCH_OPER_NAME" name="BATCH_OPER_NAME" value="" style="display: none;"/>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">任务名称：</span></span>
+								<span class="e_input"><span>
+									<input type="text" name="BATCH_TASK_NAME" id="BATCH_TASK_NAME" jwcid="@TextField" value="ognl:info.BATCH_TASK_NAME" desc="批量任务名称" nullable="no"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label">核批文号：</span>
+								<span class="e_input"><span>
+										<input id="AUDIT_NO" name="AUDIT_NO" jwcid="@TextField" value="ognl:info.AUDIT_NO" rows="1" maxsize="50" desc="核批文号"/>
+								</span></span>
+							</li>
+							<li class="li" style="display: none;">
+								<span class="label">起始时间：</span>
+								<span class="e_elements">
+										<span class="e_input e_input-left"><span>
+											<input jwcid="@DateField" name="cond_INPUT_START_DATE" id="cond_INPUT_START_DATE" nullable="no" value="ognl:info.INPUT_START_DATE" desc="起始时间"/>
+										</span></span>
+								</span>
+							</li>
+							<li class="li" style="display: none;">
+								<span class="label">终止时间：</span>
+								<span class="e_elements">
+										<span class="e_input e_input-left"><span>
+											<input jwcid="@DateField" name="cond_INPUT_END_DATE" id="cond_INPUT_END_DATE" nullable="no" value="ognl:info.INPUT_END_DATE" desc="终止时间"/>
+										</span></span>
+									</span>
+							</li>
+							<li class="li col-2" style="display: none;" id="SMSGO" name="SMSGO">
+								<span class="label">短信发送标识：</span>
+								<span class="e_select"><span><span>
+									<select jwcid="@Select" name="SMS_FLAG" id="SMS_FLAG"
+											source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TRADEBATTASK_SMSFLAG')" 
+											valueField="DATA_ID" textField="DATA_NAME" 
+											value="ognl:info.SMS_FLAG"   desc="短信发送标识" disabled="true"/>
+								</span></span></span>
+							</li>
+							<li class="li col-2">
+								<span class="label">备注：</span>
+								<span class="e_textarea">
+									<span class="e_textareaTop"><span></span></span>
+									<span class="e_textareaContent">
+										<input id="REMARK" name="REMARK" jwcid="@TextArea" value="ognl:info.REMARK" nullable="yes" desc="备注" />
+									</span>
+									<span class="e_textareaBottom"><span></span></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<!-- 表单 结束 -->
+					<div jwcid="BatCondPart@Part">
+					<!-- 标题 开始 -->
+					<div class="c_title c_title-2">
+						<div class="text">批量条件选择</div>
+					</div>
+					<!-- 标题 结束 -->
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-7 c_form-col-2">
+						<ul class="ul">
+							<li class="li col-2">
+								<span class="label"><span class="e_required">批量条件：</span></span>
+								<span class="e_elements">
+									<button jwcid="@Button" name="CODING_BUTTON" class="e_button-right" onclick="ognl:comp.COMP_POPACTION"><i class="e_ico-check"></i><span></span></button>
+									<span class="e_input e_input-left"><span><input jwcid="@Popup" name="CODING_STR" readOnly="true"/></span></span>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<!-- 表单 结束 -->
+					<!-- 标题 开始 -->
+
+						<!-- REQ201910140021_关于和教育互动业务成员批量变更归属学校的需求_ 开始 -->
+						<div class="c_form c_form-label-7 c_form-col-2">
+							<ul class="ul" id="HeEduForSchoolsID" style="display:none;">
+								<li class="li col-2">
+									<span class="label"><span class="e_required">批量转入：</span></span>
+									<span class="e_elements">
+									<button jwcid="@Button" name="CODING_BUTTON" class="e_button-right" onclick="popupPageGrp('group.bat.heeduforschools.HeEDUForSchoolsChange', 'initial', '&LISTBOX_HEIGHT=450px&BATCH_OPER_TYPE=HEEDUFORSCHOOLS&LIMIT_TYPE=0&CODING_TYPE=CODING_STR_HE', '和教育互动业务用户批量变更归属学校]', '780', '400','CODING_STR_HE');"><i class="e_ico-check"></i><span></span></button>
+									<span class="e_input e_input-left"><span><input jwcid="@Popup" name="CODING_STR_HE" readOnly="true"/></span></span>
+								</span>
+								</li>
+							</ul>
+						</div>
+						<!-- REQ201910140021_关于和教育互动业务成员批量变更归属学校的需求_ 结束 -->
+
+					
+					<div class="c_title c_title-2" >
+						<div class="text" >凭证信息</div>
+					</div>
+				
+					<!-- 标题 结束 -->
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-7 c_form-col-2"  >
+						<ul class="ul" id="MyInfoId" style="display:none;">
+							<li class="li col-2"  id="MyInfoId" >
+								<span class="label"><span class="e_required">凭证上传：</span></span>
+								<div id="VoucherFilePart" _comp_path="VoucherFilePart">	<span class="e_elements">
+      <button type="button" class="e_button-right" id="UPLOAD_BTN_MEB_VOUCHER_FILE_LIST" onclick="javascript:Wade.uploadFile('#MEB_VOUCHER_FILE_LIST')" title="凭证信息"><i class="e_ico-upload"></i><span></span></button><span id="UPLOAD_SPAN_MEB_VOUCHER_FILE_LIST" class="e_input e_input-left"><span>
+      <input readonly="readonly" type="text" id="UPLOAD_MEB_VOUCHER_FILE_LIST" name="UPLOAD_MEB_VOUCHER_FILE_LIST" nullable="no" value="已选择0个文件"/>
+      <input type="hidden" id="MEB_VOUCHER_FILE_LIST" name="MEB_VOUCHER_FILE_LIST" desc="凭证信息" filePath="upload/mebattach" ftpSite="groupserv" fileSize="20" fileDelete="true" fileTypes="*.*" needSuffix="false"/></span></span>	</span>
+                             </div>
+							</li>
+							  <li class="li">
+                            <span class="label"><span class="e_required">稽核人员：</span></span> 
+                            <span class="e_elements">
+								<button type="button" class="e_button-right"
+									onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+									<i class="e_ico-check"></i><span></span>
+								</button> 
+                                <span class="e_input e_input-left"><span> <input
+										type="text" jwcid="@TextField"
+										name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+										value=""
+										text="" nullable="no"
+										readonly="true" />
+								</span></span>
+							</span>
+                        </li>
+						</ul>
+					</div>
+					
+					<!-- 表单 结束 -->
+					<div jwcid="BatImportPart@Part">
+					<!-- 标题 开始 -->
+					<div class="c_title c_title-2">
+						<div class="text">批量数据导入</div>
+					</div>
+					<!-- 标题 结束 -->
+					
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-7 c_form-col-2">
+						<div jwcid="@Conditional" condition="ognl:comp.BATCH_OPER_TYPE == 'GROUPMEMCANCEL'||comp.BATCH_OPER_TYPE == 'GRPCHANGEDISCOUNT'">
+						<ul class="ul">
+							<li class="li">
+								<span class="label">导入方式选择：</span>
+								<span class="e_select"> 
+									<select name="GRP_BAT" id="GRP_BAT" onchange="importGrpChangeAction()">
+									<option value="0" selected="selected">通过文件导入</option>
+									<option value="1">后台自动导入</option>
+									</select>
+								 </span>
+							</li>
+							<li class="li col-2" id="cancel_text" style="display:none">
+								<span class="e_tip">导入方式选择[后台自动导入]时，默认导入此集团用户下所有成员</span>
+							</li>
+						</ul>
+						</div>
+						
+						<div jwcid="@Conditional" condition="ognl:comp.BATCH_OPER_TYPE == 'BATGRPOPENMEB'">
+						<ul>
+							<li class="li col-2">
+								<span class="label">导入方式选择：</span>
+								<div class="c_fn">
+									<ul>
+										<li><label><input jwcid="@Radio" name="OPEN_BAT" id="OPEN_BAT_NUM" onclick="importGrpOpenAction(this)"  value="1"  class="e_radio"/>导入号段</label></li>
+										<li><label><input jwcid="@Radio" name="OPEN_BAT" id="OPEN_BAT_FILE" onclick="importGrpOpenAction(this)" value="0"  class="e_radio"/>导入文件</label></li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+						<ul id="open_text" style="display: none;">
+						<div jwcid="OpenArea@Part">
+							<li class="li">
+								<span class="label">服务号段开始：</span>
+								<span class="e_input"><span><input type="text" /></span></span>
+							</li>
+							<li class="li">
+								<span class="label">SIM卡号段开始：</span>
+								<span class="e_input"><span><input type="text" /></span></span>
+							</li>
+							<li class="li">
+								<span class="label">开户数量：</span>
+								<span class="e_input"><span><input type="text" /></span></span>
+							</li>
+						</div>	
+						</ul>
+						</div>
+						
+						<ul id="cancel_file" style="display:none;">	
+							<li class="li col-2" id="cancel_file">
+								<span class="label"><span class="e_required">导入：</span></span>
+								<span class="e_elements">
+									
+									<span jwcid="@Import" name="FILE_ID" ftpSite="groupserv" id="FILE_ID"
+														fileSize="10" fileType="excel" serviceName="9006"
+														config="ognl:comp.TEMPLATE_FORMART_XML"
+														params=""
+														filePath="upload/import"
+														cond="PopupPart,MqParamPart" desc="导入文件"
+														beforeAction="chooseCompSTR" 
+														action="exportAction"
+														/> </span>
+							</li>
+						</ul>
+						<ul id="cancel_templet" style="display: none;">
+							<li class="li col-2">
+								<span class="e_tip">按模板要求格式，填写好数据，确定后再提交。&nbsp;&nbsp;&nbsp;
+									<a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&filePath='+comp.TEMPLATE_DATA_XLS)">[下载模板]</a>
+								</span>
+							</li>
+						</ul>
+					</div>
+					
+					<!-- 表单 结束 -->
+					</div>
+					</div>
+					
+					<!-- 是否点击电子打印工单按钮 REQ201807240010++新增批量开户界面人像比对、受理单打印优化需求 by mqx 20190117-->
+	    			<input type="hidden" id="PRINT_TAG" name="PRINT_TAG" value="0" />
+	    			
+					<!-- 提交 开始 -->
+					<div class="c_submit" jwcid="submitPart@Part">
+						<button type="button" class="e_button-page-ok" onclick="importSubmit2()" id="bsubmit"><i></i><span>提交</span></button>
+						<button type="button" class="e_button-page-cancel" onclick="hiddenLayer('popup')"><i></i><span>取消</span></button>
+					</div>
+					<!-- 提交 结束 -->
+				</div></div>
+				<div class="c_popupBottom"><div></div></div>
+				<div class="c_popupShadow"></div>
+			</div>
+		</div>
+		<iframe class="c_popupFrame"></iframe>
+		<div class="c_popupCover"></div>
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<div jwcid="PopupPageGrpPart@saleserv:PopupPageGrp" element="div"/>
+	<!-- 提交到MQ的参数块  开始-->
+	<div style="display: none;" jwcid="MqParamPart@Part">
+		<input jwcid="@Any" id="BATCH_TASK_ID" name="BATCH_TASK_ID" value="ognl:comp.BATCH_TASK_ID" style="display:none" encode="false" />
+		<input jwcid="@Any" id="BATCH_OPER_TYPE" name="BATCH_OPER_TYPE" value="ognl:comp.BATCH_OPER_TYPE" style="display:none" encode="false" />
+		<input jwcid="@Any" id="TERM_IP" name="TERM_IP" value="ognl:comp.TERM_IP" style="display:none" encode="false" />
+	</div>
+	<!-- 提交到MQ的参数块  结束-->
+
+	<div style="display:none;" jwcid="disParamPart@Part">
+		<input jwcid="@Any" id="GRPBAT4AFLAG" name="GRPBAT4AFLAG" value="ognl:condition.GRPBAT4AFLAG" style="display:none" encode="false" />
+		<select jwcid="@Select" name="TD_S_4APar" source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(), 'TD_S_STATIC','DATA_ID','DATA_NAME',new java.lang.String[]{'TYPE_ID','SUBSYS_CODE'},new java.lang.String[]{'TD_S_4APar','CRM'})" 
+			valueField="DATA_ID" textField="DATA_NAME" value=""  id="TD_S_4APar" desc="需要进入金库模式的批量类型"  style="display:none"/>
+	</div>
+    <div style="display: none">
+        <object id="MakeBillActiveX" classid="clsid:5144a5b7-b206-4e79-8ee2-9df3973d6527">
+        </object>
+    </div>
+<script jwcid="@Script" type="text/javascript" src="/treasury/scripts/treasury.js" outer="true"></script> 
+</body>
+</html>

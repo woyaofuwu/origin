@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>个人客户电子卡返销界面</title>
+	<script language="JavaScript" src="person/evaluecard/scripts/EValueCard.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="5333" element="div" />
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-2 c_form-text" jwcid="freshPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text" jwcid="@Insert"   value="ognl:editInfo.CUST_NAME" desc="客户名称："/>
+			</li>
+			
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:editInfo.PSPT_ID" desc="证件号码"/>
+				
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',editInfo.PSPT_TYPE_CODE)"></span>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert"   value="ognl:editInfo.PSPT_ADDR" desc="证件地址"/>
+				
+			</li>
+			
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">购卡信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 提示 开始 -->
+	<div class="c_tip">
+		<span  name="ALERT_INFO" id="ALERT_INFO" >温馨提示：默认按有价卡卡号进行查询返销，点击复选框则按交易流水查询返销！ </span>
+	</div>
+	<!-- 提示 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form  c_form-col-3 c_form-label-5 e_dis"  jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="">有价卡卡号：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" 
+				id="COND_NO" name="COND_NO"
+				value="" 
+				desc="有价卡卡号" 
+				maxsize="30" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">交易流水：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" 
+				id="COND_ID" name="COND_ID"
+				value=""  
+				desc="交易流水" 
+				maxsize="30" />
+				<input jwcid="@TextField" type="hidden" id="OPER_TYPE" name="OPER_TYPE" value="1"/>
+				<input jwcid="@TextField" type="hidden" id="QRY_TYPE" name="QRY_TYPE" value="2"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"></span>
+				<div class="c_fn">
+					<ul>
+						<li><label><input jwcid="@Checkbox" id="qryFlag" name="qryFlag" value="1" />购卡交易流水查询</label></li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button id="addButtom" name="addButtom" class="e_button-form"  onclick="queryCardInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table"  jwcid="BasicInfosPart@Part">
+		<table id="table1" jwcid="@Table"  name = 'table1'>
+			<thead>
+				<tr>
+				    <th>交易流水</th>
+					<th>卡号</th>
+					<th>渠道编码</th>
+					<th>卡面额(分)</th>
+					<th>卡类型</th>
+					<th>有效日期</th>
+					<th>销售时间</th>
+					<th>购卡号码</th>
+					<th>邮箱地址</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="tableValue1" id="tableValue1">
+				<tr jwcid="@Foreach" source="ognl:cardInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.TRANSACTIONID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CARD_NO" raw="false" /></td>
+					<td><span jwcid="@Insert" value="实体营业厅" raw="false" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.CARD_MONEY" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CARD_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CARD_EXPIREDDATE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACTION_TIME" raw="false"/></td>					
+					<td><span jwcid="@Insert" value="ognl:info.IDVALUE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.EMAIL" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkSubmit()" listener="onTradeSubmit" refreshPart=""  area="AuthPart,QueryCondPart" element="div"/>	
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

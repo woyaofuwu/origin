@@ -1,0 +1,21 @@
+SELECT USER_ID_A,
+       SERIAL_NUMBER_A,
+       TO_CHAR(USER_ID_B) USER_ID_B,
+       SERIAL_NUMBER_B,
+       INST_ID,
+       TO_CHAR(START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+       TO_CHAR(END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       RSRV_TAG3,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_DATE1,
+       RSRV_DATE2,
+       RSRV_DATE3,
+       REMARK
+  FROM TF_F_VPMNACTIVE_RELATION
+ WHERE USER_ID_B = TO_NUMBER(:USER_ID_B)
+   AND ACTIVE_TYPE = '9'
+   AND SYSDATE BETWEEN START_DATE AND END_DATE

@@ -1,0 +1,134 @@
+<div class="c_box">
+	<div jwcid="mytab@Tabset" switchAction="platOrderAdd.switchTabset(ptitle,title)">
+		<div
+			jwcid="@Conditional"
+			condition='false'>
+			<div jwcid="@Tabset" title="订购区" >
+				<!-- 表单 开始 -->
+				<div class="c_form" id="queryCond" jwcid="@Any" >
+					<ul class="ul">
+						<li class="li" jwcid="@Any">
+							<span class="label">服务名称/sp厂商：</span>
+							<span class="e_input" style="width:210px;">
+								<span>
+									<input jwcid="platSearch@Search"
+										name="platSearch"
+										page="plat.PlatOrder"
+										defaultText='ognl:cond.COND==null?"平台服务搜索":cond.COND'
+										dynamic="true"
+										listener="loadPlatSvc"
+										searchCode="SERVICE_NAME"
+										valueCode="SERVICE_ID"
+										optionEnterAction="platOrderAdd.optionEnterAction"
+										optionClickAction="platOrderAdd.optionEnterAction"
+										enterAction="platOrderAdd.queryPlatSvc"
+										width="216"/>
+								</span>
+							</span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="searchBtn@Any" id="searchBtn" type="button"  isdisable ="ognl:disableSearch"     class="e_button-form l_ml" onclick="platOrderAdd.queryPlatSvc();"><i class="e_ico-search"></i><span>查询</span></button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				
+				<!-- 表格 开始 -->
+				<div jwcid="queryPart@Part" id="queryPart" element="div">
+					<div class="c_scroll" style="height:154px;"><div class="c_table">
+						<table>
+							<thead>
+								<tr>
+									<th>选择标识</th>
+									<th>服务名称</th>
+									<th>服务代码</th>
+									<th>企业名称</th>
+									<th>企业代码</th>
+									<th>业务类型</th>
+									<th>计费类型</th>
+									<th>价格（元）</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									jwcid="@Foreach" 
+									source="ognl:platSvcList" 
+									value="ognl:platSvc"
+									element="tr" >
+									<td class="e_center">
+										<input type="checkbox" 
+											name="platAddCheckBox"
+											jwcid="@Any" 
+											serviceId="ognl:platSvc.SERVICE_ID"
+											class="e_checkbox" 
+											onclick="platOrderAdd.checkBoxAction(this)"/>
+									</td>
+									<td><span jwcid="@Insert" value="ognl:platSvc.SERVICE_NAME"/></td>
+									<td><span jwcid="@Insert" value="ognl:platSvc.BIZ_CODE"/></td>
+									<td><span jwcid="@Insert" value="ognl:platSvc.SP_NAME"/></td>
+									<td><span jwcid="@Insert" value="ognl:platSvc.SP_CODE"/></td>
+									<td>
+										<span jwcid="@Conditional" condition='ognl:!platSvc.BIZ_TYPE_CODE.equals("17")'>   
+											<span jwcid="@Insert" value="ognl:getPage().pageutil.getStaticValue('BIZ_TYPE_CODE', platSvc.BIZ_TYPE_CODE)"/>
+										</span>
+										<span jwcid="@Conditional" condition='ognl:platSvc.BIZ_TYPE_CODE.equals("17")&&platSvc.ORG_DOMAIN.equals("BJDP")'>   
+											<span jwcid="@Insert" value="ognl:'北京通用下载'"/>
+										</span>
+										<span jwcid="@Conditional" condition='ognl:platSvc.BIZ_TYPE_CODE.equals("17")&&platSvc.ORG_DOMAIN.equals("GDDP")'>   
+											<span jwcid="@Insert" value="ognl:'广东通用下载'"/>
+										</span>
+									</td>
+									<td><span jwcid="@Insert" value="ognl:platSvc.BILL_TYPE"/></td>
+									<td><span jwcid="@Insert" value="ognl:platSvc.PRICE/1000"/></td>
+								</tr>
+							</tbody>
+						</table>
+					</div></div>
+					<!-- 表格 结束 -->
+				</div>
+			</div>
+		</div>
+		<!-- 区域 结束 -->
+		<input jwcid="@Hidden" name="PLATORDERADD_COMPONENT_ID" id="PLATORDERADD_COMPONENT_ID" value="ognl:id"/>
+		<div
+			jwcid="@Conditional"
+			condition='false'>
+			<div jwcid="@Tabset" title="全退订区">
+				<div class="c_scroll" style="height:154px;"><div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th>选择标识</th>
+								<th>服务名称</th>
+							</tr>
+						</thead>
+						<tbody id="allCancelArea">
+							
+						</tbody>
+					</table>
+				</div></div>
+			</div>
+		</div>
+		<div
+			jwcid="@Conditional"
+			condition='true'>
+			<div jwcid="@Tabset" title="DSMP开关区">
+				<div class="c_scroll" style="height:154px;"><div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th>选择标识</th>
+								<th>开关名称</th>
+								<th>当前状态</th>
+							</tr>
+						</thead>
+						<tbody id="switchArea">
+							
+						</tbody>
+					</table>
+				</div></div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,619 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>流程图管理页面</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/ewe/mxClient.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/ewe/manager/script/chartmanager.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="l_edit">
+	<div class="c_scroll c_scroll-float c_scroll-header">
+	<div class="c_space"></div>			
+	<div class="c_title">
+		<div class="text">流程图展示</div>
+	</div>
+	<div class="c_box c_box-border">
+		<div class="l_padding">
+			<div class="l_col l_col-line c_box e_hide-phone" style="width:100%;height:350px;overflow:auto;">
+				<div class="l_colItem">
+					<div jwcid="EosPart@Part" class="c_list c_list-form">
+						<div id="graphContainer"
+							style="position:relative;background:url('frame/skin/base/img/flow/grid.gif');">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">流程信息</div>
+		</div>
+		<!-- 标题 结束 -->
+		<div class="c_list c_list-line c_list-col-2 c_list-border" jwcid="chartItem@Part">
+			<ul class="ul">
+				<li class="required link">
+					<div class="label">流程名（中文名）</div>
+					<div class="value">
+						<input type="text" name ="TEMPLET_NAME" jwcid="@TextField" value="ognl:condition.TEMPLET_NAME" desc="流程名（中文名）" nullable="no"/>
+					</div>
+				</li>
+				<li class="required link">
+					<div class="label">流程名ID（英文名）</div>
+					<div class="value">
+						<span class="e_mix">
+						<input type="text" name ="BPM_TEMPLET_ID" jwcid="@TextField" value="ognl:condition.BPM_TEMPLET_ID" desc="流程名（英文名）" nullable="no"/>
+						<button class="e_button-blue" ontap="queryInfo(this);">
+							<span class="e_ico-check"></span>
+							<span>查询</span>
+						</button>
+					</span>
+					</div>
+				</li>
+				<li class="li">
+					<div class="label">流程描述</div>
+					<div class="value">
+						<input type="text" name ="TEMPLET_DESC" jwcid="@TextField" value="ognl:condition.TEMPLET_DESC" desc="流程描述" />
+					</div>
+				</li>
+				<li class="li">
+					<div class="label">备注</div>
+					<div class="value">
+						<input type="text" name ="TEMPLET_REMARK" jwcid="@TextField" value="ognl:condition.TEMPLET_REMARK" desc="备注" />
+					</div>
+				</li>
+				<li class="required link">
+					<div class="label">流程类型</div>
+					<div class="value">
+						<select jwcid="@Select" name="TEMPLET_TYPE" source="ognl:pageutil.getStaticList('ESOP_TEMPLET_TYPE')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="templetChange(this);" desc="流程类型" nullable="no" value="ognl:condition.TEMPLET_TYPE"/>
+					</div>
+				</li>
+				<li class="li" id = "LI_SUB_BPM_TEMPLET_ID" name="LI_SUB_BPM_TEMPLET_ID">
+					<div class="label">关联主流程（流程ID）</div>
+					<div class="value">
+						<input type="text" name ="SUB_BPM_TEMPLET_ID" jwcid="@TextField" value="ognl:condition.SUB_BPM_TEMPLET_ID" desc="关联主流程（流程ID）"/>
+					</div>
+				</li>
+				<li class="li" id = "LI_SUB_NODE_ID" name="LI_SUB_NODE_ID">
+					<div class="label">关联主流程节点（节点ID）</div>
+					<div class="value">
+						<input type="text" name ="SUB_NODE_ID" jwcid="@TextField" value="ognl:condition.SUB_NODE_ID" desc="关联主流程节点（节点ID）"/>
+					</div>
+				</li>
+				<li class="li" id = "LI_IS_MULIT" name="LI_IS_MULIT">
+					<div class="label">是否一单多条</div>
+					<div class="value">
+						<select jwcid="@Select" name="IS_MULIT" source="ognl:pageutil.getStaticList('ESOP_IS_MULIT')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="是否一单多条" value="ognl:condition.IS_MULIT"/>
+					</div>
+				</li>
+				<li class="li" id = "LI_RELA_SVC" name="LI_RELA_SVC">
+					<div class="label">拆单服务</div>
+					<div class="value">
+						<input type="text" name ="RELA_SVC" jwcid="@TextField" desc="拆单服务" value="ognl:condition.RELA_SVC"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_space"></div>
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-full" >
+			<button type="button" class="e_button-r e_button-l e_button-blue" name="SUBMIT_CHART" id="SUBMIT_CHART">提交</button>
+			<button type="button" class="e_button-r e_button-l e_button-blue" name="SUBMIT_CHART_ONLY" id="SUBMIT_CHART_ONLY">只提交流程图</button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	</div>
+</div>	
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="taskPopup">
+		<!-- 节点信息 开始 -->
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="popupNodeItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this)">节点信息配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 节点信息配置 开始 -->
+					<div class="c_list c_list-line c_list-col-1 c_list-border">
+						<ul>
+							<li>
+								<div class="label">节点名称（中文名）</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="NODE_NAME" value="" /></div>
+								</div>
+							</li>
+							<li class="required link">
+								<div class="label">节点名称（英文名）</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="NODE_ID" value="" nullable="no"/></div>
+								</div>
+							</li>
+							<li class="required link">
+								<div class="label">节点类型</div>
+								<div class="value">
+									<div class="value">
+									<select jwcid="@Select" name="NODE_TYPE" source="ognl:pageutil.getStaticList('ESOP_NODE_TYPE')" 
+								 			textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="节点类型" nullable="no"/>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="label">节点标识</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="NODE_POS" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">节点描述</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="NODE_DESC" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">描述</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="NODE_REMARK" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">页面生成表达式</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="PAGELOAD_EXPRESS" value="" /></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveNodeInfo(this)">确定</button>
+					</div>
+					<!-- 提交 结束 -->
+				</div>
+			</div>
+			<!-- 节点信息 结束 -->
+		
+			<!-- 节点关联关系信息 开始 -->
+			<div class="c_popupItem" id="popupRelaItem"> 
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this)">节点关系配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 节点信息配置 开始 -->
+					<div class="c_list c_list-line c_list-col-1 c_list-border">
+						<ul>
+							<li>
+								<div class="label">节点关系描述</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="RELA_DESC" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">节点关系显示值</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="RELA_SHOW" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">匹配表达式</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="RELA_CONDITION_ID" value="" /></div>
+								</div>
+							</li>
+							<li class="link" ontap="showPopup('taskPopup','popupTaskItem',true)">
+								<div class="label">任务配置</div>
+								<div class="value">
+									<input type="text" readonly="readonly">
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveRelaInfo(this)">确定</button>
+					</div>
+					<!-- 提交 结束 -->
+				</div>
+			</div>
+			<!-- 节点关联关系信息 结束-->
+		
+			<!-- 节点任务关系信息 开始 -->
+			<div class="c_popupItem" id="popupTaskItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupRelaItem',true);">节点任务配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 节点任务配置 开始 -->
+					<div class="c_list c_list-line c_list-col-1 c_list-border">
+						<ul>
+							<li>
+								<div class="label">任务名称</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_NAME" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">任务类型</div>
+								<div class="value">
+									<div class="value">
+										<select jwcid="@Select" name="TASK_TYPE" source="ognl:pageutil.getStaticList('ESOP_TASK_TYPE')" 
+								 			textField="DATA_NAME" valueField="DATA_ID" nullable="no" onChange="taskTypeChange(this)" desc="任务类型"/>
+								 </div>
+								</div>
+							</li>
+							<li>
+								<div class="label">优先级</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_PRIORITY" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">匹配表达式</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_CONDITION_ID" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">节点任务描述</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="TASK_DESC" value="" /></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- 节点任务配置 结束 -->
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="addTaskTable(this)">新增</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="modTaskTable(this)">修改</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="delTaskTable(this)">删除</button>					
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+					<div class="l_queryResult">
+						<!-- 表格 开始 -->
+						<div class="c_table c_table-lite c_table-checkbox c_table-border">
+							<table jwcid="TaskTable@Table" name="TaskTable" id="TaskTable" rowClick="taskTableRowClick">
+								<thead>
+									<tr>
+										<th col ="TASK_NAME">关系中文显示</th>
+										<th col ="TASK_TYPE">任务配置</th>
+										<th col ="TASK_PRIORITY">优先级</th>
+										<th col ="TASK_CONDITION_ID">匹配表达式</th>
+										<th col ="TASK_DESC">节点任务描述</th>
+										<th col ="TASK_INFOS" style="display:none;">任务数据</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					<!-- 表格 结束 -->
+					</div>
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveTaskInfos(this)">确认</button>
+					</div>
+					<!-- 提交 结束 -->
+				</div>
+			</div>
+			<!-- 节点任务关系信息 结束 -->
+		
+			<!-- 接单规则配置信息  开始 -->
+			<div class="c_popupItem" id="popupTaskRuleItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupTaskItem', true);">接单规则配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-line c_list-col-1 c_list-border">
+					<ul>
+						<li>
+							<div class="label">工单接受方式</div>
+							<div class="value">
+								<select jwcid="@Select" name="RECEIVE_TYPE" source="ognl:pageutil.getStaticList('ESOP_RECEIVE_TYPE')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="处理类型"/>
+							</div>
+						</li>
+						<li>
+							<div class="label">接受方式说明</div>
+							<div class="value">
+								<div class="value"><input jwcid="@TextField" name="RECEIVE_DESC" value="" desc="接受方式说明"/></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<!-- 提交 开始 -->
+				<div class="c_submit c_submit-full">
+					<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveTaskRuleInfos(this)">确定</button>
+				</div>
+				<!-- 提交 结束 -->
+				</div>
+			</div>
+			<!-- 接单规则配置信息  结束-->
+		
+			<!-- 接单页面配置信息  开始 -->
+			<div class="c_popupItem" id="popupTaskPageItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupTaskItem', true);">接单页面配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-line c_list-col-1 c_list-border">
+					<ul>
+						<li>
+							<div class="label">页面类型</div>
+							<div class="value">
+								<select jwcid="@Select" name="OBJECT_TYPE" source="ognl:pageutil.getStaticList('ESOP_OBJECT_TYPE')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="页面类型" nullable="no"/>
+							</div>
+						</li>
+						<li>
+							<div class="label">子系统编码</div>
+							<div class="value">
+								<div class="value"><input jwcid="@TextField" name="SUB_SYS_ID" value="" desc="子系统编码"/></div>
+							</div>
+						</li>
+						<li>
+							<div class="label">页面名称</div>
+							<div class="value">
+								<div class="value"><input jwcid="@TextField" name="PAGE_NAME" value="" desc="页面名称"/></div>
+							</div>
+						</li>
+						<li>
+							<div class="label">页面url</div>
+							<div class="value">
+								<div class="value"><input jwcid="@TextField" name="PAGE_VALUE" value="" desc="页面url"/></div>
+							</div>
+						</li>
+						<li>
+							<div class="label">页面处理服务</div>
+							<div class="value">
+								<div class="value"><input jwcid="@TextField" name="PAGE_SVC" value="" desc="页面处理服务"/></div>
+							</div>
+						</li>
+						<li>
+							<div class="label">备注</div>
+							<div class="value">
+								<div class="value"><input jwcid="@TextField" name="PAGE_DESC" value="" desc="备注"/></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<!-- 提交 开始 -->
+				<div class="c_submit c_submit-full">
+					<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveTaskPageInfos(this)">确定</button>
+				</div>
+				<!-- 提交 结束 -->
+				</div>
+			</div>
+			<!-- 接单页面配置信息  结束 -->
+	
+			<!-- 超时规则配置信息  开始 -->
+			<div class="c_popupItem" id="popupTaskTimerItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupTaskItem', true);">超时规则配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-line c_list-col-1 c_list-border">
+					<ul>
+						<li>
+							<div class="label">提醒类型</div>
+							<div class="value">
+								<select jwcid="@Select" name="TIMER_TYPE" source="ognl:pageutil.getStaticList('ESOP_TIMER_TYPE')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="timerTypeChange()" desc="提醒类型" nullable="no"/>
+							</div>
+						</li>
+						<li>
+							<div class="label">处理人</div>
+							<div class="value">
+								<select jwcid="@Select" name="TIMER_OBJECT" source="ognl:pageutil.getStaticList('ESOP_TIMER_OBJECT')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="处理人" nullable="no"/>
+							</div>
+						</li>
+						<li id = "LI_OFFSET_LOCATION" name="LI_OFFSET_LOCATION">
+							<div class="label">偏移起始时间</div>
+							<div class="value">
+								<select jwcid="@Select" name="OFFSET_LOCATION" source="ognl:pageutil.getStaticList('ESOP_OFFSET_LOCATION')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="偏移起始时间" nullable="no"/>
+							</div>
+						</li>
+						
+						<li id = "LI_OFFSET_MODE" name="LI_OFFSET_MODE">
+							<div class="label">偏移类型</div>
+							<div class="value">
+								<select jwcid="@Select" name="OFFSET_MODE" source="ognl:pageutil.getStaticList('ESOP_OFFSET_MODE')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="偏移类型"/>
+							</div>
+						</li>
+						<li id = "LI_OFFSET_EXP" name="LI_OFFSET_EXP">
+							<div class="label">表达式</div>
+							<div class="value">
+								<input jwcid="@TextField" name="OFFSET_EXP" value="" />
+							</div>
+						</li>
+						<li id = "LI_OFFSET_TYPE" name="LI_OFFSET_TYPE">
+							<div class="label">偏移单位值</div>
+							<div class="value">
+								<select jwcid="@Select" name="OFFSET_TYPE" source="ognl:pageutil.getStaticList('ESOP_OFFSET_TYPE')" 
+								 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="偏移单位值"/>
+							</div>
+						</li>
+						<li id = "LI_OFFSET_VALUE" name="LI_OFFSET_VALUE">
+							<div class="label">偏移值</div>
+							<div class="value">
+								<input jwcid="@TextField" name="OFFSET_VALUE" value="" desc="偏移值"/>
+							</div>
+						</li>
+						<li class="link" ontap="initExcludeInfos()" id = "LI_OFFSET_EXCLUDE" name="LI_OFFSET_EXCLUDE">
+							<div class="label">偏移排除表达式</div>
+							<div class="value">
+								<input type="text" readonly="readonly">
+							</div>
+						</li>
+						
+						<li id = "LI_WARN_SVC" name="LI_WARN_SVC">
+							<div class="label">处理服务</div>
+							<div class="value">
+								<input jwcid="@TextField" name="WARN_SVC" value="" />
+							</div>
+						</li>
+						<li>
+							<div class="label">提醒内容</div>
+							<div class="value">
+								<input jwcid="@TextField" name="WARN_CONTENT" value="" nullable="no"/>
+							</div>
+						</li>
+						<li>
+							<div class="label">提醒次数</div>
+							<div class="value">
+								<input jwcid="@TextField" name="WARN_NUM" value="" nullable="no"/>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<!-- 提交 开始 -->
+				<div class="c_submit c_submit-full">
+					<button type="button" class="e_button-r e_button-l e_button-blue" ontap="addOverTimerTable(this)">新增</button>
+					<button type="button" class="e_button-r e_button-l e_button-blue" ontap="modOverTimerTable(this)">修改</button>
+					<button type="button" class="e_button-r e_button-l e_button-blue" ontap="delOverTimerTable(this)">删除</button>
+				</div>
+				<!-- 提交 结束 -->
+				<div class="c_space"></div>
+				<div class="l_queryResult">
+					<!-- 表格 开始 -->
+					<div class="c_table c_table-lite c_table-checkbox c_table-border">
+						<table jwcid="OverTimerTable@Table" name="OverTimerTable" rowClick="overTimerTableRowClick">
+							<thead>
+								<tr>
+									<th col ="TIMER_TYPE">处理类型</th>
+									<th col ="TIMER_OBJECT">处理人</th>
+									<th col ="OFFSET_LOCATION">偏移类型</th>
+									<th col ="OFFSET_MODE">表达式</th>
+									<th col ="OFFSET_EXP">偏移开始值</th>
+									<th col ="OFFSET_TYPE">偏移单位值</th>
+									<th col ="OFFSET_VALUE">偏移值</th>
+									<th col ="EXCLUDE_INFOS">偏移排除表达式</th>
+									<th col ="WARN_SVC">处理服务</th>
+									<th col ="WARN_CONTENT">提醒内容</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<!-- 表格 结束 -->
+				
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveOverTimerInfos(this)">确认</button>
+					</div>
+					<!-- 提交 结束 -->
+				</div>
+				</div>
+			</div>
+			
+			<div class="c_popupItem" id="popupTaskExcludeItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);showPopup('taskPopup','popupTaskTimerItem', true);">剔除规则配置</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 偏移排除表达式 开始 -->
+					<div class="c_list c_list-line c_list-col-1 c_list-border">
+						<ul>
+							<li>
+								<div class="label">排除类型</div>
+								<div class="value">
+									<select jwcid="@Select" name="EXCLUDE_TYPE" source="ognl:pageutil.getStaticList('ESOP_OFFSET_EXCLUDE')" 
+									 textField="DATA_NAME" valueField="DATA_ID" onChange="" desc="处理类型"/>
+								</div>
+							</li>
+							<li>
+								<div class="label">排除日期(使用逗号分隔)</div>
+								<div class="value">
+									<div class="value"><input jwcid="@TextField" name="EXCLUDE_DAY" value="" /></div>
+								</div>
+							</li>
+							<li>
+								<div class="label">时间段(格式MMHH)</div>
+								<div class="value">
+								<span class="e_mix">
+									<input jwcid="@DateField" name="EXCLUDE_TIMER_START" value="" format="MM:dd:ss"/>
+									<span class="e_label">-</span>
+									<input jwcid="@DateField" name="EXCLUDE_TIMER_END" value="" format="MM:dd:ss"/>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="addExcludeTable(this)">新增</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="modExcludeTable(this)">修改</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="delExcludeTable(this)">删除</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+					<div class="l_queryResult">
+					<!-- 表格 开始 -->
+					<div class="c_table c_table-lite c_table-checkbox c_table-border">
+						<table jwcid="ExcludeTable@Table" name="ExcludeTable" id="ExcludeTable" rowClick="excludeTableRowClick">						
+							<thead>
+								<tr>
+									<th col ="EXCLUDE_TYPE">排除类型</th>
+									<th col ="EXCLUDE_DAY">排除日期</th>
+									<th col ="EXCLUDE_TIMER_START">开始时间</th>
+									<th col ="EXCLUDE_TIMER_END">结束时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							<tr jwcid="@Foreach" source="ognl:excludeInfos" value="ognl:excludeInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_TYPE"></span></td>
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_DAY"/></td>
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_TIMER_START"/></td>		
+								<td><span jwcid="@Insert" value="ognl:excludeInfo.EXCLUDE_TIMER_END"/></td>						 
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- 表格 结束 -->
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="saveExcludeInfos(this)">确认</button>
+					</div>
+					<!-- 提交 结束 -->
+					
+					<!-- 偏移排除表达式  结束 -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 超时规则配置信息 结束 -->
+	</div>
+	<!-- 弹窗 结束 -->
+	
+	<div jwcid="hiddenItem@Part">
+		<input style="display: none" jwcid="@Hidden" id="EXCLUDE_INFOS" name="EXCLUDE_INFOS" value="" />
+		<input style="display: none" jwcid="@Hidden" id="TASK_INFOS" name="TASK_INFOS" value="" />
+		<input style="display: none" jwcid="@Hidden" id="RELA_INFOS" name="RELA_INFOS" value="" />
+		<textarea jwcid="@TextArea" name="CHART_INFO" id="CHART_INFO" value="ognl:condition.CHART_INFO" style="display:none"></textarea>
+		<input style="display: none" jwcid="@Hidden" id="XML_INFO" name="XML_INFO" value="" />
+	</div>
+</body>
+</html>

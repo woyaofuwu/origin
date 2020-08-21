@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>购机活动修改IMEI号</title>
+<script  jwcid="@Script" src="person/modifysaleactiveimei/scripts/modifysaleactiveimei.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="247"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	
+	 <!-- 三户展示组件 开始 -->
+		<div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+	 <!-- 三户展示组件 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<div jwcid="QueryListPart@Part">
+<!-- 区域 开始 -->
+<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">购机活动信息</div>
+		</div>
+		<!-- 标题 结束 -->
+
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" ><div class="c_table">
+		<table  jwcid="@Table" name="userGoodsInfoTable"  id="userGoodsInfoTable" scroll="true">
+			<thead>	
+				<tr>
+					<th col="RELATION_TRADE_ID" ><span>活动流水</span></th>
+					<th col="ACCEPT_DATE"><span>购机时间</span></th>
+					<th col="RES_CODE"><span>IMEI号</span></th>
+					<th col="GOODS_NAME"><span>购机名称</span></th>
+					<th col="UPDATE_STAFF_ID"><span>更新员工</span></th>
+					<th col="UPDATE_TIME"><span>更新时间</span></th>
+					<th col="CHECK_TRADE_ID"><span>审批工单号</span></th>
+					<th col="REMARK"><span>备注</span></th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="userGoodsInfoTableValue" id="userGoodsInfoTableValue">
+				<tr jwcid="@Foreach" source="ognl:goodsInfos" value="ognl:goodsInfo" element="tr" index="ognl:rowIndex"  ondblclick="changeGoodsInfo();">
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.RELATION_TRADE_ID"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.ACCEPT_DATE"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.RES_CODE"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.GOODS_NAME"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', goodsInfo.UPDATE_STAFF_ID)"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.UPDATE_TIME"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.CHECK_TRADE_ID"></span></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:goodsInfo.REMARK"></span></td>
+				</tr>
+			</tbody> 
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!--</div> -->
+</div>
+
+<div class="c_form c_form-label-7 c_form-col-2" jwcid="EditIMEIPart@Part">
+		<ul class="ul">
+			<li class="li">
+			<span class="label"><span class="e_required">原IMEI号：</span></span>
+			<span class="e_input"><span>
+					<input jwcid="@TextField" name="OLD_RES_CODE" id="OLD_RES_CODE" value="ognl:goodsInfo.NO_VALUE" disabled="true" desc="原IMEI号" nullable="yes" />
+				</span></span>
+			</li>
+			<li class="li">
+			<span class="label"><span class="e_required">新IMEI号：</span></span>
+			<span class="e_input"><span>
+					<input jwcid="@TextField" name="NEW_RES_CODE" id="NEW_RES_CODE" value="ognl:goodsInfo.NO_VALUE" />
+				</span></span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span class="e_required">审批工单号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="CHECK_TRADE_ID" id="CHECK_TRADE_ID" value="" />
+				</span></span>
+			</li>
+			
+			<li class="li col-2" >
+			<span class="label"><span class="e_required">备注：</span></span>
+			<span class="e_textarea">
+				<span class="e_textareaTop"><span></span></span>
+				<span class="e_textareaContent">
+					<textarea type="text" jwcid="@TextArea" id="REMARK" name="REMARK" value="ognl:goodsInfo.NO_VALUE" nullable="yes" rows="3" maxsize="10000" style="height:55px;" desc="备注" />
+				</span>
+				<span class="e_textareaBottom"><span></span></span>
+			</span>
+			</li>
+		</ul>
+		<input jwcid="@Any" type="text" name="CHG_RELATION_TRADE_ID" id="CHG_RELATION_TRADE_ID" value="ognl:goodsInfo.NO_VALUE" style="display:none"/>
+		<input jwcid="@Any" type="text" name="BAK_CHECK_TRADE_ID" id="BAK_CHECK_TRADE_ID" value="" style="display:none"/>
+</div>
+       <!-- 提交 开始 -->
+		<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeAction()" area="AuthPart,EditIMEIPart" element="div"/>
+		<!-- 提交 结束 -->
+
+</div></div></body>
+</html>

@@ -1,0 +1,7 @@
+--IS_CACHE=Y
+select A.LABEL_ID,A.LABEL_NAME,A.PARENT_LABEL_ID,A.CLASS_LEVEL
+  from TD_B_LABEL A
+ where A.CLASS_LEVEL = '-1'
+ start with A.LABEL_ID = :LABEL_ID
+connect by prior A.LABEL_ID = A.PARENT_LABEL_ID
+ order by A.SEQ

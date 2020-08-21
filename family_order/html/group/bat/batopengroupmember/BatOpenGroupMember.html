@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>集团成员批量开户</title>
+	<script jwcid="@Script" type="text/javascript" src="../../../js/jcl.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/person/CommLib.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/person/baseinfofield/BaseInfoField.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/csserv/group/opengroupmember/MemCustInfoField.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batopengroupmember/batopengroupmember.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_scroll c_scroll-mix" style="ognl:'height:' + condition.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+	<!-- 非ESOP系统链接 开始-->
+	<div jwcid="@Conditional" condition="ognl:condition.ESOP_TAG != 'ESOP'">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">集团查询</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div jwcid="CondGroupPart@Part" element="div">
+			<div class="c_form">
+				<ul class="ul">
+					<li class="li">
+						<span jwcid="@saleserv:SelectGroup" selectGroupListener="getGroupBaseInfo" refreshPart="GroupInfoPart,GroupUserInfoPart"  afterAction="refreshProductInfoArea(data);$.MemCustInfo.init('GroupUserInfoImsPart');" afterErrorAction="errorAction();"/>
+					</li>
+		  		</ul>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<!-- 非ESOP系统链接 结束-->
+		
+	<!-- 参数列表 开始 -->
+	<div jwcid="GroupInfoPart@Part">
+		<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo"/>
+	</div>
+	
+	<!-- ESOP标记值 参数 开始-->
+	<div style="display: none;">
+		<input jwcid="@Any" id="ESOPTAG" name="ESOPTAG" value="ognl:condition.ESOP_TAG" style="display:none" encode="false" />
+	</div>
+	<!-- ESOP标记值 参数 结束-->
+	<!-- 参数列表 结束 -->
+	
+	<div class="c_form c_form-col-2" jwcid="productInfoArea@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">产品：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PRODUCT_NAME" name="PRODUCT_NAME" value="ognl:groupInfo.BRAND_CODE" nullable="no" desc="产品" readonly="true"/>  
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">产品类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="userProductInfo" source="ognl:productTypeList" valueField="PRODUCT_ID" nullable="no"
+							textField="PRODUCT_NAME"  value="ognl:info.USER_ID" style="width: 100%;" 
+							onchange="selectedElements.selectedEls = new $.DatasetList();refreshProduct();"  desc="产品类型"/>
+				</span></span></span>
+			</li>
+			
+		</ul>
+		
+	</div>
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团成员开户信息</div>
+	</div>
+	<!-- 标题 结束 -->
+		
+	<!-- 表单 开始 -->
+    <div jwcid="GroupUserInfoPart@Part"  element="div" class="c_form c_form-col-3 c_form-label-5">
+		<ul class="ul">
+           <span id="MEM_CUST_INFO">				  
+			<li class="li">
+				<span class="label"><span class="e_required">证件类型：</span></span>
+				<span class="e_select"><span><span>   
+					<select jwcid="@Select" name="OMEM_CUST_INFO_PSPT_TYPE_CODE"  
+					source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_S_PASSPORTTYPE')" 
+					valueField="DATA_ID" textField="DATA_NAME" value="ognl:groupInfo.PSPT_TYPE_CODE"  desc="证件类型"  nullable="no" addDefault="true" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="OMEM_CUST_INFO_PSPT_ID" name="OMEM_CUST_INFO_PSPT_ID" value="ognl:groupInfo.POST_CODE" disabled='ognl:null==groupInfo.POST_CODE?false:true' maxlength="24" nullable="no" desc="证件号码" datatype="" onblur="validPspt()"/>  
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">联系电话：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="OMEM_CUST_INFO_CONTACT_PHONE" name="OMEM_CUST_INFO_CONTACT_PHONE" value="ognl:groupInfo.GROUP_MGR_SN" maxlength="18" nullable="no"  desc="联系电话" minSize="7" datatype="numeric"/> 
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="OMEM_CUST_INFO_CUST_NAME" name="OMEM_CUST_INFO_CUST_NAME" value="ognl:groupInfo.CUST_NAME"  onblur="getElement('MEM_ACCT_INFO_PAY_NAME').value= this.value;" maxlength="80" nullable="no"  desc="客户名称" /> 
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">用户类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="OMEM_USER_INFO_USER_TYPE_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('USER_USERTYPECODE')"   
+					value="ognl:groupInfo.USER_TYPE_CODE" valueField="DATA_ID" textField="DATA_NAME" desc="用户类型" addDefault="true" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">通信邮编：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="OMEM_CUST_INFO_POST_CODE" name="OMEM_CUST_INFO_POST_CODE"  value="ognl:groupInfo.POST_NO" maxlength="6"/>
+				</span></span>
+			</li>
+	      </span>	
+		</ul>				
+	</div>
+	
+	<div jwcid="GroupUserInfoImsPart@Part" style="display:none" element="div" class="c_form c_form-col-2 c_form-label-8">
+		<ul class="ul">
+           <span id="MEM_CUST_INFO">				  
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_PSPT_TYPE_CODE" class="e_required">证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="MEM_CUST_INFO_PSPT_TYPE_CODE" name="MEM_CUST_INFO_PSPT_TYPE_CODE"
+					source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GRPIMS_PASSPORTTYPE')" 
+					valueField="DATA_ID" textField="DATA_NAME" value="ognl:groupInfo.PSPT_TYPE_CODE" desc="证件类型" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_PSPT_ID" class="e_required">证件号码：</span></span>
+				<span class="e_elements">
+				
+		            <button type="button" class="e_button-right"  id="SHOT_IMG" name="ShotImgButton" ><i class="e_ico-check"></i><span>客户摄像</span></button>		
+					<button type="button" class="e_button-right" id="SCAN_PSPT" name="ReadCardButton"><i class="e_ico-check"></i><span>扫描</span></button>
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField" id="MEM_CUST_INFO_PSPT_ID" name="MEM_CUST_INFO_PSPT_ID" value="ognl:custInfo.PSPT_ID" nullable="no" maxsize="24" maxLength="24" onblur="validPspt()" desc="证件号码"/>
+					</span></span>
+					<input class="e_input" type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+					<input class="e_input" type="hidden" id="REALNAME_LIMIT_CHECK_RESULT" name="REALNAME_LIMIT_CHECK_RESULT" value="false" desc="实名制验证标记"/>
+					<input class="e_input" type="hidden" id="MEM_CUST_INFO_REAL_NAME" name="MEM_CUST_INFO_REAL_NAME" value="1" desc="实名制标识"/>
+					
+					<input class="e_input" type="hidden" id="MEM_CUST_INFO_PIC_ID" name="MEM_CUST_INFO_PIC_ID" value="" desc="客户照片ID"/>
+					<input class="e_input" type="hidden" id="MEM_CUST_INFO_PIC_STREAM" name="MEM_CUST_INFO_PIC_STREAM" value="" desc="拍摄人像照片流"/>
+					<input class="e_input" type="hidden" id="MEM_CUST_INFO_BACKBASE64" name="MEM_CUST_INFO_BACKBASE64" value="" desc="身份证反面照"/>
+					<input class="e_input" type="hidden" id="MEM_CUST_INFO_FRONTBASE64" name="MEM_CUST_INFO_FRONTBASE64" value="" desc="身份证正面照"/>
+					<input class="e_input" type="hidden" id="MEM_CUST_INFO_SCAN_TAG" name="MEM_CUST_INFO_SCAN_TAG" value="1" desc="客户扫描标志"/>
+					<div style="display:none">
+						<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+					</div>
+										
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_CONTACT_PHONE" class="e_required">联系电话：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_CONTACT_PHONE" name="MEM_CUST_INFO_CONTACT_PHONE" value="ognl:custInfo.PHONE"  nullable="no" desc="联系电话" datatype="numeric"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_CUST_NAME" class="e_required">客户名称：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_CUST_NAME" name="MEM_CUST_INFO_CUST_NAME" value="ognl:custInfo.CUST_NAME" maxlength="80" nullable="no"  desc="客户名称" /> 
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_USER_INFO_USER_TYPE_CODE" class="e_required">用户类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="MEM_USER_INFO_USER_TYPE_CODE" name="MEM_USER_INFO_USER_TYPE_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('USER_USERTYPECODE')"   
+					value="ognl:custInfo.USER_TYPE_CODE" valueField="DATA_ID" textField="DATA_NAME" desc="用户类型" addDefault="true" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_POST_CODE" class="">通信邮编：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_POST_CODE" name="MEM_CUST_INFO_POST_CODE"  value="ognl:custInfo.POST_NO" maxlength="6"/>
+				</span></span>
+			</li>
+					<li class="li">
+						<span class="label"><span class="e_required" id="span_MEM_CUST_INFO_BIRTHDAY">出生日期：</span></span>
+						<span class="e_input"><span>
+							<input type="text" jwcid="@DateField" id="MEM_CUST_INFO_BIRTHDAY" name="MEM_CUST_INFO_BIRTHDAY" value="ognl:custInfo.BIRTHDAY" desc="出生日期" 
+							nullable="no" maxName="custInfo_PSPT_END_DATE"/>
+						</span></span>
+					</li>
+			<li class="li col-2">
+				<span class="label"><span id="span_MEM_CUST_INFO_PSPT_ADDRESS" class="e_required">证件地址：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_PSPT_ADDRESS" name="MEM_CUST_INFO_PSPT_ADDRESS"  nullable="no"  maxlength="80" value="ognl:custInfo.GROUP_ADDR" desc="证件地址" /> 
+				</span></span>
+			</li>
+			<!-- 营业执照信息 -->
+			<li class="li" id="li_MEM_CUST_INFO_legalperson" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_legalperson">法人：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_legalperson" name="MEM_CUST_INFO_legalperson" value="" desc="法人" onchange="$.MemCustInfo.verifyEnterpriseCard();"/>
+				</span></span>
+			</li>
+			<li class="li" id="li_MEM_CUST_INFO_termstartdate" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_termstartdate">营业开始日期：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_termstartdate" name="MEM_CUST_INFO_termstartdate" value="" desc="营业开始日期" onchange="$.MemCustInfo.verifyEnterpriseCard();"/> 
+				</span></span>
+			</li>
+			<li class="li" id="li_MEM_CUST_INFO_termenddate" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_termenddate">营业结束日期：</span></span>
+				<span class="e_input"><span> 
+					<input jwcid="@TextField" id="MEM_CUST_INFO_termenddate" name="MEM_CUST_INFO_termenddate" value="" desc="营业结束日期"  onchange="$.MemCustInfo.verifyEnterpriseCard();"/> 
+				</span></span>
+			</li>	
+			<li class="li" id="li_MEM_CUST_INFO_startdate" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_startdate">成立日期：</span></span>
+				<span class="e_input"><span> 
+					<input jwcid="@TextField" id="MEM_CUST_INFO_startdate" name="MEM_CUST_INFO_startdate" value="" desc="成立日期"  onchange="$.MemCustInfo.verifyEnterpriseCard();" /> 
+				</span></span>
+			</li>	
+			<!-- 组织机构代码信息 -->
+			<li class="li" id="li_MEM_CUST_INFO_orgtype" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_orgtype">机构类型：</span></span>
+				<span class="e_input"><span> 
+					<input jwcid="@TextField" id="MEM_CUST_INFO_orgtype" name="MEM_CUST_INFO_orgtype" value="" desc="机构类型" onchange="$.MemCustInfo.verifyOrgCard();"/>
+				</span></span>
+			</li>
+			<li class="li" id="li_MEM_CUST_INFO_effectiveDate" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_effectiveDate">有效日期：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_effectiveDate" name="MEM_CUST_INFO_effectiveDate" value="" desc="有效日期"  onchange="$.MemCustInfo.verifyOrgCard();"/> 
+				</span></span>
+			</li>
+			<li class="li" id="li_MEM_CUST_INFO_expirationDate" style="display:none">
+				<span class="label"><span id="span_MEM_CUST_INFO_expirationDate">失效日期：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_expirationDate" name="MEM_CUST_INFO_expirationDate" value="" desc="失效日期"  onchange="$.MemCustInfo.verifyOrgCard();"/> 
+				</span></span>
+			</li>
+			<!-- 经办人信息 -->
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_AGENT_CUST_NAME">经办人名称：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_AGENT_CUST_NAME" name="MEM_CUST_INFO_AGENT_CUST_NAME" value="ognl:custInfo.RSRV_STR7" maxsize="48" desc="经办人名称"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_AGENT_PSPT_TYPE_CODE">经办人证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="MEM_CUST_INFO_AGENT_PSPT_TYPE_CODE" name="MEM_CUST_INFO_AGENT_PSPT_TYPE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticListByParent('GRPIMS_PASSPORTTYPE_NEW','0')" 
+							textField="DATA_NAME" valueField="DATA_ID"  value="ognl:custInfo.RSRV_STR8"
+							desc="经办人证件类型"/>
+				</span></span></span>
+			</li>					
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_AGENT_PSPT_ID">经办人证件号码：</span></span>
+				<span class="e_elements">
+				
+                    <button type="button" class="e_button-right"  id="AGENT_SHOT_IMG" name="ReadCardButton" onclick="identification('MEM_CUST_INFO_AGENT_PIC_ID','MEM_CUST_INFO_AGENT_PIC_STREAM')"><i class="e_ico-check"></i><span>经办人摄像</span></button>						
+				
+					<button type="button" class="e_button-right" id="SCAN_PSPT2" name="ReadCardButton2"><i class="e_ico-check"></i><span>扫描</span></button>
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField" id="MEM_CUST_INFO_AGENT_PSPT_ID" name="MEM_CUST_INFO_AGENT_PSPT_ID" value="ognl:custInfo.RSRV_STR9" maxsize="20" maxLength="20" desc="经办人证件号码"/>
+					</span></span>
+					
+					<input class="e_input" type="hidden"  id="MEM_CUST_INFO_AGENT_PIC_ID" name="MEM_CUST_INFO_AGENT_PIC_ID" value="" desc="经办人照片ID"/>						
+					<input class="e_input" type="hidden"  id="MEM_CUST_INFO_AGENT_PIC_STREAM" name="MEM_CUST_INFO_AGENT_PIC_STREAM" value="" desc="拍摄经办人人像照片流"/>
+					<input class="e_input" type="hidden"  id="MEM_CUST_INFO_AGENT_BACKBASE64" name="MEM_CUST_INFO_AGENT_BACKBASE64" value="" desc="经办人身份证反面照"/>
+					<input class="e_input" type="hidden"  id="MEM_CUST_INFO_AGENT_FRONTBASE64" name="MEM_CUST_INFO_AGENT_FRONTBASE64" value="" desc="经办人身份证正面照"/>
+					<input class="e_input" type="hidden"  id="MEM_CUST_INFO_AGENT_SCAN_TAG" name="MEM_CUST_INFO_AGENT_SCAN_TAG" value="1" desc="客户扫描标志"/>	
+												
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span id="span_MEM_CUST_INFO_AGENT_PSPT_ADDR">经办人证件地址：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_AGENT_PSPT_ADDR" name="MEM_CUST_INFO_AGENT_PSPT_ADDR" value="ognl:custInfo.RSRV_STR10" maxsize="128" desc="经办人证件地址"/>
+				</span></span>
+			</li>
+			<!-- 使用人信息 -->
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_USE">使用人姓名：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_USE" name="MEM_CUST_INFO_USE" value="ognl:custInfo.USE" desc="使用人姓名"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_USE_PSPT_TYPE_CODE">使用人证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="MEM_CUST_INFO_USE_PSPT_TYPE_CODE" name="MEM_CUST_INFO_USE_PSPT_TYPE_CODE" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticListByParent('GRPIMS_PASSPORTTYPE_NEW','0')" 
+	                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.USE_PSPT_TYPE_CODE" 
+	                    desc="使用人证件类型"  disabled="false" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_USE_PSPT_ID">使用人证件号码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" id="SCAN_PSPT3" name="ReadCardButton3"><i class="e_ico-check"></i><span>扫描</span></button>
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField" id="MEM_CUST_INFO_USE_PSPT_ID" name="MEM_CUST_INFO_USE_PSPT_ID" value="ognl:custInfo.USE_PSPT_ID" maxsize="20" maxLength="20" desc="使用人证件号码"  disabled="false" />
+					</span></span> 
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span id="span_MEM_CUST_INFO_USE_PSPT_ADDR">使用人证件地址：</span></span>
+				<span class="e_input"><span><input jwcid="@TextField" id="MEM_CUST_INFO_USE_PSPT_ADDR" name="MEM_CUST_INFO_USE_PSPT_ADDR" value="ognl:custInfo.USE_PSPT_ADDR" 
+				      maxLength="128"   maxsize="128"  desc="使用人证件地址"  /></span></span>
+			</li>
+			<!-- 责任人信息 -->
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_RSRV_STR2">责任人姓名：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="MEM_CUST_INFO_RSRV_STR2" name="MEM_CUST_INFO_RSRV_STR2" value="ognl:custInfo.RSRV_STR2" desc="责任人姓名"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_RSRV_STR3">责任人证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="MEM_CUST_INFO_RSRV_STR3" name="MEM_CUST_INFO_RSRV_STR3" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticListByParent('GRPIMS_PASSPORTTYPE_NEW','0')" 
+	                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.RSRV_STR3" desc="责任人证件类型"  disabled="false" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_MEM_CUST_INFO_RSRV_STR4">责任人证件号码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" id="SCAN_PSPT4" name="ReadCardButton4"><i class="e_ico-check"></i><span>扫描</span></button>
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField" id="MEM_CUST_INFO_RSRV_STR4" name="MEM_CUST_INFO_RSRV_STR4" value="ognl:custInfo.RSRV_STR4" maxsize="20" maxLength="20" desc="责任人证件号码"  disabled="false" />
+					</span></span> 
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span id="span_MEM_CUST_INFO_RSRV_STR5">责任人证件地址：</span></span>
+				<span class="e_input"><span><input jwcid="@TextField" id="MEM_CUST_INFO_RSRV_STR5" name="MEM_CUST_INFO_RSRV_STR5" value="ognl:custInfo.RSRV_STR5" maxLength="128"   maxsize="128"  desc="责任人证件地址"  /></span></span>
+			</li>
+	      </span>		    											
+		</ul>				
+	</div>
+		
+	<div class="c_form c_form-col-1 c_form-label-5" jwcid="ImsInfoPart@Part" name="ImsInfoPart" style="display:none">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">IMS客户端：</span>
+				<span class="e_select"><span><span>													
+					<select  jwcid="@Select" name="CUST_INFO_TELTYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IMS_TELTYPE')"  value="ognl:null==groupInfo.PSPT_TYPE_CODE?'1':groupInfo.PSPT_TYPE_CODE"
+			    	valueField="DATA_ID" textField="DATA_NAME"  nullable="no" addDefault="false" desc="IMS客户端" />
+				</span></span></span>
+			</li>
+		</ul>
+	</div>	
+		
+	<!-- 表单 结束 -->
+	
+	<div jwcid="ProductPackagePart@Part">
+		<div id ="productinfotabset" title="产品信息">
+			<!-- 分栏 开始 -->
+			<div class="l_col s_iframe-lower">
+				<!-- 第 1 栏 开始 -->
+				<div class="l_left" style="width:380px;">
+					<!-- 区域 开始 -->
+					<div class="c_box">
+						<!-- 标题 开始 -->
+		                <div class="c_title">
+							<div class="text">待选区</div>
+						</div>
+						<!-- 标题 结束 -->
+						<!-- 分栏 开始 -->
+						<div class="l_col l_col-close">
+							<div jwcid="offerList@csserv:OfferList" 
+		                           element="div"
+		                           svcParam="ognl:condition"
+		                           serviceName="CS.PackageSVC.getMemberProductPackages"
+		                           productId="ognl:condition.MEB_PRODUCT_ID"
+		                           switchGroupService="CS.PackageSVC.getMemberPackageElements" 
+		                           categoryId="100000000017,100000000014">
+		                    </div>
+							
+						</div>
+						<!-- 分栏 结束 -->
+					</div>
+					<!-- 区域 结束 -->
+				</div>
+			    <div class="l_auto">
+					<!-- 区域 开始 -->
+					<div class="c_box">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">已选区</div>
+						</div>
+		                 <div jwcid="selectedElements@saleserv:SelectedElements" 
+		                    initCallSvc="CS.SelectedElementSVC.getGrpUserOpenElements"
+		                    initParam="ognl:condition" 
+		                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElements" 
+		                    element="div">
+			            </div>
+						<!-- 表格 结束 -->
+					</div>
+					<!-- 区域 结束 -->
+				</div>
+				<!-- 第 2 栏 结束 -->
+			</div>
+			<!-- 分栏 结束 -->
+		</div>
+	</div>	
+		
+		
+	<input type="hidden" name="PRODUCT_ID" id="PRODUCT_ID" value=""/>
+	<input type="hidden" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value=""/>
+	<input jwcid="@Any" id="USER_EPARCHY_CODE" name="USER_EPARCHY_CODE" value="ognl:condition.USER_EPARCHY_CODE" style="display:none"  encode="false" />
+		
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 提交 开始 -->
+<div class="c_submit">
+	<button type="button" class="e_button-page-ok" onclick="if(!setData(this)) return false;"><i></i><span>确定</span></button>
+	<button type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+</div>
+<!-- 提交 结束 -->
+
+
+</div></div>
+</body>
+</html>

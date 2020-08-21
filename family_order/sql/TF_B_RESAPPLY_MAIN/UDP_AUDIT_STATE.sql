@@ -1,0 +1,5 @@
+UPDATE TF_B_RESAPPLY_MAIN
+   SET audit_state_code  = :AUDIT_STATE_CODE   
+ WHERE apply_no = :APPLY_NO
+   AND (APPLY_TYPE_CODE = :APPLY_TYPE_CODE)
+   AND (:AUDIT_STATE_OLD is null OR audit_state_code = :AUDIT_STATE_OLD)

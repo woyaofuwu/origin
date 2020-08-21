@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: AccountInfo.html,v 1.7 2013/04/22 08:16:44 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择用户信息</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/realname/scripts/SelectUserInfoForRealName.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+	<table>
+		<thead>
+            <tr>
+            	<th>选择</th>
+                <th>开户客户</th>
+                <th>用户ID</th>
+				<th>归属地州</th>
+				<th>归属业务区</th>
+				<th>状态标识</th>
+				<th>开户时间</th>
+				<th>注销时间</th>
+            </tr>
+		</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+                <td><input type="radio" jwcid="@Any" name="userinfo" value="ognl:info.USER_ID" /></td>  
+                <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+                <td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)" raw="false"/></td>
+                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="false"/></td>
+                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'USER_REMOVETAG',info.REMOVE_TAG})" raw="false"/></td>
+                
+                <td>
+                    <div jwcid="@Conditional" condition='ognl:!"".equals(info.OPEN_DATE) && info.OPEN_DATE!=null'>
+                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.OPEN_DATE)" raw="false"/>
+                    </div>
+                    <div jwcid="@Conditional" condition='ognl:"".equals(info.OPEN_DATE)'>
+                        <span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false"/>	
+                    </div>
+                </td>
+                <td>
+                    <div jwcid="@Conditional" condition='ognl:!"".equals(info.DESTROY_TIME) && info.DESTROY_TIME != null'>
+                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.DESTROY_TIME)" raw="false"/>
+                    </div>
+                    <div jwcid="@Conditional" condition='ognl:"".equals(info.DESTROY_TIME)'>
+                        <span jwcid="@Insert" value="ognl:info.DESTROY_TIME" raw="false"/>
+                    </div>
+                </td>
+			</tr>
+		</tbody>
+	</table>	
+	</div>
+	</div>
+	
+	<div class="c_submit">
+		<button class="e_button-page-ok" id="submitBtn"><i></i><span>确定</span></button>
+	</div>
+	
+</div></div>
+</body>
+</html>

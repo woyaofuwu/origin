@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IP直通车工作记录查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/ipexpresstradelog/scripts/IpExpressTradeLog.js"></script>
+<script language="JavaScript">
+   queryAreaCon();
+</script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取IP直通车工作记录无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">IP直通车工作记录查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						
+                        <li class="li">
+						    <span class="label"><span id="phCode" class="e_required">手机号码：</span></span>
+							<span class="e_input"><span>
+							<input jwcid="@TextField" name="cond_PARA_CODE1" id="cond_PARA_CODE1" value="ognl:cond.cond_PARA_CODE1" 
+							nullable="no" desc="服务号码"/>
+							</span></span>
+						</li>
+					   <li class="li">
+							<span class="label"><span class="e_required">查询方式：</span></span>
+							<span class="e_select"><span><span>
+							        <select jwcid="@Select" name="cond_QUERY_MODE" id="cond_QUERY_MODE" source="ognl:pageutil.getStaticList('SALEIPEXPRESSLOG_QUERYMODE')"
+				                                    addDefault="false" value="ognl:cond.cond_QUERY_MODE" disabled="false" desc="查询方式" nullable="no"
+				                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" onchange="queryAreaConNew();"/>
+							</span></span></span>
+						</li>
+					
+					  <span id="dateArea"  style="display:none">
+                        <li class="li">
+							<span class="label"><span class="e_required">起始时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_PARA_CODE2" id="cond_PARA_CODE2" nullable="no" value="ognl:cond.cond_PARA_CODE2" maxName="cond_PARA_CODE3" desc="起始时间"/>
+								</span></span>
+							</span>
+						 </li>
+						 <li class="li">
+							<span class="label"><span class="e_required">结束时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+								    <input jwcid="@DateField" name="cond_PARA_CODE3" id="cond_PARA_CODE3"  nullable="no" value="ognl:cond.cond_PARA_CODE3" minName="cond_PARA_CODE2" desc="结束时间"/>
+								</span></span>
+							</span>
+						 </li>
+                       </span>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryIPExpressLog(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFilePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100976"
+								  config="export/sundryquery/other/IpExpressTradeLog.xml" fileName="IP直通车工作记录查询" cond=QueryCondPart/>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	     
+				 <div class="c_table ">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>手机号码</th>
+							<th>用户名称</th>
+							<th>业务类型</th>
+							<th>固定号码</th>
+							<th>受理时间</th>
+							<th>受理员工</th>
+							<th>受理部门</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE1" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE2" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE3" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE4" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE5" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE6" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE7" raw="true"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryIPExpressLog" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

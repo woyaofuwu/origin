@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_score_new(trade_id,accept_month,user_id,serial_number,eparchy_code,city_code,brand_code,bcyc_id,score_type_code,score,score_changed,value_changed,action_code,action_count,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,remark)
+ VALUES(TO_NUMBER(:TRADE_ID),:ACCEPT_MONTH,TO_NUMBER(:USER_ID),:SERIAL_NUMBER,:EPARCHY_CODE,:CITY_CODE,:BRAND_CODE,:BCYC_ID,:SCORE_TYPE_CODE,TO_NUMBER(:SCORE),TO_NUMBER(:SCORE_CHANGED),TO_NUMBER(:VALUE_CHANGED),:ACTION_CODE,TO_NUMBER(:ACTION_COUNT),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:REMARK)

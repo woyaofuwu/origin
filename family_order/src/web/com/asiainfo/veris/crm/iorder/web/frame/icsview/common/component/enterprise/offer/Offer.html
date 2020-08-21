@@ -1,0 +1,246 @@
+<!-- 标题 开始 -->
+<div class="c_title">
+	<div class="text">产品信息</div>
+</div>
+<!-- 标题 结束 -->
+<!-- 表单 开始 -->
+<div jwcid="OfferPart@Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+	<ul>
+		<div jwcid="@Conditional" condition="ognl:readonly == false" >
+			<li class="link required">
+				<div class="label">操作类型</div>
+				<div class="value">
+					<input jwcid="@Select" name="cond_OPER_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('APPLY_REQUIREMENT_OPER_TYPE')" 
+						textField="DATA_NAME" valueField="DATA_ID" addDefault="false" value="ognl:info.OPER_TYPE" 
+						nullable="no" desc="操作类型" onchange="changeOperType();"/>
+				</div>
+			</li>
+			<li class="link required" ontap="initOfferCatalog();">
+				<div class="label">选择产品</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="cond_OFFER_NAME" id="cond_OFFER_NAME" value="ognl:offer.OFFER_NAME"/>
+					<span class="e_ico-check"></span>
+				</span></div>
+			</li>
+			<li class="link required" id="OFFER_CODE_LI" >
+				<div class="label">产品编码</div>
+				<div class="value"><input jwcid="@TextField" name="cond_OFFER_CODE" id="cond_OFFER_CODE" value="ognl:offer.OFFER_CODE"/></div>
+			</li>
+			<li class="link required" id="TEMPLET_ID_LI" >
+				<div class="label">业务流程</div>
+				<div class="value">
+				<input jwcid="@Select" name="cond_TEMPLET_ID" source="ognl:info.TEMPLET_ID_LIST" 
+						textField="BUSI_NAME" valueField="BUSI_CODE"  value="ognl:info.TEMPLET_ID" 
+						nullable="no" desc="业务流程"  onchange="changeTempletId();"/>
+			</li>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINEOPEN'">
+				<li class="link required" id="DATALINE_OPER_TYPE_LI">
+					<div class="label">产品服务</div>
+					<div class="value">
+						<span jwcid="@Segment" name="DATALINE_OPER_TYPE" textField="DATA_NAME" valueField="DATA_ID" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('DATALINE_OPER_TYPE')" value="ognl:info.DATALINE_OPER_TYPE" 
+						onchange="datalineOperTypeOnChange();"></span>
+					</div>
+				</li>
+				<li class="link required" style="display:none" id="DATALINE_SERIAL_NUMBER_LI">
+					<div class="label">产品服务号码</div>
+					<div class="value">
+						<input jwcid="@Select" name="DATALINE_SERIAL_NUMBER" source="ognl:info.DATALINE_SERIAL_NUMBER_LIST" 
+							textField="SERIAL_NUMBER" valueField="SERIAL_NUMBER" value="ognl:info.DATALINE_SERIAL_NUMBER" 
+							nullable="yes" desc="产品服务号码" onchange="getUserId();"/>
+					</div>
+				</li>
+			</div>
+		</div>
+		<div jwcid="@Conditional" condition="ognl:readonly == true" >
+			<li class="link required">
+				<div class="label">操作类型</div>
+				<div class="value">
+					<input jwcid="@Select" name="cond_OPER_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('APPLY_REQUIREMENT_OPER_TYPE')" 
+						textField="DATA_NAME" valueField="DATA_ID" addDefault="false" value="ognl:info.OPER_TYPE" 
+						nullable="no" desc="操作类型" onchange="changeOperType();"  disabled="disabled"/>
+				</div>
+			</li>
+			<li class="required">
+				<div class="label">产品名称</div>
+				<div class="value">
+					<input jwcid="@TextField" name="cond_OFFER_NAME" id="cond_OFFER_NAME" value="ognl:offer.OFFER_NAME" disabled="disabled"/>
+				</div>
+			</li>
+			<li class="required">
+				<div class="label">产品编码</div>
+				<div class="value">
+					<input jwcid="@TextField" name="cond_OFFER_CODE" id="cond_OFFER_CODE" value="ognl:offer.OFFER_CODE" disabled="disabled"/>
+				</div>
+			</li>
+			<li class="link required" id="TEMPLET_ID_LI" >
+				<div class="label">业务流程</div>
+				<div class="value">
+				<input jwcid="@Select" name="cond_TEMPLET_ID" source="ognl:info.TEMPLET_ID_LIST" 
+						textField="BUSI_NAME" valueField="BUSI_CODE" addDefault="false" value="ognl:info.TEMPLET_ID" 
+						nullable="no" desc="业务流程"/>
+			</li>
+			<li class="link" ontap="showPopup('offerOtherPopup', 'moreOfferPopupItem', true);">
+				<div class="label">其他产品信息</div>
+				<div class="value"></div>
+				<div class="more"></div>
+			</li>
+		</div>
+		<input jwcid="@Hidden" name="cond_OFFER_ID" id="cond_OFFER_ID" value="ognl:offer.OFFER_ID" desc="商品标识" />
+		<input jwcid="@Hidden" name="cond_BRAND_CODE" id="cond_BRAND_CODE" value="ognl:offer.BRAND_CODE" desc="商品品牌" />
+		<input jwcid="@Hidden" name="cond_BRAND_CODE1" id="cond_BRAND_CODE1" value="ognl:info.SHOW_PARAM_PART" desc="商品品牌" />
+		<input jwcid="@Hidden" name="cond_BRAND_CODE2" id="cond_BRAND_CODE2" value="ognl:info.OPER_TYPE" desc="商品品牌" />
+		<input jwcid="@Hidden" name="MEB_OFFER_CODE" id="MEB_OFFER_CODE" value="ognl:info.MEB_OFFER_CODE" />
+		<input jwcid="@Hidden" name="MEB_OFFER_ID" id="MEB_OFFER_ID" value="ognl:info.MEB_OFFER_ID" />
+		<input jwcid="@Hidden" name="MEB_OFFER_NAME" id="MEB_OFFER_NAME" value="ognl:info.MEB_OFFER_NAME" />
+		<input jwcid="@Hidden" name="DATALINE_USER_ID" id="DATALINE_USER_ID" value="ognl:info.DATALINE_USER_ID" />
+	</ul>
+</div>
+<!-- 表单 结束 -->
+
+<div jwcid="@Popup" class="c_popup c_popup-full c_popup-fixed" name="offerOtherPopup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="moreOfferPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">其他产品信息</div>
+			</div>
+			<div jwcid="@Scroller" name="offerScroll" class="c_scroll c_scroll-float c_scroll-header" vScroll="false">
+				<div class="l_padding l_padding-u">
+					<!-- 审核意见 开始 --> 
+					<div class="c_title">
+						<div class="text">审核信息</div>
+					</div> 
+					<div class="c_param c_param-border c_param-label-10 c_form-col-2" jwcid="auditPart@Part">
+						<ul>
+							<li>
+								<div class="label">审核意见:</div>
+								<div class="value"><span jwcid="@Insert" value="ognl:workformData.AUDITING_OPINION" /></div>
+							</li>
+						</ul>
+					</div> 
+					<!-- 审核意见 结束 -->
+					<div class="c_title">
+						<div class="text">合同信息 : </div>
+					</div>
+					<div class="c_param c_param-border c_param-label-10 c_form-col-3" jwcid="contract@Part">
+						<ul>
+							<li class="required">
+								<div class="label">合同名称 : </div>
+								<div class="value">
+									<input jwcid="@Insert" name="CONTRACT_NAME" id="CONTRACT_NAME" value="ognl:workformData.contractList.CONTRACT_NAME" disabled="disabled"/>
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">合同编号 : </div>
+								<div class="value">
+									<input jwcid="@Insert" name="GRP_CONTRACT_ID" id="GRP_CONTRACT_ID" value="ognl:workformData.contractList.GRP_CONTRACT_ID" disabled="disabled"/>
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">合同起始时间 : </div>
+								<div class="value">
+									<input jwcid="@Insert" name="CONTRACT_WRITE_DATE" id="CONTRACT_WRITE_DATE" value="ognl:workformData.contractList.CONTRACT_WRITE_DATE" disabled="disabled"/>
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">合同结束时间 : </div>
+								<div class="value">
+									<input jwcid="@Insert" name="CONTRACT_END_DATE" id="CONTRACT_END_DATE" value="ognl:workformData.contractList.CONTRACT_END_DATE" disabled="disabled"/>
+								</div>
+							</li>
+							<li>
+								<span class="label">合同扫描件</span>
+								<span class="value">
+									<a jwcid="@Redirect" contractId="ognl:workformData.contractList.GRP_CONTRACT_ID"  onclick="downAttachLib($(this).attr('contractId'))" target="_blank">[下载]</a>
+								</span>
+							</li>
+							<!-- <li>
+								<span class="label">合同下载</span>
+								<span class="value"><a jwcid="@Any" href="ognl:'attach?action=download&fileId='+workformData.contractList.fileId+'&realName='+workformData.contractList.fileName+'&ftpSite='+workformData.contractList.ftpSite+'&filePath='+workformData.contractList.filePath" target="_blank">[下载]&nbsp;&nbsp;</a></span>
+							</li> -->
+						</ul>
+					</div>
+					
+					<!-- 标题 开始 -->
+					<div class="c_title">
+						<div class="text">资费信息</div>
+					</div>
+					<!-- 标题 结束 -->
+					<!-- 列表 开始 -->
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li jwcid="@Foreach" source="ognl:workformData.PRICE_OFFER_LIST" value="ognl:priceOffer" element="li">
+								<div class="main">
+									<div class="title"><span jwcid="@Insert" value="ognl:priceOffer.SERIAL_NUMBER"/></div>
+									<div class="content content-auto">
+										<span jwcid="@Insert" value="ognl:priceOffer.PRICE_OFFER_STR"/>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<ul>
+							<li>
+								<div class="label">操作意见</div>
+								<div class="value"><input type="text"  readonly="readonly" /></div>
+							</li>
+						</ul>
+					</div>
+					<!-- 列表 结束 -->
+				   <div jwcid="OfferAttrPart@Part">
+					<div jwcid="@Conditional" condition="ognl:workformData.grpProductAttrList != null && workformData.grpProductAttrList.size() > 0">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">客户侧业务信息</div>
+						</div>
+						<!-- 标题 结束 -->
+						<div class="c_box c_box-border">
+							<div class="c_space"></div>
+							<div class="e_center"></div>
+							<!-- 参数 开始 -->
+							
+							<div  class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-auto">
+								<ul>
+									<li jwcid="@Foreach" source="ognl:workformData.grpProductAttrList" value="ognl:productAttr" element="li">
+										<span class="label"><span  jwcid="@Insert" value="ognl:productAttr.ATTR_NAME" />：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:productAttr.ATTR_VALUE" /></span>
+									</li>
+								</ul>
+							</div>
+							<!-- 参数 结束 -->
+						</div>
+					</div>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:workformData.mebProductAttrList != null && workformData.mebProductAttrList.size() > 0">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">客户侧成员信息</div>
+						</div>
+						<!-- 标题 结束 -->
+						<div class="c_box c_box-border">
+							<div class="c_space"></div>
+							<div class="e_center"></div>
+							<!-- 参数 开始 -->
+							<div class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-auto">
+								<ul>
+									<li jwcid="@Foreach" source="ognl:workformData.mebProductAttrList" value="ognl:productAttr" element="li">
+										<span class="label"><span jwcid="@Insert" value="ognl:productAttr.ATTR_NAME" />：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:productAttr.ATTR_VALUE" /></span>
+									</li>
+								</ul>
+							</div>
+							<!-- 参数 结束 -->
+						</div>
+					</div>
+					<!-- 参数 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-center">
+						<button type="button" class="e_button-r e_button-l e_button-blue"  ontap="hidePopup(this)">关闭</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

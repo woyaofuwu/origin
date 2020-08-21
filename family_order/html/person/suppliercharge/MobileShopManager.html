@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" language="JavaScript" src="person/suppliercharge/scripts/mobileShopManager.js"></script> 
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">查询区</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6" id="QueryPart">
+			<ul class="ul">
+				
+				<li class="li">
+					<span class="label"><span class="e_required">费用起始日期：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="query_START_DATE@DateField" name="query_START_DATE" value="ognl:condition.START_DATE" 
+							maxName="query_START_DATE" datatype="date" format="yyyy-MM" desc="起始日期" nullable="no" />
+					</span></span>
+				</li>
+			<li class="li">
+					<span class="label"><span class="e_required">费用终止日期：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="query_END_DATE@DateField" name="query_END_DATE" value="ognl:condition.END_DATE" 
+							minName="query_END_DATE" datatype="date" format="yyyy-MM" desc="终止日期" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li" >
+					<span class="label">卖场名称：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="query_SHOP_NAME@Select" name="query_SHOP_NAME"
+						 source="ognl:sellSupp"
+						 value="ognl:condition.SHOP_NAME" textField="CORP_NAME" valueField="CORP_NO"
+						 desc="卖场名称" />
+					</span></span></span>
+				</li>
+				 <li class="li">
+					<span class="label">进驻供应商：</span>
+					<span class="e_select"><span><span>
+						<select	jwcid="query_CORP_NAME@Select" name="query_CORP_NAME"
+								source="ognl:termSupp"
+								value="ognl:condition.CORP_NAME" textField="CORP_NAME" valueField="CORP_NO" 
+								desc="进驻供应商"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">归属业务区：</span>
+					<span class="e_select"><span><span>
+						<select	jwcid="query_CITY_CODE@Select" name="query_AREA_CODE"
+								source="ognl:cityList"
+								value="ognl:condition.AREA_CODE" textField="AREA_NAME" valueField="AREA_CODE" 
+								desc="归属业务区"/>
+					</span></span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" onclick="mobileShopCheck();"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+		<div jwcid="FreshPart@Part">
+		<div class="c_title c_title2">
+				<div class="text">查询列表</div>
+				<div class="fn" jwcid="@Any">
+					<button type="button"   onclick="deleteMobileInShop();" class="l_ml"><i class="e_ico-delete"></i><span>删除</span></button>
+				</div>
+			</div>
+			<!-- 表格 开始 -->
+			<div class="c_scroll c_scroll-x c_scroll-table-10">
+			<div class="fn">
+		      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+		      	<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="11702"
+					  config="export/suppliercharge/mobileshopmanager.xml" fileName="手机卖场管理信息" cond="QueryPart"/>
+			  </div>
+			</div>
+				<div class="c_table">
+					<table>
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="numbers_ctrl" name="numbers_ctrl" onclick="checkedAll('numbers', checked)" class="e_checkbox"/></th>
+						  
+							    <th>卖场名称</th>
+							    <th>供应商渠道编码</th>
+								<th>供应商名称</th>
+								<th>归属分公司</th>
+								<th>缴纳年份</th>
+								<th>缴纳月份</th>
+								<th>收费项目</th>
+								<th>应缴管理费(单位:元)</th>
+								<th>更新操作员</th>
+								<th>更新时间</th>
+								<th>状态</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td class="e_center"><input type="checkbox" id="numbers" name="numbers" jwcid="@Any" value="ognl:info.ROWID_T"/></td>
+						      
+						        <td><span jwcid="@Insert" value="ognl:info.SHOP_NAME" raw="true"/></td>
+						        <td><span jwcid="@Insert" value="ognl:info.CORP_NO" raw="true" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.CORP_NAME" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.AREA_CODE" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.YEAR" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.FEE_ITEM" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.BALANCE" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="true" /></td> 
+								<td><span jwcid="@Insert" value="ognl:info.STATUS" raw="true" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true" /></td> 
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- 表格 结束 -->
+			<!-- 翻页 开始 -->
+			<div jwcid="@NavBar" name="MobileOutVisitNav" cond="QueryPart" part="FreshPart" listener="queryMobileShopInfo" count="ognl:count" pageSize="10"/>
+			<!-- 翻页 结束 -->
+		</div>
+	</div>
+	<!-- 区域 结束 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">编辑区</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6" id="CondPart">
+		   <ul class="ul">
+		     <li class="li" >
+					<span class="label"><span class="e_required">卖场名称：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="cond_SHOP_NAME@Select" name="cond_SHOP_NAME"
+						 source="ognl:sellSupp"
+						 value="ognl:condition.SHOP_NAME" textField="CORP_NAME" valueField="CORP_NO"
+						 desc="卖场名称" nullable="no"/>
+					</span></span></span>
+				</li>
+			  <li class="li">
+					<span class="label"><span class="e_required">进驻供应商：</span></span>
+					<span class="e_select"><span><span>
+						<select	jwcid="cond_CORP_NAME@Select" name="cond_CORP_NAME"
+								source="ognl:termSupp"
+								value="ognl:condition.CORP_NO" textField="CORP_NAME" valueField="CORP_NO"  nullable="no"
+								desc="进驻供应商"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">缴费时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="cond_OPER_DATE@DateField" name="cond_OPER_DATE" value="ognl:condition.OPER_DATE" 
+							maxName="cond_OPER_DATE" datatype="date" format="yyyy-MM" desc="缴费时间" nullable="no" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">本月应缴：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="cond_FEE@TextField" name="cond_FEE" value="ognl:condition.FEE" 
+							desc="本月应缴管理费" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">收费项目：</span></span>
+					<span class="e_select"><span><span>
+						<select	jwcid="cond_FEE_ITEM@Select" name="cond_FEE_ITEM"
+								source="ognl:feeItemList"
+								value="ognl:condition.FEE_ITEM" textField="PARAM_NAME" valueField="PARAM_CODE"  nullable="no"
+								desc="收费项目"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">备注：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="cond_REMARK@TextField" name="cond_REMARK" value="ognl:condition.REMARK" 
+							desc="备注"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 提交 开始 -->
+		<div class="c_submit">
+			<button type="button" class="e_button-page-ok" onclick="mobileShopInsert()"><i class="e_ico-ok"></i><span>提交</span></button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	<!-- 区域  结束 -->
+</div></div>
+</body>
+</html>	

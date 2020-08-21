@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>在网营销活动终止</title>
+<script jwcid="@Script" language="JavaScript" src="person/saleactive/scripts/onnetsaleactiveend.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper" id="bodyScroll"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <div class="text">客户查询</div>
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="displaySwitch(this,'custInfoPart')"><i
+				class="e_ico-unfold"></i><span>展示客户信息</span>
+			</a>
+		</div>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="2370" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+    <div id="custInfoPart" jwcid="custInfoPart@Part" style="display:none">
+        <div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+    </div>
+</div>
+
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">活动信息</div>
+	</div>
+    <!-- 表格 开始 -->
+	<div jwcid="activatePart@Part">
+		<div class="c_table c_table-hover">
+			<table jwcid="@Table" id="activeInfoTable" name="activeInfoTable">
+			<thead>
+				<tr>
+				     <th col="ROWINDEX" style="display:none">行计数器</th>
+					 <th col="X_SELECTED">选择</th>
+					 <th col="PRODUCT_ID" style="display:none">产品编码</th>
+					 <th col="PACKAGE_ID" style="display:none">包编码</th>
+					 <th col="PRODUCT_NAME">营销活动</th>
+                     <th col="PACKAGE_NAME">营销包</th>
+                     <th col="ACCEPT_DATE">受理时间</th>
+                     <th col="START_DATE">开始时间</th>
+                     <th col="END_DATE">结束时间</th>
+                     <th col="RELATION_TRADE_ID" style="display:none">受理流水</th>
+                     <th col="ONNET_START_DATE">在网开始时间</th>
+                     <th col="ONNET_END_DATE">在网结束时间</th>
+                     <th col="CAMPN_TYPE" style="display:none">活动类型</th>
+                     <th col="PRODT_FLAG" style="display:none">是否有权限</th>
+                     <th col="INST_ID" style="display:none">实例ID</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+				    <td style="display:none"><span jwcid="@Insert" value="ognl:rowIndex" raw="false"></span></td>
+					<td class="e_center">
+						<input jwcid="@Any" onclick="selectActive(this);" rowIndex="ognl:rowIndex" type="radio" id="saleactive" name="saleactive" />
+					</td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="false"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.PACKAGE_ID" raw="false"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+                    <td class="wrap"><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.ACCEPT_DATE)" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.START_DATE)" raw="false"></span></td> 
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.END_DATE)" raw="false"></span></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.RELATION_TRADE_ID" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.ONNET_START_DATE)" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.ONNET_END_DATE)" raw="false"></span></td> 
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.CAMPN_TYPE" raw="false"></span></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.PRODT_FLAG" raw="false"></span></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.INST_ID" raw="false"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+
+
+<div class="c_box" id="activateDetailDiv" style="display:none">
+	<div class="c_title">
+		<div class="text">活动详情</div>
+	</div>
+    <!-- 表格 开始 -->
+	<div jwcid="activateDetailPart@Part">
+		<div class="c_table" id="discntInfoDiv" jwcid="@Any" style="ognl:(discnts != null && discnts.size()) > 0 ? '' : 'display:none'">
+			   <table id="SaleDiscntTable" name="SaleDiscntTable">
+				<colgroup>
+					<col style="width:50px;"></col>
+					<col></col>
+					<col style="width:190px;"></col>
+					<col style="width:190px;"></col>
+				</colgroup>
+				<tbody>
+					<tr class="even">
+						<td class="e_center" rowspan="20"><strong>优惠</strong></td>
+						<td class="e_center"><span>优惠名称</span></td>
+						<td class="e_center"><span>开始时间</span></td>
+						<td class="e_center"><span>结束时间</span></td>
+					</tr>
+					
+					<tr jwcid="@Foreach" source="ognl:discnts" value="ognl:discnt" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? 'odd' : ''">
+						<td class="wrap">
+							<span jwcid="@Insert" value="ognl:discnt.DISCNT_CODE+'|'+discnt.DISCNT_NAME"/>
+						</td>
+						<td class="e_center">
+							<span id="ognl:'DISCNT_'+rowIndex+'_'+discnt.DISCNT_CODE+'_START_DATE'" jwcid="@Insert" value="ognl:discnt.START_DATE"/>
+						</td>
+						<td class="e_center">
+							<span id="ognl:'DISCNT_'+rowIndex+'_'+discnt.DISCNT_CODE+'_END_DATE'" jwcid="@Insert" value="ognl:discnt.END_DATE"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="c_table" id="serviceInfoDiv" jwcid="@Any" style="ognl:(servs != null && servs.size() > 0) ? '' : 'display:none'">
+			   <table id="SaleServiceTable" name="SaleServiceTable">
+				<colgroup>
+					<col style="width:50px;"></col>
+					<col></col>
+					<col style="width:190px;"></col>
+					<col style="width:190px;"></col>
+				</colgroup>
+				<tbody>
+					<tr class="even">
+						<td class="e_center" rowspan="20"><strong>服务</strong></td>
+						<td class="e_center"><span>服务名称</span></td>
+						<td class="e_center"><span>开始时间</span></td>
+						<td class="e_center"><span>结束时间</span></td>
+					</tr>
+					
+					<tr jwcid="@Foreach" source="ognl:servs" value="ognl:serv" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? 'odd' : ''">
+						<td class="wrap">
+							<span jwcid="@Insert" value="ognl:serv.SERVICE_ID+'|'+serv.SERVICE_NAME"/>
+						</td>
+						<td class="e_center">
+							<span id="ognl:'SERVICE_'+rowIndex+'_'+serv.SERVICE_ID+'_START_DATE'" jwcid="@Insert" value="ognl:serv.START_DATE"/>
+						</td>
+						<td class="e_center">
+							<span id="ognl:'SERVICE_'+rowIndex+'_'+serv.SERVICE_ID+'_END_DATE'" jwcid="@Insert" value="ognl:serv.END_DATE"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="c_table" id="depositInfoDiv" jwcid="@Any" style="ognl:(deposits != null && deposits.size() > 0) ? '' : 'display:none'">
+			   <table id="SaleDepositTable" name="SaleDepositTable">
+				<colgroup>
+					<col style="width:50px;"></col>
+					<col></col>
+					<col style="width:190px;"></col>
+					<col style="width:190px;"></col>
+				</colgroup>
+				<tbody>
+					<tr class="even">
+						<td class="e_center" rowspan="20"><strong>预存</strong></td>
+						<td class="e_center"><span>预存名称</span></td>
+						<td class="e_center"><span>开始时间</span></td>
+						<td class="e_center"><span>结束时间</span></td>
+					</tr>
+					
+					<tr jwcid="@Foreach" source="ognl:deposits" value="ognl:deposit" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? 'odd' : ''">
+						<td class="wrap">
+							<span jwcid="@Insert" value="ognl:deposit.DISCNT_GIFT_ID+'|'+deposit.DISCNT_GIFT_NAME"/>
+						</td>
+						<td class="e_center">
+							<span jwcid="@Insert" value="ognl:deposit.START_DATE"/>
+						</td>
+						<td class="e_center">
+							<span jwcid="@Insert" value="ognl:deposit.END_DATE"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="c_table" id="goodsInfoDiv" jwcid="@Any" style="ognl:(goods != null && goods.size() > 0) ? '' : 'display:none'">
+			   <table id="SaleGoodsTable" name="SaleGoodsTable">
+				<colgroup>
+					<col style="width:50px;"></col>
+					<col></col>
+					<col style="width:190px;"></col>
+					<col style="width:190px;"></col>
+				</colgroup>
+				<tbody>
+					<tr class="even">
+						<td class="e_center" rowspan="20"><strong>实物</strong></td>
+						<td class="e_center"><span>实物名称</span></td>
+						<td class="e_center">实物数量</td>
+						<td class="e_center">实物类型</td>
+						<td class="e_center">实物编号</td>
+					</tr>
+					
+					<tr jwcid="@Foreach" source="ognl:goods" value="ognl:good" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? 'odd' : ''">
+						<td class="wrap">
+							<span jwcid="@Insert" value="ognl:good.GOODS_ID+'|'+good.GOODS_NAME"/>
+						</td>
+						<td class="e_center">
+							<span jwcid="@Insert" value="ognl:good.GOODS_NUM"/>
+						</td>
+						<td class="e_center">
+							<span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_TYPE','RES_TYPE_ID','RES_TYPE_NAME', good.RES_TYPE_CODE)"/>
+						</td>
+						<td class="e_center">
+							<span jwcid="@Insert" value="ognl:good.RES_CODE"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+	<!-- 表格 结束 -->
+</div>
+
+<div class="c_box">
+	<div class="c_title">
+        <div class="text">业务操作</div>
+    </div>
+    <div jwcid="userOperPart@Part">
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="conditionPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">支付方式：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select"  id="RSRVSTR6" name="RSRVSTR6" 
+					            source="ognl:pageutil.getStaticList('TD_S_PAYMONEYEND')" addDefault="false"
+					            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+	                			value="ognl:info.RSRVSTR6"  desc="支付方式"/>
+				</span></span></span> 
+			</li>
+		
+			<li class="li">
+				<span class="label">应收违约金：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="RETURNFEE@TextField" name="RETURNFEE"   desc="应收违约金"
+					 value="ognl:info.RETURNFEE" datatype="numeric" nullable="no" disabled="true"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="e_required">实收违约金：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="TRUE_RETURNFEE@TextField" name="TRUE_RETURNFEE"   
+					desc="实收违约金" value="ognl:info.TRUE_RETURNFEE" datatype="numeric" nullable="no" />
+				</span></span>
+			</li>			
+		</ul>
+		
+		<ul>
+		<li class="li col-3">
+			<span class="label"> <span class="e_required">终止原因：</span></span>
+			<span class="e_textarea"><span>
+				<span class="e_textareaTop"><span></span></span>
+				<span class="e_textareaContent">
+				     <textarea type="text" jwcid="@TextArea" nullable="no" name="REMARK" id="REMARK" value="" desc="终止原因"/>
+				</span>
+				<span class="e_textareaBottom"><span>
+				</span></span>
+            </span></span>
+	    </li>
+		</ul>
+	</div>
+	</div>
+</div>
+
+<!--
+<div class="c_box">
+	<div class="c_submit">
+	     <button jwcid="@Button" accesskey="Y" class="e_button-page-ok" name="CSSUBMIT_BUTTON">
+			<i jwcid="@Any" class="e_ico-submit"></i><span>提交</span>
+		</button>
+	</div>
+</div>
+-->
+<div class="c_box">
+	<div class="c_submit">
+		<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkSubmitBefore()" isRender="false" params="" listener="" refreshPart="" area="AuthPart" element="div"/>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

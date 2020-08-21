@@ -1,0 +1,5 @@
+SELECT COUNT(ID_TYPE)
+  FROM TF_F_POSTINFO
+ WHERE ID = TO_NUMBER(:ID)
+   AND ID_TYPE = :ID_TYPE
+   AND sysdate BETWEEN start_date AND end_date

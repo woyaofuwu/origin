@@ -1,0 +1,2 @@
+INSERT INTO tf_f_vpmn_group(user_id,vpmn_group_id,vpmn_group_name,max_users,discnt_code,start_date,end_date)
+ VALUES(TO_NUMBER(:USER_ID),:VPMN_GROUP_ID,:VPMN_GROUP_NAME,:MAX_USERS,:DISCNT_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'))

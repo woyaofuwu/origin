@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团产品成员新增-预览</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/groupfee/GroupFee.js"></script>
+<script language="javascript">
+	$(document).ready(function(){
+		initGrpFeeList();
+	});
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 基本信息 开始 -->
+<div class="c_box">
+	<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:grpCustInfo"/>
+</div>
+
+<div class="c_box">
+	<span jwcid="@saleserv:MemberUserInfo" userInfo="ognl:mebUserInfo"/>
+</div>
+
+<div jwcid="@saleserv:ProductElementView" model="ognl:memberProduct" headText="（集团成员产品）" headField="PRODUCT_NAME" showHeads="包名,元素标识,元素类型,元素名称" showFields="PACKAGE_NAME,ELEMENT_ID,ELEMENT_TYPE_NAME,ELEMENT_NAME"/>
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">业务受理信息</div>
+	</div>
+	<div  class="c_form c_form-col-3"  jwcid="@Conditional" condition='ognl:condition.PRODUCT_ID == "10009805"'>
+	<ul class="ul">
+			<li class="li col-3">
+						<label for="cond_IS_SEC" >
+							            <input type="checkbox" id="PAGE_SELECTED_TC" name="PAGE_SELECTED_TC" jwcid="@Checkbox" 
+							            onclick="if(this.checked){$(this).val('true');}else {$(this).val('false');}"
+							            		 value="true" checked="true" /><span style="color:red">*是否二次确认*</span>
+					    </label>
+					</li>
+	</ul>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">
+				<span class="label">备注：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+						<textarea
+							jwcid="@TextArea" 
+							name="parm_REMARK"
+							id="parm_REMARK" 
+							type="text"
+							value="ognl:info.pamRemark"
+							title="备注"
+							raw="true">
+						</textarea>
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="@Conditional" condition='ognl:condition.MEB_FILE_SHOW != null && condition.MEB_FILE_SHOW == "true"'>
+	<div class="c_title">
+		<div class="text">附件信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-3">				
+				<span class="label"><span>附件上传：</span></span>
+				<div jwcid="MebFilePart@Part">
+				<span class="e_elements">
+					<input jwcid="@Upload"
+							name="MEB_FILE_LIST"
+							id="MEB_FILE_LIST"
+							ftpSite="groupserv"
+							filePath="upload/mebattach"
+							fileSize="20"
+							fileTypes="*.*"
+						/>
+					</span>
+			    </div>
+			</li>
+		</ul>
+	</div>
+</div>
+         <!-- 当是bboos产品时显示，其他产品不显示 -->
+      <div class="c_box" jwcid="@Conditional" condition='ognl:info.BOSG != null && info.BOSG == "true"'>
+                <div class="c_title c_title-2" >
+						<div class="text" id="MyInfoTitle">凭证信息</div>
+					</div>
+				
+					<!-- 标题 结束 -->
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-7 c_form-col-2" id="MyInfoId" ;">
+						<ul class="ul">
+							<li class="li col-2">
+								<span class="label"><span class="e_required">凭证上传：</span></span>
+								<div id="VoucherFilePart" _comp_path="VoucherFilePart">	<span class="e_elements">
+      <button type="button" class="e_button-right" id="UPLOAD_BTN_MEB_VOUCHER_FILE_LIST" onclick="javascript:Wade.uploadFile('#MEB_VOUCHER_FILE_LIST')" title="凭证信息"><i class="e_ico-upload"></i><span></span></button><span id="UPLOAD_SPAN_MEB_VOUCHER_FILE_LIST" class="e_input e_input-left"><span>
+      <input readonly="readonly" type="text" id="UPLOAD_MEB_VOUCHER_FILE_LIST" name="UPLOAD_MEB_VOUCHER_FILE_LIST" nullable="no" value="已选择0个文件"/>
+      <input type="hidden" id="MEB_VOUCHER_FILE_LIST" name="MEB_VOUCHER_FILE_LIST"  nullable="no" desc="凭证信息" filePath="upload/mebattach" ftpSite="groupserv" fileSize="20" fileDelete="true" fileTypes="*.*" needSuffix="false"/></span></span>	</span>
+                             </div>
+							</li>
+							  <li class="li">
+                            <span class="label"><span class="e_required">稽核人员：</span></span> 
+                            <span class="e_elements">
+								<button type="button" class="e_button-right"
+									onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+									<i class="e_ico-check"></i><span></span>
+								</button> 
+                                <span class="e_input e_input-left"><span> <input
+										type="text" jwcid="@TextField"
+										name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+										value=""
+										text="" nullable="no"
+										readonly="true" />
+								</span></span>
+							</span>
+							<input type="hidden" jwcid="@Any"  id="BBOSS_FLAG" name="BBOSS_FLAG" value="ognl:info.BOSG"/>
+                        </li>
+						</ul>
+					</div>
+					</div>
+<!-- 基本信息 结束 -->
+<input jwcid="@TextArea" id="GRP_FEE_LIST" name="GRP_FEE_LIST" value="ognl:grpFeeList" type="text" style="display:none"/>
+<input jwcid="@Any" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:condition.TRADE_TYPE_CODE" style="display:none"/>
+<input jwcid="@Any" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.MEB_SERIAL_NUMBER" style="display:none"/>
+<input jwcid="@Any" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:condition.MEB_EPARCHY_CODE" style="display:none"/>
+<input jwcid="@Any" name="USER_ID" id="USER_ID" value="ognl:condition.MEB_USER_ID" style="display:none"/>
+<input jwcid="@Any" name="MEB_FILE_SHOW" id="MEB_FILE_SHOW" value="ognl:condition.MEB_FILE_SHOW" style="display:none"/>
+</div></div>
+</body>
+</html>

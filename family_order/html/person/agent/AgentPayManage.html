@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>代理商银行账户信息管理</title>
+<script jwcid="@Script" language="JavaScript" src="person/agent/scripts/agentpay.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<form jwcid="@Form">
+	<div class="c_box" jwcid="SearchCondPart@Part" element="div">
+		<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span>分公司：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="CITY_CODE" source="ognl:cityInfo" titleField="AREA_NAME"
+							textField="AREA_NAME" valueField="AREA_CODE" value="ognl:cond.CITY_CODE"  desc="分公司" addDefault="false" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>代理商起始编码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="START_AGENT_CODE" value="ognl:cond.START_AGENT_CODE" desc="代理商起始编码" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>代理商结束编码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="END_AGENT_CODE" value="ognl:cond.END_AGENT_CODE" desc="代理商结束编码" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>银行账号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="ACCOUNT_CODE" value="ognl:cond.ACCOUNT_CODE" desc="银行账号" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>回缴渠道：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PAY_CHANNEL" source="ognl:pageutil.getStaticList('AGENT_PAYFOR_CHANNEL_INFO')" 
+							titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.PAY_CHANNEL"  desc="回缴渠道"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>是否生效：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="REMOVE_TAG" source="ognl:pageutil.getStaticList('AGENT_PAYFOR_YES_NO')" 
+							titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.REMOVE_TAG"  desc="是否生效"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>账户类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="RSRV_STR1" source="ognl:pageutil.getStaticList('ACCT_TYPE_STATIC')" 
+							titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" value="ognl:cond.RSRV_STR1"  desc="账户类型"/>
+					</span></span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit e_right">
+				<button type="button" name="queryBtn" class="e_button-form" onclick="chkSearchForm()"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+	</div>
+
+	<div class="c_box" jwcid="SearchResultPart@Part" element="div">
+		<div class="c_title">
+			<div class="text">查询信息</div>
+			<div class="fn">
+				<button type="button" name="unSelectBtn" class="e_button" onclick="chkSelect('UNALL')"><i class="e_ico-unselect"></i><span>反选</span></button>
+				<!--屏蔽-->
+				<!--<button type="button" name="importBtn" class="e_button" onclick="openNav('代理商银行账户信息批量导入', 'agent.AgentPayImport')"><i class="e_ico-import"></i><span>导入</span></button>-->
+				
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="8897" 
+				 config="export/agent/AgentPayInfo.xml" fileName="代理商银行账户信息" beforeAction="checkExport" cond="SearchCondPart" />
+
+				<!--<button type="button" name="delBtn" class="e_button" onclick="delAgentPayInfo()"><i class="e_ico-delete"></i><span>删除</span></button>-->
+				<!--<button type="button" name="addBtn" class="e_button" onclick="openNav('新增代理商银行账户信息', 'agent.AgentPayForm', 'loadAgentPayForm')"><i class="e_ico-add"></i><span>新增</span></button>-->
+
+			</div>
+		</div>
+
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table" style="height:auto;">
+			<table id="AgentPayInfoTable">
+      			<thead>
+		  			<tr>
+                    	<th class="sign"><input type="checkbox" name="selectAll" onclick="chkSelect('ALL')"/></th>
+                        <th>分公司</th>
+                        <th>手机号码</th>
+                        <th>代理商编码</th>
+                        <th>代理商名称</th>
+                        <th>回缴银行账号</th>
+                        <th>帐户名</th>
+                        <th>账户类型</th>
+                        <th>银行名称</th>
+                        <th>回缴渠道</th>
+                        <th>生效标识</th>
+                        <th>添加时间</th>
+                        <th>添加员工工号</th>
+                        <th>添加员工姓名</th>
+                        <th>更新时间</th>
+                        <th>更新员工工号</th>
+                        <th>更新员工姓名</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td ><input type="checkbox" class="e_checkbox" name="AGENT_TAG" jwcid="@Any" value="ognl:info.AGENT_ID"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.CITY_CODE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+                        <td><a jwcid="@Any" href="javascript:void(0);" agentId="ognl:info.AGENT_ID" onclick="modAgentPayInfo(this)">
+                        	<span jwcid="@Insert" value="ognl:info.AGENT_CODE" raw="false"/>
+                       	</a></td>
+                        <td><span jwcid="@Insert" value="ognl:info.AGENT_NAME" raw="false"/>
+                        <td><span jwcid="@Insert" value="ognl:info.ACCOUNT_CODE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.ACCOUNT_NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ACCT_TYPE_STATIC', info.RSRV_STR1)" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.BANK_NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('AGENT_PAYFOR_CHANNEL_INFO', info.PAY_CHANNEL)" raw="false"/></td>
+                        <td><span jwcid="@Insert" value='ognl:!"0".equals(info.REMOVE_TAG)?"注销":"正常"' raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.ADD_DATE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.OPER_STAFF_ID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.OPER_STAFF_NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.MODIFY_DATE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.MODIFY_STAFF_ID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.MODIFY_STAFF_NAME" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="SearchCondPart" part="SearchResultPart" 
+	      listener="queryPrintInfo" pageSize="20" count="ognl:recordCount"></div>
+	</div>
+
+</form>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+INSERT INTO tf_f_user_discnt
+  (PARTITION_ID,
+   USER_ID,
+   USER_ID_A,
+   PRODUCT_ID,
+   PACKAGE_ID,
+   DISCNT_CODE,
+   SPEC_TAG,
+   RELATION_TYPE_CODE,
+   INST_ID,
+   CAMPN_ID,
+   START_DATE,
+   END_DATE,
+   UPDATE_TIME,
+   UPDATE_STAFF_ID,
+   UPDATE_DEPART_ID,
+   REMARK,
+   RSRV_NUM1,
+   RSRV_NUM2,
+   RSRV_NUM3,
+   RSRV_NUM4,
+   RSRV_NUM5,
+   RSRV_STR1,
+   RSRV_STR2,
+   RSRV_STR3,
+   RSRV_STR4,
+   RSRV_STR5,
+   RSRV_DATE1,
+   RSRV_DATE2,
+   RSRV_DATE3,
+   RSRV_TAG1,
+   RSRV_TAG2,
+   RSRV_TAG3)
+  SELECT MOD(a.user_id, 10000),
+         a.user_id,
+         user_id_a,
+         PRODUCT_ID,
+         PACKAGE_ID,
+         DISCNT_CODE,
+         SPEC_TAG,
+         RELATION_TYPE_CODE,
+         INST_ID,
+         CAMPN_ID,
+         START_DATE,
+         END_DATE,
+         sysdate,
+         UPDATE_STAFF_ID,
+         UPDATE_DEPART_ID,
+         REMARK,
+         RSRV_NUM1,
+         RSRV_NUM2,
+         RSRV_NUM3,
+         RSRV_NUM4,
+         RSRV_NUM5,
+         RSRV_STR1,
+         RSRV_STR2,
+         RSRV_STR3,
+         RSRV_STR4,
+         RSRV_STR5,
+         RSRV_DATE1,
+         RSRV_DATE2,
+         RSRV_DATE3,
+         RSRV_TAG1,
+         RSRV_TAG2,
+         RSRV_TAG3
+    FROM tf_b_trade_discnt a
+   WHERE trade_id = TO_NUMBER(:TRADE_ID)
+     AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID, 5, 2))
+     AND modify_tag = '0'
+     AND NOT EXISTS (SELECT 1
+            FROM tf_f_user_discnt b
+           WHERE b.user_id = a.user_id
+             AND b.partition_id = MOD(a.user_id, 10000)
+             AND b.discnt_code = a.discnt_code
+             AND b.end_date > b.start_date
+             AND b.end_date > a.start_date)

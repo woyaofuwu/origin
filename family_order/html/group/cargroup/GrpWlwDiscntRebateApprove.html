@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<title>物联网资费折扣审批</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/cargroup/GrpWlwDiscntRebateApprove.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<!-- 查询  开始 -->
+			<div class="c_title">
+				<div class="text">查询条件</div>
+			</div>
+			<div class="c_form" jwcid="QueryCondPart@Part"  optimize="true">
+			<div class="c_form c_form-col-3 c_form-label-7">
+				<ul class="ul">
+					<li class="li">
+						<span jwcid="@saleserv:SelectGroupBySNPopup" limitType="1" 
+							limitProducts="20005013,20161122,20161124,20171214,20200402,20200405" afterErrorAction="$.endPageLoading();"/> 
+					</li>
+					<li class="li">
+						<span class="label">审批结果：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" id="cond_RSRV_STR1" name="cond_RSRV_STR1"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TF_O_DISCNT_APPROVAL_RSLT')" 
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_CAMPN_TYPE" desc="审批结果" />
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">PBOSS审批结果：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" id="cond_APPROVAL_RSLT" name="cond_APPROVAL_RSLT"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TF_O_DISCNT_APPROVAL_RSLT')" 
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_CAMPN_TYPE" desc="PBOSS审批结果" />
+						</span></span></span>
+					</li>
+				</ul>
+				<ul class="ul">
+					<li class="li">
+						<span class="label">开始时间：</span>
+						<span class="e_input"><span>
+							<input datatype="date" format="yyyy-MM-dd" jwcid="@DateField" name="cond_START_DATE"
+							id="cond_START_DATE" value="ognl:condition.cond_START_DATE"
+							desc="开始时间" /> 
+						</span></span>
+					</li>
+					<li class="li "><span class="label">结束时间：</span>
+						<span class="e_input"><span>
+						<input datatype="date" format="yyyy-MM-dd" jwcid="@DateField" 
+							name="cond_END_DATE" id="cond_END_DATE" value="ognl:condition.cond_END_DATE" desc="结束时间" />
+						</span></span>
+					</li>
+					<li class="li"></li>
+				</ul>
+				<div class="submitPlace"></div>
+				<div class="submit">
+					<button class="e_button-form" onclick="return queryInfo();" >
+						<i class="e_ico-search"></i><span>查询</span></button>
+				</div>
+			</div>
+			</div>
+			<!-- 查询  结束 -->
+			
+			<div class="c_box" jwcid="QueryListPart@Part" element="div">
+				<div class="c_title c_title-1">
+					<div class="text">查询结果</div>
+					<div class="fn" style="display: black">
+						<button class="e_button" onclick="return showApproveDiv();">
+							<i class="e_ico-add"></i><span>审批</span>
+						</button>
+					</div>
+				</div>
+				<div class="c_scroll c_scroll-x c_scroll-table-10">
+					<div class="c_table">
+						<table jwcid="@Table" name="BadnessTradeTable">
+						<thead>
+							<tr>
+								<th col="IN_CHECK_ID">
+									<input type="checkbox" id="check" name="check" onclick="checkedAll('chkbox',checked)" value="" />
+								</th>
+								<th col="EC_ID">集团客户订购标识</th>
+								<th col="REPORT_NUM">报备号</th>
+								<th col="CARDS_NUM">开卡数</th>
+								<th col="CONTRACT_AWARD_DATE">合同签署日期</th>
+								<th col="CONTRACT_EFFEC_DATE">合同生效时间</th>
+								<th col="CONTRACT_EXPIRE_DATE">合同失效时间</th>
+								<th col="APPLICATION_ATTR">申请属性</th>
+								<th col="PROV_DOC">证明材料</th>
+								<th col="APPLICANT">申请人名称</th>
+								<th col="APPLICANT_PHONE">申请人联系方式</th>
+								<th col="APPLY_DATE">申请时间</th>
+								<th col="APPLY_REASON">申请原因</th>
+								<th col="APPROVAL_NO">审批文号</th>
+								<th col="RSRV_STR1">审批结果</th>
+								<th col="APPROVAL_RSLT">PBOSS审批结果</th>
+								<th col="APPROVAL_DOC">审批附件</th>
+								<th col="DETAILS">折扣产品详细</th>
+							</tr>
+						</thead>
+						<tbody jwcid="@Any" name="managePrizeBody" id="managePrizeBody">
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td align="center">
+									<input type="checkbox" name="chkbox" approveresl="ognl:info.RSRV_STR1"
+									id='"checkbox"+ rowIndex' jwcid="@Any" value="ognl:info.OPR_SEQ" />
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.EC_ID" raw="true"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.REPORT_NUM" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.CARDS_NUM" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.CONTRACT_AWARD_DATE" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.CONTRACT_EFFEC_DATE" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.CONTRACT_EXPIRE_DATE" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('APPLICATION_ATTR',info.APPLICATION_ATTR)" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.PROV_DOC" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.APPLICANT" raw="false"></span>
+								</td>
+								
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.APPLICANT_PHONE" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.APPLY_DATE" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.APPLY_REASON" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:info.APPROVAL_NO" raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TF_O_DISCNT_APPROVAL_RSLT',info.RSRV_STR1)" 
+									raw="false"></span>
+								</td>
+								<td align="center">
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TF_O_DISCNT_APPROVAL_RSLT',info.APPROVAL_RSLT)" 
+									 raw="false"></span>
+								</td>
+								<td align="center">
+									<a jwcid="@Any" href="ognl:info.URL" target="_blank">
+										<span class="text" jwcid="@Insert" value="ognl:info.APPROVAL_DOC"></span>
+									</a>
+								</td>
+								<td align="center">
+									<a jwcid="@Redirect" source="ognl:info" oprseqid="ognl:info.OPR_SEQ"  value="详细"
+								 	onclick="$.popupPageExternal('group.cargroup.WlwDiscntRebateDetails', 'queryRebateDetailsByOprSeq', '&OPR_SEQ_ID='+getAttribute('oprseqid'),'折扣产品明细信息',820,650)"
+								 	raw="true"/>
+								</td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- 分页 开始 -->
+				<div jwcid="NavBarPart@NavBar" name="NavBarPart" id="NavBarPart" 
+					cond="QueryCondPart" part="QueryListPart" listener="queryRebateApproveInfo" 
+					pageSize="10" count="ognl:totalCount" desc="">
+				</div>
+				<!-- 分页 结束 -->
+			</div>
+			<!-- 查询结果区域  结束 -->
+
+
+			<!-- 编辑区域 开始 -->
+			<div class="c_box" jwcid="editInfoPart@Part" element="div"
+				style="display: none;">
+				<div class="c_title">
+					<div class="text" id="editInfoPartTitle" name="editInfoPartTitle">审批</div>
+				</div>
+				<div class="c_form c_form-col-3 c_form-label-8">
+					<ul class="ul">
+						<li class="li"><span class="label"><span class="e_required">审批：</span> </span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="RSLT_STATE" id="RSLT_STATE"
+										desc="审批状态" nullable="no"
+										source="ognl:pageutil.getStaticList('TF_O_DISCNT_APPROVAL_RSLT')"
+										value="9" textField="DATA_NAME"
+										valueField="DATA_ID" titleField="DATA_NAME"/> </span> </span> </span>
+						</li>
+					</ul>
+				</div>
+				<div class="c_submit">
+					<button class="e_button-page-ok" id="bupdate" name="bupdate"
+						onclick="return submitApprove();">
+						<i></i><span>提交</span>
+					</button>
+					<button class="e_button-page-ok" id="bclose" name="bclose"
+						onclick="return hid();">
+						<i></i><span>取消</span>
+					</button>
+				</div>
+			</div>
+			<!-- 编辑区域 结束 -->
+
+		</div>
+	</div>
+
+</body>
+</html>

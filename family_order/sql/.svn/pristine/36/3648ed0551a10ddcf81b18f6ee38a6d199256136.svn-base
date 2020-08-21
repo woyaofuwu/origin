@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_scoresub(trade_id,accept_month,user_id,action_code,score_type_code,score_changed_sub,value_changed_sub,action_count,remark)
+ VALUES(TO_NUMBER(:TRADE_ID),:ACCEPT_MONTH,TO_NUMBER(:USER_ID),'-1',:SCORE_TYPE_CODE,TO_NUMBER(:SCORE_CHANGED_SUB),TO_NUMBER(:VALUE_CHANGED_SUB),'',:REMARK)

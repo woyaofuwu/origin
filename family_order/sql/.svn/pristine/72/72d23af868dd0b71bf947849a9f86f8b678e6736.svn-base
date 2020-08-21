@@ -1,0 +1,1 @@
+select * from TF_F_BLACKUSER_MANAGER where serial_number=:FORB_REPORT_NUMBER and black_serial_number=:FORB_BADNESS_NUMBER and black_status='0'

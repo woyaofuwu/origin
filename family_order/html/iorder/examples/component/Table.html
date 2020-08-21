@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head jwcid="@Head">
+<title>Table</title>
+<script jwcid="@Script" type="text/javascript" src="frame/scripts/device.js"></script>
+<script jwcid="@Script" type="text/javascript" src="frame/scripts/local.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="l_padding">
+	
+	<table name="mytable" jwcid="@Table" style="height:3rem;">
+		<thead>
+			<tr>
+				<th col="CBX"><input type="checkbox" ontap="checkedAll('CBX_CUST_ID', this.checked)" /></th>
+				<th col="CUST_ID"><span>客户标识</span></th>
+				<th col="CUST_NAME"><span>客户姓名</span></th>
+				<th style="display:none" col="AGE"><span>年龄</span></th>
+				<th><span>出生年月</span></th>
+				<th><span>手机号码</span></th>
+				<th><span>邮箱地址</span></th>
+				<th><span>邮箱地址</span></th>
+				<th><span>邮箱地址</span></th>
+				<th><span>邮箱地址</span></th>
+				<th><span>邮箱地址</span></th>
+				<th><span>邮箱地址</span></th>
+				<th><span>创建时间</span></th>
+				<th col="FN" class="fn"><span>删除</span></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+				<td><input jwcid="@Checkbox" name="CBX_CUST_ID" value="ognl:info.VALUE" /></td>
+				<td>0000230</td>
+				<td>Sylvester Stallone</td>
+				<td style="display:none">66</td>
+				<td>1946-07</td>
+				<td>13511223341</td>
+				<td>Sylvester@Expendables.com</td>
+				<td>Sylvester@Expendables.com</td>
+				<td>Sylvester@Expendables.com</td>
+				<td>Sylvester@Expendables.com</td>
+				<td>Sylvester@Expendables.com</td>
+				<td>Sylvester@Expendables.com</td>
+				<td>2012-12-11</td>
+				<td class="fn"><span class="e_ico-delete"></span></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<button type="button" ontap="doTest1()">新增行</button>
+	<button type="button" ontap="doTest2()">修改行</button>
+	<button type="button" ontap="doTest3()">删除行</button>
+	<button type="button" ontap="doTest4()">获取表格数据</button>
+	<button type="button" ontap="doTest5()">获取选中复选框的表格数据</button>
+</div>
+
+<script language="javascript">
+//<!--
+
+function doTest1(){
+	//alert(mytable.getRowData(1));
+	//mytable.addRow(jsonData, afterSelected);
+	mytable.addRow({"CUST_ID":"12345", 
+					"CUST_NAME":"客户姓名111", 
+					"AGE" : "99",
+					"CBX":"<input type=\"checkbox\" name=\"CBX_CUST_ID\" value=\"12345\" />",
+					"FN":"<span ontap=\"deleteTableRow('mytable', this)\" class=\"e_ico-delete\"></span>"});
+	//mytable.deleteRow(mytable.selected);
+}
+
+
+function doTest2(){
+	//alert(mytable.getRowData(1));
+	var data = new $.DataMap();
+	data.put("CUST_ID","54321");
+	data.put("CUST_NAME","客户姓名222");
+	mytable.updateRow(data.map, mytable.selected);
+	//mytable.deleteRow(mytable.selected);
+}
+
+function doTest3(){
+	mytable.deleteRow(mytable.selected);
+}
+
+function doTest4(){
+	//获取全部数据
+	alert(mytable.getData());
+	
+	//获取指定列数据
+	alert(mytable.getData("AGE"));
+}
+
+function doTest5(){
+
+	//获指定checkboxName的已勾选全部数据
+	alert(mytable.getCheckedRowsData("CBX_CUST_ID"));
+	
+	//获指定checkboxName的已勾选指定列数据
+	alert(mytable.getCheckedRowsData("CBX_CUST_ID", "AGE"));
+}
+//-->
+</script>
+</body>
+</html>

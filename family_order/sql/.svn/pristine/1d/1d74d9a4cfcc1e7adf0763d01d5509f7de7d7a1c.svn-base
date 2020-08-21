@@ -1,0 +1,1 @@
+select t.*  from tf_b_trade t where t.trade_type_code in ('6801','6802','6803','6804') and t.user_id=:USER_ID

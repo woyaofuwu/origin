@@ -1,0 +1,12 @@
+UPDATE TF_F_USER_GRP_MERCH_MEB
+   SET END_DATE         = TO_DATE(:END_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+       STATUS           = :STATUS,
+       UPDATE_TIME      = TO_DATE(:UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       UPDATE_STAFF_ID  = :UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID = :UPDATE_DEPART_ID,
+       REMARK           = :REMARK
+ WHERE PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+   AND USER_ID = TO_NUMBER(:USER_ID)
+   AND PRODUCT_ORDER_ID = :PRODUCT_ORDER_ID
+   AND START_DATE = TO_DATE(:START_DATE, 'yyyy-mm-dd hh24:mi:ss')
+   and EC_USER_ID = to_number(:EC_USER_ID)

@@ -1,0 +1,3 @@
+SELECT 'PayforWayName' KEY,PAYFOR_WAY_CODE VALUE1,'-1' VALUE2,PAYFOR_WAY_NAME VRESULT
+      FROM td_s_payfor_way
+WHERE SYSDATE BETWEEN start_date AND end_date AND 'PayforWayName'=:KEY

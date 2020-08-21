@@ -1,0 +1,3 @@
+UPDATE tl_b_ibtrade
+   SET cutoffday=TO_DATE(:CUTOFFDAY, 'YYYY-MM-DD HH24:MI:SS'),transidh=:TRANSIDH,transidc=:TRANSIDC,osnduns=:OSNDUNS,hsnduns=:HSNDUNS,rsptime=TO_DATE(:RSPTIME, 'YYYY-MM-DD HH24:MI:SS'),remoteproctime=TO_DATE(:REMOTEPROCTIME, 'YYYY-MM-DD HH24:MI:SS'),rsptype=:RSPTYPE,rspcode=:RSPCODE,rspdesc=:RSPDESC,resultcode=:RESULTCODE,resultinfo=:RESULTINFO,convid=:CONVID,updatetime=TO_DATE(:UPDATETIME, 'YYYY-MM-DD HH24:MI:SS')  
+ WHERE ibsysid=:IBSYSID

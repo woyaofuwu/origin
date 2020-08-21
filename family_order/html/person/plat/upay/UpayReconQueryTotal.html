@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: UpayReconQueryTotal.html,v 1.4 2017/01/17 08:35:53 songxw Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>和包电子券对账查询</title>
+<script jwcid="@Script" src="person/plat/upay/scripts/upayreconquery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">和包电子券对账查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-2" jwcid="UpayReconCond@Part" id="UpayReconCond" element="div">
+		<ul class="ul">		
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:cond.cond_START_DATE" maxName="cond_END_DATE" desc="开始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  value="ognl:cond.cond_END_DATE" minName="cond_START_DATE" desc="结束时间"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryUpayReconTotal(this);"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="UpayReconList@Part" id="UpayReconList"  element="div">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="UpayReconTotalTable">
+			<thead>
+				<tr>
+				  <th onclick="Wade.dom.sortTable('dataList',0,'string')"><span>对账日</span></th>
+				  <th onclick="Wade.dom.sortTable('dataList',1,'string')"><span>BOSS多</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',2,'string')"><span>平台多</span></th>	
+                  <th onclick="Wade.dom.sortTable('dataList',3,'string')"><span>平台与BOSS金额不一致</span></th>
+                  <th onclick="Wade.dom.sortTable('dataList',4,'string')"><span>操作</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd',info.CUTOFF_DAY)" raw="true"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.R1" raw="true"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.R2" raw="true"/></td>	
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.R3" raw="true"/></td>																		
+						<td class="e_center"><span>
+						<a jwcid="@Any" CUTOFF_DAY="ognl:info.CUTOFF_DAY" onclick="javascript:openNav('对账详情','plat.upay.UpayReconQuery', 'queryUpayRecon', '&amp;cond_DEAL_TAG=&amp;cond_CUTOFF_DAY=' + $(this).attr('CUTOFF_DAY'), '');" href="javascript:void(0)"><span>[查看详细]</span></a>
+						</span></td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
+	<div jwcid="@NavBar" name="PaginBar" id="PaginBar" cond="UpayReconCond" count="ognl:paginCount"  listener="queryUpayReconTotal" pageSize = "20" part="UpayReconList" />
+			
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></body>
+</html>

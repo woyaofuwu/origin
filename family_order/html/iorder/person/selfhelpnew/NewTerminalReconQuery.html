@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新型自助终端对账结果查询</title>
+<script jwcid="@Script"  src="iorder/person/selfhelpnew/scripts/NewTerminalReconQuery.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">新型自助终端对账结果查询</div>
+	<div class="fn">
+		<span class="e_ico-search" ontap=""></span>
+	</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<!-- 滚动（替换为 java 组件） 开始 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+			<div class = "c_space"></div>					
+			<!-- 查询输入区域开始-->
+			<div jwcid="ParamsPart@Part" class="c_list c_list-col-3 c_list-s  c_list-line c_list-border">
+				<ul class="ul">				
+					<li>
+						<div class="label">起始时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" readonly="true" value="ognl:condition.cond_START_DATE" maxName="cond_FINISH_DATE" dropDown="true" desc="起始时间" />
+						</div>
+					</li>
+					<li>
+						<div class="label">终止时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_FINISH_DATE" id="cond_FINISH_DATE" nullable="no" readonly="true" value="ognl:condition.cond_FINISH_DATE" minName="cond_START_DATE" dropDown="true" desc="终止时间" />
+						</div>
+					</li>		
+					<li>
+						<div class="label">对账结果</div>
+						<div class="value" id="SEL_DIV">						
+						<span class = "e_mix">
+							<select jwcid="@Select" name="cond_REC_RESULT" id="cond_REC_RESULT" source="ognl:reconResults" textField="TEXT" valueField="VALUE" class="e_select" nullable="no" defaultText="全部" desc="--请选择--"/>
+							<button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="queryPayOrder()"><i class="e_ico-search"></i><span>查询</span></button>								
+						</span>
+						</div>
+					</li>												
+				</ul>
+			</div>
+			<!-- 查询输入区域结束 -->
+			<div class = "c_space"></div>
+			<div class="c_title">
+				<div class="text">查询结果</div>
+				<div class="fn">
+					<button type="button" class="e_button-navy e_button-r" disabled="true" name="BACKFEE_BTN" id="BACKFEE_BTN" ontap="backFee()"><i class="e_ico-money"></i><span>退款</span></button>
+				</div>							
+			</div>
+			<div class="c_tip c_tip-red">对账结果为BOSS多且是否退款标识不为1的记录才可使用退款按钮</div>	
+			<!-- 查询结果显示区域开始 -->
+			<div jwcid="QueryListPart@Part">
+			<div jwcid="table4Print@Part" optimize="true">
+				<table jwcid="@Table" name="printTable" id="printTable" class="c_table c_table-row-10 c_table-border c_table-lite c_table-hover" fixedLeftCols="2" editMode="false">
+					<thead>                                            
+						<tr>
+		  					<th >选择</th>
+		  					<th >序号</th>
+		  					<th col="SERIAL_NUMBER" >手机号码</th>
+		  					<th col="REC_RESULT" >对账结果</th>
+							<th col="UPDATE_TIME" >对账时间 </th>
+							<th col="DEAL_STATE" >处理结果</th>
+							<th col="DEAL_INFO" >处理结果信息</th>
+							<th col="IS_REFUND" >是否退款</th>
+							<th col="REFUND_DATE" >退款日期</th>
+							<th col="REFUND_ORDER_NO" >退款订单号</th>
+							<th col="REFUND_FEE" >退款金额</th>
+							<th col="UUID" >UUID</th>
+							<th col="TRANS_ACTION_ID" >自助终端流水号</th>							
+							<th col="ORDER_NO" >订单号</th>
+							<th col="ACCOUNT_MONEY" >到账金额</th>
+							<th col="PAYMENT" >支付金额</th>
+							<th col="ORDER_MONNEY" >订单金额</th>
+							<th col="GIFT" >优惠金额</th>
+							<th col="BUSI_TYPE" >交易类型</th>
+							<th col="CHARGE_MONEY" >充值金额</th>
+							<th col="PAYMENT_TYPE" >支付方式</th>
+							<th col="PAY_TRANS" >支付流水号</th>
+							<th col="PAY_STATUS" >支付状态</th>
+							<th col="ORDER_STATUS_CODE" >订单处理结果</th>
+							<th col="ORDER_STATUS_DESC" >订单处理描述</th>
+							<th col="SETTLE_DATE" >对账日期</th>
+							<th col="PRODUCT_NAME" >业务类型</th>
+							<th col="HOME_PROV" >归属省份</th>							
+							<th col="HALL_CODE" >营业厅编码</th>
+							<th col="OP_ID" >操作员工</th>
+							<th col="ADD_TIME" >加入时间</th>
+							<th col="ACCEPT_MONTH" >办理月份</th>							
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td>
+								<input type="radio" name="RADIO_LIST" id="RADIO_LIST"  jwcid="@Radio" value="ognl:info.TICKET_CODE" trans_action_id="ognl:info.TRANS_ACTION_ID" rec_result="ognl:info.REC_RESULT" is_refund="ognl:info.IS_REFUND" onclick = "changeInfo(this)"/>
+							</td>		
+							<td>
+								<a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" />
+							</td>	
+							<td>
+					        	<a jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+					        </td>	
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:pageutil.getStaticValue('RECON_TYPE', info.REC_RESULT)" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:pageutil.getStaticValue('RECON_DEAL_STATE', info.DEAL_STATE)" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.DEAL_INFO" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.IS_REFUND" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.REFUND_DATE" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.REFUND_ORDER_NO" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.REFUND_FEE" raw="true" />
+					        </td>
+							<td>
+					       		<a jwcid="@Insert" value="ognl:info.UUID" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.TRANS_ACTION_ID" raw="true" />
+					        </td>
+
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ORDER_NO" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ACCOUNT_MONEY" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.PAYMENT" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ORDER_MONNEY" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.GIFT" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.BUSI_TYPE" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.CHARGE_MONEY" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.PAYMENT_TYPE" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.PAY_TRANS" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.PAY_STATUS" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ORDER_STATUS_CODE" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ORDER_STATUS_DESC" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.SETTLE_DATE" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.HOME_PROV" raw="true" />
+					        </td>
+
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.HALL_CODE" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.OP_ID" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ADD_TIME" raw="true" />
+					        </td>
+					        <td>
+					        	<a jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="true" />
+					        </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div class="c_space-c"></div>
+			<div class="c_page c_page-border" jwcid="@NavBar" name="recordNav" id="recordNav" cond="ParamsPart" part="QueryListPart" listener="queryPayOrder" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+			</div>
+			<!-- 查询结果显示区域结束 -->			
+	</div>	
+</div>
+</body>
+</html>

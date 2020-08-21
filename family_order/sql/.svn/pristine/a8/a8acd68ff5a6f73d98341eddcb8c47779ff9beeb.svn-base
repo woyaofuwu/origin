@@ -1,0 +1,36 @@
+SELECT A.PARTITION_ID,
+       A.USER_ID,
+       A.USER_ID_A,
+       A.PRODUCT_ID,
+       A.PRODUCT_MODE,
+       A.BRAND_CODE,
+       A.INST_ID,
+       A.CAMPN_ID,
+       A.START_DATE,
+       A.END_DATE,
+       A.UPDATE_TIME,
+       A.UPDATE_STAFF_ID,
+       A.UPDATE_DEPART_ID,
+       A.REMARK,
+       A.RSRV_NUM1,
+       A.RSRV_NUM2,
+       A.RSRV_NUM3,
+       A.RSRV_NUM4,
+       A.RSRV_NUM5,
+       A.RSRV_STR1,
+       A.RSRV_STR2,
+       A.RSRV_STR3,
+       A.RSRV_STR4,
+       A.RSRV_STR5,
+       A.RSRV_DATE1,
+       A.RSRV_DATE2,
+       A.RSRV_DATE3,
+       A.RSRV_TAG1,
+       A.RSRV_TAG2,
+       A.RSRV_TAG3,
+       A.MAIN_TAG
+  FROM TF_F_USER_PRODUCT A
+ WHERE A.USER_ID = TO_NUMBER(:USER_ID)
+   AND A.PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+   AND A.MAIN_TAG = '1'
+   AND A.END_DATE > SYSDATE

@@ -1,0 +1,2 @@
+INSERT INTO td_m_storesvcinfo(store_id,store_svc_id,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,update_time,remark)
+ VALUES(:STORE_ID,:STORE_SVC_ID,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:RSRV_STR6,:RSRV_STR7,:RSRV_STR8,:RSRV_STR9,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:REMARK)

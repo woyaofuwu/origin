@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: UserDiscountInfo.html,v 1.16 2013/04/22 07:18:44 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询  - 优惠信息</title>
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID"/>
+		<input name="IN_MODE_CODE1" id="IN_MODE_CODE1" jwcid="@TextField" value="ognl:getVisit().getInModeCode()" style="display:none;"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:cond.EPARCHY_CODE"/>
+		<input jwcid="@TextField" name="SelectTag" id="SelectTag" value="ognl:cond.SelectTag"/>
+		<input jwcid="@TextField" id="AGENT_STATUS" name="AGENT_STATUS" value="ognl:condition.AGENT_STATUS"/><!--如果不是5就表示不在通话状态-->
+		<input jwcid="@TextField" id="SERIAL_NUMBER_B" name="SERIAL_NUMBER_B" value="ognl:condition.SERIAL_NUMBER_B"/><!--呼入号码-->
+		<input jwcid="@TextField" id="REMOVE_TAG" name="REMOVE_TAG" value="ognl:condition.REMOVE_TAG" />
+		<input jwcid="@TextField" id="IS_VIP_MANAGER" name="IS_VIP_MANAGER" value="ognl:condition.IS_VIP_MANAGER" />
+		<input jwcid="@TextField" id="VIP_MANAGER_PASS" name="VIP_MANAGER_PASS" value="ognl:condition.VIP_MANAGER_PASS" />
+		<input jwcid="@TextField" id="IS_BOTH_SN" name="IS_BOTH_SN" value="ognl:condition.IS_BOTH_SN" />
+		<input jwcid="@TextField" id="BOTH_SN_PASS" name="BOTH_SN_PASS" value="ognl:condition.BOTH_SN_PASS" />
+		<input jwcid="@TextField" id="MANY_RECORDS" name="MANY_RECORDS" value="ognl:condition.MANY_RECORDS"/>
+		<input jwcid="@TextField" id="condition_EPARCHY_CODE" name="condition_EPARCHY_CODE" value="ognl:condition.EPARCHY_CODE"/>
+	</div>
+	<!-- 隐藏域 结束 -->
+	
+	<!-- 表头 开始 -->
+	<div class="c_title c_title-2" jwcid="tableHead@Part">
+		<div class="text">优惠列表</div>
+		<div class="fn">
+			<label for="SelectTag"><input type="checkbox" id="SelTag" name="SelTag" class="e_checkbox" onclick="checkSelectAll(this);"/>所有记录</label>
+		</div>
+		
+	</div>
+	<!-- 表头 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part"  >
+	<div class="c_scroll c_scroll-table-20"><div class="c_table">
+<!-- 	<div jwcid="@Conditional" condition="ognl:condition.IS_SHOW==1"> -->
+<!-- 		<table id="dataList"> -->
+<!-- 		  		<tr> -->
+<!-- 		           <td width="90" style="cursor:pointer;" align="left" valign="middle"> -->
+<!-- 						<button jwcid="@Any" name="send_BTN" id="send_BTN" class="e_button" onclick="send10086Mesage()"><i class="e_ico-send"></i><span>品牌资费推送</span></button> -->
+<!-- 					</td> -->
+<!-- 				</tr> -->
+<!-- 		</table> -->
+<!-- 	</div> -->
+		<table  jwcid="@Table" >
+			<thead>
+				<tr>
+					<th>优惠编码</th>
+					<th>优惠名称</th>
+					<th>开始时间</th>
+					<th>结束时间</th>
+					<th>备注</th>
+					<th>优惠标记</th>
+					<th>优惠说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				 <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE" raw="false"/></td> 	
+	             	<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" raw="false"/></td>	
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.START_DATE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.END_DATE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>		
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('USER_SPECTAG',info.SPEC_TAG)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_EXPLAIN" raw="false"/></td> 	
+					<!--<td><span jwcid="@Insert" value=" " raw="false"/></td> -->
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 分页 开始 -->
+	<!-- 
+	<div id="NavBar"   >
+	<div jwcid="@NavBar" name="UserDiscountNav" id="UserDiscountNav" cond="QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="10" count="ognl:infosCount"></div>
+	</div>
+	 -->
+	<!-- 分页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onQueryDiscountInfo();
+	});
+</script>
+</html>

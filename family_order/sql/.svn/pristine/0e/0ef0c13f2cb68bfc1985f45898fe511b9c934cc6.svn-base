@@ -1,0 +1,6 @@
+UPDATE td_m_res_commpara
+   SET para_value2=DECODE(SUBSTR(:RES_NO,2,2),'34',DECODE(:CHECKTAG,1,para_value2-:OPER_NUM,para_value2+:OPER_NUM),para_value2),para_value3=DECODE(SUBSTR(:RES_NO,2,2),'35',DECODE(:CHECKTAG,1,para_value3-:OPER_NUM,para_value3+:OPER_NUM),para_value3),para_value4=DECODE(SUBSTR(:RES_NO,2,2),'36',DECODE(:CHECKTAG,1,para_value4-:OPER_NUM,para_value4+:OPER_NUM),para_value4),para_value5=DECODE(SUBSTR(:RES_NO,2,2),'37',DECODE(:CHECKTAG,1,para_value5-:OPER_NUM,para_value5+:OPER_NUM),para_value5),para_value6=DECODE(SUBSTR(:RES_NO,2,2),'38',DECODE(:CHECKTAG,1,para_value6-:OPER_NUM,para_value6+:OPER_NUM),para_value6),para_value7=DECODE(SUBSTR(:RES_NO,2,2),'39',DECODE(:CHECKTAG,1,para_value7-:OPER_NUM,para_value7+:OPER_NUM),para_value7),para_value9=DECODE(:CHECKTAG,1,para_value9-:OPER_NUM,para_value9+:OPER_NUM),rdvalue1=SYSDATE,update_time=SYSDATE,update_staff_id=:UPDATE_STAFF_ID,update_depart_id=:UPDATE_DEPART_ID  
+ WHERE eparchy_code=:EPARCHY_CODE
+   AND para_attr=:PARA_ATTR
+   AND (:PARA_CODE1 IS NULL OR (:PARA_CODE1 IS NOT NULL AND para_code1=:PARA_CODE1))
+   AND para_code2=:PARA_CODE2

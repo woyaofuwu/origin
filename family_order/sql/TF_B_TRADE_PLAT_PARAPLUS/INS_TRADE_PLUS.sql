@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_plat_paraplus(partition_id,trade_id,user_id,info_type,info_tag,info_code,info_value,info_name,rsrv_str11,rsrv_str12,rsrv_str13,update_time)
+ VALUES(MOD(TO_NUMBER(:TRADE_ID),10000),TO_NUMBER(:TRADE_ID),TO_NUMBER(:USER_ID),:INFO_TYPE,:INFO_TAG,:INFO_CODE,:INFO_VALUE,:INFO_NAME,:RSRV_STR11,:RSRV_STR12,:RSRV_STR13,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'))

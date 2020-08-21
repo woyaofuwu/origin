@@ -1,0 +1,26 @@
+INSERT INTO td_a_recv_bankaccountno
+  (eparchy_code,
+   city_code,
+   bank_code,
+   recv_city_code,
+   recv_bank_code,
+   recv_bank_acct_no,
+   recv_name,
+   remark,
+   trust_type,
+   update_time,
+   update_staff_id,
+   update_depart_id)
+VALUES
+  (:EPARCHY_CODE,
+   :CITY_CODE,
+   :BANK_CODE,
+   :RECV_CITY_CODE,
+   :RECV_BANK_CODE,
+   :RECV_BANK_ACCT_NO,
+   :RECV_NAME,
+   :REMARK,
+   :TRUST_TYPE,
+   SYSDATE,
+   :UPDATE_STAFF_ID,
+   :UPDATE_DEPART_ID)

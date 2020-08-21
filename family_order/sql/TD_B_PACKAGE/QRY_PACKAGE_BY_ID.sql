@@ -1,0 +1,21 @@
+SELECT PACKAGE_ID,
+       PACKAGE_NAME,
+       PACKAGE_TYPE_CODE,
+       PACKAGE_KIND_CODE,
+       PACKAGE_FLAG,
+       LIMIT_TYPE,
+       PACKAGE_DESC,
+       MIN_NUMBER,
+       MAX_NUMBER,
+       TO_CHAR(START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+       TO_CHAR(END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+       TO_CHAR(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       REMARK,
+       RSRV_TAG1,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5
+  FROM TD_B_PACKAGE
+ WHERE PACKAGE_ID = :PACKAGE_ID

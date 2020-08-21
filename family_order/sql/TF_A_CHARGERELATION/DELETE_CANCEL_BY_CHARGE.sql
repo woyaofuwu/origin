@@ -1,0 +1,1 @@
+delete from tf_a_chargerelation where operate_id1=:OPERATE_ID1

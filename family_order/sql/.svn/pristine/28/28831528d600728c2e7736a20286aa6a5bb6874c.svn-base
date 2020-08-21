@@ -1,0 +1,1 @@
+update TF_F_USER_ALTSN set status = :TO_STATUS where serial_number = :SERIAL_NUMBER and status = :FROM_STATUS and  rela_type = :RELA_TYPE

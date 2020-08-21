@@ -1,0 +1,6 @@
+select t.*
+  from UCR_CRM1.TF_BH_TRADE t
+ where t.SERIAL_NUMBER = :SERIAL_NUMBER
+   AND T.TRADE_TYPE_CODE in (131,133)
+   AND t.accept_date BETWEEN TO_DATE(:START_DATE, 'YYYY-MM-DD') AND
+       TO_DATE(:END_DATE, 'YYYY-MM-DD')

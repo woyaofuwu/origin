@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>营销活动转移</title>
+<script jwcid="@Script" language="JavaScript" src="person/saleactive/scripts/saleactivetrans.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper" id="bodyScroll"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <div class="text">客户查询</div>
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="displaySwitch(this,'custInfoPart')"><i
+				class="e_ico-unfold"></i><span>展示客户信息</span>
+			</a>
+		</div>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="530" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+    <div id="custInfoPart" jwcid="custInfoPart@Part" style="display:none">
+        <div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+    </div>
+</div>
+
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">活动转移</div>
+	</div>
+    <!-- 表格 开始 -->
+	<div jwcid="activatePart@Part">
+		<div class="c_table c_table-hover">
+			<table jwcid="@Table" id="activeInfoTable" name="activeInfoTable">
+			<thead>
+				<tr>
+				     <th col="ROWINDEX" style="display:none">行计数器</th>
+					 <th col="X_SELECTED">选择</th>
+					 <th col="PRODUCT_ID" style="display:none">产品编码</th>
+					 <th col="PACKAGE_ID" style="display:none">包编码</th>
+					 <th col="PRODUCT_NAME">营销活动</th>
+                     <th col="PACKAGE_NAME">营销包</th>
+                     <th col="PROCESS_TAG">状态</th>
+                     <th col="TRANS_USER">目标用户</th>
+                     <th col="ACCEPT_DATE">受理时间</th>
+                     <th col="START_DATE">开始时间</th>
+                     <th col="END_DATE">结束时间</th>
+                     <th col="RELATION_TRADE_ID" style="display:none">受理流水</th>
+                     <th col="ADVANCE_PAY">预存话费</th>
+                     <th col="OPER_FEE">购机费</th>
+                     <th col="FOREGIFT">押金</th>
+                     <th col="ACTIVE_STATE" style="display:none">活动状态</th>
+                     <th col="CAMPN_TYPE" style="display:none">活动类型</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+				    <td style="display:none"><span jwcid="@Insert" value="ognl:rowIndex" raw="false"></span></td>
+					<td class="e_center">
+						<input jwcid="@Any" onclick="selectActive(this);" type="radio" id="saleactive" name="saleactive"/>
+					</td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="false"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.PACKAGE_ID" raw="false"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+                    <td class="wrap"><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME" raw="false"/></td>
+				    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PURCHASE_USER_TYPE', info.PROCESS_TAG)" raw="false"/></td>
+				    
+		            <td>
+		                <span class="e_elements">
+							<span class="e_input e_elementsLeft e_input-left" style="width:94px;"><span>
+								<input jwcid="@Any"  type="text" disabled="true" isCheck="false" id="ognl:'ACTIVE_'+rowIndex+'_TRANS_USER'" name="ognl:'ACTIVE_'+rowIndex+'_GIFT_USER'" />
+							</span></span>
+							<button jwcid="@Any" class="e_button-right" type="button" productId="ognl:info.PRODUCT_ID"
+								 rowIndex="ognl:rowIndex" id="ognl:'TRANS_USER_'+rowIndex" onclick="checkTransUser(this);">
+								<span>校验</span>
+							</button>
+					    </span>
+				    </td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.ACCEPT_DATE)" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.START_DATE)" raw="false"></span></td> 
+                    <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', info.END_DATE)" raw="false"></span></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.RELATION_TRADE_ID" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:info.ADVANCE_PAY/100" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:info.OPER_FEE/100" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:info.FOREGIFT/100" raw="false"></span></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.RSRV_TAG3" raw="false"></span></td>
+                    <td style="display:none"><span jwcid="@Insert" value="ognl:info.CAMPN_TYPE" raw="false"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+
+<div class="c_box">
+	<div class="c_submit">
+		<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkSubmitBefore()" isRender="false" params="" listener="" refreshPart="" area="AuthPart" element="div"/>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

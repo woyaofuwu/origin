@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>异网转接查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/uniontrans/scripts/QueryUnionTrans.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取异网转接信息无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">异网转接查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-7" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"  id="sn"><span class="label"><span class="e_required">起始服务号码：</span></span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_START_SERIALNUMBER" id="cond_START_SERIALNUMBER"
+									onblur="completeEndSn(this, 'cond_END_SERIALNUMBER');" 
+								    onkeyup="synOnKeyup(this, 'cond_END_SERIALNUMBER');" 
+									value="ognl:cond.cond_START_SERIALNUMBER" desc="起始服务号码" datatype="mbphone" maxsize="11" nullable="no"/></span></span>
+						</li>
+					    <li class="li"  id="sn"><span class="label"><span class="e_required">终止服务号码：</span></span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_END_SERIALNUMBER" id="cond_END_SERIALNUMBER"
+									value="ognl:cond.cond_END_SERIALNUMBER" desc="终止服务号码"  maxsize="11" nullable="no" datatype="mbphone" /></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryUnionTrans(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportResultPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100979"
+								  config="export/sundryquery/other/QueryUnionTransList.xml" fileName="联通转接信息" cond=QueryCondPart/>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	     
+				 <div class="c_table ">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>移动号码</th>
+							<th>联通号码</th>
+							<th>起始时间</th>
+							<th>终止时间</th>
+							<th>更新时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						    <td><span jwcid="@Insert" value="ognl:info.PHONE_CODE_A"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PHONE_CODE_B"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME"/></td>
+						
+						
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUnionTrans" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

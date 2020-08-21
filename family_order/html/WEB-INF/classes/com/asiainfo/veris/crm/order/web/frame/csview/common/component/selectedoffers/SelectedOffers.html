@@ -1,0 +1,146 @@
+<div class="c_title c_title-2">
+	<div class="text">主套餐</div>
+	<div class="fn"></div>
+</div> 
+<!-- 标题 结束 -->
+<!-- 表格 开始 -->
+<div class="c_scroll" style="height:70px;"><div class="c_table c_table-hover">
+	<table>
+        <thead>
+			<th>套餐名称</th>
+			<th style="width:85px">开始时间</th>
+			<th style="width:85px">结束时间</th>
+        </thead>
+		<tbody id="SelectMainOfferTable">
+			 <tr
+				jwcid="@Foreach" 
+				source="ognl:mainOfferList" 
+				value="ognl:mainOffer"
+				element="tr"
+                class='ognl:"0".equals(mainOffer.ACTION)?"new":"1".equals(mainOffer.ACTION)?"e_del":""'
+                title="ognl:mainOffer.OFFER_NAME">
+				<td class="wrap" jwcid="@Any">
+					<a href="#nogo" jwcid="@Any" onclick="ognl:'popupPage(\'offer.OfferDetail\', \'init\', \'&OFFER_CODE='+mainOffer.OFFER_CODE+'&OFFER_TYPE='+mainOffer.OFFER_TYPE+'&ROUTE_CODE='+district+'&SRC_OBJECT=selectedOffers\', \'商品详情\', \'700\', \'500\');'"><span jwcid="@Insert" value="ognl:mainOffer.OFFER_NAME"/></a>
+				</td>
+				<td class="e_center" jwcid="@Any">
+					<span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd',mainOffer.VALID_DATE)"/>
+				</td>
+				<td class="e_center" jwcid="@Any">
+					<span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd',mainOffer.EXPIRE_DATE)"/>
+				</td>
+            </tr>
+		</tbody>
+	</table>
+</div></div>
+
+<div class="c_title c_title-2">
+	<div class="text">程控类商品</div>
+</div>
+<!-- 标题 结束 -->
+<!-- 表格 开始 -->
+<div class="c_scroll" style="height:110px;">
+    <div class="c_list c_list-table c_list-col-2 e_noborder">
+		<ul id="SelectSvcUl">
+			<li
+				jwcid="@Foreach" 
+				source="ognl:svcList" 
+				value="ognl:svc"
+				element="li"
+                class='ognl:"0".equals(svc.ACTION)?"new":("1".equals(svc.ACTION)?"e_del":"")' 
+                title="ognl:svc.OFFER_NAME">
+                <label class="text">
+                    <span class="e_green">
+                        <input type="checkbox" 
+                        	name="SELECTED_SVC_CHECKBOX" 
+                        	jwcid="@Checkbox"
+                        	checked='ognl:"1".equals(svc.ACTION)?"false":"true"'
+                        	index="ognl:svc.INDEX"
+                        	value="ognl:svc.OFFER_ID"
+                        	onclick="selectedOffers.checkboxAction(this)"
+                        	disabled="ognl:svc.DISABLED"
+                        	class="e_checkbox" />
+                        <a href="#nogo" jwcid="@Any" onclick="ognl:'popupPage(\'offer.OfferDetail\', \'init\', \'&OFFER_CODE='+svc.OFFER_CODE+'&OFFER_TYPE='+svc.OFFER_TYPE+'&ROUTE_CODE='+district+'\', \'商品详情\', \'700\', \'500\');'"><span jwcid="@Insert" value="ognl:svc.OFFER_NAME"/></a>
+                    </span>
+                </label>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="c_title c_title-2">
+	<div class="text">内容类商品</div>
+	<div class="fn"></div>
+</div> 
+<!-- 标题 结束 -->
+<!-- 表格 开始 -->
+<div class="c_scroll" style="height:121px;"><div class="c_table c_table-hover">
+	<table>
+        <thead>
+            <th style="width:20px"></th>
+			<th>商品名称</th>
+			<th style="width:85px">开始时间</th>
+			<th style="width:85px">结束时间</th>
+        </thead>
+		<tbody id="SelectDiscntTable">
+			 <tr
+				jwcid="@Foreach" 
+				source="ognl:discntList" 
+				value="ognl:discnt"
+				element="tr"
+                class='ognl:"0".equals(discnt.ACTION)?"new":"1".equals(discnt.ACTION)?"e_del":""'
+                title="ognl:discnt.OFFER_NAME">
+                <td class="e_center">
+                    <input type="checkbox" 
+                    	name="SELECTED_DISCNT_CHECKBOX" 
+                    	class="e_checkbox" 
+                    	checked='ognl:("1".equals(discnt.ACTION)||"0_1".equals(discnt.ACTION))?"false":"true"' 
+                    	value="ognl:discnt.OFFER_ID"
+                    	jwcid="@Checkbox"
+                    	index="ognl:discnt.INDEX"
+                		disabled="ognl:discnt.DISABLED"
+                    	onclick="selectedOffers.checkboxAction(this)"/>
+                </td>
+				<td class="wrap" jwcid="@Any">
+					<a href="#nogo" jwcid="@Any" onclick="ognl:'popupPage(\'offer.OfferDetail\', \'init\', \'&OFFER_CODE='+discnt.OFFER_CODE+'&OFFER_TYPE='+svc.OFFER_TYPE+'&ROUTE_CODE='+district+'\', \'商品详情\', \'700\', \'500\');'"><span jwcid="@Insert" value="ognl:discnt.OFFER_NAME"/></a>
+				</td>
+				<td class="e_center edit" jwcid="@Any">
+					<span class="e_select"><span><span>
+						<select  
+							disabled="true" 
+							index="ognl:discnt.INDEX" 
+							jwcid="@Any" 
+							id='ognl:discnt.INDEX+"_VALID_DATE"'
+							onchange="selectedOffers.changeValidDate(this);"
+							style="width:91px">
+							<option jwcid="@Any" value="ognl:discnt.VALID_DATE"><span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd',discnt.VALID_DATE)"/></option>
+						</select>
+					</span></span></span>
+				</td>
+				<td class="e_center edit" jwcid="@Any">
+					<span class="e_select"><span><span>
+						<select
+							disabled="true" 
+							index="ognl:discnt.INDEX" 
+							jwcid="@Any" 
+							id='ognl:discnt.INDEX+"_EXPIRE_DATE"'
+							onchange="selectedOffers.changeExpireDate(this);"
+							style="width:91px">
+							<option jwcid="@Any" value="ognl:discnt.EXPIRE_DATE"><span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd',discnt.EXPIRE_DATE)"/></option>
+						</select>
+					</span></span></span>
+				</td>
+            </tr>
+		</tbody>
+	</table>
+</div></div>
+
+<input jwcid="@Hidden" name="ACCT_DAY"  id="ACCT_DAY" value="ognl:acctDay"/>
+<input jwcid="@Hidden" name="FIRST_DATE"  id="FIRST_DATE" value="ognl:firstDate"/>
+<input jwcid="@Hidden" name="NEXT_ACCT_DAY"  id="NEXT_ACCT_DAY" value="ognl:nextAcctDay"/>
+<input jwcid="@Hidden" name="NEXT_FIRST_DATE"  id="NEXT_FIRST_DATE" value="ognl:nextFirstDate"/>
+<input jwcid="@Hidden" name="BASIC_VALID_DATE_ID"  id="BASIC_VALID_DATE_ID" value="ognl:basicValidDateId"/>
+<input jwcid="@Hidden" name="BASIC_CANCEL_DATE_ID"  id="BASIC_EXPIRE_DATE_ID" value="ognl:basicExpireDateId"/>
+<input jwcid="@Hidden" name="OPER_SERVICE_NAME"  id=""OPER_SERVICE_NAME"" value="ognl:operService"/>
+<input jwcid="@Hidden" name="RENDER_SERVICE_NAME"  id=""RENDER_SERVICE_NAME"" value="ognl:renderService"/>
+<input jwcid="@Hidden" name="OPER_SERVICE_NAME"  id=""OPER_SERVICE_NAME"" value="ognl:operService"/>
+<input jwcid="@Hidden" name="SELECTED_BUSI_ITEM_CODE"  id=""SELECTED_BUSI_ITEM_CODE"" value="ognl:busiItemCode"/>

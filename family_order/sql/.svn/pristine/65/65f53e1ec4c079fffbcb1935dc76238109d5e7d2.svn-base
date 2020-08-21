@@ -1,0 +1,1 @@
+update TF_F_USER_ALTSN set RENEW_ANSWER_FLAG = :RENEW_ANSWER_FLAG , RENEW_ANSWER_TIME = sysdate where serial_number = :SERIAL_NUMBER and status = :STATUS and RELA_TYPE = :RELA_TYPE

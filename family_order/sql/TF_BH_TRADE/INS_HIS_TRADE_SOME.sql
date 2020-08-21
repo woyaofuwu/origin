@@ -1,0 +1,2 @@
+insert into tf_bh_trade(trade_id,subscribe_id,trade_type_code,in_mode_code,priority,subscribe_state,next_deal_tag,serial_number,accept_date,accept_month,trade_staff_id,trade_depart_id,trade_city_code,trade_eparchy_code,olcom_tag,exec_time,finish_date,oper_fee,foregift,advance_pay,fee_state,cancel_tag,process_tag_set)
+values(:TRADE_ID,:TRADE_ID,331,'0','0','9','0',:SERIAL_NUMBER,SYSDATE,to_char(sysdate,'mm'),:TRADE_STAFF_ID,:TRADE_DEPART_ID,:TRADE_EPARCHY_CODE,'0',SYSDATE,SYSDATE+0.01,'0','0','0','0','0','0                   ')

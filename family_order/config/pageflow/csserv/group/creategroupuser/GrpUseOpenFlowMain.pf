@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow name="CreateGroupUser" desc="集团产品开户">
+	<step
+		name="begin"
+		desc="开始"
+		nextstep="editBaseDatum"
+		/>
+	<step
+		name="editBaseDatum"
+		desc="基本资料"
+		page="csserv.group.creategroupuser.BaseInfo"
+		listener="initial"
+		nextstep="switchProduct"
+		nextbutton="bnext"
+		monitor="GRP_PRODUCT_ID,GROUP_ID,PRODUCT_CTRL_INFO,SELE_CONTRACTPRODUCT_CONTRACT_ID"
+		transdata="GROUP_ID,CUST_ID,GRP_PRODUCT_ID,BUSI_TYPE,COMPIX_PRODUCT,EOS,GRP_USER_EPARCHYCODE,SELE_CONTRACTPRODUCT_CONTRACT_ID"
+		submitdata="GRP_PRODUCT_ID,CUST_ID,GRP_USER_EPARCHYCODE,SELE_CONTRACTPRODUCT_CONTRACT_ID"
+		/>
+	<switch name="switchProduct" expression="COMPIX_PRODUCT" default="0" desc="选择修改其他资料">
+		<case value="0" nextstep="chooseProductElement" desc="否"/>
+		<case value="1" nextstep="processCompixProduct" desc="是"/>
+		<case value="D" nextstep="processCompixProduct" desc="是"/>
+		<case value="B" nextstep="processBBossProduct" desc="是"/>
+	</switch>
+	<step
+		name="processCompixProduct"
+		desc="组合产品订购"
+		page="csserv.group.creategroupuser.Power100"
+	    listener="initial"
+		nextstep="chooseProductElement"
+		nextbutton="bnext"
+		monitor="selectedCheckBox"
+		transdata="CUST_ID,GROUP_ID,GRP_PRODUCT_ID,selectedCheckBox,grpCompixProduct,BRAND_CODE,editBaseDatum@GRP_USER_EPARCHYCODE" 
+		/>
+	<step
+		name="processBBossProduct"
+		desc="BBOSS产品订购"
+		page="csserv.group.creategroupuser.BBoss"
+	    listener="initial"
+		nextstep="processBBossOtherInfo"
+		submitdata="GROUP_ID"
+		transdata="CUST_ID,GROUP_ID,GRP_PRODUCT_ID,editBaseDatum@GRP_USER_EPARCHYCODE"
+		nextbutton="bnext"
+		monitor="productGoodInfos"
+		
+		/>
+	<step
+		name="processBBossOtherInfo"
+		desc="BBOSS订单附加信息"
+		page="csserv.group.creategroupuser.EntireCustomerUserParamInfo"
+	    listener="initCrtUs"
+		nextstep="chooseProductElement"
+		submitdata="productGoodInfos,BBossParamInfo"
+		transdata="CUST_ID,GROUP_ID,GRP_PRODUCT_ID,editBaseDatum@GRP_USER_EPARCHYCODE"
+		nextbutton="bnext"
+		monitor="ALL"
+		
+		/>
+	<step
+		name="chooseProductElement"
+		desc="产品订购"
+		page="csserv.group.creategroupuser.ProductInfo"
+	    listener="initial"
+		nextstep="createUserPreview"
+		nextbutton="bnext"
+		monitor="postInfoPart,SERIAL_NUMBER,acctInfoPart,DYNATABLE_RES_RECORD,SELECTED_GRPPACKAGE_LIST,SELECTED_ELEMENTS,productParamPart,EFFECT_NOW"
+		transdata="GROUP_ID,SERIAL_NUMBER,COMPIX_ACCOUNT,CUST_ID,PRODUCT_ID,TRADE_TYPE_CODE,editBaseDatum@GRP_USER_EPARCHYCODE"
+		submitdata="EFFECT_NOW,SERIAL_NUMBER,acct_ACCT_ID,DYNATABLE_RES_RECORD,SELECTED_GRPPACKAGE_LIST,SELECTED_ELEMENTS,productParamPart,POWER100_PRODUCT_INFO,PAYPLAN_INFOS,EOS,AUDIT_STAFF_ID"
+		/>
+	<step
+		name="createUserPreview"
+		desc="集团产品受理确认"
+		page="csserv.group.creategroupuser.PreView"
+		listener="initial"
+		nextstep="end"
+		backbutton="bback"
+		submitdata="param_REMARK"
+		/>
+	<step
+		name="end"
+		desc="结束"
+		/>
+</flow>

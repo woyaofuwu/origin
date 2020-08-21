@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>一卡双号SIM卡查询</title>
+<script language="JavaScript" src="scripts/saleserv.js"></script>		   
+<script jwcid="@Script" language="JavaScript" src="person/onecardncodes/scripts/queryonecardncodessim.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		获取信息无数据!
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text"><a jwcid="@Insert" value="SIM卡信息查询" raw="false" style="display:none"/></div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-4" jwcid="siminfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+			    <span class="label"><span class="e_required">查询方式：</span></span>
+				   <span class="e_select"><span><span>
+					<select jwcid="@Select" name="ONECARDCODE_QYERY_TYPE" id="ONECARDCODE_QYERY_TYPE"
+							source="ognl:pageutil.getStaticList('ONECARDCODE_QYERY_TYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ONECARDCODE_QYERY_TYPE"
+							addDefault="false"
+							desc="查询方式" nullable="no" ;/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">号码：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="NUMBER" id="NUMBER" 
+				  		desc="号码"	 value="ognl:editInfo.NUMBER"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="c_submit">
+		<div class="right">
+			<button class="e_button-form" id="query" name="query" onclick="return querySimCardInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+	
+	<!-- 表格 开始 -->
+	<div jwcid="simcardTablePart@Part">
+	<div class="c_scroll c_scroll-x">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="simcardTable" id="simcardTable" scroll="true">
+			<thead>
+				<tr>
+					 <th><span>卡类型</span></th>
+					 
+				    <span jwcid="@Conditional" condition='ognl:"".equals(info.CHOOSE_TYPE)'>
+				    <th><span>移动卡号</span></th>
+                    </span>
+                   
+                    <span jwcid="@Conditional" condition='ognl:"1U".equals(info.CHOOSE_TYPE)'>
+					<th><span>一卡双号主卡</span></th>
+                    </span>	
+						
+					<span jwcid="@Conditional" condition='ognl:"1X".equals(info.CHOOSE_TYPE)'>
+					<th><span>一卡双号副卡</span></th>
+					</span>
+					
+					<span jwcid="@Conditional" condition='ognl:"".equals(info.CHOOSE_TYPE)'>
+					<th><span>IMSI号</span></th>
+					</span>
+					
+					<span jwcid="@Conditional" condition='ognl:"1U".equals(info.CHOOSE_TYPE)'>
+					<th><span>主卡IMSI号</span></th>
+					</span>
+					
+					<span jwcid="@Conditional" condition='ognl:"1X".equals(info.CHOOSE_TYPE)'>
+					<th><span>副卡IMSI号</span></th>
+					</span>
+					
+					
+					<th><span>移动局号</span></th>
+					<th><span>卡状态</span></th>
+					
+					
+					<th><span>远程写卡白卡号</span></th>
+					
+					<span jwcid="@Conditional" condition='ognl:"".equals(info.CHOOSE_TYPE)'>
+					<th><span>一卡多号标志</span></th>
+					</span>
+					
+					<span jwcid="@Conditional" condition='ognl:"1U".equals(info.CHOOSE_TYPE)'>
+					<th><span>一卡双号副卡</span></th>
+                    </span>
+					
+					<span jwcid="@Conditional" condition='ognl:"1X".equals(info.CHOOSE_TYPE)'>
+					<th><span>一卡双号主卡</span></th>
+					</span>
+					
+					<span jwcid="@Conditional" condition='ognl:"1X".equals(info.CHOOSE_TYPE)'>
+					<th><span>主卡IMSI号</span></th>
+					</span>
+					
+					<span jwcid="@Conditional" condition='ognl:"1U".equals(info.CHOOSE_TYPE)'>
+					<th><span>副卡IMSI号</span></th>
+					</span>
+					
+					<th><span>预配标志</span></th>
+					<th><span>预开标志</span></th>
+					<!--<th><span>卡容量</span></th>-->
+					<!--<th><span>库存级别</span></th>-->
+					<th><span>归属库存位置</span></th>
+					
+					<th><span>地域名称</span></th>
+					<th><span>归属业务区</span></th>
+					<th><span>归属员工</span></th>
+				
+					<th><span>PIN码</span></th>
+					
+					<th><span>PUK码</span></th>
+					<th><span>PIN2码</span></th>
+					<th><span>KI卡状态</span></th>
+					<th><span>PUK2码</span></th>
+				<!--  	<th><span>生产厂家</span></th>-->
+					
+					<th><span>移动电话号码</span></th>
+					<th><span>预配时间</span></th>
+					<th><span>预配员工</span></th>
+					<th><span>预开时间</span></th>
+					<th><span>预开员工</span></th>
+					
+					<th><span>调拔时间</span></th>
+					<th><span>调拔员工</span></th>
+					<th><span>操作时间</span></th>
+					<th><span>操作员工</span></th>
+					<th><span>入库时间</span></th>
+					
+					<th><span>入库员工</span></th>
+					<th><span>归属渠道名称</span></th>
+					<th><span>预配电话号码</span></th>
+					<th><span>销户时间</span></th>
+					
+					
+					<th><span>调拔流水</span></th>
+					<th><span>开户时间</span></th>
+					<th><span>成本价(元)</span></th>
+					
+					<th><span>备注</span></th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="simcardTableInfos" id="simcardTableInfos">
+				<tr>						 
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ONE_CARD_TYPE',info.RES_TYPE_CODE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.SIM_CARD_NO" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.IMSI" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.MOFFICE_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_STATE_DEF', new java.lang.String[]{'RES_TYPE_ID','STATE_CODE'}, 'STATE_NAME', new java.lang.String[]{'1',info.RES_STATE})" raw="false"/></td>
+					
+
+					<td><span jwcid="@Insert" value="ognl:info.EMPTY_CARD_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DOUBLE_TAG" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.OTHER_IMSI" raw="false"/></td>
+					
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PRECODETYPE',info.PRECODE_TAG)" raw="false"/></td>
+			        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PREOPENTYPE',info.PREOPEN_TAG)" raw="false"/></td>
+			       <!-- <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_SIMCAPACITY', 'CAPACITY_TYPE_CODE', 'CAPACITY_TYPE', info.CAPACITY_TYPE_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_RES_PARA', new java.lang.String[]{'PARA_ATTR','PARA_CODE2'}, 'PARA_NAME', new java.lang.String[]{'1000',info.STOCK_LEVEL})" raw="false"/></td>-->
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.STOCK_ID)" raw="false"/></td>
+
+					
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="false"/></td>
+		            
+				    <td><span jwcid="@Insert" value="ognl:info.PIN" raw="false"/></td>
+					
+					<td><span jwcid="@Insert" value="ognl:info.PUK" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PIN2" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('KI_STATE',info.KI_STATE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PUK2" raw="false"/></td>
+				<!-- <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_RES_CORP', new java.lang.String[]{'RES_TYPE_CODE','CORP_NO'}, 'CORP_NAME', new java.lang.String[]{'1',info.FACTORY_CODE})" raw="false"/></td> -->	
+					
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PRECODE_TIME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PRECODE_STAFF_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATE_TIME_OPEN" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.STAFF_ID_OPEN" raw="false"/></td>
+					
+					<td><span jwcid="@Insert" value="ognl:info.ASSIGN_TIME" raw="false"/></td>
+	                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.ASSIGN_STAFF_ID)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.OPER_TIME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.UPDATE_STAFF_ID)" raw="false"/></td>
+	                <td><span jwcid="@Insert" value="ognl:info.IN_TIME" raw="false"/></td>
+					
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.IN_STAFF_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.AGENT_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_CODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DESTORY_TIME" raw="false"/></td>
+					
+
+					<td><span jwcid="@Insert" value="ognl:info.LOG_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.OPEN_TIME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.COST" raw="false"/></td>
+					
+					<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	
+	</div>
+	</div>
+	</div>
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="simcardfoNav" id="simcardfoNav" cond="siminfoPart" part="simcardTablePart" listener="queryRelationUUInfos" pageSize="10" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	<!-- 表格 结束 -->
+	<!-- 初始化页面隐藏参数信息 开始 -->
+
+<!-- 初始化页面隐藏参数信息 结束-->
+
+
+<!-- 区域 结束 -->
+
+</div>
+</body>
+</html>

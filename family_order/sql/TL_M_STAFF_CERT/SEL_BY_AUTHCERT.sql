@@ -1,0 +1,1 @@
+SELECT STAFF_ID FROM tl_m_staff_cert WHERE auth_cert=:AUTH_CERT  AND start_date<=SYSDATE AND end_date>=SYSDATE AND out_time IS NULL

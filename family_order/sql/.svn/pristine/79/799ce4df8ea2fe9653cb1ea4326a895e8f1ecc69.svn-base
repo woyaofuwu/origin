@@ -1,0 +1,20 @@
+--IS_CACHE=Y
+SELECT C.SPEC_AREA_ID,
+       C.BIZ_AREACODE,
+       C.REMARK, --校园卡名称
+       D.LAC_NAME, --基站小区名称            
+       C.LAC, --基站小区编码
+       C.CELL_ID --基站编码 
+  FROM TD_B_SPECAREA_COMP C, TD_LAC D
+ WHERE C.LAC = D.LAC
+   AND C.CELL_ID = D.CELL_ID
+   AND C.LAC = :LAC
+   AND C.CELL_ID = :CELL_ID      
+   AND SYSDATE BETWEEN C.START_DATE AND C.END_DATE
+   AND EXISTS (SELECT 1
+          FROM UOP_CRM1.TD_B_ATTR_ITEMB B
+         WHERE B.ID_TYPE = 'D'
+           AND B.ATTR_CODE = '10000000'
+           AND B.ATTR_FIELD_CODE = TO_CHAR(C.SPEC_AREA_ID)
+           AND B.ID = :DISCNT_CODE 
+        )

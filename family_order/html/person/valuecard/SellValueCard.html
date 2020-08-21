@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>有价卡销售</title>
+<script jwcid="@Script" src="person/valuecard/scripts/valuecard.js"></script>
+<script jwcid="@Script"  src="scripts/csserv/component/person/eform/CommonEForm.js" ></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="416" element="div" />
+	<!-- 认证 结束 -->
+		<!-- REQ201704270011_关于购买大额有价卡的业务流程优化 -->
+		<div class="c_form c_form-col-1">
+				<ul class="ul">
+					<li class="li">
+						<span class="label"><span >提示信息：</span></span>
+						<span ><span style="color: red;">一次性购买超过5000元（包含5000元）有价卡，需要进行客户摄像</span></span>
+					</li>				
+					<li class="li">
+						<span class="label"><span >摄像：</span></span>
+						<span >
+							<button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>
+						    <button type="button" class="e_button-right" name="ShotImgButton" onclick="identification('custInfo_PIC_ID','custInfo_PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>
+								<div style="display:none">
+									<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+								</div>
+		                </span>
+					</li>						
+				</ul>
+		</div>
+		<!--  REQ201704270011_关于购买大额有价卡的业务流程优化---end-->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div class="c_form c_form-label-5 c_form-col-2">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField"  name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME"
+							desc="客户名称"/>
+					   <input type="@Hidden" jwcid="@TextField" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" value=""
+	                                    desc="扫描的客户名称" />						
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">证件类型：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField"  name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+					        value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)" disabled="true"
+							desc="证件类型" />
+					 <input jwcid="@Hidden" id="custInfo_PSPT_TYPE_CODE" name="custInfo_PSPT_TYPE_CODE" value="" desc="扫描的证件类型"/>	
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField"  name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" disabled="true"
+							desc="证件号码"/>
+					 <input jwcid="@Hidden" id="custInfo_PSPT_ID" name="custInfo_PSPT_ID" value="" desc="扫描的证件号码"/>								
+					</span></span>
+					
+				</li>
+				<li class="li">
+					<span class="label">证件地址：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField"  name="PSPT_ADDR" id ="PSPT_ADDR" disabled="true"
+							value="ognl:custInfoView.PSPT_ADDR" 
+							desc="证件有效期"/>
+						<input jwcid="@Hidden" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" value=""  nullable="no"   desc="扫描的证件地址"  />							
+					</span></span>
+				</li>
+			</ul>
+		</div>
+	
+	</div> 
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">销售信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form  c_form-col-3 c_form-label-5"  jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">起始卡号：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" 
+				id="START_CARD_NO" name="START_CARD_NO"
+				value=""
+				enterAction="" 
+				desc="起始卡号" 
+				maxsize="80" 
+				autoComplete="Off" 
+				onkeyup="startCardKeyUp()" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">截止卡号：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" 
+				id="END_CARD_NO" name="END_CARD_NO"
+				value="" 
+				enterAction="" 
+				desc="截止卡号" 
+				maxsize="80" 
+				autoComplete="Off"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">销售方式：</span>
+				<div class="c_fn">
+					<ul>
+						<li><label><input	jwcid="@Radio"	
+	                     name="baseinfo_radio" id="baseinfo_radio_a" value="a" oldvalue="1"
+	                     onclick="checkRadio();"
+	                     checked="true"/>正常销售</label></li>
+						                     
+				 		<div jwcid="@Conditional" condition="ognl:csValueCardDiscount">
+							  <li><label><input	jwcid="@Radio"	
+		                     name="baseinfo_radio" id="baseinfo_radio_b" value="b" oldvalue="0" 	
+		                     onclick="checkRadio();" 
+		                     checked="false"/>打折销售</label></li>
+						</div> 
+					</ul>
+				</div>
+			</li>
+			<span style="display:none;" jwcid="@Any" id="discount1" name="discount1">
+				<li class="li">
+					<span class="label">折扣率：</span>
+					<span class="e_input"><span>
+					<input jwcid="@TextField"
+					id="DISCOUNT"  name="DISCOUNT"   value="" 
+					  type="text"
+					onkeyup="if(window.event.keyCode==13){addValueCard('S', document.getElementById('table2'));}"
+					desc="折扣率" maxsize="80" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">销售价格：</span>
+					<span class="e_input"><span>
+					<input jwcid="@TextField"
+					id="SALEPRICE" 
+					name="SALEPRICE"
+       				 value="" 
+					  type="text"
+					onkeyup="if(window.event.keyCode==13){addValueCard('S', document.getElementById('table2'));}"
+					desc="销售价格" maxsize="80" /></span></span>
+				</li>
+			</span>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button id="addButtom" name="addButtom"  class="e_button-form" onkeyup="if(window.event.keyCode==13){addValueCardGive('S', $('#table2'));} "onclick="addValueCard('S', document.getElementById('table2'));"><i class="e_ico-import"></i><span>加入</span></button>
+			 
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x c_scroll-table-3"><div class="c_table"  jwcid="BasicInfosPart@Part">
+		<table id="table1" jwcid="@Table"  name = 'table1'>
+			<thead>
+				<tr>
+					<th>卡号</th>
+					<th>卡类型</th>
+					<th>生产厂家</th>
+					<th>有价卡状态</th>
+					<th>有效日期</th>
+					<th>销售标识</th>
+					<th>归属库存位置</th>
+					<th>入库时间</th>
+					<th>入库员工</th>
+					<th>销售时间</th>
+					<th>销售员工</th>
+					<th>销售金额（元）</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="tableValue1" id="tableValue1">
+					<tr jwcid="@Foreach" source="ognl:basicInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><span jwcid="@Insert" value="ognl:info.VALUE_CARD_NO" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_SKU','RES_SKU_ID',
+							'RES_SKU_NAME',info.RES_KIND_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_SUPPLIER','SUPPLIER_NO',
+							'SUPPLIER_NAME',info.FACTORY_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_STATE_DEF',new java.lang.String[]{'RES_TYPE_ID','TABLE_COL','STATE_CODE'},
+							'STATE_NAME',new java.lang.String[]{'3','RES_STATE',info.RES_STATE})" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALE_TAG" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.STOCK_ID)" raw="false"/></td>					
+						
+						<td><span jwcid="@Insert" value="ognl:info.IN_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.IN_STAFF_ID)" raw="false"/></td>
+
+						<td><span jwcid="@Insert" value="ognl:info.SALE_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.SALE_STAFF_ID)" raw="false"/></td>
+						<td class="e_right"><span jwcid="@Insert" value="ognl:info.SALE_MONEY" raw="false"/></td>
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-3"><div class="c_table" jwcid="SaleInfosPart@Part">
+		<table  id="table2" jwcid="@Table"  name = 'table2'>
+			<thead>
+				<tr>
+					<th col="RES_KIND_CODE_NAME">卡类型</th>
+					<th col="startCardNo">开始卡号</th>
+					<th col="endCardNo">结束卡号</th>
+					<th col="VALUE_CODE_NAME">卡面值（元）</th>
+					<th col="singlePrice">单价（元）</th>
+					<th col="totalPrice">总价（元）</th>
+					<th col="rowCount">数量</th>
+					<th col="valueCode" style="display:none"> </th>
+					<th col="advise_price" style="display:none"> </th>
+					<th col="activateInfo" style="display:none"> </th>
+					<th col="devicePrice" style="display:none"> </th>
+					<th col="RES_KIND_CODE" style="display:none"> </th>
+					<th col="activeFlag" style="display:none"> </th>
+					<th col="DEL"> &nbsp;</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="tableValue2" id="tableValue2">
+					<tr jwcid="@Foreach" source="ognl:saleInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_SKU','RES_SKU_ID',
+							'RES_SKU_NAME',info.RES_KIND_CODE)" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.startCardNo" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.endCardNo" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.advise_price/100)+'元'" raw="true"/></td>
+						<td class="e_right"><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.singlePrice)" raw="false"/></td>
+						<td class="e_right"><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.totalPrice)" raw="false"/></td>
+						<td class="e_right"><span jwcid="@Insert" value="ognl:info.rowCount" raw="false"/></td>						
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.valueCode" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.advise_price" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.activateInfo" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.devicePrice" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.RES_KIND_CODE" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.activeFlag" raw="false"/></td>
+						<td style="width:75px" class="edit"><a href="#nogo" class="e_button" onclick="deleteRow1(this.parentNode.parentNode.rowIndex, 'S')"><i class="e_ico-delete"></i><span>删除</span></a></td>
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-1" jwcid="paramsPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span><input type="text" id="remark" name="remark" /></span></span>		
+				<input jwcid="@TextField" type="hidden" id="X_CODING_STR" name="X_CODING_STR" value="X_CODING_STR_VALUE"/>	
+				<input jwcid="@TextField" type="hidden" id="RES_KIND_CODE" name="RES_KIND_CODE" value="S"/>	
+				<input jwcid="@TextField" type="hidden" id="INVOICE_TAG" name="INVOICE_TAG" value=""/>	
+				<input jwcid="@TextField" type="hidden" id="IS_DEL" name="IS_DEL" value="false"/>	
+			</li>
+		</ul>
+		<!-- REQ201704270011_关于购买大额有价卡的业务流程优化 -->
+	    <input jwcid="@Hidden" id="custInfo_PIC_ID" name="custInfo_PIC_ID" value="" desc="客户照片ID"/>						
+		<input jwcid="@Hidden" id="custInfo_PIC_STREAM" name="custInfo_PIC_STREAM" value="" desc="拍摄人像照片流"/>	
+	</div>
+	
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()"  isReset="true"  area="UCAViewPart,AuthPart,QueryCondPart,paramsPart,freshPart" element="div"/>
+	
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

@@ -1,0 +1,1 @@
+UPDATE ts_a_debforlate_tj SET charge_id = :CHARGE_ID,pay_tag = '1' WHERE acct_id = :ACCT_ID AND pay_tag = '0'

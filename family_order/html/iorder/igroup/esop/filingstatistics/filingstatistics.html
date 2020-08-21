@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- <script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script> -->
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/filingstatistics/script/filingstatistics.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">归档情况统计</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="l_query" jwcid="queryPart@Part">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="left">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="myExport1"
+						cond="qryInfo" taskId="201903121502"
+						configFile="export/querygroupinfo/exportCheckinWorkForm.xml"
+						ftpCode="eosdata" fileName="归档情况统计.xls">
+						<span class="e_ico-export" /><span>导出</span>
+					</button>
+			</div>
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('mypop','chooseOfferItem')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div class="l_queryResult">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" name="myTable" id="myTable">
+				<thead>
+					<tr>
+						<th class="e_center" col="SUB_TYPE">工单类型</th>
+						<th class="e_center" col="TOTAL">发起总量</th>
+						<th class="e_center" col="UNCHECKIN">未归档</th>
+						<th class="e_center" col="CHECKIN">已归档</th>
+						<th class="e_center" col="CHECKIN_PER">完成率</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.SUB_TYPE"　raw="false"/></td>
+						<td class="fn e_center" jwcid="@Any" onclick="qryDetailInfos(this)" cols="TOTAL" sub_type_code="ognl:info.SUB_TYPE_CODE" start_date="ognl:condition.cond_BEGIN_DATE" end_date="ognl:condition.cond_END_DATE" ><span jwcid="@Insert" value="ognl:info.TOTAL" raw="false"/></td>
+						<td class="fn e_center" jwcid="@Any" onclick="qryDetailInfos(this)" cols="UNCHECKIN" sub_type_code="ognl:info.SUB_TYPE_CODE" start_date="ognl:condition.cond_BEGIN_DATE" end_date="ognl:condition.cond_END_DATE"><span jwcid="@Insert" value="ognl:info.UNCHECKIN"　raw="false"/></td>
+						<td class="fn e_center" jwcid="@Any" onclick="qryDetailInfos(this)" cols="CHECKIN" sub_type_code="ognl:info.SUB_TYPE_CODE" start_date="ognl:condition.cond_BEGIN_DATE" end_date="ognl:condition.cond_END_DATE"　><span jwcid="@Insert" value="ognl:info.CHECKIN" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CHECKIN_PER"　raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 表格 结束 -->
+	</div>
+	<div jwcid="@Conditional" condition="ognl:infos == null || infos.size() == 0">
+	<div class="l_queryMsg" id="queryMsg">
+		<!-- 无数据提示 开始 -->
+		<div class="c_msg">
+			<div class="wrapper">
+				<div class="emote"></div>
+				<div class="info">
+					<div class="text">
+						<div class="title">暂时没有数据</div>
+						<div class="content">请输入查询条件</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 无数据提示 结束 -->
+	</div>
+	</div>
+
+	<!-- <div class="l_queryPage">
+		分页 开始
+		<div jwcid="@NavBar"
+			name="navbar1"
+			cond="qryInfo"  
+			count="ognl:infoCount" 
+			listener="qryInfos" 
+			part="queryPart" 
+			pageSize="50" 
+		></div>
+		分页 结束
+	</div> -->
+	</div>
+	
+	<div jwcid="@Popup" id="mypop" name="mypop" class="c_popup c_popup-fixed">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="chooseOfferItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">返回</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="qryInfo@Part" class="l_padding">
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link required">
+								<div class="label">开始时间</div>
+								<div class="value"><input id="BEGIN_DATE" name="BEGIN_DATE" jwcid="@DateField" dropDown="true" value="2019-01-01" format="yyyy-MM-dd" desc="开始时间"/></div>
+							</li>
+							<li class="link required">
+								<div class="label">结束时间</div>
+								<div class="value"><input id="END_DATE" name="END_DATE" jwcid="@DateField" dropDown="true" value="2019-01-01" format="yyyy-MM-dd" desc="结束时间"/></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" id="qryButton" class="e_button-r e_button-l e_button-blue" ontap="qryInfos(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_popup c_popup-full" jwcid="@Popup" name="qryPopup1" id="qryPopup1">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryOrderInfos">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);">返回</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+			<div class="l_padding l_padding-u">
+				<div class="c_fn">
+					<div class="left">
+					<div class="c_title">
+						<div class="text">归档情况明细</div>
+					</div>
+					</div>
+					<div class="right">
+						<span class="e_space"></span>
+						<button type="button" jwcid="@Export" name="myExport2"
+							cond="detailCond" taskId="201903121503"
+							configFile="export/querygroupinfo/exportCheckinDetail.xml"
+							ftpCode="eosdata" fileName="归档情况明细.xls">
+							<span class="e_ico-export" /><span>导出</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表格 开始 -->
+				<div jwcid="detailInfo@Part">
+				<div class="c_table">
+					<table jwcid="@Table" name="myDetailTable" id="myDetailTable">
+						<thead>
+							<tr>
+								<th class="e_center">工单类型</th>
+								<th class="e_center">工单号</th>
+								<th class="e_center">工单标题</th>
+								<th class="e_center">产品名称</th>
+								<th class="e_center">集团编号</th>
+								<th class="e_center">工单创建时间</th>
+								<th class="e_center">是否归档</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:orderInfos" value="ognl:orderInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.SUB_TYPE" 　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.IBSYSID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.RSRV_STR4"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.PRODUCT_NAME"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.GROUP_ID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.ACCEPT_TIME"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:orderInfo.STATE"　raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 导出条件区域 开始 -->
+				<div class="c_fn" jwcid="detailCond@Part" style="display:none">
+					<input jwcid="@TextField" id="COLS" name="COLS" value="ognl:detailCondition.COLS"/>
+					<input jwcid="@TextField" id="ROWS" name="ROWS" value="ognl:detailCondition.ROWS"/>
+					<input jwcid="@TextField" id="cond_START_DATE" name="cond_START_DATE" value="ognl:detailCondition.START_DATE"/>
+					<input jwcid="@TextField" id="cond_END_DATE" name="cond_END_DATE" value="ognl:detailCondition.END_DATE"/>
+				</div>
+				<!-- 导出条件区域 结束 -->
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script>
+		//Wade.setRatio();
+		//window["UI-popup01"] = new Wade.Popup("UI-popup01");
+		//window["UI-popup02"] = new Wade.Popup("UI-popup02");
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo.map.GROUP_ID);
+		}
+	</script>
+
+</body>
+</html>

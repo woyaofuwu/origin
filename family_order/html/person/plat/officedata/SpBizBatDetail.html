@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: PlatOrder.html,v 1.3 2014/03/18 13:53:09 xiekl Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SP企业服务信息导入处理查询</title>
+<script language="JavaScript" jwcid="@Script" src="person/plat/officedata/scripts/platofficedatamgr.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">服务查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				  <span class="label">导入标识：</span>
+					<span class="e_input"><span>
+					 <input type="text" jwcid="@TextField" name="IMPORT_ID" value="ognl:condition.IMPORT_ID" desc="导入标识" class="e_input" nullable="NO"/>
+					</span></span>
+			</li>
+			<li class="li">
+				  <span class="label">处理标识：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="DEAL_FLAG" id="DEAL_FLAG"
+								source="ognl:pageutil.getStaticList('BUREDATA_DEAL_FLAG')"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:condition.DEAL_FLAG"	desc="处理标识" />
+
+						</span></span></span>
+			</li>
+			<li class="li">
+				  <span class="label">导入工号：</span>
+					<span class="e_input"><span>
+					  <input type="text" jwcid="@TextField"  name="IMPORT_STAFF_ID" value="ognl:condition.IMPORT_STAFF_ID" desc="导入工号" class="e_input"/>
+    				</span></span>
+			</li>
+			<li class="li"> 
+			   <span class="label">导入开始时间：</span>
+					<span class="e_input"><span> 
+					<input jwcid="IMPORT_DATE_START@DateField"
+							name="IMPORT_DATE_START"
+							format="yyyy-MM-dd"
+							readonly="true"
+							maxName = "IMPORT_DATE_END"
+							desc="导入开始时间"
+						/>
+			      </span></span>
+		    </li>
+		     <li class="li">
+		    <span class="label">导入结束时间：</span>
+					<span class="e_input"><span> 
+						<input jwcid="IMPORT_DATE_END@DateField"
+							name="IMPORT_DATE_END"
+							format="yyyy-MM-dd"
+							readonly="true"
+							minName = "IMPORT_DATE_START"
+							desc="导入结束时间"
+						/>	
+						</span></span>
+		    </li>
+			
+				<li class="li">
+				  <span class="label">SP代码：</span>
+					<span class="e_input"><span>
+					  <input type="text" jwcid="@TextField" name="SP_CODE" value="ognl:condition.SP_CODE" desc="SP代码" class="e_input" nullable="NO"/>
+				</span></span>
+			</li>
+				<li class="li">
+				  <span class="label">业务代码：</span>
+					<span class="e_input"><span>
+					 <input type="text" jwcid="@TextField" name="BIZ_CODE" value="ognl:condition.BIZ_CODE" desc="业务代码" class="e_input" nullable="NO"/>
+    				</span></span>
+			</li>
+				<li class="li">
+				  <span class="label">业务名称：</span>
+					<span class="e_input"><span>
+					  <input type="text" jwcid="@TextField"  name="BIZ_NAME" value="ognl:condition.BIZ_NAME" desc="产品名称" class="e_input" nullable="NO"/>
+    				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return querySPBizBatDetail();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form" name="RESET_BTN" id="RESET_BTN" onclick="window.location.href=window.location.href;"><i class="e_ico-reset"></i><span>重置</span></button>
+			
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	 
+  <!-- 区域开始 -->
+	<div class="c_title c_title-2">
+		 <div class="text">查询结果</div>
+  	</div>
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+			<table>
+      			<thead>
+		  			<tr>
+						<th>导入流水号</th>
+						<th>企业代码</th>
+						<th>业务编码DSMP规范叫OPERATOR_CODE</th>
+						<th>业务名称DSMP规范特有叫OPERATOR_CODE</th>
+						<th>业务描述(老规范特有)</th>
+						<th>访问模式(老规范特有)</th>
+						<th>其他结算方1(DSMP规范特有)</th>
+						<th>其他结算方2(DSMP规范特有)</th>
+						<th>计费类型</th>
+						<th>信息费</th>
+						<th>生效日期(DSMP规范特有)</th>
+						<th>失效日期(DSMP规范特有)</th>
+						<th>结算比例(DSMP规范特有)</th>
+						<th>包次次数/包天天数(DSMP规范特有)</th>
+						<th>业务属性(DSMP规范特有)</th>
+						<th>是否向业务平台做第三方确认(DSMP规范特有)</th>
+						<th>是否需要二次确认(DSMP规范特有)</th>
+						<th>业务特性(DSMP规范特有)</th>
+						<th>业务状态(老规范特有)</th>
+						<th>Provision的连接地址(老规范特有)</th>
+						<th>Provision端口号(老规范特有)</th>
+						<th>业务使用方法描述(老规范特有)</th>
+						<th>业务的介绍网址(老规范特有)</th>
+						<th>操作控制ADD新增，MOD修改，DEL删除</th>
+						<th>导入时间</th>
+						<th>操作来源</th>
+						<th>CRM处理结果</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.IMPORT_ID"         raw="true" /></td>   
+						<td><span jwcid="@Insert" value="ognl:info.SP_CODE"           raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_CODE"          raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_NAME"          raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_DESC"          raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCESS_MODEL"      raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.OTHER_BAL_OBJ1"    raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.OTHER_BAL_OBJ2"    raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BILL_FLAG"         raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.FEE"               raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.VALID_DATE"        raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.EXPIRE_DATE"       raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.BAL_PROP"          raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.COUNT"             raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERV_ATTR"         raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.IS_THIRD_VALIDATE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RE_CONFIRM"        raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERV_PROPERTY"     raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SPBIZ_STATUS', info.BIZ_STATUS)"        raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PROV_ADDR"         raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PROV_PORT"         raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.USAGE_DESC"        raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.INTRO_URL"         raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPER_TYPE"         raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.IMPORT_TIME"       raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPR_SOURCE"        raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEAL_RESULT"       raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK"            raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.FILE_NAME"         raw="true" /></td>  			
+					</tr>
+				</tbody>
+			</table>
+			</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+<div jwcid="@NavBar" needStat="false" name="queryNav" id="queryNav" cond="QueryCondPart" part="QueryListPart" listener="querySPBizBatDetail" pageSize="10" count="ognl:pageCount"></div>		
+	
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</body>
+</html>
+ 
+ 

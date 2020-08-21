@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+    <title>合同录入</title>
+    <script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/phone/MBOP.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+    <!-- <script type="text/javascript" src="http://192.168.0.133:1337/vorlon.js/pangsTest"></script>  -->
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+    <div class="back">合同录入</div>
+</div>
+
+<div class="c_scroll c_scroll-float c_scroll-phone-headeElecAgreementAddr">
+
+    <div jwcid="@Conditional" condition="ognl:info.insertpage">
+        <div class="c_header">
+            <div class="back" ontap="backPopup(this)">
+                返回
+            </div>
+        </div>
+    </div>
+
+    <div class="l_padding">
+        <!-- 集团信息 -->
+        <div style="display: none">
+        <div jwcid="@ecserv:GrpCustInfo" groupId="ognl:info.GROUP_ID" readonly="ognl:info.insertpage"/>
+        </div>
+
+        <!-- 产品信息 -->
+        <div class="c_title">
+            <div class="text">产品信息</div>
+        </div>
+        <div jwcid="ProductInfo@Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+            <ul>
+                <li class="link required">
+                    <div class="label">选择产品</div>
+                    <div class="value"><span jwcid="@Select" name="PRODUCT_ID" id="PRODUCT_ID"
+                                             source="ognl:info.PRODUCTS" textField="DATA_NAME"
+                                             valueField="DATA_ID" nullable="no"
+                                             value="ognl:info.PRODUCT_ID"
+                                             onchange="changeProduct();"
+                                             desc="产品"> </span></div>
+                </li>
+                <li class="link required">
+                    <div class="label">选择产品协议</div>
+                    <div class="value" jwcid="CONTRACTS_PART@Part" ><span jwcid="@Select" name="CONTRACT_CODE" id="CONTRACT_CODE"
+                                             source="ognl:contracts" textField="AGREEMENT_NAME"
+                                             valueField="CONTRACT_CODE" nullable="no"
+                                             value="ognl:info.CONTRACT_CODE"
+                                             onchange="chooseAgreement();"
+                                             desc="产品协议"> </span></div>
+                </li>
+            </ul>
+        </div>
+        <!-- 合同信息占用开始 -->
+        <div class="c_title">
+            <div class="text">合同信息</div>
+        </div>
+        <div jwcid="CONTRACT_INFO@Part">
+            <div class="c_list c_list-col-2 c_list-border c_list-line c_list-phone-col-1">
+                <ul id="contractInfoCommonUl">
+                    <li class="link">
+                        <div class="label">从已有合同中选择</div>
+                        <div class="value">
+                            <span jwcid="@Select"
+                                  name="SelectOldContract"
+                                  textField="ARCHIVES_NAME"
+                                  valueField="AGREEMENT_ID"
+                                  source="ognl:contractInfos"
+                                  addDefault="true"
+                                  value="ognl:info.CONTRACT_ID"
+                                  onchange="selectOldContract(this);"
+                                  desc="从已有合同中选择"
+                            ></span>
+                        </div>
+                        <input jwcid="@Hidden" id="SHOWBUTTON" name="SHOWBUTTON" value="ognl:info.SHOWBUTTON"/>
+                    </li>
+                    <li class="link required">
+                        <div class="label">合同编码</div>
+                        <div class="value">
+                            <span class="e_mix">
+                                <input type="text" jwcid="@Any" name="CONTRACT_NUMBER" id="CONTRACT_NUMBER"
+                                       value="ognl:agreementInfo.AGREEMENT_ID" nullable="no"
+                                       desc="合同编码"/>
+                                <span jwcid="@Conditional" condition="ognl:agreementInfo.AGREEMENT_ID==null">
+                                    <button jwcid="@Any" id="contractPreemption" class="e_button-blue"
+                                            ontap="preemptionContractId();"><span
+                                            class="e_ico-add"></span><span>占用</span></button>
+                                </span>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div jwcid="@Foreach" source="ognl:agreementInfos" value="ognl:agreementDefInfo" index="ognl:rowIndex"
+                 element="div" id="ognl:'AGREDIV_'+rowIndex">
+                <div class="c_title">
+                    <div class="text"><span jwcid="@Insert"
+                                            value="ognl:agreementDefInfo.AGREEMENT_NAME"/>
+                    </div>
+                    <div class="fn">
+                        <ul>
+                            <li jwcid="@Any" minNum="ognl:agreementDefInfo.MIN_NUM" index="ognl:rowIndex"
+                                maxNum="ognl:agreementDefInfo.MAX_NUM" url="ognl:agreementDefInfo.AGREEMENT_DEF"
+                                agreementName="ognl:agreementDefInfo.AGREEMENT_NAME" ontap="addContract(this);"
+                                agreementDefId="ognl:agreementDefInfo.AGREEMENT_DEF_ID">
+                                <span class="e_ico-add"></span>新增
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="c_list c_list-line">
+                    <ul jwcid="@Any" id="ognl:'ContractInfo_'+rowIndex">
+                        <li jwcid="@Foreach" source="ognl:agreementDefInfo.get('INSTANCE_INFO')"
+                            value="ognl:instanceInfo" element="li" class="link">
+                            <div class="main" ontap="modifyContract(this)">
+                                <div class="title"><span jwcid="@Insert"
+                                                         value="ognl:agreementDefInfo.AGREEMENT_NAME"/></div>
+                                <div jwcid="@Any" class="content" id="ognl:'CONTRACTDATE_' + instanceInfo.ARCHIVES_ID" contractnumber="ognl:agreementInfo.AGREEMENT_ID">
+                                    <span jwcid="@Conditional"
+                                          condition="ognl:instanceInfo.START_DATE!=null && instanceInfo.END_DATE!=null">
+                                        <span jwcid="@Insert" value="ognl:'档案生效时间：'+instanceInfo.START_DATE"/><br>
+                                        <span jwcid="@Insert" value="ognl:'档案失效时间：'+instanceInfo.END_DATE"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="side" ontap="modifyContract(this)">查看修改</div>
+                            <div class="more" ontap="modifyContract(this)"></div>
+                            <div jwcid="@Any" class="fn e_hide-phone" title="打印预览" ontap="popupPreview(this);"
+                                 name="ognl:'PRINT_' + instanceInfo.ARCHIVES_ID"
+                                 id="ognl:'PRINT_' + instanceInfo.ARCHIVES_ID"
+                                 archiveId="ognl:instanceInfo.ARCHIVES_ID"><span class="e_ico-print"></span>
+                                <textarea jwcid="@TextArea" name="ognl:'ARCHIVE_DATA_'+instanceInfo.ARCHIVES_ID"
+                                          id="ognl:'ARCHIVE_DATA_'+instanceInfo.ARCHIVES_ID" value="ognl:instanceInfo"
+                                          style="display:none"></textarea>
+                            </div>
+                            <div jwcid="@Any" class="fn e_hide-phone" title="签约附件上传" ontap="popupUpload(this);"
+                                 name="ognl:'FILEUPLOAD_' + instanceInfo.ARCHIVES_ID"
+                                 id="ognl:'FILEUPLOAD_' + instanceInfo.ARCHIVES_ID"
+                                 archiveId="ognl:instanceInfo.ARCHIVES_ID" fileId="ognl:instanceInfo.ARCHIVE_FILE_ID">
+                                <span class="e_ico-upload"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 列表 结束 -->
+        <div class="c_space"></div>
+        <!-- 提交 开始 -->
+        <div class="c_submit c_submit-center">
+            <button type="button" class="e_button-r e_button-l e_button-green" ontap="onsubmit(this);">提交</button>
+            <button type="button" class="e_button-r e_button-l e_button-green" ontap="onTestHtml();">TEST</button>
+            <button type="button" class="e_button-r e_button-l e_button-green" ontap="onTestHtml('1');">TEST1</button>
+            <button type="button" class="e_button-r e_button-l e_button-green" ontap="onTestHtml('2');">TEST2</button>
+        </div>
+        <!-- 提交 结束 -->
+					
+    </div>
+</div>
+
+<!-- 弹出层开始 -->
+<div jwcid="@Popup" name="popup01" class="c_popup c_popup-fixed">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" id="attachPopupItem">
+            <input jwcid="@Upload"
+                   name="contractUpload"
+                   filePath="OrderContract"
+                   title="附件上传"
+                   ftpCode="order"
+                   fileTypes=".zip;.rar;.jpg;.png;.bmp;.doc;.docx"
+                   fileDelete="false"
+                   desc="电子协议签约附件"
+                   needSuffix="true"
+            />
+        </div>
+    </div>
+</div>
+<!-- 弹出层结束 -->
+<input jwcid="@Hidden" id="ESOP_TAG" name="ESOP_TAG" value="1" />
+<input jwcid="@Hidden" id="GROUP_EPARCHY_CODE" name="GROUP_EPARCHY_CODE" value="ognl:enterpriseInfo.EPARCHY_CODE"/>
+<input jwcid="@Hidden" id="TEMP_ARCHIVE_ID" name="TEMP_ARCHIVE_ID" value=""/>
+<input jwcid="@Hidden" id="GROUP_ID" name="GROUP_ID" value="ognl:info.GROUP_ID"/>
+<input jwcid="@Hidden" id="IBSYSID" name="IBSYSID" value="ognl:info.IBSYSID"/>
+<input jwcid="@Hidden" id="PRODUCT_ID_IN" name="PRODUCT_ID_IN" value="ognl:info.PRODUCT_ID"/>
+<input jwcid="@Hidden" id="BPM_TEMPLET_ID" name="BPM_TEMPLET_ID" value="ognl:info.BPM_TEMPLET_ID"/>
+<input jwcid="@Hidden" id="OPER_TYPE" name="OPER_TYPE" value="ognl:info.BUSIFORM_OPER_TYPE"/>
+<input jwcid="@Hidden" id="BUSI_CODE" name="BUSI_CODE" value="ognl:info.BUSI_CODE"/>
+<input jwcid="@Hidden" id="BUSIFORM_NODE_ID" name="BUSIFORM_NODE_ID" value="ognl:info.BUSIFORM_NODE_ID"/>
+<input jwcid="@Hidden" id="NODE_ID" name="NODE_ID" value="ognl:info.NODE_ID"/>
+<input jwcid="@Hidden" id="IS_REJECT" name="IS_REJECT" value="ognl:agreementInfo.IS_REJECT"/>
+<input jwcid="@Hidden" id="insertpage" name="insertpage" value="ognl:info.insertpage"/>
+<textarea jwcid="@TextArea" name="TEMP_ARCHIVE_DATA" id="TEMP_ARCHIVE_DATA" value="" style="display:none"></textarea>
+<textarea jwcid="@TextArea" name="MINOREC_PRODUCT_INFO" id="MINOREC_PRODUCT_INFO" value="" style="display:none"></textarea>
+
+<!-- 为了让组件的js优先加载完，然后再执行业务js判断 -->
+<script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/elecagreement/script/ElecAgreementAdd.js"/>
+</body>
+</html>

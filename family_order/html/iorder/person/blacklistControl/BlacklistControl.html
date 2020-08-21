@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>VoLTE黑名单管控</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/blacklistControl/scripts/BlacklistControl.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">VoLTE黑名单管控</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<!-- 表单 开始 -->
+	<div class="c_scroll">
+		<div class="l_padding" jwcid="BlacklistControlPart@Part" id="BlacklistControlPart">
+			<div class="c_space-c" ></div>
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-5 c_form-col-3 c_form-phone-col-1">
+				<!-- tab 开始  -->
+					<!-- <div class="c_tab c_tab-box" name="myTab" jwcid="@Tabset"> -->
+						
+						<div title="数据查询" class="content" >
+							<div style="background-color:#FFFFFF" class="c_form c_form-label-5 c_form-col-3 c_form-phone-col-1 c_form-submit">
+								<ul>
+									<li>
+										<div class="label">手机号码：</div>
+										<div class="value">
+										<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" desc="手机号码" />
+										</div>
+									</li>
+									
+									<li>
+										<div class="label">开始日期：</div>
+										<div class="value">
+										<input jwcid="@DateField" name="START_DATE" id="START_DATE" readonly="true" value="ognl:info.START_DATE" desc="开始日期" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+										</div>
+									</li>
+									<li>
+										<div class="label">结束日期：</div>
+										<div class="value">
+										<input jwcid="@DateField" name="END_DATE" id="END_DATE" readonly="true" value="ognl:info.END_DATE" desc="结束日期" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+										</div>
+									</li>
+								</ul>
+								
+								<input
+	                                jwcid="@SimpleUpload"
+	                                name="FILE_ID"
+	                                ftpCode="personserv"
+	                                filePath=""
+	                                fileTypes=".xls;.xlsx"/>
+	                                
+								<button
+                                type="button"
+                                class="e_button-blue"
+                                name="IMPORT_BTN"
+                                id="IMPORT_BTN"
+                                ontap="batImportBlack();"><span class="e_ico-import"></span>导入</button>
+								<a
+	                                jwcid="@Any"
+	                                id="A_TEMPLATE_DATA_XLS"
+	                                name="A_TEMPLATE_DATA_XLS"
+	                                href="ognl:encodeUrl('attach?action=downloadweb&realName=IMPORTBLACKLISTCONTROL_TEMPLATE.xls&filePath=template/bat/IMPORTBLACKLISTCONTROL_TEMPLATE.xls')">
+											<span
+	                                            jwcid="@Insert"
+	                                            value="[下载模板]"></span>
+								</a>
+								
+								<div class="submit">
+									<div class="value">
+										<button class="e_button-blue" id="queryBtn" name="queryBtn" ontap="qryUserData()">
+										<span class="e_ico-search"></span>
+										<span>查询</span>
+										</button>
+										
+										<button class="e_button-blue" id="addQueryBtn" name="addQueryBtn" ontap="openBlind()">
+										<span class="e_ico-add"></span>
+										<span>新增</span>
+										</button>
+										<button class="e_button-blue" id="delBlackUser" name="delBlackUser" ontap="delBlackUser()">
+										<span class="e_ico-delete"></span>
+										<span>删除</span>
+										</button>
+										
+										
+									</div>
+								</div>
+							</div>
+							
+							<!-- tab 开始 -->
+							<div jwcid="QueryListPart@Part">
+							<div jwcid="table4Print@Part" optimize="true" id="refreshtable">
+								<table jwcid="@Table" id="UserInfoTable" name="UserInfoTable" class="c_table c_table-lite c_table-border c_table-row-5" style="height:450px" useScroller="true">
+									<thead>
+										<tr>
+											<th col="OP" class="e_center" style="width: 66px; height: 42px;">操作</th>
+											<th col="SERIAL_NUMBER"  style="width: 250px; height: 42px;">手机号码</th>
+											<th col="UPDATE_TIME"  style="width: 250px; height: 42px;">更新日期</th>
+										</tr>
+									</thead>
+									<tbody id="UserBreakTBody">
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+											<td class="e_center">
+												<input jwcid="@Checkbox" name="monitorInfoCheckBox" id="monitorInfoCheckBox" value="ognl:info.SERIAL_NUMBER" />
+											</td>
+											<td data-title="手机号码" class="e_center">
+												<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false" />
+											</td>
+											
+											<td data-title="更新日期"  class="e_center">
+												<span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="false" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							
+							<!-- 翻页（替换为页面组件） 开始 -->
+							<div class="c_space-c"></div>
+							<div class="c_page c_page-border" jwcid="@NavBar" source="ognl:infos" refreshParts="refreshtable" name="recordNav" id="recordNav" cond="BlacklistControlPart" part="QueryListPart" listener="qryUserData" pageSize="10" count="ognl:count"></div>
+							<!-- 翻页 结束 -->
+							 </div>
+							</div>
+							<!-- tab 结束 -->
+						</div>
+					
+						
+					<!-- </div> -->
+				<!-- tab 结束 -->
+				</div>
+				<!-- 表单 结束 -->
+		</div>
+	</div>
+</body>
+
+</html>

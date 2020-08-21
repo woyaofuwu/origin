@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户押金发票号码查询</title>
+<script jwcid="@Script"  src="person/sundryquery/depositinvoiceno/scripts/querydepositinvoiceno.js"></script>
+<script language="JavaScript">
+$(document).ready(function(){
+		inita();
+   });
+</script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取用户押金发票号码信息无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">用户押金发票号码查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+					  <li class="li">
+						<span class="label"><span class="e_required">查询方式：</span></span>
+						<span class="e_select"><span><span>
+						        <select jwcid="@Select" name="cond_QUERY_TYPE" id="cond_QUERY_TYPE" source="ognl:pageutil.getStaticList('INVOICE_QUERY_TYPE')"
+			                                    addDefault="false" value="ognl:cond.cond_QUERY_TYPE" disabled="false" desc="查询方式" 
+			                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" onchange="querymodchg();"/>
+						</span></span></span>
+					  </li>
+					  <li class="li"  id="sn"  style="display:none"><span class="label"><span class="e_required">服务号码：</span></span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+									value="ognl:cond.cond_SERIAL_NUMBER" desc="服务号码" datatype="mbphone" /></span></span>
+					  </li>
+                      <li class="li"  id="invoiceNo"  style="display:none"><span class="label"><span class="e_required">发票号码：</span></span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_INVOICE_NO" id="cond_INVOICE_NO"
+									value="ognl:cond.cond_INVOICE_NO" desc="发票号码" /></span></span>
+					  </li>
+					  <!--  **
+						 * REQ201512020036 用户押金发票号码查询界面优化
+						 * chenxy3 20151221
+						 * *-->
+					  <li class="li" id="userSnType">
+						<span class="label">号码状态：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="cond_USER_SN_TYPE" id="cond_USER_SN_TYPE" source="ognl:pageutil.getStaticList('USER_SN_TYPE')"
+		                                    addDefault="true" value="ognl:cond.cond_USER_SN_TYPE" disabled="false" desc="号码状态"  
+		                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+						
+						</span></span></span>
+						</li> 
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryIntegrateCustInvoice(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 参数列表 开始 -->
+					<div class="c_form c_form-text c_form-label-6 c_form-col-3" jwcid="custInfoPart@Part">
+					
+
+			
+						<ul class="ul">
+							<li class="li">
+								<span class="label">客户名称：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_CUST_NAME" id="custinfo_CUST_NAME"  disabled="true"  value="ognl:custinfos.CUST_NAME" desc="客户名称" readonly="true"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">性别：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_SEX" id="custinfo_SEX" disabled="true" readonly="true"
+								 value="ognl:custinfos.SEX" desc="性别"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">手机号码：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_PSPT_ID" id="custinfo_PSPT_ID"  disabled="true"  value="ognl:custinfos.SERIAL_NUMBER" readonly="true" desc="手机号码"/>
+							</li>
+							
+	
+							<li class="li">
+								<span class="label">居住邮编：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_POST_CODE" id="custinfo_POST_CODE"  disabled="true"  value="ognl:custinfos.POST_CODE" readonly="true"  desc="居住邮编"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">联系人：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_CONTACT" id="custinfo_CONTACT"  disabled="true"  value="ognl:custinfos.CONTACT" desc=">联系人" readonly="true" />
+							</li>
+							
+							<li class="li">
+								<span class="label">联系电话：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_CONTACTPHONE" id="custinfo_CONTACTPHONE"  disabled="true"  readonly="true" value="ognl:custinfos.CONTACT_PHONE" desc="联系电话"/>
+							</li>
+
+							<li class="li">
+								<span class="label">居住地址：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_HOME_ADDRESS" id="custinfo_HOME_ADDRESS"  value="ognl:custinfos.HOME_ADDRESS" desc="居住地址" disabled="true"  readonly="true" />
+							</li>
+							
+							<li class="li">
+								<span class="label">品牌名称：</span>
+								<span class="text" jwcid="@Insert" name="userinfo_BRAND_NAME" id="userinfo_BRAND_NAME"  value="ognl:custinfos.BRAND" desc="品牌名称" disabled="true"  readonly="true"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">开户日期：</span>
+								<span class="text" jwcid="@Insert" name="userinfo_OPEN_DATE" id="userinfo_OPEN_DATE"   value="ognl:custinfos.OPEN_DATE" desc="开户日期" disabled="true"  readonly="true"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">归属业务区：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_AREA" id="custinfo_AREA"  
+								 value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', custinfos.CITY_CODE)" desc="归属业务区" disabled="true"  readonly="true"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">用户类型：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_CUST_TYPE" id="custinfo_CUST_TYPE"   value="ognl:custinfos.CUST_TYPE" desc="用户类型" disabled="true"  readonly="true"/>
+							</li>
+							<li class="li">
+								
+							</li>
+							
+							<li class="li">
+								<span class="label">号码状态：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_STATE" id="custinfo_STATE"   value="ognl:custinfos.REMOVE_TAG" desc="号码状态" disabled="true"  readonly="true"/>
+							</li>
+							
+							<li class="li">
+								<span class="label">销户日期：</span>
+								<span class="text" jwcid="@Insert" name="custinfo_DESTROY_TIME" id="custinfo_DESTROY_TIME"   value="ognl:custinfos.DESTROY_TIME" desc="销户日期" disabled="true"  readonly="true"/>
+							</li>
+							<li class="li">
+								
+							</li>
+						</ul>
+					</div>
+					
+				<!-- 参数列表 结束 -->
+	
+	
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+		  	     </div>	  	     
+		  	     
+				 <div class="c_table">
+					<table jwcid="@Table" name="DeptTable" id="DeptTable">
+						<thead>
+						<tr>
+							<th id="col_X_TAG" style="display:none">TAG</th>
+			  				<th>押金类型</th>
+							<th>原户名</th>
+							<th>金额（元）</th>
+							<th>发票号码</th>
+							<th>是否清退</th>
+							<th>收取时间</th>
+							<th>收取工号</th>
+							<th>收取员工</th>
+							<th>收取流水</th>
+							<th>清退时间</th>
+							<th>清退工号</th>
+							<th>清退员工</th>
+							<th>清退流水</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							
+							<td style="display:none"></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_FOREGIFT', info.FOREGIFT_CODE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.MONEY/100" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.INVOICE_NO" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG==1 ?'是':'否'" raw="false"/></td>						
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.COLLECT_STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.COLLECT_STAFF_ID)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.COLLECT_TRADE_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG==1 ?info.END_DATE:''" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG==1 ?info.CLEAR_STAFF_ID:''" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG==1 ?pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.CLEAR_STAFF_ID):''" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG==1 ?info.CLEAR_TRADE_ID:''" raw="false"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryIntegrateCustInvoice" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

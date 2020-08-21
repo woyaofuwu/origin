@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" src="scripts/group/querygroupinfo/GroupLBSQuery.js"></script>   
+</head>
+<title>集团LBS查询</title>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">查询条件</div> 
+	</div>
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="QueryCondPart@Part">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">产品编码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER_B" id="cond_SERIAL_NUMBER_B" nullable="no" value="ognl:condition.cond_SERIAL_NUMBER_B" desc="产品编码"/>
+				</span></span>
+			</li> 
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" nullable="no" value="ognl:condition.cond_SERIAL_NUMBER" desc="手机号码"/>
+				</span></span>
+			</li> 
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="bquery" onclick="return qryClick()" ><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+</div>
+
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<div class="fctTop e_clear">
+		<div align="right">
+			<div class="button">
+				<ul>
+				 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="8802" 
+					config="export/querygroupinfo/GroupLBSQuery.xml"
+					fileName="集团LBS查询导出" cond="QueryCondPart"
+					ftpSite="groupserv" beforeAction="" action="" /> 
+				</ul>
+			</div>
+		</div> 
+	</div>
+	
+	<div jwcid="groupENetInfo@Part" >
+		<div class="c_scroll c_scroll-x c_scroll-table-15" >
+		<div class="c_table" >
+			<table jwcid="cancelBookTradeTable@Table" name="cancelBookTradeTable" >
+				<thead>
+					<tr>
+						<th onclick="Wade.dom.sortTable('dataList',0,'string')">集团产品编码</th>
+						<th onclick="Wade.dom.sortTable('dataList',1,'string')">LBS集团名称</th>
+						<th onclick="Wade.dom.sortTable('dataList',2,'string')">用户号码</th>
+						<th onclick="Wade.dom.sortTable('dataList',3,'string')">用户姓名</th>
+						<th onclick="Wade.dom.sortTable('dataList',4,'string')">加入时间</th>
+						<th onclick="Wade.dom.sortTable('dataList',5,'string')">销户时间</th>             
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					 	<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_A" raw="false"/></td>
+	                    <td><span jwcid="@Insert" value="ognl:info.GROUP_NAME" raw="false"/></td>    
+	                    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td> 
+	                    <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td> 
+	                    <td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.START_DATE)" raw="false" /></td>
+	                    <td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.END_DATE)" raw="false" /></td>  
+	                </tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="QueryCondPart" part="groupENetInfo" pageSize="15" listener="queryInfos" count="ognl:infoCount" ></div>
+		<!-- 翻页 结束 -->
+	</div>	
+	<!-- 表格 结束 -->
+</div>	
+
+</div></div>
+</body>
+</html> 		

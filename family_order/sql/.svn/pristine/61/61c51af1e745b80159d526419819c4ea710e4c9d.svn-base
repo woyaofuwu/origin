@@ -1,0 +1,3 @@
+SELECT 'EducateDegree' KEY,EDUCATE_DEGREE_CODE VALUE1, '-1' VALUE2,EDUCATE_DEGREE VRESULT
+   FROM td_s_EducateDegree
+WHERE 'EducateDegree'=:KEY

@@ -1,0 +1,117 @@
+<div id="SaleGoodsDiv"
+     class="c_list c_list-col-3 c_list-phone-col-1 c_list-gray c_list-border c_list-line">
+    <ul jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+        index="ognl:rowIndex" element="ul">
+        <li>
+            <div class="ico">
+                <span class="e_ico-phone e_green" title="实物"></span>
+            </div>
+            <div class="main e_hide-phone" jwcid="@Any" title="ognl:info.GOODS_NAME">
+                <div jwcid="@Conditional"
+                     condition='ognl:!"S".equals(info.RES_TYPE_CODE)'>
+                    <span jwcid="@Insert" value="ognl:info.GOODS_NAME" />
+                </div>
+                <div jwcid="@Conditional"
+                     condition='ognl:"S".equals(info.RES_TYPE_CODE)'>
+                    <span jwcid="@Select"
+                          name="ognl:'SELECT_GOODS_' + rowIndex + '_' + info.GOODS_ID"
+                          source="ognl:info.getDataset('SELECT_GOODS')"
+                          value="ognl:info.XXXX" index="ognl:rowIndex"
+                          textField="PARAM_NAME" valueField="PARA_CODE1"
+                          goodsId="ognl:info.GOODS_ID" addDefault="false"
+                          onchange="saleActiveModule.selectGiftGoods(this);"></span>
+                </div>
+            </div>
+            <div class="main e_show-phone" jwcid="@Any" title="ognl:info.GOODS_NAME" style="overflow: auto; text-overflow: clip">
+                <div jwcid="@Conditional"
+                     condition='ognl:!"S".equals(info.RES_TYPE_CODE)'>
+                    <span jwcid="@Insert" value="ognl:info.GOODS_NAME" />
+                </div>
+                <div jwcid="@Conditional"
+                     condition='ognl:"S".equals(info.RES_TYPE_CODE)'>
+                    <span jwcid="@Select"
+                          name="ognl:'SELECT_GOODS_' + rowIndex + '_' + info.GOODS_ID"
+                          source="ognl:info.getDataset('SELECT_GOODS')"
+                          value="ognl:info.XXXX" index="ognl:rowIndex"
+                          textField="PARAM_NAME" valueField="PARA_CODE1"
+                          goodsId="ognl:info.GOODS_ID" addDefault="false"
+                          onchange="saleActiveModule.selectGiftGoods(this);"></span>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="main e_hide-phone" jwcid="@Any" title="ognl:info.GOODS_EXPLAIN">
+                <span jwcid="@Insert" value="ognl:info.GOODS_EXPLAIN" />
+            </div>
+            <div class="main e_show-phone" jwcid="@Any" title="ognl:info.GOODS_EXPLAIN" style="overflow: auto; text-overflow: clip">
+                <span jwcid="@Insert" value="ognl:info.GOODS_EXPLAIN" />
+            </div>
+            <label class="fn">
+                <input type="checkbox" jwcid="@Checkbox"
+                       value="ognl:info.GOODS_ID"
+                       name="ognl:'GOODS_CB_' + rowIndex + '_' + info.GOODS_ID"
+                       id="ognl:'GOODS_CB_' + rowIndex + '_' + info.GOODS_ID"
+                       index="ognl:rowIndex"
+                       elementId="ognl:info.GOODS_ID"
+                       elementName="ognl:info.GOODS_NAME"
+                       elementTypeCode="ognl:info.ELEMENT_TYPE_CODE"
+                       resTypeCode="ognl:info.RES_TYPE_CODE"
+                       fee="ognl:info.FEE"
+                       feeMode="ognl:info.FEE_MODE"
+                       feeTypeCode="ognl:info.FEE_TYPE_CODE"
+                       payMode="ognl:info.PAY_MODE"
+                       depositType="ognl:info.DEPOSIT_TYPE"
+                       inDepositCode="ognl:info.IN_DEPOSIT_CODE"
+                       outDepositCode="ognl:info.OUT_DEPOSIT_CODE"
+                       hasCheck="ognl:info.HAS_CHECK"
+                       checked="ognl:info.MAIN_TAG == 1 || info.DEFAULT_TAG == 1 || info.FORCE_TAG == 1"
+                       disabled="ognl:info.MAIN_TAG == 1 || info.FORCE_TAG == 1"
+                       onclick="saleActiveModule.spCheckBoxOnclickAction(this.id);" />
+            </label>
+        </li>
+        <li class="link">
+            <div jwcid="@Conditional" condition="ognl:info.NEED_CHECK == 1">
+                <div class="label">串号</div>
+                <div class="value">
+                    <span class="e_mix">
+                        <input jwcid="@TextField"
+                               name="ognl:'GOODS_' + rowIndex + '_RES_CODE'"
+                               index="ognl:rowIndex"
+                               chkboxid="ognl:'GOODS_CB_' + rowIndex + '_' + info.GOODS_ID"
+                               enterStaffTag="ognl:info.ENTER_SALE_STAFF_TAG"
+                               staffId="" value="" placeholder="输入手机串号"
+                               resCheck="ognl:info.RES_CHECK"
+                               resTypeCode="ognl:info.RES_TYPE_CODE"
+                               resId="ognl:info.RES_ID"
+                               goodsId="ognl:info.GOODS_ID" desc="手机串号" />
+                        <button jwcid="@Any" type="button" class="e_button-blue"
+                                name="ognl:'resCheckButton' + rowIndex"
+                                index="ognl:rowIndex"
+                                goodsId="ognl:info.GOODS_ID"
+                                ontap="saleActiveModule.spCheckResInfo(this);">
+                            <span class="e_ico-check"></span>
+                            <span>校验</span></button>
+                        <div jwcid="@Conditional"
+                             condition="ognl:info.ENTER_SALE_STAFF_TAG == 1">
+                            <input jwcid="@TextField"
+                                   name="ognl:'GOODS_' + rowIndex + '_STAFF_ID'"
+                                   index="ognl:'GOODS_' + rowIndex + '_RES_CODE'"
+                                   onkeydown="if(event.keyCode==13||event.keyCode==8||(event.keyCode>=65&&event.keyCode<=90)||(!event.shiftKey&&event.keyCode>=48&&event.keyCode<=57)||(!event.shiftKey&&event.keyCode>=96&&event.keyCode<=105)){return true;}else{return false;}"
+                                   onkeyup="this.value=this.value.toUpperCase();"
+                                   placeholder="输入促销员工" desc="促销员工" />
+                        </div>
+                    </span>
+                </div>
+            </div>
+            <div jwcid="@Conditional"
+                 condition="ognl:(info.RES_CHECK != 1 || info.NEED_CHECK == 0) && info.RES_CHECK != 2 && info.RES_CHECK != 3">
+                <div class="main">无资源需要校验</div>
+            </div>
+        </li>
+    </ul>
+</div>
+<input jwcid="@Hidden" name="SALEGOODS_COMPONENT_ID" value="ognl:id" />
+<input jwcid="@Hidden" name="SALEGOODS_NEW_IMEI" value="ognl:newImei" />
+<input jwcid="@Hidden" name="RED_PACK_VALUE" value="ognl:info.RED_PACK_VALUE" />
+<input jwcid="@Hidden" name="DEVICE_COST" value="ognl:info.DEVICE_COST" />
+<input jwcid="@Hidden" name="SALEGOODS_EPARCHY_CODE" value="ognl:eparchyCode" />

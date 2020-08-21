@@ -1,0 +1,25 @@
+SELECT NPSYSID,
+       SERVICE_TYPE,
+       NPCODE_LIST,
+       MESSAGE_ID,
+       FLOW_ID,
+       RESPONSE_CODE,
+       ERROR_MESSAGE,
+       RESULT_CODE,
+       RESULT_MESSAGE,
+       TO_CHAR(CREATE_TIME, 'yyyy-mm-dd hh24:mi:ss') CREATE_TIME,
+       TO_CHAR(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       TO_CHAR(LAST_SEND_TIME, 'yyyy-mm-dd hh24:mi:ss') LAST_SEND_TIME,
+       SEND_TIMES,
+       CANCEL_TAG,
+       STATE,
+       REMARK,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3
+  FROM TF_B_NP_AUDIT
+ WHERE 1=1
+   AND SERVICE_TYPE = :SERVICE_TYPE
+   AND STATE = :STATE
+   AND TRUNC(CREATE_TIME) = TO_DATE(:CREATE_TIME, 'YYYY-MM-DD')
+   AND NPCODE_LIST LIKE '%' || :NPCODE_LIST || '%'

@@ -1,0 +1,690 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>集团商品业务受理</title>	
+	<script jwcid="@Script" type="text/javascript" src="frame/login/group/GroupLogin.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>	
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/operenterprisesubscriber/script/OperEnterpriseSubscriber.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/operenterprisesubscriber/script/operGroupUser4DL100.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/operenterprisesubscriber/script/operGroupUser4Bboss.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/operenterprisesubscriber/script/operEcSubscriber4Esop.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/fee/FeeMgr.js"></script>
+
+</head>
+<body jwcid="@Body">
+
+<div class="l_edit">
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">集团商品受理</div>
+	</div>
+	<!-- 滚动 开始 -->
+	<div id="chooseOfferScroll">
+		<!-- 主流程 开始 checkDOMChanges="false"(手机端不能自动刷新，故采用手动刷新方式刷新Scroller组件) -->
+		<div jwcid="@Scroller" name="editMainScroll" class="l_editMain" hScroll="false" hScrollbar="false" checkDOMChanges="false">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">选择商品</div>
+				<div class="fn" name="offerChoiceButton" id="offerChoiceButton">
+					<ul>
+						<li ontap="initOfferCategoryPopupItem();">
+							<span class="e_ico-check" style="height:3.57em"></span><span>选择</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			
+			<!-- 必选商品 开始 -->
+			<div jwcid="mainOfferPart@Part" class="c_list c_list-form" style="display:none">
+				<ul>
+					<li jwcid="@Any" id="ognl:'li_'+initOffer.OFFER_ID">
+						<div jwcid="@Conditional" condition="ognl:initOffer.OPER_TYPE != 'DstUs' || (initOffer.BRAND_CODE == 'BOSG' && initOffer.OPER_TYPE == 'DstUs')">
+							<div class="content link" jwcid="@Any" OFFER_ID="ognl:initOffer.OFFER_ID" ontap="openEnterpriseOfferPopupItem($(this).attr('OFFER_ID'),$(this).attr('OFFER_ID'),true,0);">
+								<div class="main">
+									<div class="title">
+										<span jwcid="@Insert" name="OFFER_NAME" value="ognl:initOffer.OFFER_NAME" />
+									</div>
+									<!-- 此处两个div不能换行，否则影响页面展示效果 -->
+									<div jwcid="@Any" class="content" id="ognl:'priceOffer_'+initOffer.OFFER_ID"><div jwcid="@Foreach" source="ognl:priceOfferList" value="ognl:priceOffer" element="div" id="ognl:'div_'+priceOffer.OFFER_ID">
+										<span jwcid="@Insert" name="PRICE_ID_PRICE_NAME" value="ognl:'【'+priceOffer.OFFER_CODE+'】'" />
+										<span jwcid="@Insert" name="PRICE_NAME" value="ognl:priceOffer.OFFER_NAME" />
+										<input jwcid="@Hidden" name="ognl:'pp_'+priceOffer.MAIN_OFFER_ID+'_PRICE_OFFER_ID'" 
+										value="ognl:priceOffer.OFFER_ID" />
+									</div></div>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:initOffer.OPER_TYPE == 'CrtUs' || (initOffer.OPER_TYPE=='ChgUs'&&initOffer.BRAND_CODE=='BOSG')">
+									<div class="side"><span class="e_tag e_tag-red">待设置</span></div>
+								</div>
+								<div class="more"></div>
+							</div>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:initOffer.OPER_TYPE == 'DstUs'&& initOffer.BRAND_CODE != 'BOSG'">
+							<div class="content" >
+								<div class="main">
+									<div class="title">
+										<span jwcid="@Insert" name="OFFER_NAME" value="ognl:initOffer.OFFER_NAME" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<span jwcid="@Any" element="span" id="ognl:'class_'+initOffer.OFFER_ID" class="e_SelectOfferPart" desc="商品信息" style="display: none"></span>
+						<div jwcid="@Conditional" condition="ognl:initOffer.BRAND_CODE != null && initOffer.BRAND_CODE != 'DLBG' && serviceOfferList!=null && serviceOfferList.size()>0">
+							<div jwcid="@Any" class="sub" id="ognl:'sub_'+initOffer.OFFER_ID">
+								<div class="main" >
+									<div class="c_list c_list-gray c_list-border c_list-line c_list-col-1">
+										<ul jwcid="@Any" id="ognl:'optOffer_'+initOffer.OFFER_ID">
+											<li jwcid="@Foreach" id="ognl:'div_'+serviceOffer.OFFER_ID" source="ognl:serviceOfferList" value="ognl:serviceOffer" element="li">
+												<div jwcid="@Any" class="group link" OFFER_ID="ognl:serviceOffer.OFFER_ID" CUR_OFFER_ID="ognl:serviceOffer.MAIN_OFFER_ID" SUB_OFFER_INDEX="ognl:serviceOffer.OFFER_INDEX" ontap="openEnterpriseOfferPopupItem(this.getAttribute('OFFER_ID'),this.getAttribute('CUR_OFFER_ID'),false,this.getAttribute('SUB_OFFER_INDEX'));">
+													<div class="main"><span jwcid="@Insert" name="OFFER_NAME" value="ognl:serviceOffer.OFFER_NAME" /></div>
+													<div class="more"></div>
+													<input jwcid="@Hidden" name="ognl:'oo_'+serviceOffer.MAIN_OFFER_ID+'_OPTOFFER_ID'" 
+														value="ognl:serviceOffer.OFFER_ID" />
+												</div>
+												<!-- <label class="fn">
+													<div jwcid="@Conditional" condition="ognl:serviceOffer.SELECT_FLAG == 0">
+														<span class="fn e_dis e_ico-delete"  />
+													</div>
+													<div jwcid="@Conditional" condition="ognl:serviceOffer.SELECT_FLAG != 0">
+														<span jwcid="@Any" class="e_ico-delete" OFFER_ID="ognl:serviceOffer.OFFER_ID" CUR_OFFER_ID="ognl:serviceOffer.MAIN_OFFER_ID" ontap="deleteOptionalOffer(this.getAttribute('OFFER_ID'),this.getAttribute('CUR_OFFER_ID'));"></span>
+													</div>
+												</label> -->
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 必选商品 结束 -->
+			<!-- 动力100child商品 开始 -->
+			<div jwcid="DLchildOfferPart@Part"  style="display:none">				
+				<div class="c_title">
+					<div class="text">子商品</div>
+				</div>
+				<div class="c_list c_list-form">
+					<ul id="childUL">
+						<li jwcid="@Foreach" id="ognl:'div_'+power100Sub.OFFER_ID" source="ognl:power100Subs" value="ognl:power100Sub" element="li">
+							<div jwcid="@Any" class="main" id="ognl:'divmain_'+power100Sub.OFFER_ID" OFFER_ID="ognl:power100Sub.OFFER_ID" OFFER_CODE="ognl:power100Sub.OFFER_CODE" SELECT_FLAG="ognl:power100Sub.SELECT_FLAG">
+								<span jwcid="@Insert" value="ognl:power100Sub.OFFER_NAME" />
+								<input jwcid="@Hidden" name="child_OFFER_ID" value="ognl:power100Sub.OFFER_ID" offerName="ognl:power100Sub.OFFER_NAME" state="exist"/>
+							</div>
+							<div class='more'></div>
+							<div class="fn">
+								<input jwcid="@Checkbox" disabled="ognl:power100Sub.SELECT_FLAG == 0" id="ognl:'checkDl100_'+power100Sub.OFFER_ID" name="ognl:'checkDl100_'+power100Sub.OFFER_ID" 
+								checked="true" OFFER_ID="ognl:power100Sub.OFFER_ID"
+								ontap="checkOptionalChildOffer(this);"/>
+							</div>
+							<div jwcid="@Any" class="sub" id="ognl:'div_ins_'+power100Sub.OFFER_ID">
+								<div class="main">
+									<div class="content" ><span jwcid="@Insert" value="ognl:'【'+power100Sub.SERIAL_NUMBER+'】'+power100Sub.OFFER_NAME" /></div>
+									<input jwcid="@Hidden" name="ognl:'ps_'+power100Sub.OFFER_ID+'_SUB_INS_ID'" value="ognl:power100Sub.USER_ID"/>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 动力100child商品 结束 -->
+
+ 			<!-- 定制商品 开始 -->
+			<div jwcid="ecPackagePart@Part" style="display:none">
+				<div class="c_title">
+					<div class="text">选择定制</div>
+				</div>
+				<div class="c_list c_list-form">
+					<ul>
+						<li jwcid="@Any" id="li_ec_package">
+							<div jwcid="@Conditional" condition="ognl:initOffer.OPER_TYPE != 'DstUs'">
+								<div class="content link" jwcid="@Any" ontap="initEcUserPackagePopupItem();">
+									<div class="main">
+										<div class="title">
+											<span>定制信息</span>
+										</div>
+									</div>
+									<div jwcid="@Conditional" condition="ognl:initOffer.OPER_TYPE == 'CrtUs'">
+										<div class="side"><span class="e_tag e_tag-red">待设置</span></div>
+									</div>
+									<div class="more"></div>
+								</div>
+							</div>
+							<div jwcid="@Conditional" condition="ognl:ecPackages != null&&ecPackages.size()>0">
+								<div jwcid="@Any" class="sub" id="sub_ec_package">
+									<div class="main" >
+										<div class="c_list c_list-gray c_list-border c_list-line c_list-col-1">
+											<ul jwcid="@Any" id="optOffer_ec_package">
+												<li jwcid="@Foreach" id="ognl:'div_root●'+ecPackage.PRODUCT_ID+'●'+ecPackage.PACKAGE_ID+'●'+ecPackage.ELEMENT_ID" source="ognl:ecPackages" value="ognl:ecPackage" element="li">
+													<div jwcid="@Any" class="group link">
+														<div class="main"><span jwcid="@Insert" value="ognl:'['+ecPackage.ELEMENT_ID+']'+ecPackage.ELEMENT_NAME" /></div>
+													</div>
+													<label class="fn">
+														<div jwcid="@Conditional" condition="ognl:ecPackage.SELECT_FLAG == 1">
+															<span class=" e_dis e_ico-delete"  />
+														</div>
+														<div jwcid="@Conditional" condition="ognl:ecPackage.SELECT_FLAG != 1">
+															<span jwcid="@Any" class="e_ico-delete" ontap="ognl:'deleteUserPackage(&#39;root●'+ecPackage.PRODUCT_ID+'●'+ecPackage.PACKAGE_ID+'●'+ecPackage.ELEMENT_ID+'&#39;);'"></span>
+														</div>
+													</label>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+					<textarea jwcid="@TextArea" name="FORCE_PACKAGE_LIST" id="FORCE_PACKAGE_LIST" value="ognl:forcePkgList" style="display:none"></textarea>
+				
+			</div>
+			<!-- 定制商品 结束 -->
+			<div jwcid="OtherInfo@Part">
+				<div class="c_title">
+					<div class="text">其他信息</div>
+				</div>
+				<!-- 列表 开始 -->
+				<div class="c_list c_list-border c_list-line" id="accessNumUL">
+					<ul>
+						<li id="accessNumPart" class="required">
+							<div class="label">服务号码</div>
+							<div class="value">
+								<input type="text" jwcid="@Any" name="cond_SERIAL_NUMBER_INPUT" id="cond_SERIAL_NUMBER_INPUT" value="ognl:initOffer.SERIAL_NUMBER" disabled="disabled" onfocus="clearTips();" onblur="showTips();" desc="服务号码"/>
+								<input jwcid="@Hidden" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:initOffer.SERIAL_NUMBER" />
+								<input jwcid="@Hidden" name="cond_RES_TYPE_CODE" value="ognl:initOffer.RES_TYPE_CODE" ></input>
+								<input jwcid="@Hidden" name="cond_SERIAL_NUMBER_SUCCESS" value="ognl:initOffer.SERIAL_NUMBER_SUCCESS" ></input>
+							</div>
+							<label class="fn"><span id="checkPic" class="e_ico-check"  ontap="checkAccesssNum();"></span></label>
+							<!-- 这里必须加提示，在 li 上加 tip 属性即可 -->
+						</li>
+						<div jwcid="@Conditional" condition="ognl:initOffer.OPER_TYPE == 'CrtUs'">
+						 <!--  <li class="required">
+							<div class="label">用户类型</div>
+							<div class="value">
+								<span jwcid="@Select" class="e_select" name="USER_DIFF_CODE" source="ognl:info.USER_DIFFCODE_LIST" 
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.userDiffCode" addDefault="false"></span>
+							</div>
+						</li>
+						-->
+						<li class="link" style="display:none">
+							<div class="label">立即生效</div>
+							<div class="value">
+								<span jwcid="@Switch" name="EFFECT_NOW" value="1" onchange="changeEffectTag();" onValue="1" onText="是" offValue="0" offText="否" ></span>
+								<input jwcid="@Hidden" name="IS_CHANGE_EFFECT" value="false"/>
+							
+							</div>
+						</li>
+						</div>
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<div class="c_list c_list-border c_list-line" id="acctContractUL">
+					<ul>
+						<li id="i_contractSelPart" style="display:" class="link" ontap="initContractPopupItem();">
+							<div class="label">选择合同</div>
+							<div class="value">
+							</div>
+							<div class="more"></div>
+						</li>
+						<li id="i_acctDealPart" class="link">
+							<div class="label">账户操作</div>
+							<div class="value" jwcid="AcctDealPart@Part">
+								<!--  <span jwcid="@Select" class="e_select" name="cond_ACCT_DEAL" source="ognl:info.ACCT_DEAL_LIST" 
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.ACCT_DEAL" addDefault="false" disabled="ognl:info.SHOW_ACCT_COMBINE==false?true:false" onchange="acctDealChange(this);"></span>
+									-->
+									<span jwcid="@Segment" name="cond_ACCT_DEAL" source="ognl:info.ACCT_DEAL_LIST" value="ognl:info.ACCT_DEAL"
+									textField="DATA_NAME" valueField="DATA_ID" disabled="ognl:info.SHOW_ACCT_COMBINE==false?true:false" onchange="acctDealChange(this);" style="display:none"></span>
+							</div>
+						</li>
+						<li id="i_acctSelPart" style="display:" class="link required" ontap="showAcctAddPopup(this);">
+							<div class="label">新增账户</div>
+							<div class="value">
+							</div>
+							<div class="more"></div>
+						</li>
+						<li id="i_acctCombPart" style="display:none" class="link required" ontap="showAcctCombPopup(this);">
+							<div class="label">已有账户</div>
+							<div class="value">
+							</div>
+							<div class="more"></div>
+						</li>
+						
+						<li id="i_payPlanPart" style="display:" class="link required" ontap="initPayPlanItem();">
+							<div class="label">付费类型</div>
+							<div class="value">
+								<span id="payPlanTexts"></span>
+								<input type="hidden" jwcid="@Any" id="payPlanValue" name="payPlanValue" value="ognl:info.PLAN_TYPE_CODE"/>
+							</div>
+							<div class="more"></div>
+						</li>
+						
+						
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<div class="c_list c_list-border c_list-line" id="removeUL" style="display:none">
+					<ul>
+						<li id="removeInfo" class="link">
+							<div class="label">销户原因</div>
+							<div class="value">
+								<span jwcid="@Select" name="cond_REMOVE_REASON" source="ognl:pageUtil.getStaticList('TD_B_REMOVE_REASON_GROUP')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.REMOVE_REASON"></span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<input type="hidden" jwcid="@Any" id="auditFlag"  value="ognl:info.AUDIT_INFO_SHOW"/>
+				<div jwcid="@Conditional" condition="ognl:info.AUDIT_INFO_SHOW!=null && info.AUDIT_INFO_SHOW == 'true'">
+					<div class="c_list c_list-border c_list-line" >
+						<ul>
+							<li id="i_auditSelPart"  class="link required" ontap="showAuditAddPopup()">
+								<div class="label">稽核人员</div>
+								<div class="value">
+									<span id="payPlanTexts"></span>
+									<input type="hidden" jwcid="@Any" id="payPlanValue" name="payPlanValue" value="ognl:info.PLAN_TYPE_CODE"/>
+								</div>
+								<div class="more"></div>
+							</li>
+							<!--REQ201810100001优化政企集中稽核相关功能需求 后期如需要上传凭证则把这段放出来即可  <li class="link required">
+								<div class="label">凭证上传</div>
+								<div class="value">
+									<span class="e_mix" ontap="javascript:showPopup('popup', 'UI-popup-upload', true);">
+										<input id="UP_FILE_TEXT" name="UP_FILE_TEXT" type="text" value="" readOnly="true" />
+										<input jwcid="@Hidden" name="MEB_VOUCHER_FILE_LIST" id="MEB_VOUCHER_FILE_LIST" value="" desc="附件" readOnly="true" />
+										<span class="e_ico-browse"></span>
+									</span>
+								</div>
+							</li> --> 
+						</ul>
+					</div>
+				</div>
+				
+				<div class="c_list c_list-border c_list-line" id="remark">
+					<ul>
+						<li id="remarkInfo" class="link">
+							<div class="label">备注</div>
+							<div class="value">
+								<input type="text" jwcid="@Any" name="cond_REMARK" id="cond_REMARK" value="ognl:info.REMARK" desc="备注"/>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- 列表 结束 -->
+			</div>
+			
+			<div class="c_space"></div>
+			<div id="OpenSubmit" style="display:" class="c_submit c_submit-full">
+				<button class="e_button-l e_button-r e_button-navy" type="button" ontap="window.reloadNav();">重置</button>
+				<button class="e_button-l e_button-r e_button-green" type="button" ontap="submitAll(this);">提交</button>			
+			</div>
+			<div style="display:none" jwcid="SubmitPart@icsserv:CSSubmit" listener="submit" element="div" isGrp="true" isShowDevelopStaff="false"></div>
+						
+			<div id="ChgSubmit" style="display:none" class="c_submit c_submit-full">
+				<button class="e_button-l e_button-r e_button-green" type="button" ontap="submitAll(this);">变更</button>
+			</div>
+			<div id="DelSubmit" style="display:none" class="c_submit c_submit-full">
+				<button class="e_button-l e_button-r e_button-red" type="button" ontap="submitAll(this);">注销</button>
+				<button class="e_button-l e_button-r e_button-red" type="button" id="SHOW_DESTROY_ONE_KEY" ontap="oneKeyDelSubmit(this);">一键注销</button>
+			</div>
+			<div class="c_space"></div>
+		</div>
+		<!-- 主流程 结束 -->
+		<!-- 占位符 开始 -->
+		<div class="l_editPlace"><span class="e_ico-cmlogo"></span></div>
+		<!-- 占位符 结束 -->
+	</div>
+	<!-- 滚动 结束 -->
+	
+	<!-- 隐藏域 开始 -->
+	<input jwcid="@Hidden" id="cond_OFFER_CODE" name="cond_OFFER_CODE" value="ognl:initOffer.OFFER_CODE" desc="选择的商品编码"/>
+	<input jwcid="@Hidden" id="cond_OFFER_ID" name="cond_OFFER_ID" value="ognl:initOffer.OFFER_ID" desc="选择的商品编码"/>
+	<input jwcid="@Hidden" id="cond_OPER_TYPE" name="cond_OPER_TYPE" value="ognl:initOffer.OPER_TYPE" desc="操作类型"/>
+	<input jwcid="@Hidden" id="cond_CUST_ID" name="cond_CUST_ID" value="ognl:info.CUST_ID" desc="当前集团客户编码"/>
+	
+	<input jwcid="@Hidden" id="cond_GROUP_NAME" name="cond_GROUP_NAME" value="ognl:info.GROUP_NAME" desc="集团客户名称(没有模糊化)"/>
+	<input jwcid="@Hidden"  id="cond_EC_BRAND" name="cond_EC_BRAND" value="ognl:initOffer.BRAND_CODE" desc="集团商品的品牌"/>
+	<input type="hidden" id="class_OfferDataBackup" name="class_OfferDataBackup" class="class_OfferDataBackup" value="" desc="商品数据对象备份" />
+	<input type="hidden" id="class_SELECT_GROUP_OFFER" name="class_SELECT_GROUP_OFFER" value="" class="e_SetSelGroupOfferPart" desc="选择的商品及商品组信息" />
+	<input jwcid="@Hidden" name="IS_HAVE_INIT_OFFER" value="false"/>
+	<input jwcid="@Hidden" name="INIT_OFFER_ID" value="ognl:initOffer.OUT_OFFER_ID"/>
+	<input jwcid="@Hidden" name="INIT_OFFER_CODE" value="ognl:initOffer.OUT_OFFER_CODE"/>
+	<input jwcid="@Hidden" name="INIT_OFFER_NAME" value="ognl:initOffer.OUT_OFFER_NAME"/>
+	
+	<input jwcid="@Hidden" name="ESOP_HAS_ATTACH_OFFER" value="ognl:info.ESOP_HAS_ATTACH_OFFER"/>
+	<input jwcid="@Hidden" name="ESOP_IF_RES_CODE" value="ognl:info.ESOP_IF_RES_CODE"/>
+	<span jwcid="@Insert" style="display:none" id="ESOP_OFFER_DATA" name="ESOP_OFFER_DATA" value="ognl:initOffer.ESOP_OFFER_DATA" />
+	<span jwcid="@Insert" style="display:none" id="e_ESOP_INFO" name="e_ESOP_INFO" value="ognl:info.ESOP_INFO" />
+	<span jwcid="@Insert" style="display:none" id="e_ESOP_CONTRACT_INFO" name="e_ESOP_CONTRACT_INFO" value="ognl:info.ESOP_CONTRACT_INFO" />
+
+	<input jwcid="@Hidden" id="cond_OPEN_TAG"name="cond_OPEN_TAG" value=""/>
+	<input jwcid="@Hidden" name="cond_SHOW_FUNC_NAVIGATION" value="ognl:info.SHOW_FUNC_NAVIGATION" desc="功能导航显示标记"/>
+	<input jwcid="@Hidden" name="SHOW_TAG" value="ECOPER_TAG"/>
+	<input jwcid="@Hidden" name="ESOP_TAG" value="ognl:getParameter('ESOP_TAG')" desc="ESOP标识"/>
+	<!-- 隐藏域 结束 -->
+	
+</div>
+
+<div jwcid="@Popup" name="popup" class="c_popup c_popup-half" mask="false">	
+<!-- ===========================================第一层弹出 开始============================================ -->
+	<div class="c_popupGroup">
+							
+		<!-- 商品目录 开始 -->		
+		<div jwcid="offerCategoryPopupItem@ecserv:EnterpriseCatalog" upCategoryId="1000" isEc="true"></div>
+		<!-- 商品目录 结束 -->
+		
+		<!-- 定制目录 开始 -->		
+		<div jwcid="ecUserPackagePopupItem@ecserv:EnterpriseUserPackage" ecOfferId="ognl:initOffer.OFFER_ID"></div>
+		<!-- 定制目录 结束 -->
+						
+		<!-- 附加商品 开始 AttachOfferInfo-->
+		<!-- <div jwcid="attachOfferPopupItem@ecserv:AttachOfferInfo"></div> -->
+		<!-- 附加商品 结束 -->
+		
+		<!-- 合同信息开始 -->
+		<div jwcid="QryContract@ecserv:ContractAndProdQuery"  ></div>
+		<!-- 合同信息结束 -->	
+
+		<!-- 账户新建开始 -->				
+		<div jwcid="accountPopupItem@ecserv:EnterpriseAcctMgr" 
+			callback="accountPopupItemCallback" isCommit="false" isClear="false"></div>
+		<!-- 账户新建结束 -->
+		
+		<!-- 账户合并 开始 -->
+		<div class="c_popupItem" id="chooseEcAccount">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup('popup')">选择账户</div>
+			</div>
+			<div jwcid="@Scroller" name="acctScroll" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-col-1 c_list-line" jwcid="ecAccountListPart@Part">
+					<ul id="ecAccountUL">
+						<li class="link" jwcid="@Foreach" source="ognl:ecAccountList" value="ognl:ecAccount" element="li" id="ognl:ecAccount.ACCT_ID" ontap="selectAccount(this);">
+							<div class="main">
+								<div class="title">
+									<span jwcid="@Insert" name="ACCT_NAME" value="ognl:ecAccount.PAY_NAME" />
+								</div>
+								<div class="content">
+									账户编码：<span jwcid="@Insert" name="ACCT_ID" value="ognl:ecAccount.ACCT_ID" />	<br/>
+									账户类型：<span jwcid="@Insert" name="PAY_MODE_NAME" value="ognl:ecAccount.PAY_MODE_NAME" />
+									生效时间：<span jwcid="@Insert" name="PAY_MODE_NAME" value="ognl:ecAccount.OPEN_DATE" />		
+								</div>
+							</div>									
+						</li>								
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 账户合并 结束 -->
+		
+		<!-- 付费计划 开始 -->
+		<div jwcid="payPlanItem@oc:PayPlanInfo"></div>
+		<!-- 付费计划 结束 -->
+		
+		<!-- 稽核信息开始 -->				
+		<div jwcid="auditPopupItem@ecserv:EnterpriseAuditMgr" ></div>
+		<!-- 稽核信息结束 -->	
+					
+		<!-- 更多信息开始 -->
+		
+		<!-- 更多信息结束 -->	
+		
+		<!-- enterpriseOfferPopupItem-商品设置 开始 -->
+		<div jwcid="enterpriseOfferPopupItem@ecserv:EnterpriseOffer"></div>
+		<!-- enterpriseOfferPopupItem-商品设置 结束 -->
+		
+		<!-- 选择动力100组合子商品开始 -->
+		<div class="c_popupItem" id="chooseChildOffer">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup('popup')">子商品选择</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-col-1" jwcid="chooseChildOfferPart@Part">
+					<ul>
+						<li class="link"  jwcid="@Foreach" source="ognl:instOffers" value="ognl:instOffer" element="li">
+							<div class="main">
+								<input type="radio" jwcid="@Radio" id="ognl:instOffer.USER_ID"   offerInstId = "ognl:instOffer.OFFER_INS_ID"
+								  accessNum="ognl:instOffer.SERIAL_NUMBER" subscriberInsId = "ognl:instOffer.USER_ID" offerName="ognl:instOffer.PRODUCT_NAME" ontap="addChildOfferIns(this);" name="CHILD_RADIO"/>
+								<span jwcid="@Insert" name="SERIAL_NUMBER" value="ognl:'【'+instOffer.SERIAL_NUMBER+'】'" />	
+								<span jwcid="@Insert" name="OFFER_NAME" value="ognl:instOffer.PRODUCT_NAME" />	
+							</div>									
+						</li>								
+					</ul>
+				</div>	
+				<input type="hidden"  id="OPER_CHILD_OFFER" />	
+				<input type="hidden"  id="OPER_CHILD_OFFER_NAME" />	
+			</div>
+		</div>
+		<!-- 选择动力100组合子商品结束 -->	
+		<!-- 凭证信息开始 -->
+			
+		<div class="c_popupItem" id="UI-popup-upload">
+			<div class="l_float" x-wade-uicomponent="upload" name="fileupload" id="fileupload">
+				<div class="c_header">
+					<div class="l_float l_float-float ">
+						<span name="FILE_UPLOAD" id="FILE_UPLOAD" jwcid="@Upload" title="文件上传" ftpCode="groupserv" filePath="upload/mebattach" />
+					</div>
+				</div>
+			</div>
+			<div class="l_bottom">
+				<div class="c_submit c_submit-full">
+					<button tag="clear" type="buttton" class="e_button-l e_button-navy" ontap="clearUpFile();">清除</button>
+					<button tag="ok" type="button" class="e_button-l e_button-blue" ontap="okUpFile();">确定</button>
+				</div>
+			</div>
+		</div>
+		<!-- 凭证信息结束 -->
+		
+	</div>
+<!-- ===========================================第一层弹出 结束============================================ -->			
+
+<!-- ===========================================第二层弹出 开始============================================ -->			
+	<div class="c_popupGroup">
+		<!-- 商品组 开始 -->
+		<div jwcid="groupOffersPopupItem@ecserv:EnterpriseGroupOffers" ></div>	
+		<!-- 商品组 结束 -->
+	
+		<!-- 产品规格 开始 -->
+		<div class="c_popupItem" id="addSpec">
+			
+		</div>
+		<!-- 产品规格 结束 -->
+		
+		<!-- 产品特征 开始 -->
+		<div jwcid="productChaSpecPopupItem@Part" class="c_popupItem" id="productChaSpecPopupItem">
+			<div id="ProductChaSpecHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="productChaSpecBack">商品特征</div>
+			</div>
+			<!-- 静态参数页面 -->
+ 			<div jwcid="dynamicOfferParam@ecserv:DynamicHtml"></div>
+			<!-- BBOSS商品参数页面 -->
+			
+			<div id="BbossOfferParam">
+				 <div jwcid="@ecserv:BBossOfferParam"></div>
+			</div>
+			
+			<!-- 动态参数页面 -->
+			<div jwcid="proParamPage@Part" id="proParamPage">
+ 				<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr"/>
+			</div>
+		</div>
+		<!-- 产品特征 结束 -->
+		
+		<!-- 稽核查询 开始 -->
+		<div  jwcid="productAuditPopupItem@Part" class="c_popupItem" id="productAuditPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="backPopup(this);">选择稽核员</div>
+			</div>
+			<div jwcid="@Scroller" name="acctScrollAudit" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-col-1 c_list-line" jwcid="auditListPart@Part">
+					<ul id="ecAccountULAudit">
+						<li class="link" jwcid="@Foreach" source="ognl:auditInfoList" value="ognl:auditInfo" element="li" id="ognl:auditInfo.STAFF_ID" ontap="selectAudit(this);">
+							<div class="main">
+								<div class="title">
+									<span jwcid="@Insert" name="STAFF_ID" value="ognl:auditInfo.STAFF_ID" />
+								</div>
+								<div class="content">
+									姓名：<span jwcid="@Insert" name="STAFF_NAME" value="ognl:auditInfo.STAFF_NAME" />	<br/>
+									电话号码：<span jwcid="@Insert" name="SERIAL_NUMBER" value="ognl:auditInfo.SERIAL_NUMBER" />
+									所在地市：<span jwcid="@Insert" name="CITY_CODE" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',auditInfo.CITY_CODE)" />	
+								</div>
+							</div>									
+						</li>								
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 稽核查询 结束 -->
+		
+		
+		<!-- 价格特征 开始 -->
+		<div jwcid="priceOfferChaPopupItem@ecserv:PriceOfferCha"></div>
+		<!-- 价格特征 结束 -->
+		
+
+			
+		
+		<!-- 修改资费类商品失效日期专用弹窗 -->
+		<div class="c_popupItem" id="calendarItem1">
+			<div class="c_header">
+				<div id="calendarEle1" class="back" ontap="backPopup(this)">返回</div>			
+			</div>
+			<div class="l_float l_float-header">
+				<div name="calendar1" jwcid="@Calendar" value="" ></div>
+				<input type="hidden" id="CAL_OFFER_ID" value=""/>
+				<input type="hidden" id="CAL_OFFER_INDEX" value=""/>
+			</div>
+		</div>
+		
+		
+						
+	</div>
+<!-- ===========================================第二层弹出 结束============================================ -->
+
+<!-- ===========================================第三层弹出 开始============================================ -->	
+<!-- 	<div class="c_popupGroup" id="commonAtuoLoadPart">
+		公共时间弹窗
+		<div class="c_popupItem" id="calendarItem">
+			<div class="c_header">
+				<div id="calendarEle" class="back" ontap="backPopup(this)">返回</div>			
+			</div>
+			<div class="l_float l_float-header">
+				<div name="calendar" jwcid="@Calendar" value="" ></div>
+			</div>
+		</div>	
+		
+	</div> -->
+
+
+<!-- ===========================================第三层弹出 结束============================================ -->		
+
+
+</div>
+
+<!-- 员工组件 开始 -->
+<div jwcid="@icsserv:StaffPopup" name="STAFF_POPUP" ></div>
+<!-- 员工组件 结束 -->
+<!-- BBOSS产品定制目录 开始 -->		
+<div jwcid="bbossUserPackagePopupItem@ecserv:EnterpriseBBossUserPackage" bbossOfferId="ognl:initBbossOffer.OFFER_ID"></div>
+<!-- BBOSS产品定制目录 结束 -->
+<div jwcid="proParamPagePop@Part" id="proParamPagePop">
+	<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr" useTag="99"/> 
+</div>
+
+
+<div jwcid="PopPart@Part">
+<!-- 		<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr" pagemode="COM" layouttype="pop"/>
+ -->	</div>
+<!-- <div jwcid="@Popup" name="CalendarPopup" class="c_popup c_popup-half" mask="false">
+	<div class="c_popupGroup" id="CalendarPart">
+		公共时间弹窗
+		<div class="c_popupItem" id="calendarItem1">
+			<div class="c_header">
+				<div id="calendarEle1" class="back" ontap="backPopup(this)">返回</div>			
+			</div>
+			<div class="l_float l_float-header">
+				<div name="calendar1" jwcid="@Calendar" value="" ></div>
+			</div>
+		</div>
+		公共时间弹窗
+	</div>
+</div> -->
+
+	<!-- <div jwcid="PopPart@Part">
+		<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr" pagemode="COM" layouttype="pop"/>
+	</div> -->
+	
+<!-- <div class="display:none">
+	<span jwcid = "@crmbc:OpSel" name = "query_STAFF_ID"
+	      nullable = "no" desc = "员工" popMode = "S">
+	</span>
+</div> -->
+
+<!-- 功能导航 开始 -->
+<!-- <div class="c_cover e_hide-phone" id="EC_FUNC_NAVIGATION" style="display:none">
+	<iframe src="?service=page/enterprise.vc.navi.EcOfferNav" style="width:100%; height:100%;" frameborder="0"></iframe>
+</div> -->
+<!-- 功能导航 结束 -->
+<span jwcid="@Any" element="span" id="esop_groupInfo" style="display:none"></span>	
+<script language="javascript" type="text/javascript">
+
+var enterpriseCatalog;
+var enterpriseGroupOffers;
+var priceOfferCha;
+var activeDateField;
+$(function(){
+	//动力100子商品订购，直接传入要订购的商品ID，初始化
+	initOutOffer();
+	
+	enterpriseCatalog = new EnterpriseCatalog('offerCategoryPopupItem');
+	enterpriseGroupOffers = new EnterpriseGroupOffers('groupOffersPopupItem');
+	priceOfferCha = new PriceOfferCha('priceOfferChaPopupItem');
+	
+	var custInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+	if(custInfo)
+	{
+		$("#cond_CUST_ID").val(custInfo.get("CUST_ID"));
+	}
+	
+	initCrm();
+	
+	// 绑定日期组件的日期选择事件
+	$("#calendar1,#calendar0").select(function(e){
+		if(activeDateField && activeDateField.nodeType){
+			//alert(this.val());
+			$(activeDateField).val(this.val()); // 进行日期选择时候，把选择的日期值返回到 DateField 元素上
+			// alert(this.lunarVal()); // 获取农历日期值
+			
+			
+			var id = $(this).attr('id');
+			if(id=='calendar1'){
+			changePriceOfferExpiredDate(this.val());	
+			backPopup(document.getElementById("calendarItem1"));
+			}
+			else {changePriceOfferValidDate(this.val());
+			backPopup(document.getElementById("calendarItem0"));
+			}
+		}
+	});
+
+	// 绑定日期清除按钮事件
+	$("#calendar1,#calendar0").clear(function(e){
+		if(activeDateField && activeDateField.nodeType){
+			$(activeDateField).val("");
+		}
+	});
+});
+
+//刷新日期组件显示的日期
+function setCalendar1Value(dateField)
+{
+	//获取当前操作dateField元素
+	var el = dateField && dateField.nodeType == 1 ? dateField : document.getElementById(dateField);
+	if(!el) return;
+	calendar1.val(el.value); //设置日期组件值
+	activeDateField = el;
+}
+
+</script>
+</body>
+</html>

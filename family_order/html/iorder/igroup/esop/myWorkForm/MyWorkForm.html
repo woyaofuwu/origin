@@ -1,0 +1,333 @@
+ <!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>我的工单</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" src="iorder/igroup/esop/myWorkForm/script/myWorkForm.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">我的工单</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('popup02','UI-advance');"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 区域 开始 -->
+	<div jwcid="QueryPart@Part" class="l_query">
+		<!-- 表单 开始 -->
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<div class="c_fn">
+			<div class="left">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="myExport"
+						cond="productParamPart" taskId="201903221736"
+						configFile="export/querygroupinfo/ExportMyworkform.xml"
+						ftpCode="eosdata" fileName="我的工单导出.xls">
+						<span class="e_ico-export" /><span>导出</span>
+					</button>
+						<!-- <button type="button" class="l_ml"
+							onclick="javascript:$.printArea('QueryResultPart','打印预览','90%')">
+							<i class="e_ico-print"></i><span>打印</span>
+						</button> -->
+					<span class="e_space"></span>
+				<div class="c_tip c_tip-red">我的工单是指我参与处理过的工单！客户经理工号作为查询条件，则查询的工单是该客户经理管控的集团客户的，并且我参与过的</div>
+				</div>
+				<span class="e_space"></span>
+				<div class="right">
+					<button type="button" class="e_button-blue" ontap="showPopup('popup02','UI-advance');"><i class="e_ico-search"></i><span>查询</span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 表格 开始 -->
+		<div jwcid="QueryResultPart@Part">
+			<div jwcid="QueryListPart@Part" class="l_queryResult">
+				<table name="printTable" id="printTable" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>
+						<th class="e_center">业务类型</th>						
+						<th class="e_center">工单主题</th>						
+						<th class="e_center">订单号</th>
+						<th class="e_center">专线详情</th>
+						<th class="e_center">其他操作</th>
+						<th class="e_center">异常状态</th>
+						<th class="e_center">产品名称</th>						
+						<th class="e_center">集团名称</th>
+						<th class="e_center">集团编号</th>
+						<th class="e_center">当前节点</th>
+						<th class="e_center">当前处理人姓名</th>
+						<th class="e_center">当前节点处理人</th>
+						<th class="e_center">节点曾经处理人</th>						
+						<th class="e_center">流程名称</th>						
+						<th class="e_center">流程当前状态</th>
+						<th class="e_center">工单稽核状态</th>						
+						<th class="e_center">业务创建人工号</th>
+						<th class="e_center">业务创建人姓名</th>
+						<th class="e_center">归属市县</th>
+						<th class="e_center">流程创建时间</th>
+						<th class="e_center"  style="display:none" >开通情况</th>
+						<th class="e_center">已关联开通单</th>
+						<th class="e_center">已关联勘察单 </th>
+						<th class="e_center">集团服务号 </th>
+						<th class="e_center">撤单状态 </th>
+						<th class="e_center">撤单操作</th>
+						</tr>
+					</thead>
+					<tbody id="tableBody">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td data-title="业务类型" class="fn e_center" ontap='queryDatelineCodeType(this)' jwcid="@Any"
+                                    IBSYSID="ognl:info.IBSYSID" TEMPLET_NAME="ognl:info.TEMPLET_NAME" 
+                                    GROUP_ID="ognl:info.GROUP_ID" NODEID="ognl:info.NODE_ID"
+                                    PRODUCT_NAME="ognl:info.PRODUCT_NAME" 
+                                    DEAL_STAFF_ID="ognl:info.DEAL_STAFF_ID"
+                                    URGENCY_LEVEL="ognl:info.RSRV_STR3"
+                                    TITLE="ognl:info.RSRV_STR4"
+                                    BPM_TEMPLET_ID="ognl:info.BPM_TEMPLET_ID"
+                                    IS_FINISH="ognl:info.IS_FINISH"
+                                    BUSIFORM_ID="ognl:info.BUSIFORM_ID"
+                                     value="业务类型">
+                                    <span jwcid="@Insert" value="ognl:info.TEMPLET_NAME" raw="false"/>
+                                </td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.IBSYSID" raw="false"/></td>
+                         <td class="e_center">
+                             <div jwcid="@Conditional" condition="ognl:!'0'.equals(info.RECORDNUM_INFOS) " >
+								<a jwcid="@Redirect" source="ognl:info" 
+									IBSYSID="ognl:info.IBSYSID" 
+                            	 	NODE_ID="ognl:info.NODE_ID" 
+                            	 	BPM_TEMPLET_ID="ognl:info.BPM_TEMPLET_ID" 
+                             		PRODUCT_ID="ognl:info.PRODUCT_ID"  
+								 	value="ognl:info.RECORDNUM_INFOS_A" 
+									ontap='queryDatelineAttr(this)' />
+							</div>
+                         </td>
+                         <td>
+							<div jwcid="@Conditional" condition="ognl:!'0'.equals(info.ESOP_ID) " >
+								<a jwcid="@Redirect" source="ognl:info" zhzgUrl="ognl:info.ZHZG_URL" 
+								serialNo="ognl:info.ESOP_ID" value="ognl:info.ESOP_ID_A" 
+								onclick="window.open($(this).attr('zhzgUrl'));"/>
+							</div>
+						</td>
+						 <td class="e_center">
+                             <div jwcid="@Conditional" condition="ognl:!'0'.equals(info.STEP_INFOS) " >
+								<a jwcid="@Redirect" source="ognl:info" 
+                            	 	BUSIFORM_ID="ognl:info.BUSIFORM_ID" 
+                            	 	FLAG="TRUE" 
+                            	 	IBSYSID="ognl:info.IBSYSID"
+                            	 	value="ognl:info.STEP_INFOS_A" 
+									ontap='queryExpWorkfrom(this)' />
+							</div>
+                         </td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.NODE_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.DEAL_STAFF_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.DEAL_STAFF_ID" raw="false"/></td>
+						<td data-title="节点曾经处理人" class="fn e_center" ontap='queryOnceTemplet(this)' jwcid="@Any"
+                                    IBSYSID="ognl:info.IBSYSID" NODEID="ognl:info.NODE_ID"
+                                    DEAL_STAFF_NAME="ognl:info.DEAL_STAFF_NAME" 
+                                    DEAL_STAFF_ID="ognl:info.DEAL_STAFF_ID"
+                                    ACCEPT_TIME="ognl:info.ACCEPT_TIME" value="节点曾经处理人">
+                                    <span class="e_ico-search"></span>查看
+                                </td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.TEMPLET_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.TEMPLET_STATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.AUDIT_STATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_STAFF_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_STAFF_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('EOP_CUST_CITY_CODE', info.CITY_CODE)" raw="false"></span></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME" raw="false"/></td>
+						<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:info.CREATE_STATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.KTIBSYSID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.PORT_A_CUST" raw="false"/></td>
+                         <td class="e_center">
+                             <div jwcid="@Conditional" condition="ognl:!'0'.equals(info.DATELINE_REMOVE_A) " >
+								<a jwcid="@Redirect" source="ognl:info" 
+									IBSYSID="ognl:info.IBSYSID" 
+                            		NODE_ID="ognl:info.NODE_ID" 
+                             		BPM_TEMPLET_ID="ognl:info.BPM_TEMPLET_ID" 
+                             		PRODUCT_ID="ognl:info.PRODUCT_ID"  
+                             		CREATE_STATE="ognl:info.CREATE_STATE"
+                             		BUSIFORM_ID="ognl:info.BUSIFORM_ID"
+									DEAL_STAFF_ID="ognl:info.ACCEPT_STAFF_ID" 
+								 	value="ognl:info.DATELINE_REMOVE" 
+									ontap='queryDatelineRemoveOne(this)' />
+							</div>
+                         </td>
+					
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 表格 结束 -->
+			<div class="l_queryPage">
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="olcomnav" id="olcomnav"
+					listener="queryWorkformDetail" pageSize="10" cond="productParamPart"
+					part="QueryResultPart" count="ognl:infosCount" />
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+	</div>
+	<!-- 区域 结束 -->
+		 <!-- 隐藏域 开始 --> 
+		<input style="display: none" jwcid="@Hidden" id="EXCEPTION" name="EXCEPTION" value="ognl:staffInfo.EXCEPTION"/>
+    <!-- 隐藏域 结束 -->
+	<!-- 弹窗 开始 -->
+	<!--弹出层-->
+	<div id="popup02" name="popup02" jwcid="@Popup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="UI-advance">
+				<div class="c_header">
+					<div class="back" ontap="backPopup(this);">我的工单查询</div>
+				</div>
+				<div jwcid="AdvanceConditionPart@Part" id="AdvanceConditionPart" class="l_padding">
+					<!-- 表单 开始 -->
+					<div class="c_scroll c_scroll-float c_scroll-header">
+					<div jwcid="productParamPart@Part" element="div">
+						<div name="myTab" jwcid="@Tabset">
+						<div class="c_list c_list-form" jwcid="conditionPart@Part">	<ul>
+							<li class="link">
+								<div class="label">订单号</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_SUBSCRIBE_ID" id="cond_SUBSCRIBE_ID"
+										value="ognl:info.cond_SUBSCRIBE_ID" desc="订单号" datatype="numeric" />
+								</div>
+							</li>
+							 <li class="link">
+                                <div class="label">业务类型</div>
+                                <div class="value">
+                                <select jwcid="@Select" name="cond_TPTEMPLET_ID"
+                                      source="ognl:staffInfo.BUSI_TYPE_INFO.DATA_VAL"
+									  textField="DATA_NAME" valueField="DATA_ID"
+									  titleField="DATA_NAME" 
+                                      desc="业务类型" />
+                                </div>
+	                            </li>
+	                            <li class="link">
+	                                <div class="label">产品选择</div>
+	                                <div class="value" jwcid="QueryProductList@Part">
+	                                <select jwcid="@Select" name="cond_PRODUCT_ID"
+	                                      source="ognl:staffInfo.PRODUCT_INFO.DATA_VAL"
+										  textField="DATA_NAME" valueField="DATA_ID"
+										  titleField="DATA_NAME" 
+	                                      desc="产品选择"/>
+	                                </div>
+	                            </li>
+								<li class="link">
+								<div class="label">开始时间</div>
+								<div class="value">
+										<input 
+										name="COMPLAINT_START_DATE" 
+										id="COMPLAINT_START_DATE"
+										jwcid="@DateField" 
+										dropDown="true"  
+										desc="开始时间" 
+										format="yyyy-MM-dd HH:mm:ss" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">结束时间</div>
+								<div class="value">
+										<input 
+										name="COMPLAINT_END_DATE" 
+										id="COMPLAINT_END_DATE"
+										jwcid="@DateField" 
+										dropDown="true"  
+										desc="结束时间" 
+										format="yyyy-MM-dd HH:mm:ss" />
+										
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">客户经理工号</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_TRADE_STAFF_ID" id="cond_TRADE_STAFF_ID"
+										value="ognl:staffInfo.STAFF_ID" desc="客户经理工号" datatype="numeric" readonly="true" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">客户经理姓名</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_TRADE_STAFF_NAME" id="cond_TRADE_STAFF_NAME"
+										value="ognl:staffInfo.STAFF_NAME" desc="客户经理姓名" datatype="numeric" readonly="true"/>
+									<input style="display: none" jwcid="@Hidden" id="EPARCHY_CODE_TYPE" name="EPARCHY_CODE_TYPE" 
+									value="ognl:staffInfo.EPARCHY_CODE_TYPE"/>
+										
+								</div>
+							</li>
+							<li>
+									<div class="label">集团客户编码</div>
+									<div class="value">
+									<input jwcid="@TextField" name="cond_CUST_ID" id="cond_CUST_ID"
+										value="" desc="集团客户编码" />    
+									</div>
+								</li>
+								<li class="link">
+								<div class="label">工单主题</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_TITLE" id="cond_TITLE"
+										value="ognl:info.cond_SUBSCRIBE_ID" desc="工单主题" datatype="numeric" />
+								</div>
+							</li>
+								<li class="link">
+								<div class="label">专线实例号</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_PRODUCT_NO" id="cond_PRODUCT_NO"
+										value="ognl:info.cond_SUBSCRIBE_ID" desc="专线实例号" datatype="numeric" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">地市</div>
+								<div class="value">
+									<select jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE"
+										source="ognl:pageutil.getStaticList('EOP_CUST_CITY_CODE')"
+										addDefault="false" textField="DATA_NAME" valueField="DATA_ID"
+										value="ognl:staffInfo.EPARCHY_CODE" desc="地市" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">业务状态</div>
+								<div class="value">
+									<select jwcid="@Select" name="cond_BUSI_STATE" id="cond_BUSI_STATE"
+										source="ognl:pageutil.getStaticList('ESOP_BIZ_BUSI_STATE')"
+										addDefault="false" textField="DATA_NAME" valueField="DATA_ID"
+										 desc="业务状态" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">稽核状态</div>
+								<div class="value">
+									<select jwcid="@Select" name="cond_DEAL_TAG" id="cond_DEAL_TAG"
+										source="ognl:pageutil.getStaticList('ESOP_BIZ_ORDERSTATE')"
+										addDefault="true" textField="DATA_NAME" valueField="DATA_ID"
+										value="ognl:info.CITY_CODE" desc="稽核状态" />
+								</div>
+							</li>
+						</ul>
+						</div>
+					<!-- 表单 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button id="queryBtnPop" name="queryBtn" class="e_button-blue e_button-r" ontap="queryWorkformDetail(this);"><i class="e_ico-search"></i><span>查询</span></button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

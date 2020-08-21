@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/monitorinfo.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title"><div class="text">监控信息查询</div></div>
+			<!-- 活动详情 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5">
+				<div class="" jwcid="submit_part@Part" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label"  ><span class="e_required">查询方式：</span></span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="QUERY_TYPE"  source="ognl:pageutil.getStaticList('QUERYMONITORINFO_QUERYTYPE')" 
+									textField="DATA_NAME"  valueField="DATA_ID" value="ognl:condition.QUERY_TYPE"  desc="查询方式" addDefault="false" onchange="initQueryMonitorInfo();"/>
+								</span></span></span>
+							</li>
+							<li class="li"  id="monitor_type_li">
+								<span class="label"  ><span class="e_required">监控类型：</span></span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="MONITOR_TYPE"  source="ognl:pageutil.getStaticList('MONITORFILE_DATATYPE')" 
+									textField="DATA_NAME"  valueField="DATA_ID" value="ognl:condition.MONITOR_TYPE"  desc="监控类型"  />
+								</span></span></span>
+							</li>
+							<li class="li"  id="begin_sn_li" >
+							<span class="label " ><span class="e_required">开始号码：</span></span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "BEGIN_SN" value="ognl:condition.BEGIN_SN" desc="开始号码" maxlength=11 nullable="no" datatype="numeric"/>
+								</span></span>
+							</li>
+							<li class="li"  id="end_sn_li">
+							<span class="label " ><span class="e_required">结束号码：</span></span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" name = "END_SN" value="ognl:condition.END_SN" desc="结束号码" maxlength=11 nullable="no" datatype="numeric"/>
+								</span></span>
+							</li>
+							<li class="li" style="display:none"  id="query_date_li">
+								<span class="label"><span class="e_required">查询日期：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@DateField" name="QUERY_DATE"    value="ognl:condition.QUERY_DATE" desc="查询日期" /></span></span>
+							</li>
+							<li class="li" style="display:none"  id="violation_reason_li">
+							<span class="label">违规原因：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="VIOLATION_REASON"  source="ognl:pageutil.getStaticList('MONITORFILE_REASONCODE')" 
+									textField="DATA_NAME"  valueField="DATA_ID" value="condition.VIOLATION_REASON"  desc="违规原因" />
+								</span></span></span>
+							</li>
+							<li class="li" style="display:none" id="deal_result_li">
+							<span class="label">处理结果：</span>
+								<span class="e_select"><span><span>
+									<input type="text" jwcid="@Select" name="DEAL_RESULT"  source="ognl:pageutil.getStaticList('MONITORFILE_PROCESSTAG')" 
+									textField="DATA_NAME"  valueField="DATA_ID" value="condition.DEAL_RESULT"  desc="处理结果" />
+								</span></span></span>
+							</li>
+							<li class="li" style="display:none" id="start_date_li">
+								<span class="label e_required">开始日期：</span>
+								<span class="e_input"><span><input type="text" jwcid="@DateField" name="START_DATE" value="ognl:condition.START_DATE" desc="开始日期"   /></span></span>
+							</li>
+							<li class="li" style="display:none" id="end_date_li">
+								<span class="label e_required">结束日期：</span>
+								<span class="e_input"><span><input type="text" jwcid="@DateField" name="END_DATE" value="ognl:condition.END_DATE" desc="结束日期"  /></span></span>
+							</li>
+						</ul>
+						<div class="submitPlace"></div>
+						<div class="submit" >
+							<button class="e_button-form" listener="ognl:listeners.queryMonitorInfos"  onclick="return query();"><i class="e_ico-search"></i><span>查询</span></button>
+							<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+						</div>
+					</div>
+
+				</div>
+				
+				<div  jwcid="result_Table@Part" optimize="true">
+			    <div id="exportarea">
+			        <div class="c_title c_title-2">
+					 <div class="text">查询结果</div>
+						 <div class="fn" >
+							  <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="5000"
+									  config="export/sundryquery/monitorinfo/MonitorInfoList.xml" cond="submit_part" /> 
+					 	</div>
+			  	    </div>
+			  	    <div class="c_scroll c_scroll-table-10">
+							<div class="c_table">
+							<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+						  			<tr>
+										<th>流水号</th>
+							      		<th>处理月份</th>		
+							      		<th>入库时间</th>
+				                        <th>开始监控时间</th>
+				                        <th>超标时间</th>
+				                        <th>主叫号码</th>
+				                        <th>被叫号码</th>
+				                        <th>监控类型</th>
+				                        <th>违规原因</th>       
+				                        <th>处理结果</th>
+				                        <th>超标数目</th>
+										<th>MSGID</th>
+										<th>短信内容</th>
+										<th>处理时间</th>
+				                        <!--<th>预留字段1</th>
+				                        <th>预留字段2</th>
+				                        <th>预留字段3</th>-->
+									</tr>
+								</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE16" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE17" raw="false"/></td>               
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE1" raw="false"></span></td>   
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE2" raw="false"></span></td>   
+											<td><span jwcid="@Insert" value="ognl:info.PARA_CODE3" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE4" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE5" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MONITORFILE_DATATYPE',info.PARA_CODE6)" raw="false"></span></td>
+					                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MONITORFILE_REASONCODE',info.PARA_CODE7)" raw="false"></span></td>
+					                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MONITORFILE_PROCESSTAG',info.PARA_CODE8) " raw="false"></span></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE9" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE10" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE23" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.PARA_CODE11" raw="false"></span></td>      
+										</tr>
+									</tbody>
+							</table>
+							<!-- end table -->
+					</div>
+					</div>
+						
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="10"  listener="queryMonitorInfos" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+			</div>
+		  </div>		
+						
+						
+</div></div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

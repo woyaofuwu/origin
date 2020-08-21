@@ -1,0 +1,3 @@
+SELECT 'VIP_Manager_Name' KEY, VIP_MANAGER_ID VALUE1, '-1' VALUE2, VIP_MANAGER_NAME VRESULT
+  FROM tf_f_managerstaff
+ WHERE 'VIP_Manager_Name' = :KEY

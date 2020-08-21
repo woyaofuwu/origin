@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+select AREA_CODE,AREA_NAME from td_m_area where 1 = 1 
+and PARENT_AREA_CODE = :PARENT_AREA_CODE 
+and VALIDFLAG = :ALIDFLAG 
+and AREA_LEVEL = :AREA_LEVEL order by AREA_CODE

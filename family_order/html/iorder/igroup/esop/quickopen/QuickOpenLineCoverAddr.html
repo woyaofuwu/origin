@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/quickopen/script/quickOpenLineAddr.js"></script>
+	<title>快速开通标准地址查询</title>
+	<link href="css/global/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body jwcid="@Body">
+<div class="l_query" jwcid="AddrResultPart@Part" element="div">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('popup')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+		<div class="l_queryResult">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" id="quickOpenLineCoverAddrTable" name="quickOpenLineCoverAddrTable">
+				<thead>
+					<tr>
+						<th col="STANDARDADDR">标准地址</th>
+			            <th col="IS_COVER_TAG">覆盖程度</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.STANDARD_ADDR" raw="false"></span></td>
+						<td><span jwcid="@Insert" value="ognl:info.IS_COVER_TAG" raw="false"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+			<!-- 表格 结束 -->
+			</div>
+			<div jwcid="@Conditional" class="l_queryMsg" condition="ognl:infos == null || infos.size() == 0" element="div">
+			<!-- 无数据提示 开始 -->
+			<div class="c_msg">
+				<div class="wrapper">
+					<div class="emote"></div>
+					<div class="info">
+						<div class="text">
+							<div class="title">暂时没有数据</div>
+							<div class="content">请输入查询条件</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 无数据提示 结束 -->
+		</div>
+		<div class="l_queryMsg" id="queryLoading" style="display:none;">
+			<!-- 无数据提示 开始 -->
+			<div class="c_msg c_msg-loading">
+				<div class="wrapper">
+					<div class="emote"></div>
+					<div class="info">
+						<div class="text">
+							<div class="title">努力加载中</div>
+							<div class="content">loading</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 无数据提示 结束 -->
+		</div>
+
+		<div class="l_queryPage">
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="queryNav" id="queryNav" cond="AddrInfo" part="AddrResultPart" listener="queryLineCoverAddr" pageSize="10" count="ognl:count"></div>
+		<!-- 分页 结束 -->
+		</div>
+</div>
+<div class="c_popup" jwcid="@Popup" name="popup" id="popup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem c_popupItem-show" id="qryInfo">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);">返回</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding">
+					<div class="c_list c_list-line c_list-border" jwcid="AddrInfo@Part" >
+						<ul>
+							<li class="link">
+								<div class="label">标准地址</div>
+								<div class="value"><input type="text" jwcid="@TextField" id="cond_STANDARD_ADDR"  name="cond_STANDARD_ADDR" value="ognl:condition.STANDARD_ADDR"  desc="标准地址"/></div>
+							</li>
+							<li class="link">
+								<div class="label">覆盖程度</div>
+								<div class="value">
+									<select jwcid="@Select" id="cond_COVERTAG" name="cond_COVERTAG" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IS_COVER_TAG')" textField="DATA_NAME" valueField="DATA_ID" 
+										addDefault="true" value="ognl:condition.COVERTAG" nullable="no" desc="覆盖程度"/>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="queryLineCoverAddr();hidePopup(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

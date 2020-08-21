@@ -1,0 +1,362 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>语音专线业务责任追究考核</title>
+	
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/busicheck/script/BusiCheckVoice.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">语音专线业务责任追究考核</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="e_space"></div>
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<!-- 查询模版 开始 -->
+		<div class="e_space"></div>
+		<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left">
+					<!-- <span class="text">语音专线业务监督检查</span> -->
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="myExport"
+						cond="queryForm" taskId="2019050310"
+						configFile="export/querygroupinfo/BusiCheckVoiceExport.xml"
+						ftpCode="eosdata" fileName="语音专线业务责任追究考核.xls">
+						<span class="e_ico-export" /><span>导出</span>
+					</button>
+					<!-- <span name="myExport" taskId="2019011012" jwcid="@Export"
+								configFile="import/bat/group/"  ftpCode="order"
+								buttonText="导出" fileName="语音专线业务监督检查.xls" auto="false" /> -->
+				</div>
+				<div class="right">
+					<div class="e_mix" onclick="showPopup('qryPopup','qryPopupItem',true)">
+						<input type="text" />
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+					<!-- <div class="e_space"></div>
+					<span class="e_space"></span>
+					<button class="e_button-blue" ontap="showPopup('qryPopup','qryPopupItem',true)"><span>查询</span><span class="e_ico-next"></span></button>
+					 -->
+				</div>
+				<input jwcid="@Hidden" name="CHECK_TYPE" id="CHECK_TYPE" value="2" desc="" />
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+		<div class="e_space"></div>
+		<div class="l_queryResult c_table" id="refreshtable" jwcid="refreshtable@Part" style="height:auto;" >
+			<!-- 表格 开始 -->
+			<!-- <div class="c_table"> -->
+				<table jwcid="@Table" name="myTable">
+					<thead>
+						<tr>	
+							<th>市县</th>
+							<th>流程业务类型</th>				
+							<th>业务流水号</th>
+							<th>集团客户编号</th>
+							<th>集团客户名称</th>
+							<th>客户经理工号</th>
+							<th>客户经理</th>
+							<th>流程创建者工号</th>
+							<th>流程创建者</th>
+							<th>流程创建时间</th>
+							<th>查看详情</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.CITY_NAME" class="center" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BUSI_TYPE=='FOURMANAGE'?'400业务管控':info.BUSI_TYPE" raw="false" class="center" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.IBSYSID" raw="false" class="center" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.INSERT_TIME" raw="false"/></td>
+							<td><input type="radio" name="checkvalue"  value="ognl:info" ibsysId="ognl:info.IBSYSID" subIbsysId="ognl:info.SUB_IBSYSID"  busiType="ognl:info.BUSI_TYPE" qrytype="1" onclick="queryBusiDetail(this);" jwcid="@Radio" class="center" /></td>
+							<input jwcid="@Hidden" name="IBSYSID_Hidden" id="IBSYSID_Hidden" value="ognl:info.IBSYSID" desc="" />
+							<input jwcid="@Hidden" name="SUB_IBSYSID" id="SUB_IBSYSID" value="ognl:info.SUB_IBSYSID" desc="" />
+							<input jwcid="@Hidden" name="BUSI_TYPE" id="BUSI_TYPE" value="ognl:info.BUSI_TYPE" desc="" />
+						</tr>
+					</tbody>
+				</table>
+			<!-- </div> -->
+			<!-- 表格 结束 -->
+			<div class="l_queryPage">
+				<!-- 分页 开始 -->
+				<div class="c_page c_page-border"
+	            	jwcid="@NavBar"
+	                 name="myNavbar"
+	                 id="myNavbar" 
+	                 cond="queryForm"
+	                 count="ognl:infoCount"
+	                 listener="queryBusiInfos"
+	                 part="refreshtable"
+	                 pageSize="20">
+				</div>
+				<!-- 分页 结束 -->
+			</div>
+		</div>
+		<div class="e_space"></div>
+	<!-- 查询模版 结束 -->
+	<!--查看详情 开始  -->
+	<div id="showDetailPart"  jwcid="showDetailPart@Part" style="display:none;">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">开办详情信息记录区</div>
+						</div>
+					</div>
+			</div>
+			<div class="l_queryResult c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1"">
+					<ul>
+					<li class="link">
+						<div class="label">业务类别</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.BUSI_CATEGORY" nullable="no" desc="业务类别" disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">市/县</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.CUST_CITYORCOUNTY" nullable="no" desc="市/县" disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">业务使用用途</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.BUSI_USE" nullable="no" desc="业务使用用途"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">业务资费</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.BUSI_CHARGES" nullable="no" desc="业务资费"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">办理的套餐</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.PACKAGE_NAME" nullable="no" desc="办理的套餐"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">月租费</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.PACKAGE_MONTHLYRENTFEE" nullable="no" desc="月租费"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">功能费</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.PACKAGE_FUNCTIONFEE" nullable="no" desc="功能费"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">通讯费</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.PACKAGE_COMMUNICATIONFEE" nullable="no" desc="通讯费"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">专线带宽</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.SPEC_BANDWIDTH" nullable="no" desc="专线带宽"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">专线条数</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.SPEC_BARNUM" nullable="no" desc="专线条数"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">专线装机地址</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.SPEC_INSTALLED_ADDR" nullable="no" desc="专线装机地址"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">主叫号码/号段</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.DIALING_SECTIONNO" nullable="no" desc="主叫号码/号段"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">客户资质信息</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.CUST_INFO" nullable="no" desc="客户资质信息"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">线路类型</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.SPEC_BARTYPE" nullable="no" desc="线路类型"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">对端接入设备</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.ENDON_JOINUP_EQPTTYPE" nullable="no" desc="对端接入设备"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">接入网元位置</div>
+						<div class="value">
+							<input jwcid="@TextField" name="" value="ognl:info.ENDON_NETELEMENT_POSITION" nullable="no" desc="接入网元位置"  disabled="true"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	<!--查看详情 结束  -->
+	<div class="e_space"></div>
+	<!--业务监督检查记录表格区 开始  -->
+	<div id="checkDetailList" jwcid="checkDetailList@Part"  style="display:none;">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">责任追究考核记录表格区</div>
+						</div>
+						<div class="right">
+							<button type="button" ontap="showAddCheckRecordArea();"><span class="e_ico-add" /><span>增加责任追究考核记录</span></button>
+							<!-- <button type="button" class="e_button-r e_button-l e_button-blue" ontap="showAddCheckRecordArea(); ">增加业务监督检查记录</button> -->
+						</div>
+					</div>
+			</div>
+			<div class="e_space"></div>
+			<div class="l_queryResult c_table">
+					<table jwcid="@Table" name="checkTable">
+					<thead>
+						<tr>	
+							<th>业务流水号</th>
+							<th>检查类型</th>
+							<th>业务类型</th>
+							<th>检查人</th>
+							<th>检查时间</th>
+							<th>检查结果</th>
+							<th>备注</th>
+							<th>修改检查记录</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:checkRecordInfos" value="ognl:checkRecordInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.IBSYSID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.CHECK_TYPE==1?'业务监督检查':'责任追究考核'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.BUSI_TYPE=='FOURMANAGE'?'400业务管控':checkRecordInfo.BUSI_TYPE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.CHECK_STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.CHECK_TIME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.CHECK_RESULT" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:checkRecordInfo.REMARK" raw="false"/></td>
+	   						<td><input type="radio" name=""  value="ognl:checkRecordInfo" remark="ognl:checkRecordInfo.REMARK"  checkresult="ognl:checkRecordInfo.CHECK_RESULT" qrytype="1" onclick="showUpdateCheckRecordArea(this);" jwcid="@Radio" class="center" /></td>
+							<input jwcid="@Hidden" name="CHECK_ID" id="CHECK_ID" value="ognl:checkRecordInfo.CHECK_ID" desc="" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<!--业务监督检查记录表格区 结束  -->
+	<div class="e_space"></div>
+	<!--新增业务监督检查信息区 开始  -->
+	<div id="checkRecordPart" jwcid="checkRecordPart@Part" style="display:none;">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">责任追究考核信息区</div>
+						</div>
+					</div>
+			</div>
+			<div class="l_queryResult c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1"">
+					<ul>
+					<li class="link required">
+						<div class="label">检查类型</div>
+						<div class="value">
+							<select id="CHECK_TYPE" name="CHECK_TYPE" desc="检查类型" class="e_select">
+								<option value="2" selected="selected">责任追究考核</option>
+							</select>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">检查结果</div>
+						<div class="value">
+							<input jwcid="@TextField" name="CHECK_RESULT" value="ognl:info.CHECK_RESULT" nullable="no" desc="检查结果"/>
+						</div>
+					</li>
+					<li class="link">
+						<div class="label">备注</div>
+						<div class="value">
+							<input jwcid="@TextField" name="REMARK" value="ognl:info.REMARK"  desc="备注"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="if(confirmAll('checkRecordPart')){addOrUpdateCheckRecord(this);}">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+	</div>
+	<!--新增业务监督检查信息区 结束  -->
+	</div>
+	<!-- 滚动（替换为 java 组件） 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="qryPopupItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">条件查询</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth"  class="c_scroll c_scroll-float c_scroll-header">
+							<div class="l_padding" jwcid="queryForm@Part">
+								<div class="c_list c_list-line c_list-border">
+									<ul>
+										
+										<li class="link">
+											<div class="label">业务流水号</div>
+											<div class="value"><input type="text" jwcid="@TextField" id="IBSYSID"  name="IBSYSID" value="ognl:condition.IBSYSID"  desc="业务流水号" /></div>
+										</li>
+										<li class="link">
+											<div class="label">集团客户编码</div>
+											<div class="value"><input type="text" jwcid="@TextField" id="GROUP_ID"  name="GROUP_ID" value="ognl:condition.GROUPID"  desc="集团客户编码" /></div>
+										</li>
+										<li class="link">
+											<span class="label">所属市县</span>
+											<div class="value">
+												<select id="CITY_CODE"  value="ognl:info.CITY_CODE"  name="CITY_CODE" jwcid="@Select" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CUST_CITY_CODE')" titleField="DATA_NAME" textField="DATA_NAME" valueField="DATA_ID" desc="所属市县" />
+											</div>		
+										</li>
+									</ul>
+								</div>
+								<div class="e_space"></div>
+								<div class="c_submit c_submit-full">
+									<button class="e_button-l e_button-r e_button-blue" onclick="queryBusiInfos();hidePopup('qryPopup')"><span class="e_ico-search"></span><span>查询</span></button>
+								</div>
+							</div>
+				</div>
+		</div>
+		</div>
+		
+	</div>
+	<!-- 弹窗 结束 -->
+	
+	<script>
+		Wade.setRatio();
+	</script>
+
+
+
+
+</body>
+</html>

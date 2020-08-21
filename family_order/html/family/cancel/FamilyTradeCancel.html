@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>家庭业务撤单</title>
+	<script jwcid="@Script" type="text/javascript" src="family/cancel/scripts/familytradecancel.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll l_padding">
+	<div jwcid="Condition@Part">
+		<div jwcid="@Conditional" condition='ognl:isOverMonth == "1"' element="div">
+			<div class="c_tip c_tip-red">
+				说明：该订单产品变更已跨月生效，手机产品已生效无法返销，宽带相关可以撤单，请知悉！
+			</div>
+		</div>
+	</div>
+	<div class="c_space"></div>
+	
+	<div class="l_queryFn">
+		<div class="c_fn">
+			<div class="left">
+				<div class="text">订单查询</div>
+			</div>
+			<div class="right">
+				<div class="e_mix" ontap="showPopup('mypop','qryPopup')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div jwcid="@Popup" name="mypop">
+		<div class="c_popupGroup">
+			<div id="qryPopup" class="c_popupItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup('mypop')">查询条件</div>
+				</div>
+				<div class="c_scrollContent l_padding">
+					<div class="c_list c_list-form" jwcid="QueryCondPart@Part" element="div">
+						<ul class="ul">
+							<li class="link required">
+								<div class="label">服务号码：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="SERIAL_NUMBER" value="" 
+												nullable="no"  readonly=true desc="服务号码"/>
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">订单流水：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="ORDER_ID" value="" 
+												datatype="numeric" maxsize='16' minsize='16' desc="订单流水"/>
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">开始时间：</div>
+								<div class="value">
+									<input jwcid="@DateField" name="START_DATE" value="ognl:initInfo.START_DATE" 
+												dropDown="true" format="yyyy-MM-dd" maxName="END_DATE" desc="开始时间"/>
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">结束时间：</div>
+								<div class="value">
+									<input jwcid="@DateField" name="END_DATE" value="ognl:initInfo.END_DATE" 
+												dropDown="true" format="yyyy-MM-dd" minName="START_DATE" desc="结束时间"/>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="submit c_submit-full">
+						<button jwcid="@Button" name="QUERY_BTN" class="e_button-l e_button-r e_button-blue" ontap="getUnfiniedTradeList()">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="c_space"></div>
+
+	<div name="CancelTradeTabset" jwcid="@Tabset" class="c_tab">
+		<div title="订单列表" class="content">
+			<div class="l_queryResult" jwcid="UnfinishedTradeTablePart@Part">
+				<table jwcid="@Table" name="UnfinishedTradeTable" class="c_table c_table-even c_table-border c_table-line c_table-row-10">
+					<thead>
+						<tr>
+							<th style="text-align:center;" col="COL_OPER"><span>详情</span></th>
+							<th style="text-align:center;" col="COL_TRADE_TYPE_NAME"><span>业务类型</span></th>
+							<th style="text-align:center;" col="COL_TRADE_ID"><span>业务流水号</span></th>
+							<th style="text-align:center;" col="COL_ORDER_ID"><span>订单流水号</span></th>
+							<th style="text-align:center;" col="COL_SERIAL_NUMBER"><span>用户号码</span></th>
+							<th style="text-align:center;" col="COL_WORKER_REJECTION"><span>装维驳回</span></th>
+							<th style="text-align:center;" col="COL_ACCEPT_DATE"><span>受理时间</span></th>
+							<th style="text-align:center;" col="COL_TRADE_STAFF_NAME"><span>受理员工</span></th>
+							<th style="text-align:center;" col="COL_TRADE_DEPART_NAME"><span>受理部门</span></th>
+							<th style="text-align:center;" col="COL_TRADE_EPARCHY_NAME"><span>受理地州</span></th>
+							<th style="text-align:center;" col="COL_REMARK"><span>备注</span></th>
+							<th style="text-align:center;display:none;" col="COL_TRADE_TYPE_CODE"><span>业务类型编码</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:unfinishedTradeList" value="ognl:unfinishedTrade"
+						 	element="tr" index="ognl:rowIndex">
+							<td class="fn" jwcid="@Any" rowId="ognl:rowIndex" onclick="getCancelTradeDetails(this)"><span class="e_ico-search"></span></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.TRADE_TYPE_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.TRADE_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.ORDER_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.SERIAL_NUMBER" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.WORKER_REJECTION ? '是' : '否'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', unfinishedTrade.ACCEPT_DATE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.TRADE_STAFF_NAME + '[' + unfinishedTrade.TRADE_STAFF_ID + ']'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.TRADE_DEPART_NAME + '[' + unfinishedTrade.TRADE_DEPART_ID + ']'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.TRADE_EPARCHY_NAME + '[' + unfinishedTrade.TRADE_EPARCHY_CODE + ']'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:unfinishedTrade.REMARK" raw="false"/></td>
+							<td style="display:none;"><span jwcid="@Insert" value="ognl:unfinishedTrade.TRADE_TYPE_CODE" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div title="订单详情" class="content">
+			<div class="l_queryResult" jwcid="CancelTradePart@Part">
+				<table jwcid="@Table" name="CancelTradeTable" class="c_table c_table-even c_table-border c_table-line c_table-row-10">
+					<thead>
+						<tr>
+							<th style="text-align:center;" col="COL_TRADE_TYPE_NAME"><span>业务类型</span></th>
+							<th style="text-align:center;" col="COL_TRADE_ID"><span>业务流水号</span></th>
+							<th style="text-align:center;" col="COL_ORDER_ID"><span>订单流水号</span></th>
+							<th style="text-align:center;" col="COL_SERIAL_NUMBER"><span>用户号码</span></th>
+							<th style="text-align:center;" col="COL_WORKER_REJECTION"><span>装维驳回</span></th>
+							<th style="text-align:center;" col="COL_ACCEPT_DATE"><span>受理时间</span></th>
+							<th style="text-align:center;" col="COL_TRADE_STAFF_NAME"><span>受理员工</span></th>
+							<th style="text-align:center;" col="COL_TRADE_DEPART_NAME"><span>受理部门</span></th>
+							<th style="text-align:center;" col="COL_TRADE_EPARCHY_NAME"><span>受理地州</span></th>
+							<th style="text-align:center;" col="COL_REMARK"><span>备注</span></th>
+							<th style="text-align:center;display:none;" col="COL_TRADE_TYPE_CODE"><span>业务类型编码</span></th>
+							<th style="text-align:center;display:none;" col="COL_FINISH_FLAG"><span>完工标识</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:cancelTradeList" value="ognl:cancelTrade"
+						 	element="tr" index="ognl:rowIndex">
+							
+							<td jwcid="@Any" class="ognl:'level level-' + cancelTrade.LEVEL_CLASS" levelNum="ognl:cancelTrade.LEVEL_CLASS" tip="ognl:cancelTrade.TRADE_TYPE_CODE" 
+								finishFlag="ognl:cancelTrade.FINISH_FLAG" roleCode="ognl:cancelTrade.ROLE_CODE" serialNum="ognl:cancelTrade.SERIAL_NUMBER">
+								<div jwcid="@Any" class="ognl:cancelTrade.HAS_CHILD ? 'ico' : 'ico ico-unfold'"></div>
+								<div class="checkbox">
+									<input jwcid="@Any" type="checkbox" name="TradeCheckbox" checkboxIndex="ognl:'TradeCheckbox-' + @java.lang.String@valueOf(rowIndex + 1)"
+										tradeId="ognl:cancelTrade.TRADE_ID"/>
+								</div>
+								<div class="text" jwcid="@Insert" value="ognl:cancelTrade.TRADE_TYPE_NAME + '[' + cancelTrade.FINISH_FLAG_NAME + ']'" raw="false"/>
+							</td>
+							
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.TRADE_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.ORDER_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.SERIAL_NUMBER" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.WORKER_REJECTION ? '是' : '否'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', cancelTrade.ACCEPT_DATE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.TRADE_STAFF_NAME + '[' + cancelTrade.TRADE_STAFF_ID + ']'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.TRADE_DEPART_NAME + '[' + cancelTrade.TRADE_DEPART_ID + ']'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.TRADE_EPARCHY_NAME + '[' + cancelTrade.TRADE_EPARCHY_CODE + ']'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:cancelTrade.REMARK" raw="false"/></td>
+							
+							<td style="display:none;"><span jwcid="@Insert" value="ognl:cancelTrade.TRADE_TYPE_CODE" raw="false"/></td>
+							<td style="display:none;"><span jwcid="@Insert" value="ognl:cancelTrade.FINISH_FLAG" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- 撤单原因表单 开始 -->
+	<div class="c_title">
+		<div class="text">撤单原因</div>
+	</div>
+	<div class="c_list c_list-col-2 c_list-form c_list-line c_list-border" jwcid="CancelCausePart@Part" element="div">
+		<ul class="ul">
+			<li class="link required" >
+				<div class="label">一级撤单原因:</div>
+				<div class="value">
+					<select jwcid="@Select" name="CANCEL_CAUSE_TYPE"
+						source="ognl:pageutil.getStaticList('TRADE_CANCEL_REASONP')" titleField="DATA_NAME"
+						textField="DATA_NAME" valueField="DATA_ID" value=""
+						desc="一级撤单原因" nullable="no" addDefault="true" onchange="causeTypeChangeAction();"/>
+				</div>
+			</li>
+			<li class="link required" jwcid="SelectCausesPart@Part" element="li">
+				<div class="label">二级撤单原因:</div>
+				<div class="value">
+					<select jwcid="@Select" name="CANCEL_MAIN_CAUSE"
+						source="ognl:mainCauseList" titleField="DATA_NAME"
+						textField="DATA_NAME" valueField="DATA_ID" value=""
+						desc="二级撤单原因" nullable="no" addDefault="true"/>
+				</div>
+			</li>
+			<li class="link required" id="CUSTOM_SECOND_LEVEL_CAUSE" style="display:none">
+				<div class="label">二级撤单原因:</div>
+				<div class="value">
+					<input jwcid="@TextField" name="CANCEL_OTHER_CAUSE" 
+						value="" desc="二级撤单原因" nullable="yes"/>
+				</div>
+			</li>
+			<li class="link merge-2">
+				<div class="label">备注：</div>
+				<div class="value">
+					<input jwcid="@TextArea" class="e_textarea-row-1" name="REMARKS" 
+						value="" desc="备注"/>
+				</div>
+		   </li>
+		</ul>
+	</div>
+	<!-- 撤单原因表单 结束 -->
+	<div class="c_space"></div>
+	<!-- <div jwcid="@icsserv:Fee"></div> -->
+	
+	<!-- 提交区域 开始 -->
+	<div class="c_space"></div>
+	<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit" listener="cancelTradeSubmit" beforeAction="checkBeforeSubmit()"
+		 isReset="true" isPrint="false" cancelRule="true" area="QueryCondPart,HiddenPart,RefreshHiddenPart,CancelCausePart" element="div"></div>
+	<div class="c_space"></div>
+	<!-- 提交区域 结束 -->
+	
+	<div jwcid="HiddenPart@Part">
+		<input jwcid="@Hidden" name="OLD_ORDER_ID" value="" desc="撤销业务的订单流水"/>
+		<input jwcid="@Hidden" name="CANCEL_ORDER_TYPE" value="" desc="撤销业务主工单"/>
+		
+	</div>
+	<div jwcid="RefreshHiddenPart@Part">
+		<input jwcid="@Hidden" name="FUSION_WIDENET_MIN" value="ognl:(pageInfo == null) ? 0 : pageInfo.MIN_MEMBER_2" desc="宽带成员最小数"/>
+	</div>
+	
+</div>	
+</body>
+</html>

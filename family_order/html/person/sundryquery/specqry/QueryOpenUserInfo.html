@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/specqry/scripts/specqry.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="l_col">
+	<div class="c_form c_form-col-3">
+		<div class="" jwcid="submit_part@Part" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label e_required"  >业务受理区：</span>
+					<span class="e_select"><span><span>
+					<input type="text" jwcid="@Select" 
+					name="cond_CITY_CODE"  source="ognl:areas" 
+					textField="AREA_NAME"  valueField="AREA_CODE" 
+					addDefault="false"  value="ognl:condition.cond_CITY_CODE" 
+					nullable="no"  desc="业务受理区"  />
+					</span></span></span>
+				</li>
+				<li class="li" >
+					<span class="label e_required" >起始工号：</span>
+					<span class="e_input"><span>
+					<input type="text"  jwcid="@TextField" 
+					name = "cond_START_STAFF_ID" value="ognl:condition.cond_START_STAFF_ID"  
+					onblur="completeEndSn(this, 'cond_END_STAFF_ID');" 
+					onkeyup="synOnKeyup(this, 'cond_END_STAFF_ID');" 
+					desc="起始工号" maxsize="8" nullable="no"  />
+					</span></span>
+				</li>
+				<li class="li" >
+					<span class="label e_required" >终止工号：</span>
+					<span class="e_input"><span>
+					<input type="text"  jwcid="@TextField" 
+					name = "cond_END_STAFF_ID" value="ognl:condition.cond_END_STAFF_ID" 
+					desc="终止工号"  maxsize="8" nullable="no"  />
+					</span></span>
+				</li>
+				<li class="li" >
+					<span class="label e_required">开始日期：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_START_DATE" value="ognl:condition.cond_START_DATE" 
+					desc="开始日期" nullable="no"  />
+					</span></span>
+				</li>
+				<li class="li" >
+					<span class="label e_required">结束日期：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_END_DATE" value="ognl:condition.cond_END_DATE" 
+					afterAction="chgEndDateSynStartDate(this, 'cond_START_DATE');" 
+					desc="结束日期" nullable="no" />
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<div class="submitPlace"></div>
+			<div class="submit e_right"  >
+				<button class="e_button-form"  onclick="sundryQuery('checkOpenUserInfo','queryOpenUserInfo');"><i class="e_ico-search"></i><span>查询</span></button>
+				<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+			</div>
+		</div>
+		<div jwcid="result_Table@Part" optimize="true">
+			<div id="exportarea"  class="c_scroll c_scroll-x style='height:auto'">
+				<div class="c_title c_title-2">
+					 <div class="text">查询结果</div>
+						 <div class="fn" >
+							<button class="l_ml" type="button" onclick="$.printArea('print_Table','新开户清单','60%')">
+								<i class="e_ico-print"></i><span>打印</span>
+							</button> 
+						</div>
+					</div>
+					<div jwcid="print_Table@Part" optimize="true">
+						<div class="c_table">
+							<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+					  			<tr>
+									<th>市县</th>
+									<th>服务号码</th>
+									<th>客户姓名</th>
+									<th>开户时间</th>
+									<th>开户员工工号</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE', 'AREA_NAME', info.CITY_CODE)"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE"/></td>
+									<td><span jwcid="@Insert" value="ognl:info.DEVELOP_STAFF_ID"/></td>
+								</tr>
+							</tbody>
+							</table>
+						</div>
+					</div>		
+					<span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="20"  listener="queryOpenUserInfo" part="result_Table" count="ognl:pageCount"/>
+				</div>
+			</div>			
+		</div>
+</div>
+</body>
+</html>

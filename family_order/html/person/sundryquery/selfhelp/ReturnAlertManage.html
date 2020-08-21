@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>套餐到期退订查询</title>
+<script language="JavaScript" src="person/sundryquery/selfhelp/scripts/returnalertmanage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">套餐到期退订查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			<span class="label"><span class="e_required">套餐编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" 
+					name="cond_DISCNT_CODE" id="cond_DISCNT_CODE"
+					value="ognl:condition.cond_DISCNT_CODE" nullable="no"	desc="套餐编码：" /> </span></span>
+		    </li>
+		    <li class="li">
+			<span class="label"><span class="e_required">套餐到期时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_RSRV_DATE1" id="cond_RSRV_DATE1"
+					value="ognl:condition.cond_RSRV_DATE1" nullable="no" desc="套餐到期时间：" /> </span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryalert();"><i class="e_ico-search"></i><span>查询</span></button>
+			
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_title">
+		<div class="text">查询结果</div>
+		<div class="fn">
+		      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+		      	<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100999"
+					  config="export/sundryquery/selfreturn/ReturnAlertList.xml" fileName="套餐到期时间信息" cond=QueryCondPart/>
+			  </div>
+		</div>
+	</div>
+	<div class="c_table ">
+		<table jwcid="@Table" name="FcardTable" id="FcardTable" scroll="true">
+			<thead>
+				<tr>
+					<th>用户编码</th>
+					<th>套餐编码</th>
+					<th>服务编码</th>
+					<th>是否退订</th>
+					<th>套餐到期时间</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="orderInfos" id="orderInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERVICE_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.HASCANCEL" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.RSRV_DATE1)" raw="false"/></td>								
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryReturnAlert" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

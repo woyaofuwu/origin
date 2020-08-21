@@ -1,0 +1,133 @@
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户已有数据业务</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th><!-- input type="checkbox" class="e_checkbox" /--></th>
+					<th><span style="width:60px">操作</span></th>
+					<th>服务名称</th>
+					<th>状态</th>
+					<th>价格(元)</th>
+					<th>计费类型</th>
+					<th>生效时间</th>
+					<th>失效时间</th>
+					<th>内置卡号</th>
+					<th>业务类型</th>
+					<th>业务编码</th>
+					<th>服务商编码</th>
+					<th>服务商名称</th>
+				</tr>
+			</thead>
+			<tbody id="userPlatSvcTable">
+			<tr
+				jwcid="@Foreach" 
+				source="ognl:userPlatSvcList" 
+				value="ognl:userPlatSvc"
+				element="tr" >
+				<td   class="e_center" >
+					<input type="checkbox" jwcid="@Checkbox" 
+						serviceId="ognl:userPlatSvc.SERVICE_ID"
+						itemIndex="ognl:userPlatSvc.ITEM_INDEX"
+						name="ognl:userPlatSvc.ITEM_INDEX+'_USERCHECKBOX'" 
+						id="ognl:userPlatSvc.ITEM_INDEX+'_USERCHECKBOX'" 
+						class="e_checkbox" 
+						disabled = "ognl:disableOperation"
+						onclick="userPlatSvcsList.checkBoxAction(this)"/>
+				</td>
+				<td class="edit">
+					<span class="e_select"><span><span>
+						<select jwcid="@Select"
+	                        	name="ognl:userPlatSvc.ITEM_INDEX+'_OPERCODE'" 
+	                     		id="ognl:userPlatSvc.ITEM_INDEX+'_OPERCODE'"
+	                        	itemIndex = "ognl:userPlatSvc.ITEM_INDEX"
+								source="ognl:userPlatSvc.SUPPORT_OPERS"
+								textField="OPER_TYPE" valueField="OPER_CODE" titleField="OPER_TYPE"
+								addDefault="false"
+	                			value="ognl:userPlatSvc.INIT_OPER_CODE"
+	                			initValue="ognl:userPlatSvc.INIT_OPER_CODE"
+	                			onchange="userPlatSvcsList.changeOperCode(this)"
+								desc="操作"/>
+					</span></span></span>
+				</td>
+				<td>
+					<div jwcid="@Conditional" condition='ognl:userPlatSvc.ATTR_PARAM!=null'>    
+                    	<a jwcid="@Any" href="#nogo" 
+                    		name="ognl:userPlatSvc.ITEM_INDEX+'_ATTRPARAM'" 
+                     		id="ognl:userPlatSvc.ITEM_INDEX+'_ATTRPARAM'"
+                    		elementId="ognl:userPlatSvc.SERVICE_ID" 
+                    		elementType="Z" 
+                    		itemIndex="ognl:userPlatSvc.ITEM_INDEX" 
+                    		class="select"></a>
+                    </div>
+					<span jwcid="@Insert" value="ognl:userPlatSvc.SERVICE_NAME"/>
+				</td>
+				<td><span jwcid="@Insert" value="ognl:getPage().pageutil.getStaticValue('BIZ_STATE_CODE', userPlatSvc.BIZ_STATE_CODE)"/></td>
+				<td><span jwcid="@Insert" name="ognl:userPlatSvc.ITEM_INDEX+'_PRICE'" id="ognl:userPlatSvc.ITEM_INDEX+'_PRICE'" value="ognl:userPlatSvc.PRICE"/></td>
+				<td><span jwcid="@Insert" value="ognl:getPage().pageutil.getStaticValue('SPBIZ_BILL_TYPE',userPlatSvc.BILL_TYPE)"/></td>
+				<td><span jwcid="@Insert" value="ognl:userPlatSvc.START_DATE"/></td>
+				<td><span jwcid="@Insert" value="ognl:userPlatSvc.END_DATE"/></td>
+				<td><span jwcid="@Insert" value="ognl:userPlatSvc.IN_CARD_NO"/></td>
+				<td>
+					<span jwcid="@Conditional" condition='ognl:!userPlatSvc.BIZ_TYPE_CODE.equals("17")'>   
+						<span jwcid="@Insert" value="ognl:getPage().pageutil.getStaticValue('BIZ_TYPE_CODE', userPlatSvc.BIZ_TYPE_CODE)"/>
+					</span>
+					<span jwcid="@Conditional" condition='ognl:userPlatSvc.BIZ_TYPE_CODE.equals("17")&&userPlatSvc.ORG_DOMAIN.equals("BJDP")'>   
+						<span jwcid="@Insert" value="ognl:'北京通用下载'"/>
+					</span>
+					<span jwcid="@Conditional" condition='ognl:userPlatSvc.BIZ_TYPE_CODE.equals("17")&&userPlatSvc.ORG_DOMAIN.equals("GDDP")'>   
+						<span jwcid="@Insert" value="ognl:'广东通用下载'"/>
+					</span>
+				</td>
+				<td><span jwcid="@Insert" value="ognl:userPlatSvc.BIZ_CODE"/></td>
+				<td><span jwcid="@Insert" value="ognl:userPlatSvc.SP_CODE"/></td>
+				<td><span jwcid="@Insert" value="ognl:userPlatSvc.SP_NAME"/></td>
+			</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+<input jwcid="@Any" type="hidden" name="USERPLATSVCSLIST_COMPONENT_ID" id="USERPLATSVCSLIST_COMPONENT_ID" value="ognl:id"/>
+<div class="c_option" style="top:164px; left:117px; width:200px; display:none;" id="giftPanel">
+	<div class="c_optionContent">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-1">
+			<ul class="ul">
+				<li class = "li">
+					<span class="label">赠送号码：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="GIFT_SERIAL_NUMBER" id="GIFT_SERIAL_NUMBER"  datatype="mbphone" value="" nullable="no" desc="赠送号码" />
+						<input jwcid="@Any" type="hidden" name="GIFT_ITEM_INDEX" id="GIFT_ITEM_INDEX" value=""/>
+					</span></span>
+				</li>
+				<li class = "li">
+					<span class="label">开始时间：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="GIFT_START_DATE" id="GIFT_START_DATE" nullable="no" value="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.util.SysDateMgr@getSysDate()" disabled="true"  desc="赠送开始时间" />
+					</span></span>
+				</li>
+				<li class = "li">
+					<span class="label">结束时间：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="GIFT_END_DATE" id="GIFT_END_DATE" nullable="no" value=""  desc="赠送结束时间" />
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 提交 开始 -->
+		<div class="c_submit">
+			<button class="e_button-form" jwcid="@Any"  onclick="userPlatSvcsList.confirmGift()"><i class="e_ico-ok"></i><span>确定</span></button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	<div class="c_optionShadow"></div>
+</div>

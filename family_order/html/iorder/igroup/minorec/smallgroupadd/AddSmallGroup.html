@@ -1,0 +1,1325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>集团客户基本信息</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/smallgroupadd/script/addGroup.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div name="scroller1" jwcid="@Scroller" hScroll="true" vScrollbar="true" hScrollbar="true" bounce="true">
+
+	<div class="l_queryResult" jwcid="EditPart@Part" element="div">		
+	     <div class="l_queryFn">
+		    <div class="c_fn">
+	             <div class="left">
+				    <button type="button" style="display:none;" id="showOptionButton" ontap="showChange();"><span class="e_ico-show"></span><span>显示选填项</span></button>
+					<button id="hideOptionButton" ontap="hideChange();"><span class="e_ico-hide"></span><span>隐藏选填项</span></button>
+					<button id="checkEnterName"><span class="e_ico-check"></span><span>校验集团名称</span></button>
+			    </div>
+			    <!-- <div class="right">
+			    	<div class="label">虚拟集团信息查询：</div>
+			    	<span class="e_mix" ontap="showPopup('qryOutSynGrpMgrPopup', 'queryOutSynGrpMgrPopup')" >
+						<input type="text" jwcid="@TextField" name="OUTSYN_GRP_CUST_NAME" id="OUTSYN_GRP_CUST_NAME" value="ognl:custInfo.OUTSYN_GRP_CUST_NAME" readonly="readonly" desc="虚拟集团信息"/>
+						<span class="e_ico-check"></span>
+					</span>
+			    </div> -->
+			</div>    
+        </div>
+	     <!-- 标题 开始 -->
+		<div class="c_form c_form-box c_form-col-3 c_form-label-11" id="showGroupId"
+			style="display:none">
+			<ul>
+				<li class="link required">
+					<div class="label">集团编码：</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="GROUP_ID"
+							id="GROUP_ID" disabled="disabled" datatype="text" desc="集团编码" />
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="c_form c_form-box c_form-col-3 c_form-label-11">
+			<ul>
+				<li class="link required merge-3">
+					<div class="label">集团名称：</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="CUST_NAME"
+							id="CUST_NAME" maxsize="100" maxLength="100" nullable="no"
+							datatype="text" value="ognl:custInfo.CUST_NAME"
+							onblur="checkLength($(this), 100, '集团名称');"
+							onchange="groupNameChangeCheck()" desc="集团名称" />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">归属省份：</div>
+					<div class="value">
+						<span class="e_select" jwcid="@Select" name="PROVINCE_CODE"
+							value="ognl:custInfo.PROVINCE_CODE"
+							source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')"
+							textField="DATA_NAME" valueField="DATA_ID" nullable="no"
+							addDefault="true" disabled="disabled" desc="归属省份"> </span>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">归属地市：</div>
+					<div class="value">
+						<span class="e_select" jwcid="@Select" name="RSRV_NUM1"
+							value="ognl:custInfo.RSRV_NUM1"
+							source="ognl:pageutil.getStaticList('COP_SI_SERVICE_CITY')"
+							textField="DATA_NAME" valueField="DATA_ID" nullable="no"
+							addDefault="true" desc="归属地市"> </span>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">归属地州：</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" disabled="disabled"
+							name="EPARCHY_NAME" nullable="no" datatype="text"
+							value="ognl:custInfo.EPARCHY_NAME" desc="归属地州" /> <input
+							type="text" jwcid="@Hidden" name="EPARCHY_CODE"
+							value="ognl:custInfo.EPARCHY_CODE" />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">归属业务区：</div>
+					<div class="value">
+							<!-- <span jwcid="@customer:SecDistrictSelect" rootRegion="HAIN" popMode="S" nullable="no" open = "true"
+							name="CITY_CODE" id="CITY_CODE" value="ognl:custInfo.CITY_CODE" text='ognl:custInfo.CITY_NAME'
+								 	textField="CITY_NAME" checkBoxType="radio" valueField="CITY_CODE"  desc="归属业务区"></span> -->
+						</div>
+				</li>
+				<li class="link required">
+					<div class="label">集团类型：</div>
+					<div class="value">
+						<select class="e_select" jwcid="@Select" name="GROUP_TYPE" value="ognl:custInfo.GROUP_TYPE"
+							source="ognl:pageutil.getStaticList('CUSTGROUP_GROUPTYPE')"
+							valueField="DATA_ID" textField="DATA_NAME" addDefault="true"
+							nullable="no" desc="集团类型">
+						</select>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">集团状态：</div>
+					<div class="value">
+						<select class="e_select" jwcid="@Select" name="GROUP_STATUS" 
+							source="ognl:pageutil.getStaticList('CUSTGROUP_GROUPSTATUS')"
+							valueField="DATA_ID" textField="DATA_NAME"
+							value="ognl:custInfo.GROUP_STATUS" addDefault="true"
+							nullable="no" desc="集团状态" disabled="disabled">
+						</select>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">集团属性：</div>
+					<div class="value">
+						<select class="e_select" jwcid="@Select" name="GROUP_ATTR"
+							source="ognl:pageutil.getStaticList('CUSTGROUP_GROUPATTR')"
+							valueField="DATA_ID" textField="DATA_NAME" desc="集团属性"
+							value="ognl:custInfo.GROUP_ATTR" addDefault="true"
+							nullable="no">
+						</select>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">集团机构大类型：</div>
+					<div class="value">
+						<select class="e_select" jwcid="@Select" name="ORG_TYPE_A"
+							value="ognl:custInfo.ORG_TYPE_A"
+							source="ognl:pageutil.getStaticList('CUSTGROUP_ORGTYPEA')"
+							valueField="DATA_ID" textField="DATA_NAME" desc="集团机构大类型"
+							onchange="ogrTypeChange($(this),'A','ogrTypeB')"
+							addDefault="true" nullable="no">
+						</select>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">集团机构类型中类：</div>
+					<div jwcid="ogrTypeB@Part" class="value">
+						<select class="e_select" jwcid="@Select" name="ORG_TYPE_B"
+							source="ognl:callingTypeB"
+							valueField="DATA_ID" textField="DATA_NAME" desc="集团机构类型中类"
+							onchange="ogrTypeChange($(this),'B','ogrTypeC')"
+							addDefault="true" nullable="no">
+						</select>
+					</div>
+				</li>
+				<li class="link" id="ogrTypeCLi" style="display:none;">
+					<div class="label">集团机构类型小类：</div>
+					<div jwcid="ogrTypeC@Part" class="value">
+						<select class="e_select" jwcid="@Select" name="ORG_TYPE_C"
+							source="ognl:callingTypeC"
+							valueField="DATA_ID" textField="DATA_NAME" addDefault="true"
+							nullable="yes">
+						</select>
+					</div>
+				</li>
+			</ul>
+		</div>	
+		<div jwcid="@Part" name="ExtendPart" id="ExtendPart">
+							<div class="c_form c_form-box c_form-col-3 c_form-label-11">
+								<ul>
+									<li class="link required">
+										<div class="label">项目经理：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" nullable="no"
+												name="RSRV_STR6" value="ognl:custInfo.RSRV_STR6" desc="项目经理" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">集团经营区域类型：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="ENTERPRISE_SCOPE"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_ENTERPRISESCOPE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												desc="集团经营区域类型" value="ognl:custInfo.ENTERPRISE_SCOPE"
+												addDefault="true" nullable="no">
+											</select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">所属行业类别：</div>
+										<div class="value">
+											<span class="e_select" jwcid="@Select"
+												name="CALLING_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_CALLINGTYPE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												desc="所属行业类别" addDefault="true" nullable="no"> </span>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">所属子行业类别：</div>
+										<div jwcid="subIndustryPart@Part" class="value">
+											<span class="e_select" jwcid="@Select"
+												name="SUB_CALLING_TYPE_CODE" source="ognl:subIndustryType"
+												valueField="CALLING_SUB_TYPE_CODE" textField="CALLING_SUB_TYPE_NAME"
+												desc="所属子行业类别" addDefault="true" nullable="no"> </span>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">归属本省行业科室：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="RSRV_STR1"
+												source="ognl:pageutil.getStaticList('TD_S_INDUSTRYATTRIBUTE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												desc="归属本省行业科室" addDefault="true" nullable="no">
+											</select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">企业类型：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="ENTERPRISE_TYPE_CODE"
+												source="ognl:pageutil.getStaticList('TD_S_ENTERPRISETYPE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="no" desc="企业类型">
+											</select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">证件类别：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="BUSI_LICENCE_TYPE"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_BUSILICENCETYPE')"
+												valueField="DATA_ID" textField="DATA_NAME" maxsize="1"
+												onchange="checkPsptTypeCode();" id="BUSI_LICENCE_TYPE"
+												addDefault="true" nullable="no" desc="证件类别">
+											</select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">证件号码：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="20"
+												maxLength="20" nullable="no" name="BUSI_LICENCE_NO"
+												onblur="validPspt()" value="ognl:custInfo.BUSI_LICENCE_NO"
+												desc="证件号码" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">客户证件扫描件：</div>
+										<div class="value">
+											<span name="LICENCE_INFO" jwcid="@SimpleUpload"  desc="客户证件扫描件"
+												ftpCode="CustomerCentre" value="ognl:custInfo.LICENCE_INFO"
+												fileTypes=".jpg;.png;.gif;.jpeg;.pdf;.doc;.docx;.rar;.zip;.xls;.xlsx;.txt" filePath="upload/attach/syncToBBOSS"
+												needSuffix="true" nullable="no"/>
+										</div>
+									</li>
+									<li class="link required" id="mgrId">
+										<div class="label">集团管理员：</div>
+										<div class="value">
+											<span class="e_mix" ontap="showPopup('qryManagerPopup', 'queryManagerPopup')" >
+										        <input type="text" jwcid="@TextField" name="GROUP_MGR_CUST_NAME" id="GROUP_MGR_CUST_NAME" value="ognl:custInfo.GROUP_MGR_CUST_NAME" readonly="readonly"  nullable="no" desc="集团管理员"/>
+										        <span class="e_ico-check"></span>
+											</span>
+										</div>
+									</li>
+									<li class="link required" id="mgrSn">
+										<div class="label">管理员服务号码：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="40"
+												desc="管理员服务号码" nullable="no" datatype="text"
+												name="GROUP_MGR_SN" id="GROUP_MGR_SN"
+												value="ognl:custInfo.GROUP_MGR_SN" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">集团级别：</div>
+										<div jwcid="@Any" id="classChange1" style="ognl:'true'.equals(custInfo.MODIFY_CLASS_ID)?'display:block':'display:none'" class="value">
+											<select class="e_select" jwcid="@Select" name="CLASS_ID"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_CLASSID')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												value="ognl:custInfo.CLASS_ID" addDefault="true" onchange="changeClassID();"
+												nullable="no" desc="集团级别">
+											</select>
+										</div>
+										<div jwcid="@Any" id="classChange2"  style="ognl:'true'.equals(custInfo.MODIFY_CLASS_ID)?'display:none':'display:block'" class="value">
+											<select class="e_select" jwcid="@Select" name="CLASS_ID_CD"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_CLASSID_CD')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												value="ognl:custInfo.CLASS_ID" addDefault="true" onchange="changeCorD();"
+												nullable="no" desc="集团级别CD">
+											</select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">集团客户地址：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" nullable="no"
+												maxsize="80" maxLength="80" datatype="text"
+												name="GROUP_ADDR" value="ognl:custInfo.GROUP_ADDR"
+												desc="集团客户地址" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">集团客户邮编：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" nullable="no"
+												maxsize="6" maxLength="6" datatype="numeric"
+												name="POST_CODE" value="ognl:custInfo.POST_CODE"
+												desc="集团客户邮编" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">集团客户联系电话：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" nullable="no"
+												maxsize="20" maxLength="20" datatype="numeric"
+												name="GROUP_CONTACT_PHONE"
+												value="ognl:custInfo.GROUP_CONTACT_PHONE" desc="集团客户联系电话" />
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">是否铁通集团：</div>
+										<div class="value">
+										     <select class="e_select" jwcid="@Select" name="RSRV_NUM3" id="RSRV_NUM3"
+													source="ognl:pageutil.getStaticList('YesOrNo2')"
+													valueField="DATA_ID" textField="DATA_NAME"
+													value="ognl:custInfo.RSRV_NUM3" addDefault="false"
+													nullable="no" desc="是否铁通集团" onchange="changeRsrvNum3();">
+											 </select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">是否省级集团：</div>
+										<div class="value">
+										    <select class="e_select" jwcid="@Select" name="RSRV_TAG4"
+													source="ognl:pageutil.getStaticList('YesOrNo2')"
+													valueField="DATA_ID" textField="DATA_NAME"
+													value="ognl:custInfo.RSRV_TAG4" addDefault="false"
+													nullable="no" desc="是否省级集团">
+											 </select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">集团客户级别(2016)：</div>
+										<div class="value">
+										     <select class="e_select" jwcid="@Select" name="CLASS_ID_NEW"
+													source="ognl:pageutil.getStaticList('CUSTGROUP_CLASSID_2016')"
+													valueField="DATA_ID" textField="DATA_NAME"
+													value="ognl:custInfo.CLASS_ID_NEW" addDefault="true"
+													nullable="no" desc="集团客户级别(2016)">
+											 </select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">企业员工数：</div>
+										<div class="value"><input type="text" nullable="no" jwcid="@TextField" datatype="number"   desc="企业员工数" name="EMPLOYEE_NUMS" value="ognl:custInfo.EMPLOYEE_NUMS" onchange="calcGrpScope();"/></div>
+									</li>
+									<li class="link required">
+										<div class="label">集团年营业额：</div>
+										<div class="value">
+											<span class="e_mix">
+												<input type="text" nullable="no" jwcid="@TextField" datatype="integer" desc="集团年营业额" name="YEAR_GAIN" value="ognl:custInfo.YEAR_GAIN" onchange="calcGrpScope();"/>
+												<span class="e_label">万元</span>
+											</span>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">企业规模：</div>
+										<div class="value"><select class="e_select" jwcid="@Select" name="ENTERPRISE_SIZE_CODE" 
+												source="ognl:pageutil.getStaticList('TD_S_ENTERPRISE_SIZE')" valueField="DATA_ID" 
+												textField="DATA_NAME" desc="企业规模"
+												addDefault="true" nullable="no">
+											</select>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">是否直管客户：</div>
+										<div class="value"><select class="e_select" jwcid="@Select" name="EXT_ISSC" 
+												source="ognl:pageutil.getStaticList('CUSTGROUP_EXT_ISSC')" valueField="DATA_ID" 
+												textField="DATA_NAME" desc="是否直管客户" value="ognl:custInfo.EXT_ISSC"
+												addDefault="true" nullable="no">
+											</select>
+										</div>
+									</li>
+									<li class="link" id="scCodeLi">
+										<div class="label">直管客户编码：</div>
+										<div class="value">
+										    <span class="e_mix" id="sc" ontap="showPopup('qrySocPopup', 'querySocPopup')" >
+										        <input type="text" jwcid="@TextField" name="SC_CODE" id="SC_CODE" value="ognl:custInfo.SC_CODE" readonly="readonly"  nullable="yes" desc="直管客户编码"/>
+										        <span class="e_ico-check"></span>
+											</span>
+										</div>
+									</li>
+									<li class="link" id="orgCodeLi">
+										<div class="label">组织机构代码：</div>
+										<div class="value"><input type="text" jwcid="@TextField"  datatype="text" name="ORG_CODE" id="ORG_CODE" value="ognl:custInfo.ORG_CODE"/></div>
+									</li>
+                                    <li class="link required">
+										<div class="label">是否敏感信息集团：</div>
+										<div class="value">
+                                            <select class="e_select" 
+                                                jwcid="SECRET_GRP@Select" 
+                                                name="SECRET_GRP" 
+												source="ognl:pageutil.getStaticList('CUSTGROUP_SECRET_GRP')" 
+                                                valueField="DATA_ID" 
+												textField="DATA_NAME" 
+                                                desc="是否敏感信息集团" 
+                                                value="ognl:custInfo.SECRET_GRP"
+												addDefault="false" 
+                                                nullable="no">
+											</select>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="c_space"></div>
+							
+							
+							<div id="enterprisePart">
+						<div class="c_form c_form-box c_form-col-3 c_form-label-11" >
+						 <ul class="ul">			 		  
+								<li class="link" id="span_legalperson">
+									<div class="label">法人</div>
+									<div class="value">
+										<input jwcid="@TextField" name="custInfo_legalperson" id="custInfo_legalperson" value="ognl:custInfo.legalperson" desc="法人"  
+												 />
+									</div>
+								</li>
+								<li class="link" id="span_termstartdate">
+									<div class="label">营业开始日期</div>
+									<div class="value">
+										<input  jwcid="@TextField" name="custInfo_termstartdate" id="custInfo_termstartdate" value="ognl:custInfo.termstartdate" desc="营业开始日期"  
+												 />
+									</div>
+								</li>
+								<li class="link" id="span_termenddate">
+									<div class="label">营业结束日期</div>
+									<div class="value">
+										<input  jwcid="@TextField" name="custInfo_termenddate" value="ognl:custInfo.termenddate" desc="营业结束日期" 
+												   />
+									</div>
+								</li>
+								<li class="link" id="span_startdate">
+									<div class="label">成立日期</div>
+									<div class="value">
+										<input  jwcid="@TextField" name="custInfo_startdate" value="ognl:custInfo.startdate" desc="成立日期"      
+												 />
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="c_space"></div>
+					<div id="orgPart">
+						<div class="c_form c_form-box c_form-col-3 c_form-label-11">
+							<ul class="ul">
+								<li class="link" id="span_orgtype">
+									<div class="label">机构类型</div>
+									<div class="value">
+										<input jwcid="@TextField" name="custInfo_orgtype" id="custInfo_orgtype" value="ognl:custInfo.orgtype" desc="机构类型"  
+												 />
+									</div>
+								</li>
+								<li class="link" id="span_effectiveDate">
+									<div class="label">有效日期</div>
+									<div class="value">
+										<input type="text" jwcid="@TextField" name="custInfo_effectiveDate"  value="ognl:custInfo.effectiveDate" desc="有效日期"  
+												 />
+									</div>
+								</li>
+								<li class="link" id="span_expirationDate">
+									<div class="label">失效日期</div>
+									<div class="value">
+										<input type="text" jwcid="@TextField" name="custInfo_expirationDate" value="ognl:custInfo.expirationDate" desc="失效日期" 
+												 minName="custInfo_effectiveDate" />
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="c_space"></div>
+							
+
+							<div id="hidePart">
+							<div class="c_form c_form-box c_form-col-3 c_form-label-11">
+							<input type="text" jwcid="@Hidden" name="OUT_GRPSYN_TAG" nullable="yes" value="" desc="" />
+								<ul>
+									<li class="link">
+										<div class="label">归属国家：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="RSRV_STR4"
+												source="ognl:pageutil.getStaticList('GRP_NATION_ID')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												value="ognl:custInfo.RSRV_STR4" addDefault="true"
+												nullable="yes" desc="归属国家">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">所属行业区域：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="CALLING_AREA_CODE"
+												source="ognl:pageutil.getStaticList('TD_S_CALLING_AREA')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												value="ognl:custInfo.CALLING_AREA_CODE" addDefault="true"
+												nullable="yes" desc="所属行业区域">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">企业代码：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" name="RSRV_STR3" maxsize="6" maxLength="6" datatype="numeric"
+												value="ognl:custInfo.RSRV_STR3" desc="企业代码" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">客户经理：</div>
+										<div class="value">
+											<span id="custmgr_tt" class='e_mix'>
+												<input type="text" class="e_input" readOnly="true"/>
+											</span>
+											<span id="custmgr_yd" class="e_mix" >
+												<input type="text" jwcid="@TextField" name="CUST_MANAGER_NAME" id="CUST_MANAGER_NAME" value="ognl:custInfo.CUST_MANAGER_NAME" disabled='true' desc='客户经理'/>
+												<input type="hidden" jwcid="@Any" name="CUST_MANAGER_ID" id="CUST_MANAGER_ID" value="ognl:custInfo.CUST_MANAGER_ID" desc='客户经理'/>
+												<span class="e_ico-check" id="khjl" ontap='openCustManagerPopup("CUST_MANAGER_ID,CUST_MANAGER_NAME");'></span>
+											</span>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">集团联系人姓名：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="20"
+												maxLength="20" name="RSRV_STR2"
+												value="ognl:custInfo.RSRV_STR2" desc="集团联系人姓名" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">集团联系人号码：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" name="RSRV_STR7"
+												maxsize="20" maxLength="20" datatype="numeric"
+												value="ognl:custInfo.RSRV_STR7" desc="集团联系人号码" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">传真：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="15"
+												maxLength="15" datatype="text" name="FAX_NBR"
+												value="ognl:custInfo.FAX_NBR" desc="传真" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">企业网址：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="40"
+												maxLength="40" datatype="text" name="WEBSITE"
+												value="ognl:custInfo.WEBSITE" desc="企业网址" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">企业E-Mail地址：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" name="EMAIL"
+												maxsize="30" maxLength="30" datatype="email"
+												value="ognl:custInfo.EMAIL" desc="企业E-Mail地址" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">上级集团：</div>
+										<div class="value">
+										    <span class="e_mix" ontap="showPopup('qryParentGroupPopup', 'queryParentGroupPopup')" >
+											    <input type="text" jwcid="@TextField" name="SUPER_GROUP_NAME" nullable="yes" value="ognl:custInfo.SUPER_GROUP_NAME" desc="上级集团"  readonly="readonly"/>
+												<input type="text" jwcid="@Hidden" name="SUPER_GROUP_ID" nullable="yes" value="ognl:custInfo.SUPER_GROUP_ID" desc="上级集团" />
+										        <span class="e_ico-check"></span>
+											</span>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">客户忠诚度：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="FAITHFUL_VALUE"
+												source="ognl:pageutil.getStaticList('GRP_FAITHFUL_VALUE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes" desc="客户忠诚度">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">集团重要级别：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="SUBCLASS_ID"
+												source="ognl:pageutil.getStaticList('GRP_SUBCLASS_ID')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes" desc="集团重要级别">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">业务类别：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="BUSI_TYPE"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_BUSITYPE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">行业应用：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="CALL_TYPE"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_CALLTYPE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">是否支持纯短号码鉴权：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="IF_SHORT_PIN"
+												source="ognl:pageutil.getStaticList('YesOrNo2')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">法人代表姓名：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="20"
+												maxLength="20" id="JURISTIC_NAME" name="JURISTIC_NAME"
+												value="ognl:custInfo.JURISTIC_NAME" desc="法人代表姓名"/>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">法人类别：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="JURISTIC_TYPE_CODE"
+												source="ognl:pageutil.getStaticList('TD_S_JURISTIC_TYPE')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes" desc="法人类别">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">法人代表标识：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="16" maxLength="16" datatype="numeric" id="JURISTIC_CUST_ID"
+												name="JURISTIC_CUST_ID"
+												value="ognl:custInfo.JURISTIC_CUST_ID" desc="法人代表标识"/>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">注册资金：</div>
+										<div class="value">
+											<input type="text" maxsize="8" maxLength="8"
+												datatype="numeric" jwcid="@TextField" name="REG_MONEY"
+												value="ognl:custInfo.REG_MONEY" desc="注册资金"/>
+										</div>
+									</li>
+									<li class="link">
+										<!-- 2018关于集团业务受理大厅需求改造-->
+										<div class="label">注册资金币种：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+													name="CURRENCY"
+													source="ognl:pageutil.getStaticList('REGISTERED_CAPITAL_CURRENCY')"
+													valueField="DATA_ID" textField="DATA_NAME"
+													value="ognl:custInfo.CURRENCY" addDefault="true" desc="发展渠道">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">注册日期：</div>
+										<div class="value">
+											<input type="text" dropDown="true" nullable="yes"
+												jwcid="@DateField" name="REG_DATE"
+												value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',custInfo.REG_DATE)"
+												desc="注册日期" />
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">发展渠道：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="ACCEPT_CHANNEL"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_ACCEPTCHANNEL')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												value="ognl:custInfo.ACCEPT_CHANNEL" addDefault="true" desc="发展渠道">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">服务渠道：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select"
+												name="RSRV_TAG3" id="RSRV_TAG3" 
+												source="ognl:pageutil.getStaticList('CUSTGROUP_SERVICECHANNEL')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												value="ognl:custInfo.RSRV_TAG3" addDefault="true" desc="服务渠道">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">首席客户代表：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="8"
+												maxLength="8" name="DOYEN_STAFF_ID"
+												value="ognl:custInfo.DOYEN_STAFF_ID" desc="首席客户代表"/>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">客服号码：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="100" maxLength="20"  datatype="numchar" name="CUST_SERV_NBR"
+												value="ognl:custInfo.CUST_SERV_NBR" desc="客服号码"/>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">协议类型：</div>
+										<div class="value">
+											<select class="e_select" jwcid="@Select" name="AGREEMENT"
+												source="ognl:pageutil.getStaticList('CUSTGROUP_AGREEMENT')"
+												valueField="DATA_ID" textField="DATA_NAME"
+												addDefault="true" nullable="yes">
+											</select>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">客户经理评价：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="300"
+												maxLength="300" name="CUST_MANAGER_APPR"
+												value="ognl:custInfo.CUST_MANAGER_APPR" desc="客户经理评价"/>
+										</div>
+									</li>
+									<li class="link">
+										<div class="label">备注：</div>
+										<div class="value">
+											<input type="text" jwcid="@TextField" maxsize="100"
+												maxLength="100" datatype="text" name="REMARK"
+												value="ognl:custInfo.REMARK" desc="备注"/>
+										</div>
+									</li>
+								</ul>
+							</div>			
+			</div>
+		</div>
+				<div class="l_querySubmit">
+					<div class="c_submit c_submit-half" style="float: right">
+					    <button jwcid="@Any" name="submitButton" id="submitButton"
+						class="e_button-l e_button-r e_button-green" type="button">保存</button>
+					</div>
+				</div>
+	</div>
+</div>
+<div  jwcid="@Popup" class="c_popup c_popup-full" name="qryManagerPopup" id="qryManagerPopup">
+	<div class="c_popupGroup">
+	  <div class="c_popupItem" id="queryManagerPopup">
+		<div class="l_query l_query-submit">
+		<!-- 功能2开始 -->
+		
+		<div class="l_queryFn">
+			<div class="c_fn">
+			   <div class="left">
+					<div class="c_title">
+						<div class="text">
+							查询管理员信息
+						</div>
+					</div>
+			   </div>
+				<div class="right">
+					<div class="e_mix" ontap="showPopup('qryPopup','qryPopupItem')">
+						<input id="qryBox" type="text"/>
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 功能2结束 -->
+		<!-- 查询2开始 -->
+		<div  jwcid="QryManagerResultPart@Part" >
+		<div class="l_queryResult" element="div">
+			<!-- 表格2开始 -->
+			<div class="c_table c_table-even">
+				<table jwcid="@Table" name="managerTable" id="managerTable" scroll="true">
+					<thead>
+					  <tr>
+						<th col="SERIAL_NUMBER"><span>服务号码</span></th>
+						<th col="CUST_NAME"><span>客户名称</span></th>
+						<th col="USER_ID"><span>用户标识</span></th>
+						<th col="PSPT_ID"><span>证件号码</span></th>
+						<th col="PSPT_ADDR"><span>证件地址</span></th>
+						<th col="PHONE"><span>联系电话</span></th>
+						<th col="POST_ADDR"><span>通信地址</span></th>
+					  </tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+						
+						<td>
+							<a jwcid="@Any" href='javascript:void(0)' CUST_NAME="ognl:info.CUST_NAME" SERIAL_NUMBER='ognl:info.SERIAL_NUMBER' ontap="selectManagerValue($(this))" > 				 
+							<span jwcid="@Insert" value="ognl:info.CUST_NAME"></span></a>
+						</td>   
+						<td><span jwcid="@Insert" value="ognl:info.USER_ID"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.PSPT_ID"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.PSPT_ADDR"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.PHONE"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.POST_ADDR"></span></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			
+			<!-- 表格2 结束 -->
+		  </div>
+		<!-- 分页2开始 -->
+					<div class="l_queryPage">
+						<div name="navbar2" jwcid="@NavBar" cond="qryPopup" count="ognl:infoCount" listener="queryManager" part="QryManagerResultPart" pageSize="20" ></div>
+					</div>
+			<!-- 分页2 结束 -->
+                     <div class="l_querySubmit">
+						<div class="c_submit c_submit-full">
+						    <button type="button" class="e_button-r e_button-l e_button-navy" ontap="clearManager();">清空</button>
+							<button type="button" class="e_button-r e_button-l e_button-navy" ontap="hidePopup('qryManagerPopup')">返回</button>
+						</div>
+					</div>
+		      </div>
+		<!-- 查询2结束 -->
+	      </div>
+		</div>
+	  </div>
+</div>
+
+<div  jwcid="@Popup" name="qryPopup" id="qryPopup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryPopupItem">
+			<div class="c_header">
+				<div class="back" name="qryBack" id="qryBack" ontap="hidePopup(this)">查询条件</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+						    <li class="link required">
+								<div class="label">服务号码</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" datatype="mbphone" id="cond_SERIAL_NUMBER" value="ognl:cond.cond_SERIAL_NUMBER" nullable="no" desc="服务号码"/></div>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue" type="button" id="qryManagerButton">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div  jwcid="@Popup" class="c_popup c_popup-full" name="qrySocPopup" id="qrySocPopup">
+	<div class="c_popupGroup">
+	  <div class="c_popupItem" id="querySocPopup">
+		<div class="l_query l_query-submit">
+		<!-- 功能2开始 -->
+		
+		<div class="l_queryFn">
+			<div class="c_fn">
+			   <div class="left">
+					<div class="c_title">
+						<div class="text">
+							选择直管客户编码
+						</div>
+					</div>
+			   </div>
+				<div class="right">
+					<div class="e_mix" ontap="showPopup('qryPopup1','qryPopupItem1')">
+						<input id="qryBox" type="text"/>
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 功能2结束 -->
+		<!-- 查询2开始 -->
+		<div  jwcid="QrySocResultPart@Part" >
+		<div class="l_queryResult" element="div">
+			<!-- 表格2开始 -->
+			<div class="c_table c_table-even">
+				<table jwcid="@Table" name="socTable" id="socTable" scroll="true">
+					<thead>
+					  <tr>
+						<th col="SC_CODE"><span>直管客户编码</span></th>
+						<th col="SC_ATTR"><span>客户属性</span></th>
+						<th col="SC_NUMBER"><span>直管客户序号</span></th>
+						<th col="SC_NAME"><span>直管客户名称</span></th>
+						<th col="GROUP_NAME"><span>总部或分支机构名称</span></th>
+						<th col="ORG_CODE"><span>组织机构代码</span></th>
+						<th col="INDUSTRY_M"><span>主营行业</span></th>
+						<th col="INDUSTRY_S"><span>兼营行业</span></th>
+						<th col="IS_LOCAL"><span>集团级别</span></th>
+						<th col="GROUP_LEVER"><span>是否本地化企业</span></th>
+						<th col="PROVINCE_CODE"><span>所属省</span></th>
+						<th col="CITY_CODE"><span>所属市</span></th>
+						<th col="COUNTY"><span>所属区县</span></th>
+						<th col="ADDRESS"><span>地址</span></th>
+						<th col="CUST_PHONE"><span>客户联系电话</span></th>
+						<th col="CUST_MGR_NAME"><span>客户经理</span></th>
+						<th col="CUST_MGR_PHONE"><span>客户经理联系电话</span></th>
+						<th col="ZCUST_MGR_NAME"><span>总部客户经理</span></th>
+						<th col="ZCUST_MGR_PHONE"><span>总部客户经理联系电话</span></th>
+					  </tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+						<td>
+							<a jwcid="@Any" href='javascript:void(0)' SC_CODE="ognl:info.SC_CODE"  ORG_CODE="ognl:info.ORG_CODE" ontap="selectSocValue($(this))" > 				 
+							<span jwcid="@Insert" value="ognl:info.SC_CODE"></span></a>
+						</td>   
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_SC_ATTR',info.SC_ATTR)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.SC_NUMBER"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.SC_NAME"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.GROUP_NAME"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.ORG_CODE"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_INDUSTRY_M',info.INDUSTRY_M)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_INDUSTRY_S',info.INDUSTRY_S)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.IS_LOCAL"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_SC_LEVER',info.GROUP_LEVER)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_PROVINCE_CODE',info.PROVINCE_CODE)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_CITY_CODE',info.CITY_CODE)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.COUNTY"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.ADDRESS"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.CUST_PHONE"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.CUST_MGR_NAME"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.CUST_MGR_PHONE"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.ZCUST_MGR_NAME"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:info.ZCUST_MGR_PHONE"></span></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			
+			<!-- 表格2 结束 -->
+		  </div>
+		<!-- 分页2开始 -->
+					<div class="l_queryPage">
+						<div name="navbar3" jwcid="@NavBar" cond="qryPopup1" count="ognl:infoCount" listener="querySoc" part="QrySocResultPart" pageSize="20" ></div>
+					</div>
+			<!-- 分页2 结束 -->
+                     <div class="l_querySubmit">
+						<div class="c_submit c_submit-full">
+						    <button type="button" class="e_button-r e_button-l e_button-navy" ontap="clearSoc();">清空</button>
+							<button type="button" class="e_button-r e_button-l e_button-navy" ontap="hidePopup('qrySocPopup')">返回</button>
+						</div>
+					</div>
+		      </div>
+		<!-- 查询2结束 -->
+	      </div>
+		</div>
+	  </div>
+</div>
+
+<div  jwcid="@Popup" name="qryPopup1" id="qryPopup1">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryPopupItem1">
+			<div class="c_header">
+				<div class="back" name="qryBack1" id="qryBack1" ontap="hidePopup(this)">查询条件</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+						    <li>
+								<div class="label">直管客户所属省</div>
+								<div class="value">
+										<select class="e_select" jwcid="@Select" name="cond_PROVINCE_CODE" 
+											source='ognl:new com.ailk.common.data.impl.DatasetList("[{\"DATA_ID\":\"AN\",\"DATA_NAME\":\"海南省\"}]")' valueField="DATA_ID" 
+											textField="DATA_NAME" value="AN"
+											addDefault="false"  desc="直管客户所属省" >
+										</select>
+								</div>
+							</li>
+							<li>
+								<div class="label">直管客户编码</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_SC_CODE" maxsize="24"  id="cond_SC_CODE" value="ognl:cond.cond_SC_CODE"  desc="直管客户编码"/></div>
+							</li>
+							<li>
+								<div class="label">组织机构代码</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_ORG_CODE" maxsize="9" id="cond_ORG_CODE" value="ognl:cond.cond_ORG_CODE" desc="组织机构代码"/></div>
+							</li>
+							<li>
+								<div class="label">集团名称</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_GROUP_NAME" maxsize="256" id="cond_GROUP_NAME" value="ognl:cond.cond_GROUP_NAME" desc="集团名称"/></div>
+							</li>
+							<li>
+								<div class="label">直管客户名称</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_SC_NAME" maxsize="256" id="cond_SC_NAME" value="ognl:cond.cond_SC_NAME" desc="直管客户名称"/></div>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue" type="button" id="qrySocButton">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+<div  jwcid="@Popup" class="c_popup c_popup-full" name="qryParentGroupPopup" id="qryParentGroupPopup">
+	<div class="c_popupGroup">
+	  <div class="c_popupItem" id="queryParentGroupPopup">
+		<div class="l_query l_query-submit">
+		<!-- 功能2开始 -->
+		
+		<div class="l_queryFn">
+			<div class="c_fn">
+			   <div class="left">
+					<div class="c_title">
+						<div class="text">
+							上级集团查询
+						</div>
+					</div>
+			   </div>
+				<div class="right">
+					<div class="e_mix" ontap="showPopup('qryPopup2','qryPopupItem2')">
+						<input id="qryBox" type="text"/>
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 功能2结束 -->
+		<!-- 查询2开始 -->
+		<div  jwcid="QryParentGroupResultPart@Part" >
+		<div class="l_queryResult" element="div">
+			<!-- 表格2开始 -->
+			<div class="c_table c_table-even">
+				<table jwcid="@Table" name="ParentGroupTable" id="ParentGroupTable" scroll="true">
+					<thead>
+					  <tr>
+						<th col="SC_CODE"><span>集团标识</span></th>
+						<th col="SC_ATTR"><span>集团名称</span></th>
+						<th col="SC_NUMBER"><span>集团属性</span></th>
+						<th col="SC_NAME"><span>归属地州</span></th>
+						<th col="GROUP_NAME"><span>归属业务区</span></th>
+						<th col="ORG_CODE"><span>网别</span></th>
+					  </tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+				        <td><span jwcid="@Insert" value="ognl:info.GROUP_ID"></span></td>
+						<td>
+							<a jwcid="@Any" href='javascript:void(0)' CUST_NAME="ognl:info.CUST_NAME"  GROUP_ID="ognl:info.GROUP_ID" ontap="selectParentGroupValue($(this))" > 				 
+							<span jwcid="@Insert" value="ognl:info.CUST_NAME"></span></a>
+						</td>   
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_GROUPATTR',info.GROUP_ATTR)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)"></span></td>
+				        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)"></span></td>
+				        <td><span jwcid="@Insert" value='ognl:("1".equals(info.RSRV_NUM3))?"铁通":"移动"'></span></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			
+			<!-- 表格2 结束 -->
+		  </div>
+		<!-- 分页2开始 -->
+					<div class="l_queryPage">
+						<div name="navbar4" jwcid="@NavBar" cond="qryPopup2" count="ognl:infoCount" listener="queryParentGroup" part="QryParentGroupResultPart" pageSize="20" ></div>
+					</div>
+			<!-- 分页2 结束 -->
+                     <div class="l_querySubmit">
+						<div class="c_submit c_submit-full">
+						    <button type="button" class="e_button-r e_button-l e_button-navy" ontap="clearParentGroup();">清空</button>
+							<button type="button" class="e_button-r e_button-l e_button-navy" ontap="hidePopup('qryParentGroupPopup')">返回</button>
+						</div>
+					</div>
+		      </div>
+		<!-- 查询2结束 -->
+	      </div>
+		</div>
+	  </div>
+</div>
+
+<div  jwcid="@Popup" name="qryPopup2" id="qryPopup2">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryPopupItem2">
+			<div class="c_header">
+				<div class="back" name="qryBack2" id="qryBack2" ontap="hidePopup(this)">查询条件</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+							<li>
+								<div class="label">集团名称</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_SUPER_CUST_NAME" maxsize="100"  id="cond_SUPER_CUST_NAME" value="ognl:cond.cond_SUPER_CUST_NAME"  desc="集团名称"/></div>
+							</li>
+							<li>
+								<div class="label">集团编码</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_SUPER_GROUP_ID" maxsize="40" id="cond_SUPER_GROUP_ID" value="ognl:cond.cond_SUPER_GROUP_ID" desc="集团编码"/></div>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue" type="button" id="qryParentGroupButton">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div  jwcid="@Popup" class="c_popup c_popup-full" name="qryOutSynGrpMgrPopup" id="qryOutSynGrpMgrPopup">
+	<div class="c_popupGroup">
+	  <div class="c_popupItem" id="queryOutSynGrpMgrPopup">
+		<div class="l_query l_query-submit">
+		
+		<!-- 功能2开始 -->
+		<div class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="c_title">
+				    	<div class="text">
+					   		查询虚拟集团信息
+						</div>
+				 	</div>
+				</div>
+				<div class="right">
+					<div class="e_mix" ontap="showPopup('qryOutSynPopup','qryOutSynPopupItem')">
+						<input id="qryBox" type="text"/>
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 功能2结束 -->
+		
+		<!-- 查询2开始 -->
+		<div  jwcid="QryOutSynGrpResultPart@Part" >
+			<div class="l_queryResult" element="div">
+				<!-- 表格2开始 -->
+				<div class="c_table c_table-even" jwcid="foreGiftTable@Part">
+					<table jwcid="@Table" name="outSynMgrTable" id="outSynMgrTable" scroll="true">
+						<thead>
+							<tr>
+							<th col="OUT_CUST_NAME"><span>集团名称</span></th>
+							<th col="OUT_PROVINCE_CODE"><span>归属省份</span></th>
+							<th col="OUT_COUNTY_CODE_S"><span>归属地市</span></th>
+							<th col="OUT_COUNTY_CODE" style="display:none"><span>归属地市</span></th>
+							<th col="OUT_EPARCHY_CODE"><span>归属地州</span></th>
+							<th col="OUT_CITY_CODE"><span>归属业务区</span></th>
+							<th col="OUT_GROUP_TYPE"><span>集团类型</span></th>
+							<th col="OUT_GROUP_STATUS"><span>集团状态</span></th>
+							<th col="OUT_GROUP_ATTR_S"><span>集团属性</span></th>
+							<th col="OUT_GROUP_ATTR" style="display:none"><span>集团属性</span></th>
+							<th col="OUT_ORG_TYPE_A_S"><span>集团机构大类型</span></th>
+							<th col="OUT_ORG_TYPE_A" style="display:none"><span>集团机构大类型</span></th>
+							<th col="OUT_ORG_TYPE_B_S"><span>集团机构类型中类</span></th>
+							<th col="OUT_ORG_TYPE_B" style="display:none"><span>集团机构类型中类</span></th>
+							
+							<th col="OUT_PRO_MANAGER"><span>项目经理</span></th>
+							<th col="OUT_ENTERPRISE_SCOPE_S"><span>集团经营区域类型</span></th>
+							<th col="OUT_ENTERPRISE_SCOPE" style="display:none"><span>集团经营区域类型</span></th>
+							<th col="OUT_CALLING_TYPE_CODE_S"><span>所属行业类别</span></th>
+							<th col="OUT_CALLING_TYPE_CODE" style="display:none"><span>所属行业类别</span></th>
+							<th col="OUT_SUB_CALLING_TYPE_CODE_S"><span>所属子行业类别</span></th>
+							<th col="OUT_SUB_CALLING_TYPE_CODE" style="display:none"><span>所属子行业类别</span></th>
+							<th col="OUT_INDUSTRY_ATTR_S"><span>归属本省行业科室</span></th>
+							<th col="OUT_INDUSTRY_ATTR" style="display:none"><span>归属本省行业科室</span></th>
+							<th col="OUT_ENTERPRISE_TYPE_CODE_S"><span>企业类型</span></th>
+							<th col="OUT_ENTERPRISE_TYPE_CODE" style="display:none"><span>企业类型</span></th>
+							<th col="OUT_BUSI_LICENCE_TYPE_S"><span>证件类别</span></th>
+							<th col="OUT_BUSI_LICENCE_TYPE" style="display:none"><span>证件类别</span></th>
+							<th col="OUT_BUSI_LICENCE_NO"><span>证件号码</span></th>
+							<!--  
+							<th col="OUT_LICENCE_INFO"><span>客户证件扫描件</span></th>
+							-->
+							<th col="OUT_GROUP_MGR_CUST_NAME"><span>集团管理员</span></th>
+							<th col="OUT_GROUP_MGR_SN"><span>管理员服务号码</span></th>
+							<th col="OUT_CLASS_ID_S"><span>集团级别</span></th>
+							<th col="OUT_CLASS_ID" style="display:none"><span>集团级别</span></th>
+							<th col="OUT_GROUP_ADDR"><span>集团客户地址</span></th>
+							<th col="OUT_POST_CODE"><span>集团客户邮编</span></th>
+							<th col="OUT_GROUP_CONTACT_PHONE"><span>集团客户联系电话</span></th>
+							<th col="OUT_MOBILE_GRP_TAG_S"><span>是否铁通集团</span></th>
+							<th col="OUT_MOBILE_GRP_TAG"  style="display:none"><span>是否铁通集团</span></th>
+							<th col="OUT_TOP_GRP_TAG_S"><span>是否省级集团</span></th>
+							<th col="OUT_TOP_GRP_TAG"  style="display:none"><span>是否省级集团</span></th>
+							<th col="OUT_CLASS_ID_NEW_S"><span>集团客户级别(2016)</span></th>
+							<th col="OUT_CLASS_ID_NEW"  style="display:none"><span>集团客户级别(2016)</span></th>
+							<th col="OUT_EMPLOYEE_NUMS"><span>企业员工数</span></th>
+							<th col="OUT_YEAR_GAIN"><span>集团年营业额</span></th>
+							<th col="OUT_ENTERPRISE_SIZE_CODE_S"><span>企业规模</span></th>
+							<th col="OUT_ENTERPRISE_SIZE_CODE" style="display:none"><span>企业规模</span></th>
+							<th col="OUT_EXT_ISSC_S"><span>是否直管客户</span></th>
+							<th col="OUT_EXT_ISSC" style="display:none"><span>是否直管客户</span></th>
+							<th col="OUT_SECRET_GRP_S"><span>是否敏感信息集团</span></th>
+							<th col="OUT_SECRET_GRP" style="display:none"><span>是否敏感信息集团</span></th>
+						  	</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:outInfos" value="ognl:outInfo" element="tr">
+							<td><span jwcid="@Insert" value="ognl:outInfo.CUST_NAME"></span></td>   
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('COP_SI_PROV_CODE',outInfo.PROVINCE_CODE)"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('COP_SI_SERVICE_CITY',outInfo.COUNTY_CODE)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.COUNTY_CODE"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:outInfo.EPARCHY_CODE"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:outInfo.CITY_CODE"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_GROUPTYPE',outInfo.GROUP_TYPE)"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_GROUPSTATUS',outInfo.GROUP_STATUS)"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_GROUPATTR',outInfo.GROUP_ATTR)"></span></td>
+					        <td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.GROUP_ATTR"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_ORGTYPEA',outInfo.ORG_TYPE_A)"></span></td>
+					        <td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.ORG_TYPE_A"></span></td>
+					        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_ORGTYPEB',outInfo.ORG_TYPE_B)"></span></td>
+					        <td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.ORG_TYPE_B"></span></td>
+					        
+					        <td><span jwcid="@Insert" value="ognl:outInfo.PRO_MANAGER"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_ENTERPRISESCOPE',outInfo.ENTERPRISE_SCOPE)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.ENTERPRISE_SCOPE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CALLINGTYPE',outInfo.CALLING_TYPE_CODE)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.CALLING_TYPE_CODE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CALLINGSUBTYPE',new java.lang.String[]{'CALLING_SUB_TYPE_CODE','CALLING_TYPE_CODE'},'CALLING_SUB_TYPE_NAME',new java.lang.String[]{outInfo.SUB_CALLING_TYPE_CODE,outInfo.CALLING_TYPE_CODE})"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.SUB_CALLING_TYPE_CODE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_INDUSTRYATTRIBUTE',outInfo.INDUSTRY_ATTR)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.INDUSTRY_ATTR"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_ENTERPRISETYPE',outInfo.ENTERPRISE_TYPE_CODE)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.ENTERPRISE_TYPE_CODE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_BUSILICENCETYPE',outInfo.BUSI_LICENCE_TYPE)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.BUSI_LICENCE_TYPE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:outInfo.BUSI_LICENCE_NO"></span></td>
+							<!--  
+							<td><span jwcid="@Insert" value="ognl:outInfo.LICENCE_INFO"></span></td>
+							-->
+							<td><span jwcid="@Insert" value="ognl:outInfo.GROUP_MGR_CUST_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:outInfo.GROUP_MGR_SN"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_CLASSID',outInfo.CLASS_ID)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.CLASS_ID"></span></td>
+							<td class="wrap"><span jwcid="@Insert" value="ognl:outInfo.GROUP_ADDR"></span></td>
+							<td><span jwcid="@Insert" value="ognl:outInfo.POST_CODE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:outInfo.GROUP_CONTACT_PHONE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YesOrNo2',outInfo.MOBILE_GRP_TAG)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.MOBILE_GRP_TAG"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YesOrNo2',outInfo.TOP_GRP_TAG)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.TOP_GRP_TAG"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_CLASSID_2016',outInfo.CLASS_ID_NEW)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.CLASS_ID_NEW"></span></td>
+							<td><span jwcid="@Insert" value="ognl:outInfo.EMPLOYEE_NUMS"></span></td>
+							<td><span jwcid="@Insert" value="ognl:outInfo.YEAR_GAIN"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_ENTERPRISE_SIZE',outInfo.ENTERPRISE_SIZE_CODE)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.ENTERPRISE_SIZE_CODE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_EXT_ISSC',outInfo.EXT_ISSC)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.EXT_ISSC"></span></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CUSTGROUP_SECRET_GRP',outInfo.SECRET_GRP)"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:outInfo.SECRET_GRP"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格2 结束 -->
+			</div>
+		  
+			<!-- 分页2开始 -->
+			<div class="l_queryPage">
+				<div name="navbar9" jwcid="@NavBar" cond="qryOutSynPopupItem" count="ognl:outInfoCount" listener="queryOutGroupSynInfo" part="QryOutSynGrpResultPart" pageSize="20" ></div>
+			</div>
+			<!-- 分页2 结束 -->
+			<div class="l_querySubmit">
+				<div class="c_submit c_submit-full">
+					<button type="button" class="e_button-r e_button-l e_button-navy" ontap="clearOutGrpMgr();">清空</button>
+					<button type="button" class="e_button-r e_button-l e_button-navy" ontap="hidePopup('qryOutSynGrpMgrPopup')">返回</button>
+					<button type="button" class="e_button-r e_button-l e_button-navy" ontap="selectOutSynMgrValue();">选择</button>
+				</div>
+			</div>
+		</div>
+		<!-- 查询2结束 -->
+		
+	  </div>
+	 </div>
+	</div>
+</div>
+
+<div  jwcid="@Popup" name="qryOutSynPopup" id="qryOutSynPopup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryOutSynPopupItem">
+			<div class="c_header">
+				<div class="back" name="qrySynBack" id="qrySynBack" ontap="hidePopup(this)">查询条件</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+						    <li class="link required">
+								<div class="label">集团名称</div>
+								<div class="value"><input type="text" jwcid="@TextField" name="cond_OUTSYN_CUST_NAME" maxsize="100"  id="cond_OUTSYN_CUST_NAME" value="ognl:cond.cond_OUTSYN_CUST_NAME"  desc="集团名称"/></div>
+							</li>
+							
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue" type="button" id="qryOutSynMgrButton">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

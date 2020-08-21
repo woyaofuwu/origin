@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="person/addgroupmemberbyorder/scripts/AuditGroupmemberByOrder.js"></script>
+<title>集团通讯录成员稽核</title>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper">
+	<div class="m_wrapper2">
+			<!-- 开始查询区域 -->
+		    <div class="c_box">
+			    <div class="c_title">
+				     <div class="text">查询条件</div>
+			    </div>
+			    <div jwcid="ConditionPart@Part">
+			        <div class="c_form c_form-col-5 c_form-label-6">
+					    <ul class="ul">
+                            <li class="li">
+								<span class="label"><span>归属区域：</span></span>
+								<span class="e_input e_input-left"><span>
+				 					 <input type="text" id="CITY_CODE" name="CITY_CODE" jwcid="@TextField"  
+										value="ognl:condition.CITY_CODE" datatype="text" nullable="yes" desc="归属区域"/>
+								</span></span>
+							</li>
+					    	<li class="li">
+								<span class="label"><span>客户经理：</span></span>
+								<span class="e_input e_input-left"><span>
+				 					 <input type="text" id="CUST_MANAGER_ID" name="CUST_MANAGER_ID" jwcid="@TextField"  
+										value="ognl:condition.CUST_MANAGER" datatype="text" nullable="yes" desc="客户经理"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>集团编码：</span></span>
+								<span class="e_input e_input-left"><span>
+									<input type="text" id="GROUP_ID" name="GROUP_ID" jwcid="@TextField"  
+										value="ognl:condition.GROUP_ID" datatype="text" nullable="yes" desc="集团编码"/>
+								</span></span>
+							</li>
+					    </ul>
+					    <div class="submitPlace"></div>
+						<div class="submit">
+							<button id="queryBtn" name="queryBtn" class="e_button-form" onclick="queryGrpInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+						</div>
+			         </div>
+			    </div>
+		  </div>
+		  <!-- 结束查询区域 -->
+		  
+		  <!-- 列表显示区域开始 -->
+		  <div class="c_box" jwcid="QueryListPart@Part" element="div" >
+		    <div class="c_title">
+			   <div class="text">集团客户</div>
+		    </div>
+		    
+		    <!-- 表格 开始 -->
+			<div >
+				<div class="c_scroll c_scroll-x c_scroll-table-5">
+				<div class="c_table">
+					<table jwcid="@Table" name="UnfinishTrade">
+						<thead>
+							<tr>
+								<th col="GROUP_ID">集团编码</th>
+                                <th col="GROUP_CUST_NAME">集团名称</th>
+                                <th col="CUST_MANAGER_ID">客户经理</th>
+								<!-- <th col="USECUST_NAME">用户名称</th> -->
+								<th col="CITY_CODE">归属区域</th>
+							</tr>
+						</thead>
+						<tbody jwcid="@Any" name="UnfinishTrade_Body" id="UnfinishTrade_Body">
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td>
+                                    <a jwcid="@Any" onclick="queryGrpBooktInfos(this);" >
+                                        <span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false" />
+                                    </a>
+                                </td>
+                                <td><span jwcid="@Insert" value="ognl:info.GROUP_CUST_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID" raw="false"/></td>
+								<!-- <td><span jwcid="@Insert" value="ognl:info.USECUST_NAME" raw="false"/></td>
+								 <td><span jwcid="@Insert" value="ognl:info.CITY_CODE" raw="false"/></td>  -->
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CITY_CODE_GOODS', info.CITY_CODE)" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 分页 开始 -->
+				<div jwcid="@NavBar" name="LogNav" id="LogNav" cond="ConditionPart" part="QueryListPart" listener="queryGrpInfos" pageSize="15" count="ognl:logCount"></div>
+				<!-- 分页 结束 -->
+			</div>
+		</div>
+		<!-- 列表显示区域结束 -->	 
+		<!-- 列表显示区域开始 -->
+		<div class="c_box" jwcid="QueryBookPart@Part" element="div" >
+            <div class="c_title">
+               <div class="text">查询结果</div>
+            </div>
+            
+            <!-- 表格 开始 -->
+            <div >
+                <div class="c_scroll c_scroll-x c_scroll-table-5">
+                <div class="c_table">
+                    <table jwcid="@Table" name="UnfinishTrade">
+                        <thead>
+                            <tr>
+                                <th col="TRADE_ID_SUB"><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox2" name="viceCheckBox2" onclick="checkedAll('viceCheckBox',checked)" />选择</th>                                      
+                                <th col="GROUP_ID">集团编码</th>
+                                <th col="GROUP_CUST_NAME">集团客户名称</th>
+                                
+                                <th col="CUST_NAME">开户客户</th>
+                                <th col="MEMBER_KIND">成员类型</th>
+                                <th col="IS_CONTACT">是否可接触服务客户</th>
+                                <th col="IS_MOBILE">是否移动号码</th>
+                                <th col="EPARCHY_CODE">归属地州</th>
+                                <th col="USEPSPT_END_DATE">证件有效期</th>
+                                <th col="RSRV_TAG1">是否898集团成员</th>
+                                <th col="RSRV_STR1">898集团名称</th>
+                                <th col="RSRV_TAG4">是否属于集团V网成员</th>
+                                <th col="RSRV_STR4">集团V网对应的898名称</th>
+                                <th col="RSRV_TAG5">是否已属于集团通讯录成员</th>
+                                <th col="RSRV_TAG2">是否迁移</th>
+                                
+                                
+                                <th col="RSRV_TAG3">稽核结果</th>
+                                <th col="SERIAL_NUMBER">电话号码</th>
+                                <th col="USECUST_NAME">使用客户</th>
+                                <th col="CITY_CODE">归属业务区</th>
+                                <th col="USEPSPT_TYPE_CODE">证件类型</th>
+                                <th col="USEPSPT_ID">证件号码</th>
+                                <th col="USEPSPT_ADDR">证件地址</th>
+                                <th col="USEPOST_ADDR">成员通信地址</th>
+                                <th col="USEPHONE">成员联系电话</th>
+                                <th col="SVC_MODE_CODE">喜欢的服务方式</th>
+                                <th col="DEPART">部门</th>
+                                <th col="DUTY">职位</th>
+                                <th col="LIKE_MOBILE_BUSI">喜欢的移动业务</th>
+                                <th col="LIKE_DISCNT_TYPE">喜欢的优惠方式</th>
+                                <th col="LIKE_ACT">喜欢的活动</th>
+                                <th col="REMARK">备注</th>
+                                <th col="OLD_GROUP_ID">原通讯录集团编码</th>
+                                <th col="OLD_GROUP_CUST_NAME">原通讯领集团名称</th>
+                                <th col="AUDIT_DESC">附件信息</th>
+                            </tr>
+                        </thead>
+                        <tbody jwcid="@Any" name="UnfinishTrade_Body" id="UnfinishTrade_Body">
+                            <tr jwcid="@Foreach" source="ognl:bookinfos" value="ognl:bookinfo" index="ognl:rowIndex" element="tr">
+                                <td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox" 
+                                    value="ognl:bookinfo.USER_ID" 
+                                    groupId="ognl:bookinfo.GROUP_ID"
+                                    eparchyCode="ognl:bookinfo.EPARCHY_CODE"
+                                    cityCode="ognl:bookinfo.CITY_CODE"
+                                    groupCustName="ognl:bookinfo.GROUP_CUST_NAME"
+                                    custManagerId="ognl:bookinfo.CUST_MANAGER_ID"
+                                    
+                                /></td>                             
+                                <td><span jwcid="@Insert" id="GROUP_ID" name="GROUP_ID" value="ognl:bookinfo.GROUP_ID" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="GROUP_CUST_NAME" name="GROUP_CUST_NAME" value="ognl:bookinfo.GROUP_CUST_NAME" raw="false"/></td>
+                                
+                                
+                                
+								
+								<td><span jwcid="@Insert" value="ognl:bookinfo.CUST_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('GRP_MEMKIND', bookinfo.MEMBER_KIND)" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YESNO', bookinfo.IS_CONTACT)" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YESNO', bookinfo.IS_MOBILE)" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('AREA_CODE', bookinfo.EPARCHY_CODE)" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:bookinfo.USEPSPT_END_DATE" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YESNO', bookinfo.RSRV_TAG1)" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:bookinfo.RSRV_STR1" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YESNO', bookinfo.RSRV_TAG4)" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:bookinfo.RSRV_STR4" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YESNO', bookinfo.RSRV_TAG5)" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YESNO', bookinfo.RSRV_TAG2)" raw="false"/></td>
+                                
+                                
+                                
+                                
+                                <td data-title="稽核结果" class="e_center">
+                                    <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('RATIO_AUDIT_STATE', bookinfo.RSRV_TAG3)" raw="false"/>
+                                </td>
+                                <td><span jwcid="@Insert" id="SERIAL_NUMBER" name="SERIAL_NUMBER" value="ognl:bookinfo.SERIAL_NUMBER" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="USECUST_NAME" name="USECUST_NAME" value="ognl:bookinfo.USECUST_NAME" raw="false"/></td>
+                                <!-- <td><span jwcid="@Insert" id="CITY_CODE" name="CITY_CODE" value="ognl:bookinfo.CITY_CODE" raw="false"/></td> -->
+                                <td><span jwcid="@Insert" id="CITY_CODE" name="CITY_CODE" value="ognl:pageutil.getStaticValue('CITY_CODE_GOODS', bookinfo.CITY_CODE)" raw="false"/></td>
+                                <!-- <td><span jwcid="@Insert" id="USEPSPT_TYPE_CODE" name="USEPSPT_TYPE_CODE" value="ognl:bookinfo.USEPSPT_TYPE_CODE" raw="false"/></td> -->
+                                <td><span jwcid="@Insert" id="USEPSPT_TYPE_CODE" name="USEPSPT_TYPE_CODE" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', bookinfo.USEPSPT_TYPE_CODE)" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="USEPSPT_ID" name="USEPSPT_ID" value="ognl:bookinfo.USEPSPT_ID" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="USEPSPT_ADDR" name="USEPSPT_ADDR" value="ognl:bookinfo.USEPSPT_ADDR" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="USEPOST_ADDR" name="USEPOST_ADDR" value="ognl:bookinfo.USEPOST_ADDR" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="USEPHONE" name="USEPHONE" value="ognl:bookinfo.USEPHONE" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="SVC_MODE_CODE" name="SVC_MODE_CODE" value="ognl:pageutil.getStaticValue('TD_S_SERVICE_MODE', bookinfo.SVC_MODE_CODE)" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="DEPART" name="DEPART" value="ognl:bookinfo.DEPART" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="DUTY" name="DUTY" value="ognl:bookinfo.DUTY" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="LIKE_MOBILE_BUSI" name="LIKE_MOBILE_BUSI" value="ognl:bookinfo.LIKE_MOBILE_BUSI" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="LIKE_DISCNT_TYPE" name="LIKE_DISCNT_TYPE" value="ognl:bookinfo.LIKE_DISCNT_TYPE" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="LIKE_ACT" name="LIKE_ACT" value="ognl:bookinfo.LIKE_ACT" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="REMARK" name="REMARK" value="ognl:bookinfo.REMARK" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="OLD_GROUP_ID" name="OLD_GROUP_ID" value="ognl:bookinfo.OLD_GROUP_ID" raw="false"/></td>
+                                <td><span jwcid="@Insert" id="GROUP_CUST_NAME" name="GROUP_CUST_NAME" value="ognl:bookinfo.OLD_GROUP_CUST_NAME" raw="false"/></td>
+                                <td>
+                                    <a jwcid="@Any" href="ognl:'attach?action=download&realName=' + bookinfo.FILE_NAME + '&fileId=' + bookinfo.FILE_ID + '&needSuffix=true'" >
+                                        <span jwcid="@Insert" value="ognl:bookinfo.FILE_NAME" raw="false" />
+                                    </a>
+                                </td>
+                                <td><input jwcid="@Hidden" name="USER_ID" id="USER_ID" value="ognl:bookinfo.USER_ID" desc="用户ID用来UPDATE稽核信息"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                <!-- 分页 开始 -->
+                <!-- <div jwcid="@NavBar" name="LogNav" id="LogNav" cond="" part="QueryBookPart" listener="queryGrpBooktInfos" pageSize="15" count="ognl:logCount"></div> -->
+                <!-- 分页 结束 -->
+            </div>
+            <div class="c_form c_form-col-2 c_form-label-6">
+                <ul class="ul"> 
+                    <li class="li col-2">
+                        <span class="label"><span class="e_required">稽核意见：</span></span>
+                        <span class="e_textarea">
+                            <span class="e_textareaTop"><span></span></span>
+                            <span class="e_textareaContent">
+                            <textarea
+                                jwcid="@TextArea" 
+                                name="AUDIT_REASON" 
+                                id="AUDIT_REASON"
+                                type="text"
+                                value=""
+                                desc="稽核意见"
+                                nullable="no"
+                                raw="true" style="height:36px;"></textarea>
+                            </span>
+                            <span class="e_textareaBottom"><span></span></span>
+                        </span>
+                    </li>
+                </ul>
+                <ul class="ul">
+                    <li class="li">
+                        <span class="label"><span class="e_required">稽核结果：</span></span>
+                        <div class="e_select">
+                            <select jwcid="@Select" class="e_select" name="AUDIT_PASS_TAG" id="AUDIT_PASS_TAG" source="ognl:pageutil.getStaticList('RATIO_AUDIT_STATE')"
+                                    value="" desc="是否通过" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID">
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="c_submit">
+                <button class="e_button-page-ok" id="deleteBtn" name="deleteBtn" onclick="submitAudit();"><i class="e_ico-ok"></i><span>提交</span></button>                 
+            </div>
+        </div>
+		<!-- 列表显示区域结束 -->
+			   
+	</div>
+</div>
+</body>
+
+</html>

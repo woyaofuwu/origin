@@ -1,0 +1,34 @@
+SELECT PARTITION_ID,
+	   SEQ_ID,
+	   PRODUCT_CODE,
+	   PRODUCT_OFFERING_ID,
+	   ACTION,
+	   CUSTOMER_PHONE,
+	   BUSINESS_TYPE,
+	   MEM_TYPE,
+	   MEM_AREA_CODE,
+	   MEM_NUMBER,
+	   FINISH_TIME,
+	   EFF_TIME,
+	   EXP_TIME,
+	   INFO_CODE,
+	   INFO_VALUE,
+	   BIZ_VERSION,
+	   QRY_TAG,
+	   ACT_TAG,
+	   QRY_FILE_NAME,
+	   REMARK,
+	   OPR_TIME,
+	   RSRV_STR1,
+	   RSRV_STR2,
+	   RSRV_STR3,
+	   RSRV_STR4,
+	   RSRV_STR5,
+	   to_char(RSRV_DATE1, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1,
+	   to_char(RSRV_DATE2, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2
+	   FROM TI_B_MFC_SYNC
+	   WHERE 1=1
+	   AND ACTION = :ACTION
+	   AND CUSTOMER_PHONE = :CUSTOMER_PHONE
+	   AND MEM_NUMBER = :MEM_NUMBER
+	   AND to_date(EXP_TIME, 'yyyy-mm-dd hh24:mi:ss')> sysdate

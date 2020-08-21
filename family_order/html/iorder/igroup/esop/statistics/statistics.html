@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- <script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script> -->
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/statistics/script/statistics.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">访问统计</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="l_query" jwcid="queryPart@Part">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('mypop','chooseOfferItem')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div class="l_queryResult">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" name="myTable" id="myTable">
+				<thead>
+					<tr>
+						<th class="e_center" col="MONTH_CODE">月份</th>
+						<th class="e_center" col="STAFF_ID">工号</th>
+						<th class="e_center" col="LOGIN_TIMES">登录次数</th>
+						<th class="e_center" col="ONLINE_TIME">在线时长</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.MONTH_CODE"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.STAFF_ID"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.LOGIN_TIMES"　raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ONLINE_TIME"　raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 表格 结束 -->
+	</div>
+	<div jwcid="@Conditional" condition="ognl:infos == null || infos.size() == 0">
+	<div class="l_queryMsg" id="queryMsg">
+		<!-- 无数据提示 开始 -->
+		<div class="c_msg">
+			<div class="wrapper">
+				<div class="emote"></div>
+				<div class="info">
+					<div class="text">
+						<div class="title">暂时没有数据</div>
+						<div class="content">请输入查询条件</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 无数据提示 结束 -->
+	</div>
+	</div>
+
+	<div class="l_queryPage">
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar"
+			name="navbar1"
+			cond="qryInfo"  
+			count="ognl:infoCount" 
+			listener="qryInfos" 
+			part="queryPart" 
+			pageSize="50" 
+		></div>
+		<!-- 分页 结束 -->
+	</div>
+	</div>
+	
+	<div jwcid="@Popup" id="mypop" name="mypop" class="c_popup c_popup-fixed">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="chooseOfferItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">查询专线</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="qryInfo@Part" class="l_padding">
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link">
+								<div class="label">开始时间</div>
+								<div class="value"><input id="cond_BEGIN_DATE" name="cond_BEGIN_DATE" jwcid="@DateField" dropDown="true" format="yyyy-MM-dd" desc="开始时间"/></div>
+							</li>
+							<li class="link">
+								<div class="label">结束时间</div>
+								<div class="value"><input id="cond_END_DATE" name="cond_END_DATE" jwcid="@DateField" dropDown="true" format="yyyy-MM-dd" desc="结束时间"/></div>
+							</li>
+							<li class="link">
+								<div class="label">员工工号</div>
+								<div class="value"><input jwcid="@TextField" id="condi_STAFF_ID"  name="condi_STAFF_ID" value="ognl:info.condi_STAFF_ID"  desc="员工工号"/></div>
+								<div class="fn">
+									<span class="e_ico-check" onclick="openStaffPopup('condi_STAFF_ID')"></span>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" id="qryButton" class="e_button-r e_button-l e_button-blue" ontap="qryAll(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 员工组件 开始 -->
+<div jwcid="@icsserv:StaffPopup" name="STAFF_POPUP" ></div>
+	
+	<script>
+	function openStaffPopup(fieldName)
+	{
+		$("#POP_cond_DEPART_ID").parent().parent().parent().attr("style","");
+		$("#staffSelFrame").contents().find("#field_name").val(fieldName);
+		showPopup('staffPicker','staffPickerHome');
+	}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO td_s_work(work_id,work_name,subsys_code,status,exec_type,last_date,this_date,next_date,dynamic_interval,alarm_tag,priority,timeout,invoke_tag,start_date,end_date,use_tag)
+ VALUES(:WORK_ID,:WORK_NAME,'CCM',to_number(:STATUS),1,TO_DATE(:LAST_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:THIS_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:NEXT_DATE,'YYYY-MM-DD HH24:MI:SS'),:DYNAMIC_INTERVAL,:ALARM_TAG,0,:TIMEOUT,0,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),to_char(:USE_TAG))

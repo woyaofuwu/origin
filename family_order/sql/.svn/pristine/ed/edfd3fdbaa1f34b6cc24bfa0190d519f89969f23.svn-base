@@ -1,0 +1,1 @@
+Select sum(t.score_changed) BZSSCORE From tf_b_trade_score t where t.user_id=:USER_ID and t.cancel_tag='0' and t.score_changed>0 and t.rsrv_str6='BZS'  and  add_months(t.update_time,3)>sysdate

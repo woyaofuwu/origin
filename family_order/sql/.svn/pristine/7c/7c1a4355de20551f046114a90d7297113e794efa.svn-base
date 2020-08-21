@@ -1,0 +1,1 @@
+SELECT to_char(to_date(:START_DATE,'yyyy-mm-dd hh24:mi:ss'),'dd') UPDATE_TIME FROM DUAL

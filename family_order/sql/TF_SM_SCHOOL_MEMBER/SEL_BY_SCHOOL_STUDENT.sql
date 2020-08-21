@@ -1,0 +1,3 @@
+SELECT * FROM TF_SM_SCHOOL_MEMBER t 
+WHERE (t.school_name=:SCHOOL_NAME OR t.rsrv_str1=:SCHOOL_NAME)
+AND t.student_name=:STUDENT_NAME

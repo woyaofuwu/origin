@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>短信息拒收过滤</title>
+<link href="base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="js/jcl.js"></script>
+<script  language="JavaScript" src="person/rejectmessage/scripts/rejectmessage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+ 
+<!-- 分栏 开始 -->
+<div class="l_col l_col-2">
+	<!-- 第 1 栏 开始 -->
+	<div class="l_li1">
+
+
+
+		<!-- 区域 开始 -->
+		<div class="c_box" >
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">待过滤短信的号码</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-label-4 c_form-col-1" jwcid="fileListPart@Part">
+				<ul class="ul">
+					<li class="li">
+						<span class="label">号码导入：</span>
+						<span class="e_elements" id ="upload" name="upload">
+										<input jwcid="@SimpleUpload" name="FILE_PATH"  id="FILE_PATH" ftpSite="personserv"  
+														fileSize="20" fileTypes="*.xls;*.txt" desc="选择文件"   />
+									</span>
+					</li>
+					<li class="li">
+						<span class="label"></span>
+						<label><input type="checkbox" class="e_checkbox" name="cflag"  id="cflag"  />导入时清除重复号码</label>
+						<a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&filePath=template/person/rejectmessage/RejectMessage.xls')">[模板下载]</a>
+					</li>
+				</ul>
+				<div class="submit">
+					<button type="button" class="e_button-form" onclick="importClick();"><i class="e_ico-import"></i><span>导入</span></button>
+				</div>
+			</div>
+			<!-- 表单 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_scroll c_scroll-table-10" jwcid="showPart@Part" element="div"><div class="c_table">
+				<table jwcid="@Table" name="phoneTable"  scroll="true" >
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>服务号码</th>
+						</tr>
+					</thead>
+					<tbody jwcid="@Any" name="phoneTableValues" id="phoneTableValues">
+						<tr jwcid="@Foreach" source="ognl:editList" value="ognl:condition"   index="ognl:rowIndex" element="tr"  >
+							<td ><span jwcid="@Insert" value="ognl:condition.RSRV_STR1" /></td>
+							<td ><span jwcid="@Insert" value="ognl:condition.SERIAL_NUMBER" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div></div>
+			<!-- 表格 结束 -->
+			
+			<!--<div class="c_form c_form-col-1" jwcid="refreshSList@Part">
+				<ul class="ul">
+					<li class="li">
+						<span class="label">服务标识：</span>
+							<span class="e_select"><span><span>
+							 <select jwcid="@Select" name="SERVICE_ID" id="SERVICE_ID"	
+								source="ognl:infos" value="ognl:info.SERVICE_ID" 
+								valueField="SERVICE_ID" textField="SERVICE_NAME"
+								addDefault="false" desc="服务标识"/>
+						</span></span></span>
+					</li>
+				</ul> 
+			</div>-->
+ 
+		</div>
+		<!-- 区域 结束 -->
+		  
+		<!-- 区域 开始 -->
+		<div class="c_box"> 
+			<!-- 文本 开始 -->
+ 			<div class="c_form c_form-col-2" jwcid="ServiceInfoPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label" >服务：</span>
+					<span class="e_input"><span>
+						<input type="text"   name="SERVICE_NAME"  id="SERVICE_NAME"  nullable="no"/>
+					 </span></span>
+					
+				</li>
+				<li class="li">
+					<button type="button"  onclick="openList();"><i class="e_ico-view"></i><span>选择</span></button>
+				</li>
+			</ul>
+			</div>
+			<!-- 文本 结束 -->
+			
+			
+			<!-- 提交 开始 -->
+			<div class="c_submit">
+				<button type="button" class="e_button-page-ok" onclick="checkClick();"><i></i><span>过滤</span></button>
+			</div>
+			<!-- 提交 结束 -->
+		</div>
+		<!-- 区域 结束 -->
+
+	</div>
+	<!-- 第 1 栏 结束 -->
+	<!-- 第 2 栏 开始 -->
+	<div class="l_li2">
+
+
+
+		<!-- 区域 开始 -->
+		<div class="c_box">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">过滤结果</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_scroll" style="height:367px;" jwcid="serviceListPart@Part" element="div"><div class="c_table">
+				<table jwcid="@Table" name="fPhoneTable"  scroll="true">
+					<thead>
+						<tr>
+							<th col="NUM">序号</th>
+							<th col="SERIAL_NUMBER">服务号码</th>
+						</tr>
+					</thead>
+					<tbody jwcid="@Any" name="fPhoneTableValues" id="fPhoneTableValues">
+						<tr jwcid="@Foreach" source="ognl:selectList" value="ognl:info"  name="selectId"  id="selectId" index="ognl:rowIndex" element="tr"  >
+								<td ><span jwcid="@Insert" value="ognl:info.RSRV_STR1" /></td>
+								<td ><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div></div>
+			<!-- 表格 结束 -->
+			
+			<!-- 隐藏区域 开始 -->
+		    <div jwcid="hiddenPart@Part">
+			    <input type="hidden" jwcid="@Any" id="fPhoneSum"      name="fPhoneSum" />
+			    <input type="hidden" jwcid="@Any" id="SERVICE_ID"      name="SERVICE_ID" />
+		    </div>
+			<!-- 隐藏区域 结束 -->
+			<!-- 提交 开始 -->
+			<div class="c_submit">
+				<span jwcid="@Export"
+					name="exportFile" 
+					serviceName="1022" 
+					config="export/rejectmessage/RejectMessageExport.xml"
+					fileName="短信息拒收过滤信息"
+					cond="serviceListPart,hiddenPart"
+					ftpSite="personserv"
+					beforeAction="exportBeforeAction"
+					action="exportAction"
+					fileType="{'.xls':'.xls'}"
+					>
+				</span>
+			</div>
+			<!-- 提交 结束 -->
+		</div>
+		<!-- 区域 结束 -->
+
+
+		
+	</div>
+	<!-- 第 2 栏 结束 -->
+	
+ 
+</div>
+<!-- 分栏 结束 -->
+ 
+</div></div>
+
+
+
+<!-- 弹窗 开始 -->
+<div class="c_popup" id="popup" style="display:none;">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:700px;">
+			<div class="c_popupTitle">
+				<div class="text">服务列表信息</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="$('#popup').css('display','none')"></a>
+				</div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<div class="c_scroll" style="height:300px;">
+					<!-- 列表 开始 -->
+					<div class="c_list c_list-table c_list-col-3" jwcid="refreshSList@Part" >
+						<ul>
+							<span jwcid="@Foreach" source="ognl:infos" value="ognl:info"  index="ognl:rowIndex">
+								<li><a class="text" jwcid="@Redirect"   source="ognl:info" value="ognl:info.SERVICE_NAME" 
+											service_name="ognl:info.SERVICE_NAME" service_id="ognl:info.SERVICE_ID" onclick="popupPagePlat(this)"></a></li>
+		                	</span>
+						</ul>
+					</div>
+					<!-- 列表 结束 -->
+				</div>
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" onclick="$('#popup').css('display','none')"><i></i><span>确定</span></button>
+					<button class="e_button-page-cancel" onclick="$('#popup').css('display','none')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 弹窗 结束 -->
+
+
+</body>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+</html>

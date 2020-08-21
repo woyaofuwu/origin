@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: User360View.html,v 2.0 2014/06/01 10:58 huanghui Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 </title>
+<script jwcid="@Script" src="person/view360/scripts/user360view.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/hidden360query.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 弹窗（替换为页面组件） 开始 -->
+<input type="checkbox"  id="FIRST_NORMAL_USER_CHECK" name="FIRST_NORMAL_USER_CHECK" checked="" style="display:none"/> 
+
+<div class="c_popup" id="popupPart" jwcid="@Any">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:350px;">
+			<div class="c_popupTitle">
+				<div class="text">查询条件</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="$('#popupPart').css('display','none')"></a>
+				</div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-11 c_form-col-1" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"   id="SERIAL_NUMBER_LI">
+							<span class="label">服务号码：</span>
+							<span class="e_input"><span>
+								<input name="USER_ID" id="USER_ID" jwcid="@TextField" value="ognl:userinfo.USER_ID" style="display:none;"/>
+								<input name="CUST_ID" id="CUST_ID" jwcid="@TextField" value="ognl:userinfo.CUST_ID" style="display:none;"/>
+								<input name="EPARCHY_CODE" id="EPARCHY_CODE" jwcid="@TextField" value="ognl:condition.EPARCHY_CODE" style="display:none;"/>
+								<input name="ROUTE_EPARCHY_CODE" id="ROUTE_EPARCHY_CODE" jwcid="@TextField" value="ognl:condition.ROUTE_EPARCHY_CODE" style="display:none;"/>
+								<input name="MANY_RECORDS" id="MANY_RECORDS" jwcid="@TextField" value="ognl:condition.MANY_RECORDS" style="display:none;"/>
+								<input name="SIM_CHECK" id="SIM_CHECK" jwcid="@TextField" value="ognl:condition.SIM_CHECK" style="display:none;"/>
+								<input name="IN_MODE_CODE2" id="IN_MODE_CODE2" jwcid="@TextField" value="ognl:getVisit().getInModeCode()" style="display:none;"/>
+								<input name="SERIAL_NUMBER" id="SERIAL_NUMBER" jwcid="@TextField" value="ognl:condition.SERIAL_NUMBER" 
+								enterAction="return checkUserInput() && validFormCm()" nullable="yes" desc="服务号码" datatype="mbphone"/>
+								<input name="SERIAL_NUMBER_B" id="SERIAL_NUMBER_B" jwcid="@TextField" value="ognl:condition.SERIAL_NUMBER_B" style="display:none;"/>
+								<input name="IS_VIP_MANAGER" id="IS_VIP_MANAGER" jwcid="@TextField" value="ognl:condition.IS_VIP_MANAGER" style="display:none;"/>
+								<input name="VIP_MANAGER_PASS" id="VIP_MANAGER_PASS" jwcid="@TextField" value="ognl:condition.VIP_MANAGER_PASS" style="display:none;"/>
+								<input name="IS_BOTH_SN" id="IS_BOTH_SN" jwcid="@TextField" value="ognl:condition.IS_BOTH_SN" style="display:none;"/>
+								<input name="CALLED_SN" id="CALLED_SN" jwcid="@TextField" value="ognl:condition.CALLED_SN" style="display:none;"/>
+								<input name="IS_FROM_USER360VIEW" id="IS_FROM_USER360VIEW" type="text" value="yes" style="display:none;"/>
+								<input name="NET_TYPE_CODE" id="NET_TYPE_CODE" jwcid="@TextField" value="ognl:condition.NET_TYPE_CODE" style="display:none;"/>	
+								<input name="CRM_REALTIMEMARKETING_WEBSWITCH" id="CRM_REALTIMEMARKETING_WEBSWITCH" jwcid="@TextField" value="ognl:condition.CRM_REALTIMEMARKETING_WEBSWITCH" style="display:none;"/>
+								<input name="CUST_NAME" id="CUST_NAME" jwcid="@TextField" value="ognl:userinfo.CUST_NAME" style="display:none;"/>
+							</span></span>
+						</li>
+						<li class="li e_dis"   id="SIM_NUMBER_LI">
+							<span class="label">SIM卡号码：</span>
+							<span class="e_input"><span>
+								<input name="SIM_NUMBER" id="SIM_NUMBER" jwcid="@TextField" value="ognl:condition.SIM_NUMBER" nullable="yes" desc="SIM卡号码" datatype="text" disabled="true"/>
+							 </span></span>
+						</li>
+						<li class="li">
+							<span class="label">只查询正常用户：</span>
+								<input type="checkbox"  id="NORMAL_USER_CHECK" name="NORMAL_USER_CHECK" checked="ognl:condition.NORMAL_USER_CHECK" /> 
+						</li>
+						<li class="li">
+							<span class="label">根据SIM卡获取服务号码：</span>
+								<input type="checkbox" id="simCheck" name="simCheck" onclick="toggleCheck()" />
+						</li>
+
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button type="button" jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-page-ok" onclick="return checkUserInput() && validFormCm()"><i></i><span>查询</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 弹窗 结束 -->
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="s_viewQuery"  jwcid="@Any">
+	<button   type="button" name="query_BTN" id="query_BTN" class="e_button-form" onclick="show()"><i class="e_ico-search"></i><span>显示查询区域</span></button>
+	<button class="e_button" type="button" onclick="reflash()">
+		<i class="e_ico-refresh"></i><span>刷新用户资料</span>
+	</button> 
+</div>
+<div class="submit"  jwcid="@Any" style="display:none">
+<div class="c_form"  >
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">移动号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@Any" name="SERIAL_NUMBER_2" id="SERIAL_NUMBER_2"  
+					disabled="true"	  value="ognl:condition.SERIAL_NUMBER" />
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any"  class="e_button-form" onclick="return checkUserInput() && validFormCm()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	 
+</div> 
+<!-- 区域 开始 -->
+<div class="c_box">
+<style>#tabPart .c_tab { padding-right:180px;} .s_viewQuery { position:absolute; right:3px; top:15px; z-index:3;}</style>
+<div jwcid="tabPart@Part">
+	<!-- 分页标签 开始 -->
+	<div jwcid="mytab@Tabset" name="mytab" switchAction="myTabSwitchAction(ptitle,title);">
+		
+		<iframe jwcid="@TabsetFrame" title="用户基本信息" 
+			frameborder="0"  id="newUserInfoPage" params=""
+			page="userview.NewUserInfo" listener="queryInfo" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="客户信息" 
+			frameborder="0"  id="newCustInfoPage" params=""
+			page="userview.NewCustInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="客户历史日志" 
+			frameborder="0"  id="accountInfoPage1" params=""
+			page="userview.CustomerHistoryInfo" listener="" scrolling="no">
+		</iframe>
+
+		<iframe jwcid="@TabsetFrame" title="账户信息" 
+			frameborder="0"  id="accountInfoPage" params=""
+			page="userview.AccountInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="产品信息" 
+			frameborder="0" id="productInfoPage" params=""
+			page="userview.ProductInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="服务信息" 
+			frameborder="0" id="serviceInfoPage" params=""
+			page="userview.UserServiceInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="优惠信息" 
+			frameborder="0"  id="discountInfoPage" params=""
+			page="userview.UserDiscountInfo" listener="" scrolling="no">
+		</iframe>
+		
+	    <iframe jwcid="@TabsetFrame" title="平台业务信息" 
+			frameborder="0"  id="platServInfoPage" params=""
+			page="userview.UserPlatServInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="营销活动信息" 
+			frameborder="0"  id="saleInfoPage" params=""
+			page="userview.SaleActiveInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="资源信息" 
+			frameborder="0"  id="resourceInfoPage" params=""
+			page="userview.UserResourceInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="用户关系信息" 
+			frameborder="0"  id="relationInfoPage" params=""
+			page="userview.RelationInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="业务历史信息" 
+			frameborder="0"  id="tradeHistoryInfoPage" params=""
+			page="userview.TradeHistoryInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="邮寄信息" 
+			frameborder="0"  id="postInfoPage" params=""
+			page="userview.PostInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="押金信息" 
+			frameborder="0"  id="foregiftInfoPage" params=""
+			page="userview.ForegiftInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="积分信息" 
+			frameborder="0"  id="scoreInfoPage" params=""
+			page="scoremgr.ScoreQueryTrade" listener="initPage" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="携号转网用户信息" 
+			frameborder="0"  id="npUserInfoPage" params=""
+			page="userview.NpUserInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="宽带业务" 
+			frameborder="0"  id="userWidenetInfoPage" params=""
+			page="userview.UserWidenetInfo" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="用户信用等级" 
+			frameborder="0"  id="userCreditInfoPage" params=""
+			page="userview.NewUserCreditClass" listener="" scrolling="no">
+		</iframe>
+		
+		<iframe jwcid="@TabsetFrame" title="用户共享信息" 
+			frameborder="0"  id="userShareInfoPage" params=""
+			page="userview.UserShareInfo" listener="" scrolling="no">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="清单信息" 
+			frameborder="0"  id="userBillLogInfoPage" params="ognl:'&SERIAL_NUMBER='+condition.SERIAL_NUMBER + '&listener=myInitialize'"
+			page="ognl:condition.BILL_LOG_INFO_PAGE==null?'cdr.QueryBillLog':condition.BILL_LOG_INFO_PAGE" 
+			listener="" scrolling="no" subsys="/acctmanm/acctmanm">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="附加证件信息"  
+ 			frameborder="0"  id="additionalPSPTInfoPage" params="" 
+			page="userview.AdditionalPSPTInfo" listener="" scrolling="no">
+		</iframe>
+		<iframe jwcid="@TabsetFrame" title="家庭IMS固话信息"  
+ 			frameborder="0"  id="UserIMSInfoPage" params="" 
+			page="userview.UserIMSInfo" listener="" scrolling="no">
+		</iframe>
+		<!-- add by duhj 2017/4/24 -->
+		<!--  
+		<iframe jwcid="@TabsetFrame" title="电渠订单信息" 
+			frameborder="0"  id="channelOrderInfoPage"  style="height:400px"  params=""  
+			page="userview.ChannelOrderInfo" listener="" scrolling="no">
+		</iframe>-->
+		
+		
+<!-- 		<iframe jwcid="@TabsetFrame" title="接触信息"  -->
+<!-- 			frameborder="0"  id="custContactMgrPage" params="" -->
+<!-- 			page="userview.CustContactMgr" listener="" scrolling="no"> -->
+<!-- 		</iframe> -->		
+<!-- 		<iframe jwcid="@TabsetFrame" title="投诉信息"  -->
+<!-- 			frameborder="0"  id="custComplaintInfoPage" params="" -->
+<!-- 			page="userview.CustComplaintInfo" listener="" scrolling="no"> -->
+<!-- 		</iframe> -->	
+	</div>
+	<!-- 分页标签 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div>
+</body>
+<script language="JavaScript" type="text/javascript">
+	function getCallCenterSn(){ 
+		var sn = null; 
+		var frame=top.document.getElementById("callcenter"); 
+		var rhkfframe=window.top.document.getElementById("public_iframe");
+		if (frame && frame.contentWindow && frame.contentWindow.document) { 
+			var callObj = frame.contentWindow.document.getElementById("CALL_PHONE"); 
+			if(callObj){ 
+				var callPhone = callObj.value; 
+				var callParams = callPhone.split("JHJ"); 
+				if(callParams && callParams.length==4){ 
+					sn=callParams[3]; 
+				} 
+			} 
+		} else if(rhkfframe && rhkfframe.contentWindow && rhkfframe.contentWindow.document){
+			sn = rhkfframe.contentWindow.document.getElementById("serviceNo").value;
+		}
+		return sn; 
+	} 
+	
+	$(document).ready(function(){
+		if($('#IN_MODE_CODE2').val()=='1'){
+			var sn = getCallCenterSn();
+			if(sn){
+				$("#SERIAL_NUMBER").val(sn);
+				$("#QUERY_BTN").trigger("click"); 
+			}else if(typeof(eval(window.top.getSubscriberInfo))=="function"){//新客服打开
+				$("#SERIAL_NUMBER").val(window.top.getSubscriberInfo().getBILL_ID());
+				$("#QUERY_BTN").trigger("click"); 
+			}
+		}
+	});
+ 
+</script>
+</html>

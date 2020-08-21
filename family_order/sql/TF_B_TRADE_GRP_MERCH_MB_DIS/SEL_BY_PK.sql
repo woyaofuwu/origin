@@ -1,0 +1,38 @@
+SELECT 
+  to_char(TRADE_ID) TRADE_ID,
+  ACCEPT_MONTH,
+  to_char(USER_ID) USER_ID,            
+  serial_number ,     
+  product_offer_id ,   
+  product_spec_code ,  
+  product_discnt_code ,
+  to_char(start_date,'yyyy-mm-dd hh24:mi:ss')start_date ,        
+  to_char(end_date,'yyyy-mm-dd hh24:mi:ss')end_date ,         
+  modify_tag ,         
+  update_time ,      
+  update_staff_id ,    
+  update_depart_id ,  
+  remark ,             
+  rsrv_num1 ,       
+  rsrv_num2 ,        
+  rsrv_num3 ,        
+  rsrv_num4 ,    
+  rsrv_num5 ,         
+  rsrv_str1 ,          
+  rsrv_str2 ,       
+  rsrv_str3 ,          
+  rsrv_str4 ,         
+  rsrv_str5 ,       
+  rsrv_date1 ,      
+  rsrv_date2 ,      
+  rsrv_date3 ,     
+  rsrv_tag1 ,          
+  rsrv_tag2 ,       
+  rsrv_tag3 ,          
+  inst_id ,            
+  is_need_pf ,       
+  memberordernumber
+  
+FROM tf_b_trade_grp_merch_mb_dis t
+WHERE t.trade_id = TO_NUMBER(:TRADE_ID)
+   AND t.accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))

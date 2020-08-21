@@ -1,0 +1,316 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ESP产品预受理</title>
+    <script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+    <script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/esp/script/espProductDetailShow.js"></script>
+</head>
+
+<body jwcid="@Body">
+    <div class="c_scroll c_scroll-float">
+        <div class="l_padding">
+            <div class="l_queryFn">
+                <!-- 客户信息 开始 -->
+                <div class="c_title">
+                    <div class="text">客户信息</div>
+                    <div class="fn">
+                        <button type="button" name="espBtn" class="e_button-blue" ontap="espHtml();">
+                            <span>政企ESP订购</span><span class="e_ico-link"></span></button>
+                    </div>
+                </div>
+                <div class="c_box c_box-border" jwcid="GroupInfo@Part">
+                    <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+                        <ul>
+                            <li>
+                                <span class="label">客户名称：</span>
+                                <span class="value" id="CUST_NAME" name="CUST_NAME" jwcid="@Insert" value="ognl:groupInfo.CUST_NAME" />
+                            </li>
+                            <li>
+                                <span class="label">客户集团编码：</span>
+                                <span class="value" name="cond_GROUP_ID" id="cond_GROUP_ID" jwcid="@Insert" value="ognl:groupInfo.GROUP_ID"  />
+                            </li>
+                        </ul>
+                    </div>
+                    <input jwcid="@Hidden" name="cond_CUST_ID" id="cond_CUST_ID" value="ognl:groupInfo.CUST_ID"/>
+                    <input type="hidden" jwcid="@Any" id="GROUP_ID" name="GROUP_ID" value="ognl:groupInfo.GROUP_ID" />
+                    <input jwcid="@Hidden" name="ESP_SNY_STATE" id="ESP_SNY_STATE" value="ognl:info.espSny.SYN_ESP" desc="ESP平台同步状态"/>
+                </div>
+                <!-- 客户信息 结束 -->
+                <!-- 合同信息 开始 -->
+                <div class="c_space"></div>
+                <div class="c_title">
+                    <div class="text">合同信息</div>
+                    <div class="fn">
+                    
+                            <button type="button" name="espBtn" class="e_button-blue" ontap="popupDownload(this);">
+                            <span>合同附件下载</span><span class="e_ico-download"></span></button>
+                         
+                    </div>
+                </div>
+                <div class="c_box c_box-border">
+                	<div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+                        <ul>
+                            <li>
+                                <span class="label">合同名称：</span>
+                                <span class="value" id="contract_name" name="contract_name" jwcid="@Insert" value="ognl:info.EC_COMMON_INFO.CONTRACT_INFO.CONTRACT_NAME" />
+                            </li>
+                            <li>
+                                <span class="label">合同编号：</span>
+                                <span class="value" id="contract_id" name="contract_id" jwcid="@Insert" value="ognl:info.EC_COMMON_INFO.CONTRACT_INFO.CONTRACT_ID" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 合同信息 结束 -->
+                <!-- 产品信息 开始 -->
+                <div class="c_space"></div>
+                <div class="c_title">
+                    <div class="text">产品信息</div>
+                </div>
+                <div class="c_box c_box-border">
+                    <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+                        <ul>
+                            <li>
+                                <span class="label">产品名称：</span>
+                                <span class="value" id="product_name" name="product_name" jwcid="@Insert" value="ognl:info.ecOffer.OFFER_NAME" />
+                            </li>
+                            <li>
+                                <span class="label">产品编号：</span>
+                                <span class="value" id="product_code" name="product_code" jwcid="@Insert" value="ognl:info.ecOffer.OFFER_CODE" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div jwcid="@Conditional" condition="ognl:info.operType !='23'">
+	                <!-- 云WiFi产品属性 开始 -->
+	                <div jwcid="@Conditional" condition="ognl:info.ecOffer.OFFER_CODE=='380300'">
+	                    <div class="c_title">
+	                        <div class="text">产品属性</div>
+	                    </div>
+	                    <div class="c_box c_box-border">
+	                        <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+	                            <ul>
+	                                <li jwcid="@Foreach" source="ognl:info.ecOffer.OFFER_CHA_SPECS" value="ognl:offerPro" element="li">
+	                                    <span class="label" jwcid="@Insert" value="ognl:offerPro.ATTR_NAME+'：'"></span>
+	                                    <!-- <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE"  jwcid="@Insert" value="ognl:offerPro.ATTR_VALUE+'%'" /> -->
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='经营法人有效身份证件类型'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_ID_PAPERS_TYPE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='集团客户类型'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_CUSTOM_TYPE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='集团客户经营性质'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_CUSTOM_MANAGE_NATURE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='所属省份'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_PROVINCE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='设备安装类型'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CLUB_ACTIVITY_TYPE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='账期生效规则'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CHANGEACCEPTANCEDATE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME!='经营法人有效身份证件类型'&& offerPro.ATTR_NAME!='集团客户类型'&& offerPro.ATTR_NAME!='集团客户经营性质'&& offerPro.ATTR_NAME!='所属省份'&& offerPro.ATTR_NAME!='设备安装类型'&& offerPro.ATTR_NAME!='账期生效规则'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:offerPro.ATTR_VALUE" />
+	                                    </div>
+	                                </li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+	                <!-- 云WiFi产品属性 结束 -->
+	                <!-- 云酒馆产品属性 开始 -->
+	                <div jwcid="@Conditional" condition="ognl:info.ecOffer.OFFER_CODE=='921015'">
+	                    <div class="c_title">
+	                        <div class="text">产品属性</div>
+	                    </div>
+	                    <div class="c_box c_box-border">
+	                        <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+	                            <ul>
+	                                <li jwcid="@Foreach" source="ognl:info.ecOffer.OFFER_CHA_SPECS" value="ognl:offerPro" element="li">
+	                                    <span class="label" jwcid="@Insert" value="ognl:offerPro.ATTR_NAME+'：'"></span>
+	                                    <!-- <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE"  jwcid="@Insert" value="ognl:offerPro.ATTR_VALUE+'%'" /> -->
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='产品版本'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_BAR_PRODUCT_VERSION', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='公司面积'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_COMPANY_AREA', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME!='产品版本'&& offerPro.ATTR_NAME!='公司面积'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:offerPro.ATTR_VALUE" />
+	                                    </div>
+	                                </li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+	                <!-- 云酒馆产品属性 结束 -->
+	                <!-- 和商务TV产品属性 开始 -->
+	                <div jwcid="@Conditional" condition="ognl:info.ecOffer.OFFER_CODE=='380700'">
+	                    <div class="c_title">
+	                        <div class="text">产品属性</div>
+	                    </div>
+	                    <div class="c_box c_box-border">
+	                        <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+	                            <ul>
+	                                <li jwcid="@Foreach" source="ognl:info.ecOffer.OFFER_CHA_SPECS" value="ognl:offerPro" element="li">
+	                                    <span class="label" jwcid="@Insert" value="ognl:offerPro.ATTR_NAME+'：'"></span>
+	                                    <!-- <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE"  jwcid="@Insert" value="ognl:offerPro.ATTR_VALUE+'%'" /> -->
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='客户所在省份'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_PROVINCE_CODE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='客户所在地市'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ESP_AREA_CODE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME=='账期生效规则'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CHANGEACCEPTANCEDATE', offerPro.ATTR_VALUE)" />
+	                                    </div>
+	                                    <div jwcid="@Conditional" condition="ognl:offerPro.ATTR_NAME!='客户所在省份'&& offerPro.ATTR_NAME!='客户所在地市'&& offerPro.ATTR_NAME!='账期生效规则'">
+	                                        <span class="value" id="ognl:offerPro.ATTR_CODE" name="ognl:offerPro.ATTR_CODE" jwcid="@Insert" value="ognl:offerPro.ATTR_VALUE" />
+	                                    </div>
+	                                </li>
+	                            </ul>
+	                        </div>
+	                    </div>
+	                </div>
+	                <!-- 和商务TV产品属性 结束 -->
+                </div>
+                <!-- 产品信息 结束 -->
+                <!-- 资费信息 开始 -->
+                <div class="c_title">
+                    <div class="text">资费信息</div>
+                </div>
+                <div class="c_box c_box-border">
+                    <div jwcid="@Foreach" source="ognl:info.ecOffer.SUBOFFERS" value="ognl:subOffer" element="div">
+                        <div class="c_title c_title-green">
+                            <div class="text" jwcid="@Insert" value="ognl:subOffer.OFFER_NAME"></div>
+                        </div>
+                        <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-11">
+                            <ul>
+                                <li jwcid="@Foreach" source="ognl:subOffer.OFFER_CHA_SPECS" value="ognl:subOfferPro" element="li">
+                                    <div jwcid="@Conditional" condition="ognl:subOfferPro.ATTR_CODE=='38030000101'">
+                                        <span class="label"> 标准资费(元/台/月)：</span>
+                                        <span class="value" id="ognl:subOfferPro.ATTR_CODE" name="ognl:subOfferPro.ATTR_CODE" jwcid="@Insert" value="ognl:subOfferPro.ATTR_VALUE" />
+                                    </div>
+                                    <div jwcid="@Conditional" condition="ognl:subOfferPro.ATTR_CODE=='38030000102'">
+                                        <span class="label"> 折扣(%)：</span>
+                                        <span class="value" id="ognl:subOfferPro.ATTR_CODE" name="ognl:subOfferPro.ATTR_CODE" jwcid="@Insert" value="ognl:subOfferPro.ATTR_VALUE" />
+                                    </div>
+                                    <div jwcid="@Conditional" condition="ognl:subOfferPro.ATTR_CODE == '38070000101' || subOfferPro.ATTR_CODE == '38070000201' || subOfferPro.ATTR_CODE == '38070000301'">
+                                    	<span class="label">资费(元/台/月)： </span>
+                                    	<span class="value" id="ognl:subOfferPro.ATTR_CODE" name="ognl:subOfferPro.ATTR_CODE" jwcid="@Insert" value="ognl:subOfferPro.ATTR_VALUE" />
+                                    </div>
+                                    <div jwcid="@Conditional" condition="ognl:subOfferPro.ATTR_CODE=='38070000102' || subOfferPro.ATTR_CODE=='38070000202'">
+                                        <span class="label"> 折扣(%)：</span>
+                                        <span class="value" id="ognl:subOfferPro.ATTR_CODE" name="ognl:subOfferPro.ATTR_CODE" jwcid="@Insert" value="ognl:subOfferPro.ATTR_VALUE" />
+                                    </div>
+                                    <div jwcid="@Conditional" condition="ognl:subOfferPro.ATTR_FLAG">
+                                    	<span class="label" jwcid="@Insert" value="ognl:subOfferPro.ATTR_NAME+'：'" />
+                                    	<span class="value" id="ognl:subOfferPro.ATTR_CODE" name="ognl:subOfferPro.ATTR_CODE" jwcid="@Insert" value="ognl:subOfferPro.ATTR_VALUE" />
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 资费信息 结束 -->
+                <!-- 成员信息 开始 -->
+                <div class="c_space"></div>
+                <!-- 云WiFi 开始 -->
+                <div jwcid="@Conditional" condition="ognl:info.ecOffer.OFFER_CODE=='380300'">
+                    <div class="c_title">
+                        <div class="text" jwcid="@Insert" value="ognl:info.ecOffer.OFFER_NAME+'成员列表'"></div>
+                        <div class="fn">
+                            <button type="button" jwcid="@Export" name="myExport" taskId="201910111700" params="ognl:info" configFile="export/minorec/CloudWifiBatAddMemberExport.xml" fileName="云WIFI安审版产品成员受理模板.xls" ftpCode="eosdata">
+                                <span class="e_ico-export" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="c_scroll" style="height: 2rem;">
+                        <table jwcid="@Table" name="cloudWifiTable">
+                            <thead>
+                                <tr>
+                                    <th col="MAC_NUMBER">网关MAC号</th>
+                                    <th col="PHONE_NUMBER">宽带开通手机/固话号码</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:info.mebList" value="ognl:memberInfo" index="ognl:rowIndex" element="tr">
+                                    <td><span jwcid="@Insert" value="ognl:memberInfo.MAC_NUMBER" /></td>
+                                    <td><span jwcid="@Insert" value="ognl:memberInfo.PHONE_NUMBER" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 云WiFi 结束 -->
+                <!-- 和商务TV 开始 -->
+                <div jwcid="@Conditional" condition="ognl:info.ecOffer.OFFER_CODE=='380700'">
+                    <div class="c_title">
+                        <div class="text" jwcid="@Insert" value="ognl:info.ecOffer.OFFER_NAME+'成员列表'"></div>
+                        <div class="fn">
+                            <button type="button" jwcid="@Export" name="myExport" taskId="201910140012" params="ognl:info" configFile="export/minorec/SumBusinessMemberList.xml" fileName="和商务TV产品成员受理模板.xls" ftpCode="eosdata">
+                                <span class="e_ico-export" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="c_scroll" style="height: 2rem;">
+                        <table jwcid="@Table" name="sumBizTVTable">
+                            <thead>
+                                <tr>
+                                    <th col="MAC_NUMBER">机顶盒侧MAC号</th>
+                                    <th col="SERIAL_NUMBER">机顶盒侧SN号</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:info.mebList" value="ognl:memberInfo" index="ognl:rowIndex" element="tr">
+                                    <td><span jwcid="@Insert" value="ognl:memberInfo.DEV_MAC_NUMBER" /></td>
+                                    <td><span jwcid="@Insert" value="ognl:memberInfo.DEV_SN_NUMBER" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 和商务TV 结束 -->
+                <!-- 成员信息 结束 -->
+            </div>
+            
+            <div class="c_space"></div>
+            <!-- 提交 开始 -->
+            <div class="c_submit c_submit-center">
+                 <button type="button" class="e_button-r e_button-l e_button-green" ontap="submitApply();">订购完成确认</button>
+            </div>
+            <!-- 提交 结束 -->
+        </div>
+    </div>
+    <!-- 隐藏域 开始 -->
+    <input jwcid="@Hidden" name="COND_STAFF_ID" id="COND_STAFF_ID" value="ognl:info.staffId" desc="" />
+    <input jwcid="@Hidden" name="COND_EPARCHY_CODE" id="COND_EPARCHY_CODE" value="ognl:info.eparchyCode" desc="地州编码" />
+    <div style="display:none" id="EOS_COMMON_DATA"><span jwcid="@Insert" value="ognl:info.EOS_COMMON_DATA" desc="url请求信息" /></div>
+    <div style="display:none" id="ELECTRONIC_ARCHIVES"><span jwcid="@Insert" value="ognl:info.ELECTRONIC_ARCHIVES" desc="附件信息" /></div>
+    <!-- 隐藏域 结束 -->
+    
+    <!-- 弹出层开始 -->
+<div jwcid="@Popup" name="popup01" class="c_popup c_popup-fixed">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" id="attachPopupItem">
+            <input jwcid="@Upload"
+                   name="contractUpload"
+                   filePath="elecAgreement"
+                   title="附件下载"
+                   ftpCode="eosdata"
+                   fileSize="20"
+                   fileTypes=".zip;.rar;.jpg;.png;.bmp;.doc;.docx"
+                   fileDelete="false"
+                   desc="电子协议签约附件"
+                   needSuffix="true"
+            />
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

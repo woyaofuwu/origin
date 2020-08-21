@@ -1,0 +1,2 @@
+INSERT INTO tf_b_authcard_write_log(staff_id,card_no,validflag,accept_date,accept_staff,accept_depart)
+ VALUES(:STAFF_ID,:CARD_NO,:VALIDFLAG,TO_DATE(:ACCEPT_DATE,'YYYY-MM-DD HH24:MI:SS'),:ACCEPT_STAFF,:ACCEPT_DEPART)

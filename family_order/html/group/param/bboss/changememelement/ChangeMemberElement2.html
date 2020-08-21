@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: ChangeMemberElement2.html,v 1.16 2013/05/01 07:10:28 xunyl Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script jwcid="@Script" type="text/javascript" src="scripts/group/param/bboss/bboss.js" ></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/creategroupuser/onValueChange.js" ></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+	</head>
+	<body jwcid="@Body">
+
+		<!-- 弹窗（替换为页面组件） 开始 -->
+		<div class="c_box">
+			<div jwcid="mytab@Tabset">
+				<!-- 树 开始 -->
+					<div jwcid="@TabsetContent" id="productinfotabset" title="产品信息">
+						<div class="l_col s_iframe-lower">
+							<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width: 49%;">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<div class="c_title">
+								<div class="text">待选区</div>
+							</div>
+							 <!-- 分栏 开始 -->
+							<div class="l_col l_col-close">
+								<div jwcid="offerList@csserv:OfferList" 
+			                           element="div"
+			                           svcParam="ognl:cond"
+			                           serviceName="CS.PackageSVC.getMemberProductPackages"
+			                           productId="ognl:cond.memProductId"
+			                           switchJoinService="CS.PackageSVC.getMemberJoinRelElements"
+			                           switchGroupService="CS.PackageSVC.getMemberPackageElements" 
+			                           categoryId="100000000017,100000000014">
+			                    </div>
+							</div>
+							<!-- 分栏 结束 -->
+						</div>
+						<!-- 区域 结束  -->
+					</div>
+							<!-- 第 1 栏 结束  -->
+							<!-- 第 2 栏 开始 -->
+							<div class="l_auto">
+								<!-- 区域 开始 -->
+								<div class="c_box">
+									<!-- 表格 开始 -->
+									<div class="c_title">
+										<div class="text">
+											已选区
+										</div>
+									</div>
+									<div jwcid="selectedElements@saleserv:SelectedElements" initCallSvc="CS.SelectedElementSVC.memBBossElements" initParam="ognl:cond"
+										callAddElementSvc="CS.SelectedElementSVC.dealSelectedElements" element="div">
+									</div>
+									<!-- 表格 结束 -->
+								</div>
+								<!-- 区域 结束 -->
+							</div>
+							<!-- 第 2 栏 结束 -->
+						</div>
+					</div>
+				<!-- 树 结束 -->
+				<!-- 成员扩展信息 开始 -->
+				<div jwcid="@TabsetContent" id="orderinfotabset" title="扩展信息">
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-col-3 c_form-label-6">
+						<ul class="ul">
+							<li class="li">
+								<span class="label">成员操作类型：</span>
+								<span class="e_select">
+									 <select jwcid="@Select" id="memberOperType" name="memberOperType" valueField="OPER_CODE"
+												textField="OPER_NAME" source="ognl:mebOpers" value ="6"/>
+								</span>
+							</li>
+							<li class="li">
+								<span class="label">成员加入状态：</span>
+								<span class="e_input"><span><input disabled="true" name="productstatus" id="productstatus" jwcid="@TextField" value="ognl:productStatus" /> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label">成员类型：</span>
+								<span class="e_select"><span><span> <select jwcid="@Select" name="memberType" id="memberType" valueField="ATTR_VALUE"
+												textField="ATTR_NAME" addDefault="false"
+												source="ognl:mebTypeSet"
+												value="ognl:mebType" disabled="true"/> </span> </span> </span>
+							</li>
+						</ul>
+						<input type="hidden" jwcid="@Any" name="PRODUCT_NUMBER" id="PRODUCT_NUMBER" value="ognl:memProductId" />
+						<input type="hidden" jwcid="@Any" name="GRP_USER_ID" id="GRP_USER_ID" value="ognl:userId" />
+					</div>
+					<!-- 表单 结束 -->
+					<!-- 表格 开始 -->
+					<div class="c_scroll c_scroll-x c_scroll-table-10">
+						<div class="c_table">
+							<table>
+								<thead>
+									<tr>
+										<th style="display: none" col="X_TAG">
+											TAG
+										</th>
+										<th style="display: none" col="PARAM_CODE">
+											<span>属性ID</span>
+										</th>
+										<th col="PARAM_NAME">
+											属性名称
+										</th>
+										<th col="PARAM_VALUE">
+											属性值
+										</th>
+										<th col="INPUT">
+											输入
+										</th>
+										<th col="PARAM_ATTR">
+											备注
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:memberParams" value="ognl:info" element="tr" index="ognl:rowIndex"
+										class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										<td style="display: none">
+											3
+										</td>
+										<td style="display: none">
+											<span jwcid="@Any" type="text" name="PRODUCT_PARAM_CODE" id="PRODUCT_PARAM_CODE" value="ognl:info.ATTR_CODE" />
+										</td>
+										<td>
+											<span jwcid="@Insert" class="ognl:(info.MANDATORY==0)?'e_required':''" id="ognl:'ATTR_NAME_'+info.ATTR_CODE" value="ognl:info.ATTR_NAME" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.ATTR_VALUE" />
+										</td>
+										<!--weixiping 初始值 -->
+										<input type="hidden" jwcid="@Any" name="ognl:'OLDVALUE_'+info.ATTR_CODE" id="ognl:'OLDVALUE_'+info.ATTR_CODE" value="ognl:info.ATTR_VALUE"
+											title="属性原始值" />
+										<td class="edit" id="ognl:'div_'+info.ATTR_CODE" name="ognl:'div_'+info.ATTR_CODE" jwcid="@Any">
+											<div jwcid="@Conditional" condition="ognl:info.VALUE_LIST != null">
+												<!-- 说明是下拉列表 -->
+												<span class="e_select"><span><span><select name="ognl:'input_'+info.ATTR_CODE" id="ognl:'input_'+info.ATTR_CODE"
+																disabled="ognl:(info.READONLY==1)?true:false" jwcid="@Select" source="ognl:info.VALUE_LIST" valueField="OPTION_VALUE"
+																textField="OPTION_NAME" value="ognl:info.ATTR_VALUE" paraCode="ognl:info.ATTR_CODE" initMethodName="ognl:info.ONCHANGE_JS"
+																commitMethodName="ognl:info.ONSUBMIT_JS" onchange="onValueChangeUnit(this);changeMemberValue(this);" desc="ognl:info.ATTR_NAME"
+																nullable="ognl:info.MANDATORY==0?'no':''" />
+													</span>
+												</span> </span>
+											</div>
+											<div jwcid="@Conditional" condition="ognl:info.VALUE_LIST == null">
+												<!--非下拉列表 -->
+												<div jwcid="@Conditional" condition="ognl:info.TYPE == 'date'">
+													<span class="e_input"><span><input name="ognl:'input_'+info.ATTR_CODE" id="ognl:'input_'+info.ATTR_CODE" jwcid="@TextField"
+																disabled="ognl:(info.READONLY==1)?true:false" paraCode="ognl:info.ATTR_CODE" initMethodName="ognl:info.ONCHANGE_JS"
+																commitMethodName="ognl:info.ONSUBMIT_JS" onfocusout="onValueChangeUnit(this);changeMemberValue(this);" value="ognl:info.ATTR_VALUE"
+																desc="ognl:info.ATTR_NAME" datatype="date" format="ognl:info.FORMAT" nullable="ognl:info.MANDATORY==0?'no':''" /> </span> </span>
+												</div>
+												<div jwcid="@Conditional" condition="ognl:info.TYPE != 'date'">
+													<span class="e_input"><span><input jwcid="@TextField" id="ognl:'input_'+info.ATTR_CODE" name="ognl:'input_'+info.ATTR_CODE"
+																disabled="ognl:(info.READONLY==1)?true:false" paraCode="ognl:info.ATTR_CODE" initMethodName="ognl:info.ONCHANGE_JS"
+																commitMethodName="ognl:info.ONSUBMIT_JS" onfocusout="onValueChangeUnit(this);changeMemberValue(this);" value="ognl:info.ATTR_VALUE"
+																desc="ognl:info.ATTR_NAME" format="ognl:info.FORMAT" datatype="ognl:info.TYPE" nullable="ognl:info.MANDATORY==0?'no':''" /> </span> </span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div jwcid="@Conditional" condition="ognl:info.REMARK != null">
+												<i jwcid="@Any" id="ognl:'PARAM_DESC_'+info.ATTR_CODE" title="ognl:info.REMARK" class="e_ico-help"></i>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 表格 结束 -->
+				</div>
+				<!-- 成员扩展信息 结束 -->
+			</div>
+		</div>
+		<input style="display: none" jwcid="@TextArea" name="productGoodInfos" id="productGoodInfos" value="ognl:productGoodInfos" desc="商产品信息" />
+		<!--存放商产品信息-->
+		<input style="display: none" jwcid="@TextArea" name="OLD_MEMBER_PARAMS" id="OLD_MEMBER_PARAMS" desc="成员的老属性" value="ognl:oldMemberParams" />
+		<!-- 提交 开始 -->
+		<div class="c_submit">
+			<button class="e_button-page-ok" onclick="checkMemOpValid()">
+				<i></i><span>确定</span>
+			</button>
+			<button class="e_button-page-cancel" onclick="setReturnValue('','')">
+				<i></i><span>取消</span>
+			</button>
+		</div>
+		<!-- 提交 结束 -->
+		<!-- 弹窗 结束 -->
+
+	</body>
+</html>

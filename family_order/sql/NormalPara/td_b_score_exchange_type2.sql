@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+SELECT EXCHANGE_TYPE_CODE paracode,EXCHANGE_TYPE paraname FROM td_b_score_exchange_type
+ WHERE (EPARCHY_CODE=:TRADE_EPARCHY_CODE or EPARCHY_CODE='ZZZZ')
+  AND start_date<=SYSDATE
+  AND end_date>=SYSDATE

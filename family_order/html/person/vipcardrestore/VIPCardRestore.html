@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>VIP备卡激活</title>
+<script language="JavaScript" src="person/vipcardrestore/scripts/VIPCardRestore.js"></script>
+<script language="JavaScript" src="scripts/csserv/component/auth/AuthCheck.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+	
+	<div class="c_box">
+	<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">路由信息</div>
+		</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 认证 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3 c_form-text" jwcid="routeInfosPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">路由类型：</span></span> 
+					<span class="e_select"><span><span>
+					<select 
+						jwcid="@Select" 
+						name="ROUTE_TYPE"
+						source="ognl:pageutil.getStaticList('ROUTERTYPE')" 
+						valueField="DATA_ID"
+						textField="DATA_NAME"
+						titleField="DATA_NAME"
+						value="ognl:commInfo.cond_ROUTE_TYPE"
+						 desc="路由类型"
+					/>
+				
+				</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">手机号码：</span>
+					<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" id="cond_MOBILENUM" name="cond_MOBILENUM" value="ognl:commInfo.cond_MOBILENUM" 
+							desc="手机号码" onBlur = "$.vipCardRestore.changeValue()" />
+					</span></span>
+				</li>
+				<li class="li">
+				<span class="label">省代码：</span>
+					<span class="e_select"><span><span>
+					<select 
+						jwcid="@Select" 
+						name="PROV_CODE"
+						source="ognl:pageUtil.getStaticList('COP_SI_PROV_CODE')" 
+						valueField="DATA_ID"
+						textField="DATA_NAME"
+						titleField="DATA_NAME"
+						value="ognl:commInfo.cond_PROV_CODE"
+						disabled="true"
+						 desc="路由类型"
+					/>
+					</span></span></span>
+				</li>
+				
+			
+		</ul>
+	</div>
+	<!-- 认证 结束 -->
+	<!-- 表单 结束 -->
+	<!-- 标题 开始 -->
+	</div>
+	
+	<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 认证 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3 c_form-text" jwcid="checkInfosPart@Part">
+		<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">客户类型：</span></span> 
+						<span class="e_select"><span><span>
+						<select 
+							jwcid="@Select" 
+							name="USER_IDTYPE"
+							source="ognl:pageUtil.getStaticList('USER_IDTYPE')" 
+							valueField="DATA_ID"
+							textField="DATA_NAME"
+							titleField="DATA_NAME"
+							value="ognl:commInfo.cond_USER_IDTYPE"
+							onchange="$.vipCardRestore.changeValue()"
+							 desc="客户类型"
+							 
+						/>
+						</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">客户号码：</span></span>
+					<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" id="cond_IDVALUE" onBlur = "$.vipCardRestore.changeIdValue()" name="cond_IDVALUE" value="ognl:commInfo.cond_IDVALUE" 
+							desc="客户号码" />
+					</span></span>
+				</li>
+				
+				<li class="li">
+				<span class="label"><span class="e_required">校验方式：</span></span> 
+					<span class="e_select"><span><span>
+						<select 
+							jwcid="@Select" 
+							name="cond_VERIFY_TYPE"
+							source="ognl:verifyType" 
+							valueField="PARAM_CODE"
+							textField="PARAM_NAME"
+							titleField="PARAM_NAME"
+							value="ognl:commInfo.PARAM_CODE"
+							onchange="$.vipCardRestore.checkVerify()"
+						/>
+					</span></span></span>
+				</li>
+				<span name="checkIdCardNumPart" id="checkIdCardNumPart">
+				<li class="li" >
+					<span class="label"><span class="e_required">证件类型：</span></span> 
+						<span class="e_select"><span><span>
+						<select 
+							jwcid="@Select" 
+							name="IDCARD_TYPE"
+							source="ognl:pageUtil.getStaticList('IBOSS_PSPT_TYPE_CODE')" 
+							valueField="DATA_ID"
+							textField="DATA_NAME"
+							titleField="DATA_NAME"
+							value="ognl:commInfo.cond_IDCARDTYPE"
+							 desc="证件类型"
+							 
+						/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" id="cond_IDCARDNUM" name="cond_IDCARDNUM" value="ognl:commInfo.cond_IDCARDNUM" desc="证件号码"/>	
+					</span></span>
+				</li>
+				</span>
+				
+				<span style="display:none" name="checkUserPWDPart" id="checkUserPWDPart">
+				<li class="li">
+					<span class="label"><span class="e_required">服务密码：</span></span>
+					<span class="e_elements">
+						<button class="e_button-right" id="IMG_USER_PASSWD" name="IMG_USER_PASSWD" title="密码小键盘输入" onclick="return $.authCheck.inputPassWD(this);"><span>小键盘</span></button>
+						<span class="e_input e_input-left"><span><input type="cond_USER_PASSWD" id="cond_USER_PASSWD" name="USER_PASSWD" value="" datatype="pinteger" desc="服务密码" maxLength="6" equalsize="6"/></span></span>
+					</span>
+				
+				</li>
+				</span>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="auth_BQQUERY" id="auth_BQQUERY" onclick="return $.vipCardRestore.queryCustInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 认证 结束 -->
+	<!-- 表单 结束 -->
+	<!-- 标题 开始 -->
+	</div>
+	
+	
+	<div class="c_box">
+	<div class="c_title c_title-2">
+		<div class="text">客户资料</div>
+	</div>
+	<!-- 标题 结束 -->
+		<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3 c_form-text" jwcid="custInfosViewPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span> 
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" disabled="true" value="ognl:custInfo.CUST_NAME" desc="客户名称"/>
+			</li>
+			<li class="li">
+				<span class="label">帐户余额：</span> 
+				<span class="text" jwcid="@Insert" name="custInfo_BALANCE" id="custInfo_BALANCE" disabled="true" value="ognl:custInfo.BALANCE" desc="帐户余额"/>
+			</li>
+			<li class="li">
+				<span class="label">欠费金额：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_DEBT_BALANCE" id="custInfo_DEBT_BALANCE" disabled="true" value="ognl:custInfo.DEBT_BALANCE" desc="欠费金额"/>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_IDCARDTYPE" id="custInfo_IDCARDTYPE"  
+					value="ognl:pageUtil.getStaticValue('IBOSS_PSPT_TYPE_CODE',custInfo.IDCARDTYPE)" desc="客户性别"/>
+			</li>
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_IDCARDNUM" id="custInfo_IDCARDNUM" disabled="true" value="ognl:custInfo.IDCARDNUM" desc="证件号码"/>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" disabled="true" value="ognl:custInfo.PSPT_ADDR" desc="证件地址"/>
+			</li>
+			<li class="li">
+				<span class="label">大客户等级：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_LEVEL" id="custInfo_LEVEL"  
+					value="ognl:pageUtil.getStaticValue('IBOSS_LEVEL',custInfo.LEVEL)" desc="大客户等级"/>
+			</li>
+			<li class="li">
+				<span class="label">大客户经理：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_USER_MGR" id="custInfo_USER_MGR" disabled="true" value="ognl:custInfo.USER_MGR" desc="大客户经理"/>
+			</li>
+			<li class="li">
+				<span class="label">大客户经理电话：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_USER_MGR_NUM" id="custInfo_USER_MGR_NUM" disabled="true" value="ognl:custInfo.USER_MGR_NUM" desc="大客户经理电话"/>
+			</li>
+			<li class="li">
+				<span class="label">用户品牌：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_BRAND_CODE" id="custInfo_BRAND_CODE"  
+					value="ognl:pageUtil.getStaticValue('INTERBOSS_BRAND',custInfo.BRAND_CODE)" desc="用户品牌"/>
+			</li>
+			<li class="li">
+				<span class="label">开户日期：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_OPEN_DATE" id="custInfo_OPEN_DATE" disabled="true" value="ognl:custInfo.OPEN_DATE" desc="开户日期"/>
+			</li>
+			<li class="li">
+				<span class="label">可兑换积分（M值）：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_SCOREE" id="custInfo_SCORE" disabled="true" 
+					value="ognl:custInfo.SCORE" desc="可兑换积分（M值）"/>
+			</li>
+			<li class="li">
+				<span class="label">PUK码：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_PUK" id="custInfo_PUK" disabled="true" value="ognl:custInfo.PUK" desc="PUK码"/>  
+			</li>
+			<li class="li">
+				<span class="label">用户状态：</span>
+				
+				<span class="text" jwcid="@Insert" name="custInfo_USER_STATE_CODESET" id="custInfo_USER_STATE_CODESET"  
+					value="ognl:pageUtil.getStaticValue('INTERBOSS_STATUS',custInfo.USER_STATE_CODESET)" desc="大客户等级"/>
+			</li>
+		</ul>
+	</div>
+	</div>
+	
+<!-- 区域 开始 -->
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">业务信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-6" jwcid="submitInfosPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">是否开通GPRS：</span>
+				<input name="custInfo_GPRS_TAG" id="custInfo_GPRS_TAG" jwcid="@Checkbox" type="checkbox"  checked="ognl:'0'.equals(custInfo.GPRS_TAG)?true:false" 
+	              value="ognl:custInfo.GPRS_TAG" disabled = "true"/>
+			</li>
+			<li class="li">
+				<span class="label">是否开通国际漫游：</span>
+				<input name="custInfo_ROAM_TYPE" id="custInfo_ROAM_TYPE" jwcid="@Checkbox" type="checkbox"  checked="ognl:'0'.equals(custInfo.ROAM_TYPE)?true:false" 
+	              value="ognl:custInfo.ROAM_TYPE" disabled = "true" />
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">原SIM卡卡号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="commInfo_OLDSIMNUM" name="commInfo_OLDSIMNUM" value="ognl:custInfo.OLDSIMNUM" 
+					desc="原SIM卡卡号" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">备SIM卡卡号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="commInfo_NEWSIMNUM" name="commInfo_NEWSIMNUM" value="ognl:custInfo.NEWSIMNUM" 
+					desc="备SIM卡卡号" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<!-- 提交 结束 -->
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">费用信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+		<div class="c_table c_table-row-5" jwcid="freeInfosPart@Part">
+			<table jwcid="@Table" id="freeInfoTable" name="freeInfoTable">
+				<thead>
+				       <tr>
+							<th>业务类型标识</th>
+							<th>业务名称</th>
+						</tr>
+				</thead>
+				<tbody>
+					 <tr>
+					 	<td class="e_center"><span class="e_required">手续费(元)</span></td>
+					 	<td class="e_center">
+						 	<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" id="OPER_FEE" name="OPER_FEE" value="ognl:commInfo.OPER_FEE" 
+								desc="手续费" datatype="numeric"/>
+							</span></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="e_center">预存话费</td>
+					 	<td class="e_center">
+						 	<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" id="FEE2" name="FEE2" value="ognl:commInfo.LONG_SERVICE_ID" 
+								desc="预存话费" datatype="numeric"/>
+							</span></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="e_center">话费押金</td>
+					 	<td class="e_center">
+						 	<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" id="FEE3" name="FEE3" value="ognl:commInfo.LONG_SERVICE_ID" 
+								desc="话费押金" datatype="numeric"/>
+							</span></span>
+						</td>
+					 </tr>
+					 <tr>
+						<td class="e_center">合计金额</td>
+					 	<td class="e_center">
+						 	<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" id="FEE4" name="FEE4" value="ognl:commInfo.LONG_SERVICE_ID" 
+								desc="合计金额" datatype="numeric"/>
+							</span></span>
+						</td>
+					 </tr>
+					 <tr>
+						<td class="e_center">服务费</td>
+					 	<td class="e_center">
+						 	<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" id="FEE5" name="FEE5" value="ognl:commInfo.LONG_SERVICE_ID" 
+								desc="合计金额" datatype="numeric"/>
+							</span></span>
+						</td>
+					 </tr>
+				 </tbody>
+			</table>
+		</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit"  beforeAction="$.vipCardRestore.onTradeSubmitApp()" isReset="true" area="routeInfosPart,checkInfosPart,submitInfosPart,freeInfosPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+
+
+<!-- 区域 结束 -->
+<span id="hiddenPart" style="display:none">
+	<input type="hidden"  id="idcardtypehidden"  name="idcardtypehidden" />
+</span>
+</div></div></body>
+</html>

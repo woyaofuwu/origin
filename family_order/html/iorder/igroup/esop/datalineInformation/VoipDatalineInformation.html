@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" src="iorder/igroup/esop/datalineInformation/script/datalineInformation.js"></script>
+	<script jwcid="@Script" src="iorder/igroup/esop/datalineInformation/script/voipDatalineInformation.js"></script>
+	<style type="text/css">
+		.c_table table td input[type="text"] {
+			width: 30%
+		}
+	</style>
+</head>
+<body jwcid="@Body">
+    <div class="l_float e_phone-infoTop">
+		<!-- 查询模版 开始 -->
+		<div class="l_query  l_query-submit">
+			<div class="l_queryFn">
+				<!-- 功能 开始 -->
+				<div class="c_fn">
+					<div class="right">
+						<div class="text">资管交互界面</div>
+					</div>
+					<div class="left">
+						<button type="button" onclick="barchRestartSend()"><span class="e_ico-reset"></span><span>批量重派</span></button>
+						<button type="button" onclick="renewSheet()"><span class="e_ico-reset"></span><span>重派</span></button>
+						<button type="button" id ="barchFile"  onclick="barchFile()"><span class="e_ico-flow"></span><span>批量归档</span></button>
+						<button type="button" id ="closeSheet"  onclick="closeSheet()"><span class="e_ico-flow"></span><span>归档</span></button>
+					</div>
+				</div>
+				<!-- 功能 结束 -->
+			</div>
+			<div jwcid="QueryListPart@Part" class="l_queryResult" style="height:80%">
+			<div class="c_table" jwcid="QryResultPart@Part" element="div">
+			<table name="myTable" id="myTable" class="c_table c_table-checkbox" jwcid="@Table">
+						<thead>
+							<tr>
+								<th col="TRADE_ID_SUB">
+					 				 <th class="e_center"><input type="checkbox" id="checkbox" name="checkbox" ontap="checkedAll('TRADES', this.checked)" class="e_checkbox"/></th>					  
+								</th>
+								<th class="e_center" col="VALUEDESC">工单状态说明</th>
+								
+								<th class="e_center" col="EOMS_TITLE">主题</th>
+								<th class="e_center" col="IBSYSID">工单流水号</th>
+								<th class="e_center" col="PRODUCT_NO">专线实例号</th>
+								<th class="e_center" col="SERIALNO">ESOP工单编号</th>
+								<th class="e_center" col="EOMS_CUSTOMNO">集团编号</th>
+								<th class="e_center" col="BUSI_SIGN">专线类型</th>
+								<th class="e_center" col="ZJ">
+									
+									             <div class="label required">中继号填写</div>
+									    
+							    </th>
+								<th class="e_center" col="RECORD_NUM" style="display:none" >专线条数</th>
+								<th class="e_center" col="NODE_ID" style="display:none" >当前节点ID</th>
+								<th class="e_center" col="PARAMVALUE" style="display:none" >工单状态</th>
+								<th class="e_center" col="PRODUCT_ID" style="display:none" >产品编码</th>
+								<th class="e_center" col="DEAL_TYPE_1" style="display:none" >业务类型</th>
+								<th class="e_center" col="DEAL_TYPE">业务类型</th>
+								<th class="e_center" col="EOMS_ACCEPTTIME">定单受理时间</th>
+								<th	class="e_center" col="EOMS_OPDESC">综资驳回原因</th>
+							<!-- 	<th class="e_center">归档</th>
+								<th	class="e_center">重派</th> -->
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td>
+			   					 <td class="e_center"><input type="checkbox" id="TRADES" name="TRADES" jwcid="@Any"/></td>	
+								</td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.VALUEDESC" /></td>	
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.EOMS_TITLE" /></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.IBSYSID" /></td>	
+								<td class="e_center" name="productNo"><span jwcid="@Insert" value="ognl:info.PRODUCT_NO"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.SERIALNO" /></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.EOMS_CUSTOMNO" /></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.BUSI_SIGN" /></td>
+								<td class="e_center">
+											 <input type="text" jwcid="@Any"  name="ZJ" id="ognl:rowIndex +'ZJ'" value="ognl:info.ZJ" desc="中继号" style="width:100%;"/>
+								</td>
+								<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:info.RECORD_NUM" /></td>
+								<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:info.NODE_ID" /></td>
+								<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:info.PARAMVALUE" /></td>
+								<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" /></td>	
+								<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:info.DEAL_TYPE" /></td>		
+								
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'EOP_SUBSCRIBE_TYPE',info.DEAL_TYPE})" raw="false"/></td>	
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.EOMS_ACCEPTTIME" /></td>	
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.EOMS_OPDESC" /></td>
+							<!-- 	 <td data-title="归档" class="fn e_center" ontap='closeSheet(this)' jwcid="@Any"
+                                    IBSYSID="ognl:info.IBSYSID" PRODUCT_NO="ognl:info.PRODUCT_NO" RECORD_NUM="ognl:info.RECORD_NUM"
+                                    GROUP_ID="ognl:info.EOMS_CUSTOMNO"  DEAL_TYPE="ognl:info.DEAL_TYPE" NODE_ID="ognl:info.NODE_ID"
+                                    PRODUCT_ID="ognl:info.PRODUCT_ID">
+                                    <span class=e_ico-ok></span>
+                                </td>
+                                <td data-title="重派" class="fn e_center" ontap='renewSheet(this)' jwcid="@Any"
+                                    IBSYSID="ognl:info.IBSYSID" PRODUCT_NO="ognl:info.PRODUCT_NO" PRODUCT_ID="ognl:info.PRODUCT_ID"
+                                    DEAL_TYPE="ognl:info.DEAL_TYPE" NODE_ID="ognl:info.NODE_ID"   >
+                                    <span class="e_ico-reset"></span>
+                                </td> -->
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 提交 开始 -->
+			<div class="l_querySubmit" style="width:auto; left:0.71em; right:0.71em; margin-left:0; text-align:center;" jwcid="querySubmit@Part">
+				<div class="c_submit c_submit-center">
+					<button class="e_button-l e_button-r e_button-navy" type="button" ontap="window.reloadNav();">重置</button>
+					<button class="e_button-l e_button-r e_button-green" id="submitButton" type="button" ontap="submit()">提交</button>
+				</div>
+			</div>
+			<!-- 提交 结束 -->
+		</div>
+		<!-- 查询模版 结束 -->
+		 <!-- 隐藏域 开始 --> 
+		<input style="display: none" jwcid="@Hidden" id="ATTR_NEW_VALUE" name="ATTR_NEW_VALUE" value="ognl:condition.ATTR_NEW_VALUE"/>
+		<!-- 隐藏域 结束 -->
+		
+		
+	</div>
+	
+</body>
+
+</html>

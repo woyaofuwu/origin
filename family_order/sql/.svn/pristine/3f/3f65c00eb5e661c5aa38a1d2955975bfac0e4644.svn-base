@@ -1,0 +1,2 @@
+INSERT INTO tl_b_recent_cust_contact(staff_id,cust_id,cust_contact_id,start_date,dead_line)
+ VALUES(:STAFF_ID,TO_NUMBER(:CUST_ID),TO_NUMBER(:CUST_CONTACT_ID),TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:DEAD_LINE,'YYYY-MM-DD HH24:MI:SS'))

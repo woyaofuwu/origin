@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'ResValuePrice' KEY, eparchy_code VALUE1, res_type_code VALUE2, VALUE_CODE VALUE3, VALUE_PRICE / 100 VRESULT
+  FROM TD_M_RESVALUE
+ WHERE 'ResValuePrice' = :KEY

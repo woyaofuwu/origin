@@ -1,0 +1,1 @@
+SELECT to_char(to_date(:START_DATE,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd') START_DATE FROM dual

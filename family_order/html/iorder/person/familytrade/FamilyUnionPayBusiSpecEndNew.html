@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>统一付费特殊终止</title>
+	<script language="JavaScript" src="iorder/person/familytrade/scripts/FamilyUnionPayBusiSpecEndNew.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/iorder/icsserv/component/person/usercheck/UserCheck.js"></script>
+</head>
+<body jwcid="@Body">
+	
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<!-- 认证 开始 -->
+			<div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="325" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+			<!-- 认证 结束 -->
+			<div class="c_space"></div>
+			<!-- 标题 开始 -->
+			<!-- 标题 结束 -->
+			<div jwcid="EditPart@Part">
+				
+			</div>
+			<!-- 标题 开始 -->
+			<div jwcid="curMemberCountPart@Part" class="c_title">
+				<div class="text">
+					已绑定成员号码<span class="e_space"></span><span jwcid="@Insert" name="FMY_CUR_COUNT"
+						class="e_tag e_tag-r e_tag-red" id="FMY_CUR_COUNT"
+						value="ognl:commInfo.FMY_CUR_COUNT" raw="false" ></span>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 列表 开始 -->
+			<div jwcid="memberSnPart@Part" id="memberSnPart" class="c_list c_list-s c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li jwcid="@Foreach" class="memberSnList" name="memberSnList" id="ognl:'memberSnList_' + rowIndex" source="ognl:infos"
+						value="ognl:info" index="ognl:rowIndex" idx="ognl:rowIndex" element="li">
+						<div class="main memberSnValue" id="ognl:'memberSnValue_' + rowIndex" jwcid="@Any">
+							<div class="title"><span id="ognl:'SERIAL_NUMBER_B_T_' + rowIndex" jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" /></div>
+							<div class="content">开始时间：<span id="ognl:'START_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.START_DATE)" /></div>
+							<div class="content">结束时间：<span id="ognl:'END_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.END_DATE)" /></div>
+							<input jwcid="@Hidden" name="ORG_END_DATE" id="ognl:'ORG_END_DATE_' + rowIndex" value="ognl:info.END_DATE" />
+							<input jwcid="@Hidden" name="SERIAL_NUMBER_B" id="ognl:'SERIAL_NUMBER_B_' + rowIndex" value="ognl:info.SERIAL_NUMBER_B" desc="副号码" />
+							<input jwcid="@Hidden" name="START_DATE" id="ognl:'START_DATE_' + rowIndex" value="ognl:info.START_DATE" />
+							<input jwcid="@Hidden" name="END_DATE" id="ognl:'END_DATE_' + rowIndex" value="ognl:info.END_DATE" />
+							<input jwcid="@Hidden" name="RSRV_TAG1" id="ognl:'RSRV_TAG1_' + rowIndex" value="ognl:info.RSRV_TAG1NAME" />
+							<input jwcid="@Hidden" name="MODIFY_TAG" id="ognl:'MODIFY_TAG_' + rowIndex" value="ognl:info.MODIFY_TAG" />
+							<input jwcid="@Hidden" name="SELF_START_DATE" id="ognl:'SELF_START_DATE_' + rowIndex" value="ognl:info.SELF_START_DATE" />
+							<input jwcid="@Hidden" name="NOW_ACCT_DAY" id="ognl:'NOW_ACCT_DAY_' + rowIndex" value="ognl:info.ACCT_DAY" />
+							<input jwcid="@Hidden" name="checkTag" id="ognl:'checkTag_' + rowIndex" />
+						</div>
+						<input jwcid="@Hidden" name="ognl:'POP_SERIAL_NUMBER_B_'+ rowIndex" id="ognl:'POP_SERIAL_NUMBER_B_' + rowIndex" islocal="false" cachesn="false" isauth="true" checktag="11000" tradeaction="ognl:'checkMember(' + rowIndex + ')'" bindevent="true" desc=""/>
+						<div style="display:none" jwcid="@Any" class="fn" id="ognl:'pwdValidBt_' + rowIndex" idx="ognl:rowIndex" onclick="pwdValidate(this);" tip="校验"><span class="e_ico-check"></span></div>
+						<div style="display:none" jwcid="@Any" class="fn" id="ognl:'sucMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="sucMeb(this);" tip="校验成功"><span class="e_ico-ok"></span></div>
+						<div jwcid="@Any" class="fn" id="ognl:'delMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="delMeb(this);" tip="删除"><span class="e_ico-delete"></span></div>
+						<div style="display:none" jwcid="@Any" class="fn" id="ognl:'resetMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="resetMeb(this);" tip="恢复"><span class="e_ico-reset"></span></div>
+						<div style="display:none" jwcid="@Any" class="fn" id="ognl:'lockMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="lockMeb(this);" tip="锁定"><span class="e_ico-lock"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 列表 结束 -->
+			<div jwcid="HiddenPart@Part" style="display:none">
+				<input jwcid="@Hidden" id="START_CYCLE_ID" name="START_CYCLE_ID" value="ognl:commInfo.START_CYCLE_ID" desc="" />
+				<input jwcid="@Hidden" id="END_CYCLE_ID" name="END_CYCLE_ID" value="ognl:commInfo.END_CYCLE_ID_LAST_MONTH" desc="" />
+				<input jwcid="@Hidden" id="END_DATE_THIS_ACCT" name="END_DATE_THIS_ACCT" value="ognl:commInfo.END_DATE_THIS_ACCT_LAST_MONTH" desc="" />
+				<input jwcid="@Hidden" id="COMM_START_DATE" name="START_DATE" value="ognl:commInfo.START_DATE" desc="" />
+				<input jwcid="@Hidden" id="COMM_END_DATE" name="END_DATE" value="ognl:commInfo.END_DATE" desc="" />
+				<input jwcid="@Hidden" id="MAIN_ACCT_DAY" name="END_DATE" value="ognl:commInfo.MAIN_ACCT_DAY" desc="" />
+				<input jwcid="@Hidden" id="LAST_TIME_THIS_MONTH" name="LAST_TIME_THIS_MONTH" value="ognl:commInfo.LAST_TIME_THIS_MONTH_LAST_MONTH" desc="" />
+				<input jwcid="@Hidden" id="MEB_LIM" name="MEB_LIM" value="ognl:commInfo.MEB_LIM" desc="限制数量s" />
+				<input type="hidden" jwcid="@Hidden"  id="ENDDATE_FLAG" name="ENDDATE_FLAG" value="1"  desc=""/>
+			</div>
+			<input jwcid="@Hidden" name="POP_FIELD_NAME" id="POP_FIELD_NAME" value=""/>
+		</div>
+		<div class="c_space"></div>
+		<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="submitTrade()"
+			params="" listener="" refreshPart="" area="AuthPart,EditPart,HiddenPart"
+			isReset="true" element="div" /><br>
+		<div><span><b><span>提示:</span></b><span style="color:#FF6633" >取消统一付费后需等待账单费用重算后才能办理销号，否则将导致销号后的用户欠费。</span></span></div><br/>
+	</div>
+</body>
+</html>

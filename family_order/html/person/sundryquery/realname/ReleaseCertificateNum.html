@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>证件号码预占解除</title>
+<script language="JavaScript" src="person/sundryquery/realname/scripts/releasecertificatenum.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">证件号码预占解除</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3" jwcid="psptPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">证件类型：</span></span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')" value = "0" desc="证件类型" nullable="no" />
+				</span></span></span>
+			</li>
+				<li class="li">
+				<span class="label"><span class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" desc="证件号码" value = "" nullable="no" />
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		<input type="hidden" id="reInfo" name="reInfo" value="" afterAction="reInfoAction()"/>
+		<input jwcid="@Any" type="hidden" name="editType" id="editType" value=""/>
+	</div>
+	<!-- 表单 结束 -->
+	<div class="c_title c_title-2">
+		 <div class="text">查询结果</div>
+			 <div class="fn">				
+				<button  class="e_button-right" onClick="delWasteWordInfo($(this))"><i class="e_ico-delete"></i><span>解除预占</span> </button>
+			</div>
+  	</div>
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table ">
+		<table jwcid="@Table" id="listFormTable" name="listFormTable">
+			<thead>
+				<tr>
+						<th col="radioInfo"><input type=radio id="SEQ_str" name="SEQ_str" jwcid="@Any" onclick="checkedAll('SEQ', checked)"/></th>
+						<th col="SEQ">操作流水号</th>
+						<th col="CUSTOMER_NAME">客户姓名</th>
+						<th col="ID_CARD_TYPE">证件类型</th>
+						<th col="ID_CARD_NUM">证件号码</th>
+						<th  col="P_SEQ">预占凭证</th>
+						<th col="START_TIME">开始时间</th>
+						<th col="END_TIME">结束时间</th>
+						<th col="UPDATE_TIME">更新时间</th>
+						<th col="REMARK">备注</th>
+				</tr>
+			</thead>
+			<tbody>
+			    <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><input type="radio" id="SEQ" name="SEQ" jwcid="@Any" value="ognl:info.SEQ"/></td>
+						<td ><span jwcid="@Insert" value="ognl:info.SEQ" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUSTOMER_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE2', info.ID_CARD_TYPE)"  /></td>			
+					    <td><span jwcid="@Insert" value="ognl:info.ID_CARD_NUM" raw="true"/></td>
+					    <td ><span jwcid="@Insert" value="ognl:info.P_SEQ" raw="true"/></td>			
+						<td><span jwcid="@Insert" value="ognl:info.START_TIME" format="ognl:getDateFormat('yyyy-MM-dd HH:mm:ss')" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.END_TIME" format="ognl:getDateFormat('yyyy-MM-dd HH:mm:ss')" raw="true"/></td>			
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME"  format="ognl:getDateFormat('yyyy-MM-dd HH:mm:ss')" raw="true"/></td>		
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+			    </tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+<div jwcid="@NavBar" name="queryNav" id="queryNav" cond="QueryCondPart" part="QueryListPart" listener="queryList" pageSize="10" count="ognl:count"></div>		
+	
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div>
+
+
+</div></div>
+</body>
+</html>

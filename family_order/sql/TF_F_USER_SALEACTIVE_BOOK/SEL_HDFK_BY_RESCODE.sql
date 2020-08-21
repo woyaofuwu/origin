@@ -1,0 +1,5 @@
+select *
+  from TF_F_USER_SALEACTIVE_BOOK
+ where RES_CODE = :RES_CODE
+   AND DEAL_STATE_CODE = '0'
+   and BOOK_TYPE='0'

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnetfeereg/cttqryfeereg/scripts/cttqryfeereg.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">银行上缴款登记查询(铁通)</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form"  jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">登记日期(起始)：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="START_DATE" id="START_DATE" value="ognl:cond.START_DATE" desc="登记日期(起始)"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">登记日期(终止)：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="END_DATE" id="END_DATE" value="ognl:cond.END_DATE" desc="登记日期(终止)"/></span></span>
+			</li>
+			<li class="li">
+					<span class="label">审核状态：</span>
+					<span class="e_select"><span><span>
+						 <select jwcid="@Select" name="cond_STATE" id="cond_STATE" value="ognl:cond.cond_STATE"  nullable="no"     
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('FEEREG_STATE')"  desc="审核状态"/>
+					</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return qryBankFeeRegCTT()";><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="ResultDataPart@Part">
+		<div class="c_scroll c_scroll-x">
+			<div class="c_table c_table-row-10">
+				<table>
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>登记员工</th>
+							<th>登记日期</th>
+							<th>缴款方式</th>
+							<th>上级银行</th>
+							<th>银行名称</th>
+							<th>日常营业上缴款</th>
+							<th>TD业务上缴款</th>
+							<th>卡类业务上缴款</th>
+							<th>合计</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >	
+							<td>	
+								<a jwcid="@Redirect" value="ognl:info.LOG_ID" log_id="ognl:info.LOG_ID"
+								onclick="openNav('银行上缴款登记(铁通)','broadband.cttnet.cttnetfeereg.cttfeereg.CttBankFeeReg','initBankFeeRegCTT','LOG_ID='+$(this).attr('log_id'))"/>
+							</td>				
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.REG_STAFF_ID)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.REG_DATE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BANKFEE_PAYTYPE', info.RSRV_TAG1)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_SUPERBANK_CTT', 'SUPER_BANK_CODE', 'SUPER_BANK', info.RSRV_STR1)"" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_BANK_CTT', 'BANK_CODE', 'BANK', info.RSRV_STR2)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.FEETYPE_T2/100)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.FEETYPE_T3/100)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.FEETYPE_T4/100)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.FEETYPE_T5/100)" raw="false"/></td>
+							</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="cttinfo" id="cttinfo" listener="qryBankFeeRegCTT" pageSize="10" cond="QueryPart" part="ResultDataPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+--IS_CACHE=Y
+--IS_CACHE=N
+SELECT C.SPEC_AREA_ID,
+       C.BIZ_AREACODE,
+       C.REMARK, --校园卡名称
+       D.LAC_NAME, --基站小区名称            
+       C.LAC, --基站小区编码
+       C.CELL_ID --基站编码 
+  FROM TD_B_SPECAREA_COMP C, TD_LAC D
+ WHERE C.LAC = D.LAC
+   AND C.CELL_ID = D.CELL_ID
+   AND  c.spec_area_id=:SPEC_AREA_ID
+   AND (C.LAC = :LAC OR :LAC IS NULL)
+   AND (C.CELL_ID = :CELL_ID  OR :CELL_ID IS NULL)      
+   AND SYSDATE BETWEEN C.START_DATE AND C.END_DATE

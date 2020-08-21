@@ -1,0 +1,2 @@
+INSERT INTO tf_a_foregiftlog(charge_id,user_id,foregift_code,money,cancel_tag,update_time,update_staff_id,update_depart_id,cancel_time,cancel_staff_id,cancel_depart_id)
+ VALUES(TO_NUMBER(:CHARGE_ID),TO_NUMBER(:USER_ID),:FOREGIFT_CODE,TO_NUMBER(:MONEY),:CANCEL_TAG,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,TO_DATE(:CANCEL_TIME,'YYYY-MM-DD HH24:MI:SS'),:CANCEL_STAFF_ID,:CANCEL_DEPART_ID)

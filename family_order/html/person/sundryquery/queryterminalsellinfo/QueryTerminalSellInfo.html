@@ -1,0 +1,196 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head jwcid="@Head">
+    <title>终端销售政策查询</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script jwcid="@Script"  src="person/sundryquery/queryterminalsellinfo/scripts/QueryTerminalSellInfo.js" />
+  </head>
+  
+  <body jwcid="@Body">
+  	<div class="m_wrapper"><div class="m_wrapper2">
+    <div class="c_box">
+    <div jwcid="QueryCondPart@Part">
+    	<div class="c_title">
+    		<div class="text">按机型查询</div>
+    	</div>
+    	<div class="c_form c_form-col-2 c_form-label-5" >
+			<ul class="ul">
+			    <li class="li">
+		            <span class="label"><span class="e_required">起始价格：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="cond_PRICE_RANGE_START" id="cond_PRICE_RANGE_START"
+									source="ognl:page.pageutil.getStaticList('TERMINAL_PRICE_RANGE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:condition.cond_PRICE_RANGE_START"
+									desc="起始价格"
+                        />
+	                </span></span></span>
+		        </li>
+		        <li class="li">
+		            <span class="label"><span class="e_required">最高价格：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="cond_PRICE_RANGE_END" id="cond_PRICE_RANGE_END"
+									source="ognl:page.pageutil.getStaticList('TERMINAL_PRICE_RANGE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:condition.cond_PRICE_RANGE_END"
+									desc="最高价格"
+                        />
+	                </span></span></span>
+		        </li>
+		         
+				<li class="li">
+		            <span class="label"><span class="e_required">终端厂商：</span></span>
+					<span class="e_select"><span><span>
+		               	<select jwcid="@Select" name="cond_TERMINAL_SRC_CODE" id="cond_TERMINAL_SRC_CODE"
+									source="ognl:page.pageutil.getStaticList('QTERMINAL_SRC_CODE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+		                			value="ognl:condition.cond_TERMINAL_SRC_CODE"
+									desc="终端厂商"
+                        />
+	                </span></span></span>
+		        </li>
+		        
+		        <li class="li">
+		            <span class="label">查询机型：</span>
+		            <span class="e_input"><span><input type="text" id = "TERMINAL_TYPE" name = "TERMINAL_TYPE"/></span></span>
+		        </li>
+		        <li class="li">
+		        </li>
+		        <li class="li">
+		            <span class="label"></span>
+					<span class="inputArea"><span><span>
+					     <button type="button" class="e_button-form" name="check_search" id="check_search"
+					     onclick="checkStepByPhoneInfo();"><span>校验查询</span></button>
+	                </span></span></span>
+		        </li>
+		        <li class="li" id="TerminalPart">
+					<span class="label">终端型号：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="TERMINAL_SEARCH" id="TERMINAL_SEARCH"
+								source="ognl:products"
+								textField="GOODS_EXPLAIN" valueField="DEVICE_MODE_CODE"
+	                			value="ognl:info.TERMINAL_SEARCH"
+	                			onchange="checkTerminalSearch(this)"
+								desc="终端型号"
+                    />
+	                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">营销方案：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="SALE_PRODUCT_ID" id="SALE_PRODUCT_ID"
+								source="ognl:products"
+								textField="PRODUCT_NAME" valueField="PRODUCT_ID"
+	                			value="ognl:info.PRODUCT_ID"
+	                			onchange=""
+								desc="营销方案"
+                    />
+	                </span></span></span>
+				</li>
+				</ul> 
+				<div class="submitPlace"></div>
+				<div class="submit">
+				<button class="e_button-form" id="query" name="query" onclick="return queryPriceInfo()">
+					<i class="e_ico-search"></i><span>查询</span>
+				</button>
+				</div>
+				</div>   
+				 <!-- -->
+				 <div class="c_title">
+    				<div class="text">按活动类型查询</div>
+    			 </div>
+				 <div class="c_form c_form-col-2 c_form-label-4" > 
+				 <ul class="ul">
+				 	<li class="li">
+						<span class="label">是否生效：</span>
+							<input type="checkbox" id="CampCheck" name="CampCheck" onclick="toggleCheck()" />
+					</li>
+					<li class="li">
+		        	</li>
+					<li class="li">
+					<span class="label">活动类型：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="SALE_CAMPN_TYPE" id="SALE_CAMPN_TYPE"
+								source="ognl:products"
+								textField="PRODUCT_NAME" valueField="PRODUCT_ID"
+		                		value="ognl:info.PRODUCT_ID"
+		                		onchange="getTerminalByID(this)"
+								desc="活动类型"
+                    />
+	                </span></span></span>
+				</li>
+				<li class="li" id="TerminalPart1" >
+					<span class="label">终端型号：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="TERMINAL_SEARCH1" id="TERMINAL_SEARCH1"
+								source="ognl:products"
+								textField="GOODS_EXPLAIN" valueField="DEVICE_MODE_CODE"
+	                			value="ognl:info.TERMINAL_SEARCH1"
+	                			onchange=""
+								desc="终端型号"
+                    />
+	                </span></span></span>
+				</li>
+				<li></li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" id="query1" name="query1" onclick="return queryPriceInfo()">
+					<i class="e_ico-search"></i><span>查询</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+			<div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="99340"
+				config="export/sundryquery/QueryTerminalsList.xml" fileName="终端销售政策查询" 
+				cond="QueryCondPart" />
+			</div>		
+		</div>
+		
+		<!-- 表格区开始-->
+		<div jwcid="results@Part" element="div">
+		        <div class="c_title c_title-2">
+		  	     </div>
+		            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="resultsTable" id="resultsTable">
+						<thead>
+						<tr>							
+							<th datatype="string">产品名称</th>
+							<th datatype="string">包名称</th>
+							<th datatype="string">裸机销售价</th>
+							<th datatype="string">购机款</th>
+							<th datatype="string">消费档次</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:terminals" value="ognl:terminal" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">				
+							<td><span jwcid="@Insert" value="ognl:terminal.PRODUCT_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:terminal.PACKAGE_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:terminal.SALE_PRICE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:terminal.FEE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:terminal.GOODS_NAME" raw="true"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+			<!-- 翻页 开始 -->
+			<div jwcid="@NavBar" name="qryInfoNav" id="qryInfoNav" cond="QueryCondPart" part="results" listener="queryPriceInfo" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+			
+			<!--button class="l_ml" type="button" onclick="$.printArea('results','终端销售价格查询','60%')">
+					<i class="e_ico-print"></i><span>打印</span></button-->
+		  </div>
+		  <!-- 表格区结束 -->
+    </div>
+  </body>
+</html>
+<script language="JavaScript">
+   $(document).ready(function(){
+		initBtn();
+   });
+</script>
+

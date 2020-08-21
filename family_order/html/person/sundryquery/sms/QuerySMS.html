@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>短信查询</title>
+<script jwcid="@Script" src="person/sundryquery/sms/scripts/querysms.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">短信查询</div>
+	</div>
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="QuerySmsPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" 
+						 desc="手机号码" nullable="no" datatype="mbphone" inModeCode="ognl:getVisit().getInModeCode()"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+				        <select jwcid="@Select" name="cond_QUERY_MODE" id="cond_QUERY_MODE" source="ognl:pageutil.getStaticList('SALEQUERYSMS_QUERYMODE')"
+	                                    addDefault="false" value="ognl:condition.cond_QUERY_MODE" disabled="false" desc="查询方式" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" onchange="resultAreaCon();"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" desc="起始时间"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" desc="结束时间"/>
+					</span></span>
+				</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return querySms();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 条件结束-->
+    
+  <!-- 表格开始 -->
+	<div jwcid="QueryListPart@Part"  id="QueryListPart" style="display:none" element="div">
+	  <div id="RefreshTable10658666"  jwcid="RefreshTable10658666@Part" optimize="true">
+		<div id="10658666area" class="c_scroll c_scroll-x style='height:auto'">
+		    <div class="c_title c_title-2">
+			 <div class="text">查询结果</div>
+				 <div class="fn">
+				    <div class="button" jwcid="@Conditional" condition="ognl:infos10658666.size > 0">
+					  <span jwcid="@Export" name="exportFileNon10086" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100998"
+							  config="export/sundryquery/QuerySMS_Non_10086.xml" fileName="短信查询信息导出" cond=QuerySmsPart/> 
+			        </div>
+			     </div>
+	  	     </div>
+			<div class="c_table ">
+				<table jwcid="@Table"  name="Non10086Table" id="Non10086Table">
+					<thead>
+					<tr>
+						<th id="id_col_queryuipbtn" style="display:none" >调用接口情况查询按钮</th>
+						<th>业务请求号码</th>
+						<th>请求指令</th>
+						<th>目标端口</th>
+						<th>短信下发端口</th>
+						<th>业务请求时间</th>
+						<th>业务受理时间</th>
+						<th>回复信息</th>
+						<th>信息流水</th>					
+						<th>月份标识</th>	
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos10658666" value="ognl:info10658666" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td>
+							<div class="e-button" >
+								<a jwcid="@Redirect" value="调用接口情况查询" para="ognl:info10658666.PARA_CODE7" onclick="openUipQuery($(this).attr('para'));" class="e_bLinkFinishNB"/>
+							</div>
+						</td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE2" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE3" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_AIM_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE4" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE6" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE7" raw="true"/></td>
+						<td class="e_lSet"><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE5" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE1" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10658666.PARA_CODE8" raw="true"/></td>
+							
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+	          <span jwcid="@NavBar" name="pageNavNon10086" cond="QuerySmsPart" pageSize="10" listener="querySms" part="RefreshTable10658666" count="ognl:pageCount"/>
+	        <!-- 翻页 结束 -->
+		</div>
+	  </div>
+	  <div id="RefreshTable10086" jwcid="RefreshTable10086@Part" optimize="true">
+	    <div id="10086area" class="c_scroll c_scroll-x style='height:auto'">
+	        <div class="c_title c_title-2">
+			 <div class="text">查询结果</div>
+				 <div class="fn">
+				    <div class="button" jwcid="@Conditional" condition="ognl:infos10086.size > 0">
+					  <span jwcid="@Export" name="exportFile10086" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100998"
+							  config="export/sundryquery/QuerySMS_089810086.xml" fileName="短信查询信息导出" cond=QuerySmsPart/> 
+					</div>
+			 </div>
+	  	    </div>
+			<div class="c_table ">
+				<table jwcid="@Table" name="10086Table" id="10086Table">
+					<thead>
+					<tr>
+						<th>接收号码</th>
+						<th>短信下发端口</th>
+						<th>信息生成时间</th>			
+						<th>发送时间</th>
+						<th>信息内容</th>
+						<th>备注</th>
+						<th>发送工号</th>
+						<th>发送部门</th>
+						<th>处理状态</th>	
+						<th>发送渠道</th>					
+						<th>月份</th>
+						<th>信息流水</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos10086" value="ognl:info10086" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE2" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE9" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE6" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE4" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE3" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE10" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE5" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info10086.PARA_CODE11)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE7" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE12" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE8" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info10086.PARA_CODE1" raw="true"/></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+	         <span jwcid="@NavBar" name="pageNav10086" cond="QuerySmsPart" pageSize="10" listener="querySms" part="RefreshTable10086" count="ognl:pageCount"/>
+	       <!-- 翻页 结束 -->
+		</div>
+	  </div>
+	</div>
+	<!-- 表格结束 -->
+</div>
+<!-- 区域结束 -->
+</div></div>
+</body>
+</html>

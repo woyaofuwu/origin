@@ -1,0 +1,11 @@
+select D.SHOPPING_CART_ID,
+      D.CUST_ID,
+      D.USER_ID,
+      D.DISCNT_RULE_ID,
+      D.STATE,
+      D.TRADE_STAFF_ID,
+      TO_CHAR(D.ACCEPT_DATE, 'yyyy-mm-dd hh24:mi:ss') ACCEPT_DATE
+ from TF_B_SHOPPING_CART D
+where D.TRADE_STAFF_ID = :TRADE_STAFF_ID
+  and D.USER_ID = :USER_ID
+  and D.STATE = :STATE

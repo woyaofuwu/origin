@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>点对点短信屏蔽号码管理</title>
+<script language="JavaScript" jwcid="@Script" src="person/rubbishsmsmgr/scripts/manageforbiddenpoint.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">点对点短信屏蔽号码管理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-10 c_form-col-3" jwcid="QueryCondPart@Part">
+	<ul class="ul">
+			<li class="li">
+				<span class="label">受限主叫号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="cond_FORBIDDEN_NUM" name="cond_FORBIDDEN_NUM"  
+						desc="号码"	value="ognl:editInfo.FORBIDDEN_NUM" />
+						</span></span>
+			</li> 
+			<li class="li">
+				<span class="label">投诉号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="cond_REPORT_NUM" name="cond_REPORT_NUM"  
+						desc="号码"	value="ognl:editInfo.REPORT_NUM" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE"  
+						desc="用户举报时间"	value="ognl:editInfo.START_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE"  
+						desc="用户举报时间"	value="ognl:editInfo.END_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">服务请求标识：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_INFO_RECV_ID" id="cond_INFO_RECV_ID"
+				  		desc="服务请求标识"	 value="ognl:editInfo.INFO_RECV_ID"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">有效标记：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_OPERATE_TYPE" id="cond_OPERATE_TYPE" desc="有效标记" 
+						source="ognl:pageutil.getStaticList('FORBIDDEN_STATES')" 
+						value="ognl:editInfo.OPERATE_TYPE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		
+		<div class="submit">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryForbiddenList();" ><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+	<!-- 区域结束 -->
+	
+<div class="c_box" >	
+	<div class="c_submit">
+		<div class="left">
+			<button type="button" id="btndel" name="btndel" onclick="return deleteData();"><i class="e_ico-delete"></i><span>失效</span></button>
+		</div>
+		
+		<div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="99030"
+				config="export/badness/sundryquery/ManageForbiddenPoint.xml" fileName="点对点短信屏蔽管理" beforeAction=""
+				cond="QueryCondPart" params="ognl:'TAG_PARAM=6&&STAFF_ID=' + getVisit().getStaffId()"/>
+		</div>
+	
+	</div>
+	
+	<!-- 表格 开始 -->
+		<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-10">
+		<div class="c_table">
+			<table jwcid="@Table" name="BadnessTradeTable" id="BadnessTradeTable">
+				<thead>
+					<tr>
+					<th col="IN_CHECK_ID"><input type="checkbox" id="badness_ctrl" name="badness_ctrl" onclick="checkedAll('chkbox', checked)"/></th>
+						<th col="INFO_RECV_ID"> 服务请求标识</th>
+						<th col="FORB_BADNESS_NUMBER">受限主叫号码</th>
+						<th col="FORB_REPORT_NUMBER">投诉号码</th>
+						<th col="FORB_OPERATE_TYPE">有效标记</th>
+						<th col="FORB_STAFF_ID">操作人员</th>
+						<th col="FORB_UPDATE_TIME">操作时间</th>
+						<th col="OPERATE_TYPE" style="display:none">有效标记</th>
+                        <th col="RECV_CONTENT">举报内容</th>
+					</tr>
+				</thead>
+				<tbody  jwcid="@Any" name="forbiddenPointBody" id="forbiddenPointBody">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td align="center">
+						<input type="checkbox" name="chkbox" id='"checkbox"+ rowIndex'  jwcid="@Any" value="ognl:info.INFO_RECV_ID"/>
+						</td>
+						 <td><span jwcid="@Insert" value="ognl:info.INFO_RECV_ID" ></span></td>
+						 <td><span jwcid="@Insert" value="ognl:info.FORB_BADNESS_NUMBER" ></span></td>
+						 <td><span jwcid="@Insert" value="ognl:info.FORB_REPORT_NUMBER" ></span></td>
+						 <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FORBIDDEN_STATES', info.FORB_OPERATE_TYPE.trim())"></span></td>
+						 <td><span jwcid="@Insert" value="ognl:info.FORB_STAFF_ID" ></span></td>
+						 <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.FORB_UPDATE_TIME)" ></span></td>
+						 <td style="display:none"><span jwcid="@Insert" value="ognl:info.FORB_OPERATE_TYPE.trim()" ></span></td>
+                         <td><span jwcid="@Insert" value="ognl:info.RECV_CONTENT" ></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="forbiddenPoint" id="forbiddenPoint" cond="QueryCondPart" part="QueryListPart" listener="queryForbiddenList" pageSize="10" count="ognl:count"></div>
+		<!-- 分页 结束 -->
+		</div>
+		<!-- 表格 结束 -->
+</div>	
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+﻿<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>全流程平均处理时长报表</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/interProvincialAverageDealTime/script/interProvincialAverageDealTime.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">全流程平均处理时长报表</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div jwcid="QueryPart@Part" class="l_query">
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<!-- 查询区域 开始 -->
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">表格展示区（单位：天）</div>
+				</div>
+				<div class="right"  jwcid="queryForm@Part">
+					<span class="label">流程类型：</span>
+					<select jwcid="@Select" style="width:11.34em;" id="OPER_TYPE" name="OPER_TYPE" source="ognl:pageutil.getStaticList('EOP_BUSINESS_STATUS')" selected="ognl:getParameter('BUSINESS_STATUS')" textField="DATA_NAME" valueField="DATA_ID" onChange="$.authCheck.checkId()" desc="流程类型"/>
+					<span class="e_space e_space-2"></span>
+					<button class="e_button-blue" onclick="query();"><span class="e_ico-search"></span><span>查询</span></button>
+				</div>
+			</div>
+			<!-- 查询区域  结束 -->
+		</div>
+		<div jwcid="QueryListPart@Part">
+			<div jwcid="QueryResultPart@Part" class="l_queryResult">
+				<!-- 表格 开始 -->
+				<table name="printTable" id="printTable" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>	
+							<th>产品名称</th>
+							<th>客户经理主管审批</th>
+							<th>地市业务主管审批</th>
+							<th>省公司审批</th>
+							<th>工单提交</th>
+							<th>总部业务调度员稽核派单</th>
+							<th>配合省确认</th>
+							<th>提单人员汇总</th>
+							<th>工单归档</th>
+							<th>工单完成</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO6==null ?info.STEPNO1:info.STEPNO1.length()>6 ? info.STEPNO1.substring(0,5):info.STEPNO1" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO2==null ?info.STEPNO2:info.STEPNO2.length()>6 ? info.STEPNO2.substring(0,5):info.STEPNO2" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO3==null ?info.STEPNO3:info.STEPNO3.length()>6 ? info.STEPNO3.substring(0,5):info.STEPNO3" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO6==null ?info.STEPNO6:info.STEPNO6.length()>6 ? info.STEPNO6.substring(0,5):info.STEPNO6" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO7==null ?info.STEPNO7:info.STEPNO7.length()>6  ? info.STEPNO7.substring(0,5):info.STEPNO7" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO11==null ?info.STEPNO11:info.STEPNO11.length()>6 ? info.STEPNO11.substring(0,5):info.STEPNO11" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO9==null ?info.STEPNO9:info.STEPNO9.length()>6  ? info.STEPNO9.substring(0,5):info.STEPNO9" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO4==null ?info.STEPNO4:info.STEPNO4.length()>6 ? info.STEPNO4.substring(0,5):info.STEPNO4" raw="false" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STEPNO5==null ?info.STEPNO5:info.STEPNO5.length()>6 ? info.STEPNO5.substring(0,5):info.STEPNO5" raw="false" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 表格 结束 -->
+			</div>
+			<div class="l_queryPage">
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart"
+					part="QueryListPart" listener="queryRealNameInfo" pageSize="10"
+					count="ognl:infoCount"></div>
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+		<!-- 区域 结束 -->
+	</div>
+	<!-- 弹窗 开始 -->
+	<!-- 弹窗 结束 -->
+</body>
+</html>

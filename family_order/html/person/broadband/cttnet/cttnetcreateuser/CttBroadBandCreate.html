@@ -1,0 +1,828 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>海南宽带开户</title>
+<script jwcid="@Script" type="text/javascript" src="person/broadband/cttnet/cttnetcreateuser/scripts/cttbroadbandcreate.js"></script>
+<script jwcid="@Script" src="scripts/csserv/common/validate/custvalidate.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/eform/CommonEForm.js" ></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/CommLib.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 隐藏区域 开始 -->
+<div class="" jwcid="HidePart@Part" style="display:none">
+<input jwcid="@Hidden" name="DEPART_KIND_CODE" id="DEPART_KIND_CODE" value="ognl:info.DEPART_KIND_CODE" desc="登录部门类型"/>
+
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">填写基本信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+<!-- 刷新区域 开始 -->
+	<div jwcid="UserInfoArea@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label" ><span class="e_required">证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select id="PSPT_TYPE_CODE" name="PSPT_TYPE_CODE" jwcid="@Select" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')"
+					 	 textField="DATA_NAME" onchange="checkPsptTypeCode();" valueField="DATA_ID" value="ognl:info.PSPT_TYPE_CODE" desc="证件类型" nullable="no"
+					 	 addDefault="false"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">证件号码：</span></span>
+					<span class="e_elements" id="PSPT_INPUT">
+						<!-- ------------------------------TODO 证件扫描------------------------ -->
+						<button type="button" class="e_button-right"   id="ReadCardButton" name="ReadCardButton"  onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>
+						<input class="e_input"  type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" value="ognl:info.PSPT_ID" nullable="no"
+						 		   onchange="checkID();" desc="证件号码"/>
+						</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">客户名称：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="CUST_NAME" id="CUST_NAME" value="ognl:info.CUST_NAME" nullable="no" onchange="chkCustName('CUST_NAME');" desc="客户名称"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">证件地址：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="PSPT_ADDR" id="PSPT_ADDR" value="ognl:info.PSPT_ADDR" nullable="no"
+					    desc="证件地址" onchange="validatePsptAddress('PSPT_ADDR');"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">证件有效期：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="PSPT_END_DATE" value="ognl:info.PSPT_END_DATE"  minName="BIRTHDAY"
+							desc="证件有效期"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系电话：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="PHONE" id="PHONE" value="ognl:info.PHONE" nullable="no"
+						onchange="if(!$.verifylib.checkMbphone($('#PHONE').val())){alert('请输入正确的手机号码！');};"  desc="联系电话"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系人：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="CONTACT" id="CONTACT" value="ognl:info.CONTACT" nullable="no"  desc="联系人"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系人电话：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="CONTACT_PHONE" id="CONTACT_PHONE" value="ognl:info.CONTACT_PHONE"
+						onchange="if(!$.verifylib.checkMbphone($('#CONTACT_PHONE').val())){alert('请输入正确的手机号码！');};"  nullable="no"  desc="联系人电话"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">客户业务区：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="CITY_NAME" id="CITY_NAME" value="ognl:getVisit().getCityName()" disabled="true" nullable="no"  desc="客户业务区"/>
+					</span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">通信地址：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="ASSURE_POST_ADDRESS" id="ASSURE_POST_ADDRESS" value="ognl:info.POST_ADDRESS" desc="通信地址"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>通信邮编：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="ASSURE_POST_CODE" id="ASSURE_POST_CODE" value="ognl:info.POST_CODE" desc="通信邮编"/>
+					</span></span>
+				</li>
+				<li class="li col-3">
+					<span class="label"><span>备注：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="REMARK" id="REMARK" value="ognl:info.REMARK" desc="备注"/>
+					</span></span>
+				</li>
+				<li class="li" >
+					<span class="label"><span id="span_AGENT_CUST_NAME">经办人名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="AGENT_CUST_NAME" id="AGENT_CUST_NAME" value="ognl:info.RSRV_STR7" 
+												 maxsize="48" maxLength="48" desc="经办人名称" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_TYPE_CODE">经办人证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_AGENT_PSPT_TYPE_CODE" id="AGENT_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+	                       		textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:info.RSRV_STR8" 
+	                        	desc="经办人证件类型"  disabled="false"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_ID">经办人证件号码：</span></span>
+					<span class="e_elements">
+					<!--<button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt2()"><i class="e_ico-check"></i><span>扫描</span></button>-->
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="AGENT_PSPT_ID" id="AGENT_PSPT_ID" value="ognl:info.RSRV_STR9" maxsize="20" maxLength="20"
+                         desc="经办人证件号码"  disabled="false" />
+					</span></span>
+                    </span>
+				</li>
+				<li class="li" >
+					<span class="label"><span id="span_AGENT_PSPT_ADDR">经办人证件地址：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="AGENT_PSPT_ADDR" id="AGENT_PSPT_ADDR" value="ognl:info.RSRV_STR10" 
+						  maxLength="128"   maxsize="128"  desc="经办人证件地址" /></span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		
+	<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">银行信息</div>
+			<div class="fn">
+				<a href="#nogo" class="e_button e_cur-hand" onclick="$.cttbroadbandcreate.writeBankInfo(this);"><i class="e_ico-unfold"></i><span>填写银行信息</span></a>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<div jwcid="BankPart@Part" style="display:none">
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-label-8 c_form-col-3">
+				<ul class="ul">
+					<li class="li">
+						<span class="label"><span class="e_required">账户名称：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="PAY_NAME" id="PAY_NAME" value="ognl:info.PAY_NAME" desc="账户名称" nullable="no"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">账户类型：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="PAY_MODE_CODE" id="PAY_MODE_CODE" source="ognl:pageutil.getStaticList('TD_S_PAYMODE')" addDefault="false"
+							 textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.PAY_MODE_CODE==null ? info.DEFAULT_PAY_MODE : info.PAY_MODE_CODE"
+							 desc="账户类型" nullable="no" onchange="$.cttbroadbandcreate.checkPayModeCode();"/>
+						</span></span></span>
+					</li> 
+					<li class="li">
+						<span class="label"><span id="span_SUPER_BANK_CODE">上级银行：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="SUPER_BANK_CODE" id="SUPER_BANK_CODE"
+									source="ognl:pageutil.getList('TD_S_SUPERBANK_CTT','SUPER_BANK_CODE','SUPER_BANK')"
+									textField="SUPER_BANK" valueField="SUPER_BANK_CODE" value="ognl:info.SUPER_BANK_CODE"
+									desc="上级银行" disabled='ognl:"0".equals(info.DEFAULT_PAY_MODE) ? "true" : "false"'
+									onchange="$.cttbroadbandcreate.checkSuperBankCode();"/>
+						</span></span></span>
+					</li>
+					<li class="li" jwcid="BankCodePart@Part" element="li">
+						<span class="label"><span id="span_BANK_CODE">银行名称：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="BANK_CODE" id="BANK_CODE"
+									source="ognl:bankCodeList"
+									textField="BANK" valueField="BANK_CODE" value="ognl:info.BANK_CODE"
+									desc="银行名称" disabled='ognl:"0".equals(info.DEFAULT_PAY_MODE) ? "true" : "false"'/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="span_BANK_ACCT_NO">银行帐号：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="BANK_ACCT_NO" id="BANK_ACCT_NO" value="ognl:info.BANK_ACCT_NO" 
+									desc="银行帐号" disabled='ognl:"0".equals(info.DEFAULT_PAY_MODE) ? "true" : "false"'/>
+						</span></span>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+		</div>
+		</div>
+	</div>
+	
+	
+<!-- 刷新区域 结束 -->
+	<div class="c_box" jwcid="widenetProductInfos@Part">
+	<div class="c_title">
+		<div class="text">产品信息</div>
+	</div>
+	<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">品牌：</span></span>
+					<span class="e_input"><span>铁通宽带</span></span>
+				</li>
+			</ul>
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">产品规格：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PROD_SPEC_TYPE" id="PROD_SPEC_TYPE" source="ognl:pageutil.getList('TD_S_PRODUCT_SPEC','PROD_SPEC_TYPE','PROD_SPEC_DESC','PARENT_SPEC_TYPE','10000')"
+                         textField="PROD_SPEC_DESC" valueField="PROD_SPEC_TYPE" titleField="PROD_SPEC_DESC" value="ognl:info.PROD_SPEC_TYPE" desc="产品 规格"
+                         onchange="$.cttbroadbandcreate.getProductBySpec()" nullable="no" />
+					</span></span></span>
+				</li>
+			</ul>
+			<ul class="ul">
+				<li class="li">
+				  <span jwcid="productListPart@Part">
+					<span class="label"><span class="e_required">产品：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PRODUCT_ID" id="PRODUCT_ID" source="ognl:productList"
+                         textField="PRODUCT_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" value="ognl:info.PRODUCT_ID" desc="产品 类型"
+                         onchange="$.cttbroadbandcreate.getPackages()" nullable="no"/>
+					</span></span></span>
+					
+					<input type="hidden" jwcid="@Any" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value="ognl:info.USER_EPARCHY_CODE"/>
+					
+				</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	
+	
+	<!-- 产品信息区域 开始 -->
+		<div jwcid="productInfoArea@Part">
+		 <div class="l_col">
+			<!-- 第 1 栏 开始 -->
+			<div class="l_left" style="width:49%;">
+				<!-- 区域 开始 -->
+				<div class="c_box">
+					<!-- 标题 开始 -->
+		               <div class="c_title">
+						<div class="text">待选区</div>
+						<div class="fn">
+							<span class="e_input e_input-left">
+								<span>
+									<input jwcid="elementSearch@Search"
+										name="elementSearch"
+										page="changeproduct.ChangeProduct"
+										defaultText='元素搜索'
+										dynamic="true"
+										listener="search"
+										searchCode="SEARCH_NAME"
+										valueCode="SEARCH_ID"
+										optionEnterAction="$.cttbroadbandcreate.searchElementOptionEnter"
+										optionClickAction="$.cttbroadbandcreate.searchElementOptionEnter"
+										width="200"/>
+								</span>
+							</span>
+							<span class="e_label e_label-right"><span>元素搜索</span></span>
+						</div>
+					</div>
+					<!-- 标题 结束 -->
+					<!-- 分栏 开始 -->
+					<div class="l_col l_col-close">
+						<div jwcid="offerList@csserv:OfferList" 
+		                          element="div" 
+		                          categoryId="100000000114,88888888"></div>
+					</div>
+					<!-- 分栏 结束 -->
+				</div>
+				<!-- 区域 结束 -->
+			</div>
+		    <div class="l_auto">
+				<!-- 区域 开始 -->
+				<div class="c_box">
+					<!-- 标题 开始 -->
+					<div class="c_title">
+						<div class="text">已选区</div>
+					</div>
+	                <div jwcid="selectedElements@csserv:SelectedElements" 
+	                    renderCallSvc="CS.WidenetPackageSVC.getUserOpenElements" 
+                   		callAddElementSvc="CS.WidenetPackageSVC.dealSelectedElementsForChg"
+	                    afterRenderAction="$.cttbroadbandcreate.afterRenderSelectedElements(data);"
+	                    basicStartDateControlId="NEW_PRODUCT_START_DATE"
+	                    basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+	                    eparchyCodeComponentId="USER_EPARCHY_CODE"
+	                    tradeTypeCode="9711"
+	                    element="div"></div>
+					<!-- 表格 结束 -->
+				</div>
+				<!-- 区域 结束 -->
+			</div>
+		<!-- 第 2 栏 结束 -->
+		</div>
+		<!-- 产品信息区域 结束 -->
+		</div>
+	
+	
+	<!-- 标题 开始 -->
+	<div class="c_box" jwcid="widenetInfosPart1@Part">
+		<div class="c_title">
+			<div class="text">宽带信息</div>
+		</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+		<div class="c_form c_form-label-8 c_form-col-3">
+			<ul class="ul">
+			   <li class="li">
+					<span class="label">固网号码：</span>
+					<span class="e_elements">
+						<button class="e_button-right" id="CTT_PHONE_ID" type="button" onclick="$.popupPage('person.cttbroadband.QueryCttPhone','','&refresh=true','固网号码', '720', '300','','','')" desc="固网号码"><i class="e_ico-search"></i><span>固网号码</span></button>
+						<span class="e_input e_dis"><span>
+							<input jwcid="@TextField" name="CTT_PHONE" id="CTT_PHONE" value="ognl:info.CTT_PHONE" disabled="true" nullable="no" desc="固网号码CODE"/>
+						</span></span>
+					</span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">标准地址：</span></span>
+					<span class="e_elements">
+						<button class="e_button-right" id="POP_BTN_ADDR_ID" type="button" onclick="$.popupPage('brm.standardAddressSelect','','&refresh=true','标准地址', '720', '300','','',subsys_cfg.pbossintf)" desc="标准地址"><i class="e_ico-search"></i><span>地址查询</span></button>
+						<span class="e_input e_dis"><span>
+							<input jwcid="@TextField" name="STAND_ADDRESS" id="STAND_ADDRESS" value="ognl:info.STANDE_ADDRESS" disabled="true" nullable="no" desc="标准地址CODE"/>
+						</span></span>
+						<input jwcid="@TextField" id="STAND_ADDRESS_CODE" name="STAND_ADDRESS_CODE" value="ognl:info.STAND_ADDRESS_CODE"  style="display:none" desc="STAND_ADDRESS_CODE"/>
+						<input jwcid="@TextField" id="SIGN_PATH" name="SIGN_PATH" value="ognl:info.SIGN_PATH" style="display:none" desc="SIGN_PATH"/>
+					
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">接入类型：</span></span>
+					<span class="e_select"><span><span>
+						<select id="CONNECT_TYPE" name="CONNECT_TYPE" jwcid="@Select" source="ognl:pageutil.getStaticList('CONNECT_TYPE')"
+					 	 textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.DATA_ID" desc="接入类型" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_MODEM_STYLE">MODEM方式：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="MODEM_STYLE" id="MODEM_STYLE" source="ognl:pageutil.getStaticList('BROADBAND_ASSET_STYLE')"
+						 textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.MODEM_STYLE" addDefault="false" desc="MODEM方式"
+						 onchange="$.cttbroadbandcreate.setModemStyleClass()"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label" ><span id="span_MODEM_NUMERIC">MODEM型号：</span></span>
+					<span class="e_elements">
+							<button class="e_button-right" name="QUERY_MODEM id="QUERY_MODEM" type="button" 
+								onclick="$.popupPage('brm.materialChoose','queryMaterialList','&RES_TYPE_CODE=W&refresh=true&RES_KIND_CODE=03', '选择设备', '800', '400','CHOOSEDEVICE','',subsys_cfg.pbossintf)" 
+								desc="查询" ><i class="e_ico-search">
+							</i><span>查询</span></button>
+							<span class="e_input e_input-left"><span>
+								<input type="text" jwcid="@TextField" name="SALETYPE_DESC" id="SALETYPE_DESC" disabled="true"  value="ognl:info.SALETYPE_DESC"  desc="MODEM型号"/>
+								<input id="CHOOSEDEVICE" style="display:none" afterAction="$.cttbroadbandcreate.setReturnFunc();" type="text" readonly="readonly" value="" name="CHOOSEDEVICE"></input>
+								<input jwcid="@TextField" name="SALEPRICE"	   id="SALEPRICE"     style="display:none" value="ognl:info.SALEPRICE"/>
+								<input jwcid="@TextField" name="SALETYPE_CODE" id="SALETYPE_CODE" style="display:none" value="ognl:info.SALETYPE_CODE"/>
+								<input jwcid="@TextField" name="MATERIAL_CODE" id="MATERIAL_CODE" style="display:none" value="ognl:info.MATERIAL_CODE"/>
+					</span></span></span>
+				</li>
+				
+				<li class="li col-3">
+					<span class="label"><span class="e_required">安装地址：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="DETAIL_ADDRESS" id="DETAIL_ADDRESS" value="ognl:info.DETAIL_ADDRESS" nullable="no" desc="安装地址"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<div class="c_form c_form-label-8 c_form-col-3" jwcid="widenetInfosPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">宽带帐号：</span></span>
+					<span class="e_elements">
+							<button  class="e_button-right" onclick="$.cttbroadbandcreate.checkWidenetAcctId()" ><i class="e_ico-check"></i><span>校验帐号</span></button>
+							<span class="e_input e_input-left"><span>
+								<input jwcid="@TextField" name="WIDENET_ACCT_ID" id="WIDENET_ACCT_ID" 
+								value="ognl:accountInfo.WIDENET_ACCT_ID" desc="宽带帐号" nullable="no" maxlength="8" />
+							</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">宽带密码：</span></span>
+					<span class="e_elements">
+							<button type="button" class="e_button-right" name="addNewPasswd" id="addNewPasswd" onclick="$.cttbroadbandcreate.checkAddNewPasswd();"><i class="e_ico-config"></i><span>设置密码</span></button>
+							<span class="e_input e_input-left"><span>
+								<input jwcid="@Password" name="WIDENET_ACCT_PASSWD" id="WIDENET_ACCT_PASSWD" value="ognl:accountInfo.WIDENET_ACCT_PASSWD" readonly="true" hidden="true" desc="宽带密码" nullable="no"/>
+					</span></span>
+					</span>
+				</li>
+			</ul>
+				
+				<input jwcid="@Hidden" name="WIDENET_IP_ADDRESS" id="WIDENET_IP_ADDRESS" value="ognl:accountInfo.WIDENET_IP_ADDRESS"/>
+				<input jwcid="@Hidden" name="ARAM_USER_TAG" id="ARAM_USER_TAG" value="ognl:accountInfo.ARAM_USER_TAG"/>
+				<input jwcid="@Hidden" name="ACCT_PREFIX" id="ACCT_PREFIX" value="ognl:accountInfo.ACCT_PREFIX"/>
+				<input jwcid="@Hidden" name="ACCT_TAIL" id="ACCT_TAIL" value="ognl:accountInfo.ACCT_TAIL"/>
+			
+		</div>
+	<!-- 表单结束 -->
+	</div>
+	
+	
+	<div class="c_box">
+	<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">其他信息</div>
+			<div class="fn">
+				<a href="#nogo" class="e_button" onclick="$.cttbroadbandcreate.writeOtherInfo(this);"><i class="e_ico-unfold"></i><span>填写担保信息</span></a>
+			</div>
+		</div>
+	<!-- 标题 结束 -->
+	
+		<div jwcid="OtherInfoPart@Part" style="display:none">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7">
+				<ul class="ul">
+					<li class="li">
+						<span class="label">担保类型：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_TYPE_CODE" id="ASSURE_TYPE_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_ASSURETYPE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.ASSURE_TYPE_CODE"
+									desc="担保类型" onchange="$.cttbroadbandcreate.writeAssureTypeTag();"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="ASSURE_PSPT_TYPE_CODE1">担保人证件类型：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_PSPT_TYPE_CODE" id="ASSURE_PSPT_TYPE_CODE"
+									source="ognl:pageutil.getStaticList('PSPT_TYPE_CODE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.ASSURE_PSPT_TYPE_CODE"
+									desc="担保人证件类型"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="ASSURE_PSPT_ID1">担保人证件号码：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_PSPT_ID" id="ASSURE_PSPT_ID" value="ognl:info.ASSURE_PSPT_ID" 
+									desc="担保人证件号码"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="ASSURE_NAME1">担保人名称：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_NAME" id="ASSURE_NAME" value="ognl:info.ASSURE_NAME" 
+									desc="担保人名称"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="ASSURE_PHONE1">担保人联系方式：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_PHONE" id="ASSURE_PHONE" value="ognl:info.ASSURE_PHONE" 
+									desc="担保人联系方式"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="ASSURE_DATE1">担保期限：</span></span>
+						<span class="e_input"><span>
+							<input type="text" jwcid="@DateField"  name="ASSURE_DATE" id ="ASSURE_DATE" value="ognl:info.ASSURE_DATE"  
+									format="yyyy-MM-dd HH:mm:ss" desc="担保期限"/>
+					    </span></span>
+					</li>
+				<li class="li col-2">
+						<span class="label">家庭地址：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_HOME_ADDRESS" id="ASSURE_HOME_ADDRESS" value="ognl:info.HOME_ADDRESS" 
+									desc="家庭地址"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">工作单位：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_WORK_NAME" id="ASSURE_WORK_NAME" value="ognl:info.WORK_NAME" 
+									desc="工作单位"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">工作部门：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_WORK_DEPART" id="ASSURE_WORK_DEPART" value="ognl:info.WORK_DEPART" 
+									desc="工作部门"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">Email地址：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_ASSURE_EMAIL" id="ASSURE_ASSURE_EMAIL" value="ognl:info.EMAIL" 
+									desc="Email地址" datatype="email"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">传真电话：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_FAX_NBR" id="ASSURE_FAX_NBR" value="ognl:info.FAX_NBR" 
+									desc="传真电话"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">优先联系方式：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_CONTACT_TYPE_CODE" id="ASSURE_CONTACT_TYPE_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_CONTACTTYPE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.CONTACT_TYPE_CODE"
+									desc="优先联系方式"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">职业类型：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_JOB_TYPE_CODE" id="ASSURE_JOB_TYPE_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_JOBTYPE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.JOB_TYPE_CODE"
+									desc="职业类型"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">性别：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_SEX" id="ASSURE_SEX"
+									source="ognl:pageutil.getStaticList('SEX')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.SEX"
+									desc="性别"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">出生日期：</span>
+						<span class="e_input"><span>
+							<input type="text" jwcid="@DateField"  name="ASSURE_BIRTHDAY" id ="ASSURE_BIRTHDAY" value="ognl:info.BIRTHDAY"  
+									format="yyyy-MM-dd HH:mm:ss" desc="出生日期"/>
+					    </span></span>
+					</li>
+					<li class="li">
+						<span class="label">婚姻状况：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_MARRIAGE" id="ASSURE_MARRIAGE"
+									source="ognl:pageutil.getStaticList('SALECHANCECONTACT_MARRIAGE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.MARRIAGE"
+									desc="婚姻状况"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">教育程度：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_EDUCATE_DEGREE_CODE" id="ASSURE_EDUCATE_DEGREE_CODE"
+									source="ognl:pageutil.getStaticList('CUSTPERSON_EDUCATEDEGREECODE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.EDUCATE_DEGREE_CODE"
+									desc="教育程度"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">国籍：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_NATIONALITY_CODE" id="ASSURE_NATIONALITY_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_NATIONALITY')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.NATIONALITY_CODE"
+									desc="国籍"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">民族：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_FOLK_CODE" id="ASSURE_FOLK_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_FOLK')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.FOLK_CODE"
+									desc="民族"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">信仰：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_RELIGION_CODE" id="ASSURE_RELIGION_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_RELIGION')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.RELIGION_CODE"
+									desc="信仰"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">语言：</span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="ASSURE_LANGUAGE_CODE" id="ASSURE_LANGUAGE_CODE"
+									source="ognl:pageutil.getStaticList('TD_S_LANGUAGE')"
+									textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.LANGUAGE_CODE"
+									desc="语言"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">社会保障号：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_COMMUNITY_ID" id="ASSURE_COMMUNITY_ID" value="ognl:info.COMMUNITY_ID" 
+									desc="传真电话"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">发展员工：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ASSURE_DEVELOP_STAFF_ID" id="ASSURE_DEVELOP_STAFF_ID" value="ognl:getVisit().getStaffId()" 
+									desc="发展员工"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">发展日期：</span>					
+						<span class="e_input"><span>
+							<input type="text" jwcid="@DateField"name="ASSURE_DEVELOP_DATE" id ="ASSURE_DEVELOP_DATE" 
+								value="ognl:(info.DEVELOP_DATE==null) ? pageutil.getSysDate() : info.DEVELOP_DATE"   
+								format="yyyy-MM-dd" desc="发展日期" disabled="true"/>
+						</span></span>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单结束 -->
+		</div>
+	</div>
+		
+		
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">邮寄信息</div>
+		<div class="fn">
+			<a href="#nogo" class="e_button" onclick="$.cttbroadbandcreate.writePostInfo(this);"><i class="e_ico-unfold"></i><span>填写邮寄信息</span></a>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="PostInfoPart@Part" style="display:none">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">邮递标志：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="POST_TAG" id="POST_TAG"
+								source="ognl:pageutil.getStaticList('POSTINFO_POSTTAG')" addDefault="false"
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.postInfo_POST_TAG"
+								desc="邮递标志" disabled='ognl:"1".equals(info.CHR_OPENPOSTINFO) ? "true" : "false"'
+								onchange="$.cttbroadbandcreate.writePostTag();"/>
+					</span></span></span>
+				</li>
+			<span element="span" jwcid="PostTagHiddenPart@Part" style="display:none">	
+				<li class="li" element="li" jwcid="postInfo_POST_CYC@Part">
+						<span class="label">邮寄周期：</span>
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="POST_CYC" id="POST_CYC"
+								source="ognl:pageutil.getStaticList('POSTINFO_POSTCYC')" addDefault="false"
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.postInfo_POST_CYC"
+								desc="语言" />
+					</span></span></span>
+					</li>
+		
+					<li class="li col-3">
+						<span class="label"><span id="span_postInfo_POST_TYPESET">邮寄方式：</span></span>
+						<div class="c_fn">
+							<ul>
+								<li jwcid="@Foreach" source="ognl:pageutil.getStaticList('MODIFYPOST_POSTTYPESET')" value="ognl:info" element="li">
+									<label>
+										<input type="checkbox" class="e_checkbox" jwcid="@Checkbox" value="ognl:info.DATA_ID" name="POST_TYPESET"
+										        checked='ognl:((info.postInfo_POST_TYPESET==null) ? "no" : info.postInfo_POST_TYPESET).indexOf(info.DATA_ID)==-1 ? "false" : "true"'
+										        onclick="$.cttbroadbandcreate.checkPostTypeSet(this);" />
+										<span jwcid="@Insert" value="ognl:info.DATA_NAME"/>
+									</label>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="li col-3" element="li" jwcid="PostTypeContentPart@Part">
+						<span class="label"><span id="span_postInfo_POSTTYPE_CONTENT">邮政投递：</span></span>
+						<div class="c_fn">
+							<ul>
+								<li jwcid="@Foreach" source="ognl:pageutil.getStaticList('POSTTYPE_CONTENT')" value="ognl:info" element="li">
+									<label>
+										<input type="checkbox" class="e_checkbox" jwcid="@Checkbox" value="ognl:info.DATA_ID" name="POSTTYPE_CONTENT" id="POSTTYPE_CONTENT" 
+										        checked='ognl:((info.postInfo_POSTTYPE_CONTENT==null) ? "no" : info.postInfo_POSTTYPE_CONTENT).indexOf(info.DATA_ID)==-1 ? "false" : "true"'
+										         />
+										<span jwcid="@Insert" value="ognl:info.DATA_NAME"/>
+									</label>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="li col-2">
+						<span class="label"><span id="span_postInfo_POST_ADDRESS">邮递地址：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="POST_ADDRESS" id="POST_ADDRESS" value="ognl:info.postInfo_POST_ADDRESS" 
+									desc="邮递地址"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">邮递编码：</span>
+							<span class="e_input"><span>
+							<input jwcid="@TextField" name="POST_CODE" id="POST_CODE" value="ognl:info.postInfo_POST_CODE" 
+									desc="邮递编码" datatype="numeric" equsize="6"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="span_postInfo_POST_NAME">邮递名称：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="POST_NAME" id="POST_NAME" value="ognl:info.postInfo_POST_NAME" 
+									desc="邮递名称"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="span_postInfo_FAX_NBR">传真电话：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="FAX_NBR" id="FAX_NBR" value="ognl:info.postInfo_FAX_NBR" 
+									desc="传真电话"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span id="span_postInfo_EMAIL">Email：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="EMAIL" id="EMAIL" value="ognl:info.postInfo_EMAIL" 
+									desc="Email地址"/>
+						</span></span>
+					</li>
+				</span>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="$.cttbroadbandcreate.onTradeSubmit()" disabledBtn="false" isReset="true" area="UserInfoArea,PostInfoPart,OtherInfoPart,widenetProductInfos,widenetInfosPart1" element="div" />
+	<!-- 提交 结束 -->
+<!-- 区域 结束 -->
+<div class="" jwcid="CheckSerialNumberHidePart@Part" >
+	<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+	<input jwcid="@Hidden" name="OLD_ACCOUNT_ID" id="OLD_ACCOUNT_ID" value=""/>
+	
+</div>
+<!-- 区域 开始 -->
+<div class="c_popup" id="pwdModify" style="display:none">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:320px">
+			<div class="c_popupTitle">
+				<div class="text">服务密码设置</div>
+				<div class="fn">
+					<a href="#nogo" class="close" onclick="$.cttbroadbandcreate.cancelNewPasswd();"></a>
+				</div>
+			</div>
+			
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+			
+				<!-- 服务密码设置 开始 -->
+				<div class="c_form c_form-col-1 c_form-label-9">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">请输入新密码：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@Password" name="NEW_PASSWD" id="NEW_PASSWD" value="ognl:info.NEW_PASSWD" 
+										desc="新密码" datatype="numeric" equsize="6" maxlength="6"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">请再次输入新密码：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@Password" name="NEW_PASSWD_AGAIN" id="NEW_PASSWD_AGAIN" value="ognl:info.NEW_PASSWD_AGAIN" 
+										desc="重复密码" datatype="numeric" equsize="6" maxlength="6"/>
+							</span></span>
+						</li>
+					</ul>
+				</div>
+				<!-- 服务密码设置 结束 -->
+				
+				<!-- 按钮 开始 -->
+				<div class="c_submit">
+					<button type="button" class="e_button-page-ok" onclick="$.cttbroadbandcreate.confirmNewPasswd();" onkeypress="if($.cttbroadbandcreate.checkKeyPressIsEnter()){$.cttbroadbandcreate.confirmNewPasswd();}"><i></i><span>确定</span></button>
+					<button type="button" class="e_button-page-cancel" onclick="$.cttbroadbandcreate.cancelNewPasswd();"><i></i><span>取消</span></button>
+					<button type="button" class="e_button-page" onclick="$.cttbroadbandcreate.resetNewPasswd();"><i class="e_ico-reset"></i><span>清空</span></button>
+				</div>
+				<!-- 按钮 结束 -->
+				
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>	
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 区域 结束 -->
+<div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+
+<input jwcid="@Hidden" name="STAFF_ID" id="STAFF_ID" value="ognl:getVisit().getStaffId()"/>
+<script>
+/*
+*REQ201608030012 关于铁通业务实名制相关界面功能改造的需求
+*适用开户、代理商开户
+*新增获取部门类型编码，如果是100或者500以外的部门控制证件类型为身份证，禁用手动录入
+*/
+window.onload=function()
+{
+	var departKindCode = $("#DEPART_KIND_CODE").val(); 
+	var staffv = $("#STAFF_ID").val().substring(0,4); 
+	if(departKindCode != "" && departKindCode != "100" && departKindCode != "500" && staffv != "HNSJ" && staffv != "HNHN" && staffv != "SUPERUSR")
+	{ 
+		//$("#PSPT_TYPE_CODE").empty();
+		//$("#PSPT_TYPE_CODE").append("<option value='0'>本地身份证</option>");
+		//$("#PSPT_TYPE_CODE").append("<option value='1'>外地身份证</option>");
+		$("#PSPT_ID").attr("disabled",true);
+		$("#CUST_NAME").attr("disabled",true);
+		$("#PSPT_ADDR").attr("disabled",true);
+		$("#PSPT_END_DATE").attr("disabled",true);
+	}
+}
+</script>
+</body>
+</html>

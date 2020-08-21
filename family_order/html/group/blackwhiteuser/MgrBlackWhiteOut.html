@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网外黑白名单</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/blackwhiteuser/mgrblackwhiteuser.js"></script>
+
+</head>
+<body jwcid="@Body">
+	<div jwcid="SelectMemGroupPart@Part">
+		<span jwcid="@saleserv:PopupGrpSnList" infos="ognl:infos"  sucessJsMethod="initGroupInfoForMem(data);" />
+	</div>
+<!-- 区域 开始 -->
+<div class="m_wrapper"><div class="m_wrapper2">
+	</div>
+<div class="c_box">
+	<div jwcid="hintBar@Part">
+		<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8" jwcid="QryBlackWhiteOutPart@Part" id="QryBlackWhiteOutPart" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">查询方式：</span>
+				<span class="e_select"><span><span>
+					<select name="QueryType" id="QueryType" onchange="changeQueryType();">
+						<option value="0" default>集团客户编码</option>
+                        <option value="1">成员手机号码</option>
+					</select>
+				</span></span></span>
+			</li>
+			<li class="li" jwcid="selectGroupPart@Part" element="li">
+				<span jwcid="@saleserv:SelectGroup" afterAction="initGroupInfo(data);"/>		
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">成员服务号码：</span></span>		
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" 
+						onkeypress="var e=$.event.fix(event);if (e.which == 13) {queryMebBySN();e.stop();};"
+						nullable="no" datatype="mbphone" maxsize="16" desc="成员服务号码" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="GroupInfoPart@Part" element="div">
+		<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+	
+	<!-- 参数列表 开始 -->		
+	<div jwcid="MemInfo@Part" element="div" style="display:none">
+		<span jwcid="@saleserv:GroupMemberInfo" info="ognl:mebInfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box" >	
+		<div class="c_form c_form-col-2 c_form-label-1" jwcid="ServicePart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">选择服务：</span></span>
+				<span class="e_select"><span><span>				
+					<select jwcid="@Select" name="SERVICE_TYPE" id="SERVICE_TYPE" nullable="no" desc="选择服务"
+							source="ognl:serviceInfos" textField="SERVICE_NAME" valueField="SERVICE_ID" 
+							value="ognl:serviceInfo.SERVICE_ID" onchange="changeOperType();" disabled="true"/>
+				</span></span></span>		
+				<textarea jwcid="@TextArea" name="SERVICE_INFOS" id="SERVICE_INFOS" value="ognl:serviceInfos" style="display:none"></textarea>	
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">服务参数信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="ServiceParamPart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">操作类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="OPER_TYPE" name="OPER_TYPE" desc="操作类型" disabled="true"
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('OPER_BLACKWHITE')"
+						value="ognl:serviceInfo.OPER_TYPE" valueField="DATA_ID" textField="DATA_NAME"  />	
+				</span></span></span>	
+			</li>
+			<li class="li">
+				<span class="label">用户服务状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="PLAT_SYNC_STATE" name="PLAT_SYNC_STATE" desc="用户服务状态" disabled="true"
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PLAT_SYNC_STATE')"
+						value="ognl:serviceInfo.PLAT_SYNC_STATE" valueField="DATA_ID" textField="DATA_NAME"  />	
+				</span></span></span>	
+			</li>
+			<li class="li">
+				<span class="label">业务属性：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="BIZ_ATTR" name="BIZ_ATTR" desc="业务属性" disabled="true"
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GRP_PLAT_BIZ_ATTR')"
+						value="ognl:serviceInfo.BIZ_ATTR" valueField="DATA_ID" textField="DATA_NAME"  />	
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">业务代码：</span>
+				<span class="text"><span jwcid="@Insert" value="ognl:serviceInfo.BIZ_CODE" desc="业务代码" disabled="true"/></span>
+			</li>
+			<li class="li">
+				<span class="label">业务名称：</span>
+				<span class="text"><span jwcid="@Insert" value="ognl:serviceInfo.BIZ_NAME" desc="业务名称" disabled="true"/></span>
+			</li>
+			<li class="li">
+				<span class="label">服务代码：</span>
+				<span class="text"><span jwcid="@Insert" value="ognl:serviceInfo.SERV_CODE" desc="服务代码" disabled="true"/></span>
+			</li>
+			<!-- 隐藏域   开始 -->
+			<textarea jwcid="@TextArea" name="SERVICE_INFO" id="SERVICE_INFO" value="ognl:serviceInfo" style="display:none"></textarea>	
+			<input jwcid="@TextField" id="GRP_USER_ID" name="GRP_USER_ID" value="ognl:serviceInfo.USER_ID"  style="display:none"/>
+			<input jwcid="@TextField" id="MEB_USER_ID" name="MEB_USER_ID" value="ognl:serviceInfo.MEB_USER_ID"  style="display:none"/>	
+			<input jwcid="@TextField" id="EPARCHY_CODE" name="EPARCHY_CODE" value="ognl:serviceInfo.EPARCHY_CODE"  style="display:none"/>	
+			<input jwcid="@TextField" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:serviceInfo.PRODUCT_ID"  style="display:none"/>
+			<!-- 隐藏域  结束 -->
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="QryBlackWhiteOutPart,ServicePart,ServiceParamPart" 
+		listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" submitText="提交" disabledBtn="true" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

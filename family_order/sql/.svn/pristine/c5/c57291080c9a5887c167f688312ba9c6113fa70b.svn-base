@@ -1,0 +1,3 @@
+UPDATE tf_f_user_vpn
+   SET vpn_name=:VPN_NAME,func_tlags=:FUNC_TLAGS,feeindex=:FEEINDEX,max_close_num=:MAX_CLOSE_NUM,max_num_close=:MAX_NUM_CLOSE,person_maxclose=:PERSON_MAXCLOSE,max_inner_num=:MAX_INNER_NUM,max_outnum=:MAX_OUTNUM,max_users=:MAX_USERS,max_linkman_num=:MAX_LINKMAN_NUM,max_telphonist_num=:MAX_TELPHONIST_NUM,vpn_scare_code=:VPN_SCARE_CODE,call_net_type=:CALL_NET_TYPE,call_area_type=:CALL_AREA_TYPE,over_fee_tag=:OVER_FEE_TAG,limfee_type_code=:LIMFEE_TYPE_CODE,sinword_type_code=:SINWORD_TYPE_CODE,cust_manager=:CUST_MANAGER,short_code_len=:SHORT_CODE_LEN,rsrv_str1=:RSRV_STR1,RSRV_STR5=:RSRV_STR5,RSRV_STR6=:RSRV_STR6,WORK_TYPE_CODE=:WORK_TYPE_CODE  
+ WHERE user_id=TO_NUMBER(:USER_ID)

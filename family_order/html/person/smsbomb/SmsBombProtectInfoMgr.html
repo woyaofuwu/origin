@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>短信炸弹保护名单</title>
+<script language="JavaScript"
+	src="person/smsbomb/scripts/SmsBombProtectInfoMgr.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" jwcid="allPart@Part"><div class="m_wrapper2">
+
+<!-- 
+<div class="c_tip" jwcid="TipBar@Part" style="display:none;">
+	<span id="tipSpan"></span>
+</div> -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">资料查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="QueryUserPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" 
+						 value="ognl:condition.cond_SERIAL_NUMBER" 
+						 desc="手机号码" nullable="no" datatype="mbphone" inModeCode="ognl:getVisit().getInModeCode()"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryUserInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 条件结束-->
+	
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">保护名单列表</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-3" jwcid="protectPart@Part">
+				<table jwcid="@Table" id="protectTable" name="protectTable" rowClick="tableRowClick">
+					<thead>
+						<tr>
+							<th col="PROTECT_NUM">被保护号码</th>
+							<th col="EXPIRE_DATE">生效截止时间</th>
+						</tr>
+					</thead>
+					<tbody name="ProtectTableValues" id="ProtectTableValues">
+						<tr jwcid="@Foreach" source="ognl:userInfos" value="ognl:userInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:userInfo.SERIAL_NUMBER" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:userInfo.EXPIRE_DATE" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<!-- 表单 开始 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6"  jwcid="ProtectEditPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">被保护号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@Any"  id="PROTECT_NUM" name="PROTECT_NUM" 
+						disabled="false" nullable="no" desc="被保护号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">生效截止时间：</span></span>
+					<label>
+					<input type="text" jwcid="@DateField" id="EXPIRE_DATE" name="EXPIRE_DATE" desc="生效截止时间"
+						format="yyyyMMdd" nullable="no"  />
+					</label>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="return createPhone(this);"><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="bupdate" name="bupdate" onclick="return updatePhone(this);"><i id="ibcreate" name="ibcreate" class="e_ico-edit"></i><span>修改</span></button>
+				<button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="return deletePhone(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">白名单列表</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="whitePart@Part">
+				<table jwcid="@Table" id="whiteTable" name="whiteTable" rowClick="tableRowClick2">
+					<thead>
+						<tr>
+							<th col="WHITE_NUM">白名单号码</th>
+							<th col="WHITE_TYPE_NAME">白名单号码业务类型</th>
+							<th col="WHITE_TYPE"  style="display:none">白名单号码业务类型</th>
+						</tr>
+					</thead>
+					<tbody name="WhiteTableValues" id="WhiteTableValues">
+						<tr jwcid="@Foreach" source="ognl:userSubInfos" value="ognl:userSubInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:userSubInfo.WHITE_NUM" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:userSubInfo.WHITE_TYPE_NAME" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:userSubInfo.WHITE_TYPE" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<!-- 表单 开始 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6"  jwcid="WhiteEditPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">白名单号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@Any"  id="WHITE_NUM" name="WHITE_NUM" 
+							nullable="no" desc="白名单号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">白名单号码业务类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="WHITE_TYPE" id="WHITE_TYPE"
+								source="ognl:pageutil.getStaticList('WHITE_NUM_TYPE')" 
+								textField="DATA_NAME" valueField="DATA_ID"  titleField="DATA_NAME"
+								desc="白名单号码业务类型" nullable="no" />
+					</span></span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreateWhite" name="bcreateWhite" onclick="return createWhitePhone(this);"><i id="ibcreateW" name="ibcreateW" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="bdeleteWhite" name="bdeleteWhite" onclick="return deleteWhitePhone(this)"><i  id="ibcreateW" name="ibcreateW" class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+
+<div class="c_box">
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="checkAndSubmit()"><i class="e_ico-ok"></i><span>提交</span></button>
+	</div>
+	<!-- 提交 结束 -->
+</div>
+
+</div>
+</div>
+</body>
+</html>

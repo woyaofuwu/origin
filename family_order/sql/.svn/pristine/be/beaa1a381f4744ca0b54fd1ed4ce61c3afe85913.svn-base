@@ -1,0 +1,2 @@
+INSERT INTO tf_a_payrelation(partition_id,user_id,acct_id,payitem_code,acct_priority,user_priority,addup_months,addup_method,bind_type,start_cycle_id,end_cycle_id,default_tag,act_tag,limit_type,limit,complement_tag,inst_id,update_staff_id,update_depart_id,update_time)
+ VALUES(TO_NUMBER(:PARTITION_ID),TO_NUMBER(:USER_ID),TO_NUMBER(:ACCT_ID),:PAYITEM_CODE,:ACCT_PRIORITY,:USER_PRIORITY,:ADDUP_MONTHS,:ADDUP_METHOD,:BIND_TYPE,:START_CYCLE_ID,:END_CYCLE_ID,:DEFAULT_TAG,:ACT_TAG,:LIMIT_TYPE,TO_NUMBER(:LIMIT),:COMPLEMENT_TAG,:INST_ID,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,SYSDATE)

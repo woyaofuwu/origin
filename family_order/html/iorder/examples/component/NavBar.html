@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head jwcid="@Head">
+<title>NavBar</title>
+</head>
+<body jwcid="@Body">
+
+
+<div class="l_query">
+	
+	<div id="queryCond" class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="left">
+				<button type="button"><span class="e_ico-add"></span><span>加入下发列表</span></button>
+				<span class="e_space"></span>
+				<span class="e_select" id="sendListButton">待下发列表<span class="e_tag e_tag-red e_tag-r">9</span></span>
+				<button type="button" class="e_button-green" onclick="showPopup('editPopup')"><span class="e_ico-send"></span><span>下发</span></button>
+			</div>
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('popup')">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+
+	<div jwcid="queryPart@Part">
+		<div class="l_queryResult">
+		
+		
+			<table name="mytable" jwcid="@Table">
+				<thead>
+					<tr>
+						<th col="CUST_ID"><span>客户标识</span></th>
+						<th col="CUST_NAME"><span>客户姓名</span></th>
+						<th><span>年龄</span></th>
+						<th><span>出生年月</span></th>
+						<th><span>手机号码</span></th>
+						<th><span>邮箱地址</span></th>
+						<th><span>邮箱地址</span></th>
+						<th><span>邮箱地址</span></th>
+						<th><span>邮箱地址</span></th>
+						<th><span>邮箱地址</span></th>
+						<th><span>邮箱地址</span></th>
+						<th><span>创建时间</span></th>
+						<th><span>删除</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+						<td><span jwcid="@Insert" value="ognl:info.PAGE_INFO"/></td>
+						<td>Sylvester Stallone</td>
+						<td>66</td>
+						<td>1946-07</td>
+						<td>13511223341</td>
+						<td>Sylvester@Expendables.com</td>
+						<td>Sylvester@Expendables.com</td>
+						<td>Sylvester@Expendables.com</td>
+						<td>Sylvester@Expendables.com</td>
+						<td>Sylvester@Expendables.com</td>
+						<td>Sylvester@Expendables.com</td>
+						<td>2012-12-11</td>
+						<td class="fn"><span class="e_ico-delete"></span></td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="l_queryPage">
+			<div name="navbar1" jwcid="@NavBar" cond="queryCond" count="ognl:infoCount" listener="queryList" part="queryPart" pageSize="50" ></div>
+		</div>
+	</div>
+	
+</div>
+
+
+<script language="javascript">
+//<!--
+$(function(){
+	
+	//加载页面时进行查询
+	$.beginPageLoading("正在查询数据..");
+	$.ajax.submit("queryCond", "queryList", null, "queryPart", function(data){
+		$.endPageLoading();
+	}, function(code, info){
+		$.endPageLoading();
+		MessageBox.error("", code + "<br />" + info);
+	});
+});
+//-->
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>信用购机退货/撤单查询</title>
+<script jwcid="@Script" language="JavaScript"
+	src="iorder/person/saleactive/scripts/cancelWholenetCreditPurchases.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 	<div class="c_title">
+		 <div class="text">信用购机退货/撤单查询</div>
+		 <div class="submitPlace"></div>
+	</div> -->
+	<div class="c_space-c"></div>
+
+	<div jwcid="queryCanelCondPart@Part">
+		<div class="l_padding">
+			<div class="c_list c_list-s c_list-line c_list-border c_list-col-4"
+				jwcid="QueryCancelPart@Part">
+				<ul>
+					<li class="required">
+						<div class="label ">用户手机号：</div>
+						<div class="value">
+							<input jwcid="@TextField" id="cusMblNo" name="cusMblNo" value=""
+								desc="用户手机号" nullable="no" />
+						</div>
+					</li>
+					<li class="required">
+						<div class="label ">申请类型：</div>
+						<div class="value">
+							<select jwcid="@Select" name="procTyp" id="procTyp"
+								textField="DATA_NAME" valueField="DATA_ID"
+								titleField="DATA_NAME"
+								source="ognl:pageutil.getStaticList('PROCTYP')" value=""
+								desc="申请类型" nullable="no" />
+						</div>
+					</li>
+					
+					<!-- <li class="li">
+					<span class="label"><span class="e_required">被撤销交易操作流水号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="ExSeq" name="ExSeq"  
+						       value=""  desc="被撤销交易操作流水号" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">全网信用购机平台订单号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="mplOrdNo" name="mplOrdNo" 
+						       value=""  desc="全网信用购机平台订单号" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li"><span class="label"><span class="e_required">全网信用购机平台订单日期：</span> </span> 
+							   <span class="e_input"><span>
+									<input type="text" jwcid="@DateField" id="mplOrdDt"
+										name="mplOrdDt" value="" desc="全网信用购机平台订单日期"
+										format="yyyyMMdd" nullable="no"/>
+							   </span> </span>
+				</li> -->
+				<button type="button" class="e_button-blue" name="QUERY_BTN"
+							id="QUERY_BTN" onclick="return queryCancelData();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+				</ul>
+						
+			</div>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button style="display: none" class="e_button-blue"
+					name="Cancel2_BTN" id="Cancel2_BTN"
+					onclick="return CancelRequest();">
+					<i class="e_ico-star"></i><span>退货</span>
+				</button>
+				<button style="display: none" class="e_button-blue"
+					name="Cancel1_BTN" id="Cancel1_BTN"
+					onclick="return CancelRequest();">
+					<i class="e_ico-star"></i><span>撤单</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="c_title c_title-2">
+		<div class="text">信用购机信息</div>
+	</div>
+
+	<div jwcid="HiddenPart@Part" element="div">
+		<input jwcid="@Hidden" id="PROCTYP" name="PROCTYP"
+			value="ognl:result.PROCTYP" />
+		 <input jwcid="@Hidden" name="MPL_ORD_DT" id="MPL_ORD_DT" value="ognl:result.MPL_ORD_DT" desc="全网信用购机平台订单日期"/>
+			
+	</div>
+
+	<div class="c_scroll c_scroll-table-10"
+		jwcid="QueryCancelListPart@Part">
+		<div
+			class="c_table c_table-hover c_table-lite c_table-border c_table-min-5 c_table-hover">
+			<table id="CancelListFormTable" name="CancelListFormTable">
+				<thead>
+					<tr>
+						<th>消息返回码</th>
+						<th>消息内容</th>
+						<th>退款金额/撤单金额</th>
+						<th>手续费</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+						element="tr">
+						<td class="e_center"><span jwcid="@Insert"
+							value="ognl:info.RSP_CODE" raw="false" /></td>
+						<td class="e_center"><span jwcid="@Insert"
+							value="ognl:info.RSP_INFO" raw="false" /></td>
+						<td class="e_center"><span jwcid="@Insert"
+							value="ognl:info.REJECT_AMT" raw="false" /></td>
+						<td class="e_center"><span jwcid="@Insert"
+							value="ognl:info.SERVICE_AMT" raw="false" /></td>
+						<td style="display:none"> </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</body>
+</html>

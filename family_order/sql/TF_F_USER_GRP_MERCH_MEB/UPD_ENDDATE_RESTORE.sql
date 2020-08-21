@@ -1,0 +1,14 @@
+UPDATE TF_F_USER_GRP_MERCH_MEB M SET M.END_DATE= to_date(:END_DATE,'yyyy-mm-dd hh24:mi:ss')
+ WHERE M.USER_ID = :USER_ID
+   AND M.PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+   AND  EXISTS (SELECT 1
+          FROM TF_B_TRADE_GRP_MERCH_MEB T
+         WHERE T.TRADE_ID = :TRADE_ID
+           AND T.USER_ID = M.USER_ID
+           AND T.EC_USER_ID = M.EC_USER_ID
+           AND EXISTS (SELECT 1
+                  FROM TF_F_CUST_GROUP G, TF_F_USER U
+                 WHERE U.USER_ID = M.EC_USER_ID
+                   AND U.PARTITION_ID = MOD(TO_NUMBER(M.EC_USER_ID), 10000)
+                   AND G.CUST_ID = U.CUST_ID
+                   AND G.REMOVE_TAG = '0'))

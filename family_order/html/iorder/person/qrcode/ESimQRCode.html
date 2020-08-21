@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s"> 
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>eSIM二维码管理</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/qrcode/scripts/eSimQRCode.js"></script>
+</head>
+<body jwcid="@Body">
+	<div jwcid="QueryPart@Part" class="l_query l_query-nopage">
+		<div jwcid="psptPart@Part" class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">eSIM二维码管理</div>
+				</div>
+				<div class="right">
+					<span class="label">二维码类型：</span>
+					<select jwcid="@Select" name="BIZ_TYPE" id="BIZ_TYPE"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+							source="ognl:pageutil.getStaticList('TD_S_QRCODETYPE')"
+							value="0" desc="二维码类型" nullable="no" />
+					<span class="e_space"></span>
+					<div class="right">
+						<span class="label">手机号码：</span>
+							<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER"
+								onenterAction="queryESimQrCode();"
+								value="" desc="手机号码" maxsize="11"
+								nullable="no" datatype="mbphone" />
+						<span class="e_space"></span>
+						<button type="button" class="e_button-blue"
+								onclick="queryESimQrCode();">
+							<span class="e_ico-search"></span><span>查询</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="c_space"></div>
+		<div jwcid="QueryListPart@Part" class="l_queryResult">
+			<table jwcid="@Table" name="QrCodeTable" id="QrCodeTable">
+				<thead>
+				<tr>
+					<th style="" col="QR_CODE_ID">二维码ID</th>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="BIZ_TYPE">二维码类型</th>
+					<th col="BIZ_TYPE_CODE"  style="display:none"></th>
+					<th col="DEVICE_TYPE">设备类型</th>
+					<th col="PRIMARY_MSISDN">iPhone手机号码</th>
+					<th col="BIZ_TYPE_TIME">业务受理时间</th>
+					<th style="" col="ACTIVATION_CODE_SHOW">二维码查看和打印</th>
+					<th col="ACTIVATION_CODE" style="display:none"></th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr jwcid="@Foreach" source="ognl:qrCodeInfos"
+					value="ognl:qrCodeInfo" element="tr" index="ognl:rowIndex"
+					class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td data-title="二维码ID"><span jwcid="@Insert" value="ognl:qrCodeInfo.QR_CODE_ID" /></td>
+					<td data-title="手机号码"><span jwcid="@Insert" value="ognl:qrCodeInfo.SERIAL_NUMBER" /></td>
+					<td data-title="二维码类型"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_QRCODETYPE', qrCodeInfo.BIZ_TYPE)" /></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:qrCodeInfo.BIZ_TYPE" /></td>
+					<td data-title="设备类型"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ESIM_DEVICE_TYPE', qrCodeInfo.DEVICE_TYPE)" /></td>
+					<td data-title="iPhone手机号码"><span jwcid="@Insert" value="ognl:qrCodeInfo.PRIMARY_MSISDN" /></td>
+					<td data-title="业务受理时间"><span jwcid="@Insert" value="ognl:qrCodeInfo.BIZ_TYPE_TIME == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', qrCodeInfo.BIZ_TYPE_TIME)" /></td>
+					<td class="e_center">
+						<a jwcid="@Redirect" value="二维码" style="ognl:qrCodeInfo.ACTIVATION_CODE == null ? 'display:none' : 'display:'" onclick="showQRCode(this.parentNode.parentNode.rowIndex)" />
+					</td>
+					<td style="display:none">
+                    	<span jwcid="@Insert"
+							value="ognl:qrCodeInfo.ACTIVATION_CODE"></span>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

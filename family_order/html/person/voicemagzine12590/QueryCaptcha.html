@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>灰名单查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/voicemagzine12590/scripts/queryCommRecord.js"></script>
+<script language="javascript">
+	window.attachEvent("onunload",closePage);
+	function closePage()
+	{
+		ajaxSubmit('HiddenPart,SerialNumPart','closePage',null,null,null);
+	};
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">灰名单查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="QueryRecordPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">用户手机号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_PARA_CODE1" id="cond_PARA_CODE1" desc="用户手机号码" maxLength="11" nullable="no" datatype="mbphone"
+					       value="ognl:getVisit().getInModeCode() == 1 ? getData().getString('SERIAL_NUMBER',''):cond.PARA_CODE1" />
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecord();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 隐藏区域 开始 -->
+   	<div jwcid="HiddenPart@Part" element="div">
+		<input jwcid="@Hidden" id="INDICTSEQ" name="INDICTSEQ" value="ognl:result.INDICTSEQ" />
+		<input jwcid="@Hidden" id="ORIGINTIME" name="ORIGINTIME" value="ognl:result.ORIGINTIME" />
+		<input jwcid="@Hidden" id="MAXRECORDNUM" name="MAXRECORDNUM" value="ognl:result.MAXRECORDNUM" />
+		<input jwcid="@Hidden" id="RSLTPAGECURRCNT" name="RSLTPAGECURRCNT" value="ognl:result.RSLTPAGECURRCNT" />
+		<input jwcid="@Hidden" id="PIGEONHOLE" name="PIGEONHOLE" value="ognl:result.PIGEONHOLE" />
+		<input jwcid="@TextArea" type="hidden" id="REPORTPAGE" name="REPORTPAGE" value="ognl:reportPage" style="display:none"/>
+	</div>
+	<div jwcid="SerialNumPart@Part" element="div">
+		<input jwcid="@Hidden" id="CALLERNO" name="CALLERNO" value="ognl:result.CALLERNO" />
+	</div>
+	<!-- 隐藏区域 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x style="height:242px"">
+	<div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>是否灰名单</th>
+					<th>提出省份</th>
+					<th>有效开始时间</th>
+					<th>有效结束时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('IS_CARTCHA',info.RSRV_STR0)" raw="true"/></td>
+					
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></td> 
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	 <!-- 分页 开始 -->
+	 <div jwcid="@NavBar" name="recordNav" id="recordNav" cond="HiddenPart,SerialNumPart" part="QueryListPart" 
+	      listener="queryOtherRecord" pageSize="ognl:result.RSLTPAGECURRCNT" count="ognl:result.MAXRECORDNUM"></div>
+	 <!-- 分页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

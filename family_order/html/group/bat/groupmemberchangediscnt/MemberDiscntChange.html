@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/memberDiscntChg/memberDiscntChg.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_scroll c_scroll-mix" style="ognl:'height:' + condition.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="CondGroupPart@Part" element="div">
+		<div class="c_form">
+			<ul class="ul">
+				<li class="li">
+					<span jwcid="@saleserv:SelectGroup" refreshPart="GroupInfoPart,GroupTreePart"  afterAction="refreshProductTree(data);" afterErrorAction="errorAction();"/>
+				</li>
+	  		</ul>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+
+	<!-- 参数列表 开始 -->
+	<div jwcid="GroupInfoPart@Part">
+		<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+    
+    <!-- 凭证信息开始  -->
+    <div jwcid="VoucherInfoPart@Part" element="div">
+    <div class="c_box" jwcid="@Conditional" condition='ognl:true'>
+		<div class="c_title">
+			<div class="text">凭证信息</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li col-3">				
+					<span class="label"><span class="e_required">凭证上传：</span></span>
+					<div jwcid="VoucherFilePart@Part">
+						<span class="e_elements">
+						<input jwcid="@Upload"
+								name="MEB_VOUCHER_FILE_LIST"
+								id="MEB_VOUCHER_FILE_LIST"
+								ftpSite="groupserv"
+								filePath="upload/mebattach"
+								fileSize="20"
+								fileTypes="*.*"
+                        		desc="凭证信息" 
+                        		nullable="no"
+							/>
+						</span>
+				    </div>
+				</li>
+                <li class="li">
+	                <span class="label"><span class="e_required">稽核人员：</span></span> 
+	                <span class="e_elements">
+						<button type="button" class="e_button-right"
+							onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+							<i class="e_ico-check"></i><span></span>
+						</button> 
+	                    <span class="e_input e_input-left"><span> <input
+								type="text" jwcid="@TextField"
+								name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+								value=""
+								text="" nullable="no"
+								readonly="true"/>
+						</span></span>
+					</span>
+	            </li>
+			</ul>
+		</div>
+	</div>
+    </div>
+    <!-- 凭证信息结束  -->
+	
+	<!-- 分栏 开始 -->
+	<div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:200px;">
+	
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 树 开始 -->
+				<div class="c_scroll" style="height:270px;">
+					<div jwcid="GroupTreePart@Part" element="div">
+					<!-- 产品列表 开始 -->
+					<div class="c_box" id="treePar">
+						<span jwcid="@saleserv:GroupProductsTree"
+						      parentTypeCode="1000"
+						      multiSelect="false"
+						      operType="GROUP_CREATE_USER"
+						      checkboxAction="queryProduct(nodedata);"
+						      init="false"
+						      async="false"
+						      method="loadGrpTreeForOrderedOneTime"  
+						      rootName="集团已订购产品"/>
+		   			</div>
+				</div></div>
+				<!-- 树 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+	
+	
+		</div>
+		<!-- 第 1 栏 结束 -->
+		<!-- 第 2 栏 开始 -->
+		<div class="l_auto">
+	
+			<!-- 区域 开始 -->
+			
+			<div class="c_scroll" style="height:270px;">
+				
+				<div jwcid="CompProductInfoPart@Part" element="div">
+					<span jwcid="@saleserv:GrpUserList" useInfos="ognl:userInfos" ifCheck="true" titleInfo="用户信息" clickAction="chooseUserProducts($(this))"/>
+				</div>
+				
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">成员优惠信息</div>
+				</div>
+				<!-- 标题 结束 -->
+				
+				<div class="c_form c_form-col-2" jwcid="BatDiscntPart@Part" element="div">
+					
+					<ul class="ul">
+						
+						<li class="li col-2">
+							<span class="label"><span class="e_required">成员优惠：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="DISCNT_CODE_B" source="ognl:customDiscnt" valueField="ELEMENT_ID" nullable="no"
+										textField="ELEMENT_NAME"  value="ognl:condition.ELEMENT_ID" style="width: 100%;"   desc="成员优惠"/>
+							</span></span></span>
+						</li>
+						
+						<li class="li">
+							<span class="label"><span class="e_required">优惠生效时间：</span></span>
+							<span class="e_select"><span><span>
+								<select id="EFFECT_TIME" name="EFFECT_TIME" class="e_select">
+									<option value="">---选择---</option>
+								    <option value="0">立即生效</option>
+								    <option value="1">下月生效</option>
+								</select>
+							</span></span></span>
+						</li>
+						
+						<li class="li">
+							<span class="label"><span class="e_required">优惠变更方式：</span></span>
+							<span class="e_select"><span><span>
+								<select id="OPER_TYPE" name="OPER_TYPE" class="e_select">
+									<option value="">---选择---</option>
+									<option value="0">新增</option>
+									<option value="1">删除</option>
+								</select>
+							</span></span></span>
+						</li>
+			
+					</ul>
+		
+				</div>
+			</div>
+			<!-- 区域 结束 -->
+	
+		</div>
+		<!-- 第 2 栏 结束 -->
+		
+		<!-- 隐藏域数据信息 开始 -->
+		  <div jwcid="GroupUserPart@Part" element="div">
+			<input jwcid="@Any" id="GRP_SN" name="GRP_SN" value="ognl:userInfo.SERIAL_NUMBER" style="display:none" encode="false" />
+			<input jwcid="@Any" id="GRP_USER_ID" name="GRP_USER_ID" value="ognl:userInfo.USER_ID" style="display:none"  encode="false" />
+			<input jwcid="@Any" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:userInfo.PRODUCT_ID" style="display:none"  encode="false" />
+			<input jwcid="@Any" id="USER_EPARCHY_CODE" name="USER_EPARCHY_CODE" value="ognl:userInfo.EPARCHY_CODE" style="display:none"  encode="false" />
+			<input jwcid="@Any" id="GRP_PRODUCT_NAME" name="GRP_PRODUCT_NAME" style="display:none"  value="ognl:userInfo.PRODUCT_NAME"  encode="false" />
+            <input jwcid="@Any" id="MEB_VOUCHER_FILE_SHOW" name="MEB_VOUCHER_FILE_SHOW" style="display:none"  value="ognl:voucherInfo.MEB_VOUCHER_FILE_SHOW"  encode="false" />
+	  	  </div>
+		<!-- 隐藏域数据信息 结束 -->
+	
+	</div>
+	<!-- 分栏 结束 -->
+	
+	
+</div>
+<!-- 区域 结束 -->
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="conjuction()"><i></i><span>确定</span></button>
+		<button type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+	</div>
+	<!-- 提交 结束 -->
+
+</div></div>
+</body>
+</html>

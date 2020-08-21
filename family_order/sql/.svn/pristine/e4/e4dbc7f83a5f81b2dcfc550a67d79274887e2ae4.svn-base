@@ -1,0 +1,3 @@
+update TF_F_NONBOSSFEE_LOG T
+set T.rsrv_str6 ='1', T.rsrv_str7 =SYSDATE, T.TRADE_ID=:TRADE_ID, T.TICKET_ID=:TICKET_ID, T.TICKET_TYPE=:TICKET_TYPE
+where log_id=:LOG_ID

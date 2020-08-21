@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>NB-IOT产品属性</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/param/wlw/UserParamInfo3.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div id="NBIOTParam">
+<div class="c_scroll c_scroll-form-10">
+	<!-- 表单数据开始 -->
+	<div id="platsvcParam@Part" class="c_form c_form-label-20 c_form-col-1">
+		<ul class="ul">
+			<li class="li service">
+				<span class="label"><span id="APNNAME" class="e_required">APN名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="pam_APNNAME" id="pam_APNNAME" 
+						value="ognl:iotParam.APNNAME" desc="APN名称" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li service">
+				<span class="label"><span id="LOWPOWERMODE" class="e_required">低电耗模式：</span></span>
+				<span class="e_select"><span>
+					<select jwcid="@Select" name="pam_LOWPOWERMODE" id="pam_LOWPOWERMODE"
+						source="ognl:pageutil.getStaticList('LOWPOWERMODE')" 
+						textField="DATA_NAME" valueField="DATA_ID"
+						desc="低电耗模式" nullable="no" onchange="getPower()"/>
+				</span></span>
+			</li>
+			<li class="li service" id="TimerClock" style="display:none" disabled="disabled">
+				<span class="lebel"><span id="RAUTAUTIMER" class="e_required">RAU/TAU定时器精度:</span></span>
+				<span class="e_select">
+				<span>
+					<select jwcid="@Select" name="TimeClock" id="TimeClock"
+                                source="ognl:pageutil.getStaticList('RAUTAUTIMER')"
+                                textField="DATA_NAME" valueField="DATA_ID"
+                                desc="RAU/TAU定时器" nullable="no" onchange="getTime()"/>
+				</span></span>
+			</li>
+			<li class="li service" id="TimerSure" style="display:none" disabled="disabled">
+				<span class="lebel"><span id="RAUTAUTIMER" class="e_required">RAU/TAU定时器具体时间:</span></span>
+				<span>
+				<select name="pam_RAUTAUTIMER" id="pam_RAUTAUTIMER"
+                                desc="RAU/TAU定时器" nullable="no"></select>
+				</span>
+				
+			</li>
+		
+			<li class="li discnt">
+				<span class="label"><span id="DISCOUNT" class="e_required">固定折扣率：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="pam_DISCOUNT" id="pam_DISCOUNT"
+						value="ognl:iotParam.DISCOUNT" desc="固定折扣率" nullable="no" onkeyup="value=NUMBER(value)?value:''" onchange="getDiscount()"/>
+					
+				</span></span>
+			</li>
+			<li class="li discnt">
+				<span class="label"><span id="APPROVALNUM" class="e_required">审批文号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="pam_APPROVALNUM" id="pam_APPROVALNUM" 
+						value="ognl:iotParam.APPROVALNUM" desc="审批文号" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li discnt">
+				<span class="laebl"><span id="PROMISEUSEMONTHS" class="e_required">承诺在网时间（月）：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField"  name="pam_PROMISEUSEMONTHS" id="pam_PROMISEUSEMONTHS"
+						value="ognl:iotParam.PROMISEUSEMONTHS" desc="承诺在网时间（月）" nullable="no" onchange="getDiscount()" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/"/>
+				</span></span>
+			</li>
+			<li class="li discnt">
+				<span class="label"><span id="BATCHACCOUNTS" class="e_required">一次性批量入网用户数（张）：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="pam_BATCHACCOUNTS" id="pam_BARCHACCOUNTS" 
+						value="ognl:iotParam.BATCHACCOUNTS" desc="一次性批量入网用户数（张）" nullable="no" onchange="getDiscount()" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/"/>
+				</span></span>
+			</li>
+			<li class="li discnt">
+				<span class="label"><span id="CANSHARE" class="e_required">是否可共享：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="pam_CANSHARE" id="pam_CANSHARE" 
+						value="ognl:iotParam.CANSHARE" desc="是否可共享" nullable="no" />
+				</span></span>
+			</li>
+			</ul>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button class="e_button-page-ok" value="确定" id="bt_ok" name="bt_ok"
+			desc="确定" onclick="setData(this);">
+			<i></i><span>确定 </span>
+		</button>
+		<button class="e_button-page-cancel" value="取消" id="bt_canlet"
+			name="bt_canlet" desc="取消" onclick="setCancleData(this);">
+			<i></i><span>取消 </span>
+		</button>
+	</div>
+	<!-- 提交 结束 -->
+	<input jwcid="@Hidden" name="ELEMENT_ID" value="ognl:elementId"/>
+	<input jwcid="@Hidden" name="ELEMENT_TYPE_CODE" value="ognl:elementTypeCode"/>
+	<input jwcid="@Hidden" name="HIDDEN_NAME" value="ognl:hiddenName"/>
+	<input jwcid="@Hidden" name="PARAM_VERIFY_SUCC" value="ognl:paramVerifySucc"/>
+	
+</div>
+</div>
+</body>
+<script type="text/javascript">
+$(document).ready(
+	function(){loadUserParamInfo();}
+);
+</script>
+</html>

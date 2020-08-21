@@ -1,0 +1,4 @@
+INSERT INTO tf_f_user_mbmp(partition_id,user_id,serial_number,biz_type_code,org_domain,opr_source,passwd,biz_state_code,start_date,end_date,update_staff_id,update_depart_id,update_time)
+ select mod(user_id,10000),user_id,serial_number,biz_type_code,org_domain,opr_source,passwd,biz_state_code,start_date,end_date,trade_staff_id,trade_depart_id,trade_time
+from tf_b_trade_mbmp
+where trade_id=:TRADE_ID

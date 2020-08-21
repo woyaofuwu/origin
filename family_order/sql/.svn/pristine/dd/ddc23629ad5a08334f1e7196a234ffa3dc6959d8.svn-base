@@ -1,0 +1,6 @@
+SELECT to_char(reck_qust_id) reck_qust_id,to_char(reck_id) reck_id,channel_id,accept_eparchy,city_code,depart_code,staff_id,reck_type_code,normal_num,to_char(normal_fee) normal_fee,cancel_num,to_char(cancel_fee) cancel_fee,reck_file_name,to_char(begin_time,'yyyy-mm-dd hh24:mi:ss') begin_time,to_char(end_time,'yyyy-mm-dd hh24:mi:ss') end_time,to_char(quest_time,'yyyy-mm-dd hh24:mi:ss') quest_time,to_char(file_time,'yyyy-mm-dd hh24:mi:ss') file_time,deal_tag,deal_times,spring_result_code,spring_result,remark,prevaluec1,prevaluec2,prevaluec3,prevalue1,prevalue2,prevalue3,to_char(prevaluen1) prevaluen1,to_char(prevaluen2) prevaluen2,to_char(prevaluen3) prevaluen3,to_char(prevalued1,'yyyy-mm-dd hh24:mi:ss') prevalued1,to_char(prevalued2,'yyyy-mm-dd hh24:mi:ss') prevalued2,to_char(prevalued3,'yyyy-mm-dd hh24:mi:ss') prevalued3 
+  FROM tp_o_reckqust
+ WHERE deal_tag=:DEAL_TAG
+       AND (:CHANNEL_ID is null or channel_id = :CHANNEL_ID )
+       AND (:BEGIN_TIME is null or begin_time >= TO_DATE(:BEGIN_TIME ,'YYYY-MM-DD HH24:MI:SS') )
+       AND (:END_TIME is null or end_time <= TO_DATE(:END_TIME ,'YYYY-MM-DD HH24:MI:SS') )

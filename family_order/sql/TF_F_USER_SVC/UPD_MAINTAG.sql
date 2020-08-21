@@ -1,0 +1,6 @@
+UPDATE TF_F_USER_SVC
+   SET MAIN_TAG = :MAIN_TAG,update_time=sysdate
+ WHERE PARTITION_ID = MOD(TO_NUMBER(:USER_ID),10000)
+   AND USER_ID = to_number(:USER_ID)
+   AND SERVICE_ID = :SERVICE_ID
+   AND end_date > sysdate

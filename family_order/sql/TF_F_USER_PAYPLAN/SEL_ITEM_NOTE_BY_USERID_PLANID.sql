@@ -1,0 +1,11 @@
+SELECT   
+     t.PARTITION_ID,to_char(USER_ID) USER_ID, to_char(PLAN_ID) PLAN_ID, t.PAYITEM_CODE, t.BIND_TYPE, t.ACT_TAG, t.LIMIT_TYPE, to_char(LIMIT) LIMIT, t.COMPLEMENT_TAG, t.RULE_ID, t.START_CYCLE_ID, t.END_CYCLE_ID, to_char(t.UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME, t.UPDATE_STAFF_ID, t.UPDATE_DEPART_ID, t.REMARK, t.RSRV_STR1, t.RSRV_STR2, t.RSRV_STR3, t.RSRV_STR4, t.RSRV_STR5, t.RSRV_STR6, t.RSRV_STR7, t.RSRV_STR8, t.RSRV_STR9, t.RSRV_STR10
+ ,b.note_item_code,b.note_item 
+ FROM tf_f_user_payitem t,td_b_noteitem b
+ WHERE USER_ID=:USER_ID 
+  AND PARTITION_ID = MOD(TO_NUMBER(:USER_ID),10000)
+  AND t.payitem_code = b.note_item_code
+  AND PLAN_ID=:PLAN_ID
+  AND ACT_TAG='1'
+  AND START_CYCLE_ID<=to_char(SYSDATE,'yyyyMM')
+  AND END_CYCLE_ID>=to_char(SYSDATE,'yyyyMM')

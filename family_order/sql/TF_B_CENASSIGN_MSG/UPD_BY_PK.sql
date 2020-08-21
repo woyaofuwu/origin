@@ -1,0 +1,5 @@
+UPDATE tf_b_cenassign_msg
+   SET res_type_code=:RES_TYPE_CODE,start_res_no=:START_RES_NO,end_res_no=:END_RES_NO,res_kind_code=:RES_KIND_CODE,capacity_type_code=:CAPACITY_TYPE_CODE,oper_num=TO_NUMBER(:OPER_NUM),assign_time=TO_DATE(:ASSIGN_TIME, 'YYYY-MM-DD HH24:MI:SS'),assign_staff_id=:ASSIGN_STAFF_ID,assign_declare=:ASSIGN_DECLARE,time_in=TO_DATE(:TIME_IN, 'YYYY-MM-DD HH24:MI:SS'),staff_id_in=:STAFF_ID_IN,declare_in=:DECLARE_IN,audit_state_code=:AUDIT_STATE_CODE1,cancel_reason=:CANCEL_REASON,remind_code_a=:REMIND_CODE_A,remind_date_a=TO_DATE(:REMIND_DATE_A, 'YYYY-MM-DD HH24:MI:SS'),log_id=TO_NUMBER(:LOG_ID),remind_code_b=:REMIND_CODE_B,remind_date_b=TO_DATE(:REMIND_DATE_B, 'YYYY-MM-DD HH24:MI:SS'),sub_log_id=TO_NUMBER(:SUB_LOG_ID),remark=:REMARK,rsrv_tag1=:RSRV_TAG1,rsrv_str2=:RSRV_STR2  
+ WHERE eparchy_code=:EPARCHY_CODE
+   AND msg_no=:MSG_NO
+   AND (:AUDIT_STATE_CODE is null or audit_state_code=:AUDIT_STATE_CODE)

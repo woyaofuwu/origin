@@ -1,0 +1,8 @@
+INSERT INTO tf_b_trade_payrelation(trade_id,accept_month,user_id,acct_id,payitem_code,acct_priority,user_priority,bind_type,start_cycle_id,end_cycle_id,act_tag,default_tag,limit_type,limit,complement_tag,update_time,UPDATE_STAFF_ID,UPDATE_DEPART_ID,REMARK,ADDUP_MONTHS,ADDUP_METHOD,INST_ID,MODIFY_TAG,RSRV_STR1,RSRV_STR2,RSRV_STR3,RSRV_STR4,RSRV_STR5,RSRV_STR6,RSRV_STR7,RSRV_STR8,RSRV_STR9,RSRV_STR10)
+ SELECT :TRADE_ID,TO_NUMBER(SUBSTR(:TRADE_ID,5,2)),user_id,acct_id,payitem_code,acct_priority,user_priority,bind_type,start_cycle_id,TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMM')),act_tag,default_tag,limit_type,limit,complement_tag,TO_DATE(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,REMARK,ADDUP_MONTHS,ADDUP_METHOD,INST_ID,:MODIFY_TAG,RSRV_STR1,RSRV_STR2,RSRV_STR3,RSRV_STR4,RSRV_STR5,RSRV_STR6,RSRV_STR7,RSRV_STR8,RSRV_STR9,RSRV_STR10
+ FROM TF_A_PAYRELATION T
+ WHERE T.USER_ID=:USER_ID
+AND T.END_CYCLE_ID>=TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMM'))
+AND T.END_CYCLE_ID>T.START_CYCLE_ID
+AND T.DEFAULT_TAG='0'
+AND T.ACCT_ID=:ACCT_ID

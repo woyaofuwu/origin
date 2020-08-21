@@ -1,0 +1,6 @@
+select C.USER_ID,B.ACCT_ID,C.CUST_ID,C.SERIAL_NUMBER from tf_f_user_ecrecep_offer A 
+LEFT JOIN tf_f_relation_bb bb on A.USER_ID=bb.USER_ID_A and a.serial_number=bb.serial_number_a
+LEFT JOIN TF_A_PAYRELATION B ON B.USER_ID=bb.USER_ID_A
+LEFT JOIN TF_F_USER C ON C.USER_ID=bb.USER_ID_A
+WHERE A.Merch_Offer_Id=:PRODUCT_ORDER_ID
+AND SYSDATE BETWEEN  A.START_DATE AND A.END_DATE

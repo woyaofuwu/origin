@@ -1,0 +1,3 @@
+SELECT to_char(trade_id) trade_id,contract_no,cust_name,feeitem_code,to_char(fee) fee,group_id,pay_mode_code,pay_tag,contact,contact_phone,prevalue1,prevalue2,prevalue3,prevalue4,prevalue5,to_char(prevaluen1) prevaluen1,to_char(prevaluen2) prevaluen2,to_char(prevaluen3) prevaluen3,to_char(prevalued1,'yyyy-mm-dd hh24:mi:ss') prevalued1,to_char(prevalued2,'yyyy-mm-dd hh24:mi:ss') prevalued2,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date,remark,to_char(trade_time,'yyyy-mm-dd hh24:mi:ss') trade_time,trade_staff_id,trade_depart_id,eparchy_code,city_code 
+  FROM tf_f_othertradefee
+ WHERE cust_name LIKE :CUST_NAME||'%'

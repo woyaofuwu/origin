@@ -1,0 +1,1 @@
+update TF_F_USER_OFFER_REL a  set  a.start_date=to_date(:START_DATE,'yyyy-MM-dd hh24:mi:ss') ,a.end_date=to_date(:END_DATE,'yyyy-MM-dd hh24:mi:ss') where a.REL_OFFER_INS_ID=:REL_OFFER_INS_ID  and a.rel_offer_code =:DISCNT_CODE

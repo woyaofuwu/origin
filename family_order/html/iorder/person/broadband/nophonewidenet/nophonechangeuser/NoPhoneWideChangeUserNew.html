@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无手机宽带过户</title>
+<script jwcid="@Script" type="text/javascript" src="iorder/person/broadband/nophonewidenet/nophonechangeuser/scripts/NoPhoneWideChangeUser.js"></script>  
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script"  src="scripts/iorder/icsserv/common/validate/custvalidate.js" ></script>
+<script jwcid="@Script"  src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js" ></script> 
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back">宽带过户</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div  class="l_padding">
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@icsserv:Auth"  authType="04" tradeTypeCode="690"  tradeAction="refreshPartAtferAuth2(data)" element="div"></div>
+	<!-- 认证 结束 -->
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">宽带信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_param c_param-label-6 c_param-phone-col-1 c_param-border c_param-col-2" jwcid="wideInfoPart@Part">
+		<ul>
+			<li>
+				<div class="label">套餐名称：</div>
+				<div class="value">
+					<span jwcid="@Insert" name="DISCNT_NAME" id="DISCNT_NAME" value="ognl:info.DISCNT_NAME" desc=""/>
+				</div>
+			</li>
+				
+			<li>
+				<div class="label">宽带类型：</div>
+				<div class="value">
+					<span jwcid="@Insert" name="WIDETYPENAME" id="WIDETYPENAME"   value="ognl:info.WIDE_TYPE_NAME" desc="标准地址"/>
+				</div>
+				<input jwcid="@Hidden" name="WIDE_TYPE_CODE" id="WIDE_TYPE_CODE"  value="ognl:info.WIDE_TYPE_CODE"/>
+			</li> 
+			<div jwcid="@Conditional" condition='ognl:"3".equals(info.WIDE_TYPE_CODE)' element="div">
+				
+				<li>
+					<div class="label">光猫串号：</div>
+					<div class="value">
+						<span jwcid="@Insert" name="MODEM_CODE" id="MODEM_CODE" value="ognl:info.MODEM_CODE" desc="光猫串号"/>
+					</div>
+					<span type="hidden" jwcid="@TextField" name="MODEM_CODE_HI" id="MODEM_CODE_HI" value="ognl:info.MODEM_CODE" desc="光猫串号"/>
+					<input type="hidden" jwcid="@TextField" name="MODEM_FEE" id="MODEM_FEE" value="ognl:info.MODEM_FEE" desc="光猫押金"/>
+				</li> 
+				<li>
+					<div class="label">申领模式：</div>
+					<div class="value">
+						<spanjwcid="@Insert" name="MODEM_MODE_NAME" id="MODEM_MODE_NAME" value="ognl:info.MODEM_MODE_NAME" desc="光猫申领模式"/>
+					</div>
+					<input type="hidden" jwcid="@TextField" name="MODEM_MODE" id="MODEM_MODE" value="ognl:info.MODEM_MODE" desc="光猫申领模式"/>
+				</li> 
+				<li id="MODEM_DEPOSIT_ID" style="display:''">
+					<div class="label">光猫押金：</div>
+					<div class="value">
+						<span jwcid="@Insert" name="MODEM_DEPOSIT" id="MODEM_DEPOSIT" value="ognl:info.MODEM_DEPOSIT" desc="光猫押金"/>
+					</div>
+					<span type="hidden" jwcid="@TextField" name="MODEM_DEPOSIT_HI" id="MODEM_DEPOSIT_HI" value="ognl:info.MODEM_DEPOSIT" desc="光猫押金"/> 
+				</li> 
+				
+			</div> 
+			
+			<li>
+				<div class="label e_blue">套餐开始时间：</div>
+				<div class="value e_blue">
+					<span jwcid="@Insert" name="DISCNT_START_DATE" id="DISCNT_START_DATE" value="ognl:info.DISCNT_START_DATE" desc=""/>
+				</div>
+			</li>
+			<li>
+				<div class="label e_blue">套餐截止时间：</div>
+				<div class="value e_blue">
+					<span jwcid="@Insert" name="DISCNT_END_DATE" id="DISCNT_END_DATE" value="ognl:info.DISCNT_END_DATE" desc="套餐截止时间"/>
+				</div>
+			</li>  
+		</ul>
+	</div>
+	
+ 	<!-- 表单 结束 -->  
+	<div  jwcid="hiddenPart@Part">
+		<input jwcid="@Hidden" name="WIDE_TYPE" id="WIDE_TYPE"  value="ognl:wideInfoParam.WIDE_TYPE"/>
+	 	<input jwcid="@Hidden" name="NOPHONE_SERIAL_NUMBER" id="NOPHONE_SERIAL_NUMBER" value="" />  
+	</div>
+
+<!-- 表单结束 -->	
+	<div jwcid="CustInfoPart@Part">
+	<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">新用户信息</div>
+		</div>
+		<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border" >
+				<ul class="ul">
+					
+					<li  class="link required">
+						<div class="label">证件类型</div>
+						<div class="value">
+							<select jwcid="@Select" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_S_PASSPORTTYPE2')"
+		                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.PSPT_TYPE_CODE"
+		                            desc="证件类型"  disabled="false" nullable="no" onchange="checkPsptTypeCode('custInfo_PSPT_TYPE_CODE')"/>
+						</div>
+					</li>
+					<li  class="link required" id="psptDIV">
+						<div class="label">证件号码</div>
+						<div class="value">
+							<span class="e_mix">
+								<input type="text" jwcid="@TextField" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" value="ognl:custInfo.PSPT_ID" datatype="pspt" maxsize="20" maxLength="20"
+			                         desc="证件号码" nullable="no" disabled="false"  onchange="checkPsptId('custInfo_PSPT_ID')" />
+								<button type="button" class="e_button-blue" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>
+								<input  jwcid="@Any"  type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+							</span>
+	                    </div>
+					</li>
+					<li class="link required">
+						<div class="label">证件有效期</div>
+						<div class="value"><input type="text" jwcid="@DateField" name="custInfo_PSPT_END_DATE" id="custInfo_PSPT_END_DATE" value="ognl:custInfo.PSPT_END_DATE" 
+		                                min="ognl:page.pageutil.getSysDate()" onafterAction="checkEndDate(this)"   dropDown="true"   nullable="no"  desc="证件有效期"   /></div>
+					</li>
+					<li  class="link required" id="psptAddrDIV">
+						<div class="label">证件地址</div>
+						<div class="value"><input type="text" jwcid="@TextField" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" value="ognl:custInfo.PSPT_ADDR" maxsize="128"
+		                                                   onchange="checkAddr('custInfo_PSPT_ADDR')" maxLength="128"    disabled="false"  nullable="no"   desc="证件地址"  /></div>
+					</li>
+					<li class="link required">
+						<div class="label" id="span_BIRTHDAY">出生日期</div>
+		                <div class="value">
+							<input type="text" jwcid="@DateField" name="custInfo_BIRTHDAY" value="ognl:custInfo.BIRTHDAY" desc="出生日期" 
+							nullable="no"  dropDown="true"  maxName="custInfo_PSPT_END_DATE"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">客户名称</div>
+						<div class="value"><input type="text" jwcid="@TextField" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" value="ognl:custInfo.CUST_NAME" maxsize="48" maxLength="48" disabled="false"
+		                                   nullable="no" desc="客户名称" onchange="checkCustName('custInfo_CUST_NAME')"/></div>
+					</li>
+					
+					
+					<li>
+						<div class="label">客户性别：</div>
+						<div class="value">
+							<select jwcid="@Select" name="custInfo_SEX" id="custInfo_SEX" source="ognl:pageutil.getStaticList('SEX')"
+		                                    value="ognl:custInfo.SEX" disabled="false" desc="客户性别" nullable="yes" 
+		                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+						</div>
+					</li>
+					<li>
+						<!--<span class="label">实名制：</span>
+						<input name="custInfo_REAL_NAME" id="custInfo_REAL_NAME" jwcid="@Checkbox" type="checkbox"  checked="ognl:commInfo.REAL_NAME" 
+		                                     value="ognl:commInfo.REAL_NAME" onclick="chgRealname()"/>-->
+		                <input jwcid="@Any" id="custInfo_REAL_NAME" type="hidden" name="custInfo_REAL_NAME" value="1" />
+					</li>
+			</ul>
+		</div>
+	</div>
+ 
+	<!-- 区域 结束 --> 
+	<div class="c_space"></div>
+	<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="submitBeforeCheck()" area="AuthPart,wideInfoPart,CustInfoPart,hiddenPart"  isReset="true" element="div"/>
+
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO ti_a_asyn_billqry(eparchy_code,trade_city_code,trade_depart_id,trade_staff_id,acct_id,contract_no,province_code,start_acyc_id,end_acyc_id,operate_type,result_code,result_info,rsrv_attr,rsrv_info,rsrv_char,rsrv_date)
+ VALUES(:EPARCHY_CODE,:TRADE_CITY_CODE,:TRADE_DEPART_ID,:TRADE_STAFF_ID,TO_NUMBER(:ACCT_ID),TO_NUMBER(:CONTRACT_NO),:PROVINCE_CODE,:START_ACYC_ID,:END_ACYC_ID,:OPERATE_TYPE,:RESULT_CODE,:RESULT_INFO,:RSRV_ATTR,:RSRV_INFO,:RSRV_CHAR,TO_DATE(:RSRV_DATE,'YYYY-MM-DD HH24:MI:SS'))

@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户短信上下行日志查询</title>
+<script jwcid="@Script" language="JavaScript"
+	src="person/addresslist/scripts/queryCommRecord.js"></script>
+<script language="javascript">
+	window.attachEvent("onunload", closePage);
+	function closePage() {
+		ajaxSubmit('HiddenPart,SerialNumPart', 'closePage', null, null, null);
+	};
+</script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">用户短信上下行日志查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-5"
+					jwcid="QueryRecordPart@Part">
+					<ul class="ul">
+						<li class="li"><span class="label"><span
+								class="e_required">手机号码：</span> </span> <span class="e_input"><span>
+									<input jwcid="@TextField" name="cond_PARA_CODE1"
+									id="cond_PARA_CODE1"
+									value="ognl:getVisit().getInModeCode() == 1 ? getData().getString('SERIAL_NUMBER',''):cond.PARA_CODE1"
+									desc="手机号码" maxLength="11" nullable="no" datatype="mbphone" />
+							</span> </span>
+						</li>
+						<li class="li"><span class="label"><span
+								class="e_required">查询时间：</span> </span> <span class="e_input"><span>
+									<input jwcid="@DateField" id="cond_PARA_CODE2"
+									name="cond_PARA_CODE2" value="ognl:cond.PARA_CODE2" desc="查询时间"
+									time="true" format="yyyy-MM-dd HH:mm:ss" nullable="no"/> </span> </span>
+						</li>
+						<li class="li"><span class="label"><span class="e_required">查询类型：</span></span> 
+						<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_USER_MSGLOG_TYPE" id="cond_USER_MSGLOG_TYPE"
+								source="ognl:pageutil.getStaticList('USER_MSGLOG_TYPE')" desc="查询类型"
+								 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"nullable="no"
+								 onchange="qryTypeChange();"/> </span>
+						 </span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form" onclick="return queryRecord();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 隐藏区域 开始 -->
+				<div jwcid="HiddenPart@Part" element="div">
+					<input jwcid="@Hidden" id="INDICTSEQ" name="INDICTSEQ"
+						value="ognl:result.INDICTSEQ" /> <input jwcid="@Hidden"
+						id="ORIGINTIME" name="ORIGINTIME" value="ognl:result.ORIGINTIME" />
+					<input jwcid="@Hidden" id="MAXRECORDNUM" name="MAXRECORDNUM"
+						value="ognl:result.MAXRECORDNUM" /> <input jwcid="@Hidden"
+						id="RSLTPAGECURRCNT" name="RSLTPAGECURRCNT"
+						value="ognl:result.RSLTPAGECURRCNT" /> <input jwcid="@Hidden"
+						id="PIGEONHOLE" name="PIGEONHOLE" value="ognl:result.PIGEONHOLE" />
+					<input jwcid="@TextArea" type="hidden" id="REPORTPAGE"
+						name="REPORTPAGE" value="ognl:reportPage" style="display:none" />
+				</div>
+				<div jwcid="SerialNumPart@Part" element="div">
+					<input jwcid="@Hidden" id="CALLERNO" name="CALLERNO"
+						value="ognl:result.CALLERNO" />
+				</div>
+				<!-- 隐藏区域 结束 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				<!--下行 表格 开始 -->
+					<div class="c_scroll c_scroll-x" style="height:242px" id='up' >
+						<div class="c_table c_table-row-10">
+							<table>
+								<thead>
+									<tr>
+										<th>发送时间</th>
+										<th>消息内部流水号</th>
+										<th>原始消息内部流水号</th>
+										<th>虚拟SP代码</th>
+										<th>SP服务代码</th>
+										<th>消息发送方地址</th>
+										<th>消息接收方地址</th>
+										<th>是否返回状态报告</th>
+										<th>消息付费方标识</th>
+										<th>其它计费方地址</th>
+										<th>资费单位</th>
+										<th>消息长度</th>
+										<th>短信内容</th>
+										<th>SP企业代码</th>
+										<th>发送结果</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+										element="tr" index="ognl:rowIndex"
+										class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR0"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR7"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR8"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR9"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR10"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR11"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR12"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR13"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR14"
+											raw="true" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!--下行 表格 结束 -->
+					<!--上行 表格 开始 -->
+					<div class="c_scroll c_scroll-x" style="height:242px;display:none;" id='down'>
+						<div class="c_table c_table-row-10">
+							<table>
+								<thead>
+									<tr>
+										<th>发送时间</th>
+										<th>消息ID</th>
+										<th>原始消息内部流水号</th>
+										<th>消息发送方地址</th>
+										<th>消息接收方地址</th>
+										<th>短信内容</th>
+										<th>发送结果</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+										element="tr" index="ognl:rowIndex"
+										class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR0"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5"
+											raw="true" />
+										</td>
+										<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6"
+											raw="true" />
+										</td>
+										
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!--上行 表格 结束 -->
+					<!-- 分页 开始 -->
+					<div jwcid="@NavBar" name="recordNav" id="recordNav"
+						cond="HiddenPart,SerialNumPart" part="HiddenPart,QueryListPart"
+						listener="queryOtherRecord" pageSize="ognl:result.RSLTPAGECURRCNT"
+						count="ognl:result.MAXRECORDNUM"></div>
+					<!-- 分页 结束 -->
+				</div>
+			</div>
+			<!--上行 表格 结束 -->
+			<!-- 区域 结束 -->
+		</div>
+	</div>
+</body>
+</html>

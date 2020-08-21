@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>国漫数据流量日套餐业务</title>
+<script  jwcid="@Script" src="person/interroamday/scripts/interroamday.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="300"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	
+	 <!-- 三户展示组件 开始 -->
+		<div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+	 <!-- 三户展示组件 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+<!--<div jwcid="@Conditional" condition="ognl:modifyTag==1"> -->
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div jwcid="QueryListPart@Part">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">业务受理</div>
+		</div>
+		<!-- 标题 结束 -->
+
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" ><div class="c_table">
+		<table  jwcid="@Table" name="userDiscntTable"  id="userDiscntTable" scroll="true">
+				<tr>											
+					<th col="DISCNT_CODE" style="width:10%"><span>优惠编码</span></th>
+					<th col="DISCNT_NAME"><span>优惠名称</span></th>
+					<th col="DISCNT_START_DATE" style="width:10%"><span>优惠生效时间</span></th>
+					<th col="DISCNT_END_DATE" style="width:10%"><span>优惠失效时间</span></th>
+				</tr>
+			<tr jwcid="@Foreach" source="ognl:interRoamDayDiscntInfos" value="ognl:interRoamDayDiscntInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td> <div jwcid="@Insert" value="ognl:interRoamDayDiscntInfo.ELEMENT_ID"></div></td>
+						<td><label jwcid="@Any" for="ognl:'DISCNT_'+rowIndex+'_'+interRoamDayDiscntInfo.ELEMENT_ID" title="ognl:interRoamDayDiscntInfo.ELEMENT_EXPLAIN">
+								<input type="checkbox"
+									   id="ognl:'DISCNT_'+rowIndex+'_'+interRoamDayDiscntInfo.ELEMENT_ID" 
+									   name="ognl:'DISCNT_'+rowIndex+'_'+interRoamDayDiscntInfo.ELEMENT_ID"
+															jwcid="@Checkbox" value="ognl:interRoamDayDiscntInfo.ELEMENT_ID" 
+															package_id="ognl:interRoamDayDiscntInfo.PACKAGE_ID"
+															element_id="ognl:interRoamDayDiscntInfo.ELEMENT_ID"
+															element_name="ognl:interRoamDayDiscntInfo.ELEMENT_NAME"
+															enable_tag="ognl:interRoamDayDiscntInfo.ENABLE_TAG"
+															checked="ognl:interRoamDayDiscntInfo.CHECKED" 
+															disabled='ognl:interRoamDayDiscntInfo.FORCE_TAG==1||interRoamDayDiscntInfo.DISABLED_CANCEL==1|| "true".equals(interRoamDayDiscntInfo.DISABLED)'
+															oldchecked="ognl:interRoamDayDiscntInfo.OLD_CHECKED"
+															start_date="ognl:interRoamDayDiscntInfo.START_DATE"
+															end_date="ognl:interRoamDayDiscntInfo.END_DATE"
+															inst_id="ognl:interRoamDayDiscntInfo.INST_ID"
+															cancel_tag="ognl:interRoamDayDiscntInfo.CANCEL_TAG"
+															onClick="clickElement(this);"/>
+													<span jwcid="@Insert" value="ognl:interRoamDayDiscntInfo.ELEMENT_NAME"></span>
+												</label>
+						</td>
+						<td>
+								<div class="e_input"><input	type="text" jwcid="@TextField" name="ognl:'DISCNT_START_'+interRoamDayDiscntInfo.ELEMENT_ID" 
+												value="ognl:interRoamDayDiscntInfo.START_DATE" readonly="true" desc="优惠生效日期" 
+												style="ognl:'true'==interRoamDayDiscntInfo.CHECKED?'display:':'display:none'"/>
+												</div>
+						</td>
+						<td>
+								<div class="e_input"><input	type="text" jwcid="@TextField" name="ognl:'DISCNT_END_'+interRoamDayDiscntInfo.ELEMENT_ID"
+												value="ognl:interRoamDayDiscntInfo.END_DATE" readonly="true" desc="优惠失效日期" 
+												style="ognl:'true'==interRoamDayDiscntInfo.CHECKED?'display:':'display:none'"/> 
+												</div>
+						</td>
+					</tr> 
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+   <!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeAction()" area="AuthPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!--</div> -->
+<!-- 隐藏区域开始 -->
+	<div jwcid="hiddenPart@Part">
+	<input jwcid="@Any" type="text" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value="" style="display:none"/>
+	<input jwcid="@Any" type="text" name="NOW_DATE" id="NOW_DATE" value="ognl:acctDayInfo.NOW_DATE" style="display:none"/>
+	</div>
+<!-- 隐藏区域结束 -->
+
+</div></div></body>
+</html>

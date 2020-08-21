@@ -1,0 +1,13 @@
+SELECT T.PART_ID,
+       T.PART_TITLE,
+       T.PART_CLASS,
+       T.PART_DESC,
+       T.PART_TYPE,
+       T.VALID_TAG,
+       T.RSRV_STR1,
+       T.RSRV_STR2,
+       T.RSRV_STR3,
+       T.RSRV_STR4
+  FROM TD_B_EOP_PAGE_PART T
+ WHERE T.PART_ID = :PART_ID
+   AND T.VALID_TAG = :VALID_TAG

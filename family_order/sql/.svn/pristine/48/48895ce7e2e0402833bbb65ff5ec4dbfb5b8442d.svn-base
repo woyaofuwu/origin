@@ -1,0 +1,2 @@
+INSERT INTO td_s_device_color(eparchy_code,device_type_code,color_code,color,update_time,update_staff_id,update_depart_id,remark)
+ VALUES(:EPARCHY_CODE,:DEVICE_TYPE_CODE,:COLOR_CODE,:COLOR,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK)

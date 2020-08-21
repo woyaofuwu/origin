@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>EOMS催单[阶段通知]</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/eoms/script/reminderforeoms.js"></script>
+</head>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#PrintPosReceiptBtn").bind("click", function(){
+		$.setReturnValue({"POS_RECEIPT":1}, true);
+	});
+});
+</script>
+<body jwcid="@Body">		
+<div class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<div class="l_padding l_padding-u l_padding-phone-0">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">EOMS催单[阶段通知]</div>
+		</div>
+		<!-- 标题 结束 -->
+		<div class="e_show-phone">
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-form">
+				<ul>
+					<li>
+						<div class="value">
+							<span class="e_mix e_mix-avg">
+								<button><span class="e_ico-search"></span><span>查看附件</span></button>
+								<button><span class="e_ico-edit"></span><span>历史记录</span></button>
+								<button><span class="e_ico-flow"></span><span>流程跟踪</span></button>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space-c"></div>
+		</div>
+		
+		<div class="c_list c_list-line">
+			<ul jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="ul" >
+				<li>
+					<div class="main">
+						<div class="title"><span jwcid="@Insert" value="ognl:info.OPTYPE" /></div>
+						<div class="content">通知时间：<span jwcid="@Insert" value="ognl:info.INSERT_TIME" /></div>
+						<div class="content">通知内容：<span jwcid="@Insert" value="ognl:info.ATTR_VALUE" /></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<div jwcid="ConfPart@Part" id="ConfPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+			<ul>
+				<li class="link">
+					<div class="label">操作类型</div>
+					<div class="value">
+						<input jwcid="@TextField" readonly="true" desc="操作类型" disabled="true" id="OPTYPE" name="OPTYPE" value="ognl:condition.OPTYPE==null?'阶段通知':'阶段通知'"/>
+						
+						<input name="OPER_TYPE" id="OPER_TYPE" jwcid="@Hidden" type="hidden" value="ognl:condition.OPER_TYPE" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">处理人联系方式</div>
+					<div class="value">
+						<input jwcid="@TextField" id="OPCONTACT" name="OPCONTACT" value="ognl:getVisit().getSerialNumber()"  desc = "处理人联系方式"/>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">处理人</div>
+					<div class="value">
+						<input jwcid="@TextField" id="OPPERSON" name="OPPERSON" value="ognl:getVisit().getStaffName()"  desc = "处理人"/>
+					</div>
+				</li>
+			</ul>
+			<ul>
+				<li class="link">
+					<div class="label">处理人部门</div>
+					<div class="value">
+						 <input jwcid="@TextField" id="OPDERAT" name="OPDERAT" value="ognl:getVisit().getDepartId()"  desc = "处理人部门"/>	
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">操作说明</div>
+					<div class="value">
+						 <textarea type="text" jwcid="@TextArea" id="OPDESC" name="OPDESC" value="ognl:condition.OPDESC" nullable="yes" rows="10" maxsize="1000" desc="操作说明" style="height:100px;"/>
+					</div>
+				</li>
+			</ul>
+		</div>	
+		<div class="c_space"></div>
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-full">
+			<button id="PrintPosReceiptBtn" type="button" class="e_button-page"><i class="e_ico-print"></i><span>打印</span></button>
+			<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+			<button type="button" class="e_button-r e_button-l e_button-blue" ontap="submit(this);">提交</button>
+		</div>
+		<!-- 提交 结束 -->
+ 	</div>
+</div>
+	
+	<div class="c_space"></div>			
+	<input name="SUB_IBSYSID" id="SUB_IBSYSID" jwcid="@Hidden" type="hidden" value="ognl:condition.SUB_IBSYSID" />
+	<input name="BUSIFORM_ID" id="BUSIFORM_ID" jwcid="@Hidden" type="hidden" value="ognl:condition.BUSIFORM_ID" />
+	<input name="RECORD_NUM" id="RECORD_NUM" jwcid="@Hidden" type="hidden" value="ognl:condition.RECORD_NUM" />
+	<input name="IBSYSID" id="IBSYSID" jwcid="@Hidden" type="hidden" value="ognl:condition.IBSYSID" />
+	<input name="SERIALNO" id="SERIALNO" jwcid="@Hidden" type="hidden" value="ognl:condition.SERIALNO" />
+</body>

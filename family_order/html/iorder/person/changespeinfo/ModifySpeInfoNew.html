@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<script jwcid="@Script"  src="iorder/person/changespeinfo/scripts/modifyspeinfo.js" ></script>
+</head>
+<body jwcid="@Body">
+<!-- 区域 开始 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+	<!-- 区域 开始 -->
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@icsserv:Auth" tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="72" element="div"/>
+	<!-- 认证 结束 -->
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<!-- 标题 开始 -->
+<div class="c_title">
+	<div class="text">业务受理</div>
+</div>
+<!-- 标题 结束 -->
+<div jwcid="ChangeDataPart@Part">
+	<div class="c_list c_list-s c_list-line c_list-border c_list-col-3" >
+	<!-- 表单 开始 -->
+		<ul>
+			<li class="link required">
+				<div class="label">当前品牌</div>
+				<div class="value">
+					<select jwcid="@Select" name="E_BRAND_CODE" id="E_BRAND_CODE"  
+					  source="ognl:brandList" 
+					  textField="TEXT" valueField="VALUE"
+					  titleField="TEXT" value="ognl:commInfo.BRAND_CODE" desc="当前品牌"  disabled="true" nullable="no"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">业务区</div>
+				<div class="value">
+					<select jwcid="@Select" name="CITY_CODE" id="CITY_CODE" 
+					  source="ognl:pageutil.getList('TD_M_AREA','AREA_CODE','AREA_NAME',new java.lang.String[]{'PARENT_AREA_CODE','AREA_LEVEL'},new java.lang.String[]{getVisit().getStaffEparchyCode(),'30'})" 
+					  textField="AREA_NAME" valueField="AREA_CODE"
+					  optionWidth="30" optionColumn="2"
+					  titleField="AREA_NAME" value="ognl:userInfo.CITY_CODE" desc="用户业务区"  disabled="true" nullable="no"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">用户类型</div>
+				<div class="value">
+					<select jwcid="@Select" name="USER_TYPE_CODE" id="USER_TYPE_CODE"
+							source="ognl:pageutil.getList('TD_B_USERTYPE','USER_TYPE_CODE','USER_TYPE','EPARCHY_CODE',getVisit().getStaffEparchyCode())"
+							textField="USER_TYPE" valueField="USER_TYPE_CODE" value="ognl:userInfo.USER_TYPE_CODE"
+							desc="用户类型" nullable="no" disabled="true" titleField="USER_TYPE"/>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">用户状态</div>
+				<div class="value">
+					<select jwcid="@Select" name="USER_STATE_CODESET" id="USER_STATE_CODESET"   
+					 source="ognl:stateList"
+					 textField="STATUS_NAME" valueField="FUNC_STATUS"
+                     			titleField="STATUS_NAME"	nullable="no"  value="ognl:commInfo.USER_STATE_CODESET" disabled="true" desc="用户状态" />
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">用户卡号</div>
+				<div class="value">
+					<input type="text" jwcid="@TextField" name="SIM_CARD_NO" id="SIM_CARD_NO" value="ognl:commInfo.SIM_CARD_NO" maxsize="100" 
+									onchange="simCardNoCheck()" disabled="true" desc="用户卡号" nullable="no" />
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">用户IMSI</div>
+				<div class="value">
+					<input type="text" jwcid="@TextField" name="IMSI" id="IMSI" value="ognl:commInfo.IMSI" maxsize="100" 
+									onchange="imsiCheck()" disabled="true" desc="用户IMSI" nullable="no" />
+				</div>
+			</li>
+			<li class="link">
+				<div class="label">发展工号</div>
+				<div class="value">
+					<input type="text" jwcid="@TextField" name="DEVELOP_STAFF_ID" id="DEVELOP_STAFF_ID" value="ognl:userInfo.DEVELOP_STAFF_ID" disabled="true" maxlength="8" maxsize="8"  desc="发展工号"/>
+				</div>
+			</li>
+			<li class="link required merge-2">
+				<div class="label">修改原因</div>
+				<div class="value">
+					<input type="text" jwcid="@TextField" name="REMARK" id="REMARK" value="" maxsize="100" 
+									disabled="true" desc="修改原因" nullable="no" />
+				</div>
+			</li>
+		</ul>
+	<!-- 表单 结束 -->
+	
+	<!-- 隐藏数据-->  
+	<input type="hidden" jwcid="@Any" id="OLD_SIM_CARD_NO" name="OLD_SIM_CARD_NO" value="ognl:commInfo.SIM_CARD_NO" />
+	<input type="hidden" jwcid="@Any" id="OLD_IMSI" name="OLD_IMSI" value="ognl:commInfo.IMSI" />
+	<input type="hidden" jwcid="@Any" id="OLD_BRAND_CODE" name="OLD_BRAND_CODE" value="ognl:commInfo.BRAND_CODE" />
+	<input type="hidden" jwcid="@Any" id="OLD_USER_STATE_CODESET" name="OLD_USER_STATE_CODESET" value="ognl:commInfo.USER_STATE_CODESET" />
+	<!--隐藏数据 结束-->
+	</div>
+</div>
+	<div class="c_space"></div>
+	<!-- 提交区域 开始 -->
+	<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="onTradeSubmit()" isReset="true" area="AuthPart,ChangeDataPart" element="div"/>
+	<!-- 提交区域 结束 -->
+<!-- 区域 结束 -->
+	
+</div></div></body>
+</html>

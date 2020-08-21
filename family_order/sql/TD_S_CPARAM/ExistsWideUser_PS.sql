@@ -1,0 +1,5 @@
+SELECT count(1) recordcount
+  FROM TF_F_USER A
+ WHERE A.SERIAL_NUMBER = 'KD_' || :SERIAL_NUMBER
+   AND TO_CHAR(A.OPEN_DATE, 'yyyymm') = TO_CHAR(SYSDATE, 'yyyymm')
+   AND REMOVE_TAG = '0'

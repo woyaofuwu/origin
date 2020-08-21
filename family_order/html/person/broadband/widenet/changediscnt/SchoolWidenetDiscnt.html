@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>校园宽带套餐办理及退订</title>
+<script jwcid="@Script" type="text/javascript" src="person/broadband/widenet/changediscnt/scripts/schoolwidenetdiscnt.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_tip">
+	   您好！  对于某些宽带校园网套餐，您可能没有退订权限！  用户所缴预存款不可清退！退订套餐后如有余额则将转成手机话费！
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">基本信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<div id="authArea">
+		<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data);" tradeTypeCode="165" element="div"/>
+	</div>
+
+<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">新宽带套餐</div>
+		<div class="fn"></div>
+	</div>
+	<div class="c_form c_form-label-6 c_form-col-3">
+		<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">新宽带套餐：</span></span>
+			<span class="e_select" jwcid="chooseDiscntPart@Part"><span><span>
+				<select jwcid="@Select" name="CHOOSE_DISCNT" id="CHOOSE_DISCNT"
+					    source="ognl:canDiscntList" value="ognl:info.DISCNT_CODE" valueField="DISCNT_CODE"
+						textField="DISCNT_NAME" titleField="DISCNT_NAME" nullable="yes" desc="优惠名称" onchange="getSpecDiscnt()">
+				</select>
+            </span></span></span>
+		</li>
+		</ul>
+	</div>
+</div>
+<!-- 区域 结束 -->	
+<!-- 区域开始-->
+<div class="c_box">	
+	<div class="c_title">
+		<div class="text">已办理的校园宽带套餐</div>
+		  <div class="fn">
+			<button type="button" id="add" name="add" class="l_ml" onclick="addDiscntCheck()"><i class="e_ico-add" ></i><span>新增</span></button>
+			<button type="button" id="del" name ="del" class="l_ml" onclick="delDiscntCheck()"><i class="e_ico-delete"></i><span>删除</span></button>
+	      </div>
+	</div>
+		
+	<div jwcid="userDiscntList@Part">
+	<div class="c_table c_table-row-5">
+		<table jwcid="@Table" id="userDiscntTable" name="userDiscntTable">
+      	<thead>
+		  	<tr>
+				<th style="width:5%;"    col="CHECK">&nbsp;</th>
+				<th style="width:9%;"    col="DISCNT_CODE"><span>优惠编码</span></th>
+				<th style="width:28%;"   col="DISCNT_NAME"><span>优惠名称</span></th>
+				<th style="width:16%;"   col="START_DATE"><span>开始时间</span></th>
+				<th style="width:16%;"   col="END_DATE"><span>结束时间</span></th>
+                <th style="width:15%;"   col="DEPOSIT_ABLANCE"><span>存折余额(元)</span></th>
+                <th style="width:11%;"   col="DEFER_MONTHS"><span>办理/延期月数</span></th>
+                <th style="display:none" col="ENABLE_TAG"><span>生效标志</span></th>
+                <th style="display:none" col="INST_ID"><span>INST_ID</span></th>
+                <th style="display:none" col="DEFER_TAG"><span>延期标志</span></th>
+                <th style="display:none" col="DISCNT_FEE"><span>优惠月费</span></th>
+                <th style="display:none" col="DEPOSIT_CODE"><span>存折编码</span></th>
+                <th style="display:none" col="DAY_PRICE"><span>首月按日费用单价</span></th>
+                <th style="display:none" col="DEFINE_MONTHS"><span>包月标志</span></th>
+			</tr>
+		</thead>
+		<tbody id="userDiscntTable_Body">
+			<tr jwcid="@Foreach" source="ognl:userDiscntList" value="ognl:userDiscntInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+			   <td><input name="chkbox" jwcid="@Checkbox"  value="ognl:userDiscntInfo.DISCNT_CODE"/></td>
+               <td><span jwcid="@Insert" value="ognl:userDiscntInfo.DISCNT_CODE" raw="true"/></td>
+               <td><span jwcid="@Insert" value="ognl:userDiscntInfo.DISCNT_NAME" raw="true"/></td>
+               <td><span jwcid="@Insert" value="ognl:userDiscntInfo.START_DATE" raw="true"/></td>
+               <td><span jwcid="@Insert" value="ognl:userDiscntInfo.END_DATE" raw="true"/></td>
+               <td><span jwcid="@Insert" value="ognl:userDiscntInfo.DEPOSIT_ABLANCE" raw="true"/></td>
+               <td><select jwcid="@Select" id='ognl:rowIndex+"_DEFER_MONTHS"' name='ognl:rowIndex+"_DEFER_MONTHS"' source="ognl:deferMonthsList" value="ognl:userDiscntInfo.DEFER_MONTHS" valueField="DEFER_MONTHS" textField="DEFER_MONTHS" addDefault="false"   onchange="updateDiscntInfo(this)"/></td>
+               <td style="display:none"><span jwcid="@Insert" value="ognl:userDiscntInfo.ENABLE_TAG" raw="true"/></td>
+               <td style="display:none"><span jwcid="@Insert" value="ognl:userDiscntInfo.INST_ID" raw="true"/></td>
+               <td style="display:none"></td>
+               <td style="display:none"><span jwcid="@Insert" value="ognl:userDiscntInfo.RSRV_STR2" raw="true"/></td>
+               <td style="display:none"><span jwcid="@Insert" value="ognl:userDiscntInfo.RSRV_STR3" raw="true"/></td>
+               <td style="display:none"><span jwcid="@Insert" value="ognl:userDiscntInfo.RSRV_STR4" raw="true"/></td>
+               <td style="display:none"><span jwcid="@Insert" value="ognl:userDiscntInfo.DEFINE_MONTHS" raw="true"/></td>
+			</tr>
+		</tbody>
+		</table>	
+	</div>
+
+	
+</div>
+<!-- 区域 结束 -->
+
+   <div  id="operationTip" class="c_tip" style="display:none"></div>
+   <div  id="operationTip2" class="c_tip" style="display:none"></div>
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onSubmit()" isReset="true" area="AuthPart" element="div" />
+	<!-- 提交 结束 -->
+</div></div>
+<div class="" jwcid="HidePart@Part" style="display:none;">
+<input jwcid="@Hidden" name="ENABLE_TAG" id="ENABLE_TAG" value="ognl:discntParam.ENABLE_TAG"  desc="新增优惠生效方式" />
+<input jwcid="@Hidden" name="DEPOSIT_CODE" id="DEPOSIT_CODE" value="ognl:discntParam.DEPOSIT_CODE"  desc="新增优惠存折编码" />
+<input jwcid="@Hidden" name="DISCNT_FEE" id="DISCNT_FEE" value="ognl:discntParam.DISCNT_FEE"  desc="新增优惠月费" />
+<input jwcid="@Hidden" name="DAY_PRICE" id="DAY_PRICE" value="ognl:discntParam.DAY_PRICE"  desc="新增优惠日费" />
+<input jwcid="@Hidden" name="DEFINE_MONTHS" id="DEFINE_MONTHS" value="ognl:discntParam.DEFINE_MONTHS"  desc="包月标志" />
+<input jwcid="@Hidden" name="FIRST_TIME_NEXT_MONTH" id="FIRST_TIME_NEXT_MONTH" value="ognl:discntParam.FIRST_TIME_NEXT_MONTH"  desc="下月开始时间" />
+<input jwcid="@Hidden" name="LAST_TIME_CURRENT_MONTH" id="LAST_TIME_CURRENT_MONTH" value="ognl:discntParam.LAST_TIME_CURRENT_MONTH"  desc="本月结束时间" />
+<input jwcid="@Hidden" name="CURRENT_TIME" id="CURRENT_TIME" value="ognl:discntParam.CURRENT_TIME"  desc="当前时间" />
+<input jwcid="@Hidden" name="REMAIN_DAYS" id="REMAIN_DAYS" value="ognl:discntParam.REMAIN_DAYS"  desc="本月的剩余天数(含当天)" />
+<input jwcid="@Hidden" name="SPEC_DEFER_MONTHS" id="SPEC_DEFER_MONTHS" value="ognl:discntParam.DEFER_MONTHS"  desc="可延期月数" />
+<input jwcid="@Hidden" name="SPEC_ADD_LIMIT" id="SPEC_ADD_LIMIT" value="ognl:discntParam.SPEC_ADD_LIMIT"  desc="可新增的优惠列表" />
+<input jwcid="@Hidden" name="SPEC_DEL_LIMIT" id="SPEC_DEL_LIMIT" value="ognl:discntParam.SPEC_DEL_LIMIT"  desc="可删除的优惠列表" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT" id="SPEC_ADD_DISCNT" value="ognl:discntParam.SPEC_ADD_DISCNT"  desc="新增和延期的优惠" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_STARTDATE" id="SPEC_ADD_DISCNT_STARTDATE" value="ognl:discntParam.SPEC_ADD_DISCNT_STARTDATE"  desc="新增和延期的优惠的开始时间" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_ENDDATE" id="SPEC_ADD_DISCNT_ENDDATE" value="ognl:discntParam.SPEC_ADD_DISCNT_ENDDATE"  desc="新增和延期的优惠的结束时间" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_ADDMONEY" id="SPEC_ADD_DISCNT_ADDMONEY" value="ognl:discntParam.SPEC_ADD_DISCNT_ADDMONEY"  desc="新增和延期的优惠的应缴金额" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_FACTMONEY" id="SPEC_ADD_DISCNT_FACTMONEY" value="ognl:discntParam.SPEC_ADD_DISCNT_FACTMONEY"  desc="新增和延期的优惠的实缴金额" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_DEFERMONTHS" id="SPEC_ADD_DISCNT_DEFERMONTHS" value="ognl:discntParam.SPEC_ADD_DISCNT_DEFERMONTHS"  desc="新增和延期的优惠的延期月数" />
+
+
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_INSTID" id="SPEC_ADD_DISCNT_INSTID" value="ognl:discntParam.SPEC_ADD_DISCNT_INSTID"  desc="新增和延期的优惠的INST_ID" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_DEFERTAG" id="SPEC_ADD_DISCNT_DEFERTAG" value="ognl:discntParam.SPEC_ADD_DISCNT_DEFERTAG"  desc="新增和延期的优惠的延期标识" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_FEE" id="SPEC_ADD_DISCNT_FEE" value="ognl:discntParam.SPEC_ADD_DISCNT_FEE"  desc="新增和延期的优惠的优惠月费" />
+<input jwcid="@Hidden" name="SPEC_ADD_DISCNT_PAYMENTID" id="SPEC_ADD_DISCNT_PAYMENTID" value="ognl:discntParam.SPEC_ADD_DISCNT_PAYMENTID"  desc="新增和延期的优惠的存折编码" />
+
+<input jwcid="@Hidden" name="SPEC_HAVE_DISCNT" id="SPEC_HAVE_DISCNT" value="ognl:discntParam.SPEC_HAVE_DISCNT"  desc="用户已有的校园宽带优惠" />
+<input jwcid="@Hidden" name="SPEC_HAVE_DEPOSIT" id="SPEC_HAVE_DEPOSIT" value="ognl:discntParam.SPEC_HAVE_DEPOSIT"  desc="用户已有存折信息" />
+<input jwcid="@Hidden" name="SPEC_DEL_DISCNT" id="SPEC_DEL_DISCNT" value="ognl:discntParam.SPEC_DEL_DISCNT"  desc="删除的优惠" />
+<input jwcid="@Hidden" name="SPEC_DEL_DISCNT_FEE" id="SPEC_DEL_DISCNT_FEE" value="ognl:discntParam.SPEC_DEL_DISCNT_FEE"  desc="删除优惠的转移余额" />
+<input jwcid="@Hidden" name="SPEC_DEL_DISCNT_PAYMENTID" id="SPEC_DEL_DISCNT_PAYMENTID" value="ognl:discntParam.SPEC_DEL_DISCNT_PAYMENTID"  desc="删除优惠的存折编码" />
+
+<input jwcid="@Hidden" name="SPEC_DEL_DISCNT_INST" id="SPEC_DEL_DISCNT_INST" value="ognl:discntParam.SPEC_DEL_DISCNT_INST"  desc="删除优惠的instId" />
+<input jwcid="@Hidden" name="SPEC_DEL_STARTDATE" id="SPEC_DEL_STARTDATE" value="ognl:discntParam.SPEC_DEL_STARTDATE"  desc="删除优惠的开始时间" />
+<input jwcid="@Hidden" name="SPEC_DEL_ENDDATE" id="SPEC_DEL_ENDDATE" value="ognl:discntParam.SPEC_DEL_ENDDATE"  desc="删除优惠的结束时间" />
+<input jwcid="@Hidden" name="CYCLE_TAG" id="CYCLE_TAG" value="ognl:discntParam.CYCLE_TAG"  desc="帐期标志" />
+
+<input jwcid="@Hidden" name="CAN_DISCNT_LIST" id="CAN_DISCNT_LIST" value=""/>
+<input jwcid="@Hidden" name="CAMPUS_TAG" id="CAMPUS_TAG" value="ognl:info.CAMPUS_TAG" desc="订购退订与变更页面区分标记"/>
+</div>
+</body>
+</html>

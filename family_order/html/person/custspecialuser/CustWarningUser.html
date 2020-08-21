@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>警示性用户配置</title>
+<script jwcid="@Script"  src="person/custspecialuser/scripts/custwarningusermanage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2" jwcid="CustSpecialUserManageALLPart@Part">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">警示性用户配置</div>
+		<div class="tip"><span class="e_tip">此页面进行警示性用户配置管理</span></div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 --><!-- 查询框 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="CustSpecialUserManageCondPart@Part">
+	<ul class="ul">
+	
+		<li class="li" id="type">
+			    <span class="label"><span class="e_required">类型：</span></span>
+				   <span class="e_select"><span><span>
+					<select jwcid="@Select" 
+					name="TYPE" id="TYPE"
+					source="ognl:pageutil.getStaticList('CUST_SPACIALUSER_TYPE')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					addDefault="true" 
+					defaultText="--请选择--"
+					onChange="onchangetype()"
+				 />
+				</span></span></span>
+		</li>
+		
+		<li class="li" id="sn">
+			   <span class="label">客户号码：</span>
+				<span class="e_input" ><span>
+				<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+				desc="客户号码" nullable="no"/>
+				</span></span>
+		</li>
+		
+		<li class="li" id="custname">
+			   <span class="label">客户姓名：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="USER_NAME" id="USER_NAME" value="ognl:cond.USER_NAME" 
+				desc="客户姓名" nullable="no"/>
+				</span></span>
+		</li>
+		
+		
+		
+		<li class="li" id="flag" >
+			   <span class="label" id="label_flag">操作类型：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="FLAG" id="FLAG" value="ognl:cond.FLAG" 
+				desc="" nullable="no"/>
+				</span></span>
+		</li>
+		
+		
+		
+		<li class="li" id="reserve1" >
+			   <span class="label" id="lable_reserve1" >投诉类型：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="RESERVE1" id="RESERVE1" value="ognl:cond.RESERVE1" 
+				desc="" nullable="no"/>
+				</span></span>
+		</li>
+		
+		
+		<li class="li" id="reserve2" >
+			   <span class="label" id="lable_reserve2">投诉次数：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="RESERVE2" id="RESERVE2" value="ognl:cond.RESERVE2" 
+				desc="" nullable="no"/>
+				</span></span>
+		</li>
+		
+		</ul>
+		
+	  	<div class="submitPlace"></div>
+		<div class="button" >
+
+				<div jwcid="@Conditional" condition="ognl:cond.CUST_SPECIALUSER_IMPORT == 1 ">
+				<span jwcid="@Import" name="importFile" 
+						ftpSite="personserv" fileSize="30" fileTypes="excel" serviceName="101997" 
+						config="import/custspecialuser/WarningUserImport.xml"
+						desc="导入文件" nullable="no" cond="" params="" afterAction=""/>
+				</div>	
+				<div jwcid="@Conditional" condition="ognl:cond.CUST_SPECIALUSER_EXPORT == 1 ">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" serviceName="101998"
+								  config="export/custspecialuser/WarningUserExport.xml" fileName="查询结果导出" cond=CustSpecialUserManageCondPart/>
+				</div>
+			</div> 
+		
+		<div class="submit">
+		 <button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+		
+	
+	<!-- 表格 开始 -->
+	<div jwcid="CustSpecialUserManageListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table  jwcid="@Table" id="DeptTable"  name="DeptTable" rowClick="CustSpecialUserTableClick" >
+      			<thead>
+		  			<tr>
+						<th col="col_SERIAL_NUMBER" id="id_col_SERIAL_NUMBER">客户号码</th>
+						<th col="col_USER_NAME" id="id_col_USER_NAME">客户姓名</th>
+						<th col="col_TYPE" id="id_col_TYPE">类型</th>
+						<th col="col_START_DATE" id="id_col_START_DATE">起始时间</th>
+						<th col="col_END_DATE" id="id_col_END_DATE">结束时间</th>
+						<th col="col_FLAG" id="id_col_FLAG">操作类型</th>
+						<th col="col_RESERVE1" id="id_col_RESERVE1" >投诉类型</th>
+						<th col="col_RESERVE2" id="id_col_RESERVE2" >投诉次数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">		
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.USER_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TYPE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FLAG" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESERVE1" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESERVE2" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+	</div></div>
+	<div jwcid="@NavBar" name="page" id="page" cond="CustSpecialUserManageCondPart"  part="CustSpecialUserManageListPart" listener="queryList" pageSize="10" count="ognl:listCount"></div>	
+	</div>
+	<!-- 表格 结束 -->
+	
+	
+	<div jwcid="ModifyCustSpecialUserPart@Part">
+		<div class="c_title"><div class="text">记录修改</div></div>
+		<div class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">客户号码：</span></span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='MODIFY_SERIAL_NUMBER' name='MODIFY_SERIAL_NUMBER' value="ognl:cond.SERIAL_NUMBER" nullable="no" desc="客户号码" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">客户姓名：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='MODIFY_USER_NAME' name='MODIFY_USER_NAME' value="ognl:cond.USER_NAME" nullable="no" desc="客户姓名" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li" id="modifytype">
+				    <span class="label"><span class="e_required">类型：</span></span>
+					   <span class="e_select"><span><span>
+						<select jwcid="@Select" 
+						name="MODIFY_TYPE" id="MODIFY_TYPE"
+						source="ognl:pageutil.getStaticList('CUST_SPACIALUSER_TYPE')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+						addDefault="true" 
+						defaultText="--请选择--"
+					 />
+					</span></span></span>
+				</li>
+				
+				<li class="li" id="sdate">			
+			    <span class="label"><span class="e_required">生效起始时间：</span></span>
+				   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="MODIFY_START_DATE" id ="MODIFY_START_DATE" value="ognl:cond.START_DATE" desc="起始日期" format="yyyy-MM-dd HH:mm:ss" time="true"/>
+				   </span></span>
+				</li>
+				
+				<li class="li" id="edate">			
+				 <span class="label"><span class="e_required">生效结束时间：</span></span>  
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="MODIFY_END_DATE" id ="MODIFY_END_DATE" value="ognl:cond.END_DATE"   desc="结束时间" format="yyyy-MM-dd HH:mm:ss" time="true"/>
+				 </span></span>
+				</li>
+				
+				<li class="li" id="modifyflag" >
+			   		<span class="label" id="label_modifyflag">操作类型：</span>
+					<span class="e_input"><span>
+					<input jwcid="@TextField" name="MODIFY_FLAG" id="MODIFY_FLAG" value="ognl:cond.FLAG" 
+					desc="" nullable="no" />
+					</span></span>
+				</li>
+				
+				<li class="li" id="modifyreserve1" >
+					<span class="label" id="label_modifyreserve1">投诉类型：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='MODIFY_RESERVE1' name='MODIFY_RESERVE1' value="ognl:cond.RESERVE1" nullable="no" desc="" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li" id="modifyreserve2" >
+					<span class="label" id="label_modifyreserve2">投诉次数：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='MODIFY_RESERVE2' name='MODIFY_RESERVE2' value="ognl:cond.RESERVE2" nullable="no" desc="" /></span></span>
+					</span>
+				</li>
+				
+				
+			</ul>
+			
+		</div>
+	</div>
+	<div jwcid="@Conditional" condition="ognl:cond.CUST_SPECIALUSER_MODIFYRIGHT == 1 ">		
+	<div class="c_submit">
+		<button type="button" class="e_button-page-add" onclick="addspecialuser()"><i></i><span>新增</span></button>
+		<button type="button" class="e_button-page-modify" onclick="modifyspecialuser()"><i></i><span>修改</span></button>
+		<button type="button" class="e_button-page-del" onclick="delspecialuser()"><i></i><span>删除</span></button>
+	</div>
+	
+	</div>
+	
+</div>
+
+
+</div></div></body>
+</html>

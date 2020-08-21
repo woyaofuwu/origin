@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>和目终端管理</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/broadband/widenet/ftthmodemmanage/script/HEMUTerminalManage.js?v=201711291527"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/cssubmit/CSSubmit.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2 e_hide-x">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">和目终端管理</span>
+        
+       
+    </div>
+    <!-- 隐藏域开始  -->
+    
+   <input jwcid="@Hidden" class="hidden_input" name="INST_ID" id="INST_ID"  value=""/>
+   <input jwcid="@Hidden" class="hidden_input" name="AUTH_SERIAL_NUMBER" id="AUTH_SERIAL_NUMBER"  value=""/>
+   <input jwcid="@Hidden" class="hidden_input" name="DEVICE_MODEL_CODE" id="DEVICE_MODEL_CODE"  value=""/>
+   <input jwcid="@Hidden" class="hidden_input" name="DEVICE_BRAND_CODE" id="DEVICE_BRAND_CODE"  value=""/>
+   <input jwcid="@Hidden" class="hidden_input" name="PRODUCT_ID" id="PRODUCT_ID"  value=""/>
+   <input jwcid="@Hidden" class="hidden_input" name="PACKAGE_ID" id="PACKAGE_ID"  value=""/>
+   <input jwcid="@Hidden" class="hidden_input" name="DEPOSIT_TRADE_ID" id="DEPOSIT_TRADE_ID"  value=""/>
+   <!-- 隐藏域结束  -->
+	<!-- 认证 开始 -->
+    服务号码：<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="" desc="服务号码" />
+    <button id='CHECK_SERIAL_NUMBER' name="CHECK_SERIAL_NUMBER" class="e_button-center e_button-form" onclick="checkSerialNumber();"><span>查询</span></button>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part" style="display:none">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	
+	<li class="li" style="display:none">
+			<span class="label"><span class="e_required">业务类型：</span></span>
+			<span class="e_elements">
+				<span class="e_input e_input-left"><span>
+				<input type="text" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="588" orderTypeCode="588" nullable="no" desc="业务类型"/>	</span></span>
+			</span>
+	</li>
+	
+</div>
+<div class="" id="HemuTerminalManage">
+
+	<div class="c_box">
+	<div class="c_title">
+        <span class="text">和目终端信息</span>
+    </div>
+	 <!-- 选择业务开始 -->
+	 <div class="c_form c_form-col-3 c_form-label-6 e_hide-x">
+	 	<ul>
+	 		<li class = "li col-1">
+	 			<span class="label"><span>终端串号：</span></span>
+				<span>
+					   <input jwcid="@TextField" class="hidden_input" name="RES_CODE" id="RES_CODE" disabled="disabled" value=""/>
+				</span>
+	 		</li>
+	 		<li class = "li col-1">
+	 			<span class="label"><span>终端名称：</span></span>
+				<span>
+					   <input jwcid="@TextField" class="hidden_input" name="RES_NAME" id="RES_NAME" disabled="disabled" value=""/>
+				</span>
+	 		</li>
+	 	</ul>
+	 </div>
+    
+    <!-- 选择业务结束 -->
+	</div>
+
+	<div class="c_box">
+	<div class="c_title">
+        <span class="text">和目终端业务选择</span>
+    </div>
+	 <!-- 选择业务开始 -->
+	 <div class="c_form c_form-col-3 c_form-label-6 e_hide-x">
+	 	<ul>
+	 		<li class = "li col-1">
+	 			<span class="label"><span>业务类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="TERMINAL_TRADE_TYPE" id="TERMINAL_TRADE_TYPE" onchange = "changeBusiTerminaltrade()"
+							source="ognl:pageutil.getStaticList('HEMU_TERMINAL_TRADE_TYPE')" addDefault = "false"
+							textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.TERMINAL_TRADE_TYPE"
+							desc="和目终端业务类型" nullable="no"/>
+				</span></span></span>
+	 		</li>
+	 	</ul>
+	 </div>
+    
+    <!-- 选择业务结束 -->
+</div>
+<div class="c_box e_hide-x"> 
+
+	<div class="" id="terminalapplyinfo">
+	<div class="c_title">
+        <span class="text">和目终端换机</span>
+    </div>
+    <div id="checkTerminalPopup" style="display:none" >
+		<div class="c_form c_form-col-1 c_form-label-4 e_hide-x">
+	    <ul class="ul">
+	    	
+			<li class="li">  
+				<span class="label"><span class="">终端编号：</span></span>
+				<span class="e_elements" id="RES_ID_INPUT">
+					<button id='CHECK' name="CHECK" class="e_button-center e_button-form" onclick="checkTerminalId();"><i class="e_ico-bottom"></i><span>校验</span></button>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="TERMINAL_ID" id="TERMINAL_ID" value="ognl:info.TerminalId"
+									desc="终端编号"/>
+						</span></span>
+				</span>		
+			</li>
+	    </ul>
+    </div>
+	</div>
+    <div jwcid="TerminalCheckPart@Part" id="TerminalCheckPart">
+    	<div class="c_form c_form-col-3 c_form-label-6">
+	    <ul class="ul">
+			<li class="li">
+				<span class="label"><span class="">终端编号：</span></span>
+				<span class="e_elements" id="RES_ID_INPUT">
+					<button id='CHECK' name="CHECK" class="e_button-center e_button-form" onclick="popupDiv('checkTerminalPopup','40%','终端校验');"><i class="e_ico-bottom"></i><span>终端录入</span></button>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="APPLYTERMINALID" id="APPLYTERMINALID" value="ognl:info.RES_NO"
+									desc="终端编号" disabled="true"/>
+						</span></span>
+				</span>		
+			</li>
+			<li class="li">
+				<span class="label">终端型号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="RES_KIND_CODE" id="RES_KIND_CODE"  value="ognl:info.RES_KIND_CODE" desc="终端型号" disabled="true"/>
+				</span></span>			
+			</li>
+			<li class="li">
+				<span class="label">终端名称：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="RES_KIND_NAME" id="RES_KIND_NAME"  value="ognl:info.RES_KIND_NAME" desc="终端名称" disabled="true"/>
+				</span></span>			
+			</li>
+	    </ul>
+    </div>
+    </div>
+    <div jwcid="terminalApplyPart@Part" id="terminalApplyPart">
+    	<div class="c_form c_form-col-3 c_form-label-6">
+	    <ul class="ul">
+	    	<li class="li">
+				<span class="label" id="PAYTYPE">押金金额：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="DEPOSIT" id="DEPOSIT"  value="ognl:modermInfo.DEPOSIT" desc="押金金额"  disabled="true"/>
+				</span></span>			
+			</li>
+			<li class="li col-3">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK"
+	                 value=""
+					 desc="备注" disabled=""/>
+				</span></span>
+			</li>
+	    </ul>
+    </div>
+    </div>
+	
+	</div>
+
+</div>
+</div>
+<button class="e_button-center e_button-form" id="submitBtn" name="submitBtn" onclick="submit()" style="margin-left: 45%;"><i class="e_ico-submit"></i><span>提交</span></button>	
+<!--受理信息结束-->
+</div></div></body>
+</html>

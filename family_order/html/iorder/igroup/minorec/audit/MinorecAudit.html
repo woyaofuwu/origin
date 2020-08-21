@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>中小企业业务稽核</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/minorec/audit/script/MinorecAudit.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">中小企业业务稽核</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="e_space"></div>
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<input jwcid="@Hidden" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:orderInfo.BUSI_CODE" />
+	<input jwcid="@Hidden" id="BPM_TEMPLET_ID" name="BPM_TEMPLET_ID" value="ognl:orderInfo.BPM_TEMPLET_ID" />
+	<input jwcid="@Hidden" id="BUSIFORM_ID" name=""BUSIFORM_ID"" value="ognl:orderInfo.BUSIFORM_ID" />
+	<input jwcid="@Hidden" id="IBSYSID"	name="IBSYSID" value="ognl:orderInfo.BI_SN" />
+	<input jwcid="@Hidden" id="EC_SERIAL_NUMBER" name="EC_SERIAL_NUMBER" value="ognl:info.EC_SERIAL_NUMBER" />
+	<input jwcid="@Hidden" id="EXP_INFO" name="EXP_INFO" value="ognl:expInfo.EXP_INFO" />
+	<!-- 查询模版 开始 -->
+	<div class="e_space"></div>
+	<div class="l_queryResult c_table" id="refreshtable" jwcid="refreshtable@Part" style="height:auto;" >
+		<!-- 表格 开始 -->
+		<!-- <div class="c_table"> -->
+			<table jwcid="@Table" name="myTable">
+				<thead>
+					<tr>	
+				 		<th class="e_center"><input checked='checked' type="checkbox" id="checkbox"  name="checkbox" ontap="checkedAll('TRADES', this.checked)" class="e_checkbox"/></th>					  
+						<th>业务类型</th>
+						<th>订单号</th>
+						<th>产品名称</th>
+						<th>集团名称</th>
+						<th>集团编号</th>
+						<th>业务创建人工号</th>
+						<th>是否已稽核</th>
+						<th>查看订单详情</th>	
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<div jwcid="@Conditional" condition="ognl:info.AUDIT_FLAG == 1">
+		   					<td class="e_center"><input type="checkbox" recordNum="ognl:info.RECORD_NUM" userid="ognl:info.USER_ID" ibsysid="ognl:info.BI_SN" 
+		   					tradeid="ognl:info.TRADE_ID" productno="ognl:info.PRODUCT_NO" id="TRADES" name="TRADES" jwcid="@Any" checked='checked'/></td>	
+						</div>
+						<div jwcid="@Conditional" condition="ognl:info.AUDIT_FLAG == 0">
+							<td><span jwcid="@Insert" value="" class="center" raw="false"/></td>
+						</div>
+						<td><span jwcid="@Insert" value="ognl:info.BPM_TEMPLET_NAME" class="center" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BI_SN" raw="false" class="center" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false" class="center" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IS_AUDIT" raw="false"/></td>
+						<td data-title="查看详情" class="fn e_center"  jwcid="@Any" ontap="openOfferPopupItem(this);" value="查看详情"
+                                   OFFER_CODE="ognl:offerCInfo.OFFER_CODE" OFFER_ID="ognl:offerCInfo.OFFER_ID">
+                               <span class="e_ico-search"></span>
+							<input jwcid="@Hidden" name="ognl:'CHILD_OFFER_ID_'+offerCInfo.OFFER_ID" BRAND_CODE="ognl:offerCInfo.BRAND_CODE" OFFER_CODE="ognl:offerCInfo.OFFER_CODE" value="ognl:offerCInfo.OFFER_ID" />
+					       	<div jwcid="@Any" style="display:none" id="ognl:'OFFER_MEMBER_DATA_'+offerCInfo.OFFER_ID" ><span jwcid="@Insert" value="ognl:offerCInfo.OFFER_MEMBER"></span></div>
+					       	<div jwcid="@Any" style="display:none" id="ognl:'MEB_OFFER_DATA_'+offerCInfo.OFFER_ID" ><span jwcid="@Insert" value="ognl:offerCInfo.MEB_OFFER"></span></div>
+					       	<div jwcid="@Any" style="display:none" id="ognl:'EC_OFFER_DATA_'+offerCInfo.OFFER_ID" ><span jwcid="@Insert" value="ognl:offerCInfo.EC_OFFER"></span></div>
+					       	<div jwcid="@Any" style="display:none" id="ognl:'EC_COMMON_INFO_DATA_'+offerCInfo.OFFER_ID" ><span jwcid="@Insert" value="ognl:offerCInfo.EC_COMMON_INFO"></span></div>
+                           </td>
+					</tr>
+				</tbody>
+			</table>
+	</div>
+	<div class="e_space"></div>
+	<!-- 查询模版 结束 -->
+	<!-- 自动稽核 开始 -->
+	<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == '2222' || info.PRODUCT_ID == '7341'">
+	<div class="c_title">
+		<div class="text">自动稽核</div>
+	</div>
+	<div class="c_box c_box-border">
+		<!-- 参数 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" id="memberTradeInfos" name="memberTradeTable">
+				<thead>
+					<tr>
+						<th col="space" class="e_center">&nbsp</th>
+						<th col="ELEC_INFO" class="e_center">电子协议信息</th>
+						<th col="FINISH_INFO" class="e_center">资料信息</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:autoAuditInfos" value="ognl:autoAuditInfo" element="tr" index="ognl:rowIndex" 
+						class="ognl:autoAuditInfo.AUTO_FLAG =='false'?'strong':''">
+						<td class="e_center"><span jwcid="@Insert" value="ognl:autoAuditInfo.AUDIT_NAME"　raw="false"/></td>
+						<div jwcid="@Conditional" condition="ognl:autoAuditInfo.AUTO_FLAG =='false'">
+							<td class="e_center e_red"><span jwcid="@Insert" value="ognl:autoAuditInfo.ELEC_PARAM"　raw="false"/></td>
+							<td class="e_center e_red"><span jwcid="@Insert" value="ognl:autoAuditInfo.DATA_PARAM"　raw="false"/></td>
+						</div> 
+						<div jwcid="@Conditional" condition="ognl:autoAuditInfo.AUTO_FLAG =='true'">
+							<td class="e_center"><span jwcid="@Insert" value="ognl:autoAuditInfo.ELEC_PARAM"　raw="false"/></td>
+							<td class="e_center"><span jwcid="@Insert" value="ognl:autoAuditInfo.DATA_PARAM"　raw="false"/></td>
+						</div>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 参数 结束 -->
+	</div>
+	<div class="e_space"></div>
+	</div>
+	<!-- 自动稽核  结束-->
+	<!-- 合同查询附件开始 -->
+	<div class="c_title">
+		<div class="text">合同信息</div>
+	</div>
+	<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+		<ul>
+			<div jwcid="@Foreach" source="ognl:contractNameList" value="ognl:contractNameData" >
+				<li class="link required">
+					<div class="label">协议名称</div>
+					<div class="value">
+						<input jwcid="@TextField" name="ognl:'ARCHIVES_NAME_'+rowIndex" value="ognl:contractNameData.ARCHIVES_NAME" disabled="disabled"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">协议编码</div>
+					<div class="value">
+						<input jwcid="@TextField" name="ognl:'AGREEMENT_ID_'+rowIndex" value="ognl:contractNameData.AGREEMENT_ID" disabled="disabled"/>
+					</div>
+				</li>
+			</div>
+
+		</ul>
+	</div>
+	<div class="c_space"></div>
+	<div jwcid="@Foreach" source="ognl:contractList" value="ognl:contractData">
+              <div class="c_title">
+                  <div class="text"><span jwcid="@Insert" value="ognl:contractData.ARCHIVES_NAME"/>
+                  </div>
+              </div>
+		<div class="c_list c_list-s">
+			<ul>
+				<li class="link" jwcid="@Foreach" source="ognl:contractData.ARCHIVES_ATTACH" value="ognl:attchData" element="li">
+			        <div class="ico">
+			         <span class="e_ico-word"></span>
+			        </div> 
+			           <a jwcid="@Any" href="ognl:'waterMark?ACTION=NO_WATER_MARK&DOWNLOAD=true&TYPE='+attchData.TYPE
+				           	+'&IMG_TYPE='+attchData.IMG_TYPE+'&needSuffix=false&FILE_NAME='+attchData.FILE_NAME
+				           	+'&FILE_ID='+attchData.FILE_ID +'&AGREEMENT_ID='+attchData.AGREEMENT_ID" target="_blank"> 
+			           	<span jwcid="@Insert" value="ognl:attchData.FILE_NAME == null?'附件'+rowIndex:attchData.FILE_NAME" raw="false" />
+			         	</a>
+			        <div class="c_space"></div>
+		       </li>
+			</ul>
+		</div>
+	</div>
+    <!-- 合同查询附件结束 -->
+	<div class="e_space"></div>
+	<!--新增业务监督检查信息区 开始  -->
+	<div id="checkRecordPart" jwcid="checkRecordPart@Part">
+		<div  class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">稽核信息</div>
+				</div>
+			</div>
+		</div>
+		<div class="l_queryResult c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+			<ul>
+			
+			<li class="link required">
+				<div class="label">稽核是否通过</div>
+				<div class="value">
+					<span jwcid="@Select" name="TARIFF_FLAG" id="TARIFF_FLAG" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('AUDIT_ISPASS')" 
+						value="ognl:info.TOTAL_FLAG == 'false'?'0':'1'" textField="DATA_NAME" valueField="DATA_ID" nullable="no"></span>
+				</div>
+			</li>
+			<li class="link">
+				<div class="label">稽核意见</div>
+				<div class="value">
+					<input jwcid="@TextField" name="REMARK" value=""  desc="稽核意见" nullable="no"/>
+				</div>
+			</li>
+			
+		</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<div class="c_space"></div>
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-center">
+			<button type="button" class="e_button-r e_button-l e_button-navy" ontap="window.reloadNav();">重置</button>
+			<button type="button" class="e_button-r e_button-l e_button-green" ontap="if(confirmAll('checkRecordPart')){submitInfos();}">提交</button>
+		</div>
+		<!-- 提交 结束 -->
+		<div class="c_space"></div>
+	</div>
+	<!--新增业务监督检查信息区 结束  -->
+	</div>
+	<!-- 滚动（替换为 java 组件） 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup02" class="c_popup c_popup-full">
+<div class="c_popupGroup">
+	<div jwcid="setOfferDataPratPopup@Part" class="c_popupItem" id="setOfferDataPratPopup">
+		<div class="c_scroll c_scroll-float">
+			<div class="l_padding">
+				<div class="l_queryFn">
+					<div id="queryshowExplian" class="c_header">
+						<div class="back" ontap="backPopup(this);" id="showExplian">产品属性展示</div>
+					</div>
+					<div jwcid="ecCommonPrat@Part" >
+						<div jwcid="@Conditional" condition="ognl:ecCommonList!=null&&ecCommonList.size()>0" element="div" >
+							<div class="c_fn">
+								<div class="left">
+									<div class="text">集团账户信息</div>
+								</div>
+							</div>
+							<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-16" element="div">	
+								<ul element='ul'> 
+									<li jwcid="@Foreach" source="ognl:ecCommonList" value="ognl:ecCommonInfo" element="li">
+										<div class="main">
+											<span class="label" jwcid="@Insert" value='ognl:ecCommonInfo.ATTR_NAME==null?"":ecCommonInfo.ATTR_NAME+"："'></span>
+											<span class="value" jwcid="@Insert" value='ognl:ecCommonInfo.ATTR_VALUE==null?"":ecCommonInfo.ATTR_VALUE'/>
+										</div>
+									</li> 
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div jwcid="grpPackagePrat@Part" >
+						<div jwcid="@Conditional" condition="ognl:grpPackageList!=null&&grpPackageList.size()>0" element="div" >
+							<div class="c_fn">
+								<div class="left">
+									<div class="text">集团定制信息</div>
+								</div>
+							</div>
+							<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">		
+								<ul element='ul'>
+									<li jwcid="@Foreach" source="ognl:grpPackageList" value="ognl:grpPackageInfo" element="li" >
+										<div class="main">
+											<div jwcid="@Any" class="title" tip="ognl:grpPackageInfo.ELEMENT_NAME">
+												【<span jwcid="@Insert" value="ognl:grpPackageInfo.ELEMENT_ID"></span>】<span jwcid="@Insert" value="ognl:grpPackageInfo.ELEMENT_NAME"></span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div jwcid="ecOfferChaPrat@Part" >
+						<div jwcid="@Conditional" condition="ognl:ecOfferChaList!=null&&ecOfferChaList.size()>0" element="div" >
+							<div class="c_fn">
+								<div class="left">
+									<div class="text">集团产品信息</div>
+								</div>
+							</div>
+							<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-16" element="div">	
+								<ul element='ul'> 
+									<li jwcid="@Foreach" source="ognl:ecOfferChaList" value="ognl:ecOfferChaInfo" element="li">
+										<div class="main">
+											<span class="label" jwcid="@Insert" value='ognl:ecOfferChaInfo.ATTR_NAME==null?"":ecOfferChaInfo.ATTR_NAME+"："'></span>
+											<span class="value" jwcid="@Insert" value='ognl:ecOfferChaInfo.ATTR_VALUE==null?"":ecOfferChaInfo.ATTR_VALUE' />
+										</div>
+									</li> 
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div jwcid="memberOfferPrat@Part" >
+						<div jwcid="@Conditional" condition="ognl:memberOfferList!=null&&memberOfferList.size()>0" element="div" >
+							<div class="c_fn">
+								<div class="left">
+									<div class="text">成员商品子商品信息</div>
+								</div>
+							</div>
+							<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">		
+								<ul element='ul'>
+									<li jwcid="@Foreach" source="ognl:memberOfferList" value="ognl:memberOfferInfo" element="li" >
+										<div class="main">
+											<div jwcid="@Any" class="title" tip="ognl:memberOfferInfo.OFFER_NAME">
+												【<span jwcid="@Insert" value="ognl:memberOfferInfo.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:memberOfferInfo.OFFER_NAME"></span>
+											</div>
+											<div class="content content-auto">
+												<span jwcid="@Insert" value="ognl:memberOfferInfo.START_DATE.substring(0,10)"></span>~<span jwcid="@Insert" value="ognl:memberOfferInfo.END_DATE.substring(0,10)"></span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div jwcid="offermeberPrat@Part" >
+						<div jwcid="@Conditional" condition="ognl:memberList!=null&&memberList.size()>0" element="div" >
+							<div class="c_fn">
+								<div class="left">
+									<div class="text">成员信息</div>
+								</div>
+							</div>
+							<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-16" element="div">	
+								<ul element='ul'> 
+									<li class="link"  jwcid="@Foreach" source="ognl:memberList" value="ognl:memberInfo" element="li">
+										<div class="main">
+											<span class="label">成员号码：</span>
+											<span class="value">
+												<span jwcid="@Insert" value="ognl:memberInfo.SERIAL_NUMBER"></span>
+											</span>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div class="c_space"></div>										
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue e_button-width-m" type="button" ontap="backPopup(this);">关闭</button>
+					</div>
+			 </div>
+		  </div>
+	   </div>
+	</div>
+	<!-- 勘查信息 结束 -->
+	</div>
+</div>
+<!-- 弹窗结束 -->
+</body>
+</html>

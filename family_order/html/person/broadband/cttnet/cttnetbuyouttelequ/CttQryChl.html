@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择代理商</title>
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnetbuyouttelequ/scripts/cttbuyouttelequ.js" ></script>
+
+<script language="javascript"><!--
+function queryIt(){
+	// 根据名称或编码模糊查询
+	$.ajax.submit('QueryChnlPart', 'qryChl', null, 'QueryListPart', function(data){
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+// --></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+ 	<input type="text" jwcid="@TextField" name="DEPART_ID" id="DEPART_ID" value="ognl:cond.DEPART_ID" style="display:none"/>
+ 	
+<div class="c_box">
+	<div class="c_form" jwcid="QueryChnlPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">代理商编码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="CHNL_CODE" id="CHNL_CODE" value="ognl:cond.CHNL_CODE" desc="代理商编码"/>
+			   </span></span> 
+			</li>
+			<li class="li">
+				<span class="label">代理商名称：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="CHNL_NAME" id="CHNL_NAME" value="ognl:cond.CHNL_NAME" desc="代理商名称"/>
+			   </span></span> 
+			</li>
+		</ul>
+	    <div class="submitPlace"></div>
+		<div class="submit">
+			  <button class="e_button-form" id="bquery" name="bquery"  onclick="return queryIt();"><i class="e_ico-search"></i><span>查询</span></button>
+			  <button class="e_button-form" id="reset" name="reset"  onclick="return reset();"><i class="e_ico-reset"></i><span>重置</span></button>
+		</div>
+	</div>
+	 
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-table-10">
+		<div class="c_table">
+			<table jwcid="@Table" name="AgentTable">
+				<thead>
+					<tr>
+						<th col="CHNL_ID">代理商标识</th>
+						<th col="CHNL_CODE">代理商编码</th>
+						<th col="CHNL_NAME">代理商名称</th>
+					</tr>
+				</thead>
+				
+				<tbody  jwcid="@Any" name="ChnlTableValues" id="ChnlTableValues">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><a jwcid="@Redirect" value="ognl:info.CHNL_ID" CHNL_ID="ognl:info.CHNL_ID" CHNL_CODE="ognl:info.CHNL_CODE" 
+    						   CHNL_NAME="ognl:info.CHNL_NAME"  onclick="setPopupReturnValue(getAttribute('CHNL_ID'),getAttribute('CHNL_NAME'));"/></td>
+						<td><a jwcid="@Redirect" value="ognl:info.CHNL_CODE" CHNL_ID="ognl:info.CHNL_ID" CHNL_CODE="ognl:info.CHNL_CODE" 
+   						   	   CHNL_NAME="ognl:info.CHNL_NAME"  onclick="setPopupReturnValue(getAttribute('CHNL_ID'),getAttribute('CHNL_NAME'));"/></td>
+   						<td><a jwcid="@Redirect" value="ognl:info.CHNL_NAME" CHNL_ID="ognl:info.CHNL_ID" CHNL_CODE="ognl:info.CHNL_CODE" 
+   						   	   CHNL_NAME="ognl:info.CHNL_NAME"  onclick="setPopupReturnValue(getAttribute('CHNL_ID'),getAttribute('CHNL_NAME'));"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+
+	</div>
+	<!-- 表格 结束 -->
+	 <!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="pageinfo" id="pageinfo" listener="queryIt" pageSize="10" cond="qryChl" part="QueryListPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	</div>
+</div> 
+</body>
+</html>

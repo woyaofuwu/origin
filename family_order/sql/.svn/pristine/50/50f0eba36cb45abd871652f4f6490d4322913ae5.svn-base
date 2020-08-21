@@ -1,0 +1,6 @@
+SELECT to_char(e.trade_id) trade_id,e.oper_code,e.pkgseq,e.udsum,e.intf_trade_id,e.accept_month,to_char(e.user_id) user_id,e.service_id,e.serial_number,e.sp_code,e.biz_code,e.biz_type_code,e.biz_state_code,e.product_no,e.org_domain,e.opr_source,e.bill_type,e.price,to_char(e.first_date,'yyyy-mm-dd hh24:mi:ss') first_date,to_char(e.first_date_mon,'yyyy-mm-dd hh24:mi:ss') first_date_mon,e.gift_serial_number,e.gift_user_id,to_char(e.subscribe_id) subscribe_id,to_char(e.start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(e.end_date,'yyyy-mm-dd hh24:mi:ss') end_date,to_char(e.update_time,'yyyy-mm-dd hh24:mi:ss') update_time,e.update_staff_id,e.update_depart_id,e.remark,e.rsrv_num1,e.rsrv_num2,e.rsrv_num3,to_char(e.rsrv_num4) rsrv_num4,to_char(e.rsrv_num5) rsrv_num5,e.rsrv_str1,e.rsrv_str2,e.rsrv_str3,e.rsrv_str4,e.rsrv_str5,e.rsrv_str6,e.rsrv_str7,e.rsrv_str8,e.rsrv_str9,e.rsrv_str10,to_char(e.rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(e.rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(e.rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3
+FROM tf_b_trade_platsvc e  
+WHERE rsrv_tag2 = '1'
+and  trade_id = :TRADE_ID 
+AND e.accept_month = TO_NUMBER(SUBSTR(:TRADE_ID, 5, 2)) 
+and service_id = TO_NUMBER(:SERVICE_ID)

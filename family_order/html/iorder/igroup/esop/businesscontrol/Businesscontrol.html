@@ -1,0 +1,929 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/applyrequirement/script/applyrequirement.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">开通申请</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+				<!-- 客户信息 开始 -->
+			     <div jwcid="@ecserv:GrpCustInfo" groupId="ognl:info.GROUP_ID" groupInfo="ognl:groupInfo" custMgrInfo="ognl:custMgrInfo" readonly="ognl:repInfo.IS_READONLY=='true'?'true':''"/>
+				<!-- 客户信息 结束 -->
+			
+				<!-- 产品信息 开始 -->
+				<div class="c_title">
+					<div class="text">产品信息</div>
+			    </div>
+			    <div jwcid="OfferPart@Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+					<ul>
+							<li class="link required">
+								<div class="label">选择产品</div>
+								<div class="value">
+								<input jwcid="@Select" name="cond_OFFER_NAME" id="cond_OFFER_NAME" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ESOP_ManageProduct')" 
+								textField="DATA_NAME" valueField="DATA_ID" addDefault="true" value="ognl:info.OFFER_NAME" 
+									nullable="no" desc="选择产品" onchange="changeOperType400();"/>
+								</div>
+							</li>
+							<li class="link required" id="OFFER_CODE_LI" >
+								<div class="label">产品编码</div>
+								<div class="value"><input jwcid="@TextField" name="cond_OFFER_CODE" id="cond_OFFER_CODE" value="ognl:offer.OFFER_CODE" disabled="disabled"/></div>
+							</li>
+							<li class="link required" id="TEMPLET_ID_LI" >
+								<div class="label">业务流程</div>
+								<div class="value">
+								<input jwcid="@Select" name="cond_TEMPLET_ID" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ESOP_BPM_TEPMENTID')" 
+								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.TEMPLET_ID" 
+										nullable="no" desc="业务流程"  onchange="changeTempletId();"/>
+							</li>
+							
+						<input jwcid="@Hidden" name="cond_OPER_TYPE" id="cond_OPER_TYPE" value="20"  desc="操作类型"/>
+						<input jwcid="@Hidden" name="cond_OFFER_ID" id="cond_OFFER_ID" value="9983" desc="商品标识" />
+						<input jwcid="@Hidden" name="cond_BRAND_CODE" id="cond_BRAND_CODE" value="ognl:offer.BRAND_CODE" desc="商品品牌" />
+						<input jwcid="@Hidden" name="cond_BRAND_CODE1" id="cond_BRAND_CODE1" value="ognl:info.SHOW_PARAM_PART" desc="商品品牌" />
+						<input jwcid="@Hidden" name="cond_BRAND_CODE2" id="cond_BRAND_CODE2" value="ognl:info.OPER_TYPE" desc="商品品牌" />
+						<input jwcid="@Hidden" name="MEB_OFFER_CODE" id="MEB_OFFER_CODE" value="ognl:info.MEB_OFFER_CODE" />
+						<input jwcid="@Hidden" name="MEB_OFFER_ID" id="MEB_OFFER_ID" value="ognl:info.MEB_OFFER_ID" />
+						<input jwcid="@Hidden" name="MEB_OFFER_NAME" id="MEB_OFFER_NAME" value="ognl:info.MEB_OFFER_NAME" />
+						<input jwcid="@Hidden" name="SHOW_PARAM_PART" id="SHOW_PARAM_PART" value="ognl:info.SHOW_PARAM_PART" />
+						<input jwcid="@Hidden" name="CREATE_INESSCOBUSI400" id="CREATE_INESSCOBUSI400" value="1" />
+					</ul>
+				</div>
+				<!-- 产品信息 结束 -->
+			
+			<div jwcid="ParamPart@Part">
+				<div jwcid="@Conditional" condition="ognl:info.SHOW_PARAM_PART == 3">
+					<!-- BBOSS商品 开始 -->
+					<div jwcid="BbossApplyParamPopup@ecserv:BbossApplyParam" ></div>
+					<!-- BBOSS商品 结束 -->
+					<!-- 普通专线产品 开始 -->
+					<div jwcid="@ecserv:DataLineApplyParam" offerName="ognl:offer.OFFER_NAME" operCode="ognl:info.OPER_TYPE" serialNO="ognl:info.serialNO" ftpInfo="ognl:ftpInfo.SUCC_LIST" templetId ="ognl:info.TEMPLET_ID"></div>
+					<!-- 普通专线产品 结束 -->
+				</div>
+				<input jwcid="@Hidden" name="SHOW_PARAM_PART" value="ognl:info.SHOW_PARAM_PART" />
+				<span id="BUSI_SPEC_RELE" style="display:none;" desc="流程信息"><span jwcid="@Insert" value="ognl:info.BUSI_SPEC_RELE"></span></span>
+				<span id="NODE_TEMPLETE" style="display:none;" desc="流程节点信息"><span jwcid="@Insert" value="ognl:info.NODE_TEMPLETE"></span></span>
+			</div>
+			
+<!-- 		<div jwcid="@Part" id="LineSpecialParam">
+				<div jwcid="@Conditional" condition="ognl:info.SHOW_PARAM_PART == 2">
+					<div jwcid="@ecserv:DataLineOrderDetailParam" groupId="ognl:info.GROUP_ID"  areas="ognl:areas"/>
+				</div>
+			</div>   -->
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">其他信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border ">
+				<ul>
+					<li class="link merge-3">
+						<div class="label">附件上传</div>
+						<div class="value"><span class="e_mix">
+							<input jwcid="@TextField" name="ATTACH_FILE_NAME" value="" ontap="showPopup('popup01','attachPopupItem',true);" readonly="true"/>
+							<input jwcid="@Hidden" name="ATTACH_FILE_ID" value=""/>
+							<span style="display:none" id="ATTACH_FILE_LIST"></span>
+							<span class="e_ico-upload" ontap="showPopup('popup01','attachPopupItem',true);"></span>
+						</span></div>
+					</li>
+					<li class="link merge-3">
+						<div class="label">操作意见</div>
+						<div class="value"><input jwcid="@TextField" name="ATTACH_REMARK" value="" /></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitApply();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+		<input type="hidden" id="OFFER_CHA_HIDDEN_ID" value="" desc="当前设置的商品特征应保存到的对于隐藏域id" />
+		<input type="hidden" jwcid="@Any" id="apply_USER_ID" value="ognl:repInfo.USER_ID" desc="主商品的用户标识" />
+		<input jwcid="@Hidden" name="offerchalist" id="offerchalist" value="" desc="" />
+		<input type="hidden" id="ESOP_TAG" value="1" />
+		<input type="hidden" jwcid="@Any" id="IBSYSID" value="ognl:repInfo.IBSYSID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="NODE_ID" value="ognl:repInfo.NODE_ID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="BPM_TEMPLET_ID" value="ognl:repInfo.BPM_TEMPLET_ID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="BUSIFORM_ID" value="ognl:repInfo.BUSIFORM_ID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="BUSIFORM_NODE_ID" value="ognl:repInfo.BUSIFORM_NODE_ID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="BUSI_CODE" value="ognl:repInfo.BUSI_CODE" raw="false" />
+		<input type="hidden" jwcid="@Any" id="BUSIFORM_OPER_TYPE" value="ognl:repInfo.BUSIFORM_OPER_TYPE" raw="false" />
+		<input type="hidden" jwcid="@Any" id="SUB_IBSYSID" value="ognl:repInfo.SUB_IBSYSID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="APPLY_ID" value="ognl:ftpInfo.APPLY_ID" raw="false" />
+		<input type="hidden" jwcid="@Any" id="CROMNO" value="" raw="false" />
+		<input type="hidden" jwcid="@Any" id="CONFCRMTICKETNO" value="" raw="false" />
+	</div>
+<!-- 滚动 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup01">
+
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="moreCustomerPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">其他客户信息</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="@Part" id="moreCustPart" class="l_padding">
+					<!-- 集团客户基本信息 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户级别：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CLASS_ID"></span></span>
+							</li>
+							<li>
+								<span class="label">客户联系人：</span>
+								<span class="value"></span>
+							</li>
+							<li>
+								<span class="label">客户联系电话：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.GROUP_CONTACT_PHONE"></span></span>
+							</li>
+							<li>
+								<span class="label">客户邮编：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.POST_CODE"></span></span>
+							</li>
+							<li>
+								<span class="label">客户邮箱：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.EMAIL"></span></span>
+							</li>
+							<li>
+								<span class="label">客户服务等级：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTGROUP_SERV_LEVEL', groupInfo.SERV_LEVEL)"></span></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 集团客户基本信息 结束 -->
+					<!-- 集团客户附加信息 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户所属地州：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.EPARCHY_NAME"></span></span>
+							</li>
+							<li>
+								<span class="label">客户所属市县：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CITY_NAME"></span></span>
+							</li>
+							<li>
+								<span class="label">集团客户行业：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CALLING_TYPE_NAME"></span></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 集团客户附加信息 结束 -->
+					<!-- 集团客户经理信息 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户经理：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.CUST_MANAGER_NAME"></span></span>
+							</li>
+							<li>
+								<span class="label">客户经理工号：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.CUST_MANAGER_ID"></span></span>
+							</li>
+							<li>
+								<span class="label">客户经理电话：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.SERIAL_NUMBER"></span></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 集团客户经理信息 结束 -->
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+		<div class="c_popupItem" id="uploadPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">批量新增文件导入</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="@Part" id="UploadPart" class="l_padding">
+					<div class="c_list c_list-line c_list-border c_list-col-1 c_list-phone-col-1">
+						<ul>
+							<li>
+								<span class="label">导入文件</span>
+								<span class="value"><span jwcid="@SimpleUpload"
+									name="FILE1"
+									ftpCode="eosdata"
+									fileTypes=".xls" 
+									fileSize="5" 
+								/></span>
+							</li>
+							<li>
+								<span class="label">下载模板</span>
+								<span class="value"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&filePath=template/eop/'+info.fileName)">[点击下载]&nbsp;&nbsp;</a></span>
+							</li>
+							<li id="failFileLi" style="display:none;">
+								<span class="label e_red">下载失败文件</span>
+								<span class="value"><a id="failFile" href="">[点击下载]&nbsp;&nbsp;</a></span>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<span class="e_ico-help"></span>&nbsp;&nbsp;<span class="e_size-m">注意：大小不能超过5M，请查看模板格式！</span>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="excuteImport(this);">导入</button>
+						<button type="button" class="e_button-r e_button-l e_button-navy" ontap="hidePopup(this)">取消</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+		<div class="c_popupItem" id="attachPopupItem">
+			<div jwcid="@Upload"
+				name="fileupload"
+				title="附件上传"
+				fileTypes=".doc;.docx;.jpg;.txt;.rar;.zip"
+				ftpCode="eop"
+				fileSize="5"
+			></div>
+		</div>
+	</div>
+		
+</div>
+
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup02" class="c_popup c_popup-half c_popup-half-hasBg">
+	<div class="c_popupGroup">
+		<div jwcid="GrpOfferCatalogPopup@ecserv:GrpOfferCatalog" 
+			upCatalogId="1000" 
+			filterOfferSvc="SS.GroupCatalogsQrySVC.filterOfferForEopApply" 
+			filterCatalogSvc="SS.GroupCatalogsQrySVC.filterOfferCatalogForEopApply"></div>
+		
+		<!-- 产品特征 开始 -->
+		<div jwcid="offerChaPopupItem@Part" class="c_popupItem" id="offerChaPopupItem">
+			<div id="offerChaHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="offerChaBack">商品特征</div>
+			</div>
+			<!-- 动态参数页面 -->
+ 			<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr" multimatch="true"/>
+			<!-- </div> -->
+		</div>
+		<!-- 产品特征 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup03" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<!-- 勘查信息 开始 -->
+		<div jwcid="confCrmPopupItem@Part" class="c_popupItem" id="confCrmPopupItem">
+			<div id="confCrmHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="offerChaBack">勘查信息</div>
+			</div>
+		<div class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+				<div class="label">
+						<span class="e_space"></span>
+					</div>
+					<div class="right">
+					<span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7010'">
+						<span cond="confCrmPopupItem" name="importFile" taskId="2019011010"
+							jwcid="@Import"
+							configFile="import/bat/group/CONFCRMINFO_VOIP.xml"
+							templateFile="template/bat/group/CONFCRMINFO_VOIP.xls"
+							fileName="VOIP勘查信息导入.xls" ftpCode="eosdata" auto="false"></span>
+                    </span>
+                    <span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7011'">
+						<span cond="confCrmPopupItem" name="importFile" taskId="2019011011"
+							jwcid="@Import"
+							configFile="import/bat/group/CONFCRMINFO_INTERNET.xml"
+							fileName="互联网勘查信息导入.xls" ftpCode="eosdata" auto="false"></span>
+                    </span>
+                    <span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7012'">
+						<span cond="confCrmPopupItem" name="importFile" taskId="2019011012"
+							jwcid="@Import"
+							configFile="import/bat/group/CONFCRMINFO_DATALINE.xml"
+							fileName="数据专线勘查信息导入.xls" ftpCode="eosdata" auto="false"></span>
+                    </span>
+					</div>
+				</div>
+				<span class="e_space"> </span>
+				<div class="left">
+				<span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7010'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="confCrmExport"
+						cond="confCrmPopupItem" taskId="2019011610"
+						configFile="export/querygroupinfo/ExportConfCrm_VOIP.xml"
+						ftpCode="eosdata" fileName="VOIP勘查信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7011'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="confCrmExport"
+						cond="confCrmPopupItem" taskId="2019011611"
+						configFile="export/querygroupinfo/ExportConfCrm_Internet.xml"
+						ftpCode="eosdata" fileName="互联网勘查信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				<span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7012'">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="confCrmExport"
+						cond="confCrmPopupItem" taskId="2019011612"
+						configFile="export/querygroupinfo/ExportConfCrm_DataLine.xml"
+						ftpCode="eosdata" fileName="数据专线勘查信息导出.xls">
+						<span class="e_ico-export"/><span>导出</span>
+					</button>
+				</span>
+				</div>	
+				<div class="right">
+					<span class="label">关联CRM勘察工单号：</span>
+					<input jwcid="@Select" style="width:30em;" name="pattr_CONFCRMTICKETNO" source="ognl:info.CONFCRMTICKETNOS" textField="CONFCRMTICKETNO" valueField="CONFCRMTICKETNO"
+					addDefault="true" value="ognl:info.CONFCRMTICKETNO" onchange="getConfCrmInfo();" nullable="no" desc="关联CRM勘察工单号"/>					
+				</div>
+				</div>
+				<!-- 隐藏域 开始 --> 
+				<input style="display: none" jwcid="@Hidden" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:condition.PRODUCT_ID"/>
+				<input style="display: none" jwcid="@Hidden" id="GROUP_ID" name="GROUP_ID" value="ognl:condition.GROUP_ID"/>
+				<input style="display: none" jwcid="@Hidden" id="BPM_TEMPLET_ID" name="BPM_TEMPLET_ID" value="ognl:condition.BPM_TEMPLET_ID"/>
+				<input style="display: none" jwcid="@Hidden" id="LINE_NO" name="LINE_NO" value="ognl:condition.LINE_NO"/>
+				<input style="display: none" jwcid="@Hidden" id="IBSYSID" name="IBSYSID" value="ognl:condition.IBSYSID"/>
+				<!-- 隐藏域 结束 -->
+			</div>
+			<div class="l_queryFn" jwcid="QryResultPart@Part" element="div">
+				<div class="l_queryResult">		
+					<div class="c_table">
+					<table name="myTable" id="myTable" class="c_table c_table-checkbox" jwcid="@Table">
+						<thead>
+							<tr>
+								<th col="LINENO_ID_SUB">
+					 			<th class="e_center"><input type="checkbox" id="LINENO" name="LINENO" ontap="checkedAll('LINENO', this.checked)" class="e_checkbox"/>全选</th>					  
+								</th>
+								<th class="e_center" col="NOTIN_LINE_NO">专线实例号</th>
+								<th class="e_center" col="NOTIN_RSRV_STR1">专线宽带(兆)</th>
+								<th class="e_center" col="NOTIN_RSRV_STR2">月租费(元/月)</th>
+								<th class="e_center" col="NOTIN_RSRV_STR3">一次性费用(安装调试费)(元)</th>
+								<span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7012'">
+	                                <th class="e_center" col="NOTIN_RSRV_STR6">集团分成比例</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR7">A端分成比例</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR8">Z端分成比例</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR11">软件应用服务费</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR12">网络技术支持服务费</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR16">SLA服务费(元/月)</th>
+	                                <th class="e_center" col="ROUTEMODE">路由保护方式</th>
+	                                <th class="e_center" col="BIZSECURITYLV">业务保障等级</th>
+	                                <th class="e_center" col="PORTACUSTOM">A端用户名称</th>
+	                                <th class="e_center" col="PROVINCEA">A端所属省份</th>
+	                                <th class="e_center" col="COUNTYA">A端街道/乡镇</th>
+	                                <th class="e_center" col="VILLAGEA">A端门牌/村组</th>
+	                         		<th class="e_center" col="PORTAINTERFACETYPE">A端口类型</th>
+	                         		<th class="e_center" col="PORTARATE">A端业务端口速率</th>
+	                                <th class="e_center" col="PORTACONTACT">A端用户技术联系人</th>
+	                                <th class="e_center" col="PORTACONTACTPHONE">A端用户技术联系人电话</th>
+	                                <th class="e_center" col="PORTZCUSTOM">Z端用户名称</th>
+	                                <th class="e_center" col="PROVINCEZ">Z端所属省份</th>
+	                                <th class="e_center" col="COUNTYZ">Z端街道/乡镇</th>
+	                                <th class="e_center" col="VILLAGEZ">Z端门牌/村组</th>
+	                                <th class="e_center" col="PORTZINTERFACETYPE">Z端口类型</th>
+	                                <th class="e_center" col="PORTZCONTACT">Z端用户技术联系人</th>
+	                                <th class="e_center" col="PORTZCONTACTPHONE">Z端用户技术联系人电话</th>
+	                                <th class="e_center" col="TRADENAME">专线名称</th>
+                                </span>
+                                <span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7011'">
+	                                <th class="e_center" col="NOTIN_RSRV_STR10">IP地址使用费</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR11">软件应用服务费</th>
+	                                <th class="e_center" col="NOTIN_RSRV_STR12">网络技术支持服务费</th>
+	                                <th class="e_center" col="TRANSFERMODE">传输接入方式</th>
+	                                <th class="e_center" col="BIZSECURITYLV">业务保障等级</th>
+	                                <th class="e_center" col="PORTARATE">业务端口速率</th>
+	                                <th class="e_center" col="PORTACUSTOM">用户名称</th>
+	                                <th class="e_center" col="PROVINCEA">所属省份</th>
+	                                <th class="e_center" col="CITYA">所属地市</th>
+	                                <th class="e_center" col="AREAA">所属区县</th>
+	                                <th class="e_center" col="COUNTYA">街道/乡镇</th>
+	                                <th class="e_center" col="VILLAGEA">门牌/村组</th>
+	                                <th class="e_center" col="PORTAINTERFACETYPE">业务端口类型</th>
+	                                <th class="e_center" col="PORTACONTACT">用户技术联系人</th>
+	                                <th class="e_center" col="PORTACONTACTPHONE">用户技术联系人电话</th>
+	                                <th class="e_center" col="IPTYPE">IP地址类型</th>
+	                                <th class="e_center" col="CUSAPPSERVIPADDNUM">客户申请公网IP地址数</th>
+	                                <th class="e_center" col="CUSAPPSERVIPV4ADDNUM">申请公网IPV4地址数</th>
+	                                <th class="e_center" col="CUSAPPSERVIPV6ADDNUM">申请公网IPV6地址数</th>
+	                                <th class="e_center" col="DOMAINNAME">域名</th>
+	                                <th class="e_center" col="MAINDOMAINADD">主域名服务器地址</th>
+	                                <th class="e_center" col="TRADENAME">专线名称</th>
+                                </span>
+                                <span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7010'">
+	                                <th class="e_center" col="NOTIN_RSRV_STR15">语音通信费（元/分钟）</th>
+                                </span>
+                                <th class="e_center" col="LINEOPENTAG">专线开通方式</th>
+                                <th class="e_center" col="ISCOVER">是否覆盖</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+								<td>
+			   					 <td class="e_center"><input type="checkbox" id="LINENO" name="LINENO" jwcid="@Any"/></td>	
+								</td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_LINE_NO" /></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR1" /></td>	
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR2" /></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR3" /></td>
+								<span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7012'">
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR6" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR7" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR8" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR11" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR12" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR16" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.ROUTEMODE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.BIZSECURITYLV" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTACUSTOM" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PROVINCEA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.CITYA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.AREAA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.COUNTYA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.VILLAGEA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTAINTERFACETYPE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTARATE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTACONTACT" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTACONTACTPHONE" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTZCUSTOM" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.PROVINCEZ" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.CITYZ" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.AREAZ" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.COUNTYZ" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.VILLAGEZ" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTZINTERFACETYPE" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTZCONTACT" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTZCONTACTPHONE" raw="false" /></td>
+	                            	<td class="e_center"><span jwcid="@Insert" value="ognl:info.TRADENAME" raw="false" /></td>
+	                            </span>
+	                            <span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7011'">
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR10" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR11" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR12" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.TRANSFERMODE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.BIZSECURITYLV" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTARATE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTACUSTOM" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PROVINCEA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.CITYA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.AREAA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.COUNTYA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.VILLAGEA" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTAINTERFACETYPE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTACONTACT" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.PORTACONTACTPHONE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.IPTYPE" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.CUSAPPSERVIPADDNUM" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.CUSAPPSERVIPV4ADDNUM" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.CUSAPPSERVIPV6ADDNUM" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.DOMAINNAME" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.MAINDOMAINADD" raw="false" /></td>
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.TRADENAME" raw="false" /></td>
+	                            </span>
+	                            <span jwcid="@Conditional" condition="ognl:condition.PRODUCT_ID == '7010'">
+		                            <td class="e_center"><span jwcid="@Insert" value="ognl:info.NOTIN_RSRV_STR15" raw="false" /></td>
+	                            </span>
+	                            <td class="e_center"><span jwcid="@Insert" value="0" raw="false" /></td>
+	                            <td class="e_center"><span jwcid="@Insert" value="N" raw="false" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>	
+			</div>
+		</div>
+		<div class="c_space"></div>										
+		<div class="c_submit c_submit-full">
+			<button class="e_button-l e_button-r e_button-blue" type="button" ontap="sureConfCrm();">确定</button>
+		</div>
+	 </div>
+		<!-- 勘查信息 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup04" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<!-- 查询地址  开始 -->
+		<div jwcid="queryLineAddrPopupItem@Part" class="c_popupItem" id="queryLineAddrPopupItem">
+			<div id="queryLineAddrHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="offerChaBack">查询快速开通地址信息</div>
+			</div>
+			<div class="c_fn">
+				<div class="left">
+					<div class="text"></div>
+				</div>
+				<div class="right"  jwcid="queryLineAddrForm@Part">
+					<span class="label">标准地址：</span>
+					<input style="width:18em;"  jwcid="@TextField" id="cond_addrStandard"  name="cond_addrStandard" value="ognl:condition.addrStandard"  desc="标准地址"/>
+					<span class="e_space"></span>
+					<span class="label">地市：</span>
+					<input jwcid="cond_CITY@Select" name="cond_CITY" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BELONG_CITY_NEWCODE')" textField="DATA_NAME" valueField="DATA_ID" 
+					addDefault="true" value="ognl:condition.CITY" nullable="no" desc="地市"/>					
+					<span class="e_space"></span>
+					<span class="label">区县：</span>
+					<input jwcid="cond_AREA@Select" name="cond_AREA" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BELONG_COUNTY_CODE')" textField="DATA_NAME" valueField="DATA_ID" 
+					addDefault="true" value="ognl:condition.AREA" nullable="no" desc="区县"/>					
+					<button class="e_button-blue" onclick="queryLineAddr();"><span class="e_ico-search"></span><span>查询</span></button>
+					<input type="hidden" id="ADDR_PORT" value="A" desc="记录地址为A端还是Z端"/>
+				</div>
+			</div>
+			<div class="l_queryFn" jwcid="LineAddrResultPart@Part" element="div">
+				<div class="l_queryResult">		
+					<div class="c_table">
+					<table name="lineAddrTable" id="lineAddrTable" class="c_table c_table-checkbox" jwcid="@Table">
+						<thead>
+							<tr>
+								<th></th>
+			                	<th col="addrStandard">标准地址</th>
+			                    <th col="PROVINCEA">省份</th>
+			                    <th col="CITYA">地市</th>
+			                    <th col="AREAA">区县</th>
+			                    <th col="COUNTYA">街道</th>
+			                    <th col="VILLAGEA">门牌</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td>
+								<input type="radio" id="ckline" name="ckline" checked="ognl:info.IS_CHECKED" jwcid="@Radio" value="ognl:info.addrAll" ontap="doReturnVal();"/>
+		                        </td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.addrStandard" raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.PROVINCEA" raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.CITYA"  raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.AREAA"  raw="false"></span></td>	
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.COUNTYA"  raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.VILLAGEA"  raw="false"></span></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div>	
+			</div>
+		</div>
+	 </div>
+		<!-- 勘查信息 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup05" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<!-- 载入历史数据  开始 -->
+		<div jwcid="queryHisDataPopupItem@Part" class="c_popupItem" id="queryHisDataPopupItem">
+			<div id="queryHisDataHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="offerChaBack">查询资源确认工单</div>
+			</div>
+			<div class="c_fn">
+				<div class="left">
+					<div class="text"></div>
+				</div>
+				<div class="right"  jwcid="queryHisDataForm@Part">
+					<span class="label">单号：</span>
+					<input style="width:18em;"  jwcid="@TextField" id="cond_IBSYSID"  name="cond_IBSYSID" value="ognl:condition.IBSYSID"  desc="单号"/>
+					<span class="e_space"></span>
+					<span class="label">主题：</span>
+					<input style="width:18em;"  jwcid="@TextField" id="cond_TITLE"  name="cond_TITLE" value="ognl:condition.TITLE"  desc="主题"/>
+					<button class="e_button-blue" onclick="queryHisConfCrm();"><span class="e_ico-search"></span><span>查询</span></button>
+				</div>
+			</div>
+			<div class="l_queryFn" jwcid="HisConfCrmResultPart@Part" element="div">
+				<div class="l_queryResult">		
+					<div class="c_table">
+					<table name="hisConfCrmTable" id="hisConfCrmTable" class="c_table c_table-checkbox" jwcid="@Table">
+						<thead>
+							<tr>
+								<th></th>
+			                	<th col="IBSYSID">单号</th>
+			                    <th col="TITLE">主题</th>
+			                    <th col="STATE">是否在途</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td class="e_center" align="center">
+									<a jwcid="@Redirect" value="ognl:info.IBSYSID" ontap="sureHisConfCrm(this);"/>
+								</td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.TITLE" raw="false"></span></td>
+								<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.STATE"  raw="false"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>	
+			</div>
+		</div>
+	 </div>
+		<!-- 勘查信息 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup06" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<!-- 查询地址  开始 -->
+		<div jwcid="queryshowExplianPopup@Part" class="c_popupItem" id="queryshowExplianPopup">
+			<div class="c_scroll c_scroll-float">
+				<div class="l_padding">
+					<div class="l_queryFn">
+						<div id="queryshowExplian" class="c_header">
+							<div class="back" ontap="backPopup(this);" id="showExplian">业务保障级别说明</div>
+						</div>
+						<div class="c_fn">
+							<div class="left">
+								<div class="text">客户服务等级分为金牌级服务、银牌级服务、铜牌级服务和标准级服务。客户服务等级与客户级别一一对应，对应关系如下：</div>
+							</div>
+						</div>
+						<div class="l_queryFn" jwcid="explianTable@Part" element="div">
+							<div class="l_queryResult">		
+								<div class="c_table">
+								<table name="showExplianTable" id="showExplianTable" class="c_table c_table-checkbox" jwcid="@Table">
+									<thead>
+										<tr>
+						                	<th>集团客户类型</th>
+						                    <th>客户服务登记(标准)</th>
+						                    <th>客户服务登记(铜牌)</th>
+						                    <th>客户服务登记(银牌)</th>
+						                    <th>客户服务登记(金牌)</th>
+						                    <th>备注说明</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A1类客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value="√"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="默认提供金牌服务"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A2类客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value="√"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="默认提供金牌服务"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="B1类客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="√"  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="默认提供银牌服务"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="B2类客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="√"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="默认提供铜牌服务"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="C类客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="√" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="默认提供标准服务"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="D类客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="√" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value=""  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="默认提供标准服务"  raw="false"></span></td>	
+										</tr>
+									</tbody>
+								</table>
+							</div>	
+						</div>
+					</div>
+						<div class="c_fn">
+							<div class="left">
+								<div class="text">业务保障等级根据客户服务等级和业务重要程度两个维度进行综合判定，判定标准见下表:(其他特殊需求:客户愿意为高质量业务保障支付相应费用，其业务保障等级根据合同要求定义!)</div>
+							</div>
+						</div>
+						<div class="l_queryFn" jwcid="explianTable1@Part" element="div">
+							<div class="l_queryResult">		
+								<div class="c_table">
+								<table name="showExplianTable1" id="showExplianTable1" class="c_table c_table-checkbox" jwcid="@Table">
+									<thead>
+										<tr>
+											<th>客户服务等级</th>
+						                	<th>跨省、跨国端到端数据专线</th>
+						                    <th>集团客户总部或中心点单端核心汇聚电路（如CPOS电路等）</th>
+						                    <th>跨地市、其他数据专线</th>
+						                    <th>APN专线、集团短彩信、语音专线、MPLS VPN专线</th>
+						                    <th>互联网专线</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="金牌级客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AAA" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AAA"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A"  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AAA"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="银牌级客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AAA"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A"  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="铜牌级客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="普通"  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A"  raw="false"></span></td>	
+										</tr>
+										<tr>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="标准客户" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="A" raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="AA"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="普通"  raw="false"></span></td>	
+											<td class="e_center" align="center"><span jwcid="@Insert" value="普通"  raw="false"></span></td>
+											<td class="e_center" align="center"><span jwcid="@Insert" value="普通"  raw="false"></span></td>	
+										</tr>
+									</tbody>
+								</table>
+							</div>	
+						</div>
+					</div>
+					<div class="c_fn">
+							<div class="left">
+								<div class="text">举例：</div>
+							</div>
+					</div>
+					<div class="c_fn">
+							<div class="left">
+								<div class="text">（1）跨省、跨国数据专线：指由海南省发起，A端落地在海南省，Z端落地在其他省份或其他国家的数据专线。</div>
+								<div class="text">案例：海南省公安厅的客户服务等级为金牌，由海南省公安厅发起的，到北京市公安部的1条10M的数据专线，业务保障等级设定为AAA。</div>
+								<div class="text">（2）集团客户总部或中心点单端核心汇聚电路：适用于点对多点的数据专线项目的汇聚节点，专线规模≥10条。</div>
+								<div class="text">（3）跨地市、其余数据专线：适用于点对多点的数据专线的分支节点，以及点到点的数据专线。</div>
+								<div class="text">案例1：中国银行的客户服务等级为金牌，由中国银行总部发起的，落地到18个市县的银行支行网点、ATM机共计200条数据专线，根据上表的对应关系，中国银行总部作为专线规模≥10条的项目汇聚节点，汇聚点的业务保障等级设定为AAA，其余的支行网点和ATM机作为分支节点，设置为A。</div>
+								<div class="text">备注：签署框架协议的集团客户，在提交第一个项目时，若专线规模不足10条，考虑到未来业务发展需要，其汇聚节点仍按照集团客户总部或中心点单端核心汇聚电路的要求去设定业务保障等级（根据上表，不得低于AA）。</div>
+								<div class="text">案例2：澄迈公安网专线项目，澄迈公安的客户服务等级为金牌，专线网络架构为澄迈110指挥中心分别连接各分支派出所，各分支派出所下挂所在辖区所有的视频监控点。</div>
+								<div class="text">根据定义，澄迈110指挥中心与各分支派出所由于下挂分支节点都超过10条，因此都定义为核心汇聚电路。根据上表的对应关系，澄迈110指挥中心与各分支派出所的业务保障等级设定为AAA，视频监控点作为分支节点，设置为A。</div>
+								<div class="text">案例3：海南省地震局专线项目，海南省地震局的客户服务等级为金牌，专线业务从白沙地震局传递至白沙政务中心，由于为点到点的数据专线，因此白沙地震局与白沙政务中心，业务保障等级设置为A。</div>
+							</div>
+					</div>
+					<div class="c_space"></div>										
+						<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue e_button-width-m" type="button" ontap="backPopup(this);">关闭</button>
+						</div>
+				 </div>
+			  </div>
+		   </div>
+		</div>
+		<!-- 勘查信息 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup" class="c_popup" mask="false">	
+<!-- ===========================================第一层弹出 开始============================================ -->
+	<div class="c_popupGroup">
+		
+		<!-- 账户新建开始 -->				
+		<div jwcid="accountPopupItem@ecserv:EnterpriseAcctMgr" 
+			callback="accountPopupItemCallback" isCommit="false" isClear="false"></div>
+		<!-- 账户新建结束 -->
+		
+		<!-- 账户合并 开始 -->
+		<div class="c_popupItem" id="chooseEcAccount">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup('popup')">选择账户</div>
+			</div>
+			<div jwcid="@Scroller" name="acctScroll" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_list c_list-col-1 c_list-line" jwcid="ecAccountListPart@Part">
+					<ul id="ecAccountUL">
+						<li class="link" jwcid="@Foreach" source="ognl:ecAccountList" value="ognl:ecAccount" element="li" id="ognl:ecAccount.ACCT_ID" ontap="selectAccount(this);">
+							<div class="main">
+								<div class="title">
+									<span jwcid="@Insert" name="ACCT_NAME" value="ognl:ecAccount.PAY_NAME" />
+								</div>
+								<div class="content">
+									账户编码：<span jwcid="@Insert" name="ACCT_ID" value="ognl:ecAccount.ACCT_ID" />	<br/>
+									账户类型：<span jwcid="@Insert" name="PAY_MODE_NAME" value="ognl:ecAccount.PAY_MODE_NAME" />
+									生效时间：<span jwcid="@Insert" name="PAY_MODE_NAME" value="ognl:ecAccount.OPEN_DATE" />		
+								</div>
+							</div>									
+						</li>								
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 账户合并 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup07">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="discntAttachPopupItem">
+			<div jwcid="@Upload"
+				name="upload"
+				title="附件上传"
+				fileTypes=".doc;.docx;.jpg;.txt;.rar;.zip"
+				ftpCode="eop"
+				fileSize="5"
+			></div>
+		</div>
+	</div>
+</div>	
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup08" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="auditPopupItem">
+			<div id="auditHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="auditPopupBack">选择稽核员工</div>
+			</div>
+			<div class="c_fn">
+				<div class="left">
+					<div class="text"></div>
+				</div>
+					<div class="right"  jwcid="auditForm@Part">
+						<span class="label">员工姓名：</span>
+						<input style="width:18em;"  jwcid="@TextField" id="cond_StaffName"  name="cond_StaffName" value="ognl:condition.StaffName"  desc="员工姓名"/>
+						<button class="e_button-blue" onclick=""><span class="e_ico-search"></span><span>查询</span></button>
+					</div>
+				</div>
+				<div class="l_queryFn" jwcid="auditParts@Part" element="div">
+					<div class="l_queryResult">		
+						<div class="c_table">
+						<table name="auditTable" id="auditTable" class="c_table c_table-checkbox" jwcid="@Table">
+							<thead>
+								<tr>
+				                	<th col="AUDIT_STAFF_ID">员工工号</th>
+				                    <th col="AUDIT_STAFF_ID">员工姓名</th>
+				                    <th col="CITY_CODE">所在地市</th>
+				                    <th col="EPARCHY_CODE">所在地州</th>
+				                    <th col="DEPART_ID">部门编号</th>
+				                    <th col="DEPART_NAME">部门名称</th>
+				                    <th col="STAFF_PHONE">联系电话</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+									<td class="e_center" align="center"><span jwcid="@Redirect" value="ognl:info.AUDIT_STAFF_ID" onclick="setReturnValue(this);" staff_id="ognl:info.AUDIT_STAFF_ID" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.CITY_CODE"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.EPARCHY_CODE"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:info.DEPART_ID"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.DEPART_NAME"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:info.STAFF_PHONE"  raw="false"></span></td>	
+								
+								</tr>
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>			
+<!-- 员工组件 开始 -->
+<div jwcid="@icsserv:StaffPopup" name="STAFF_POPUP" ></div>
+<!-- 员工组件 结束 -->
+
+<div style="display:none" id="EOS_COMMON_DATA"><span jwcid="@Insert" value="ognl:repInfo.EOS_COMMON_DATA" desc="url请求信息"/></div>
+<div jwcid="attrPart@Part">
+<span jwcid="@Insert" style="display:none" id="ESOP_OFFER_DATA" name="ESOP_OFFER_DATA" value="ognl:workformData.grpProductAttrList" />
+</div>
+</body>
+</html>

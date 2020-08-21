@@ -1,0 +1,19 @@
+UPDATE TD_M_OPERATION_SP
+   SET SP_CODE = :SP_CODE,
+       BIZ_CODE = :BIZ_CODE,
+       BIZ_NAME = :BIZ_NAME,
+       BIZ_ATTR = :BIZ_ATTR,
+       COUNT_SIDE1 = :COUNT_SIDE1,
+       COUNT_SIDE2 = :COUNT_SIDE2,
+       BILL_TYPE = :BILL_TYPE,
+       PRICE = :PRICE,
+       START_DATE = to_date(:START_DATE,'yyyy-mm-dd'),
+       END_DATE = to_date(:END_DATE,'yyyy-mm-dd'),
+       COUNT_PCT = :COUNT_PCT,
+       NUM_TIME = :NUM_TIME,
+       NUM_DAY = :NUM_DAY,
+       SMS_PROCESS_TAG = :SMS_PROCESS_TAG,
+       RSRV_STR1 = :RSRV_STR1,
+       FILE_NAME = :FILE_NAME
+ WHERE SP_CODE = :SP_CODE
+   AND BIZ_CODE = :BIZ_CODE

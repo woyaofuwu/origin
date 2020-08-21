@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>非出账业务参数配置</title>
+<script jwcid="@Script" src="person/nonbossfee/scripts/NonBossFeeItemMgr.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryRecordPart@Part">
+		<ul class="ul">
+			<li class="li" >
+					<span class="label">项目名称：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_DATA_NAME" id="cond_DATA_NAME" source="ognl:feetype"
+	                                    addDefault="true" value="ognl:condition.cond_DATA_NAME" disabled="false" desc="项目名称" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+			</li> 
+			<li class="li" >
+					<span class="label">收入类别：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_PARAM_NAME" id="cond_PARAM_NAME" source="ognl:incometype"
+	                                    addDefault="true" value="ognl:condition.cond_PARAM_NAME" disabled="false" desc="收入类别" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+			</li>
+			<li class="li">
+					<span class="label">发票项目：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_PARA_CODE3" id="cond_PARA_CODE3" source="ognl:invoicetype"
+	                                    addDefault="true" value="ognl:condition.cond_PARA_CODE3" disabled="false" desc="发票项目" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+			</li>
+			<li class="li">
+				<span class="e_elements">
+					<span class="label">有效性：</span>
+					<span class="e_select"><span><span>
+						<select id="cond_VALID_FLAG" name="cond_VALID_FLAG" onchange="validChange();">
+							<option value='1' selected>有效</option>
+							<option value='0'>无效</option>
+						</select>
+					</span></span></span>
+				</span> 
+			</li>
+			<li class="li">
+					<span class="label">市场段：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_PARA_CODE10" id="cond_PARA_CODE10" source="ognl:markettype"
+	                                    addDefault="false" value="ognl:condition.cond_PARA_CODE10" disabled="false" desc="市场段" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+			</li>
+		</ul> 
+		<div class="submitPlace"></div>
+		<div class="submit"  >
+				<button class="e_button-form"  name="QUERY_BTN" id="QUERY_BTN" onclick="return queryItemInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+				<button class="e_button-form" onclick="return resetQry();" ><i class="e_ico-reset"></i><span>重置</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div class="submit e_left" > 
+		<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="1101" 
+					 config="export/nonbossfee/NonBossFeeItem.xml" fileName="非出账业务参数维护"   cond="QueryRecordPart" />
+		</span> 
+	</div> 
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-10 ">
+		<div class="c_table">
+			<table jwcid="@Table"  id="paramTable" name="paramTable"  rowClick="tableRowClick" >
+				<thead>
+					<tr>
+						<th col="DATA_ID">编码</th>
+						<th col="DATA_ID_OLD" style="display:none">原编码</th>
+						<th col="DATA_NAME">费用项目</th>
+						<th col="PARAM_CODE" style="display:none">收入类别代码</th>
+						<th col="PARAM_NAME">收入类别</th>
+						<th col="PARA_CODE1" style="display:none">应税类型代码</th>
+						<th col="PARA_CODE1_NAME">应税类型</th>
+						<th col="PARA_CODE2">增值税率(%)</th>
+						<th col="PARA_CODE3" style="display:none">发票项目代码</th>
+						<th col="PARA_CODE3_NAME">发票项目</th>
+						<th col="PARA_CODE4">借方</th>
+						<th col="PARA_CODE5">借方科目</th>
+						<th col="PARA_CODE6">贷方COA</th>
+						<th col="PARA_CODE7">贷方科目</th>
+						<th col="PARA_CODE8">税COA</th>
+						<th col="PARA_CODE9">税科目</th>
+						<th col="PARA_CODE10" style="display:none">市场段类别代码</th>
+						<th col="PARA_CODE10_NAME">市场段</th>
+						<th col="REMARK">备注</th>
+						<th col="UPDATE_STAFF_ID">维护工号</th>
+						<th col="UPDATE_TIME">更新时间</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">终止时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.DATA_ID" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.DATA_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.DATA_NAME" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.PARAM_CODE" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARAM_NAME" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.PARA_CODE1" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE1_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE2"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.PARA_CODE3" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE3_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE4" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE5" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE6" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE7" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE8" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE9" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.PARA_CODE10" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PARA_CODE10_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_DATE" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_DATE" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>
+<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">编辑区</div>
+			<div class="fn"></div>
+		</div>
+		<!-- 标题 结束 -->
+		<div class="c_form c_form-col-3 c_form-label-6"  jwcid="editPart@Part" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">编码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "DATA_ID" id="DATA_ID"    value="" desc="费用项目编码" maxLength="50" datatype="text"  nullable="no"/>
+						<input type="text" jwcid="@TextField" style="display:none;" name = "DATA_ID_OLD"  id="DATA_ID_OLD"   value="" desc="原费用项目编码" maxLength="50" datatype="text" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">费用项目：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "DATA_NAME" id="DATA_NAME"    value="ognl:info.DATA_NAME_NO" desc="费用项目" maxLength="150" datatype="text"  nullable="no"/>
+					</span></span>
+				</li>
+				 
+				<li class="li" id="incomeList" style="display:''">
+					<span class="label">收入类别：</span>
+					<span class="e_elements"><span>
+					<button type="button" class="e_button-right" id="turnBackBtn1" onclick="selectOther('income');" ><i class="e_ico-change"></i><span>其他</span></button>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PARAM_NAME" id="PARAM_NAME" source="ognl:incometype"
+	                                    addDefault="true" value="" disabled="false" desc="收入类别"  
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+					
+					</span></span></span>
+					</span></span>
+				</li>
+			 
+				<li class="li" id="incomeLiText" style="display:none">
+					<span class="label">收入类别：</span>
+					<span class="e_elements"><span>
+					<button type="button" class="e_button-right" id="turnBackBtn2" onclick="turnBackList('income');" ><i class="e_ico-change"></i><span>返回</span></button>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" id="PARAM_NAME_OTHER" name ="PARAM_NAME_OTHER"   value="" desc="收入类别"  maxLength="100"  datatype="text"/></span></span>
+					
+					</span></span>
+				</li>
+				
+				
+				<li class="li" id="taxList" style="display:''">
+					<span class="label">应税类型：</span>
+					<span class="e_elements"><span>
+					<button type="button" class="e_button-right" id="turnBackBtn3" onclick="selectOther('tax');" ><i class="e_ico-change"></i><span>其他</span></button>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PARA_CODE1" id="PARA_CODE1" source="ognl:taxtype"
+	                                    addDefault="true" value="" disabled="false" desc="应税类型" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+					
+					</span></span></span>
+					</span></span>
+				</li>
+			 
+				<li class="li" id="taxLiText" style="display:none">
+					<span class="label">应税类型：</span>
+					<span class="e_elements"><span>
+					<button type="button" class="e_button-right" id="turnBackBtn4" onclick="turnBackList('tax');" ><i class="e_ico-change"></i><span>返回</span></button>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" id="PARA_CODE1_OTHER" name ="PARA_CODE1_OTHER"   value="" desc="应税类型"  maxLength="100"  datatype="text"/></span></span>
+					
+					</span></span>
+				</li>
+				
+				<li class="li">
+					<span class="label">增值税率(%)：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE2" name ="PARA_CODE2"   value="" desc="增值税率"  maxLength="100" datatype="numeric" nullable="no"/>
+					</span></span>
+				</li>
+				
+				<li class="li" id="invoiceList" style="display:''">
+					<span class="label">发票项目：</span>
+					<span class="e_elements"><span>
+					<button type="button" class="e_button-right" id="turnBackBtn5" onclick="selectOther('invoice');" ><i class="e_ico-change"></i><span>其他</span></button>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PARA_CODE3" id="PARA_CODE3" source="ognl:invoicetype"
+	                                    addDefault="true" value="ognl:condition.cond_PARA_CODE1" disabled="false" desc="发票项目" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+					</span></span>
+				</li>
+			 
+				<li class="li" id="invoiceLiText" style="display:none">
+					<span class="label">发票项目：</span>
+					<span class="e_elements"><span>
+					<button type="button" class="e_button-right" id="turnBackBtn6" onclick="turnBackList('invoice');" ><i class="e_ico-change"></i><span>返回</span></button>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" id="PARA_CODE3_OTHER" name ="PARA_CODE3_OTHER"   value="" desc="发票项目"  maxLength="100"  datatype="text" /></span></span>
+					
+					</span></span>
+				</li> 
+			 	<li class="li">
+					<span class="label">借方：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE4" name ="PARA_CODE4"   value="" desc="借方"  maxLength="100"  datatype="text" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label">借方科目：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE5" name ="PARA_CODE5"   value="" desc="借方科目"  maxLength="100" 	datatype="text" nullable="no"/>
+					</span></span>
+				</li> 
+				<li class="li">
+					<span class="label">贷方COA：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE6" name ="PARA_CODE6"   value="" desc="贷方COA"  maxLength="100" 	datatype="text" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label">贷方科目：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE7" name ="PARA_CODE7"   value="" desc="贷方科目"  maxLength="100" 	datatype="text" nullable="no"/>
+					</span></span>
+				</li> 
+				<li class="li">
+					<span class="label">税COA：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE8" name ="PARA_CODE8"   value="" desc="税COA"  maxLength="100" 	datatype="text" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label">税科目：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="PARA_CODE9" name ="PARA_CODE9"   value="" desc="税科目" 
+					 maxLength="100" 	datatype="text" nullable="no"/>
+					</span></span>
+				</li> 
+			  <li class="li" id="marketList" style="display:''">
+					<span class="label">市场段：</span>
+					<span class="e_elements"><span>
+					
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PARA_CODE10" id="PARA_CODE10" source="ognl:markettype"
+	                                    addDefault="false" value="" disabled="false" desc="市场段"  
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+					
+					</span></span></span>
+					</span></span>
+				</li> 
+				<li class="li">
+					<span class="label">生效时间：</span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="START_DATE" id="START_DATE"   format="yyyy-MM-dd"
+									value="" desc="生效时间" maxName="cond_END_DATE" readonly="true" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">失效时间：</span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="END_DATE" id="END_DATE"  format="yyyy-MM-dd"
+										value="" desc="失效时间" mixName="cond_START_DATE" />
+					</span></span>
+				</li> 
+				<li class="li col-3">
+					<span class="label">备注：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="REMARK" name ="REMARK"   value="" desc="备注"  maxLength="100" 	datatype="text"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit"  >
+				<button class="e_button-form" id="addButton" onclick="return addItem();" disabled="true"><i class="e_ico-add"></i><span>新增</span></button>
+				<button class="e_button-form" id="editButton" onclick="return editItem();" disabled="true"><i class="e_ico-modify"></i><span>修改</span></button>
+				<button class="e_button-form" id="delButton" onclick="return delItem();" disabled="true"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="e_button-form" id="retButton" onclick="return reset();" disabled="true"><i class="e_ico-reset"></i><span>清空</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<div class="c_box">
+		<div jwcid="SubmitPart@csserv:CSSubmit"  beforeAction="submitCheck()" isReset="true" area="" element="div"/>
+	</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

@@ -1,0 +1,31 @@
+SELECT TRADE_ID,
+       ACCEPT_MONTH,
+       USER_ID,
+       PARTITION_ID,
+       SERIAL_NUMBER,
+       SUB_ID,
+       BANK_ID,
+       USER_ACCOUNT,
+       PAY_TYPE,
+       ACCOUNT_CAT,
+       SUB_TIME,
+       RECH_AMOUNT,
+       RECH_THRESHOLD,
+       MODIFY_TAG,
+       INST_ID,
+       START_DATE,
+       END_DATE,
+       UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5,
+       PAY_MODE,
+       USER_TYPE
+  FROM TF_B_TRADE_RELATION_BANK
+ WHERE TRADE_ID = :TRADE_ID
+       AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))
+        AND modify_tag != '9'

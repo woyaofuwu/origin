@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户预约产品查询</title>
+<script jwcid="@Script" src="person/sundryquery/userreservecombo/scripts/queryuserreservecombo.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域开始 -->
+   <div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" name="title" id="title">
+		<div class="text">用户预约产品查询</div>
+	</div>
+
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER"  datatype="mbphone" maxsize="11" nullable="no" desc="手机号码"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button  class="e_button-form" onclick="return queryUserReserveCombo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+	<!-- 表格 开始 -->
+				<div jwcid="ResultDataPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+                <div class="c_title">
+				     <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:rsvTrades.size > 0">
+						      <span jwcid="@Export" name="exportUserReserveComboPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100986"
+								  config="export/sundryquery/other/QueryUserReserveTradesList.xml" fileName="用户预约业务列表" cond=QueryCondPart/>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	     
+				 <div class="c_table ">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>业务流水号</th>
+							<th>业务类型</th>
+							<th>业务办理时间</th>
+							<th>预约执行时间</th>
+							<th>办理员工号</th>
+							<th>业务办理部门</th>
+							<th>备注</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:rsvTrades" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE', 'TRADE_TYPE', info.TRADE_TYPE_CODE)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.EXEC_TIME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID', 'DEPART_NAME', info.TRADE_DEPART_ID)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+			</div>
+	<!-- 表格 结束 -->
+	<!-- 区域 开始 -->
+<div class="c_box">
+
+	<div jwcid="scoreTab@Tabset" switchAction="myTabSwitchAction(ptitle,title)">
+	<!-- 产品变化开始 -->
+	<div jwcid="ProductInfoPage@TabsetContent" title="产品变化">
+	     <div class="c_title">
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:rsvProducts.size > 0">
+						      <span jwcid="@Export" name="exportProductPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100985"
+								  config="export/sundryquery/other/QueryUserReserveProductList.xml" fileName="用户预约产品列表" cond=QueryCondPart params="ognl:'cond_TRADE_ID='+ condition.cond_TRADE_ID"/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('ProductListPrint','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		</div>	  
+		<div class="c_scroll c_scroll-table-10">
+                	     
+		  	     <div  jwcid="ProductList@Part">
+				 <div class="c_table " id="ProductListPrint">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>新产品编码</th>
+							<th>新产品名称</th>
+							<th>新品牌编码</th>
+							<th>新品牌名称</th>
+							<th>原产品编码</th>
+							<th>原产品名称</th>
+							<th>原品牌编码</th>
+							<th>原品牌名称</th>
+							<th>状态属性</th>
+							<th>开始日期</th>
+							<th>结束日期</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:rsvProducts" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BRAND_CODE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BRAND"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OLD_PRODUCT_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OLD_PRODUCT_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OLD_BRAND_CODE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OLD_BRAND"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PRODUCT_MODIFYTAG', info.MODIFY_TAG)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+		</div>
+	</div>
+	<!-- 产品变化 结束 -->
+	
+	<!-- 服务变化开始 -->
+	<div jwcid="ServiceInfoPage@TabsetContent" title="服务变化">
+	    <div class="c_title">
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:rsvServices.size > 0">
+						      <span jwcid="@Export" name="exportServicePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100984"
+								  config="export/sundryquery/other/QueryUserReserveServiceList.xml" fileName="用户预约服务列表" cond=QueryCondPart params="ognl:'cond_TRADE_ID='+ condition.cond_TRADE_ID"/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('ServiceListPrint','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		 </div>	  	
+		<div class="c_scroll c_scroll-table-10">
+                     
+		  	     <div  jwcid="ServiceList@Part">
+				 <div class="c_table " id="ServiceListPrint">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>服务编码</th>
+							<th>服务名称</th>
+							<th>状态属性</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:rsvServices" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.SERVICE_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERVICE_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('DISCNT_MODIFYTAG', info.MODIFY_TAG)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+		</div>
+	</div>
+	<!-- 服务变化 结束 -->
+	
+	<!-- 优惠变化开始 -->
+	<div jwcid="DiscntInfoPage@TabsetContent" title="优惠变化">
+	    <div class="c_title">
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:rsvDiscnts.size > 0">
+						      <span jwcid="@Export" name="exportDiscntPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100983"
+								  config="export/sundryquery/other/QueryUserReserveDiscntList.xml" fileName="用户预约优惠列表" cond=QueryCondPart params="ognl:'cond_TRADE_ID='+ condition.cond_TRADE_ID"/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('DiscntListPrint','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		 </div>	  	 
+		<div class="c_scroll c_scroll-table-10">
+                    
+		  	     <div  jwcid="DiscntList@Part">
+				 <div class="c_table " id="DiscntListPrint">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>优惠编码</th>
+							<th>优惠名称</th>
+							<th>状态属性</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:rsvDiscnts" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('DISCNT_MODIFYTAG', info.MODIFY_TAG)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+		</div>
+	</div>
+	<!-- 优惠变化 结束 -->
+ </div>
+ </div>
+</div>				
+
+</div></div>
+</body>
+</html>

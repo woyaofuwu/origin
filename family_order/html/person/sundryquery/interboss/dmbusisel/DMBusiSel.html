@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script language="JavaScript" src="scripts/person/sundryquery/interboss/dmbusisel/dmbusiqury.js"></script>
+		<title>DM业务查询</title>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+				<!-- 区域 开始 -->
+				<div class="c_box">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">DM业务查询</div>
+						</div>
+						<!-- 表单 开始 -->
+						<div class="c_form c_form-label-5 c_form-col-3" jwcid="DMBusiPart@Part">
+							<ul class="ul">
+								<li class="li">
+									<span class="label"><span >手机号码：</span></span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name="cond_PHONENUM" id="cond_PHONENUM" value="ognl:condition.cond_PHONENUM" desc="手机号码" maxsize="11"  nullable="yes" datatype="mbphone" />
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span >IMEI号：</span></span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name="cond_IMEINUM" id="cond_IMEINUM" value="ognl:condition.cond_IMEINUM" desc="IMEI号码" maxsize="40"  nullable="yes" datatype="text" />
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">操作类型：</span></span>
+									<span class="e_select"><span><span>
+									<select jwcid="@Select" name="cond_APPLY_TYPE" id="cond_APPLY_TYPE" value="ognl:condition.cond_APPLY_TYPE" desc="操作类型" nullable="no"
+									 source="ognl:pageutil.getStaticList('APPLY_TYPE')" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label">起始日期：</span>
+									<span class="e_elements">
+									<span class="e_input e_input-left"><span>
+									<input type="text" jwcid="@DateField" name="cond_STARTDATE" id="cond_STARTDATE"  value="ognl:condition.cond_STARTDATE" desc="订单开始日期"/>
+									</span>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label">终止日期：</span>
+									<span class="e_elements">
+									<span class="e_input e_input-left"><span>
+									<input type="text" jwcid="@DateField" name="cond_ENDDATE" id="cond_ENDDATE"  value="ognl:condition.cond_ENDDATE" desc="订单结束日期"/>
+									</span></span>
+									</span>
+								</li>
+							</ul>
+							<div class="submitPlace"></div>
+							<div class="submit">
+								<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryDMBusi();"><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+						</div>
+						<!-- 表单 结束 -->
+						
+						<!-- 表格 开始 -->
+					<div jwcid="QueryListPart@Part" element="div">
+						<div class="c_scroll c_scroll-x style="height:242px"">
+							<div class="c_table c_table-row-5">
+								<table jwcid="@Table" name="DMBusiSelTable" id="DMBusiSelTable">
+									<thead>
+										<tr>
+										    <!--<th>&nbsp;</th>
+											--><th>取消</th>
+											<th>DM业务参数关联查询</th>
+											<th col="APPLY_TYPE">操作类型</th>
+											<th col="OPERATEID">操作ID</th>
+											<th col="RESULTSTATUS">操作结果状态</th>
+											<th col="ACCEPT_DATE">业务受理时间</th>
+											<th col="REPLYDATE">接收反馈时间</th>
+											<th col="PHONENUM">用户手机号码</th>
+											<th col="IMEINUM">IMEI号</th>
+											<th col="BAGID">包ID</th>
+											<th col="TERMINALID">终端ID</th>
+											<th col="SOFTWAREEDITIONNUM">终端软件版本号</th>
+											<th col="CONFIGUREAGREEMENT">配置协议</th>
+											<th col="BEGINTIME">开始时间YYYY-MM-DD HH:MM:SS</th>
+											<th col="ENDTIME">结束时间YYYY-MM-DD HH:MM:SS</th>
+											<th col="FAILTYPE">错误类型</th>
+											<th col="FAILREASON">错误原因</th>
+											<th col="TRADE_EPARCHY_CODE">受理地州编码</th>
+											<th col="TRADE_CITY_CODE">受理城市编码</th>
+											<th col="TRADE_DEPART_ID">受理部门编号</th>
+											<th col="TRADE_STAFF_ID">受理员工编号</th>
+											<th col="ACCOUNTNUM">客服帐号名称</th>
+											<th col="CANCEL_TAG">操作取消状态</th>
+											<th col="CANCEL_TIME">操作取消时间</th>
+											<th col="CANCEL_EPARCHY_CODE">返销地州编码</th>
+											<th col="CANCEL_CITY_CODE">返销城市编码</th>
+											<th col="CANCEL_DEPART_ID">返销部门编号</th>
+											<th col="CANCEL_STAFF_ID">返销员工编号</th>
+											<th col="CANCEL_ACCOUNTNUM">返销客服帐号名称</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:accountsInfos" value="ognl:accountsInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											
+											<td>
+												<button jwcid="@Redirect" parameters="ognl:accountsInfo" onclick="afterTrade(this.parentNode.parentNode.rowIndex)"><i class="e_ico-cancel"></i></button>
+											</td>
+											<td>
+											    <span jwcid="@Redirect" value="DM业务数据关联查询" parameters="ognl:accountsInfo" operid="ognl:accountsInfo.OPERATEID" apply_type="ognl:accountsInfo.APPLY_TYPE"
+												      onclick="queryDMBusi_Sub(this)"/>
+											</td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.APPLY_TYPE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.OPERATEID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.RESULTSTATUS" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.ACCEPT_DATE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.REPLYDATE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.PHONENUM" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.IMEINUM" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.BAGID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.TERMINALID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.SOFTWAREEDITIONNUM" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CONFIGUREAGREEMENT" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.BEGINTIME" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.ENDTIME" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.FAILTYPE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.FAILREASON" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.TRADE_EPARCHY_CODE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.TRADE_CITY_CODE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.TRADE_DEPART_ID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.TRADE_STAFF_ID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.ACCOUNTNUM" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_TAG" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_TIME" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_EPARCHY_CODE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_CITY_CODE" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_DEPART_ID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_STAFF_ID" /></td>
+											<td><span jwcid="@Insert" value="ognl:accountsInfo.CANCEL_ACCOUNTNUM" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 表格 结束 -->
+					<!-- 表格 开始 -->
+					<div jwcid="QueryListSubPart@Part" element="div">
+						<div class="c_scroll c_scroll-x style="height:242px"">
+							<div class="c_table c_table-row-5">
+								<table jwcid="@Table" name="DMBusiSelSubTable">
+									<thead>
+										<tr>
+											<th>操作ID</th>
+											<th>业务参数分类</th>
+											<th>业务参数名称</th>
+											<th>业务参数值</th>
+											<th>业务ID</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:activeInfos" value="ognl:activeInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert" value="ognl:activeInfo.OPERATE_ID1" /></td>
+											<td><span jwcid="@Insert" value="ognl:activeInfo.PARAMCODE" /></td>
+											<td><span jwcid="@Insert" value="ognl:activeInfo.PARAMNAME" /></td>
+											<td><span jwcid="@Insert" value="ognl:activeInfo.PARAMVALUE" /></td>
+											<td><span jwcid="@Insert" value="ognl:activeInfo.FUNCTIONID" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 表格 结束 -->
+				</div>
+				<!-- 区域 结束 -->
+			</div>
+		</div>
+	</body>
+</html>

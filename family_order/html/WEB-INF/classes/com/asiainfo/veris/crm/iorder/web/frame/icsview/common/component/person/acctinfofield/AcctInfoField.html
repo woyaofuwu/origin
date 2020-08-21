@@ -1,0 +1,86 @@
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="@Any" id="AcctInfoCmp" cityCode="ognl:cityCode!=null?cityCode:getVisit().getCityCode()" isHidden="ognl:isHidden"
+	requiredField="ognl:requiredField" eparchyCode="ognl:eparchyCode!=null?eparchyCode:getVisit().getLoginEparchyCode()" changeAcctDay="ognl:changeAcctDay">
+	<!-- 标题 开始 -->
+	<div jwcid="@Conditional" condition="ognl:isShowTitle">
+	<div class="c_title">
+		<div class="text">账户信息</div>
+		<div class="fn">
+			<a href="#nogo" class="e_button" id="AcctInfoVisiblPart"><i class="e_ico-fold"></i><span>隐藏账户信息</span></a>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	</div>
+	<div id="AcctInfoPart">
+		<!-- 表单 开始 -->
+		<div jwcid="@Any" class="ognl:'c_list c_list-'+listSize+' c_list-col-3 c_list-phone-col-1 c_list-border c_list-line'">
+			<ul class="ul">
+				<li class="link">
+					<div class="label"><span id="span_PAY_NAME" class="required">账户名称</span></div>
+					<div class="value">
+						<input jwcid="@TextField" name="PAY_NAME" value="ognl:acctInfo.PAY_NAME" 
+								desc="账户名称" nullable="no"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label"><span id="span_PAY_MODE_CODE">账户类型</span></div>
+					<div class="value">
+						<span jwcid="@Select" name="PAY_MODE_CODE" class="e_select"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE','REMARK','割接批量导入')"
+								textField="PAY_MODE" valueField="PAY_MODE_CODE" value="ognl:acctInfo.PAY_MODE_CODE"
+								desc="账户类型" nullable="no"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label"><span id="span_ACCT_DAY">用户结账日</span></div>
+					<div class="value">
+					<span jwcid="@Select" name="ACCT_DAY" class="e_select" source="ognl:acctInfoDays"
+						textField="PARAM_NAME" valueField="PARA_CODE1" value="ognl:acctInfo.ACCT_DAY"
+							disabled="ognl:changeAcctDay==false" desc="用户结账日" nullable="no" />
+					</div>
+				</li>
+				<li class="link" id="SuperBankCodeLi">
+					<div class="label"><span id="span_SUPER_BANK_CODE">上级银行</span></div>
+					<div class="value">
+					<span jwcid="@Select" name="SUPER_BANK_CODE"  class="e_select"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')"
+								textField="SUPER_BANK" valueField="SUPER_BANK_CODE" value="ognl:acctInfo.SUPER_BANK_CODE"
+								desc="上级银行"/>
+					</div>
+
+				</li>
+				<li class="link" id="BankCodeLi">
+					<div class="label"><span id="span_BANK_CODE">银行名称</span></div>
+					<div class="value">
+						<div class="e_mix">
+						<input type="text" jwcid="@Any" id="BANK" name="BANK" readOnly="readOnly" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_B_BANK','BANK_CODE','BANK', acctInfo.BANK_CODE)" desc="银行名称"/>
+						<input jwcid="@Hidden" name="BANK_CODE" value="ognl:acctInfo.BANK_CODE" desc="银行名称"/>
+						<button type="button" class="e_button-blue" id="QryBankBtn"><i class="e_ico-check"></i><span></span></button>
+						</div>
+					</div>
+				</li>
+				<li class="link" id="BankAcctNoLi">
+					<div class="label"><span id="span_BANK_ACCT_NO">银行账号</span></div>
+					<div class="value">
+						<input jwcid="@TextField" name="BANK_ACCT_NO" value="ognl:acctInfo.BANK_ACCT_NO" 
+								desc="银行帐号" />
+					</div>
+				</li>
+				<li class="link" id="bankAgreementNoLi">
+					<div class="label"><span id="span_BANK_AGREEMENT_NO">银行协议号</span></div>
+					<div class="value">
+						<input jwcid="@TextField" id="BANK_AGREEMENT_NO" name="BANK_AGREEMENT_NO" value="ognl:acctInfo.RSRV_STR6" desc="银行协议号" />
+					</div>
+				</li>
+	
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+<script>
+    $(function () {
+        $.acctInfo.init();
+    });
+</script>

@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>跨区入网服务</title>
+<script language="JavaScript" src="person/interboss/mobileoperation/scripts/crossregservice.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	 <!-- 标题 开始 -->
+	   <div class="c_title">
+		 <div class="text">路由信息</div>
+	   </div>
+	   <!-- 标题 结束 -->
+	   <!-- 表单 开始 -->
+	   <div class="c_form c_form-label-5 c_form-col-3" jwcid="AddrCondPart@Part">
+	      <ul class="ul">
+	         <li class="li">
+	            <span class="label"><span class="e_required">路由类型：</span></span>
+		            <span class="e_select"><span><span>
+							<select jwcid="@Select" id="cond_ROUTETYPE" name="cond_ROUTETYPE" 
+								source="ognl:pageutil.getStaticList('ROUTERTYPE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_ROUTETYPE"
+								titleField="DATA_NAME" addDefault ="false"  nullable="no" desc="路由类型" />
+				</span></span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label">手机号码：</span>
+	            <span class="e_input"><span>
+	               <input jwcid="@TextField" id="cond_MOBILENUM" name="cond_MOBILENUM" value="ognl:condition.cond_MOBILENUM" desc="手机号码"
+	               maxLength="11" onBlur = "changeValue3()"/>
+	            </span></span>
+	         </li>
+	         <li class="li">
+	            <span class="label">省代码：</span>
+	            <span class="e_select"><span><span>
+						<select jwcid="@Select" id="cond_PROVINCE_CODE" name="cond_PROVINCE_CODE" 
+							source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')" 
+							valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_PROVINCE_CODE"
+							titleField="DATA_NAME" nullable="no" desc="省代码" disabled = "true"/>
+				</span></span></span>
+	        </li>
+	     </ul>
+	</div>
+	   <!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8"   jwcid="CustCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">原归属地手机号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" 
+				     desc="原归属地手机号码" nullable = "no" onBlur = "changeValue4()" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">客户姓名：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_NAME" name="cond_NAME" value="ognl:condition.cond_NAME" 
+				     desc="客户姓名" nullable = "no"  />
+				</span></span>
+			</li>
+			<li class="li" id="idcardtype">
+				<span class="label">证件类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_IDCARDTYPE" name="cond_IDCARDTYPE" 
+								source="ognl:pageutil.getStaticList('IBOSS_PSPT_TYPE_CODE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.cond_IDCARDTYPE"
+								titleField="DATA_NAME" nullable="no" desc="证件类型" />
+				</span></span></span>
+			</li>
+			<li class="li" id = "idcardnum">
+				<span class="label">证件号码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_IDCARDNUM" name="cond_IDCARDNUM" value="ognl:condition.cond_IDCARDNUM" desc="证件号码" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="queryCustInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3 c_form-text"  jwcid="CustInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户级别：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="CLASS_LEVEL" id="CLASS_LEVEL" 
+								value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('VIPCLUBMEMBER_VIPCLASS',cust.CLASS_LEVEL)" 
+									desc="客户级别" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">客户级别有效期：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="LEVEL_DATE" id="LEVEL_DATE" value="ognl:cust.LEVEL_DATE" 
+							desc="客户级别有效期" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">入网时间：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="JOIN_DATE" id="JOIN_DATE" value="ognl:cust.JOIN_DATE" 
+							desc="入网时间" disabled="true"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_table" jwcid="ScoreInfoPart@Part"> 
+		<table id="printTable">
+  			<thead>
+	  			<tr>
+					<th>消费积分(M值)</th>
+					<th>品牌奖励积分（M值)</th>
+					<th>网龄奖励积分（M值)</th>
+					<th>专项积分（M值）</th>
+					<th>已兑换积分(M值)</th>
+					<th>可兑换积分(M值)</th>			
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><span jwcid="@Insert" value="ognl:cust.ALL_CON_SCORE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:cust.BRAND_AWARD_SCORE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:cust.YEAR_AWARD_SCORE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:cust.OTHER_SCORE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:cust.USE_SCORE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:cust.ABLE_SCORE" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenPart@Part">
+	   <input type="hidden"  jwcid="@Any" id="DISABLED_FLAG"      name="DISABLED_FLAG"       value="ognl:cust.DISABLED_FLAG"  />
+	   <input type="hidden"  jwcid="@Any" id="ALL_CON_SCORE"      name="ALL_CON_SCORE"       value="ognl:cust.ALL_CON_SCORE"  />
+	   <input type="hidden"  jwcid="@Any" id="CLASS_LEVEL"        name="CLASS_LEVEL"         value="ognl:cust.CLASS_LEVEL"  />
+	   <input type="hidden"  jwcid="@Any" id="LEVEL_DATE"         name="LEVEL_DATE"          value="ognl:cust.LEVEL_DATE"  />
+	   <input type="hidden"  jwcid="@Any" id="JOIN_DATE"          name="JOIN_DATE"           value="ognl:cust.JOIN_DATE"  />
+	   <input type="hidden"  jwcid="@Any" id="BRAND_AWARD_SCORE"  name="BRAND_AWARD_SCORE"   value="ognl:cust.BRAND_AWARD_SCORE"  />
+	   <input type="hidden"  jwcid="@Any" id="YEAR_AWARD_SCORE"   name="YEAR_AWARD_SCORE"    value="ognl:cust.YEAR_AWARD_SCORE"  />
+	   <input type="hidden"  jwcid="@Any" id="OTHER_SCORE"        name="OTHER_SCORE"         value="ognl:cust.OTHER_SCORE"  />
+	   <input type="hidden"  jwcid="@Any" id="USE_SCORE"          name="USE_SCORE"           value="ognl:cust.USE_SCORE"  />
+	   <input type="hidden"  jwcid="@Any" id="ABLE_SCORE"         name="ABLE_SCORE"          value="ognl:cust.ABLE_SCORE"  />
+   </div>
+    <!-- 隐藏区域 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkRights()" isReset="true"   area="AddrCondPart,CustCondPart,CustInfoPart,ScoreInfoPart,hiddenPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

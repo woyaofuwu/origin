@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>光猫管理</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/broadband/nophonewidenet/nophonemodemmanage/scripts/NoPhoneModemManage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2 e_hide-x">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">光猫管理</span>
+        
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="displaySwitch(this,'UCAViewPart')"><i
+				class="e_ico-unfold"></i><span>展示客户基本信息</span>
+			</a>
+		</div>
+    </div>
+   
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="6801" authType="04" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part" style="display:none">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box" > 
+	<div class="c_title">
+		<div class="text">光猫信息</div>
+	</div> 
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-text c_form-label-6 c_form-col-3" jwcid="wideInfoPart@Part">
+		<ul class="ul">
+				 
+			 	
+				<li class="li">
+					<span class="label">光猫串号：</span>
+					<span class="text" jwcid="@Insert" name="MODEM_CODE" id="MODEM_CODE" value="ognl:info.MODEM_CODE" desc="光猫串号"/>
+					<span type="hidden" jwcid="@TextField" name="MODEM_CODE_HI" id="MODEM_CODE_HI" value="ognl:info.MODEM_CODE" desc="光猫串号"/>
+					<input type="hidden" jwcid="@TextField" name="MODEM_FEE" id="MODEM_FEE" value="ognl:info.MODEM_FEE" desc="光猫押金"/>
+				</li> 
+				<li class="li">
+					<span class="label">申领模式：</span>
+					<span class="text" jwcid="@Insert" name="MODEM_MODE_NAME" id="MODEM_MODE_NAME" value="ognl:info.MODEM_MODE_NAME" desc="光猫申领模式"/>
+					<input type="hidden" jwcid="@TextField" name="MODEM_MODE" id="MODEM_MODE" value="ognl:info.MODEM_MODE" desc="光猫申领模式"/>
+				</li> 
+				<li id="MODEM_DEPOSIT_ID" class="li" style="display:''">
+					<span class="label">光猫押金：</span>
+					<span class="text" jwcid="@Insert" name="MODEM_DEPOSIT" id="MODEM_DEPOSIT" value="ognl:info.MODEM_DEPOSIT" desc="光猫押金"/>
+					<span type="hidden" jwcid="@TextField" name="MODEM_DEPOSIT_HI" id="MODEM_DEPOSIT_HI" value="ognl:info.MODEM_DEPOSIT" desc="光猫押金"/> 
+				</li> 
+				<li class="li col-3">
+					<span class="label">描述：</span>
+					<span class="text" jwcid="@Insert" name="USER_STATE_DESC" id="USER_STATE_DESC" value="ognl:info.USER_STATE_DESC" desc="用户状态描述"/>
+				</li>  
+		</ul>
+	</div>
+	<!-- 表单结束 -->	
+	
+	
+	<div  jwcid="hiddenPart@Part">
+		<input jwcid="@Hidden" name="WIDE_TYPE" id="WIDE_TYPE"  value="ognl:info.WIDE_TYPE"/>
+	 	<input jwcid="@Hidden" name="NOPHONE_SERIAL_NUMBER" id="NOPHONE_SERIAL_NUMBER" value="" /> 
+		<input jwcid="@Hidden" name="HIDDEN_STATE" id="HIDDEN_STATE" value="ognl:info.HIDDEN_STATE" /> 
+	</div>
+</div>
+<!-- 区域 结束 --> 
+
+<!-- FTTH光猫管理开始 -->
+<div class="" id="FTTHModemManage">
+	<div class="c_box">
+	<div class="c_title">
+        <span class="text">FTTH光猫业务选择</span>
+    </div>
+	 <!-- 选择业务开始 -->
+	 <div class="c_form c_form-col-3 c_form-label-6 e_hide-x">
+	 	<ul>
+	 		<li class = "li col-1">
+	 			<span class="label"><span>业务类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="MODERM_TRADE_TYPE" id="MODERM_TRADE_TYPE" onchange = "changeModermtrade()"
+							source="ognl:pageutil.getStaticList('MODERM_TRADE_TYPE')" addDefault = "false"
+							textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.MODERM_TRADE_TYPE"
+							desc="光猫业务类型" nullable="no"/>
+				</span></span></span>
+	 		</li>
+	 		
+	 		<li class="li" id="selApplyType">
+				<span class="label"><span>申领模式：</span></span>
+				<span class="e_select"><span><span>
+					 <select jwcid="@Select" name="MODERM_APPLY_TYPE" id="MODERM_APPLY_TYPE"   value="ognl:info.MODERM_APPLY_TYPE" onchange = "changeApplyType()"   nullable="no"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:applyTypeList" excludeField = "3" desc="申领模式"/>
+				</span></span></span>
+				</li>
+	 	</ul>
+	 </div>
+    
+    <!-- 选择业务结束 -->
+</div>
+<div class="c_box e_hide-x"> 
+	<!-- 光猫申领开始 -->
+	<div class="" id="modermapplyinfo">
+	<div class="c_title">
+        <span class="text">FTTH光猫申领</span>
+    </div>
+    <div id="checkModermpopup" style="display:none" >
+		<div class="c_form c_form-col-1 c_form-label-4 e_hide-x">
+	    <ul class="ul">
+	    	<li class="li e_hideX" id="oldModermId">
+				<span class="label"><span class="">老终端编号：</span></span>
+				<span class="e_elements" style="width:210px;">
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" name="cond_OLD_MODERM_ID" id="cond_OLD_MODERM_ID" value="" desc="光猫串号" disabled="true"/>
+					</span></span>
+				</span>		
+			</li>
+			<li class="li">
+				<span class="label"><span class="">终端编号：</span></span>
+				<span class="e_elements" id="RES_ID_INPUT">
+					<button id='CHECK' name="CHECK" class="e_button-center e_button-form" onclick="checkModermId();"><i class="e_ico-bottom"></i><span>校验</span></button>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="check_MODERID" id="check_MODERID" value="ognl:info.check_MODERID"
+									desc="终端编号"/>
+						</span></span>
+				</span>		
+			</li>
+	    </ul>
+    </div>
+	</div>
+    <div jwcid="ModermCheckPart@Part" id="ModermCheckPart">
+    	<div class="c_form c_form-col-3 c_form-label-6">
+	    <ul class="ul">
+			<li class="li">
+				<span class="label"><span class="">终端编号：</span></span>
+				<span class="e_elements" id="RES_ID_INPUT">
+					<button id='CHECK' name="CHECK" class="e_button-center e_button-form" onclick="popupDiv('checkModermpopup','40%','光猫校验');"><i class="e_ico-bottom"></i><span>光猫录入</span></button>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="cond_APPLYMODERMID" id="cond_APPLYMODERMID" value="ognl:info.RES_NO"
+									desc="终端编号" disabled="true"/>
+						</span></span>
+				</span>		
+			</li>
+			<li class="li">
+				<span class="label">终端型号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="RES_KIND_CODE" id="RES_KIND_CODE"  value="ognl:info.RES_KIND_CODE" desc="光猫型号" disabled="true"/>
+				</span></span>			
+			</li>
+	    </ul>
+    </div>
+    </div>
+    <div jwcid="ModermApplyPart@Part" id="ModermApplyPart">
+    	<div class="c_form c_form-col-3 c_form-label-6">
+	    <ul class="ul">
+	    	<li class="li">
+				<span class="label" id="PAYTYPE">押金金额：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="DEPOSIT" id="DEPOSIT"  value="ognl:modermInfo.DEPOSIT" desc="押金金额"  disabled="true"/>
+				</span></span>			
+			</li>
+			<li class="li e_hideX" id="returnDate">
+				<span class="label"><span class="e_required">预约归还时间：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@DatePopup"
+								name="RETURN_DATE"
+								readonly="true"
+								value="ognl:modermInfo.RETURN_DATE"
+								desc="预约归还时间"
+								afterAction=""
+								nullable="no"
+								format="yyyy-MM-dd"
+							/>
+						</span></span>
+			</li>
+			<li class="li">
+				<span class="e_input e_hideX"><span>
+					<input jwcid="@TextField" name="APPLYTYPE" id="APPLYTYPE"  value="ognl:modermInfo.APPLYTYPE" desc="申领模式"  disabled="true"/>
+				</span></span>	
+			</li>
+			<li class="li col-3">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK"
+	                 value=""
+					 desc="备注" disabled=""/>
+				</span></span>
+			</li>
+	    </ul>
+    </div>
+    </div>
+	
+	</div>
+	<!-- 光猫申领结束 -->
+	
+	<!-- 光猫更改、丢失、退还开始 -->
+	<div class="e_hideX" id="modermInfo">
+	<div class="c_title">
+        <span class="text">FTTH光猫信息</span>
+    </div>
+    <div jwcid="QueryCondPart@Part" id="QueryCondPart">
+    <div class="c_form c_form-col-3 c_form-label-6">
+    	 <ul class="ul">
+			<li class="li col-1">
+			<span class="label"><span>光猫串号：</span></span>
+			<span class="e_elements" style="width:260px;">
+				<button class="e_button-center e_button-form" id="queryBtn" name="queryBtn" onclick="return queryModermInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+				<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@TextField" name="cond_MODERM_ID" id="cond_MODERM_ID" value="ognl:info.MODERM_ID" desc="光猫串号"/>
+				</span></span>
+			</span>
+			</li>
+	    </ul>
+	    
+    </div>
+    </div>
+	<div jwcid="QueryListPart@Part" id="QueryListPart">
+    <div class="c_scroll c_scroll-x c_scroll-table-15">
+		<div class="c_table">
+			<table jwcid="@Table" id="DataTable"
+			   name="DataTable">
+      			<thead>
+		  			<tr>
+		  			    <th width='30px' col="INST_ID"><input type="checkbox" onclick="checkedOther('monitorids');" /></th>
+		  			    <th col="USER_ID">用户标识</th>
+						<th col="MODERM_ID">光猫串号</th>
+						<th col="MODERM_TYPE">光猫型号</th>
+						<th col="MODERM_STATUS">光猫状态</th>
+						<th col="APPLY_TYPE">申领模式</th>
+						<th col="DEPOSIT">押金金额</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+						<th col="NEW_MODERM_ID" hideId="insert" class="e_hideX">新光猫串号</th>
+						<th col="NEW_MODERM_TYPE" hideId="insert" class="e_hideX">新光猫型号</th>
+						<th col="" hideId="insert" class="e_hideX">新光猫录入</th>
+					</tr>
+				</thead>
+				<tbody id = "tbdoyHide">
+					<!-- 循环显示表格列，并设置行间隔颜色 -->
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" >
+						<td class="e_center"><input jwcid="@Checkbox" id="monitorids" name="monitorids" SUBSCRIBE_ID="ognl:info.SUBSCRIBE_ID" IBSYSID="ognl:info.IBSYSID" value="ognl:info.INST_ID" /></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_MODEM_STATUS',info.RSRV_TAG2)"" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_MODEM_STYLE',info.RSRV_TAG1)" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.RSRV_STR2/100" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+						<td class="e_center e_hideX" hideId="insert"><span jwcid="@Insert" value="ognl:info.NEW_MODERM_ID" raw="false"/></td>
+						<td class="e_center e_hideX" hideId="insert"><span jwcid="@Insert" value="ognl:info.NEW_MODERM_TYPE" raw="false"/></td>	
+						<td class="e_center e_hideX" hideId="insert"><button str1 = "ognl:info.RSRV_STR1" str2 = "ognl:info.RSRV_TAG2" class="e_button-center e_button-form" jwcid="@Any"  onclick="checkNewModermId(this);"><i class="e_ico-bottom" /><span>新光猫录入</span></button></td>	
+					</tr>
+				</tbody> 
+			</table>
+		</div>
+		</div>
+	</div>
+	</div>
+	<!-- 光猫更改结束 -->
+</div>
+</div>
+<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart" element="div"/>	
+<!--受理信息结束-->
+</div></div></body>
+</html>

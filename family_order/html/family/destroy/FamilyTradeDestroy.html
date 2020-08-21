@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>家庭业务注销</title>
+<script jwcid="@Script"  src="family/destroy/scripts/FamilyTradeDestroy.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float c_scroll-phone-header" id="PAGE_CONTENT">
+		<div class="l_padding">
+			<div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="457" tradeAction="refreshPartAfterAuth(data)" element="div" authType="00"/>			
+		
+			<div class="c_space"></div>
+			
+			<div jwcid="UCAViewPart@Part">
+		    	<div jwcid="@icsserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			</div>
+			
+			<div class="c_space"></div>	
+			
+			<div class="c_title">
+				<div class="text">产品区</div>	
+			</div>
+			<div class="c_box">				
+				<div class="c_form c_form-col-2 c_form-text">
+					<ul class="ul">
+						<li class="li">
+							<span class="label" style="margin-left: 22px;">产品：</span> 
+							<span class="value" id="FAMILY_PRODUCT_NAME" style="padding-top: 13px;"></span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="c_space"></div>
+			
+			<div class="c_title">
+				<div class="text">成员资料</div>
+			</div>			
+			<div jwcid="memberListPart@Part">
+				<table jwcid="@Table" id="memberTable" name="memberTable" useScroller="true" class="c_table c_table-s c_table-even c_table-th-hover c_table-hover c_table-border c_table-line c_table-row-5">
+					<thead>
+						<tr>
+							<th col="SERIAL_NUMBER_A">家庭号码</th>
+				            <th col="ROLE_CODE_B_NAME">成员角色</th>
+				            <th col="SERIAL_NUMBER_B">成员号码</th>
+				            <th col="START_DATE">开始时间</th>
+				            <th col="END_DATE">结束时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:memberInfos" value="ognl:memberInfo" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:memberInfo.FAMILY_SERIAL_NUM" raw="false"/></td>							
+							<td><span jwcid="@Insert" value="ognl:memberInfo.MEMBER_ROLE_NAME" raw="false"/></td>							
+							<td><span jwcid="@Insert" value="ognl:memberInfo.MEMBER_SERIAL_NUM" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:memberInfo.START_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:memberInfo.END_DATE" raw="false"/></td>							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="c_space"></div>		
+			
+			<div class="c_title">
+				<div class="text">家庭注销变更手机产品</div>
+			</div>
+			<div class="c_box" jwcid="UNFamily@Part">	
+				 <div class="l_col l_col-middle l_col-space-1 c_list-border" jwcid="familyPackagePart@Part">
+				  	<div class="l_colItem" style="width:1%;"> <!-- 第一列 -->
+				  		<!--插入组件 -->				  	
+				  	</div>
+					<div class="l_colItem link required" style="width:13%;"> <!-- 第二列 -->
+						<!-- 插入组件 -->
+						<span class="text" style="text-align: center;">注销恢复产品：</span>							
+					</div>
+					<div class="l_colItem" style="width:15%;"> <!-- 第三列 -->
+						<!-- 插入组件 -->
+						<span   jwcid="@Select" 
+								name="GRP_PRODUCT_ID" 
+								source="ognl:pageutil.getStaticList('FAMILYDROP_PRODUCT')"
+                         		value="ognl:info.cond_GRP_PRODUCT_ID"  
+                         		textField="DATA_NAME" 
+                         		valueField="DATA_ID" 
+                         		titleField="DATA_NAME"
+                           		desc="销户恢复产品"  
+                           		onChange="">
+                        </span>
+					</div>
+					<div class="l_colItem" style="width:80%;"> <!-- 第四列 -->
+				  		<!--插入组件 -->				  				  	
+				  	</div>
+				  	
+				  	<input type="text" jwcid="@TextField"  name="RECOVEPRODUCTSTR" value="" style="display:none" desc="恢复产品串"/>		
+				  	<input type="text" jwcid="@TextField"  name="MODIFY_PRODUCT_FLAG" value="" style="display:none" desc="产品变更类型"/>						  	
+				</div>
+			</div>
+				
+			<div class="c_space"></div>
+			
+			<div class="c_title">
+				<div class="text">其他信息</div>
+			</div>
+			<div jwcid="remarkPart@Part" class="l_padding">
+				<div class="c_list c_list-border c_list-line c_list-phone-col-3">
+					<ul>
+						<li>
+							<div class="label">备注</div>
+							<div class="value">
+								<input jwcid="@TextField" name="REMARK" id="REMARK" value="ognl:info.REMARK" desc="备注" />
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="c_space"></div>	
+			<div class="c_space"></div>
+			<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit"  beforeAction = "submitBeforeCheck()" isReset="true" element="div" area = ""/>
+			<div class="c_space"></div>
+		</div>
+	</div>
+	
+	<!-- 隐藏域 start -->
+	<div jwcid="PageHiddenPart@Part" style="display:none;">
+		<input jwcid="@Hidden" name="FAMILY_SN" id="FAMILY_SN" value=""/>
+		<input jwcid="@Hidden" name="EPARCHY_CODE" id="EPARCHY_CODE" value=""/>
+	</div>
+	<!-- 隐藏域 end -->
+</body>
+</html>

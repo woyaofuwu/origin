@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryTwoCardFeeInfo.html,v 1.3 2013/04/17 01:57:11 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户资料模糊查询</title>
+<script language="JavaScript" src="person/sundryquery/userinfo/scripts/querysnbyusrpid.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	
+	<div jwcid="scoreTab@Tabset" switchAction="myTabSwitchAction(ptitle,title)" tabStyle="c_tab c_tab-2">
+	<div jwcid="thServerInfoPage@TabsetContent" title="用户资料模糊查询">
+	<div  jwcid="refreshArea@Part">
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户资料模糊查询</div>
+	
+		<div class="fn">
+			 <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="1020"  beforeAction="" 
+								  action="" config="export/sundryquery/userinfos/QuerySnByUsrpidList.xml" fileName="custInfo" cond="QuerySnByUsrpidPart"/>
+			<!--<button type="button"><i class="e_ico-export"></i><span>导出</span></button>
+			<button type="button" class="l_ml"><i class="e_ico-print"></i><span>打印</span></button>-->
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QuerySnByUsrpidPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_QUERY_MODE" id="cond_QUERY_MODE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('USER_QUERY_MODE')" value="ognl:cond.cond_QUERY_MODE" desc="查询方式" onchange="userquerymodechg();" />
+				</span></span></span>
+			</li>
+			<li class="li"  style="display:none" id="sn">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:cond.cond_SERIAL_NUMBER" desc="手机号码" maxsize="11"  nullable="no" datatype="mbphone" />
+				</span></span>
+			</li>
+			<li class="li" style="display:none" id="custname">
+				<span class="label"><span class="e_required">客户名称：</span></span>
+				<span class="e_input" ><span>
+					<input type="text" jwcid="@TextField" id="cond_CUST_NAME" name="cond_CUST_NAME"
+								value="ognl:cond.cond_CUST_NAME"  nullable="no" desc="客户名称"/>
+				</span></span>
+			</li>
+			<li class="li"  style="display:none" id="pspttypecode">
+				<span class="label"><span class="e_required">证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_PSPT_TYPE_CODE" id="cond_PSPT_TYPE_CODE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')" value="ognl:cond.cond_PSPT_TYPE_CODE" desc="证件类型"/>
+				</span></span></span>
+			</li>
+			<li class="li"  style="display:none" id="psptid">
+				<span class="label"><span class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_PSPT_ID" id="cond_PSPT_ID" value="ognl:cond.cond_PSPT_ID" desc="证件号码" />
+				</span></span>
+			</li>
+			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return querySnByUsrpid();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_MOD" id="QUERY_MOD" class="e_button-form" onclick="return querySnByUsrpidMod();"><i class="e_ico-search"></i><span>免模糊化查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th onclick="Wade.dom.sortTable('sortedTable',1,'string')">移动手机号码</th>
+					<th>实时结余</th>
+					<th>客户名称</th>
+					<th>籍贯</th>
+					<th>性别</th>
+					<th onclick="Wade.dom.sortTable('sortedTable',5,'string')">联系电话</th>
+					<th>家庭住址</th>
+					<th>工作单位</th>
+					<th>通信地址</th>
+					<th>邮编</th>
+					<th>联系人</th>
+					<th>联系人电话</th>
+					<th>证件类型</th>
+					<th>证件号码</th>
+					<th>证件地址</th>
+					<th>品牌</th>
+					<th>销户标志</th>
+					<th>归属地市</th>
+					<th>归属业务区</th>
+					<th>建档渠道</th>
+					<th>建档员工</th>
+					
+					<th>开户时间</th>
+					<th>开户员工</th>
+					<th>开户部门</th>
+					<th>销户时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_NUM3" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_LOCAL_NATIVE', info.LOCAL_NATIVE_CODE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SEX', info.SEX)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PHONE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.HOME_ADDRESS" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.WORK_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.POST_ADDRESS" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.POST_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CONTACT" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CONTACT_PHONE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', info.PSPT_TYPE_CODE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PSPT_ADDR" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.BRAND" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('REMOVE_TAG', info.REMOVE_TAG)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="false" /></td>
+
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.IN_STAFF_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.IN_DEPART_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.OPEN_STAFF_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.OPEN_DEPART_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DESTROY_TIME" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QuerySnByUsrpidPart1" part="QueryListPart" listener="querySnByUsrpid" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+	</div></div>
+	
+	<!-- 宽带业务 -->
+	<div jwcid="thCustomerContactInfoPage@TabsetContent" title="宽带业务">
+	<div  jwcid="refreshArea2@Part">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">宽带业务查询</div>
+			<div class="fn">
+			 <!-- <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="1020"  beforeAction="" 
+								  action="" config="export/sundryquery/userinfos/QuerySnByUsrpidList.xml" fileName="broadInfo" broad="BroadQuerySnByUsrpidPart"/>-->
+			<!--<button type="button"><i class="e_ico-export"></i><span>导出</span></button>
+			<button type="button" class="l_ml"><i class="e_ico-print"></i><span>打印</span></button>-->
+		</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form" jwcid="BroadQuerySnByUsrpidPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+				<select  desc="查询方式" onchange="broadquerymodechg();" id="broad_QUERY_MODE" name="broad_QUERY_MODE">
+					<option value="">请选择</option>
+					<option value="1">按证件查询</option>
+					<option value="2">按客户名称+证件查询</option>
+				</select>
+				</span></span></span>
+			</li>
+			<li class="li" style="display:none" id="broadcustname">
+				<span class="label"><span class="e_required">客户名称：</span></span>
+				<span class="e_input" ><span>
+					<input type="text" jwcid="@TextField" id="broad_CUST_NAME" name="broad_CUST_NAME"
+								value="ognl:broad.broad_CUST_NAME"  nullable="no" desc="客户名称"/>
+				</span></span>
+			</li>
+			<li class="li"  style="display:none" id="broadpspttypecode">
+				<span class="label"><span class="e_required">证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="broad_PSPT_TYPE_CODE" id="broad_PSPT_TYPE_CODE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')" value="ognl:broad.broad_PSPT_TYPE_CODE" desc="证件类型"/>
+				</span></span></span>
+			</li>
+			<li class="li"  style="display:none" id="broadpsptid">
+				<span class="label"><span class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="broad_PSPT_ID" id="broad_PSPT_ID" value="ognl:broad.broad_PSPT_ID" desc="证件号码" />
+				</span></span>
+			</li>
+			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="broad_QUERY_BTN" id="broad_QUERY_BTN" class="e_button-form" onclick="return broadQuerySnByUsrpid();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		</div>
+		<!-- 表单 结束 -->
+		
+		<div jwcid="BroadQueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>宽带账号</th>
+						<th>宽带账号状态</th>
+						<th>宽带装机地址</th>
+						<th>用户身份证号码</th>
+						<th>用户姓名</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STATE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DETAIL_ADDRESS" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+					</tr>
+					<tr id="broadcon">
+						<td colspan="5" style="text-align:center" ><span>未查询到相关记录！</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<!-- 翻页（替换为页面组件） 开始 
+		<div jwcid="@NavBar" name="broadnavt" id="broadnavt" broad="BroadQuerySnByUsrpidPart1" part="BroadQueryListPart" listener="broadQuerySnByUsrpid" pageSize="10" count="ognl:broadcount"></div>		
+		 翻页 结束 -->
+	</div>
+		
+		
+		<!-- 
+		<div jwcid="@NavBar"  name="pagin2" id="pagin2" listener="qryTHCustomerContactInfo" pageSize="10" cond="QueryCondPart" part="refreshArea2" count="ognl:paginCount2"/>
+		 -->
+	</div>
+	</div>
+	
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script jwcid="@Script" src="/treasury/scripts/treasury.js" outer="true" type="text/javascript"></script>
+</body>
+</html>

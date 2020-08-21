@@ -1,0 +1,162 @@
+<!-- 标题 开始 -->
+<div class="c_title">
+	<div class="text">成员列表</div>
+	<div class="fn e_hide-phone" name="importMebButton" id="importMebButton">
+		<ul>
+			<li>
+				<span name="ADD_MEB_TYPE" jwcid="@Segment" source="ognl:addMemberTypeList" 
+					textField="TEXT" valueField="VALUE" value="1" onchange="showAddMemberByType();"/>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- 标题 结束 -->
+<div jwcid="SINGLE_ADD@Part" class="c_list c_list-col-3 c_list-line c_list-border c_list-phone-col-1" id="SINGLE_ADD" element="div">
+	<ul>
+		<li class="link required" jwcid="@Conditional" condition="ognl:ecOfferCode == 8001 || ecOfferCode == 2222 || ecOfferCode == 8000"  element="li">
+			<div class="label">短号码</div>
+			<div class="value">
+				<input jwcid="@TextField" name="SHORT_CODE" value="" desc="短号码" nullable="no"/>
+			</div>
+		</li>
+		<li class="link required" jwcid="@Conditional" condition="ognl:ecOfferCode != 380700 && ecOfferCode != 380300" element="li"> 
+			<div class="label">成员号码</div>
+			<div class="value">
+			<span class="e_mix">
+				<input jwcid="@TextField" name="SERIAL_NUMBER" value="" desc="成员号码" nullable="no" datatype="mbphone"/>
+				<button class="e_button-blue" ontap="addMemberSingle();"><span class="e_ico-add"></span><span>新增</span></button>
+			</span>
+			</div>
+		</li>
+		<!-- 云WiFi成员  S -->
+		<li class="link required" jwcid="@Conditional" condition="ognl:ecOfferCode == 380300" element="li">
+			<div class="label">网关MAC号</div>
+			<div class="value">
+				<input jwcid="@TextField" name="MAC_NUMBER" value="" desc="网关MAC号" nullable="no"/>
+			</div>
+		</li>
+		<li class="link" jwcid="@Conditional" condition="ognl:ecOfferCode == 380300" element="li"> 
+			<div class="label">成员号码</div>
+			<div class="value">
+			<span class="e_mix">
+				<input jwcid="@TextField" name="SERIAL_NUMBER" value="" desc="成员号码" datatype="mbphone"/>
+				<button class="e_button-blue" ontap="addMemberSingle();"><span class="e_ico-add"></span><span>新增</span></button>
+			</span>
+			</div>
+		</li>
+		<!-- 云WiFi成员  E -->
+		<!-- 和商务TV  S -->
+		<li class="link required" jwcid="@Conditional" condition="ognl:ecOfferCode == 380700"  element="li">
+			<div class="label">机顶盒侧MAC号</div>
+			<div class="value">
+				<input jwcid="@TextField" name="DEV_MAC_NUMBER" value="" desc="机顶盒侧MAC号" nullable="no"/>
+			</div>
+		</li>
+		<li class="link required" jwcid="@Conditional" condition="ognl:ecOfferCode == 380700"  element="li">
+			<div class="label">机顶盒侧SN号</div>
+			<div class="value">
+			<span class="e_mix">
+				<input jwcid="@TextField" name="DEV_SN_NUMBER" value="" desc="机顶盒侧SN号" nullable="no"/>
+				<button class="e_button-blue" ontap="addTVMemberSingle();"><span class="e_ico-add"></span><span>新增</span></button>
+			</span>
+			</div>
+		</li>
+		<!-- 和商务TV  E -->
+	</ul>
+</div>
+<div class="c_list c_list-col-4 c_list-line c_list-border c_list-phone-col-1" id="BATCH_ADD_1" style="display:none">
+	<ul>
+		<li class="required merge-2">
+			<div class="label">导入文件</div>
+			<div class="value">
+				<span class="e_mix">
+					<span jwcid="@SimpleUpload"
+						name="MEBLIST_FILE"
+						ftpCode="order"
+						fileTypes=".xls" 
+						fileSize="5"/>
+					<button class="e_button-blue" ontap="addMemberBatch();"><span class="e_ico-import"></span><span>导入</span></button>
+				</span>
+			</div>
+		</li>
+		<li id="BATCH_ADD_2">
+			<div class="label">下载模板</div>
+			<div class="value"><a jwcid="@Any" id="MEBLIST_downUrl" href="ognl:'attach?action=downloadweb&filePath='+filePath">[点击下载]&nbsp;&nbsp;</a></div>
+		</li>
+		<li id="MEBLIST_failFileLi" style="display:none;">
+			<div class="label e_red">下载失败文件</div>
+			<div class="value"><a id="MEBLIST_failFile" href="">[点击下载]&nbsp;&nbsp;</a></div>
+		</li>
+	</ul>
+</div>
+<div class="c_space"></div>
+<div class="c_list c_list-col-4 c_list-line c_list-border c_list-phone-col-1 c_list-fixWrapSpace">
+	<ul id="MEB_LIST_UL">
+	<input jwcid="@Hidden" name="ESP_BPM_TEMPLET_ID" value="ognl:bpmData.BPM_TEMPLET_ID" desc="ESOP产品编码"/>
+	<input jwcid="@Hidden" name="ESP_SERIAL_NUMBER" value="ognl:bpmData.SERIAL_NUMBER" desc="ESOP服务号码"/>
+	<input jwcid="@Hidden" name="ESP_EC_USER_ID" value="ognl:bpmData.EC_USER_ID" desc="ESOP用户标识"/>
+		<div jwcid="@Conditional" condition="ognl:ecOfferCode == 8001 || ecOfferCode == 2222 || ecOfferCode == 8000" >
+			<li jwcid="@Foreach" source="ognl:mebList" value="ognl:meb" id="ognl:'MEB_LIST_'+meb.SERIAL_NUMBER" element="li">
+				<div class='e_ico-pic e_ico-user'></div>
+				<div class='main'>
+					<div class='title'>
+						<span jwcid="@Insert" value="ognl:meb.SERIAL_NUMBER"/>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:meb.SHORT_CODE!=null" class='content' element="div">
+						<span jwcid="@Insert" value="ognl:meb.SHORT_CODE"/>
+					</div>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:'DelMeb'.equals(operType)" class='fn' element="div" ontap='deleteMemberSn(this);'>
+					<span class='e_ico-delete'></span>
+				</div>
+	        </li>
+        </div>
+        <div jwcid="@Conditional" condition="ognl:ecOfferCode == 380300" >
+        	<li jwcid="@Foreach" source="ognl:mebList" value="ognl:meb" id="ognl:'MEB_LIST_'+meb.MAC_NUMBER" element="li">
+				<div class='e_ico-pic e_ico-user'></div>
+				<div class='main'>
+					<div class='title'>
+						<span jwcid="@Insert" value="ognl:meb.MAC_NUMBER"/>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:meb.SERIAL_NUMBER !=null" class='content' element="div">
+						<span jwcid="@Insert" value="ognl:meb.SERIAL_NUMBER"/>
+					</div>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:'DelMeb'.equals(operType)" class='fn' element="div" ontap='deleteWifiMemberSn(this);'>
+					<span class='e_ico-delete'></span>
+				</div>
+	        </li>
+        </div>
+        <div jwcid="@Conditional" condition="ognl:ecOfferCode == 380700" >
+        	<li jwcid="@Foreach" source="ognl:mebList" value="ognl:meb" id="ognl:'MEB_LIST_'+meb.DEV_MAC_NUMBER" element="li">
+				<div class='e_ico-pic e_ico-user'></div>
+				<div class='main'>
+					<div class='title'>
+						<span jwcid="@Insert" value="ognl:meb.DEV_MAC_NUMBER"/>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:meb.DEV_SN_NUMBER !=null" class='content' element="div">
+						<span jwcid="@Insert" value="ognl:meb.DEV_SN_NUMBER"/>
+					</div>
+				</div>
+				<div jwcid="@Conditional" condition="ognl:'DelMeb'.equals(operType)" class='fn' element="div" ontap='deleteTVMemberSn(this);'>
+					<span class='e_ico-delete'></span>
+				</div>
+	        </li>
+        </div>
+	</ul>
+	<!-- <div id="MEB_LIST" style="display:none"></div> -->
+</div>
+<div jwcid="MEBLIST_PART@Part" id="MEBLIST_PART" style="display:none"></div>
+
+<input jwcid="@Hidden" name="IMPORT_XML_PATH" value="ognl:importXmlPath" />
+<input jwcid="@Hidden" name="EXPORT_XML_PATH" value="ognl:exportXmlPath" />
+<input jwcid="@Hidden" name="CHECK_SVC_NAME" value="ognl:chkSvcName" />
+<input jwcid="@Hidden" name="EC_OFFER_CODE" value="ognl:ecOfferCode" desc="如果是bboss业务，记录的是集团产品OFFER_CODE"/>
+<input jwcid="@Hidden" name="EC_USER_ID" value="ognl:ecUserId" desc="如果是变更业务，集团已生成 用户信息"/>
+<input jwcid="@Hidden" name="MEMBER_FILE_INFO_TMP" value="" FILE_NAME="" FILE_ID="" />
+<input jwcid="@Hidden" name="M_CHILDOFFER_OPER_TYPE" value="ognl:operType" desc="子商品操作类型"/>
+<div id="MEMBER_FILE_INFO" style="display:none"></div>
+<div id="SUCCESS_MEMBER_LIST" style="display:none"><span jwcid="@Insert" value="ognl:mebList"/></div>
+<div id="SUCCESS_MEMBERDEL_LIST" style="display:none"><span jwcid="@Insert" value="ognl:mebDelList" desc="已删除成员信息"/></div>
+<div id="SUCCESS_DELMBR_LIST" style="display:none"><span jwcid="@Insert" value=""/></div>
+

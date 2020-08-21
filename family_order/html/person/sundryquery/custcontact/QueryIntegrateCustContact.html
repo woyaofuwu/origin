@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户接触综合查询</title>
+<script jwcid="@Script"  src="person/sundryquery/custcontact/scripts/queryintegratecustcontact.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2" jwcid="QueryIntegrateCustContactALLPart@Part">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户接触信息记录查询</div>
+		<div class="tip"><span class="e_tip">点击客户接触标识，链接可看相应订单/服务信息</span></div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="QueryIntegrateCustContactCondPart@Part">
+		<!-- 隐藏值域开始 -->
+		<input jwcid="@Any" id="isReadOnly" name="isReadOnly" type="hidden"  value="ognl:cond.isReadOnly" />
+		
+		<textarea jwcid="@TextArea"   id="pvstr"   name="pvstr"    value="ognl:cond.pvstr" style ="display :none"  />
+		<!-- 隐藏值域结束 -->
+		<ul class="ul">
+			<li class="li">
+			    <span class="label"><span class="e_required">查询方式：</span></span>
+				   <span class="e_select"><span><span>
+					<select jwcid="@Select" 
+					name="CUSTCONTACT_QUERY_TYPE" id="CUSTCONTACT_QUERY_TYPE"
+					source="ognl:pageutil.getStaticList('CUSTCONTACT_QUERY_TYPE')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					value="ognl:cond.CUSTCONTACT_QUERY_TYPE"
+					addDefault="false"
+					desc="查询方式" nullable="no"  
+					onchange="custcontquerymodchg()";/>
+				</span></span></span>
+			</li>
+			<li class="li" id="sn">
+			   <span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+				desc="服务号码" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li" id="userstate">
+			    <span class="label">用户状态：</span>
+				   <span class="e_select"><span><span>
+					<select jwcid="@Select" 
+					name="REMOVE_TAG" id="REMOVE_TAG"
+					source="ognl:pageutil.getStaticList('USER_TYPE')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" v
+					alue="ognl:cond.REMOVE_TAG"
+					desc="用户状态" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li" id="custid" style = "display:none" >
+			       <div class="label" ><span  class="e_required" >客户接触标识：</span></div>
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='CUST_CONTACT_ID' name='CUST_CONTACT_ID' value="ognl:cond.CUST_CONTACT_ID" nullable="no" desc="客户接触标识" /></span></span>
+			</li>
+			<li class="li" id="timehorizon">
+			   <span class="label"><span class="e_required">查询范围：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="CUSTCONTACT_TIME_HORIZON" id="CUSTCONTACT_TIME_HORIZON"
+							source="ognl:pageutil.getStaticList('CUSTCONTACT_TIME_HORIZON')"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:cond.CUSTCONTACT_TIME_HORIZON"
+							addDefault="false"
+							desc="查询范围" nullable="no"  onchange="custcontquerytimechg();"/>
+				</span></span></span>
+			</li>
+			<li class="li" id="sdate">			
+			    <span class="label"><span class="e_required">起始时间：</span></span>  
+				   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField"name="START_DATE" id ="START_DATE" value="ognl:cond.START_DATE"   desc="起始日期"/>
+				   </span></span>
+			</li>
+			<li class="li" id="edate">			
+				 <span class="label"><span class="e_required">结束时间：</span></span>  
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField"name="END_DATE" id ="END_DATE" value="ognl:cond.END_DATE"   desc="起始日期"/>
+				 </span></span>
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+		 <button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryIntegrateCustContact();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryIntegrateCustContactListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table  jwcid="@Table" id="DeptTable"  name="DeptTable" rowClick="custContactTableClick" >
+      			<thead>
+		  			<tr>
+		  				<th col="col_X_TAG" style="display:none">TAG</th>
+		  				<th col="col_CUST_CONTACT_ID" style="display:none">CUST_CONTACT_ID</th>
+		  				<th col="col_ACCEPT_MONTH">受理月份</th>
+						<th col="col_CUST_CONTACT_ID_ALIAS">客户接触标识</th>
+						<th>客户编码</th>
+						<th>客户名称</th>
+						<th>服务号码</th>
+						<th>产品</th>
+						<th>接触类型</th>
+						<th>接触渠道类型</th>
+						<th>接触媒体类型</th>
+						<th>员工</th>
+						<th>部门</th>
+						<th>接触开始时间</th>
+						<th>接触完工时间</th>
+						<th>接触状态</th>
+						<th>受理地市</th>
+						<th>受理业务区</th>
+						<th col="col_REMARK">注释</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td style="display:none"></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.CUST_CONTACT_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="true"/></td>
+						<td><a jwcid="@Redirect" href="javascript:void(0);" value="ognl:info.CUST_CONTACT_ID" 
+						       caption="客户接触" ccid="ognl:info.CUST_CONTACT_ID"  in_mode_code="ognl:info.IN_MODE_CODE"  
+						       onclick="redirectTheUrl(this);"/></td>											
+						<td><span jwcid="@Insert" value="ognl:info.CUST_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CONTACT_MODE','CONTACT_MODE','CONTACT_NAME',info.CONTACT_MODE)" raw="true"/></td>			
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_INMODE',info.IN_MODE_CODE)"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_MEDIATYPE','MEDIA_TYPE_CODE','MEDIA_TYPE',info.IN_MEDIA_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.SUB_CHANNEL_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.CHANNEL_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FINISH_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CONTACT_STATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+	</div></div>
+	<div jwcid="@NavBar" name="page" id="page" cond="QueryIntegrateCustContactCondPart"  part="QueryIntegrateCustContactListPart" listener="queryIntegrateCustContact" pageSize="10" count="ognl:custContactCount"></div>	
+	</div>
+	<!-- 表格 结束 -->
+	
+	<div jwcid="ModifyIntegrateCustContactPart@Part">
+		<div class="c_title"><div class="text">信息修改</div></div>
+		<div class="c_form c_form-col-2 c_form-label-6">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">接触明细标识：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='CUST_CONTACT_ID2' name='CUST_CONTACT_ID2' value="ognl:cond.CUST_CONTACT_ID" nullable="no" desc="客户接触标识" /></span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label">接触备注：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='REMARK' name='REMARK' value="ognl:cond.CUST_CONTACT_ID" nullable="no" desc="客户接触标识" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li col-2">
+					<span class="label">修改描述原因：</span>
+					<span class="e_textarea">
+						<span class="e_textareaTop"><span></span></span>
+						<span class="e_textareaContent">
+							<textarea jwcid="@TextArea" name="MODIFY_DESC" id="MODIFY_DESC" value="ognl:detailInfo.MODIFY_DESC" desc="修改原因描述" style="height:72px;"></textarea>
+						</span>
+						<span class="e_textareaBottom"><span></span></span>
+					</span>
+				</li>
+			</ul>
+			<input type="text" jwcid="@TextField" name="ACCEPT_MONTH" id="ACCEPT_MONTH" value="ognl:detailInfo.ACCEPT_MONTH" style="display:none" />
+			<input type="text" jwcid="@TextField" name="LAST_COND" id="LAST_COND" value="ognl:lastcond" style="display:none"/>
+		</div>
+	</div>		
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="modifycustcontact()"><i></i><span>修改</span></button>
+	</div>
+	
+</div>
+
+</div></div></body>
+</html>

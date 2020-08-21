@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>携转号码审计查询</title>
+<script jwcid="@Script" language="JavaScript"
+	src="person/sundryquery/telaudit/scripts/npAuditList.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+
+
+			<!-- 区域 开始 -->
+			<div class="c_box">
+
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">携转号码审计查询</div>
+
+				</div>
+				<!-- 标题 结束 -->
+
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-8"
+					jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"><span class="label"><span class="">NP业务类型：</span></span>
+							<span class="e_select"> <span><span> <select
+										jwcid="@Select" name="SERVICE_TYPE" id="SERVICE_TYPE"
+										source="ognl:pageutil.getStaticList('NP_SERVICETYPE')"
+										textField="DATA_NAME" valueField="DATA_ID" title="TEXT"
+										value="ognl:condition.SERVICE_TYPE" desc="NP业务类型" />
+								</span> </span></span></li>
+
+
+
+						<li class="li"><span class="label"><span class="">数据审计状态：</span></span>
+							<span class="e_select"> <span><span> <select
+										jwcid="@Select" name="STATE" id="STATE"
+										source="ognl:pageutil.getStaticList('NP_AUDIT_STATE')"
+										textField="DATA_NAME" valueField="DATA_ID" title="TEXT"
+										value="ognl:condition.STATE" desc="数据审计状态" />
+								</span> </span></span></li>
+
+						<li class="li"><span class="label ">数据生成时间：</span> <span
+							class="e_elements">
+								<!-- 替换为页面组件 --> <span class="e_input"><span> <input
+										jwcid="@DateField" name="CREATE_TIME" id="CREATE_TIME"
+										value="ognl:condition.CREATE_TIME" desc="举报开始时间"
+										format="yyyy-MM-dd" />
+								</span></span>
+						</span></li>
+						<li class="li"><span class="label"><span class="">NP号码：</span></span>
+							<span class="e_input"> <span> <input
+									jwcid="@TextField" value="ognl:condition.NPCODE_LIST"
+									name="NPCODE_LIST" id="NPCODE_LIST" desc="手机号码" />
+							</span></span></li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+
+					<div class="c_title c_title-2">
+						<div class="text">信息列表</div>
+						<div class="fn">
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">上传前请查看模板格式：</span></span> <span class="">
+									<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS"
+									name="A_TEMPLATE_DATA_XLS"
+									href="ognl:encodeUrl('attach?action=downloadweb&filePath='+'template/person/telaudit/npaudit.xls')">
+										<span jwcid="@Insert" value="[点击下载]"></span>
+								</a>
+							</span>
+					<span class="label"><span class="e_required">导入文件：</span></span>
+					<span class="">
+					<span jwcid="@Import"
+								name="FILE_ID" ftpSite="personserv" fileSize="10"
+								fileTypes="excel" serviceName="20140609"
+								config="import/npaudit/NpAuditImport.xml" desc="导入文件"
+								nullable="no" cond="" params=""
+								afterAction="" />
+					</span>
+				</li>
+				</ul>
+							
+						</div>
+					</div>
+
+					<div class="c_scroll c_scroll-x style='height:242px'">
+						<div class="c_table c_table-row-10">
+							<table jwcid="@Table" name="InfoTable">
+								<thead>
+									<tr>
+										<th></th>
+										<th>NP号码列表</th>
+										<th>NP业务类型</th>
+										<th>数据审计状态</th>
+										<th>数据生成时间</th>
+									</tr>
+								</thead>
+								<tbody jwcid="@Any" name="usernpva" id="usernpva">
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+										index="ognl:rowIndex" element="tr">
+
+										<td><input type="checkbox" id="telephones"
+											name="telephones" jwcid="@Any" value="ognl:info.NPSYSID" /></td>
+										<td><a jwcid="@Redirect" parameters="ognl:info"
+											value="ognl:info.NPCODE_LIST"
+											onclick="showChildPage('telaudit.NpAuditInfo', 'getInfo', $(this).attr('parameters'))" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:pageutil.getStaticValue('NP_SERVICETYPE',info.SERVICE_TYPE)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:pageutil.getStaticValue('NP_AUDIT_STATE',info.STATE)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert" value="ognl: info.CREATE_TIME"
+											raw="true" /></td>
+										<input type="hidden" value="ognl:info.NPSYSID" encode="false" />
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 表格 结束 -->
+					<!-- 翻页（替换为页面组件） 开始 -->
+
+					<div jwcid="@NavBar" name="infofonav" id="infofonav"
+						cond="QueryCondPart" part="QueryListPart" listener="getInfos"
+						pageSize="20" count="ognl:infosCount"></div>
+
+					<!-- 翻页 结束 -->
+				</div>
+				<!-- 区域 结束 -->
+
+
+
+			</div>
+		</div>
+</body>
+</html>

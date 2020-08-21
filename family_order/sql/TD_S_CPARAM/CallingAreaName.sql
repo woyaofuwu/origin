@@ -1,0 +1,3 @@
+SELECT 'CallingAreaName' KEY,CALLING_AREA_CODE VALUE1,'-1' VALUE2,CALLING_AREA_NAME VRESULT
+      FROM td_s_calling_area
+WHERE SYSDATE BETWEEN start_date AND end_date AND 'CallingAreaName'=:KEY

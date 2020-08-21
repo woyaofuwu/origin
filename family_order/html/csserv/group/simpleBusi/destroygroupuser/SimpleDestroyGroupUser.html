@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>集团产品退订</title>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/simpleBusi/destroygroupuser/SimpleDestroyGroupUser.js"></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+	</head>
+	<body jwcid="@Body">
+	
+	<div class="m_wrapper"><div class="m_wrapper2">
+	<div id="destroyUserPart">	 
+		
+		<!-- 区域 开始 -->
+		<div class="c_box">
+		
+		  	<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">集团号码查询</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-3">
+				<ul class="ul">
+					<li class="li">
+						<span jwcid="@saleserv:SelectGroupBySNPopup" condition="ognl:condition" afterErrorAction="selectGroupBySnErrorAfterAction();" afterAction="selectGroupBySnAfterAction(data);" limitType="ognl:condition.PRODUCTTREE_LIMIT_TYPE" limitProducts="ognl:condition.PRODUCTTREE_LIMIT_PRODUCTS"/>
+					</li>
+				</ul>
+			</div>
+			<!--  表单结束 -->
+			
+			<!-- 集团客户信息  -->
+			<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo" titleLev="2"/>
+			<span jwcid="@saleserv:GroupUserInfo" groupUserInfo="ognl:userInfo" titleLev="2"/>
+			<span jwcid="@saleserv:GroupAccountInfo" titleLev="2"/>
+			<div style="display:none">
+				<span jwcid="@saleserv:ProductExplain" productInfo="ognl:productInfo"/>
+			</div>
+			
+			
+	        <span jwcid="@saleserv:GroupBookingInfo" busiType="DstUs"/>
+		</div>
+		<!-- 区域 结束 -->
+		
+		<div jwcid="PRODUCTELEMNET_VIEW@saleserv:ProductElementView" initHead="true" model="ognl:useElementinfos" headText="用户元素信息"  showHeads="产品名,包名,类型,编码,名称" showFields="PRODUCT_NAME,PACKAGE_NAME,ELEMENT_TYPE_NAME,ELEMENT_ID,ELEMENT_NAME"/>
+		<div class="c_box">
+			
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-2 c_form-label-5">
+				<ul class="ul">
+					<li class="li">
+						<span class="label"><span class="e_required">注销原因：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" 	
+								name="param_REMOVE_REASON" id="param_REMOVE_REASON"	
+								source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_B_REMOVE_REASON_GROUP')" 
+								value="ognl:info.REMOVE_REASON"
+								nullable="no"
+								textField="DATA_NAME"
+		                        valueField="DATA_ID"
+								desc="销户原因" />
+						</span></span></span>
+					</li>
+					
+					<li class="li col-2">
+						<span class="label"><span class="e_required">备注：</span></span>
+						<span class="e_textarea">
+							<span class="e_textareaTop"><span></span></span>
+							<span class="e_textareaContent">
+							<textarea
+								jwcid="@TextArea" 
+								name="param_REMARK" 
+								id="param_REMARK"
+								type="text"
+								value="ognl:info.pamRemark"
+								nullable="no"
+								desc="备注"
+								raw="true" style="height:36px;"></textarea>
+							</span>
+							<span class="e_textareaBottom"><span></span></span>
+						</span>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+		
+		</div>
+		
+		
+		<input type="hidden" name="BUSI_TYPE" id="BUSI_TYPE" value="DstUs"/>
+	
+    	<div jwcid="SubmitPart@saleserv:CSSubmit" area="destroyUserPart" callBean="com.asiainfo.veris.crm.order.web.frame.csview.group.destroygroupuser.GrpUseDestroyFlowMainHttpHandler" listener="submit" isGrp="true" beforeAction="onSubmitBaseTradeCheck()"  disabledBtn="false" element="div"/>
+	
+	</div>
+		<!-- 产品详情 结束 -->
+	</div></div>
+
+	
+	</body>
+	<script language="javascript" defer="defer">
+		$(document).ready(function(){
+			if($('#cond_GROUP_SERIAL_NUMBER').val() != '')
+				getGrpInfoBySn();
+		});
+	</script>
+</html>

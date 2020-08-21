@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<title>大客户担保开机</title>
+<script jwcid="@Script" src="person/changesvcstate/scripts/changesvcstate.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="492" tradeAction="refreshVipAssurePartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-2" jwcid="busiInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">大客户号码：</span></span>
+				<span class="e_elements">
+					<button class="e_button-right" onclick="checkVipAssureInfo()"><span>查询</span></button>
+					<span class="e_input e_input-left"><span>
+						<input  jwcid="@TextField" name="GUATANTEE_SERIAL_NUMBER" id="GUATANTEE_SERIAL_NUMBER" 
+								 onchange="checkVipAssureInfo()" nullable="no" 
+								 value="ognl:busiInfo.GUATANTEE_SERIAL_NUMBER" desc="担保客户服务号码" disabled="false"/>
+					</span></span>
+				<input jwcid="@Any" type="hidden" name="GUATANTEE_USER_ID" id="GUATANTEE_USER_ID"  value= "ognl:busiInfo.GUATANTEE_USER_ID" />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">担保时间(小时)：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="OPEN_HOURS"
+							id="OPEN_HOURS" source="ognl:assuerTimesList"
+							textField="PARA_CODE1"
+							valueField="PARA_CODE1"
+							value=""
+							addDefault="false" desc="担保时间"></select>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">大客户名称：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="VIP_CUST_NAME" id="VIP_CUST_NAME" nullable="no" 
+						value= "ognl:busiInfo.VIP_CUST_NAME" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">大客户类型：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="VIP_CLASS_NAME" id="VIP_CLASS_NAME" nullable="no" 
+						value= "ognl:busiInfo.VIP_CLASS_NAME" disabled="true"/>
+				</span></span>
+				<input jwcid="@Any" type="hidden" name="VIP_CLASS_ID" id="VIP_CLASS_ID"  value= "ognl:busiInfo.VIP_CLASS_ID" />
+			</li>
+			<li class="li">
+				<span class="label">大客户归属地：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="CITY_CODE" id="CITY_CODE" nullable="no" 
+						value= "ognl:pageutil.getStaticValue('COP_AREA_CODE', busiInfo.CITY_CODE)" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">客户经理姓名：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="MANAGER_NAME" id="MANAGER_NAME" nullable="no" 
+						value= "ognl:busiInfo.MANAGER_NAME" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">客户经理电话：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="MANAGER_PHONE" id="MANAGER_PHONE" nullable="no" 
+						value= "ognl:busiInfo.MANAGER_PHONE" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">客户经理工号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="CUST_MANAGER_ID" id="CUST_MANAGER_ID" nullable="no" 
+						value= "ognl:busiInfo.CUST_MANAGER_ID" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">本月担保开机数：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="ASSURE_COUNT" id="ASSURE_COUNT" nullable="no" 
+						value= "ognl:busiInfo.ASSURE_COUNT"  desc="本月担保开机数" disabled="true"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="REMARK" maxlength="100" 
+								id ="REMARK" value="" desc="备注"/></span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="vipAssureSubmitCheck()" isReset="true" refreshPart="" area="AuthPart,busiInfoPart" element="div"/>
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnetbuyouttelequ/scripts/cttbuyouttelequ.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	<input type="text" jwcid="@TextField" id="LOG_ID" name="LOG_ID" value="ognl:buyoutInfo.LOG_ID" style="display:none"/>    
+	<input type="text" jwcid="@TextField" id="TRADE_DEPART_ID" name="TRADE_DEPART_ID" value="ognl:buyoutInfo.TRADE_DEPART_ID" style="display:none"/>
+<div class="c_box">
+    <!--表格 start -->
+    <div jwcid="RefreshTable@Part">
+    			<div class="c_title">
+							<div class="text">登记员信息</div>
+							</div>
+    				<div class="c_form c_form-col-3 c_form-label-5" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span class="e_required">受理员工：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@TextField" name="REG_STAFF_ID" id="REG_STAFF_ID" value="ognl:buyoutInfo.REG_STAFF_ID" desc="受理员工" disabled="true" /></span></span>
+							</li>
+							<li class="li">
+									<span class="label"><span class="e_required">受理日期：</span></span>
+									<span class="inputArea"><span class="e_input"><span>
+										 <input type="text" jwcid="@DateField" name="REG_DATE" id="REG_DATE" value="ognl:buyoutInfo.REG_DATE" desc="受理日期" format="yyyy-MM-dd HH:mm:ss"
+												disabled="true" />
+									</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">受理部门：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@TextField" name="REG_DEPART_ID" id="REG_DEPART_ID" value="ognl:buyoutInfo.REG_DEPART_ID" desc="受理部门" disabled="true" /></span></span>
+							</li>
+						</ul>
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span class="e_required"><span id="chnl">代理商：</span></span></span>
+								<span class="e_elements">
+									<button type="button" class="e_button-right" id="chnlFld" onclick="javascript:popupPage('broadband.cttnet.cttnetbuyouttelequ.CttQryChl','initQryChl','&multi=true&DEPART_ID=' +$('#TRADE_DEPART_ID').val(),'选择代理商',750,400,'CHNL_ID')">
+									<i class="e_ico-check"></i><span></span></button>
+									<span class="e_input e_input-left"><span>
+									<input type="text" jwcid="@Popup"  readOnly="true" value="ognl:buyoutInfo.CHNL_NAME" text="ognl:buyoutInfo.CHNL_NAME" name="CHNL_ID" id="CHNL_ID" desc="代理商"/>
+									</span></span>
+								</span>	
+							</li>
+							<li class="li">&nbsp;</li>
+							<li class="li">&nbsp;</li>
+						</ul>
+						<ul class="ul">
+							<li class="li">
+									<span class="label"><span class="e_required">单价(元)：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="TELEQU_PRICE" id="TELEQU_PRICE" value ='ognl:buyoutInfo.TELEQU_PRICE'
+																		 source="ognl:pageutil.getStaticList('TELEQU_PRICE')"
+																		textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  desc="单价(元)"   nullable="no" onchange="checkFee(this);"/>
+									</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">数量：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@TextField" name="TELEQU_COUNT" id="TELEQU_COUNT" maxsize="6" value="ognl:buyoutInfo.TELEQU_COUNT" desc="数量" onblur="checkFee2(this);" /></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">合计：</span></span>
+								<span class="e_input"><span><input type="text" jwcid="@TextField" name="TELEQU_FEE_TOTLE"  id="TELEQU_FEE_TOTLE" value="ognl:formatDecimal ('0.00',buyoutInfo.TELEQU_FEE_TOTLE/100)" 
+								desc="合计"  disabled="true" /></span></span>
+							</li>
+							<li class="li col-3">
+									<span class="label">备注：</span>
+									<span class="e_textarea">
+										<span class="e_textareaTop"><span></span></span>
+										<span class="e_textareaContent"><textarea jwcid="@TextArea" name="REMARK" id="REMARK" value="ognl:buyoutInfo.REMARK" maxsize="300" desc="备注" style="height:60px;"></textarea></span>
+										<span class="e_textareaBottom"><span></span></span>
+									</span>
+							</li>
+						</ul>
+					</div>
+    			</div>
+    			<div class="c_submit">
+    			<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="saveBuyoutTelEqu()" isReset="true" listener="saveBuyoutTelEqu" area="RefreshTable" disabledBtn="false" element="div"/>
+							<!--  <button type="button" style='ognl:("-1".equals(buyoutInfo.LOG_ID)) ? "display:" : "display:none"'
+									onclick="if(!saveBuyoutTelEqu())return false;" class="e_button-page-ok"><i class="e_ico-ok"></i><span>提交</span></button>
+							<button type="button" style='ognl:("-1".equals(buyoutInfo.LOG_ID)) ? "display:" : "display:none"' class="e_button-page" onclick="reset()"><i class="e_ico-reset"></i><span>重置</span></button>		-->				
+    			</div>
+    	</div>   	
+    </div></div>
+</body>
+</html>

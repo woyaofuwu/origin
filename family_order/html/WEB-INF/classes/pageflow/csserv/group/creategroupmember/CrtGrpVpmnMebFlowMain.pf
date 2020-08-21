@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow name="CreateVPMNGroupMember" desc="VPMN集团成员新增">
+	<step
+		name="begin"
+		desc="开始"
+		nextstep="editBaseDatum"
+		/>
+	<step
+		name="editBaseDatum"
+		desc="基本资料"
+		page="csserv.group.createvpmngroupmember.BaseInfo"
+		listener="initial"
+		nextstep="chooseProductElement"
+		nextbutton="bnext"
+		monitor="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,GRP_SN,MEB_USER_ID,MEB_SERIAL_NUMBER,PAY_PLAN_SEL_PLAN_TYPE"
+		transdata="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,GRP_SN,MEB_USER_ID,MEB_SERIAL_NUMBER,BUSI_TYPE,MEB_EPARCHY_CODE,GROUP_ID,MEB_CUST_ID,USER_ACCTDAY_ACCT_DAY,USER_ACCTDAY_FIRST_DATE,USER_ACCTDAY_NEXT_ACCT_DAY,USER_ACCTDAY_NEXT_FIRST_DATE,bookingDate,PAY_PLAN_SEL_PLAN_TYPE"
+		submitdata="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,MEB_USER_ID,MEB_SERIAL_NUMBER,bookingDate,PAY_PLAN_SEL_PLAN_TYPE"
+		/> 
+	<step
+		name="chooseProductElement"
+		desc="产品订购"
+		page="csserv.group.createvpmngroupmember.ProductInfo"
+	    listener="initial"
+		nextstep="createUserPreview"
+		nextbutton="bnext"
+		monitor="productParamPart,ROLE_CODE_B,SELECTED_ELEMENTS"
+		transdata="PRODUCT_ID,GRP_USER_ID,MEB_USER_ID,TRADE_TYPE_CODE,MEB_EPARCHY_CODE,MEB_SERIAL_NUMBER,CUST_ID"
+		submitdata="DYNATABLE_RES_RECORD,SELECTED_ELEMENTS,ROLE_CODE_B,productParamPart,IF_CENTRETYPE,EFFECT_NOW"
+		/>
+	<step
+		name="createUserPreview"
+		desc="成员新增确认"
+		page="csserv.group.createvpmngroupmember.PreView"
+		listener="initial"
+		nextstep="end"
+		backbutton="bback"
+		submitdata="parm_REMARK"
+		/>
+	<step
+		name="end"
+		desc="结束"
+		/>
+</flow>

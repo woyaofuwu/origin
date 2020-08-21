@@ -1,0 +1,2 @@
+DELETE FROM TF_F_NOUSRINFO
+WHERE serial_number=:serial_number

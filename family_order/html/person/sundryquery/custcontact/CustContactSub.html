@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户接触详细信息</title>
+<script language="JavaScript" src="common/scripts/sundryquery/querytrade.js"></script>
+</head>
+<body jwcid="@Body">
+<script>
+<!-- 
+function getPageIpPort() {
+	var url=window.location.href;
+	var i1 = url.indexOf('/', url.indexOf('//')+2);
+	return url.substring(0, i1+1);
+}
+
+function urlConvert(url, subsysPrefix) {
+	var i1 = url.indexOf('/', url.indexOf('//')+2);
+	var i2 = url.indexOf('?');
+	var ipPort = url.substring(0, i1+1);
+	var params = url.substring(i2+1, url.length);
+	url =  subsysPrefix + '/' + subsysPrefix + '?' + params;
+	return getPageIpPort() + url;
+}
+function getNextCustContactSub(contactsubname, subid, rsrvstr7) {
+	var rawUrl;
+	var url; 
+	var params;
+	if(rsrvstr7!='') {
+		params='&subSysCode=custmanm&TRADE_ID=' + rsrvstr7 ;
+		rawUrl = Wade.context.getPageUrl('customerinfoqry.TradeHistoryInfo', 'queryTradeHisInfo',params);
+		url = urlConvert(rawUrl, 'custmanm');
+	} else {
+		if (contactsubname != '1') {
+			params='&subSysCode=salemanm&JOB_ID=' + subid ;
+			rawUrl = Wade.context.getPageUrl('job.new.JobHistory', 'queryHistoryJob', params);
+			url = urlConvert(rawUrl, 'salemanm');
+		} else if (contactsubname == '2') {
+			params='&subSysCode=cencustmgr&CONTACTNUM=' + subid ;
+			rawUrl = Wade.context.getPageUrl('querycontact.queryContact', 'queryContact', params);
+			url = urlConvert(rawUrl, 'custapp');
+		}
+	} 
+	document.contentframe.location.href =url;
+}
+-->
+</script>
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户接触信息查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="CustContactSubListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+      			<thead>
+		  			<tr>
+ 						<th>客户接触标识</th>
+ 						<th>客户接触轨迹标识</th>
+						<th>接触类型</th>
+						<th>接触子项类型</th>
+						<th>客户姓名</th>
+						<th>手机号码</th>
+						<th>子流水号</th>
+						<th>接触渠道类型</th>
+						<th>接触媒体类型</th>
+						<th>受理地市</th>
+						<th>受理业务区</th>
+						<th>部门</th>
+						<th>员工</th>
+						<th>接触时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:subinfos" value="ognl:subinfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">					
+						<td><span jwcid="@Insert" value="ognl:subinfo.CUST_CONTACT_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:subinfo.CUST_CONTACT_TRACE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CONTACT_MODE', 'CONTACT_MODE', 'CONTACT_NAME', subinfo.CONTACT_MODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_CONTACT_MODE', 'CONTACT_MODE', 'CONTACT_NAME', subinfo.CONTACT_SUB_MODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:subinfo.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:subinfo.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:subinfo.SUB_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_S_INMODE', 'IN_MODE_CODE','IN_MODE',subinfo.IN_MODE_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_S_MEDIATYPE','MEDIA_TYPE_CODE','MEDIA_TYPE', subinfo.IN_MEDIA_TYPE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_M_AREA', 'AREA_CODE', 'AREA_NAME', subinfo.EPARCHY_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_M_AREA', 'AREA_CODE', 'AREA_NAME', subinfo.CITY_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', subinfo.CHANNEL_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', subinfo.SUB_CHANNEL_ID)" raw="true"/></td>			
+						<td><span jwcid="@Insert" value="ognl:subinfo.START_TIME" raw="true"/></td>								        
+					</tr>
+				</tbody>
+			</table>
+	</div></div>
+	</div>
+	
+	<iframe id="contentframe" name="contentframe" jwcid="@Redirect" type="iframe" height="400" width="100%" frameborder=no />
+	<div id="RefreshPart" jwcid="RefreshPart@Part" optimize="true" >
+			<div id="toppageServRequest" style="display:none">
+				<iframe id="topframeServRequest" name="topframeServReques@RedirectgeRedirect" type="iframe" height="400" width="100%" frameborder=no/>
+			</div>
+
+			<div id="toppageRecvFee"  style="display:none">
+				<iframe id="topframeRecvFee" name="topframeRecvFee" jwcid="@Redirect" type="iframe" height="400" width="100%" frameborder=no/>
+			</div>		
+	</div>
+	<input type="text" jwcid="@TextField" id="SUB_INFO" name="SUB_INFO" value="ognl:custcontactsub" style="display:none" />
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

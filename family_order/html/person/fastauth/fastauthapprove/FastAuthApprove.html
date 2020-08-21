@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>授权业务审核</title>
+<script jwcid="@Script" language="JavaScript" src="person/fastauth/fastauthapprove/scripts/FastAuthApprove.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取授权业务清单无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">授权业务审核</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-7" jwcid="queryPart@Part">
+					<ul class="ul">
+					  <li class="li">
+							<span class="label">申请开始时间：</span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="yes" value="ognl:condition.cond_START_DATE"  desc="申请开始时间"/>
+								</span></span>
+							</span>
+					  </li>
+					  <li class="li">
+							<span class="label">申请结束时间：</span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="yes" value="ognl:condition.cond_END_DATE"  desc="申请结束时间"/>
+								</span></span>
+							</span>
+					  </li>	
+					  <li class="li">
+						<span class="label">申请人：</span>
+						<span class="e_elements"><span>
+							<input jwcid="@biz:StaffField" id="AWS_STAFF_ID" name="AWS_STAFF_ID" type="text"  open="true"
+								   value="ognl:condition.AWS_STAFF_ID" desc="申请人"/>
+						</span></span>
+					  </li>
+					  <li class="li">
+						<span class="label">授权业务：</span>
+						<span class="e_select"><span><span>
+							 <select jwcid="@Select" name="cond_MENU_ID" id="cond_MENU_ID"
+												source="ognl:acceptTradeList"
+												textField="MENU_TITLE" valueField="MENU_ID" 
+												 titleField="MENU_TITLE" value="ognl:condition.cond_MENU_ID" desc="授权业务"/>	
+						</span></span></span>
+					  </li>
+					  <li class="li">
+						<span class="label">状态：</span>
+						<span class="e_select"><span><span>
+						        <select jwcid="@Select" name="cond_ASK_STATE" id="cond_ASK_STATE" source="ognl:pageutil.getStaticList('FASTAUTH_STATE')"
+			                                    addDefault="false" value="ognl:condition.cond_ASK_STATE" disabled="false" desc="申请状态" nullable="yes" 
+			                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+						</span></span></span>
+					  </li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryAuthApply();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="detailPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">已申请授权的业务</div>	     
+		  	       <div class="fn">
+		  	         <div class="right">
+		  	          <div class="button" jwcid="@Conditional" condition="ognl:applyTradeList.size > 0">
+                         <span jwcid="@Export" name="exportFilePart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100964"
+											  config="export/sundryquery/other/APPLYAUTHINFOLIST.xml" fileName="已申请的快速授权业务列表" cond=queryPart/>
+						 <button type="button" class="l_ml" onclick="checkedOther('ASK_ID')">
+								<i class="e_ico-unselect"></i><span>反选</span>
+						 </button>
+						 <button type="button" class="l_ml" onclick="approveFuc('accept');">
+								<i class="e_ico-ok"></i><span>通过</span>
+						 </button>
+						 <button type="button" class="l_ml" onclick="approveFuc('reject');">
+								<i class="e_ico-cancel"></i><span>拒绝</span>
+						 </button>
+
+					  </div>
+					  </div>
+				    </div>
+				 </div>
+				 <div class="c_scroll c_scroll-table-10">
+				 <div class="c_table ">
+					<table jwcid="@Table" name="ResultTable" id="ResultTable"  sort="true">
+						<thead>
+						<tr>
+			  				<th col="ASK_ID"><input col="IS_CHECKED" type="checkbox" id="checkaskids" name="checkaskids" onclick="checkedAll('ASK_ID', checked)"/></th>
+			  				<th>申请员工</th>
+							<th>申请时间</th>
+							<th col="MENU_ID">菜单</th>
+							<th>可使用次数</th>
+							<th>可使用开始时间</th>
+							<th>可使用结束时间</th>
+							<th col="AWS_STATE">审核状态</th>
+							<th>申请理由</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:applyTradeList" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> 
+						<td><input jwcid="@Checkbox" name="ASK_ID" id="ASK_ID" value="ognl:info.ASK_ID" checked="ognl:false" disabled="ognl:false"/></td>
+						<td jwcid="@Any" name="ASK_STAFF_ID" value="ognl:info.ASK_STAFF_ID">
+							<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.ASK_STAFF_ID)" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="ASK_TIME" value="ognl:info.ASK_TIME">
+							<span jwcid="@Insert" value="ognl:info.ASK_TIME" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="MENU_ID" value="ognl:info.MENU_ID">
+							<span jwcid="@Insert" value="ognl:info.MENU_TITLE" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="ASK_NUM" value="ognl:info.ASK_NUM">
+							<span jwcid="@Insert" value="ognl:info.ASK_NUM" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="ASK_START_DATE" value="ognl:info.ASK_START_DATE">
+							<span jwcid="@Insert" value="ognl:info.ASK_START_DATE" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="ASK_END_DATE" value="ognl:info.ASK_END_DATE">
+							<span jwcid="@Insert" value="ognl:info.ASK_END_DATE" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="AWS_STATE" value="ognl:info.AWS_STATE">
+							<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FASTAUTH_STATE',info.AWS_STATE)" raw="true"/>
+						</td>
+						<td jwcid="@Any" name="RSRV_STR1" value="ognl:info.RSRV_STR1">
+							<span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/>
+						</td>
+					</tr>                                          
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="queryPart" part="detailPart" listener="queryApplyTradeList" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

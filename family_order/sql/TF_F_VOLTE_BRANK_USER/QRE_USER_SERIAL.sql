@@ -1,0 +1,1 @@
+select * from TF_F_VOLTE_BRANK_USER t where t.SERIAL_NUMBER = to_char(:SERIAL_NUMBER)

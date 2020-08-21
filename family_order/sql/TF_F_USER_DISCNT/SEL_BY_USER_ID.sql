@@ -1,0 +1,1 @@
+select * from tf_f_user_discnt where user_id=to_number(:USER_ID) and user_id_a=to_number(:USER_ID_A) and DISCNT_CODE=to_number(:DISCNT_CODE)  AND SYSDATE BETWEEN START_DATE AND  END_DATE

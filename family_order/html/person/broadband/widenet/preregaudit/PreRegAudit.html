@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>宽带预登记审核</title>
+		<script jwcid="@Script" src="scripts/csserv/common/bmpage/BmFrame.js"></script>
+		<script jwcid="@Script" language="JavaScript" src="person/broadband/widenet/preregaudit/scripts/preregaudit.js"></script>
+	</head>
+	<body jwcid="@Body">
+	    <div class="m_wrapper">
+		    <div class="m_wrapper2">
+			    <div class="c_box">
+				    <div class="c_title">
+					     <div class="text">宽带预登记查询</div>
+				    </div>
+				    <div jwcid="ConditionPart@Part">
+				        <div class="c_form c_form-col-3 c_form-label-6">
+						    <ul class="ul">
+							    <li class="li">
+									<span class="label"><span>客户姓名：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="cond_CUST_NAME" id="cond_CUST_NAME" value="ognl:info.CUST_NAME"
+												desc="客户姓名" />
+									</span></span>
+						        </li>
+								<li class="li">
+									<span class="label"><span>联系电话：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="cond_CONTACT_SN" id="cond_CONTACT_SN" value="ognl:info.CONTACT_SN" 
+												desc="联系电话" datatype="numeric"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span>审核状态：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="cond_AUDIT_STATUS" id="cond_AUDIT_STATUS"
+												source="ognl:pageutil.getStaticList('PRE_REG_STATUS')" addDefault="true"
+												textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.AUDIT_STATUS"
+												desc="审核状态" />
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">起始时间：</span></span>
+									<span class="e_elements" id="PSPT_INPUT">
+										<span class="e_input e_input-left"><span>
+										    <input jwcid="@DatePopup"
+												name="cond_START_DATE"
+												readonly="true"
+												value="ognl:pageutil.getSysDate()"
+												desc="起始时间"
+												afterAction=""
+												nullable="no"
+												format="yyyy-MM-dd"
+											/>
+										</span></span>
+									</span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">结束时间：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@DatePopup"
+											name="cond_END_DATE"
+											readonly="true"
+											value="ognl:info.END_DATE"
+											desc="结束时间"
+											afterAction=""
+											nullable="no"
+											format="yyyy-MM-dd"
+										/>
+									</span></span>
+								</li>
+						    </ul>
+						    <div class="submitPlace"></div>
+							<div class="submit">
+								<button id="queryBtn" name="queryBtn" class="e_button-form"><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+				         </div>
+				    </div>
+			    </div>
+			    <div class="c_box">
+				    <div class="c_title">
+					   <div class="text">宽带预登记审核</div>
+				    </div>
+				    <span jwcid="@csserv:TableGrid" tableId="WideNetBookTable" serviceName="SS.PreRegAuditService.getWideNetBookList" 
+				          rowSequence=true footDisplay=true editable=true scroll=true onrowclick="$.BmFrame.auditPreReg">
+				        <span jwcid="@csserv:TableItem" name="CUST_NAME" title="客户名称"/>
+				        <span jwcid="@csserv:TableItem" name="CONTACT_SN" title="联系电话"/>
+				        <span jwcid="@csserv:TableItem" name="PSPT_TYPE_CODE" displayValue="pageutil.getStaticValue('PSPT_TYPE_CODE',getValue('PSPT_TYPE_CODE'))" title="证件名称"/>
+				        <span jwcid="@csserv:TableItem" name="PSPT_ID" title="证件号码"/>
+				        <span jwcid="@csserv:TableItem" name="SET_ADDR" title="安装地址"/>
+				        <span jwcid="@csserv:TableItem" name="REG_DATE" title="登记时间"/>
+				        <span jwcid="@csserv:TableItem" name="AUDIT_STATUS" displayValue="pageutil.getStaticValue('PRE_REG_STATUS',getValue('AUDIT_STATUS'))" title="审核状态" editType="DBListBox" editable=true>
+				           <span jwcid="@csserv:ListDataSource" listener="getPreRegAuditStatusList" valueAttr="DATA_ID" textAttr="DATA_NAME">
+				              <span jwcid="@csserv:Parameter" name="TYPE_ID" value="PRE_REG_STATUS"/>
+				           </span>
+				        </span>
+				        <span jwcid="@csserv:TableItem" name="HOME_ADDR" title="客户住址"/>
+				        <span jwcid="@csserv:TableItem" name="INST_ID" title="实例标识" visible=false/>
+				        <span jwcid="@csserv:TableItem" name="REMARK" title="备注"/>
+				        <span jwcid="@csserv:TableItem" name="UPDATE_STAFF_ID"  title="操作员工"/>
+				        <span jwcid="@csserv:TableItem" name="UPDATE_DEPART_ID" title="所属部门"/>
+			        </span>
+					<!-- 提交 开始 -->
+					<div class="c_submit">
+					     <button jwcid="@Button" accesskey="Y" class="e_button-page-ok" name="CSSUBMIT_BUTTON">
+							<i jwcid="@Any" class="e_ico-submit"></i><span>提交</span>
+						</button>
+					</div>
+				    <!-- 提交 结束 -->
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

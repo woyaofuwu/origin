@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>已有成员选择界面</title>
+<script jwcid="@Script" src="person/multioffer/selmember/scripts/SelMember.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2" >
+    <div class="c_box">
+		<div class="c_form">
+			<ul class="ul">
+			    <li class="li">
+					<span class="label"><span class="e_required">网别名称：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="NET_TYPE_CODE" id="NET_TYPE_CODE"
+								source="ognl:pageutil.getList('TD_S_NETCODE','NET_TYPE_CODE','NET_TYPE_NAME')" addDefault="false"
+								textField="NET_TYPE_NAME" valueField="NET_TYPE_CODE"  value="ognl:getParameter('NET_TYPE_CODE')"
+								desc="网别名称" nullable="no" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">服务号码：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:getParameter('SERIAL_NUMBER')" 
+								desc="服务号码" datatype="numeric" nullable="no"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submit">
+				 <button id="queryBtn" name="queryBtn" class="e_button-form"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+	</div>
+	<div class="c_box">
+		<div jwcid="UCAViewPart@Part" id="UCAViewPart" element="div">
+		    <div class="c_form c_form-text c_form-col-3 c_form-label-5">
+				<ul class="ul">
+				    <li class="li">
+						<span class="label">客户名称：</span>
+						<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME"
+								desc="客户名称"/>
+			        </li>
+			        <li class="li">
+						<span class="label">证件类型：</span>
+						<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+						        value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)"
+								desc="证件类型" />
+			        </li>
+					<li class="li">
+						<span class="label">证件号码：</span>
+						<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" 
+								desc="证件号码"/>
+					</li>
+					<li class="li">
+						<span class="label">当前品牌：</span>
+						<span class="text" jwcid="@Insert" name="BRAND_CODE" id="BRAND_CODE" 
+								value= "ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_S_BRAND', 'BRAND_CODE', 'BRAND', userInfoView.BRAND_CODE)"
+								desc="当前品牌"/>
+					</li>
+					<li class="li">
+						<span class="label">当前产品：</span>
+						<span class="text" jwcid="@Insert" name="PRODUCT_ID" id="PRODUCT_ID" 
+								value= "ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_B_PRODUCT', 'PRODUCT_ID', 'PRODUCT_NAME', userInfoView.PRODUCT_ID)"
+								desc="当前产品"/>
+					</li>
+					<li class="li">
+						<span class="label">开户时间：</span>
+						<span class="text" jwcid="@Insert" name="OPEN_DATE" id ="OPEN_DATE" 
+								value="ognl:userInfoView.OPEN_DATE==null ? '' : getPage().formatDate('yyyy-MM-dd', userInfoView.OPEN_DATE)"    
+								desc="证件有效期"/>
+					</li>
+				</ul>
+	        </div>
+	    </div>
+	    <div jwcid="RoleProdPart@Part" id="RoleProdPart" element="div">
+		    <div jwcid="@Conditional" condition="ognl: rolePackList && rolePackList.size() > 0">
+			    <div class="c_form c_form-col-2 c_form-label-5">
+					<ul class="ul">
+					    <li class="li col-2">
+					        <span class="e_tip">加入融合套餐要求成员使用指定的基本产品，请选择新的基本产品</span>
+				        </li>
+				        <li class="li">
+							<span class="label"><span class="e_required">产品类型：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="PACKAGE_ID" id="PACKAGE_ID"
+										source="ognl:rolePackList" addDefault="true"
+										textField="PACKAGE_NAME" valueField="PACKAGE_ID"  
+										value="ognl:getParameter('PACKAGE_ID')"
+										desc="产品类型" nullable="no" />
+							</span></span></span>
+				        </li>
+						<li class="li">
+							<span class="label"><span class="e_required">产品名称：</span></span>
+							<span class="e_select"><span><span>
+							    <div jwcid="ProdSelPart@Part" id="ProdSelPart" element="div">
+									<select jwcid="@Select" name="PRODUCT_ID" id="PRODUCT_ID"
+											source="ognl:packProdList" addDefault="true"
+											textField="PRODUCT_NAME" valueField="PRODUCT_ID"  
+											value="ognl:getParameter('PRODUCT_ID')"
+											desc="产品名称" nullable="no" />
+								</div>
+							</span></span></span>
+						</li>
+					</ul>
+		        </div>
+			</div>
+		</div>
+	</div>
+	<div class="c_submit">
+	    <button id="okBtn" name="okBtn" class="e_button-page-ok"><i></i><span>确定</span></button>
+        <button id="cancelBtn" name="cancelBtn" class="e_button-page-cancel"><i></i><span>取消</span></button>
+	</div>
+	<div jwcid="@csserv:UserCheck" tradeAction="$.selmember.userCheckAction(data)" fieldName="SERIAL_NUMBER" isAuth="ognl:getParameter('IS_AUTH')" />
+</div></div>
+</body>
+</html>

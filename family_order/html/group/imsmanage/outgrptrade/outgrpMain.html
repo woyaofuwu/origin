@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="base.css" rel="stylesheet" type="text/css" />
+<link href="base-c_guide.css" rel="stylesheet" type="text/css" />
+<title>网外号码管理</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/group/imsmanage/outgrptrade/outgrptrade.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" ><div class="m_wrapper2">
+<!-- 查询区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form"  jwcid="QueryGrpPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">集团产品编码：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="cond_QueryCondition" name="cond_QueryCondition" enterAction="queryGrpCustInfo()" value="ognl:condition.QueryCondition" desc="集团产品编码" nullable="no" />
+                </span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="queryGrpCustInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="grpcustRefreshPart@Part" >
+		<input type="text" jwcid="@TextField" id="hiddenstartdate" name="hiddenstartdate" value="ognl:grpcustinfo.START_DATE" style="display:none" />
+		<input type="text" jwcid="@TextField" id="hiddenenddate" name="hiddenenddate" value="ognl:grpcustinfo.END_DATE" style="display:none" /> 
+		<input type="text" jwcid="@TextField" id="GRP_USER_EPARCHY_CODE" name="GRP_USER_EPARCHY_CODE" value="ognl:grpuserinfo.EPARCHY_CODE" style="display:none" /> 
+		<span jwcid="@saleserv:GroupCustInfo" hasTitle="false" groupUserInfo="ognl:grpcustinfo"/>
+		<span jwcid="@saleserv:GroupUserInfo" hasTitle="false" groupUserInfo="ognl:grpuserinfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+	<!-- 参数列表 开始 --> 
+	<div jwcid="vpmnRefreshPart@Part" >
+		<!-- 页面隐藏域 开始 -->
+		<input type="text" jwcid="@TextField" id="ctl_type" name="ctl_type" value="ognl:ctl_type" style="display:none" />	
+		<input type="text" jwcid="@TextField" id="phone_user_id" name="phone_user_id" value="ognl:grpuserinfo.USER_ID" style="display:none" />
+		<!-- 页面隐藏域 结束 --> 
+		<span jwcid="@saleserv:GroupUserVpnInfo" hasTitle="false" vpmnInfo="ognl:vpmn"/> 
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 查询区域 结束 --> 
+<!-- 业务办理区域 开始 -->
+<div class="c_box">
+	<!-- 分页标签（替换为页面组件） 开始 -->
+	<div class="c_tab">
+		<ul>
+			<li id="groupLi" class="on"><a href="#nogo" onclick="fn_ctl_type('GRP');return queryGrpOutinfo();">集团网外号码</a></li>
+			<!-- <li id="memLi"><a href="#nogo" onclick="fn_ctl_type('MEM');return memFresh();">成员网外号码</a></li> -->
+		</ul>
+	</div>
+	<!-- 分页标签 结束 -->
+	
+	<!-- 成员网外号码 开始 -->
+	<div id="mem_part" style="display:none;"> 
+		<!-- 表单 开始 -->
+		<div class="c_form"  jwcid="QueryMemPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">成员服务号码：</span></span>
+					<span class="e_input"><span>
+                    <input type="text" jwcid="@TextField" id="cond_mem_sn" name="cond_mem_sn" value="ognl:condition.cond_mem_serial" desc="成员服务号码"  nullable="no"  datatype="numeric" minsize="11" maxsize="11" />
+                    </span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form"  onclick="queryMemInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 参数列表 开始 -->
+		<div class="c_form c_form-label-7 c_form-col-3 c_form-text" jwcid="memRefreshPart@Part" id="memRefreshPart" element="div">
+			<input type="text" jwcid="@TextField" id="phone_mem_name" name="phone_mem_name" value="ognl:meminfo.CUST_NAME" style="display:none" />
+			<input type="text" jwcid="@TextField" id="mem_user_id" name="mem_user_id" value="ognl:meminfo.USER_ID" style="display:none" />
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+				    <span class="text">
+				    <span jwcid="@Insert"  id="CUST_NAME" name="CUST_NAME"  value="ognl:meminfo.CUST_NAME"/>
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">证件类型：</span>
+				    <span class="text"> 
+				    <input jwcid="@Insert" id="PSPT_TYPE_CODE" name="PSPT_TYPE_CODE" value="ognl:meminfo.PSPT_TYPE_CODE==null?'':pageutil.getStaticValue('TD_S_PASSPORTTYPE',meminfo.PSPT_TYPE_CODE)" desc="证件类型"  />
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+				    <span class="text">
+				    <span jwcid="@Insert"  id="PSPT_ID" name="PSPT_ID"  value="ognl:meminfo.PSPT_ID"/>
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">居住地邮编：</span>
+				    <span class="text">
+				    <span jwcid="@Insert"  id="POST_CODE" name="POST_CODE"  value="ognl:meminfo.POST_CODE"/>
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">联系电话：</span>
+				    <span class="text">
+				    <span jwcid="@Insert"  id="SERIAL_NUMBER" name="SERIAL_NUMBER"  value="ognl:meminfo.SERIAL_NUMBER"/>
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">居住地址：</span>
+				    <span class="text">
+				    <span jwcid="@Insert"  id="ADDR" name="ADDR"  value="ognl:meminfo.ADDR"/>
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">品牌名称：</span>
+				    <span class="text"> 
+				    <input jwcid="@Insert" id="BRAND_CODE" name="BRAND_CODE" value="ognl:meminfo.BRAND_CODE==null?'':pageutil.getStaticValue('TD_S_BRAND', 'BRAND_CODE','BRAND',meminfo.BRAND_CODE)" desc="品牌名称"  />
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">开户日期：</span>
+				    <span class="text">
+				    <span jwcid="@Insert"  id="IN_DATE" name="IN_DATE"  value="ognl:meminfo.IN_DATE"/>
+				    </span>
+				</li>
+				<li class="li">
+					<span class="label">产品名称：</span>
+				    <span class="text">
+				    <input jwcid="@Insert" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:meminfo.PRODUCT_ID==null?'':pageutil.getStaticValue('TD_B_PRODUCT', 'PRODUCT_ID','PRODUCT_NAME',meminfo.PRODUCT_ID)" desc="品牌名称"  />
+				    </span>
+				</li>
+				<input type="text" jwcid="@TextField" id="MEB_USER_EPARCHY_CODE" name="MEB_USER_EPARCHY_CODE" value="ognl:meminfo.EPARCHY_CODE" style="display:none" /> 
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+		 
+	</div>
+	<!-- 成员网外号码 结束 -->
+			
+	<!-- 网外号码添加 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="groupPopup@Part" element="div" style="display:none;">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">网外号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="out_grp_num" name="out_grp_num" value="ognl:outPhoneInfo.OUT_PHONE" desc="网外号码"  nullable="no" datatype="numeric" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">生效时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_OPEN_DATE" name="cond_OPEN_DATE" value="ognl:pageutil.getSysTime()" desc="开始时间" disabled="true" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">失效时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_FINISH_DATE" name="cond_FINISH_DATE" value="2050-12-31 23:59:59" desc="失效时间" disabled="true" />
+				</span></span>		
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="c_submit">
+			<button id="subBut" class="e_button-page-ok" onclick="submitLayer('groupPopup')"><i></i><span>确定</span></button>
+			<button class="e_button-page-cancel" onclick="hideLayer('groupPopup')"><i></i><span>取消</span></button>
+		</div>	
+	</div>
+	<!--  网外号码添加 表单 结束 -->
+	
+	<!-- 集团网外号码 开始 -->
+	<div jwcid="outgrpinfopart@Part" >
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">集团网外号码列表</div>
+			<div class="fn">
+				<button type="button" onclick="if(!confirmBox(this, 'outgrplist'))return false;return delConfirm();"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button type="button" class="l_ml" onclick="showLayer('groupPopup')"><i class="e_ico-add"></i><span>新增</span></button>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="refreshtable2@Part"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th>网外号码标识</th>
+						<th>网外号码</th>
+						<th>生效时间</th>
+						<th>失效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr jwcid="@Foreach" source="ognl:outgrpInfoList" value="ognl:outgrpinfoIdata"   index="ognl:rowIndex"   element="tr">
+						<td><input id="outgrplist"  name="outgrplist" jwcid="@Radio" value="ognl:outgrpinfoIdata.USER_ID_A+'_'+outgrpinfoIdata.USER_ID_B+'_'+outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.USER_ID_B" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.START_DATE" raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.END_DATE" raw="true"/></td>
+				     </tr>
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="ActiveNav" id="ActiveNav" cond="vpmnRefreshPart" part="outgrpinfopart" listener="getGrpOutinfo" pageSize="10" count="ognl:infosCount" />
+		<!--分页 结束 -->
+	</div>	
+	<!-- 集团网外号码 结束 -->
+	
+	<!-- 成员网外列表 开始 -->
+	<div jwcid="outmebinfopart@Part" style="display:none">
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">成员网外号码列表</div>
+			<div class="fn">
+				<button type="button" onclick="if(!confirmBox(this, 'memoutgrplist'))return false;return delConfirm();"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button type="button" onclick="showLayer('groupPopup')"><i class="e_ico-add"></i><span>新增</span></button>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="refreshtable@Part"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th>网外号码标识</th>
+						<th>网外号码</th>
+						<th>生效时间</th>
+						<th>失效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:outgrpInfoList" value="ognl:outgrpinfoIdata"   index="ognl:rowIndex"   element="tr">
+						<td><input id="memoutgrplist"  name="memoutgrplist" jwcid="@Radio" value="ognl:outgrpinfoIdata.USER_ID_B+'_'+outgrpinfoIdata.SERIAL_NUMBER_A+'_'+outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.USER_ID_B" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.START_DATE" raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.END_DATE" raw="true"/></td>
+				     </tr>
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="ActiveNav2" id="ActiveNav2" cond="vpmnRefreshPart,mem_part" part="outmebinfopart" listener="getMemOutGrp" pageSize="10" count="ognl:infosCount" />
+		<!--分页 结束 -->
+		
+	</div>	
+	<!--成员网外列表 结束 -->
+</div>
+<!-- 业务办理区域 结束 -->
+
+</div></div>
+
+
+
+
+	<!-- 引用组件  不显示   -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit"  listener="onSubmitBaseTrade"  isGrp="true" disabledBtn="false" style="display:none" element="div"/>
+</body>
+</html>

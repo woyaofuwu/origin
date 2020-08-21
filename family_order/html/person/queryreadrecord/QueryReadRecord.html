@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>阅读记录查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/queryreadrecord/scripts/queryCommRecord.js"></script>
+<script language="javascript">
+	window.attachEvent("onunload",closePage);
+	function closePage()
+	{
+		ajaxSubmit('HiddenPart,SerialNumPart','closePage',null,null,null);
+	};
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">阅读记录查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryRecordPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_PHONE_NUM" name="cond_PHONE_NUM" 
+					       value="ognl:getVisit().getInModeCode() == 1 ? getData().getString('SERIAL_NUMBER',''):cond.PHONE_NUM"  
+					       desc="手机号码" maxLength="11" nullable="no" datatype="mbphone" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">阅读途径：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_READ_WAY" id="cond_READ_WAY" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('CELLPHONE_TOREAD_CHANEL')" value="ognl:cond.READ_WAY" desc="阅读途径" />
+				</span></span></span>
+			</li>
+						<li class="li">
+				<span class="label">内容类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_READ_CONTENT" id="cond_READ_CONTENT" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('CELLPHONE_TOREAD_CONTENT_TYPE')" value="ognl:cond.READ_CONTENT" desc="内容类型"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE" nullable="no" value="ognl:cond.START_DATE" desc="起始时间" format="yyyy-MM-dd HH:mm:ss"  time = "true"  maxName="cond_END_DATE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input" ><span>
+				<input type="text" jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE" nullable="no" value="ognl:cond.END_DATE" desc="结束时间" format="yyyy-MM-dd HH:mm:ss"  time = "true"  minName="cond_START_DATE"/>
+				</span></span>
+			</li>
+						<li class="li">
+				<span class="label">书名：</span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_BOOK_NAME" name="cond_BOOK_NAME" value="ognl:cond.BOOK_NAME"  desc="书名" />
+				</span></span>
+			</li>
+						<li class="li">
+				<span class="label">章节名称：</span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_CHAPTER_NAME" name="cond_CHAPTER_NAME" value="ognl:cond.CHAPTER_NAME"  desc="章节名称"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecord();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+		<!-- 隐藏区域 开始 -->
+   	<div jwcid="HiddenPart@Part" element="div">
+		<input jwcid="@Hidden" id="INDICTSEQ" name="INDICTSEQ" value="ognl:result.INDICTSEQ" />
+		<input jwcid="@Hidden" id="ORIGINTIME" name="ORIGINTIME" value="ognl:result.ORIGINTIME" />
+		<input jwcid="@Hidden" id="MAXRECORDNUM" name="MAXRECORDNUM" value="ognl:result.MAXRECORDNUM" />
+		<input jwcid="@Hidden" id="RSLTPAGECURRCNT" name="RSLTPAGECURRCNT" value="ognl:result.RSLTPAGECURRCNT" />
+		<input jwcid="@Hidden" id="PIGEONHOLE" name="PIGEONHOLE" value="ognl:result.PIGEONHOLE" />
+		<input jwcid="@TextArea" type="hidden" id="REPORTPAGE" name="REPORTPAGE" value="ognl:reportPage" style="display:none"/>
+	</div>
+	<div jwcid="SerialNumPart@Part" element="div">
+		<input jwcid="@Hidden" id="CALLERNO" name="CALLERNO" value="ognl:result.CALLERNO" />
+	</div>
+	<!-- 隐藏区域 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x style="height:242px"">
+	<div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>查询结果记录序号</th>
+					<th>手机号码</th>
+					<th>书名</th>
+					<th>卷名</th>
+					<th>章名</th>
+					<th>内容类型</th>
+					<th>阅读时间</th>						
+					<th>订购方式</th>	
+					<th>阅读途径</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR0" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_TOREAD_CONTENT_TYPE', info.RSRV_STR5)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ORDER_TYPE_FOR_CELLPHONE', info.RSRV_STR7)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CELLPHONE_TOREAD_CHANEL', info.RSRV_STR8)" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="HiddenPart,SerialNumPart" part="QueryListPart" 
+	      listener="queryOtherRecord" pageSize="ognl:result.RSLTPAGECURRCNT" count="ognl:result.MAXRECORDNUM"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

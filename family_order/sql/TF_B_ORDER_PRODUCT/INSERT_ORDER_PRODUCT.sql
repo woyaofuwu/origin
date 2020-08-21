@@ -1,0 +1,2 @@
+INSERT INTO tf_b_order_product(accept_month,order_id,cancel_tag,trade_type_code,prod_order_id,brand_code,product_id,product_mode,comp_tag,oper_fee,foregift,advance_pay,fee_state,fee_staff_id,fee_time)
+ VALUES(:ACCEPT_MONTH,TO_NUMBER(:ORDER_ID),:CANCEL_TAG,:TRADE_TYPE_CODE,TO_NUMBER(:PROD_ORDER_ID),:BRAND_CODE,:PRODUCT_ID,:PRODUCT_MODE,:COMP_TAG,TO_NUMBER(:OPER_FEE),TO_NUMBER(:FOREGIFT),TO_NUMBER(:ADVANCE_PAY),:FEE_STATE,:FEE_STAFF_ID,TO_DATE(:FEE_TIME,'YYYY-MM-DD HH24:MI:SS'))

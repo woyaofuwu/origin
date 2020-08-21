@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>宽带业务办理查询</title>
+		<script jwcid="@Script" language="JavaScript" src="person/broadband/widenet/querywidenettrade/scripts/querywidenettrade.js"></script>
+	</head>
+	<body jwcid="@Body">
+	    <div class="m_wrapper">
+		    <div class="m_wrapper2">
+			    <div class="c_box">
+				    <div class="c_title">
+					     <div class="text">宽带业务办理查询</div>
+				    </div>
+				    <div jwcid="ConditionPart@Part">
+				        <div class="c_form c_form-col-3 c_form-label-6">
+						    <ul class="ul">
+						        <li class="li">
+									<span class="label"><span class="e_required">宽带业务区：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="INSTALL_ADDRESS_CITY_CODE" id="INSTALL_ADDRESS_CITY_CODE"
+												source="ognl:pageutil.getStaticList('JOB_CALL_CITYCODE')" addDefault="true"
+												textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.INSTALL_ADDRESS_CITY_CODE"
+												desc="宽带业务区" nullable="no" />
+									</span></span></span>
+								</li>
+							    <li class="li">
+									<span class="label"><span>手机号码：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER"
+												desc="用户手机号码"/>
+									</span></span>
+						        </li>
+								<li class="li">
+									<span class="label"><span>登记流水号：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="TRADE_ID" id="TRADE_ID" value="ognl:info.TRADE_ID" 
+												desc="登记流水号" datatype="numeric"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">开始时间：</span></span>
+									<span class="e_elements" id="PSPT_INPUT">
+										<span class="e_input e_input-left"><span>
+										    <input jwcid="@DatePopup"
+												name="ACCEPT_START_DATE"
+												readonly="true"
+												value="ognl:pageutil.getSysDate()"
+												desc="受理开始时间"
+												afterAction=""
+												format="yyyy-MM-dd"
+											/>
+										</span></span>
+									</span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">结束时间：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@DatePopup"
+											name="ACCEPT_END_DATE"
+											readonly="true"
+											value="ognl:info.END_DATE"
+											desc="受理结束时间"
+											afterAction=""
+											format="yyyy-MM-dd"
+										/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span>业务类型：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="SUBSCRIBE_TYPE" id="SUBSCRIBE_TYPE"
+												source="ognl:pageutil.getList('TD_S_STATIC','PDATA_ID','DATA_NAME','TYPE_ID','BPM_ID2TRADE_CODE')" addDefault="true"
+												textField="DATA_NAME" valueField="PDATA_ID"  value="ognl:info.SUBSCRIBE_TYPE"
+												desc="业务类型"/>
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span>处理状态：</span></span>
+									<span class="e_select"><div jwcid="statelistPart@Part"><span><span>
+										<select jwcid="@Select" name="SUBSCRIBE_STATE" id="SUBSCRIBE_STATE"
+												source="ognl:statelist" addDefault="true"
+												textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.SUBSCRIBE_STATE"
+												desc="处理状态"/>
+									</span></span></div></span>
+								</li>
+						    </ul>
+						    <div class="submitPlace"></div>
+							<div class="submit">
+								<button id="queryBtn" name="queryBtn" class="e_button-form"><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+				         </div>
+				    </div>
+			    </div>
+			    <div class="c_box">
+				    <div class="c_title">
+					   <div class="text">查询结果</div>
+					   <div class="fn"> 
+							<span jwcid="@Export" name="testExport" ftpSite="personserv" serviceName="92109"
+								config="export/sundryquery/QueryWidenetTrade.xml" 
+								fileName="宽带业务办理查询" fileType="{'.xls':'.xls'}" 
+								params="a=b&c=中文" cond="ConditionPart"/>
+	                   </div>
+				    </div>
+				    <span jwcid="@csserv:TableGrid" tableId="WideNetTradeTable" 
+				          serviceName="SS.QueryWidenetTradeService.queryWidenetTrade" 
+				          rowSequence=true footDisplay=true scroll=true>
+				        <span jwcid="@csserv:TableItem" name="INSTALL_ADDRESS_CITY_NAME" title="宽带业务区"/>
+				        <span jwcid="@csserv:TableItem" name="SERIAL_NUMBER" title="手机号码" />
+				        <span jwcid="@csserv:TableItem" name="INSTALL_DETAIL_ADDRESS" title="安装地址"/>
+				        <span jwcid="@csserv:TableItem" name="SUBSCRIBE_TYPE_NAME" title="业务类型"/>
+				        <span jwcid="@csserv:TableItem" name="SUBSCRIBE_STATE_NAME" title="处理状态"/>
+				        <span jwcid="@csserv:TableItem" name="CUST_NAME" title="客户名称"/>
+				        <span jwcid="@csserv:TableItem" name="CUST_CONTACT_PHONE" title="客户联系电话"/>
+				        <span jwcid="@csserv:TableItem" name="ACCEPT_DATE" title="受理时间"/>
+				        <span jwcid="@csserv:TableItem" name="FINISH_DATE" title="完工时间"/>
+				        <span jwcid="@csserv:TableItem" name="TRADE_STAFF_ID" title="受理工号"/>
+			        </span>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

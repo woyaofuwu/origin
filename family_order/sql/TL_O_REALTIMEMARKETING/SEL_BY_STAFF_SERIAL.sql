@@ -1,0 +1,27 @@
+select REQ_ID,
+  ACCEPT_MONTH,
+  ACCEPT_DATE,
+  TRADE_TYPE_CODE,
+  IN_MODE_CODE,
+  USER_ID,
+  SERIAL_NUMBER,
+  NET_TYPE_CODE,
+  EPARCHY_CODE,
+  CITY_CODE,
+  TRADE_STAFF_ID,
+  TRADE_DEPART_ID,
+  TRADE_CITY_CODE,
+  TRADE_EPARCHY_CODE,
+  PROCESS_TAG,
+  EXEC_DESC,
+  EXEC_RESULT,
+  PROCESS_TIME,
+  EXEC_TIME,
+  REMARK,
+  UPDATE_TIME
+  from TL_O_REALTIMEMARKETING a
+ where 1=1
+   and a.serial_number = :SERIAL_NUMBER
+   and a.user_id = :USER_ID
+   and a.trade_staff_id = :TRADE_STAFF_ID
+   order by a.req_id desc

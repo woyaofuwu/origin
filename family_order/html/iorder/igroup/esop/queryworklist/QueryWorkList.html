@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>任务查询</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/queryworklist/script/queryworklist.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="l_query">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div jwcid="@Conditional" condition="ognl:condition.INFO_STATUS!=9" element="div" class="left">
+				<div class="text">任务查询</div>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:condition.INFO_STATUS==9" element="div" class="left">
+				<div class="text">已办任务查询</div>
+			</div>
+			<div class="right">
+				<div class="e_mix" ontap="showPopup('popup','qryConditionPopupItem',true)">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div jwcid="ResultPart@Part" >
+		<div class="l_queryResult">
+			<div class="c_table">
+				<table name="myTable" id="myTable" jwcid="@Table">
+					<thead>
+						<tr>
+							<th>待办类型</th>
+							<th>业务类型</th>
+							<th>订单号</th>
+							<th>工单主题</th>
+							<th>办理状态</th>
+							<th>产品名称</th>
+							<th>集团名称</th>
+							<th>集团编码</th>
+							<th>当前节点</th>
+							<th>当前节点处理人</th>
+							<th>客户经理工号</th>
+							<th>计划完成时间</th>
+							<th>发起时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" >	
+							<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('INFO_CHILD_TYPE',info.INFO_CHILD_TYPE)"></span></td>
+							<td data-title="业务类型" class="fn e_center" ontap='queryDatelineCodeType(this)' jwcid="@Any"
+                                    IBSYSID="ognl:info.IBSYSID" TEMPLET_NAME="ognl:info.TEMPLET_NAME" 
+                                    GROUP_ID="ognl:info.GROUP_ID" NODEID="ognl:info.NODE_ID"
+                                    PRODUCT_NAME="ognl:info.PRODUCT_NAME" 
+                                    DEAL_STAFF_ID="ognl:info.STAFF_ID"
+                                    URGENCY_LEVEL="ognl:info.INFO_LEVEL"
+                                    TITLE="ognl:info.INFO_TOPIC"
+                                    BPM_TEMPLET_ID="ognl:info.BPM_TEMPLET_ID"
+                                    IS_FINISH="ognl:info.IS_FINISH"
+                                    BUSIFORM_ID="ognl:info.BUSIFORM_ID"
+                                     value="业务类型">
+                                    <span jwcid="@Insert" value="ognl:info.TEMPLET_NAME" raw="false"/>
+                                </td>
+							<td><span jwcid="@Insert" value="ognl:info.IBSYSID"></span></td>
+							<div jwcid="@Conditional" condition="ognl:info.INFO_STATUS!=9">
+								<td>
+									<a jwcid="@Any" style="cursor: pointer;" todoUrl="ognl:info.INFO_URL" instId="ognl:info.INST_ID" taskId="ognl:info.INFO_ID" busiTypeCode="ognl:info.INFO_CHILD_TYPE" ontap="openFlowInst(this);">
+										<span jwcid="@Insert" value="ognl:info.INFO_TOPIC"></span>
+									</a>
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('INFO_INFOSTATUS',info.INFO_STATUS)"></span>
+								</td>
+							</div>
+							<div jwcid="@Conditional" condition="ognl:info.INFO_STATUS==9">
+								<td>
+									<a jwcid="@Any" style="cursor: pointer;" instId="ognl:info.INST_ID" ontap="openReadWork(this);">
+										<span jwcid="@Insert" value="ognl:info.INFO_TOPIC"></span>
+									</a>
+								</td>
+								<td>已处理</td>
+							</div>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID"></span></td>
+							<td><span jwcid="@Insert" value="ognl:info.NODE_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValueDataSource(getVisit(), 'sys', 'TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.RECE_OBJ)"></span></td>
+							<td><span jwcid="@Insert" value="ognl:info.RECE_OBJ"></span></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_TIME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:info.INFO_SEND_TIME"></span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div jwcid="@Conditional" class="l_queryMsg l_queryMsg-notop" condition="ognl:infos == null || infos.size() == 0" element="div">
+			<div class="c_msg">
+				<div class="wrapper">
+					<div class="emote"></div>
+					<div class="info">
+						<div class="text">
+							<div class="title">暂时没有数据</div>
+							<div class="content">请重新输入查询条件</div>
+				  	 	</div>
+				   	</div>
+				</div>
+			</div>
+		</div>
+		<div class="l_queryPage">
+			<div jwcid="@NavBar" name="myNavbar" cond="CondPart" count="ognl:count" listener="queryWorkList" part="ResultPart" pageSize="10"></div>
+		</div>
+	</div>
+</div>
+<div jwcid="@Popup" name="popup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryConditionPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">查询</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="CondPart@Part" class="l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+							<li>
+								<div class="label">待办主题：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_INFO_TOPIC" value="ognl:condition.INFO_TOPIC"/></div>
+							</li>
+							<li>
+								<div class="label">待办类型：</div>
+								<div class="value"><input jwcid="@Select" name="cond_INFO_CHILD_TYPE" source="ognl:condition.INFOCHILDTYPE" value="ognl:condition.INFO_CHILD_TYPE" textField="DATA_NAME" valueField="DATA_ID" /></div>
+							</li>
+							
+							<li jwcid="@Conditional" condition="ognl:condition.INFO_STATUS!=9" element="li">
+								<div class="label">办理状态：</div>
+								<div class="value"><input jwcid="@Select" name="cond_INFO_STATUS" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('INFO_INFOSTATUS')" value="ognl:condition.INFO_STATUS" textField="DATA_NAME" valueField="DATA_ID" /></div>
+							</li>
+							<li jwcid="@Conditional" condition="ognl:condition.INFO_STATUS==9" element="li" style="display:none;">
+								<input jwcid="@Hidden" name="cond_INFO_STATUS" value="ognl:condition.INFO_STATUS" />
+							</li>
+							<li>
+								<div class="label">发起时间（起）：</div>
+								<div class="value"><input name="cond_START_DATE" jwcid="@DateField" dropDown="true" value="ognl:condition.START_DATE" format="yyyy-MM-dd" /></div>
+							</li>
+							<li>
+								<div class="label">发起时间（止）：</div>
+								<div class="value"><input name="cond_END_DATE" jwcid="@DateField" dropDown="true" value="ognl:condition.END_DATE" format="yyyy-MM-dd" /></div>
+							</li>
+							<li>
+								<div class="label">订单号：</div>
+								<div class="value"><input name="cond_IBSYSID" jwcid="@TextField"  value="ognl:condition.IBSYSID"  /></div>
+							</li>
+							<li>
+								<div class="label">集团编码：</div>
+								<div class="value"><input name="cond_GROUP_ID" jwcid="@TextField"  value="ognl:condition.GROUP_ID" /></div>
+							</li>
+							<li>
+								<div class="label">集团名称：</div>
+								<div class="value"><input name="cond_CUST_NAME" jwcid="@TextField"  value="ognl:condition.CUST_NAME" /></div>
+							</li>
+							<li >
+								<div class="label">客户经理姓名：</div>
+								<div class="value">
+									<span class="e_mix">
+									
+										<input type="text" id="POP_CONTACTOR_ID" name="POP_CONTACTOR_ID" 
+											   jwcid="@TextField" value="" readOnly = "true"/>
+										<input type="hidden" id="CONTACTOR_ID" name="CONTACTOR_ID" value=""/> 
+										<button class="e_button-blue" ontap="openStaffPopup('CONTACTOR_ID');">
+											<span class="e_ico-search"></span>
+										</button>
+									</span>
+								</div>
+							</li>
+							<li>
+								<div class="label">待办关键字：</div>
+								<div class="value"><input jwcid="@Select" name="cond_INFO_KEYWORDS" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('INFO_KEYWORDS')" value="ognl:condition.INFO_KEYWORDS" textField="DATA_NAME" valueField="DATA_ID" /></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue" type="button" ontap="queryWorkList(); hidePopup('popup');">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 员工组件 开始 -->
+<div jwcid="@icsserv:StaffPopup" name="STAFF_POPUP" ></div>
+<!-- 员工组件 结束 -->
+</body>

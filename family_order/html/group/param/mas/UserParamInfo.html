@@ -1,0 +1,462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/group/param/mas/UserParamInfo.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div id="adcServicParamsForm_pam">
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-2">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+				<span class="e_select"><span><span>
+		   	    <select jwcid="@Select" name="pam_OPER_STATE" id="pam_OPER_STATE"  addDefault="false"
+		   	    	source="ognl:pageutil.getStaticList('TD_M_OPER_NEW')"
+	                textField="DATA_NAME" valueField="DATA_ID" 	value="ognl:platsvcparam.OPER_STATE" desc="操作类型"  nullable="no" onchange="setStatetype()"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">当前服务状态：</span>
+				<span class="e_select"><span><span>
+           		<select jwcid="@Select" name="pam_PLAT_SYNC_STATE" id="pam_PLAT_SYNC_STATE" addDefault="false" disabled="true"
+           			source="ognl:pageutil.getStaticList('GRP_PLAT_SYNC_STATE')"
+           			textField="DATA_NAME" valueField="DATA_ID" value="ognl:platsvcparam.PLAT_SYNC_STATE" desc="当前服务状态"   />
+				</span></span></span>
+			</li>
+
+			<li class="li">
+				<span class="label"><span class="e_required">企业代码：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="pam_RSRV_STR4" id="pam_RSRV_STR4"
+						value="ognl:platsvcparam.RSRV_STR4"  disabled="true" desc="企业代码" />
+				</span></span>
+			</li>
+
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+
+	<!-- 分页标签 开始 -->
+    <div jwcid="mytab@Tabset" >
+
+		<!-- 服务平台信息 开始 -->
+		<div jwcid="@TabsetContent" id ="PlatSvcParamtableSet" title="服务平台信息">
+			<!-- 表单 开始 -->
+			<div class="c_scroll c_scroll-form-10">
+				<div id="platsvcparamtable" class="c_form c_form-label-10 c_form-col-2">
+					<ul class="ul">
+
+					<div jwcid="servpart@Part" id= "servpart" element="div"  style="display:none">
+						<li class="li">
+							<span class="label"><span class="e_required">预占的服务代码：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_SERVICE_CODE" id="pam_SERVICE_CODE"
+								   value="ognl:platsvcparam.SERVICE_CODE" desc="预占的服务代码" />
+							</span></span>
+						</li>
+					</div>
+
+						<li class="li">
+							<span class="label"><span class="e_required">EC 基本接入号属性：</span></span>
+							<span class="e_select"><span><span>
+							<select jwcid="@Select" name="pam_EC_BASE_IN_CODE_A" id="pam_EC_BASE_IN_CODE_A"  disabled="true"
+							 source="ognl:pageutil.getStaticList('BIZ_IN_CODE_A')"  textField="DATA_NAME" valueField="DATA_ID"
+								   value="ognl:platsvcparam.EC_BASE_IN_CODE_A" desc="EC 基本接入号属性"  nullable="no" />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">EC基本接入号：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_EC_BASE_IN_CODE" id="pam_EC_BASE_IN_CODE"  disabled="true"
+								   value="ognl:platsvcparam.EC_BASE_IN_CODE" desc="EC基本接入号" onchange="ecBaseInCodeChange()" nullable="no" />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">服务代码：</span></span>
+								<span  class="e_input" id="BIZ_IN_CODE"  style="display:none">
+									<input type="text" jwcid="@TextField" name="pam_BIZ_IN_CODE" id="pam_BIZ_IN_CODE"
+										 value="ognl:platsvcparam.BIZ_IN_CODE" 	title="服务代码校验" nullable="no" />
+								</span>
+								<span class="e_elements e_elements-col-2" id="SI_BASE_IN_CODE" style="display:block">
+									 <span class=""><span>
+									      <input type="text" jwcid="@TextField" name="svrCodeHead" id="svrCodeHead" disabled="true" style="width:120px;"
+											value="ognl:platsvcparam.svrCodeHead" title="服务代码头" nullable="no" /></span></span>
+									<span class=""><span>
+										  <input type="text" jwcid="@TextField"  name="svrCodeTail" id="svrCodeTail" style="width:30px;"
+											value="ognl:platsvcparam.svrCodeTail"  desc="服务代码尾" nullable="yes" /></span></span>
+										<!--
+										  <a href="#nogo" class="e_button e_button-left"  onclick="createBizCodeExtend()"><i class="e_ico-add"></i><span>生成</span></a>
+										 -->
+								</span>
+
+						</li>
+
+						<li class="li">
+							<span class="label">短信上行访问码：</span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_MO_ACCESS_NUM" id="pam_MO_ACCESS_NUM" disabled="true"
+							value="ognl:platsvcparam.MO_ACCESS_NUM" desc="短信上行访问码"  />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">业务代码：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_BIZ_CODE" id="pam_BIZ_CODE"
+							value="ognl:platsvcparam.BIZ_CODE" desc="业务代码" nullable="no"  />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">业务名称：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_BIZ_NAME" id="pam_BIZ_NAME"
+								value="ognl:platsvcparam.BIZ_NAME" desc="业务名称" nullable="no" />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label">mas服务账户名：</span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_MAS_ID" id="pam_MAS_ID"   onkeyup="lengthLimit(this,14);"
+							value="ognl:platsvcparam.MAS_ID" desc="mas服务账户名"  />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">管理员手机号码：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_ADMIN_NUM" id="pam_ADMIN_NUM"
+							value="ognl:platsvcparam.ADMIN_NUM" desc="管理员手机号码"  nullable="no" />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">业务属性：</span></span>
+							<span class="e_select"><span><span>
+     						    <select jwcid="@Select" name="pam_BIZ_ATTR" id="pam_BIZ_ATTR"  addDefault="false"  onchange="bizattrChanged()"
+     						    source="ognl:pageutil.getStaticList('TD_M_BIZBLACKWHITE')"
+     							textField="DATA_NAME" valueField="DATA_ID" value="ognl:platsvcparam.BIZ_ATTR" desc="业务属性" nullable="no"  />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">业务种类：</span></span>
+							<span class="e_select"><span><span>
+     						    <select jwcid="@Select" name="pam_BIZ_TYPE_CODE" id="pam_BIZ_TYPE_CODE"  addDefault="false" disabled="true"
+     						    source="ognl:pageutil.getStaticList('GRP_PLAT_BIZ_TYPE_CODE')"
+     							textField="DATA_NAME" valueField="DATA_ID" value="ognl:platsvcparam.BIZ_TYPE_CODE" desc="业务种类" nullable="no"  />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">业务状态：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="pam_BIZ_STATUS" id="pam_BIZ_STATUS"  addDefault="false"
+								source="ognl:pageutil.getStaticList('TD_M_BIZSTATUS')"
+    							textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.BIZ_STATUS" desc="业务状态" nullable="no"/>
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">访问模式：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="pam_ACCESS_MODE" id="pam_ACCESS_MODE" addDefault="false"  disabled="true"
+									source="ognl:pageutil.getStaticList('PLAT_ACCESS_MODE')"
+									textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.ACCESS_MODE" desc="访问模式" nullable="no"/>
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">计费类型：</span></span>
+							<span class="e_select"><span><span>
+	       						<select jwcid="@Select" name="pam_BILLING_TYPE" id="pam_BILLING_TYPE"  addDefault="false" disabled="true"
+	       							source="ognl:pageutil.getStaticList('TD_M_CHARGETYPE')"
+	       							textField="DATA_NAME" valueField="DATA_ID" value="ognl:platsvcparam.BILLING_TYPE" desc="计费类型" nullable="no" olddisabled="no"  onchange="chargeTypeChanged()"  />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">单价：</span></span>
+						     <span class="e_elements">
+							  	<span class="e_label e_label-right"><span>人民币分</span></span>
+							  	<span class="e_input e_input-left"><span>
+									<input type="text" jwcid="@TextField" name="pam_PRICE" id="pam_PRICE"
+										value="ognl:platsvcparam.PRICE" desc="单价" datatype="pinteger" onchange="chargePrice()"  nullable="no"/>
+							</span></span>
+							</span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">业务接入号鉴权方式：</span></span>
+							<span class="e_select"><span><span>
+  							    <select jwcid="@Select" name="pam_AUTH_CODE" id="pam_AUTH_CODE" addDefault="false"
+  							     source="ognl:pageutil.getStaticList('TD_M_AUTH_CODE')"
+  								 textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.AUTH_CODE" desc="业务接入号鉴权方式" nullable="no"/>
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label">限制下发次数：</span>
+							<span class="e_elements">
+								<select id="pam_DELIVER_NUM" name="pam_DELIVER_NUM" jwcid="@Flip" value="ognl:platsvcparam.DELIVER_NUM"
+										desc="限制下发次数" minsize="0" nullable="no" readonly="false"/>
+							</span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">预付费标记：</span></span>
+							<span class="e_select"><span><span>
+          						<select jwcid="@Select" name="pam_PRE_CHARGE" id="pam_PRE_CHARGE" addDefault="false" disabled="true"
+									source="ognl:pageutil.getStaticList('TD_M_PRECHARGETAG')"
+									textField="DATA_NAME" valueField="DATA_ID"
+            				        value="ognl:platsvcparam.PRE_CHARGE" desc="预付费标记" nullable="no"  />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="e_tip">0为不限制</span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">计费模式：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="pam_BILLING_MODE" id="pam_BILLING_MODE" addDefault="false"
+									source="ognl:pageutil.getStaticList('PLAT_BILLINGMODE')"
+									textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.BILLING_MODE" desc="计费模式：" nullable="no"/>
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">每天最大短信数：</span></span>
+								<span class="e_elements">
+								<select id="pam_MAX_ITEM_PRE_DAY" name="pam_MAX_ITEM_PRE_DAY" jwcid="@Flip" value="ognl:platsvcparam.MAX_ITEM_PRE_DAY"
+										desc="每天最大短信数" minsize="1" nullable="no" readonly="false" onfocusout="smsLimitCounCheck();"/>
+							   </span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">每月最大短信数：</span></span>
+								<span class="e_elements">
+								<select id="pam_MAX_ITEM_PRE_MON" name="pam_MAX_ITEM_PRE_MON" jwcid="@Flip" value="ognl:platsvcparam.MAX_ITEM_PRE_MON"
+										desc="每月最大短信数" minsize="1" nullable="no" readonly="false" onfocusout="smsLimitCounCheck();" />
+							   </span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">短信正文签名：</span></span>
+							<span class="e_select"><span><span>
+      						   	<select  jwcid="@Select" name="pam_IS_TEXT_ECGN" id="pam_IS_TEXT_ECGN" addDefault="false"
+      						    source="ognl:pageutil.getStaticList('GRP_IS_TEXT_ECGN')"
+        						textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.IS_TEXT_ECGN"  desc="短信正文签名" />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">签名语言：</span></span>
+							<span class="e_select"><span><span>
+      							<select jwcid="@Select" name="pam_DEFAULT_ECGN_LANG" id="pam_DEFAULT_ECGN_LANG" addDefault="false"
+									source="ognl:pageutil.getStaticList('TD_M_DEFAULTECGNLANG')"
+									textField="DATA_NAME" valueField="DATA_ID"
+        							value="ognl:platsvcparam.DEFAULT_ECGN_LANG" desc="签名语言" nullable="no"  />
+							</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">中文签名：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_TEXT_ECGN_ZH" id="pam_TEXT_ECGN_ZH"
+									onfocusout="value=value.replace(/[&\*\+\.\[\]%\$\^\/\?\{}\|\\#@!~]/g,'');ischinese();"
+           						    value="ognl:platsvcparam.TEXT_ECGN_ZH" desc="中文签名"  nullable="no"
+           						    textEcgnClass="ognl:checkInfo.GRP_ECGN_SIZE_CLASS" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">英文签名：</span></span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField"  name="pam_TEXT_ECGN_EN" id="pam_TEXT_ECGN_EN"
+									onfocusout="value=value.replace(/[^A-Za-z0-9_\s]/g,'')"
+           							maxsize="36" minsize="4" value="ognl:platsvcparam.TEXT_ECGN_EN" desc="英文签名" nullable="no" />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label">业务优先级：</span>
+							<span class="e_select"><span><span>
+        						  <select jwcid="@Select" name="pam_BIZ_PRI" id="pam_BIZ_PRI" addDefault="false"
+        						    source="ognl:pageutil.getStaticList('PLAT_GRP_BIZ_PRI')"
+        						  	textField="DATA_NAME" valueField="DATA_ID" value="ognl:platsvcparam.BIZ_PRI" desc="业务优先级"  />
+							</span></span></span>
+						</li>
+
+						<li class="li">
+							<span class="label">业务方法描述：</span>
+							<span class="e_input"><span>
+							 <input type="text" jwcid="@TextField" name="pam_USAGE_DESC" id="pam_USAGE_DESC" value="ognl:platsvcparam.USAGE_DESC" desc="业务方法描述" />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label">业务的介绍网址：</span>
+							<span class="e_input"><span>
+							 <input type="text" jwcid="@TextField" name="pam_INTRO_URL" id="pam_INTRO_URL" 	 value="ognl:platsvcparam.INTRO_URL" desc="业务的介绍网址" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">EC Porvision的URL：</span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" name="pam_CS_URL" id="pam_CS_URL" value="ognl:platsvcparam.CS_URL" desc="EC Porvision的URL" />
+							</span></span>
+						</li>
+
+						<li class="li">
+							<span class="label"><span class="e_required">客户等级：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="pam_RSRV_TAG2" id="pam_RSRV_TAG2" addDefault="false"  disabled="true"
+									source="ognl:pageutil.getStaticList('GRP_PLAT_RSRV_TAG2')"
+									textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.RSRV_TAG2" desc="客户等级：" nullable="no" olddisabled="no"/>
+							</span></span></span>
+						</li>
+
+						<div>
+						<li class="li">
+							<span class="label">不允许下发开始时间1：</span>
+							<span class="e_input"><span>
+								<input jwcid="@DateField" name="pam_FORBID_START_TIME_A" id="pam_FORBID_START_TIME_A" maxName="pam_FORBID_END_TIME_A" value="ognl:platsvcparam.FORBID_START_TIME_A"
+								format="HHmmss" desc="不允许下发开始时间1"  />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发结束时间1：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_END_TIME_A" id ="pam_FORBID_END_TIME_A"  minName="pam_FORBID_START_TIME_A" maxName="pam_FORBID_START_TIME_B" value="ognl:platsvcparam.FORBID_END_TIME_A"
+						         format="HHmmss" desc="不允许下发结束时间1"/>
+								</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发开始时间2：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_START_TIME_B" id ="pam_FORBID_START_TIME_B" minName="pam_FORBID_END_TIME_A" maxName="pam_FORBID_END_TIME_B" value="ognl:platsvcparam.FORBID_START_TIME_B"
+						         format="HHmmss" desc="不允许下发开始时间2"/>
+								</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发结束时间2：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_END_TIME_B" id ="pam_FORBID_END_TIME_B"  minName="pam_FORBID_START_TIME_B" maxName="pam_FORBID_START_TIME_C" value="ognl:platsvcparam.FORBID_END_TIME_B"
+						         format="HHmmss" desc="不允许下发结束时间2"/>
+								</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发开始时间3：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_START_TIME_C" id ="pam_FORBID_START_TIME_C"  minName="pam_FORBID_END_TIME_B" maxName="pam_FORBID_END_TIME_C" value="ognl:platsvcparam.FORBID_START_TIME_C"
+						         format="HHmmss" desc="不允许下发开始时间3"/>
+								</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发结束时间3：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_END_TIME_C" id ="pam_FORBID_END_TIME_C"  minName="pam_FORBID_START_TIME_C" maxName="pam_FORBID_START_TIME_D"  value="ognl:platsvcparam.FORBID_END_TIME_C"
+						         format="HHmmss" desc="不允许下发结束时间3"/>
+								</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发开始时间4：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_START_TIME_D" id ="pam_FORBID_START_TIME_D"  minName="pam_FORBID_END_TIME_C" maxName="pam_FORBID_END_TIME_D"  value="ognl:platsvcparam.FORBID_START_TIME_D"
+						         format="HHmmss" desc="不允许下发开始时间4"/>
+								</span></span>
+						</li>
+						<li class="li">
+							<span class="label">不允许下发结束时间4：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@DateField" name="pam_FORBID_END_TIME_D" id ="pam_FORBID_END_TIME_D"  minName="pam_FORBID_START_TIME_D"  value="ognl:platsvcparam.FORBID_END_TIME_D"
+						         format="HHmmss" desc="不允许下发开始时间4"/>
+								</span></span>
+						</li>
+
+							<li class="li">
+								<span class="label"><span class="e_required">业务类型：</span></span>
+								<span class="e_select"><span><span>
+	  							    <select jwcid="@Select" name="pam_SERVICE_TYPE" id="pam_SERVICE_TYPE" addDefault="true"
+	  							    source="ognl:pageutil.getStaticList('TD_M_SERVICE_TYPE')" 
+	  								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.SERVICE_TYPE" desc="业务类型" nullable="no"/>
+								</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">白名单二次确认：</span></span>
+								<span class="e_select"><span><span>
+	  							    <select jwcid="@Select" name="pam_WHITE_TOWCHECK" id="pam_WHITE_TOWCHECK" addDefault="true"
+	  							    source="ognl:pageutil.getStaticList('TD_M_WHITE_TOWCHECK')"
+	  								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.WHITE_TOWCHECK" desc="白名单二次确认" nullable="no"/>
+								</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">模板短信管理：</span></span>
+								<span class="e_select"><span><span>
+	  							    <select jwcid="@Select" name="pam_SMS_TEMPALTE" id="pam_SMS_TEMPALTE" addDefault="true"
+	  							    source="ognl:pageutil.getStaticList('TD_M_SMS_TEMPALTE')"
+	  								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.SMS_TEMPALTE" desc="模板短信管理" nullable="no"/>
+								</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">端口类别：</span></span>
+								<span class="e_select"><span><span>
+	  							    <select jwcid="@Select" name="pam_PORT_TYPE" id="pam_PORT_TYPE" addDefault="true"
+	  							    source="ognl:pageutil.getStaticList('TD_M_PORT_TYPE')"
+	  								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.PORT_TYPE" desc="端口类别" nullable="no"/>
+								</span></span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">是否使用mas服务器：</span></span>
+								<span class="e_select"><span><span>
+	  							    <select jwcid="@Select" name="pam_IS_MAS_SERV" id="pam_IS_MAS_SERV" addDefault="true"
+	  							    source="ognl:pageutil.getStaticList('GRP_IS_MAS_SERV')"
+	  								textField="DATA_NAME" valueField="DATA_ID"  value="ognl:platsvcparam.IS_MAS_SERV" desc="是否使用mas服务器" nullable="no"/>
+								</span></span></span>
+							</li>
+                        </div>
+					</ul>
+				</div>
+			</div>
+			<!-- 表单 结束 -->
+		</div>
+		<!-- 服务平台信息 结束 -->
+
+	</div>
+	<!-- 分页标签 结束 -->
+
+	<!-- 提交 开始 -->
+   	<div class="c_submit">
+	    <button class="e_button-page-ok" type="button" value="确定" id="bt_ok" name="bt_ok" desc="确定"  onclick="setData(this);"><i></i><span>确定</span></button>
+	    <button class="e_button-page-cancel" type="button" value="取消" id="bt_canlet" name="bt_canlet" desc="取消" onclick="setCancleData(this);"><i></i><span>取消</span></button>
+	</div>
+	<!-- 提交 结束 -->
+<input jwcid="@Hidden" name="ITEM_INDEX" value="ognl:itemIndex"/>
+<input jwcid="@Hidden" name="SERVICE_ID" value="ognl:serviceId"/>
+<input jwcid="@Hidden" name="HASMODIFYPRV" value="ognl:hasModifyPrv"/>
+<input jwcid="@Hidden" name="pam_MODIFY_TAG" value="ognl:platsvcparam.MODIFY_TAG"/>
+<input jwcid="@Hidden" name="CANCLE_FLAG" value="ognl:cancleFlag"/>
+<input jwcid="@Hidden" name="pam_START_DATE" value="ognl:platsvcparam.START_DATE"/>
+<input jwcid="@Hidden" name="PARAM_VERIFY_SUCC" value="ognl:paramVerifySucc"/>
+<input jwcid="@Any"    name="GRP_USER_EPARCHYCODE" id="GRP_USER_EPARCHYCODE" value="ognl:grpUserEparchyCode" style="display:none"/>
+<input jwcid="@Any"    name="pam_C_LENGTH" id='pam_C_LENGTH' value="ognl:platsvcparam.C_LENGTH" style="display:none"/>
+<input jwcid="@Any"    name="pam_SVR_CODE_HEAD" id='pam_SVR_CODE_HEAD' value="ognl:platsvcparam.SVR_CODE_HEAD" style="display:none"/>
+
+<input jwcid="@Any"    name="CUST_INFO_RSRV_STR8"  id="CUST_INFO_RSRV_STR8" value="ognl:groupDate.RSRV_STR8" style="display:none"/>
+<input jwcid="@Any"    name="CUST_INFO_RSRV_STR3"  id="CUST_INFO_RSRV_STR3" value="ognl:groupDate.RSRV_STR3" style="display:none"/>
+<input jwcid="@Any"    name="CLASS_ID"         id="CLASS_ID"       value="ognl:groupDate.CLASS_ID"     style="display:none"/>
+<input jwcid="@Any"    name="GROUP_MGR_SN"     id="GROUP_MGR_SN"   value="ognl:groupDate.GROUP_MGR_SN" style="display:none"/>
+
+</div>
+</body>
+<script type="text/javascript">
+$(document).ready(
+	function(){loadUserParamInfo();}
+);
+</script>
+</html>

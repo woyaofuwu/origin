@@ -1,0 +1,1 @@
+UPDATE ts_a_bill_rc SET bill_pay_tag='0',update_time=to_date(:UPDATE_TIME,'YYYY/MM/DD HH24:MI:SS'),update_staff_id=:UPDATE_STAFF_ID,update_depart_id=:UPDATE_DEPART_ID WHERE acct_id = :ACCT_ID AND partition_id = :PARTITION_ID AND user_id = :USER_ID AND bill_id = :BILL_ID

@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>协助处理请求查询</title>
+<script language="javascript">
+<!--
+function isTel(str){
+       var reg=/^([0-9]|[\-])+$/g ;
+       if(str.length!=11&&str.length!=13){//增加物联网手机号码长度 13位
+        return false;
+       }
+       else{
+         return reg.exec(str);
+       }
+}
+function AssistRequestHasten()
+{	
+    if($("#cond_IPHONENUM").val()!=""){
+	    if(!isTel($("#cond_IPHONENUM").val()))
+		{
+			alert("手机号码格式不正确，请重新输入！");
+			return false;
+		}
+	}
+	//查询条件校验
+	if(!$.validate.verifyAll("submitCondPart"))
+	{
+		return false;
+	}
+	$.beginPageLoading("正在处理数据...");
+	//播记录查询
+	$.ajax.submit('seqPart,submitCondPart', 'AssistRequestHasten', null, 'submitCondPart', function(data)
+	{
+		MessageBox.alert("提示","操作成功！",function(btn)
+		{
+			if(btn=="ok")
+			{
+				window.location.href = window.location.href;
+			}
+			setPopupReturnValue('','',true);
+		});
+		$.endPageLoading();
+	},
+	function(error_code,error_info)
+	{
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+function AssistRequestArchival()
+{   
+    if($("#cond_IPHONENUM").val()!=""){
+	    if(!isTel($("#cond_IPHONENUM").val()))
+		{
+			alert("手机号码格式不正确，请重新输入！");
+			return false;
+		}
+	}
+    //查询条件校验
+	if(!$.validate.verifyAll("submitCondPart"))
+	{
+		return false;
+	}
+	$.beginPageLoading("正在处理数据...");
+	//播记录查询
+	$.ajax.submit('seqPart,submitCondPart', 'AssistRequestArchival', null, 'submitCondPart', function(data)
+	{
+		MessageBox.alert("提示","操作成功！",function(btn)
+		{
+			if(btn=="ok")
+			{
+				window.location.href = window.location.href;
+			}
+			setPopupReturnValue('','',true);
+		});
+		$.endPageLoading();
+	},
+	function(error_code,error_info)
+	{
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+-->
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">展示区</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="seqPart@Part" element="div">
+		<input jwcid="@Hidden" id="cond_INDICTSEQ" name="cond_INDICTSEQ" value="ognl:info.INDICTSEQ" />
+	</div>
+	<span jwcid="@Conditional" condition="ognl:'RECORD'.equals(info.BUSYTAG)">
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-8" jwcid="submitCondRPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>服务请求标识：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert" value="ognl:info.INDICTSEQ" desc="服务请求标识" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>协助处理请求状态：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert" value="ognl:info.STATUS" desc="协助处理请求状态" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>当前环节：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert"  value="ognl:info.CURRENTNODE" desc="当前环节" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>处理部门：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert"  value="ognl:info.HANDLINGDEPT" desc="处理部门" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>处理人：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert"  value="ognl:info.HANDLINGSTAFF" desc="处理人" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>处理人联系电话：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert"  value="ognl:info.STAFFCONTACTPHONE" desc="处理人联系电话" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>工单交易日志：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert"  value="ognl:info.LOGLIST" desc="工单交易日志" disabled="disabled"/>
+				</span></span> 
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" class="e_button-form" onclick="closePopupPage(true);"><i class="e_ico-cancel"></i><span>返回</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	</span>
+	<span jwcid="@Conditional" condition="ognl:!'RECORD'.equals(info.BUSYTAG)">
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-8" jwcid="submitCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>服务请求标识：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert" value="ognl:info.INDICTSEQ" desc="服务请求标识" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>业务类别：</span></span>
+				<span class="e_input"><span>
+				    <span jwcid="@Insert" value="ognl:info.SERVICE_TYPE" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>协助处理请求简述：</span></span>
+				<span class="e_input"><span>
+					<span jwcid="@Insert" value="ognl:info.ASSISTREQ_TITLE" disabled="disabled"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>联系电话：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_PHONENUM" id="cond_IPHONENUM" value=""  desc="联系电话" nullable="yes" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">
+				<span jwcid="@Conditional" condition="ognl:'HASTEN'.equals(info.BUSYTAG)">催办意见：</span>
+				<span jwcid="@Conditional" condition="ognl:'ARCHIVAL'.equals(info.BUSYTAG)">归档意见：</span></span></span>
+				<span class="e_textarea">
+				<span class="e_textareaTop"><span></span></span>
+				<span class="e_textareaContent">
+					<textarea type="text" jwcid="@TextArea" id="cond_HANDLINGCOMMENT" name="cond_HANDLINGCOMMENT" value="" nullable="no" rows="4" maxsize="10000" style="height:50px;" desc="催办意见" />
+				</span>
+				<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+	<span jwcid="@Conditional" condition="ognl:'HASTEN'.equals(info.BUSYTAG)">
+		<button class="e_button-page-ok" onclick="AssistRequestHasten();"><i class="e_ico-ok"></i><span>催办</span></button>
+	</span>
+	<span jwcid="@Conditional" condition="ognl:'ARCHIVAL'.equals(info.BUSYTAG)">
+		<button class="e_button-page-ok" onclick="AssistRequestArchival();"><i class="e_ico-ok"></i><span>归档</span></button>
+	</span>
+	</div>
+	<!-- 提交 结束 -->
+	</span>
+	
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

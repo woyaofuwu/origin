@@ -1,0 +1,2 @@
+INSERT INTO td_s_commpara(subsys_code,param_attr,param_code,param_name,para_code1,para_code2,para_code3,para_code4,para_code5,para_code6,para_code7,para_code23,para_code24,para_code25,start_date,end_date,eparchy_code,remark,update_staff_id,update_depart_id,update_time)
+ VALUES(:SUBSYS_CODE,:PARAM_ATTR,:PARAM_CODE,:PARAM_NAME,:PARA_CODE1,:PARA_CODE2,:PARA_CODE3,:PARA_CODE4,:PARA_CODE5,:PARA_CODE6,:PARA_CODE7,:PARA_CODE23,:PARA_CODE24,:PARA_CODE25,TO_DATE(:START_DATE,'YYYY-MM-DD'),TO_DATE('2050-12-31','YYYY-MM-DD'),'ZZZZ',:REMARK,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,SYSDATE)

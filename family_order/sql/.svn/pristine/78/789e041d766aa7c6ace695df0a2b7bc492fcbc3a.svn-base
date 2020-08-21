@@ -1,0 +1,3 @@
+INSERT INTO tf_f_user_other(partition_id,user_id,rsrv_value_code,rsrv_value,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,
+rsrv_str9,rsrv_str10,staff_id,depart_id,trade_id,start_date,end_date,update_time,update_staff_id,update_depart_id,remark,inst_id)
+values(mod(to_number(:USER_ID),10000),:USER_ID,:RSRV_VALUE_CODE,:RSRV_VALUE,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:RSRV_STR6,:RSRV_STR7,:RSRV_STR8,:RSRV_STR9,:RSRV_STR10,:STAFF_ID, :DEPART_ID, to_number(:TRADE_ID),to_date(:START_DATE,'yyyy-mm-dd hh24:mi:ss'),to_date(:END_DATE,'yyyy-mm-dd hh24:mi:ss'),sysdate,:UPDATE_STAFF_ID, :UPDATE_DEPART_ID,:REMARK,TO_NUMBER(:INST_ID))

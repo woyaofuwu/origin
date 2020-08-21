@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>骚扰电话监控信息查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/monitorinfo/scripts/queryphonemonitorinfo.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+		<div class="text">骚扰电话监控信息查询</div>
+	</div>
+	
+	<div jwcid="QueryCondPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="HeadQueryPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询方式：</span></span>
+					<span class="e_select"><span><span>
+               		<select jwcid="@Select" name="QUERY_TYPE" id="QUERY_TYPE"
+							source="ognl:pageutil.getStaticList('QUERYHARASS_QUERYTYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="QUERY_TYPE"
+                			value="1"
+                			onchange="changeQueryType()"
+							desc="查询方式"
+                			nullable="no"
+                       />
+                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">归属省份：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PROV_CODE" id="PROV_CODE"
+							source="ognl:pageutil.getStaticList('BAD_PROVINCE_CODE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="PROV_CODE"
+                			value="ognl:editInfo.PROV_CODE"
+                			default="1"
+							desc="归属省份"
+                       />
+                </span></span></span>
+				</li>
+				<li class="li"></li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="NormalQueryPart@Part" style="display:''">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">开始号码：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="START_SERIAL_NUMBER" name="START_SERIAL_NUMBER"  nullable="no"
+						desc="开始号码"	value="ognl:editInfo.START_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="END_SERIAL_NUMBER" name="END_SERIAL_NUMBER"  nullable="no"
+						desc="结束号码"	value="ognl:editInfo.END_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="DayQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_REPORT" name="DATE_REPORT"  
+						desc="查询日期"	value="ognl:editInfo.DATE_REPORT" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label">违规原因：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REASON_CODE_DAY" id="REASON_CODE_DAY" 
+						source="ognl:pageutil.getStaticList('HARASSPHONE_REASONCODE')" 
+						value="ognl:editInfo.REASON_CODE_DAY" textField="DATA_NAME" valueField="DATA_ID"  desc="违规原因"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">处理结果：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PROCESS_TAG_DAY" id="PROCESS_TAG_DAY" 
+						source="ognl:pageutil.getStaticList('HARASSPHONE_PROCESSTAG')" 
+						value="ognl:editInfo.PROCESS_TAG_DAY" textField="DATA_NAME" valueField="DATA_ID"  desc="处理结果"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="TimeQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_START" name="DATE_START"  
+						desc="查询日期"	value="ognl:editInfo.DATE_START" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">到：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="DATE_END" name="DATE_END"  
+						desc="结束日起"	value="ognl:editInfo.DATE_END" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label">违规原因：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REASON_CODE_TIME" id="REASON_CODE_TIME" 
+						source="ognl:pageutil.getStaticList('HARASSPHONE_REASONCODE')" 
+						value="ognl:editInfo.REASON_CODE_TIME" textField="DATA_NAME" valueField="DATA_ID"  desc="违规原因"  titleField="DATA_NAME" />
+					</span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="SummaryQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_START_SUMMARY" name="DATE_START_SUMMARY"  
+						desc="查询日期"	value="ognl:editInfo.DATE_START_SUMMARY" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">到：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="DATE_END_SUMMARY" name="DATE_END_SUMMARY"  
+						desc="结束日期"	value="ognl:editInfo.DATE_END_SUMMARY" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<div class="c_submit">
+		<div class="right">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryMonitorInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="remarkPart">
+	<div class="c_title">
+        <span class="text">监控信息</span>
+        <div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92108"
+						  config="export/monitorinfo/HarassPhoneList.xml" fileName="骚扰电话监控信息列表" beforeAction="exportBeforeAction"
+						 cond="QueryCondPart" params="ognl:'TEST_PARAM=5&&STAFF_ID=' + getVisit().getStaffId()"/>
+		</div>
+    </div>
+    <!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10" jwcid="MonitorInfoPart@Part" id="MonitorInfoPart" style="display:''">
+		<div class="c_table">
+			<table jwcid="@Table" id="MonitorInfoTable" name="MonitorInfoTable">
+			<thead>
+				<tr>
+					<th col="INTF_ID">流水号</th>
+					<th col="SERIAL_NUMBER">主叫号码</th>
+					<th col="PROV_CODE">归属省份</th>
+	   				<th col="CITY_CODE">分公司</th>
+	   				<th col="X_CALL_EDMPHONECODE">被叫号码</th>
+					<th col="REASON_CODE">违规原因</th>
+					<th col="PROCESS_TAG">处理结果</th>
+					<th col="MONTH">处理月份</th>
+	 				<th col="IN_TIME">入库时间</th>
+	 				<th col="START_DATE">开始监控时间</th>
+	 				<th col="END_DATE">结束监控时间</th>
+	   				<th col="TRADE_NUMBER">拨号次数</th>
+					<th col="EXEC_TIME">处理时间</th>
+					<th col="AUDIT_STAFF_ID">审核员工</th>
+					<th col="AUDIT_DEPART_ID">审核部门</th>
+	 				<th col="AUDIT_TIME">审核时间</th>
+	 				<th col="REMARK">备注</th>
+				</tr>
+			</thead>
+			<tbody id="MonitorInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.INTF_ID"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', info.PROV_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.X_CALL_EDMPHONECODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HARASSPHONE_REASONCODE', info.REASON_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HARASSPHONE_PROCESSTAG', info.PROCESS_TAG)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.MONTH"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.IN_TIME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.START_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.END_DATE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.EXEC_TIME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.AUDIT_STAFF_ID)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.AUDIT_DEPART_ID)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.AUDIT_TIME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.REMARK"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div class="c_scroll c_scroll-table-10" jwcid="SummaryInfoPart@Part" id="SummaryInfoPart" style="display:none">
+		<div class="c_table">
+			<table jwcid="@Table" id="SummaryInfoTable" name="SummaryInfoTable">
+			<thead>
+				<tr>
+					<th col="TITLE">&nbsp;</th>
+					<th colspan="2" col="INNER">网内</th>
+					<th col="OUTER">网外</th>
+					<th col="TOTAL">总计</th>
+				</tr>
+			</thead>
+			<tbody id="SummaryInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.TITLE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.BS"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.WS"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.WW"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.ZJ"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div class="c_scroll c_scroll-table-10" jwcid="SheetInfoPart@Part" id="SheetInfoPart" style="display:none">
+		<div class="c_table">
+			<table jwcid="@Table" id="SheetInfoTable" name="SheetInfoTable">
+			<thead>
+				<tr>
+					<th col="TITLE">&nbsp;</th>
+					<th col="PROV_CODE">归属省</th>
+					<th col="SERIAL_NUMBER">主叫号码</th>
+					<th col="TRADE_NUMBER">拨号次数</th>
+				</tr>
+			</thead>
+			<tbody id="SummaryInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.TITLE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', info.PROV_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_NUMBER"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

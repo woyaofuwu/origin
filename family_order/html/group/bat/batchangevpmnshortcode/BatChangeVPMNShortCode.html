@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>批量修改集团VPMN成员短号</title>
+<script jwcid="@Script" type="text/javascript" src="../../../js/jcl.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batchangevpmnshortcode/BatChangeVPMNShortCode.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_scroll c_scroll-mix" style="ognl:'height:' + condition.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+
+	<div class="c_title c_title-2">
+		<div class="text">VPMN查询</div>
+	</div>
+	
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">VPMN编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" name="cond_SERIAL_NUMBER" jwcid="cond_SERIAL_NUMBER@TextField" value="ognl:condition.cond_SERIAL_NUMBER" enterAction="qryVpmnUser()" nullable="no" datatype="text" desc="VPMN编码"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="c_title c_title-2">
+		<div class="text">VPMN基本信息</div>
+	</div>
+	
+	<div class="c_form c_form-text c_form-col-2 c_form-label-7" jwcid="vpmnPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">VPMN编码：</span></span>
+				<span class="e_input"><span><input type="text" name="SERIAL_NUMBER" jwcid="SERIAL_NUMBER@TextField" value="ognl:vpmn.SERIAL_NUMBER" disabled="true" nullable="no" desc="VPMN编码"/></span></span>					
+			</li>
+			<li class="li">
+				<span class="label">VPMN名称：</span>
+				<span class="e_input"><span><input type="text" name="VPN_NAME" jwcid="VPN_NAME@TextField" value="ognl:vpmn.VPN_NAME" disabled="true" nullable="no" desc="VPMN名称"/></span></span>					
+			</li>
+		</ul>
+		
+		<input type="hidden" jwcid="@Any" id="GROUP_ID" name="GROUP_ID" value="ognl:vpmn.GROUP_ID" desc="集团客户编码"/>
+		<input type="hidden" jwcid="@Any" id="USER_ID" name="USER_ID" value="ognl:vpmn.USER_ID" desc="VPMN用户标识标识"/>
+	</div>
+	
+	<div class="c_title c_title-2">
+		<div class="text">批量条件</div>
+	</div>
+	
+	<div class="c_form c_form-col-2 c_form-label-7">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">成员角色：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="ROLE_CODE_B" name="ROLE_CODE_B" source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(), 'TD_S_RELATION_ROLE', 'ROLE_CODE_B', 'ROLE_B', 'RELATION_TYPE_CODE', '20')" valueField="ROLE_CODE_B" textField="ROLE_B" nullable="no" addDefault="false" desc="成员角色"></select>
+				</span></span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">短号前缀：</span></span>
+				<span class="e_input"><span>
+					<input type="text" name="SHORT_CODE_PREFIX" jwcid="SHORT_CODE_PREFIX@TextField" value="" onblur="validateShortCodePrefix()" nullable="no" datatype="numeric" maxsize="2" desc="短号前缀"/>
+				</span></span>					
+			</li>
+		</ul>
+	</div>
+	<!-- 凭证信息开始  -->
+    <div class="c_box" jwcid="@Conditional" condition='ognl:condition.MEB_VOUCHER_FILE_SHOW != null && condition.MEB_VOUCHER_FILE_SHOW == "true"'>
+		<div class="c_title">
+			<div class="text">凭证信息</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li col-3">				
+					<span class="label"><span class="e_required">凭证上传：</span></span>
+					<div jwcid="VoucherFilePart@Part">
+						<span class="e_elements">
+						<input jwcid="@Upload"
+								name="MEB_VOUCHER_FILE_LIST"
+								id="MEB_VOUCHER_FILE_LIST"
+								ftpSite="groupserv"
+								filePath="upload/mebattach"
+								fileSize="20"
+								fileTypes="*.*"
+                        		desc="凭证信息" 
+                        		nullable="no"
+							/>
+						</span>
+				    </div>
+				</li>
+                <li class="li">
+	                <span class="label"><span class="e_required">稽核人员：</span></span> 
+	                <span class="e_elements">
+						<button type="button" class="e_button-right"
+							onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+							<i class="e_ico-check"></i><span></span>
+						</button> 
+	                    <span class="e_input e_input-left"><span> <input
+								type="text" jwcid="@TextField"
+								name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+								value=""
+								text="" nullable="no"
+								readonly="true"/>
+						</span></span>
+					</span>
+	            </li>
+			</ul>
+		</div>
+	</div>
+    <!-- 凭证信息结束  -->
+	
+	
+	<div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="setReturnData()"><i></i><span>确定</span></button>
+		<button type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+	</div>
+
+</div></div>
+</body>
+
+</html>

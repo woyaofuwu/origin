@@ -1,0 +1,3 @@
+SELECT to_char(user_id) user_id,vpmn_id,area_code,scp_code,vpmn_type,sub_state,func_tlags,inter_feeindex,out_feeindex,outgrp_feeindex,subgrp_feeindex,pre_ip_no,pre_ip_disc,othor_ip_disc,trans_no,max_close_num,max_num_close,person_maxclose,max_outnum,max_users,to_char(pkg_start_date,'yyyy-mm-dd hh24:mi:ss') pkg_start_date,pkg_type,discount,to_char(limit_fee) limit_fee,zone_max,zonefree_num,to_char(zone_fee) zone_fee,mt_maxnum,aip_id,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5 
+  FROM tf_f_user_vpmn
+ WHERE user_id=TO_NUMBER(:USER_ID)

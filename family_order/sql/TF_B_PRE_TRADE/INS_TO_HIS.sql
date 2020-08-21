@@ -1,0 +1,1 @@
+insert into TF_BH_PRE_TRADE select * from TF_B_PRE_TRADE where SERIAL_NUMBER = :SERIAL_NUMBER and status = '1' and RSRV_STR6 = :RSRV_STR6

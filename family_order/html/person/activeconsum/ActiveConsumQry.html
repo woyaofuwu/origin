@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>推荐套餐查询界面 </title>
+<script jwcid="@Script" src="person/activeconsum/scripts/ActiveConsumQry.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2"> 
+<div class="c_box"> 
+	<div jwcid="CondPart@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+			<li class="li">
+					<span class="label"><span class="e_required">客户号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name ="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="客户号码"  nullable="no"/>
+					</span></span>
+			</li> 
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+		<button type="button" class="e_button-form" id="SearchBtn" onclick="queryListInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		<button type="button" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+		<button type="button" class="e_button-form" id="SendSMSBtn"  onclick="sendConsumSMS();"  disabled=true><i class="e_ico-send"></i><span>推荐短信</span></button>
+		</div> 
+		<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID"/>
+	</div>
+	
+	<div class="c_form c_form-col-3 c_form-label-6"  jwcid="showPart@Part">
+			<ul class="ul">
+				<li class="li col-2">
+					<span class="label"><span class="e_required">原套餐：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "PRODUCT_OLD" id="PRODUCT_OLD" value="ognl:edit.PRODUCT_OLD" desc="原套餐"   datatype="text"  disabled="yes"/> 
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">开始日期：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "STARTDATE_OLD" id="STARTDATE_OLD" value="ognl:edit.STARTDATE_OLD" desc="原套餐开始日期"   datatype="text"  disabled="yes"/> 
+					</span></span>
+				</li>
+				<li class="li col-3">
+					<span class="label"><span class="e_required">推荐套餐：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "PRODUCT_NEW" id="PRODUCT_NEW" value="ognl:edit.PRODUCT_NEW" desc="推荐套餐"   datatype="text"  disabled="yes"/> 
+					</span></span>
+				</li>  
+				<li class="li col-3">
+				<span class="label">描述：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+						<textarea type="text" jwcid="@TextArea" id="DESC" name="DESC" value="ognl:edit.DESC"  disabled="yes" rows="3"   desc="描述" />
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+			</ul> 
+	</div>
+	
+	<div jwcid="ResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="sortedTable">
+	     		<thead>
+		  			<tr>
+		  				<th >序号</th>
+		  				<th col="RSRV_STR1">月份</th>
+		  				<th col="SERIAL_NUMBER">手机号</th>
+		  				<th col="TELE_TIME3">省内市话主叫(分)</th>
+						<th col="TELE_TIME2" >省内拨打国内长途(分)</th>
+						<th col="TELE_TIME1" >国内漫游拨打国内电话(分)</th>
+			      		<th col="SMS_CNT" >发送国内短信(条)</th>
+			      		<th col="GPRS_CNT" >GPRS流量(M)</th>
+			      		<th col="GPRS_SN" >GPRS省内流量(M)</th>
+			      		<th col="GPRS_SJ" >GPRS省际流量(M)</th>
+			      		<th col="WLAN" >WLAN时长(M)</th>
+			      		<th col="ALL_FEE" >总费用(元) </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" /></td> 
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.TELE_TIME3" /></td> 	 
+						<td><span jwcid="@Insert" value="ognl:info.TELE_TIME2" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TELE_TIME1" /></td> 	 
+						<td><span jwcid="@Insert" value="ognl:info.SMS_CNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GPRS_CNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GPRS_SN" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GPRS_SJ" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.WLAN" /></td> 
+						<td><span jwcid="@Insert" value="ognl:info.ALL_FEE" raw="true"/></td>	 
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="CondPart" part="ResultPart" 
+	      listener="qryConsumInfos" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+	<div class="submit e_left">
+		<button type="button" class="e_button-form" id="ConsumBtn" onclick="consum();"><i class="e_ico-refresh"></i><span>推荐套餐</span></button>
+	</div> 
+	
+	<!-- 标题 结束 -->
+	<div class="c_form c_form-col-4 c_form-label-8"  jwcid="editPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">市话主叫：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "TELE_TIME3" id="TELE_TIME3"  value="ognl:edit.TELE_TIME3" desc="市话主叫" maxLength="10" datatype="numeric"  nullable="no"/> 
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">国内长途：</span></span> 
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "TELE_TIME2" id="TELE_TIME2" value="ognl:edit.TELE_TIME2" desc="国内长途" maxLength="10" datatype="numeric"  nullable="no"/> 
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">漫游拨打国内电话：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="TELE_TIME1" name ="TELE_TIME1" value="ognl:edit.TELE_TIME1" desc="漫游拨打国内电话"  maxLength="10" 	datatype="numeric" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">国内短信：</span></span> 
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "SMS_CNT" id="SMS_CNT" value="ognl:edit.SMS_CNT" desc="国内短信" maxLength="8" datatype="text"  nullable="no" disabled="true"/> 
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">GPRS流量：</span></span> 
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "GPRS_CNT" id="GPRS_CNT" value="ognl:edit.GPRS_CNT" desc="流量" maxLength="16" datatype="numeric"  nullable="no"/> 
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">WLAN时长：</span></span> 
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "WLAN" id="WLAN" value="ognl:edit.WLAN" desc="WLAN时长" maxLength="8" datatype="text"  nullable="no" disabled="true"/> 
+					</span></span>
+				</li> 
+				<li class="li">
+					<span class="label"><span class="e_required">费用(元)：</span></span> 
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "ALL_FEE" id="ALL_FEE" value="ognl:edit.ALL_FEE" desc="费用(元)" maxLength="20" datatype="text"  nullable="no" disabled="true" /> 
+					</span></span>
+				</li> 
+			</ul> 
+		</div>
+</div>
+
+</div></div>
+</body>
+</html>

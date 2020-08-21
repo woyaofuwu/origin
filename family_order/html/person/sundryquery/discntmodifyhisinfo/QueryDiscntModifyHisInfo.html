@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>优惠变更历史查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/discntmodifyhisinfo/scripts/QueryDiscntModifyHisInfo.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取优惠变更历史查询无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">优惠变更历史查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li" id="TRADE_CITY_CODE">
+							<span class="label"><span class="e_required">业务区：</span></span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_TRADE_CITY_CODE"  id="cond_TRADE_CITY_CODE" 
+									source="ognl:areas" textField="AREA_NAME" valueField="AREA_CODE"
+									value="ognl:condition.cond_TRADE_CITY_CODE" desc="业务区"  nullable="no" />
+								</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">起始工号：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="cond_START_STAFF_ID" id="cond_START_STAFF_ID" value="ognl:condition.cond_START_STAFF_ID" 
+									 onblur="completeEndStaffId(this, 'cond_END_STAFF_ID');"
+									 onKeyUp="synStaffIdOnkeyup(this, 'cond_END_STAFF_ID');"
+									 desc="起始工号"  maxLength="8" equsize="8" nullable="no" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">终止工号：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="cond_END_STAFF_ID" id="cond_END_STAFF_ID" value="ognl:condition.cond_END_STAFF_ID" 
+									 onKeyUp="inputCtrlForStaff(this)" desc="终止工号"  maxLength="8"  nullable="no" />
+							</span></span>
+						</li>
+                        <li class="li"><span class="label">优惠编码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_DISCNT_CODE" id="cond_DISCNT_CODE"
+									value="ognl:condition.cond_DISCNT_CODE" desc="优惠编码" datatype="numeric" nullable="yes" /></span></span>
+						</li>
+                        <li class="li">
+							<span class="label"><span class="e_required">起始日期：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" desc="起始日期"/>
+								</span></span>
+							</span>
+						 </li>
+						 <li class="li">
+							<span class="label"><span class="e_required">终止日期：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+								    <input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  nullable="no" 
+								    afterAction="chgEndDateSynStartDate(this, 'cond_START_DATE');"
+								    value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" desc="终止日期"/>
+								</span></span>
+							</span>
+						 </li>
+
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryDiscntModifyHisInfo(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100965"
+								  config="export/sundryquery/other/QueryDiscntModifyHisInfo.xml" fileName="优惠变更历史信息" cond=QueryCondPart
+								  params="ognl:'STAFF_ID=' + getVisit().getStaffId()"/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	    <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">号码</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">用户名称</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">业务流水号</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">办理工号</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">办理日期</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">优惠名称</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">办理状态</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">起始时间</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">终止时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.MODIFY_TAG"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>						
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryDiscntModifyHisInfo" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

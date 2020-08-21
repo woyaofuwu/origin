@@ -1,0 +1,2 @@
+INSERT INTO td_m_switch(eparchy_code,switch_id,switch_type_code,switch_name,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:EPARCHY_CODE,:SWITCH_ID,:SWITCH_TYPE_CODE,:SWITCH_NAME,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

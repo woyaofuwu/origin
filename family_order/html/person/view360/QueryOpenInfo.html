@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: NewUserInfo.html,v 1.13 2013/04/28 03:39:30 xiaolu Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>已开业务查询</title>
+<script jwcid="@Script" src="person/view360/scripts/queryopeninfo.js"></script>
+
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+    <div class="c_box">
+	<div class="c_title c_title-2">
+		<div class="text">已开业务查询</div>
+	</div>
+	<div class="c_form c_form-col-4 c_form-label-8" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+                        <li class="li"  id="sn"><span class="label"><span class="e_required">服务号码：</span></span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+									desc="手机号码" datatype="mbphone" maxsize="11" nullable="no"
+									inModeCode="ognl:getVisit().getInModeCode()"/></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryInfo();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+				     </div>
+	</div>
+	
+	<div jwcid="OpenSvcPart@Part"  >
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">扣费业务明细</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-15"><div class="c_table">
+		<table jwcid="@Table" name="OpenSvcTable" id="OpenSvcTable"  sort="true">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th onclick="return sortByBussiness();">业务名称</th>
+					<th onclick="return sortByMoney();">月租（元）</th>
+					<th onclick="return sortByType();">扣费方式</th>
+					<th>按天收取金额（元）</th>
+					<th>目前是否扣取</th>
+					<th>已扣取天数（天）</th>
+					<th>目前扣取金额（元）</th>
+					<th>账目明细</th>
+					<th onclick="return sortByTime();">开始时间</th>
+					<th>结束时间</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+			    <tr jwcid="@Foreach" source="ognl:openInfos" value="ognl:openInfo" index="ognl:rowIndex" element="tr">
+			    	<td><span jwcid="@Insert" value="ognl:rowIndex+1" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:openInfo.BUSINESS_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:openInfo.MONTH_RENT" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:openInfo.RECVE_TYPE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:openInfo.DAY_RECVE_FEE	" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:openInfo.IS_RECV_FEE" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:openInfo.RECVE_DAYS" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:openInfo.RECVE_FEE_SUM" raw="false"/></td>
+               		<td><span jwcid="@Insert" value="ognl:openInfo.ITEM_CONTENT" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', openInfo.START_DATE)" raw="false"/></td>
+               		<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', openInfo.END_DATE)" raw="false"/></td>
+               		<input jwcid="@Hidden" name="TYPE" value="ognl:openInfo.BUSINESS_TYPE" raw="false"/>                        		
+              	</tr> 
+              	<tr jwcid="@Foreach" source="ognl:sumInfos" value="ognl:sumInfo" index="ognl:rowIndex" element="tr">
+			    	<td><span jwcid="@Insert" value="ognl:sumInfo.SUM" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:sumInfo.NUM" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:sumInfo.SUM_MONTH_RENT" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:sumInfo.NUM" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:sumInfo.SUM_DAY_RECVE_FEE	" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:sumInfo.NUM" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:sumInfo.NUM" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:sumInfo.SUM_RECVE_FEE_SUM" raw="false"/></td>
+               		<td><span jwcid="@Insert" value="ognl:sumInfo.NUM" raw="false"/></td>
+               		<td><span jwcid="@Insert" value="ognl:sumInfo.NUM" raw="false"/></td>	               		
+              	</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->	
+	<!--已开业务区域结束-->
+	</div>
+	<!--营销活动明细区域开始-->
+	<div jwcid="SaleInfoPart@Part"  >
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">营销活动明细</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>活动名称  </th>
+					<th>营销包名称  </th>
+					<th>活动说明  </th>
+					<th>共返还（月）</th>
+					<th>目前已返还（月）</th>
+					<th>办理时间  </th>
+					<th>开始时间</th>
+					<th>结束时间  </th>
+				</tr>
+			</thead>
+			<tbody>
+			 	<tr jwcid="@Foreach" source="ognl:saleInfos" value="ognl:saleInfo" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:saleInfo.PRODUCT_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:saleInfo.PACKAGE_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:saleInfo.PACKAGE_DESC" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:saleInfo.MONTHS" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:saleInfo.RETURN_COUNT" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:saleInfo.ACCEPT_DATE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:saleInfo.START_DATE" raw="false"/></td>	
+               		<td><span jwcid="@Insert" value="ognl:saleInfo.END_DATE" raw="false"/></td>	
+               				
+              	</tr> 
+			</tbody>
+		</table>
+	</div></div>
+	</div>
+	<!-- 表格 结束 -->
+	</div>
+	<!--区域结束-->
+	<div jwcid="@Any" style="ognl:getVisit().getInModeCode()==1 ? 'display:none' : 'display:'" >
+	</div>
+<!-- 区域 结束 -->
+</div>
+</div>
+</body>
+</html>

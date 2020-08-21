@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: GroupBbossManage.html,v 1.8 2013/04/27 06:08:46 weixb3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/querygroupinfo/groupinfoquery.js"></script>
+		<script>
+			function onGroupBbossManageBtnSubmitClick(){
+				//查询条件校验
+				if(!$.validate.verifyAll("QueryCondPart")) {
+					return false;
+				}
+				
+				//查询
+				ajaxSubmit('QueryCondPart,infonav', 'qryBBossMeb', null, 'QueryListPart,ctrlInfoPart', 
+					new function(data){
+						$("#ctrlInfoPart").attr("style","display:;");
+				});
+			}
+			
+		</script>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+				<div class="c_box">
+					<div class="c_title">
+						<div class="text">
+							BBOSS成员签约关系订购反馈结果查询
+						</div>
+						<div class="fn">
+							<div class="fn">
+							
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('QueryListPart','BBOSS成员签约关系订购反馈结果查询','60%')">
+								<i class="e_ico-print"></i><span>打印</span>
+							</button>
+								<span jwcid="@Export" 
+									  id="exportFile"
+									  name="exportFile"
+									  serviceName="99102" 
+									  config="export/querygroupinfo/GroupBBossMebQuery.xml" 
+									  params="ognl:condition" 
+									  cond="QueryCondPart"
+									  fileName="BBOSS成员签约关系订购反馈结果查询"
+									  defaultSuffix="xls"
+									  ftpSite="groupserv"
+									  beforeAction="" 
+									  action="" />
+  							</div>
+						</div>
+					</div>
+
+					<!-- 提示区 -->
+					<div class="c_box" jwcid="ctrlInfoPart@Part" id="ctrlInfoPart" style="display: none;">
+						<div class="c_tip">
+							<span jwcid="@Insert" value="ognl:ctrlInfo.strHint" raw="false" />
+						</div>
+					</div>
+
+					<div class="c_form c_form-label-5 c_form-col-3" jwcid="QueryCondPart@Part">
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span class="e_required">查询方式：</span> </span>
+								<span class="e_select"><span><span> <select jwcid="@Select" name="cond_QueryMode" id="cond_QueryMode"
+												source="ognl:pageutil.getStaticList('BBOSS_MEBQUERY')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_QueryMode"
+												desc="查询方式" nullable="no" onchange="javascript:GroupBBossMebQuery()" addDefault="false" /> </span> </span> </span>
+							</li>
+							<li class="li" id="QueryTypeOne">
+								<span class="label"><span class="e_required">手机号码：</span> </span>
+								<span class="e_input"><span> <input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" type="text"
+											value="ognl:condition.cond_SERIAL_NUMBER" desc="手机号码" nullable="no" /> </span> </span>
+							</li>
+							<li class="li" id="QueryTypeTwo" style="display: none">
+								<span class="label"><span class="e_required">集团客户编码：</span> </span>
+								<span class="e_input"><span> <input jwcid="@TextField" id="cond_GROUP_ID" name="cond_GROUP_ID" type="text"
+											value="ognl:condition.cond_GROUP_ID" desc="集团客户编码" /> </span> </span>
+							</li>
+							<li class="li" id="QueryTypeThree" style="display: none">
+								<span class="label"><span class="e_required">集团产品编码：</span> </span>
+								<span class="e_input"><span> <input jwcid="@TextField" id="cond_EC_SERIAL_NUMBER" name="cond_EC_SERIAL_NUMBER" type="text"
+											value="ognl:condition.cond_EC_SERIAL_NUMBER" desc="集团产品编码" /> </span> </span>
+							</li>
+							<li class="li" id="QueryTypeFour" style="display: none">
+								<span class="label"><span class="e_required">订单号：</span> </span>
+								<span class="e_input"><span> <input jwcid="@TextField" id="cond_PRODUCT_ORDER_ID" name="cond_PRODUCT_ORDER_ID" type="text"
+											value="ognl:condition.cond_PRODUCT_ORDER_ID" desc="订单号" /> </span> </span>
+							</li>
+							<li class="li" id="QueryTypeFive" style="display: none">
+								<span class="label"><span class="e_required">订购关系编码：</span> </span>
+								<span class="e_input"><span> <input jwcid="@TextField" id="cond_PRODUCT_OFFER_ID" name="cond_PRODUCT_OFFER_ID" type="text"
+											value="ognl:condition.cond_PRODUCT_OFFER_ID" desc="订购关系编码" /> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label"><span>状态说明：</span> </span>
+								<span class="e_select"><span><span> <select jwcid="@Select" name="cond_STATE" id="cond_STATE"
+												source="ognl:pageutil.getStaticList('BBOSS_ORDER_STATUS')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_STATE"
+												desc="状态说明" /> </span> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label"><span>加入起始时间：</span> </span>
+								<span class="e_input"><span> <input jwcid="@DateField" id="cond_START_DATE" name="cond_START_DATE" type="text"
+											value="ognl:condition.cond_START_DATE" desc="起始时间" /> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label"><span>加入结束时间：</span> </span>
+								<span class="e_input"><span> <input jwcid="@DateField" id="cond_END_DATE" name="cond_END_DATE" type="text"
+											value="ognl:condition.cond_END_DATE" desc="结束时间" /> </span> </span>
+							</li>
+						</ul>
+
+						<div class="submitPlace"></div>
+						<div class="submit">
+							<button class="e_button-form" id="bsubmit" name="bsubmit" onclick="return onGroupBbossManageBtnSubmitClick();">
+								<i class="e_ico-search"></i><span>查询</span>
+							</button>
+						</div>
+					</div>
+
+					<div jwcid="QueryListPart@Part" element="div"  >
+						<div class="c_scroll c_scroll-x c_scroll-table-10" >
+						<div class="c_table">
+							<table jwcid="@Table" name="infoTable">
+								<thead>
+									<tr>
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="ORDER_ID" class="desc">
+											<span>订单号</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="MODIFY_TAG" class="desc">
+											<span>操作类型</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="STATE" class="desc">
+											<span>状态说明</span>
+										</th>
+											<th onclick="javascript:$.sortTable(this,'string', null, 'desc')" col="SERIAL_NUMBER" class="desc">
+											<span>手机号码</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'string', null, 'desc')" col="SER_CUST_NAME" class="desc">
+											<span>手机号码用户名</span>
+										</th>
+										
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="GROUP_ID" class="desc">
+											<span>集团客户编码</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="JT_CUST_NAME" class="desc">
+											<span>集团客户名称</span>
+										</th>
+										
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="EC_SERIAL_NUMBER" class="desc">
+											<span>集团产品编码</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="PRODUCT_OFFER_ID" class="desc">
+											<span>订购关系编码</span>
+										</th>
+										
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="POSPECNAME" class="desc">
+											<span>商品名称</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'int', null, 'desc')" col="PRODUCTSPECNAME" class="desc">
+											<span>产品名称</span>
+										</th>
+										
+										<th onclick="javascript:$.sortTable(this,'date', null, 'desc')" col="ACCEPT_DATE" class="desc">
+											<span>操作时间</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'date', null, 'desc')" col="FINISH_DATE" class="desc">
+											<span>完成时间</span>
+										</th>
+										<th onclick="javascript:$.sortTable(this,'string', null, 'desc')" col="TRADE_STAFF_ID" class="desc">
+											<span>操作员工工号</span>
+										</th>
+									</tr>
+								</thead>
+								<tbody jwcid="@Any" name="infoTableValues" id="infoTableValues">
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+										<td>
+											<span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.MODIFY_TAG" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.STATE" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.SER_CUST_NAME" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false" />
+										</td>										
+										<td>
+											<span jwcid="@Insert" value="ognl:info.JT_CUST_NAME" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.EC_SERIAL_NUMBER" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.PRODUCT_OFFER_ID" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.POSPECNAME" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.PRODUCTSPECNAME" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.ACCEPT_DATE)" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.FINISH_DATE)" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="false" />
+										</td>																		
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+						</div>
+						<!-- 分页 开始 -->
+						<div jwcid="@NavBar" name="infonav" id="infonav" cond="QueryCondPart" part="QueryListPart" listener="qryBBossMeb" pageSize="10"
+							count="ognl:infoCount"></div>
+						<!-- 分页 结束 -->
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,74 @@
+<div id="SaleScoreDiv" class="c_list c_list-gray c_list-border c_list-line">
+    <ul>
+        <li jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+            index="ognl:rowIndex" element="li">
+            <div class="ico">
+                <span class="e_ico-fare" title="积分"></span>
+            </div>
+            <div class="main">
+                <!-- （Pc/Pad 版） 开始 -->
+                <div class="title e_hide-phone">
+                    <span jwcid="@Insert" value="ognl:'兑换/扣减积分：' + info.SCORE_VALUE" />
+                </div>
+                <div class="content e_hide-phone">
+                    <span jwcid="@Insert" value="ognl:'用户当前积分：' + userScore" />
+                </div>
+
+                <!-- （Phone版） 开始 -->
+                <div class="title e_show-phone" style="overflow: auto; text-overflow: clip">
+                    <span jwcid="@Insert" value="ognl:'兑换/扣减积分：' + info.SCORE_VALUE" />
+                </div>
+                <div class="content e_show-phone" style="overflow: auto; text-overflow: clip">
+                    <span jwcid="@Insert" value="ognl:'用户当前积分：' + userScore" />
+                </div>
+            </div>
+            <div class="side">
+                <div jwcid="@Conditional"
+                     condition="ognl:info.DEPOSIT_TAG == 1">
+                    <input jwcid="@TextField"
+                           name="ognl:'SCORE_' + rowIndex + '_DEPOSIT_VALUE_DISPLAY'"
+                           value="ognl:info.DEPOSIT_VALUE_DISPLAY"
+                           deductLow="ognl:info.DEDUCT_LOW"
+                           placeholder="输入预存金额" datatype="pinteger"
+                           maxLength="5" disabled="true" desc="预存金额" />
+                </div>
+                <div jwcid="@Conditional"
+                     condition="ognl:info.DEPOSIT_TAG != 1">不允许预存补积分
+                </div>
+            </div>
+            <label class="fn">
+                <input type="checkbox" jwcid="@Checkbox"
+                       value="ognl:info.SCORE_DEDUCT_ID"
+                       name="ognl:'SCORE_' + rowIndex + '_' + info.SCORE_DEDUCT_ID"
+                       id="ognl:'SCORE_' + rowIndex + '_' + info.SCORE_DEDUCT_ID"
+                       inputId="ognl:'INPUT_SCORE_' + rowIndex + '_' + info.SCORE_DEDUCT_ID"
+                       packageId="ognl:packageId"
+                       packageName="ognl:info.PACKAGE_NAME"
+                       elementId="ognl:info.ELEMENT_ID"
+                       elementName="ognl:info.GOODS_NAME"
+                       elementTypeCode="ognl:info.ELEMENT_TYPE_CODE"
+                       startDate="ognl:info.START_DATE"
+                       endDate="ognl:info.END_DATE"
+                       flag="ognl:info.FLAG"
+                       flagSourceId="ognl:info.FLAG_SOURCE_ID"
+                       feeMode="ognl:info.FEE_MODE"
+                       feeTypeCode="ognl:info.FEE_TYPE_CODE"
+                       fee="ognl:info.FEE"
+                       payMode="ognl:info.PAY_MODE"
+                       paymentId="ognl:info.PAYMENT_ID"
+                       inDepositCode="ognl:info.IN_DEPOSIT_CODE"
+                       outDepositCode="ognl:info.OUT_DEPOSIT_CODE"
+                       defaultStartDate="ognl:info.DEFAULT_START_DATE"
+                       userScore="ognl:userScore"
+                       scoreValue="ognl:info.SCORE_VALUE"
+                       depositRate="ognl:info.DEPOSIT_RATE"
+                       depositValue="ognl:info.DEPOSIT_VALUE"
+                       scoreChanged="ognl:info.SCORE_VALUE"
+                       checked="ognl:info.MAIN_TAG == 1 || info.DEFAULT_TAG == 1 || info.FORCE_TAG == 1"
+                       disabled="ognl:info.FORCE_TAG == 1 || info.MAIN_TAG == 1"
+                       onclick="saleActiveModule.spCheckBoxOnclickAction(this.id);" />
+            </label>
+        </li>
+    </ul>
+</div>
+<input jwcid="@Hidden" name="SALESCORE_EPARCHY_CODE" value="ognl:eparchyCode" />

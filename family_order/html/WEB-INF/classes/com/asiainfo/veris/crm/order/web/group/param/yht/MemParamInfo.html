@@ -1,0 +1,173 @@
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	<div class="text">主叫一号通副号</div>
+</div>
+<!-- 标题 结束 -->
+
+<script type="text/javascript">
+	$(document).ready(
+		function(){initPage();}
+	);
+</script>
+<!-- 表格 开始 -->
+<div class="c_table c_table-row-3">
+	<table id="ZyhtTable"  name="ZyhtTable" jwcid="@Table" rowClick="ztableRowClick" rowDBClick="ztableRowDBClick" >
+		<thead>
+			<tr>
+				<th col="X_TAG" style="display:none">TAG</th> 
+		  	    <th col="MAIN_FLAG_CODE" style="display:none" >主显code</th>
+		  	    <th col="START_DATE" style="display:none">开始时间</th> 
+		  	    <th col="SERIAL_NUMBER">号码</th>
+			    <th col="MAIN_FLAG" style="display:none">是否主显号码</th> 
+			    <th col="ZUSERID">用户标识</th>
+			    <th col="INST_ID" style="display:none">实例标识</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:info.INFOS" value="ognl:condition" element="tr">
+			    <td style="display:none">0</td> 
+			    <td style="display:none"><span jwcid="@Insert" value="ognl:condition.MAIN_FLAG_CODE" raw="true"/></td>
+			    <td style="display:none"><span jwcid="@Insert" value="ognl:condition.START_DATE" raw="true"/></td>
+			    <td><span jwcid="@Insert" value="ognl:condition.SERIAL_NUMBER" raw="true"/></td> 
+			    <td style="display:none"><span jwcid="@Insert" value="ognl:condition.MAIN_FLAG" raw="true"/></td>
+			    <td><span jwcid="@Insert" value="ognl:condition.ZUSERID" raw="true"/></td>
+			    <td style="display:none"><span jwcid="@Insert" value="ognl:condition.INST_ID" raw="true"/></td> 
+		    </tr>
+		</tbody>
+	</table>
+</div>
+<!-- 表格 结束 -->
+
+<!-- 表单 开始 -->
+<div class="c_form" jwcid="ZEditPart@Part" id="ZEditPart" element="div">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" id="SERIAL_NUMBER" name="SERIAL_NUMBER" value="" desc="号码" datatype="integer"/>
+			</span></span>
+		</li>
+		<li class="li">
+			<span class="label"></span>
+			
+			<input  style="display:none" type="checkbox" class="e_checkbox" id="MAIN_FLAG_CODE" name="MAIN_FLAG_CODE" jwcid="@Checkbox" value="0" onclick="changeMainflag()" checked='true' />		</li>
+		<!-- 隐藏域 开始 -->
+		<input style="display:none" jwcid="@Any" id="MAIN_FLAG" name="MAIN_FLAG" desc="是否主显号码" value="否"/>
+		<input style="display:none" jwcid="@Any" id="ZUSERID" name="ZUSERID"  value="ognl:info.ZUSER_ID"/>
+		<textarea jwcid="@TextArea" id="pam_zyht" name="pam_zyht" value="ognl:info.Yhtpam.pam_zyht" style="display:none"></textarea>
+		<textarea jwcid="@TextArea" id="pam_oldzyht" name="pam_oldzyht" value="ognl:info.Yhtpam.pam_oldzyht" style="display:none"></textarea>		
+      	<input type="text" jwcid="@Any" id="METHOD_NAME" name="METHOD_NAME" value="ognl:info.METHOD.METHOD_NAME" style="display:none"/>
+      	<input type="text" jwcid="@Any" id="MEMSN" name="MEMSN" value="ognl:info.METHOD.MEMSN" style="display:none"/>
+      	<input style="display:none" jwcid="@Any" id="pam_zpause" name="pam_zpause" value="ognl:info.Yhtpam.ZPAUSE"/>	
+		<!-- 隐藏域 结束 -->
+	</ul>
+	
+	<div class="submitPlace"></div>
+	<div class="submit">
+		<div id = "zdealPart">
+			<button type="button" class="e_button-form" id="zyht_bcreate" name="zyht_bcreate" onclick="return createZyht();">
+				<i class="e_ico-add"></i><span>新增</span>
+			</button>
+			<button type="button" class="e_button-form" id="zyht_bupdate" name="zyht_bupdate" onclick="return updateZyht();" >
+				<i class="e_ico-edit"></i><span>修改</span>
+			</button>
+			<button type="button" class="e_button-form" id="zyht_bdelete" name="zyht_bdelete" onclick="return deleteZyht();">
+				<i class="e_ico-delete"></i><span>删除</span>
+			</button>
+		</div>		
+		<button type="button" class="e_button-form" id="zyht_bpause" name="zyht_bpause" onclick="return updateZPause('1');">
+			<i class="e_ico-edit"></i><span>暂停</span>
+		</button>
+		<button type="button" class="e_button-form" id="zyht_resume" name="zyht_resume" onclick="return updateZPause('0');" style="display:none">
+			<i class="e_ico-edit"></i><span>恢复</span>
+		</button>
+	</div>
+</div>
+<!-- 表单 结束 -->
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	<div class="text">被叫一号通副号</div>
+</div>
+<!-- 标题 结束 -->
+
+<!-- 表格 开始 -->
+<div class="c_table c_table-row-5">
+	<table id="ByhtTable"  name="ByhtTable" jwcid="@Table" rowClick="btableRowClick" rowDBClick="btableRowDBClick" >
+		<thead>
+			<tr>
+				<th col="X_TAG" style="display:none">TAG</th> 
+		  	    <!--th col="Z_TAG_VAL" style="display:none">振动值</th--> 
+  	    		<th col="START_DATE" style="display:none">开始时间</th> 
+  	    		<th col="BSERIAL_NUMBER">号码</th>  
+  	    		<!--th col="Z_TAG_NAME">振动方式</th--> 
+  	    		<th col="BUSERID">用户标识</th>
+  	    		<th col="INST_ID" style="display:none">实例标识</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:info.BINFOS" value="ognl:infotemp" element="tr">
+	    		<td style="display:none">0</td> 
+	    		<!--td style="display:none"><span jwcid="@Insert" value="ognl:infotemp.Z_TAG_VAL" raw="true"/></td--> 
+	    		<td style="display:none"><span jwcid="@Insert" value="ognl:infotemp.START_DATE" raw="true"/></td> 
+	    		<td><span jwcid="@Insert" value="ognl:infotemp.BSERIAL_NUMBER" raw="true"/></td>   
+	    		<!--td><span jwcid="@Insert" value="ognl:infotemp.Z_TAG_NAME" raw="true"/></td-->
+			    <td><span jwcid="@Insert" value="ognl:infotemp.BUSERID" raw="true"/></td> 
+			    <td style="display:none"><span jwcid="@Insert" value="ognl:infotemp.INST_ID" raw="true"/></td> 
+		    </tr>
+		</tbody>
+	</table>
+</div>
+<!-- 表格 结束 -->
+
+<!-- 表单 开始 -->
+<div class="c_form" jwcid="BEditPart@Part" id="BEditPart" element="div">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">号码：</span></span>
+			<span class="e_input"><span>
+				<input id="BSERIAL_NUMBER" name="BSERIAL_NUMBER" jwcid="@TextField" value="" desc="号码" datatype="integer" />
+			</span></span>
+		</li>
+		<li class="li">
+			<span class="label"></span>
+			<div class="c_fn">
+				<ul>
+					<li><label><input name="Z_TAG" id="Z_TAG" jwcid="@Radio" type="radio"  value="0" checked = "true" onclick="changeZflag();" />同振</label></li>
+					<li><label><input name="Z_TAG" id="Z_TAG" jwcid="@Radio" type="radio"  value="1" onclick="changeZflag();"/>顺振</label></li>							    					    	
+				</ul>				
+			</div>
+		</li>
+		<!-- 隐藏域 开始 -->
+		<input style="display:none" jwcid="@Any" id="pam_Z_TAG_VAL" name="pam_Z_TAG_VAL" desc="振动方式值" value="ognl:info.BYHTPAM.pam_Z_TAG_VAL"/>
+		<input style="display:none" jwcid="@Any" id="old_Z_TAG_VAL" name="old_Z_TAG_VAL" desc="振动方式值" value="ognl:info.BYHTPAM.pam_Z_TAG_VAL"/>
+		<input style="display:none" jwcid="@Any" id="pam_Z_TAG_NAME" name="pam_Z_TAG_NAME" desc="振动方式" value="顺振"/>
+		<input style="display:none" jwcid="@Any" id="BUSERID" name="BUSERID" value="ognl:info.BUSERID"/>
+		
+		<textarea jwcid="@TextArea" id="pam_byht" name="pam_byht" value="ognl:info.BYHTPAM.pam_byht" style="display:none"></textarea>
+		<textarea jwcid="@TextArea" id="pam_oldbyht" name="pam_oldbyht" value="ognl:info.BYHTPAM.pam_oldbyht" style="display:none"></textarea>
+		<input style="display:none" jwcid="@Any" id="pam_bpause" name="pam_bpause" value="ognl:info.BYHTPAM.BPAUSE"/>	
+		<!-- 隐藏域 结束 -->
+	</ul>
+	
+	<div class="submitPlace"></div>
+	<div class="submit">
+		<div id = "bdealPart">
+			<button type="button" class="e_button-form" id="byht_bcreate" name="byht_bcreate" onclick="return createByht();">
+				<i class="e_ico-add"></i><span>新增</span>
+			</button>
+			<button type="button" class="e_button-form" id="byht_bupdate" name="byht_bupdate" onclick="return updateByht();">
+				<i class="e_ico-edit"></i><span>修改</span>
+			</button>
+			<button type="button" class="e_button-form" id="byht_bdelete" name="byht_bdelete"  onclick="return deleteByht();">
+				<i class="e_ico-delete"></i><span>删除</span>
+			</button>
+		</div>
+		<button type="button" class="e_button-form" id="byht_bpause" name="byht_bpause" value="暂 停" onclick="return updateBPause('1');">
+			<i class="e_ico-edit"></i><span>暂停</span>
+		</button>
+		<button type="button" class="e_button-form" id="byht_resume" name="byht_resume" onclick="return updateBPause('0');" style="display:none">
+			<i class="e_ico-edit"></i><span>恢复</span>
+		</button>
+	</div>
+</div>
+<!-- 表单 结束 -->

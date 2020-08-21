@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 	<title>通用参数维护</title>
+ 	<script jwcid="@Script" src="person/parametermaintainance/scripts/ParaMaintain.js"></script>
+</head>
+  
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+  
+  	<!-- 第一部分：规则部分 开始 -->
+	<div class="c_box">
+		
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">参数配置规则</div>
+		</div>
+		<!-- 标题 结束 -->
+  	
+  		<!-- 搜索条件 开始 -->
+		<div class="c_form c_form-label-6 c_form-col-3" jwcid="QryPrmRuleCondPart@Part">
+	    	<ul class="ul">
+				<li class="li">
+				  	<span class="label">配置规则名称：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="cond_RULE_NAME" id="cond_RULE_NAME" value="ognl:condition.cond_RULE_NAME" desc="配置规则名称"/>
+					</span></span>
+				</li>
+				<li class="li">
+				  	<span class="label">配置表名：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="cond_TABLE_NAME" id="cond_TABLE_NAME" value="ognl:condition.cond_TABLE_NAME" desc="配置表名"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onClick="return qryPrmRuleList();"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+		<!-- 搜索条件 结束 -->
+	
+		<!-- 配置规则内容 开始 -->
+		<div jwcid="QryPrmRuleListPart@Part" element="div"><div class="c_scroll c_scroll-table-6"><div class="c_table">
+			<table jwcid="@Table" id="listFormTable">
+		   		<thead>
+					<tr>
+						<th col="">配置规则ID</th>
+						<th col="">配置规则名称</th>
+						<th col="">配置表名</th>
+						<th col="">操作权限编码</th>						
+						<th col="">生效时间</th>	
+						<th col="">失效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+			    	<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex"  onclick="return clickPrmRuleRow(this);" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+			    		<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TABLE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RIGHT_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- 翻页 开始 -->
+        	<div jwcid="@NavBar" needStat="false" name="QryPrmRuleNav" id="QryPrmRuleNav" cond="QryPrmRuleCondPart" part="QryPrmRuleListPart" listener="qryPrmRuleList" pageSize="10" count="ognl:count"></div>		
+	    	<!-- 翻页 结束 -->
+		</div></div></div>
+		<!-- 配置规则 结束 -->
+		
+ 	</div>
+	<!-- 第一部分：规则部分 结束 -->
+  
+ 
+ 
+	<!-- 第二部分：参数表记录集开始 -->
+  	<div jwcid="ParaRecordListDivPart@Part" id="ParaRecordListDivPart" name="ParaRecordListDivPart" element="div" class="c_box" style="display:none;">
+    	
+    	<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+	    	<div class="text">参数配置列信息</div>
+	    	<div style="float:right;padding:2px 8px 3px 6px;no-repeat;height:23px;position:relative;display:inline;line-height:14px;height:14px;">
+				<input jwcid="@SimpleUpload" name="FILE_PATH"  id="FILE_PATH" 
+						ftpSite="personserv"  fileSize="20" fileTypes="*.xls" desc="选择导入文件" value="选择导入文件"
+						afterAction="ajaxUpload"	 filePath="import/parammaintance" needSuffix="false" descddd="ftpSite从数据表WD_F_FTPACCT得到; needSuffix只能等于false; filePath为FTP服务器的保存路径 " />
+			</div>
+	    	<div class="fn">
+				<button class="e_button-left" onClick="clickPrmRowInsert($(this))"><i class="e_ico-add"></i><span>新增</span></button>
+				<button class="e_button-center" onclick="clickPrmRowDelete(this);"><i class="e_ico-edit"></i><span>删除</span> </button>
+				<a jwcid="@Any" href="javascript:void(0);" onclick="exportTemplate();">[模板下载]</a>
+				
+				<a href="javascript:void(0);"><span>批量导入:</span></a>
+				
+				<!-- 
+				<div class="right"><a href="javascript:void(0);"><span>批量导入:</span></a></div>
+				<input jwcid="@SimpleUpload" name="FILE_PATH"  id="FILE_PATH" 
+						ftpSite="resserv"  fileSize="20" fileTypes="*.xls" desc="选择导入文件" value="选择导入文件"
+						afterAction="ajaxUpload"	 filePath="a/b/c/d" needSuffix="false" descddd="ftpSite从数据表WD_F_FTPACCT得到; needSuffix只能等于false; filePath为FTP服务器的保存路径 " />
+	    		 -->
+				<!-- 
+				<span jwcid="@Import" name="FILE_ID" 
+					ftpSite="personserv" fileSize="20" fileTypes="excel" 
+					serviceName="com.ailk.personview.parametermaintainance.ParaMaintain@importData"
+					desc="批量导入文件" 
+					config="ognl:'import/parammaintance/' + infos[0].RULE_ID + '.xml'"
+					nullable="yes" cond="ImportPart" params="ognl:'RULE_ID=' + infos[0].RULE_ID + '&RULE_NAME=' + infos[0].RULE_NAME + '&TABLE_NAME=' + infos[0].TABLE_NAME"/> -->
+			</div>
+  		</div>
+  		<!-- 标题 结束 -->
+  	
+  		<!-- 搜索条件 开始 -->
+		<div class="c_form c_form-label-6 c_form-col-3" jwcid="QryPrmRecCondPart@Part" style="display:none;">
+	    	<ul class="ul">
+	    		<li class="li">
+	    			<span class="label">配置规则ID：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="cond_RULE_ID" id="cond_RULE_ID" value="" desc="配置规则ID"/>
+						<input type="text" jwcid="@TextField" name="cond_RULE_NAME" id="cond_RULE_NAME" value="" desc="配置规则NAME" style="display:none;"/>
+						<input type="text" jwcid="@TextField" name="cond_RIGHT_CODE" id="cond_RIGHT_CODE" value="" desc="权限CODE" style="display:none;"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">参数表名：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="cond_TABLE_NAME2" id="cond_TABLE_NAME2" value="" desc="参数表名"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 搜索条件 结束 -->
+  	
+  		<!-- 参数记录 开始 -->
+		<div jwcid="QryPrmRecListPart@Part" element="div"><div class="c_scroll" ><div class="c_table">
+			<table jwcid="@Table" id="paraRecordTable">
+		   		<thead>
+					<tr>
+				    	<th col="RECORDROWID" ><input type="checkbox" class="e_checkbox" onclick="clickChcbox(this.checked)"/></th>
+						<th jwcid="@Foreach" source="ognl:thinfos" value="ognl:thinfo" element="th" columnIsFixed="ognl:thinfo.IS_FIXED" index="ognl:rowIndex">
+					    	<span jwcid="@Insert" value="ognl:thinfo.COL_DESC" raw="true"/>
+						</th>
+						<th>
+							<span>
+								<button class="e_button-left" title="隐藏固定列" onclick="return clickFixedHide();"><i class="e_ico-hide"></i></button>
+								<button class="e_button-right" title="显示固定列" onclick="return clickFixedShow();"><i class="e_ico-show"></i></button>
+					    	</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+			    <tr jwcid="@Foreach" source="ognl:trinfos" value="ognl:trinfo" element="tr" index="ognl:rowIndex">
+					<td jwcid="@Foreach" source="ognl:trinfo" value="ognl:tdinfo" element="td" columnIsFixed="ognl:tdinfo.IS_FIXED">
+						<span jwcid="@Conditional" condition="ognl:tdinfo.COLUMN_NAME == 'RECORDROWID'">					    					    	
+							<input id="chkx" jwcid="@Checkbox" name="chcbox" columnName="ognl:tdinfo.COLUMN_NAME" columnDesc="ognl:tdinfo.COL_DESC" columnIsFixed="ognl:tdinfo.IS_FIXED" value="ognl:tdinfo.COLUMN_VALUE"/>
+					    </span>
+					    <span jwcid="@Conditional" condition="ognl:tdinfo.COLUMN_NAME != 'RECORDROWID'">
+					    	<span jwcid="@Insert" columnName="ognl:tdinfo.COLUMN_NAME" columnDesc="ognl:tdinfo.COL_DESC" columnIsFixed="ognl:tdinfo.IS_FIXED" value="ognl:tdinfo.COLUMN_VALUE" raw="true" />
+						</span>
+						<input jwcid="@Any" columnName="ognl:tdinfo.COLUMN_NAME" columnDesc="ognl:tdinfo.COL_DESC" columnIsFixed="ognl:tdinfo.IS_FIXED" value="ognl:tdinfo.COLUMN_VALUE" style="display:none;"/> 
+					</td>
+					<td>
+						<button class="e_button-left" onclick="return clickPrmRowUpdate(this, '0');"><i class="e_ico-edit"></i><span>修改</span> </button>
+						<button class="e_button-right" onclick="return clickPrmRowUpdate(this, '1');"><i class="e_ico-edit"></i><span>复制</span> </button>
+					</td>
+			    </tr>
+			</tbody>
+		</table>
+		<!-- 翻页 开始 -->
+        <div jwcid="@NavBar" needStat="false" name="QryPrmRecListNav" id="QryPrmRecListNav" cond="QryPrmRecCondPart" part="QryPrmRecListPart" listener="qryPrmRecList" pageSize="10" count="ognl:count2"></div>		
+	    <!-- 翻页 结束 -->
+	    </div></div></div>
+	    <!-- 参数记录 结束 -->
+	    
+	</div>
+	<!-- 第二部分：参数表记录集结束 -->
+
+
+	<!-- 第三部分：参数表记录详情配置 开始 -->
+	<div class="c_box" id="ParaSetDivPart" style="display:none;">
+	
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">参数记录详情配置</div>			
+  		</div>
+  		<!-- 标题 结束 -->
+  	
+  		<!-- 参数配置 开始 -->
+		<div jwcid="ParaSetPart@Part" element="div"><div class="c_scroll" style="height:250px;"><div class="c_table">		
+			<input jwcid="@Any" name="TABLE_NAME" value="ognl:thinfos[0].TABLE_NAME" style="display:none;"/> 
+			
+			<table jwcid="@Table" id="paraSetTable">
+				<thead>
+					<tr>
+						<th col="RECORDROWID" style="display:none;">RECORDROWID</th>
+						<th jwcid="@Foreach" source="ognl:thinfos" value="ognl:thinfo" element="th" columnIsFixed="ognl:thinfo.IS_FIXED" index="ognl:rowIndex">		   
+					    	<span jwcid="@Insert" value="ognl:thinfo.COL_DESC" raw="true"/>
+						</th>	
+					</tr>
+				</thead>
+				<tbody>
+			    	<tr id="col_tr">
+			    		<td col="RECORDROWID" style="display:none;">
+			    			<input jwcid="@Any" id="col_RECORDROWID" name="col_RECORDROWID" desc="RECORDROWID" value=""/>
+						</td>
+						<td jwcid="@Foreach" source="ognl:thinfos" value="ognl:thinfo" element="td" columnIsFixed="ognl:thinfo.IS_FIXED">
+					    	<input jwcid="@Any" id='ognl:"old_OLD_"+thinfo.COL_NAME' name='ognl:"old_OLD_"+thinfo.COL_NAME' desc="ognl:thinfo.COL_DESC" columnIsFixed="ognl:thinfo.IS_FIXED" value="ognl:thinfo.COL_VALUE" style="display:none;"/>					    
+					    	<span jwcid="@Conditional" condition="ognl:thinfo.IS_FIXED == 0">					    					    
+				    			<span jwcid="@Conditional" condition="ognl:thinfo.COL_TYPE == 3">
+				    				<input jwcid="@DateField" format="yyyy-MM-dd HH:mm:ss" showImg="false" id='ognl:"col_"+thinfo.COL_NAME' name='ognl:"col_"+thinfo.COL_NAME' desc="ognl:thinfo.COL_DESC" columnIsFixed="ognl:thinfo.IS_FIXED" value="ognl:thinfo.COL_VALUE" nullable="ognl:thinfo.COL_NULLABLE==0 ? 'no' : 'yes'" datatype="ognl:thinfo.COL_TYPE==2? 'numeric':thinfo.COL_TYPE==3? 'date': 'text'"  style="width:99%;" />
+				    			</span>
+				    			<span jwcid="@Conditional" condition="ognl:thinfo.COL_TYPE != 3">
+				    				<input jwcid="@Any" id='ognl:"col_"+thinfo.COL_NAME' name='ognl:"col_"+thinfo.COL_NAME' desc="ognl:thinfo.COL_DESC" columnIsFixed="ognl:thinfo.IS_FIXED" value="ognl:thinfo.COL_VALUE" nullable="ognl:thinfo.COL_NULLABLE==0 ? 'no' : 'yes'" datatype="ognl:thinfo.COL_TYPE==2? 'numeric':thinfo.COL_TYPE==3? 'date': 'text'"  style="width:99%;" />
+				    			</span>
+					    	</span>
+					    	<span jwcid="@Conditional" condition="ognl:thinfo.IS_FIXED == 1">
+					    		<span jwcid="@Conditional" condition="ognl:thinfo.COL_TYPE == 3">
+				    				<input jwcid="@DateField" format="yyyy-MM-dd HH:mm:ss" showImg="false" id='ognl:"col_"+thinfo.COL_NAME' name='ognl:"col_"+thinfo.COL_NAME' desc="ognl:thinfo.COL_DESC" columnIsFixed="ognl:thinfo.IS_FIXED" value="ognl:thinfo.COL_VALUE" readonly="true" nullable="ognl:thinfo.COL_NULLABLE==0 ? 'no' : 'yes'" datatype="ognl:thinfo.COL_TYPE==2? 'numeric':thinfo.COL_TYPE==3? 'date': 'text'" style="width:99%;" />
+				    			</span>
+				    			<span jwcid="@Conditional" condition="ognl:thinfo.COL_TYPE != 3">
+				    				<input jwcid="@Any" id='ognl:"col_"+thinfo.COL_NAME' name='ognl:"col_"+thinfo.COL_NAME' desc="ognl:thinfo.COL_DESC" columnIsFixed="ognl:thinfo.IS_FIXED" value="ognl:thinfo.COL_VALUE" readonly="true" nullable="ognl:thinfo.COL_NULLABLE==0 ? 'no' : 'yes'" datatype="ognl:thinfo.COL_TYPE==2? 'numeric':thinfo.COL_TYPE==3? 'date': 'text'" style="width:99%;"/>
+				    			</span>
+					    	</span>
+				    	</td>
+			    	</tr>
+		    	</tbody>
+	    	</table>
+		</div></div></div>
+		<!-- 参数配置 结束 -->
+	
+		<div class="c_title" style="width: 50%;">
+			<div class="fn">
+				<button class="e_button" onClick="if(confirmAll('ParaSetPart')){saveOrUpdateParaMaintain();}"><i class="e_ico-save"></i><span>提交</span></button>
+			</div>
+		</div>
+		
+	</div>
+	<!-- 第三部分：参数表记录详情配置 结束 -->
+
+</div></div>
+</body>
+</html>

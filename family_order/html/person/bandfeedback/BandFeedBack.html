@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>宽带类接口展示反馈</title>
+<script jwcid="@Script" src="person/bandfeedback/scripts/BandFeedBack.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="condPart@Part">
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-8">
+	<ul>
+	    <li class="li">
+	    	<span class="label"><span>点击查询：</span></span>
+    		<button type="button" class="e_button-left" id="CONF_BUTTON" name="CONF_BUTTON" onclick="queryBandInfo()"><i class="e_ico-check"></i><span>查询</span></button>
+    	</li>
+    	<li class="li">
+    	
+    	</li>
+		<li class="li">
+			<span class="label"><span class="e_required">订单类型：</span></span>
+			<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_ORDER_TYPE" id="cond_ORDER_TYPE" desc="订单类型" nullable="no" 
+        			source="ognl:pageutil.getStaticList('FEED_BACK_ORDER_TYPE')" 
+        			textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" onchange="showOrderTablePart()"/>
+			</span></span></span>
+		</li>
+    	<li class="li">
+			<span class="label"><span>订单编码：</span></span>
+			<span class="e_input"><span>
+                <input jwcid="@TextField" name="cond_ORDER_ID" id="cond_ORDER_ID" value=""  desc="订单编码" maxsize="50"/>
+            </span></span>
+    	</li>
+    	<li class="li">
+			<span class="label"><span>子订单编码：</span></span>
+			<span class="e_input"><span>
+                <input jwcid="@TextField" name="cond_SUB_ORDER_ID" id="cond_SUB_ORDER_ID" value=""  desc="子订单编码" maxsize="50"/>
+            </span></span>
+    	</li>
+    	<li class="li" name="RETURN_ID_li" id="RETURN_ID_li" style="display:none;">
+			<span class="label"><span>退款单编码：</span></span>
+			<span class="e_input"><span>
+                <input jwcid="@TextField" name="cond_RETURN_ID" id="cond_RETURN_ID" value=""  desc="退款单编码" maxsize="50"/>
+            </span></span>
+    	</li>
+	</ul>
+	</div>
+</div>
+
+ 
+<div class="c_box" jwcid="OrderPart@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">订购订单</div>
+	</div>
+	<div jwcid="orderInfoPart@Part" element="div">
+		<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+		</div>
+	<div class="c_scroll c_scroll-x c_scroll-table-10">
+	<div class="c_table c_table-row-10">
+	<table jwcid="@Table" id="orderInfoTable" name="orderInfoTable">
+      	<thead>
+		  	<tr>
+		  		<th col="IN_CHECK_ID">是否修改</th>
+		  		<th col="ORDER_TYPE">订单类型</th>
+		  		<th col="GOODS_TITLE">商品标题</th>
+				<th col="ORDER_ID">订单编码</th>
+				<th col="SUBORDER_ID">子订单编码</th>
+				<th col="CHANNEL_CODE">合作渠道编码</th>
+				<th col="EXTORDER_ID">合作渠道订单编码</th>
+				<th col="CREATE_TIME">订单创建时间</th>
+				<th col="UPDATE_TIME">订单更新时间</th>
+				<th col="SERVICENO">业务号码</th>
+				<th col="NUMBER_OPRTYPE">业务号码操作类型</th>
+				<th col="SERVICENO_TYPE">业务号码类型</th>
+				<th col="UPDATE_STAFF_ID">更新员工编号</th>
+				<th col="UPDATE_DEPART_ID">更新部门编号</th>
+				<th col="RSRV_STR10">预约上门时间</th>
+				<th col="STATE">订单状态</th>
+				<th col="REAL_ADDRESS">地址</th>
+				<th col="POST_CODE">邮编</th>
+				<th col="MOBILE_PHONE">手机号码</th>
+				<th col="LAND_LINE">固话号码</th>
+				<th col="RSRV_STR3">备注</th>
+			</tr>
+		</thead>
+		<tbody id="orderInfoTable_Body">
+			<tr jwcid="@Foreach" source="ognl:orderInfos" value="ognl:orderInfo" index="ognl:rowIndex" element="tr" >
+				<td><input align="center" type="checkbox" name="chkbox" jwcid="@Any" value="ognl:orderInfo.ORDER_ID" SUBORDER_ID="ognl:orderInfo.SUBORDER_ID" ORDER_ID="ognl:orderInfo.ORDER_ID" ORDER_STATE="ognl:orderInfo.STATE" CREATE_TIME="ognl:formatDate('yyyy-MM-dd HH:mm:ss',orderInfo.CREATE_TIME)" UPDATE_TIME="ognl:formatDate('yyyy-MM-dd HH:mm:ss',orderInfo.UPDATE_TIME)" ADDITION=" , , "  RSRV_STR3="ognl:orderInfo.RSRV_STR3"/></td>
+				<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FEED_BACK_ORDER_TYPE', orderType)"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.GOODS_TITLE"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.ORDER_ID"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:orderInfo.SUBORDER_ID"/></td>	
+				<td><span jwcid="@Insert" value="ognl:orderInfo.CHANNEL_CODE"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:orderInfo.EXTORDER_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',orderInfo.CREATE_TIME)"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',orderInfo.UPDATE_TIME)"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.SERVICENO"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:orderInfo.NUMBER_OPRTYPE"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.SERVICENO_TYPE"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.UPDATE_STAFF_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.UPDATE_DEPART_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.RSRV_STR10"/></td>
+				<td><span jwcid="@Select" name="ORDER_STATE" id="ORDER_STATE" desc="订单状态" nullable="no" 
+        			source="ognl:pageutil.getStaticList('FEED_BACK_STATUS')"  addDefault="false" value="ognl:orderInfo.STATE"
+        			textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" onchange="changeCheckBoxVar(this)" disabled="ognl:orderInfo.STATE=='SC' ? 'true' : orderInfo.STATE=='CA' ? 'true' : orderInfo.STATE=='FA' ? 'true' : 'false' "/></td>
+        		<td><span jwcid="@Insert" value="ognl:orderInfo.COUNTRY + orderInfo.PROVINCE + orderInfo.CITY + orderInfo.DISTRICT + orderInfo.ADDRESS"/></td>
+        		<td><span jwcid="@Insert" value="ognl:orderInfo.POST_CODE"/></td>
+        		<td><span jwcid="@Insert" value="ognl:orderInfo.MOBILE_PHONE"/></td>
+        		<td><span jwcid="@Insert" value="ognl:orderInfo.LAND_LINE"/></td>
+        		<td>
+				  	<span jwcid="@TextField" name="RSRV_STR3" id="RSRV_STR3" onchange="changeCheckRsrvStrVar(this)" value="ognl:orderInfo.RSRV_STR3" desc="备注" >
+	                </span>
+        		</td>
+			</tr>
+		</tbody>
+	</table>		
+	</div>
+	</div>
+	<!-- 分页 开始 -->
+	<div jwcid="OrderNavBarPart@NavBar" name="OrderNavBarPart" id="OrderNavBarPart" cond="condPart" part="orderInfoPart" listener="queryBandInfo" pageSize="10" count="ognl:totalCount" desc="cond为查询条件DIV; part为显示结果集DIV; listener为监听方法; count为java类传入集合个数参数"></div>
+	<!-- 分页 结束 -->
+	</div>
+	
+
+</div>
+
+<div class="c_box" jwcid="ReturnPart@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">退订订单</div>
+	</div>
+	<div jwcid="returnInfoPart@Part" element="div">
+		<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+		</div>
+	<div class="c_scroll c_scroll-x c_scroll-table-10">
+	<div class="c_table c_table-row-10">
+	<table jwcid="@Table" id="returnInfoTable" name="returnInfoTable">
+      	<thead>
+		  	<tr>
+		  		<th col="IN_CHECK_ID">是否修改</th>
+				<th col="ORDER_TYPE">订单类型</th>
+				<th col="RETURN_TYPE">退订类型</th>
+				<th col="ORDER_ID">订单编码</th>
+				<th col="SUB_ORDER_ID">子订单编码</th>
+				<th col="RETURN_ID">退款单编码</th>
+				<th col="CHANNEL_ID">合作渠道编码</th>
+				<th col="EXT_RETURN_ID">渠道退款单编码</th>
+				<th col="BUYER_RETURN_TIME">发起退订申请时间</th>
+				<th col="UPDATE_TIME">订单更新时间</th>
+				<th col="UPDATE_STAFF_ID">更新员工编号</th>
+				<th col="UPDATE_DEPART_ID">更新部门编号</th>
+				<th col="STATUS">订单状态</th>
+			</tr>
+		</thead>
+		<tbody id="returnInfoTable_Body">
+			<tr jwcid="@Foreach" source="ognl:returnInfos" value="ognl:returnInfo" index="ognl:rowIndex" element="tr" >
+				<td align="center"><input type="checkbox" name="chkbox" jwcid="@Any" value="ognl:returnInfo.ORDER_ID"  SUBORDER_ID="ognl:returnInfo.SUB_ORDER_ID" ORDER_ID="ognl:returnInfo.ORDER_ID" RETURN_ID="ognl:returnInfo.RETURN_ID" ORDER_STATE="ognl:returnInfo.STATUS" OPR_NUM="ognl:returnInfo.OPR_NUM" ACCEPT_DATE="ognl:formatDate('yyyy-MM-dd HH:mm:ss',returnInfo.ACCEPT_DATE)" UPDATE_TIME="ognl:formatDate('yyyy-MM-dd HH:mm:ss',returnInfo.UPDATE_TIME)" ADDITION=" , , " /></td>
+				<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FEED_BACK_ORDER_TYPE', orderType)"/></td>
+				<td><span jwcid="@Insert" value="ognl:returnInfo.RETURN_TYPE"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:returnInfo.ORDER_ID"/></td>	
+				<td><span jwcid="@Insert" value="ognl:returnInfo.SUB_ORDER_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:returnInfo.RETURN_ID"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:returnInfo.CHANNEL_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:returnInfo.EXT_RETURN_ID"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',returnInfo.BUYER_RETURN_TIME)"/></td>	
+				<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',returnInfo.UPDATE_TIME)"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.UPDATE_STAFF_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:orderInfo.UPDATE_DEPART_ID"/></td>						 
+				<td><span jwcid="@Select" name="RETURN_STATUS" id="RETURN_STATUS" desc="订单状态" nullable="no" 
+        			source="ognl:pageutil.getStaticList('FEED_BACK_STATUS')"  addDefault="false" value="ognl:returnInfo.STATUS"
+        			textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" onchange="changeCheckBoxVar(this)" disabled="ognl:returnInfo.STATUS=='SC' ? 'true' : returnInfo.STATUS=='CA' ? 'true' : returnInfo.STATUS=='FA' ? 'true' : 'false' "/></td>	
+			</tr>
+		</tbody>
+	</table>		
+	</div>
+	</div>
+	<!-- 分页 开始 -->
+	<div jwcid="ReturnNavBarPart@NavBar" name="ReturnNavBarPart" id="ReturnNavBarPart" cond="condPart" part="returnInfoPart" listener="queryBandInfo" pageSize="10" count="ognl:totalCount" desc="cond为查询条件DIV; part为显示结果集DIV; listener为监听方法; count为java类传入集合个数参数"></div>
+	<!-- 分页 结束 -->
+	</div>
+	
+
+</div>
+
+<!-- 区域 结束 -->
+	<div class="c_submit">
+		<!--<button class="e_button-page-ok" id="updatebutton" name="updatebutton" onclick="updateStatus();"><i class="e_ico-ok"></i><span>更新</span></button>-->
+		<button class="e_button-page-ok" id="feedbackbutton" name="feedbackbutton"  onclick="feedBackInfo();"><i class="e_ico-ok"></i><span>反馈</span></button>
+	</div>
+
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

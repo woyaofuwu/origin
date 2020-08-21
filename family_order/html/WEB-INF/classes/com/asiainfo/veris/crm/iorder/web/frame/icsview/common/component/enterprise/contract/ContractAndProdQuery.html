@@ -1,0 +1,95 @@
+<div id="contractInfoList" class="c_popupItem">
+	<!-- 合同开始  -->
+	<div class="l_queryResult" jwcid="contractInfo@Part" id="contractInfo">
+		<div class="c_header">
+			<div class="back" onclick="hidePopup(this)">合同信息</div>
+			<div class="fn">
+				<button class="e_button-blue" onclick="addContract();"><span class="e_ico-add"></span><span>合同新增</span></button>
+				<button class="e_button-blue" onclick="refreshCont();"><span class="e_ico-refresh"></span><span>刷新</span></button>
+				<span class="e_mix e_mix-search" style="width:15em;">
+					<input jwcid="@TextField"  id="CONTRACT_SEARCH_TEXT" name="CONTRACT_SEARCH_TEXT" onkeyup="search();" value="" class="" />
+					<button type="button" class="e_button-blue" onclick="search();"><span class="e_ico-search"></span></button>
+				</span>
+			</div>
+		</div>
+		<div jwcid="@Scroller" name="tableScroll" vScroll="true" checkDOMChanges="true" class="c_scroll c_scroll-float c_scroll-header c_scroll-white">
+			<!-- 列表 开始 -->
+			<div class="c_list c_list-line">
+				<ul name="contractInfomationUl" id="contractInfomationUl">
+					<li jwcid="contractInfoLi@Foreach" source="ognl:contractInfos" value="ognl:contractInfoData" index="ognl:rowIndex" element="li" CONTRACT_ID="ognl:contractInfoData.CONTRACT_ID">
+						<div class="content" >
+							<div class="main">
+								<div class="title e_blue">[<span jwcid="@Insert" name="CONTRACT_ID" id="CONTRACT_ID" value="ognl:contractInfoData.CONTRACT_ID"></span>] <span jwcid="@Insert" name="CONTRACT_NAME" id="CONTRACT_NAME" value="ognl:contractInfoData.CONTRACT_NAME"></span></div>
+								<div class="content">
+									<div class="c_param c_param-label-auto c_param-col-2">
+										<ul>
+											<li>
+												<span class="label">决策人：</span>
+												<span class="value"><span jwcid="@Insert" name="CONTRACT_CONMAN" id="CONTRACT_CONMAN" value="ognl:contractInfoData.CONTRACT_CONMAN"></span></span>
+											</li>
+											<li>
+												<span class="label">项目经理：</span>
+												<span class="value"><span jwcid="@Insert" name="CONTRACT_MANAGER"id="CONTRACT_MANAGER" value="ognl:contractInfoData.CONTRACT_MANAGER"></span></span>
+											</li>
+											<li>
+												<span class="label">签订人：</span>
+												<span class="value"><span jwcid="@Insert" name="CONTRACT_WRITER" id="CONTRACT_WRITER" value="ognl:contractInfoData.CONTRACT_WRITER"></span></span>
+											</li>
+											<li>
+												<span class="label">签订日期：</span>
+												<span class="value"><span jwcid="@Insert" name="CONTRACT_WRITE_DATE" id="CONTRACT_WRITE_DATE" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd', contractInfoData.CONTRACT_WRITE_DATE)"></span></span>
+											</li>
+											<li>
+												<span class="label">有效期：</span>
+												<span class="value"><span jwcid="@Insert" name="CONTRACT_END_DATE" id="CONTRACT_END_DATE" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd', contractInfoData.CONTRACT_END_DATE)"></span></span>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div jwcid="@Any" class="fn" onclick="updateContract(this)" contractId="ognl:contractInfoData.CONTRACT_ID"><span class="e_ico-edit"></span></div>
+							<div class="side">
+								<button jwcid="@Any" type="button" class="e_button-blue e_button-r" contractId="ognl:contractInfoData.CONTRACT_ID" contractName="ognl:contractInfoData.CONTRACT_NAME" 
+									contractType="ognl:contractInfoData.CONTRACT_TYPE_CODE" contractManager="ognl:contractInfoData.CONTRACT_MANAGER" 
+									contractConman="ognl:contractInfoData.CONTRACT_CONMAN" contractWriter="ognl:contractInfoData.CONTRACT_WRITER" 
+									contractWriteDate="ognl:contractInfoData.CONTRACT_WRITE_DATE" contractEndDate="ognl:contractInfoData.CONTRACT_END_DATE" 
+									contractContent="ognl:contractInfoData.CONTRACT_CONTENT" offerIds="ognl:contractInfoData.OFFER_IDS">
+									<span class="e_ico-ok"></span><span>选择</span>
+								</button>
+							</div>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:contractInfoData.QUERY_PRODUCT_INFO != null && contractInfoData.QUERY_PRODUCT_INFO.size() > 0">
+							<div class="sub sub-noline">
+								<div class="main">
+									<!-- 列表 开始 -->
+									<div class="c_list c_list-gray c_list-line c_list-border">
+										<ul>
+											<li jwcid="@Foreach" source="ognl:contractInfoData.QUERY_PRODUCT_INFO" value="ognl:productInfoData" element="li">
+												<div class="main">
+													<div class="title">[<span jwcid="@Insert" name="PRODUCT_ID" id="PRODUCT_ID" value="ognl:productInfoData.PRODUCT_ID"></span>] 
+																		<span jwcid="@Insert" name="PRODUCT_NAME" id="PRODUCT_NAME" value="ognl:productInfoData.PRODUCT_NAME"></span>
+													</div>
+													<div class="content"></div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<!-- 列表 结束 -->
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_line"></div>
+			<!-- 列表 结束 -->
+		</div>
+	</div>
+</div>
+<!-- 合同结束  -->	
+
+
+
+
+<!-- showPopup(popupName, showItem); 显示弹窗， popupName为Popup组件的name属性值, showItem为第一层要显示的项(div .c_popupItem)元素id -->
+<!-- <button type="button" id="qryButton" ontap="showPopup('mypop', 'level1Item1')">打开弹窗</button> -->

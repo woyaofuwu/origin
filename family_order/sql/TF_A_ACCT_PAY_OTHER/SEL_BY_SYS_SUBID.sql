@@ -1,0 +1,4 @@
+SELECT sys_code,to_char(log_id) log_id,to_char(sub_log_id) sub_log_id,partition_id,eparchy_code,city_code,depart_id,oper_staff_id,pay_money_code,sale_type_code,oper_type_code,agent_code,profit_cen_id,to_char(acc_date,'yyyy-mm-dd hh24:mi:ss') acc_date,to_char(oper_date,'yyyy-mm-dd hh24:mi:ss') oper_date,check_number,fee_type_code,fee_item_type_code,fee,to_char(deposit_begin_date,'yyyy-mm-dd hh24:mi:ss') deposit_begin_date,to_char(deposit_end_date,'yyyy-mm-dd hh24:mi:ss') deposit_end_date,dc_tag,remark,rsrv_tag1,rsrv_tag2,rsrv_tag3,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_num1,rsrv_num2,rsrv_num3 
+  FROM tf_a_acct_pay_other
+ WHERE sys_code=:SYS_CODE
+   AND sub_log_id=TO_NUMBER(:SUB_LOG_ID)

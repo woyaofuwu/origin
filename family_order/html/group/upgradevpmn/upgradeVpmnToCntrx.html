@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"  privs="GROUPMENBER_VPMN_PRV">
+<title>V网升级为融合V网</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/product/productdata.js"></script>-->
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/creategroupmember/ProductInfo.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script>  
+<script jwcid="@Script" type="text/javascript" src="scripts/group/upgradevpmn/upgradeVpnToCntrx.js"></script>  
+<script language="javascript"><!--
+$(document).ready(function(){
+	// j2ee initProductInfo();
+});
+// --></script>
+</head>
+<body jwcid="@Body" style="ognl:'background:url(/watermarkimg/ShowImageServer?staff_id='+page.visit.staffId+') repeat;'"><div class="m_wrapper"><div class="m_wrapper2">
+<div id="productInfoPart" >
+<!-- 区域 开始 -->
+<div class="c_box"> 
+	<!-- 表单 开始 --> 
+	<div class="c_form">
+		<ul class="ul">    
+			<li class="li"> 
+				<span jwcid="@saleserv:SelectGroupBySN"  afterAction="selectGroupBySnAfterAction(data);" afterErrorAction="selectGroupBySnErrorAfterAction();" />
+			</li>  
+			<li class="li"> 
+				 
+				<span class="label"><span class="e_required">批量成员默认优惠：</span></span>
+				
+				<span class="e_select"><span ><span>
+				<span jwcid="codePart@Part" optimize="true">
+					<select jwcid="@Select" 	
+						name="DISCNT_CODE" id="DISCNT_CODE"	
+						source="ognl:infos" 
+						textField="DISCNT_NAME" valueField="DISCNT_CODE" titleField="PRODUCT_ID" desc="批量成员默认优惠" 
+						nullable="no" addDefault=false/> 
+				</span></span></span>
+				</span>
+			</li> 
+		</ul> 
+	</div>
+	
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div  jwcid="GroupInfoPart@Part">
+		<span jwcid="@saleserv:GroupCustInfo"   /> 
+	</div>
+	 
+	<div class="c_title">
+		<div class="text">VPMN产品信息</div>
+	</div> 
+	<div class="c_form c_form-text c_form-col-3 c_form-label-7" jwcid="VpmnPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">集团产品编码：</span>
+				<span class="text"><span><input jwcid="@Insert" value="ognl:vpmnInfo.SERIAL_NUMBER" desc="集团产品编码"/></span></span>					
+			</li>
+			<li class="li">
+				<span class="label">SCP代码：</span>
+				<span class="text"><span><input jwcid="@Insert" value="ognl:vpmnInfo.SCP_NAME" desc="SCP代码"/></span></span>					
+			</li> 
+			<li class="li">
+				<span class="label">产品：</span>
+				<span class="text"><span><input jwcid="@Insert" value="ognl:vpmnInfo.PRODUCT_NAME" desc="产品"/></span></span>
+			</li> 
+		</ul> 
+	</div>
+	  
+	<!--  表单结束 -->
+	<div id="GrpUserInfoPart" jwcid="GrpUserInfoPart@Part" optimize="true">
+		<div class="c_box" style="display:none">
+			<span jwcid="@saleserv:GrpUserList" ifCheck="true" clickAction="chooseUserProducts($(this))" />
+	    </div>
+    </div>
+	  
+</div>
+<!-- 区域 结束 -->
+
+	<!-- 主区域 开始 -->
+	<div class="c_box">
+		<div jwcid="mytab@Tabset" >
+		 
+			<div jwcid="@TabsetContent" id ="productinfotabset" title="产品信息">
+				<div class="l_col s_iframe-lower s_iframe-close">
+					<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width:49%;">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+			                <div class="c_title">
+								<div class="text">待选区</div>
+							</div>
+							<!-- 标题 结束 -->
+							<!-- 分栏 开始 -->
+							<div class="l_col l_col-close">
+								<!--  
+								<div class="l_left" style="width:50%;">
+									 
+			                        <div jwcid="packageList@saleserv:PackageList" 
+			                            element="div" 
+			                            svcParam="ognl:cond"
+			                            productId="ognl:productId"
+			                            callSvc="CS.PackageSVC.getGrpPackagesByProduct"></div>
+									 
+								</div>
+								 
+								<div class="l_auto">
+									<div jwcid="pkgElementList@saleserv:PkgElementList" 
+			                            element="div" 
+			                            callSvc="CS.PackageSVC.getPackageElements" 
+			                            packageId=""></div>
+								</div>
+								 -->
+								 <div id="offerListPart" jwcid="offerListPart@Part" optimize="true">
+									<div jwcid="offerList@csserv:OfferList" 
+				                           element="div"
+				                           svcParam="ognl:cond"
+				                           productId="ognl:productId"
+				                           categoryId="100000000017,100000000014"></div>
+			                     </div>
+							</div>
+							<!-- 分栏 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+				    <div class="l_auto">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">已选区</div>
+								<div class="fn">
+									<label for="effectNow">
+							            <input type="checkbox" id="EFFECT_NOW" name="EFFECT_NOW" jwcid="@Checkbox" 
+							            onclick="if(this.checked){selectedElements.effectNow();$(this).val('true');}else {selectedElements.unEffectNow();$(this).val('false');}"
+							            value="true" checked="true"/><span>立即生效</span>
+							         </label>
+						       </div>
+							</div>
+			                 <div jwcid="selectedElements@saleserv:SelectedElements" 
+			                    initCallSvc="ognl:initSvc" 
+			                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElements" 
+			                    renderCallSvc="CS.SelectedElementSVC.getGrpUserOpenElements"
+			                    initParam="ognl:cond"
+			                    element="div"></div>
+							<!-- 表格 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+					
+				<!-- 第 2 栏 结束 -->
+				</div>
+				<!-- 分栏 结束 -->
+			</div> 
+				<div jwcid="@TabsetContent" id ="grppackage" title="定制信息">
+					<span jwcid="userGrpPackage@saleserv:UserGrpPackage" element="div" grpProductId="ognl:productId" grpUserEparchyCode="ognl:cond.USER_EPARCHY_CODE"
+					treeTextAction="packageTreeTextAction(nodedata)"/>
+				</div>  
+			 
+			 
+		</div>
+	</div>
+			
+	<div jwcid="elementAttr@saleserv:ElementAttr" element="div"></div>
+	<!-- 分栏 结束 -->
+	<input jwcid="@Any" name="PRODUCT_ID" id="PRODUCT_ID" value="ognl:productId" style="display:none"/>
+	<input type="hidden" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value="[]"/>
+ 
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="productInfoPart" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+</div></div>
+</body>
+</html>

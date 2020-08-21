@@ -1,0 +1,6 @@
+UPDATE td_s_commpara
+   SET UPDATE_TIME = TO_DATE(:UPDATE_TIME, 'YYYY-MM-DD HH24:MI:SS'),
+       PARA_CODE23 = :PARA_CODE23
+ WHERE subsys_code=:SUBSYS_CODE
+   AND param_attr=:PARAM_ATTR
+   AND param_code=:PARAM_CODE

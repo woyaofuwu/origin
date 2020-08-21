@@ -1,0 +1,2 @@
+INSERT INTO td_m_sparea(province_code,area_code,area_name,start_date,biz_status,remark,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5)
+ VALUES(:PROVINCE_CODE,:AREA_CODE,:AREA_NAME,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),:BIZ_STATUS,:REMARK,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5)

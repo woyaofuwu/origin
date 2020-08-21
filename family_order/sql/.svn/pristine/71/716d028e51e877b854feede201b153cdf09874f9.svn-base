@@ -1,0 +1,28 @@
+--IS_CACHE=Y
+--IS_CACHE=N
+SELECT LOG_ID,
+       OPER_TYPE_CODE,
+       HINT_CODE,
+       TRADE_TYPE_CODE,
+       EXEC_COUNT,
+       EXEC_MODE,
+       ELEMENT_TYPE_CODE,
+       ELEMENT_ID,
+       NOTIFY_CONTENT,
+       HINT_TYPE,
+       VERIFY_TAG,
+       IN_MODE_CODE,
+       EPARCHY_CODE,
+       TO_CHAR(START_DATE, 'yyyy-mm-dd hh24:mi:ss') START_DATE,
+       TO_CHAR(END_DATE, 'yyyy-mm-dd hh24:mi:ss') END_DATE,
+       TO_CHAR(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       REMARK
+  FROM TD_B_TRADE_HINT_LOG
+ WHERE 1 = 1
+   AND UPDATE_STAFF_ID = :UPDATE_STAFF_ID
+   AND TRADE_TYPE_CODE = :TRADE_TYPE_CODE
+   AND UPDATE_TIME >= TO_DATE(:START_DATE, 'yyyy-mm-dd hh24:mi:ss')
+   AND UPDATE_TIME <= TO_DATE(:END_DATE, 'yyyy-mm-dd hh24:mi:ss')
+ ORDER BY 1 DESC

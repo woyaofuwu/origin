@@ -1,0 +1,3 @@
+--IS_CACHE=Y
+SELECT RELATION_TYPE_CODE paracode,RELATION_TYPE_Name paraname FROM td_s_relation
+where (:TRADE_EPARCHY_CODE IS NOT NULL OR :TRADE_EPARCHY_CODE IS NULL) and relation_kind='1'

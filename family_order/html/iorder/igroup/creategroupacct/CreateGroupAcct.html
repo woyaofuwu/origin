@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>集团账户查询</title>
+	<script jwcid="@Script" src="iorder/igroup/creategroupacct/script/creategrpacct.js"></script>
+	<script jwcid="@Script" src="iorder/igroup/creategroupacct/script/message.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="l_query l_query-nopage">
+		<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left">
+					<span jwcid="@Conditional" condition="getParameter('POP_DIALOG')=='true'">
+						<button type="button" onclick="setReturnValue('','')" style="display:none">
+							<i class="e_ico-back"></i>
+							<span>返回</span>
+						</button>
+					</span>
+					<span jwcid="@Conditional" condition="getParameter('FLAG')=='true'">
+						<button type="button" id="bcreateTop" onclick="createAcct();">
+							<i class="e_ico-add"></i>
+							<span>新增</span>
+						</button>
+					</span>
+					<button type="button" onclick="refresh();" class="l_ml">
+						<i class="e_ico-refresh"></i>
+						<span>刷新</span>
+					</button>
+				</div>
+				<div class="right">
+					<span class="e_mix" onclick="queryAcctInfoList()">
+						<input type="text" readonly="readonly" />
+						<button type="button" class="e_button-blue"><span class="e_ico-search"></span><span>查询</span></button>
+					</span>
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+		<div class="l_queryResult">
+			<div jwcid="acctArea@Part" optimize="true" class="c_table c_table-lite c_table-border ">
+				<table jwcid="@Table" id="acctInfos" name="myTable">
+					<thead>
+						<tr>
+							<th class="e_center">序号</th>
+							<th class="e_center">账户标识</th>
+							<th class="e_center">账户名称</th>
+							<th class="e_center">产品名称</th>
+							<th class="e_center">集团服务号码</th>
+							<th class="e_center">账户类型</th>
+							<th class="e_center">账户开户时间</th>
+							<th class="e_center">归属地市</th>
+							<th class="e_center">账户生效时间</th>
+							<th class="e_center">账户失效时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'" onclick=" for(i=0;i<this.parentNode.children.length;i++){this.parentNode.children[i].className='';} this.className='on';acctInfo($(this).attr('acct_id'),$(this).attr('grpSn'));" acct_id="ognl:info.ACCT_ID" grpSn="ognl:info.SERIAL_NUMBER">
+							<td>
+								<span jwcid="@Insert" value="ognl:(rowIndex + 1 )" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.ACCT_ID" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.PAY_NAME" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.PAY_MODE_NAME" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.OPEN_DATE" />
+							</td>
+							<td>
+								<span jwcid=@Insert value="ognl:info.EPARCHY_NAME" />
+							</td>
+							<td>
+								<span jwcid=@Insert value="ognl:info.START_CYCLE_ID" />
+							</td>
+							<td>
+								<span jwcid=@Insert value="ognl:info.END_CYCLE_ID" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 标题 开始 -->
+	<!-- 编辑区域 开始 -->
+	<!-- 弹窗第一层 开始-->
+	<div jwcid="@Popup" name="popup" class="c_popup c_popup-half c_popup-half-hasBg">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="selectPopup">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup('popup')">新增账户</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<div class="c_list c_list-s c_list-form" jwcid="createArea@Part">
+							<ul>
+								<li id="AcctInfo1">
+									<div class="label">账户标识</div>
+									<div class="value">
+										<input type="text" id="acctInfo_ACCT_ID" name="acctInfo_ACCT_ID" jwcid="@TextField" value="ognl:condition.ACCT_ID" desc="账户编码" disabled="true" />
+									</div>
+								</li>
+								<li id="AcctInfo2">
+									<div class="label">开户时间</div>
+									<div class="value">
+										<input type="text" name="acctInfo_OPEN_DATE" jwcid="@TextField" value="ognl:condition.OPEN_DATE" desc="账户编码" disabled="true" />
+									</div>
+								</li>
+								<li id="AcctInfo3">
+									<div class="label">归属地州</div>
+									<div class="value">
+										<select name="acctInfo_EPARCHY_CODE" jwcid="@Select" source="ognl:pageutil.getStaticList('AREA_CODE')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.EPARCHY_CODE" disabled="true" desc="帐户类别" />
+									</div>
+								</li>
+								<li class="link required">
+									<div class="label">账户名称</div>
+									<div class="value">
+										<input type="text" name="acctInfo_PAY_NAME" jwcid="@TextField" value="ognl:condition.PAY_NAME" defalt_value="ognl:condition.PAY_NAME" nullable="no" desc="账户名称" onchange="if($(this).val() != $(this).attr('defalt_value')){$('#acctInfo_PAY_NAME_ISCHANGED').val('true');} else {$('#acctInfo_PAY_NAME_ISCHANGED').val('false');}" />
+										<input jwcid="@TextField" id="acctInfo_PAY_NAME_ISCHANGED" type="text" name="acctInfo_PAY_NAME_ISCHANGED" value="false" style="display:none" />
+									</div>
+								</li>
+								<li>
+									<div class="label">帐户类别</div>
+									<div class="value">
+										<select name="acctInfo_PAY_MODE_CODE" jwcid="@Select" source="ognl:pageutil.getStaticList('TD_S_PAYMODE')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.PAY_MODE_CODE" nullable="no" onchange="checkPaymode(0)" addDefault="false" desc="帐户类别" />
+									</div>
+
+								</li>
+								<li>
+									<div class="label">托收合同号</div>
+									<div class="value">
+										<input name="acctInfo_CONTRACT_ID" jwcid="@TextField" value="ognl:consign.CONTRACT_ID" type="text" datatype="text" disabled="true" desc="合同号" />
+									</div>
+								</li>
+								<!--铁通账户管理才显示-->
+								<div jwcid="@Conditional" condition='ognl:isTTGrp =="true"'>
+									<li>
+										<div class="label">客户化账单方式</div>
+										<div class="value">
+											<select name="acctInfo_RSRV_STR3" jwcid="@Select" source="ognl:pageutil.getStaticList('ACCOUNT_BILLPAPER_TYPE')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.RSRV_STR3" desc="客户化账单方式" />
+										</div>
+									</li>
+								</div>
+								<li id="AcctInfo4">
+									<div class="label">上级银行</div>
+									<div class="value" id="PartsuperBankCode">
+										<!--  
+										<span name="acctInfo_SUPER_BANK_CODE" jwcid="@Select" source="ognl:pageutil.getList('TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')" valueField="SUPER_BANK_CODE" textField="SUPER_BANK" value='ognl:consign.SUPER_BANK_CODE' desc="上级银行" onchange="ajaxGetBankCode()" />
+										-->
+										<span name="acctInfo_SUPER_BANK_CODE" jwcid="@Select" source="ognl:pageutil.getList('TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')" valueField="SUPER_BANK_CODE" textField="SUPER_BANK" value='ognl:consign.SUPER_BANK_CODE' desc="上级银行" onchange="checkSuperBank()" />
+									</div>
+								</li>
+								<li id="AcctInfo5">
+									<div class="label">银行名称</div>
+									<div class="value">
+										<div id="bankFld" jwcid="bankFld@Part" optimize="true" class="e_mix">
+											<!--  
+											<select name="acctInfo_BANK_CODE" jwcid="@Select" source="ognl:bankList" valueField="BANK_CODE" textField="BANK_INFO" disabled="true" value="ognl:consign.BANK_CODE" desc="银行名称" />
+											-->
+											<input id="acctInfo_BANK_NAME" name="acctInfo_BANK_NAME"  jwcid="@TextField" readOnly="false" disabled="true" value="ognl:consign.BANK" desc="银行名称" />
+											<input id="acctInfo_BANK_CODE" name="acctInfo_BANK_CODE"  jwcid="@TextField" readOnly="false" disabled="true" value="ognl:consign.BANK_CODE" desc="银行编码" style="display:none" />
+											<button class="e_button-blue" type="button" ontap="if(checkBank() == false) return false;forwardPopup(this,'chooseBank')">
+												<i class="e_ico-search"></i>
+												<span>查询</span>
+											</button>
+										</div>
+									</div>
+								</li>
+								<li id="AcctInfo6">
+									<div class="label">银行账号</div>
+									<div class="value">
+										<input type="text" name="acctInfo_BANK_ACCT_NO" jwcid="@TextField" value="ognl:consign.BANK_ACCT_NO" disabled="true" desc="银行帐号" />
+									</div>
+								</li>
+								<li>
+									<div class="label">联系电话</div>
+									<div class="value">
+										<div class="e_mix">
+											<input jwcid="@TextField" id="acctInfo_CONTACT_PHONE" name="acctInfo_CONTACT_PHONE" text="ognl:consign.CONTACT_PHONE" value="ognl:consign.CONTACT_PHONE" readOnly="false" disabled="true" nullable="no" desc="联系电话" />
+											<button class="e_button-blue" type="button" ontap="forwardPopup(this,'chooseNumber')">
+												<i class="e_ico-search"></i>
+												<span>查询</span>
+											</button>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="label">账户联系人</div>
+									<div class="value">
+										<input type="text" name="acctInfo_CONTACT" id="acctInfo_CONTACT" jwcid="@TextField" value="ognl:consign.CONTACT" disabled="true" desc="联系人姓名" />
+									</div>
+									<input type="text" name="acctInfo_CONTACT_UID" id="acctInfo_CONTACT_UID" jwcid="@TextField" value="ognl:consign.RSRV_STR9" disabled="true" desc="联系人userId" style="display:none" />
+								</li>
+								<li>
+									<div class="label">托收定额</div>
+									<div class="value">
+										<input type="text" name="acctInfo_CONSIGN_AMOUNT" jwcid="@TextField" value="ognl:consign.RSRV_STR7" desc="账户说明--托收限额" disabled="true" />
+									</div>
+								</li>
+								<li class="li">
+									<span class="label">是否同步集团总部：</span>
+									<input type="checkbox" id="acctInfo_CHECK" name="acctInfo_CHECK" onclick="changeSmsFlag();" jwcid="@Checkbox" value="0"/>
+								</li>
+							</ul>
+							<div id="OpenSubmit" class="c_submit c_submit-full">
+								<button class="e_button-r e_button-l e_button-blue" type="button" id="bcreate" onclick="return submitAcct('1');" style="display:none">
+									<i class="e_ico-ok"></i>
+									<span>确定</span>
+								</button>
+								<button class="e_button-r e_button-l e_button-blue" type="button" id="bupdate" onclick="return submitAcct('2');" style="display:none">
+									<i class="e_ico-ok"></i>
+									<span>确定</span>
+								</button>
+								<button class="e_button-r e_button-l e_button-red" type="button" id="bdelete" onclick="return submitAcct('3');" style="display:none">
+									<i class="e_ico-delete"></i>
+									<span>删除</span>
+								</button>
+							</div>
+							<!--隐藏区域开始-->
+							<div>
+								<input type="text" id="GrpSn" name="GrpSn" jwcid="@TextField" value="" style="display:none" />
+								<input type="text" name="acctInfo_INST_ID" jwcid="@TextField" value="ognl:consign.INST_ID" style="display:none" />
+								<input type="text" name="acctInfo_OLDBANK_CODE" jwcid="@TextField" value="ognl:consign.BANK_CODE" style="display:none" />
+								<input type="text" name="acctInfo_OLDBANK_ACCT_NO" jwcid="@TextField" value="ognl:consign.BANK_ACCT_NO" style="display:none" />
+								<input type="text" name="acctInfo_OLDSTART_CYCLE_ID" jwcid="@TextField" value="ognl:consign.START_CYCLE_ID" style="display:none" />
+								<input type="text" name="acctInfo_OLDEND_CYCLE_ID" jwcid="@TextField" value="ognl:consign.END_CYCLE_ID" style="display:none" />
+								<input type="text" name="acctInfo_OLDPAY_MODE_CODE" jwcid="@TextField" value="ognl:consign.PAY_MODE_CODE" style="display:none" />
+								<input type="text" name="acctInfo_OLDSUPER_BANK_CODE" jwcid="@TextField" value="ognl:consign.SUPER_BANK_CODE" style="display:none" />
+								<input type="text" name="acctInfo_OLDPAY_NAME" jwcid="@TextField" value="ognl:consign.BANK_ACCT_NAME" style="display:none" />
+								<input type="text" name="GROUP_MGR_CUST_NAME" jwcid="@TextField" value="ognl:consign.GROUP_MGR_CUST_NAME" style="display:none" />
+								<input type="text" name="GROUP_MGR_SN" jwcid="@TextField" value="ognl:consign.GROUP_MGR_SN" style="display:none" />
+								<input jwcid="@Any" name="CUST_ID_HIDE" id="CUST_ID_HIDE" value="0" style="display:none" />
+								<input type="hidden" jwcid="@Any" name="acctInfo_DELETETAG" id="acctInfo_DELETETAG" value="0" style="display:none" />
+								<textarea jwcid="@TextArea" id="pam_NOTIN_GROUP_ID" name="pam_NOTIN_GROUP_ID" value="ognl:groupInfo.GROUP_ID" style="display:none"></textarea>
+								<input jwcid="@Any" name="GROUP_ACCT_DEL" id="GROUP_ACCT_DEL" value="ognl:condition.GROUP_ACCT_DEL_CLASS_PRV" style="display:none" />
+								<input type="hidden" jwcid="@Any" name="acctInfo_isTTGrp" id="acctInfo_isTTGrp" value="ognl:isTTGrp" style="display:none" />
+								<input type="hidden" jwcid="@Any" name="acctInfo_GROUPCUSTCODE" id="acctInfo_GROUPCUSTCODE" value="" style="display:none"/>
+							</div>
+							<!--隐藏区域结束-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+		<!-- 第二框 开始 -->
+		<div class="c_popupGroup">
+			<!-- 付费账目列表 -->
+			<div class="c_popupItem" id="chooseNumber">
+				<div class="c_header">
+					<div class="back" ontap="backPopup(this)">服务号码查询</div>
+				</div>
+				<!-- 区域 开始 -->
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-padding" jwcid="queryForm@Part">
+						<ul>
+							<li>
+								<div class="label">服务号码：</div>
+								<div class="value">
+									<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER" nullable="no" desc="服务号码" />
+									<button class="e_button-form" onclick="if($.validate.verifyAll('queryForm')){ajaxSubmit('queryForm', 'queryPersonBySerial', '', 'CustPart,refreshHintBar')};">
+										<span class="e_ico-search"></span>
+										<span>查询</span>
+									</button>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!--表单结束-->
+					<div jwcid="CustPart@Part" optimize="true">
+						<div class="c_list c_list-line c_list-border">
+							<ul jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="ul">
+								<li>
+									<div class="main">
+										<div class="title"><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true" /></div>
+										<div class="content"><a jwcid="@Redirect" value="ognl:info.SERIAL_NUMBER" cust_name="ognl:info.CUST_NAME" serial_number="ognl:info.SERIAL_NUMBER" userId="ognl:info.USER_ID" ontap="clickNumber(this)" /></div>
+									</div>
+									<div class="side"><span jwcid="@Insert" value="ognl:info.EPARCHY_NAME" raw="true" /></div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- 区域 结束 -->
+			</div>
+			
+			<!-- 银行名称查询列表 -->
+			<div class="c_popupItem" id="chooseBank">
+				<div class="c_header">
+					<div class="back" ontap="backPopup(this)">银行名称选择列表</div>
+				</div>
+				<!-- 区域 开始 -->
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-padding" jwcid="queryBankForm@Part">
+						<ul>
+							<li>
+								<div class="label">银行名称或编码：</div>
+								<div class="value">
+									<input type="text" jwcid="@TextField" name="comminfo_BANK_OR_CODE" id="comminfo_BANK_OR_CODE" value="ognl:condition.comminfo_BANK_OR_CODE" desc="银行名称或编码"/>
+									<button class="e_button-form" onclick="if($.validate.verifyAll('queryBankForm')){ajaxSubmit('queryBankForm', 'queryBankInfo', '', 'QueryBankPart')};">
+										<span class="e_ico-search"></span>
+										<span>查询</span>
+									</button>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!--表单结束-->
+					<div jwcid="QueryBankPart@Part" optimize="true">
+						<div class="c_list c_list-line c_list-border">
+							<table jwcid="@Table" id="bankInfos" name="myBankTable">
+								<thead>
+									<tr>
+										<th col="BANK">银行名称</th>
+										<th col="BANK_CODE">银行编码</th>
+									</tr>
+								</thead>
+								<tbody  jwcid="@Any" name="BankTableValues" id="BankTableValues">
+									<tr jwcid="@Foreach" source="ognl:bankListInfos" value="ognl:bankListInfo" index="ognl:rowIndex2" element="tr">
+										<td><a jwcid="@Redirect" value="ognl:bankListInfo.BANK" BANK_CODE="ognl:bankListInfo.BANK_CODE" BANK="ognl:bankListInfo.BANK" onclick="clickBank(this)"/></td>
+										<td><a jwcid="@Redirect" value="ognl:bankListInfo.BANK_CODE" BANK_CODE="ognl:bankListInfo.BANK_CODE" BANK="ognl:bankListInfo.BANK" onclick="clickBank(this)"/></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- 区域 结束 -->
+			</div>
+			
+		</div>
+		<!-- 第二框结束 -->
+		
+		<!-- 第三框 开始 -->
+		<div class="c_popupGroup">
+			
+		</div>
+		<!-- 第三框结束 -->
+		
+	</div>
+	<input type="hidden" jwcid="@Any" name="GROUP_PRODUCT_ID" id="GROUP_PRODUCT_ID" value="ognl:productId" style="display:none" />
+
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+UPDATE td_m_res_stockjob
+   SET warnning_value_u=warnning_value_u+:INC_VALUE 
+ WHERE eparchy_code=:EPARCHY_CODE
+   AND stock_pos=:STOCK_POS
+   AND job=:JOB
+   AND res_type_code=:RES_TYPE_CODE
+   AND city_code=:CITY_CODE
+   AND res_kind_code=:RES_KIND_CODE
+   AND add_tag=:ADD_TAG

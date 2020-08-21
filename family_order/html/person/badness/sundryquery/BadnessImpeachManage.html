@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>不良信息举报处理</title>
+<script jwcid="@Script" language="JavaScript" src="person/badness/sundryquery/scripts/badnessimpeachmanage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/badness/sundryquery/scripts/accessorylist.js"></script>
+<script language="JavaScript">
+   $(document).ready(function(){
+		initBtn();
+   });
+</script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		<span jwcid="@Insert" id="tipInfo" name="tipInfo" value="ognl:tipInfo"></span>
+		<!-- 获取待处理不良信息无数据! -->
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">不良信息举报处理</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="badInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">举报手机号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_REPORT_SERIAL_NUMBER" id="cond_REPORT_SERIAL_NUMBER" datatype="mbphone"
+				  		desc="举报手机号码"	 value="ognl:editInfo.REPORT_SERIAL_NUMBER"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">举报开始时间：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_REPORT_START_TIME" id="cond_REPORT_START_TIME" time = "true" 
+				  		desc="举报开始时间"	 value="ognl:editInfo.REPORT_START_TIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">举报结束时间：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_REPORT_END_TIME" id="cond_REPORT_END_TIME" time = "true" 
+				  		desc="举报结束时间"	 value="ognl:editInfo.REPORT_END_TIME"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">被举报号码：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_BADNESS_INFO" id="cond_BADNESS_INFO"
+				  		desc="被举报号码"	 value="ognl:editInfo.BADNESS_INFO"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">服务请求标识：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_INFO_RECV_ID" id="cond_INFO_RECV_ID"
+				  		desc="服务请求标识"	 value="ognl:editInfo.INFO_RECV_ID"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">举报对象类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_REPORT_TYPE_CODE" id="cond_REPORT_TYPE_CODE" 
+						source="ognl:pageutil.getStaticList('REPORT_TYPE_CODE')" 
+						value="ognl:editInfo.REPORT_TYPE_CODE" textField="DATA_NAME"   valueField="DATA_ID" desc="举报对象类型"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">被举报号网别：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_BADNESS_INFO_NET" id="cond_BADNESS_INFO_NET" desc="举报网络" 
+						source="ognl:pageutil.getStaticList('BADNESS_INFO_NET')" onchange="changenet();"
+						value="ognl:editInfo.BADNESS_INFO_PROVINCE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<!-- 
+			<li class="li">
+				<span class="label">是否异地举报：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_IS_OTHERPROVINCE" id="cond_IS_OTHERPROVINCE" 
+						source="ognl:pageutil.getStaticList('IS_OTHERPROVINCE')" 
+						value="0" textField="DATA_NAME"  valueField="DATA_ID" desc="是否异地举报"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			 -->
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="query" name="query" onclick="return queryBadnessInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div class="c_title c_title-2">
+		<div class="text">不良信息</div>
+		<div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92103"
+						  config="export/badness/sundryquery/BadnessImpeachManage.xml" fileName="不良信息举报处理" beforeAction="exportBeforeAction"
+						 cond="badInfoPart" params="ognl:'TAG_PARAM=1&&STAFF_ID=' + getVisit().getStaffId()"/>
+		</div>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="badInfoTablePart@Part">
+	<div class="c_scroll c_scroll-x">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="badTable" id="badTable" scroll="true">
+			<thead>
+				<tr>
+					<th><input col="IS_CHECKED" id="badness_ctrl" type="checkbox" class="e_checkbox" onclick="checkedAll('revcIdCheckBox', checked)"/></th>
+					    <th col="INFO_RECV_ID">服务请求标识</th>
+						<th col="BADNESS_INFO">被举报号码/网站地址</th>
+						<th>举报内容</th>
+						<th col="OPERATE_STEP">预处理内容</th>
+						<th col="REPORT_SERIAL_NUMBER">举报手机号码</th>
+						<th col="REPORT_CUST_NAME">举报用户姓名</th>
+						<th col="REPORT_CUST_PROVICE">举报用户归属省</th>
+						<th col="RECV_PROVINCE">举报受理省</th>
+						<th col="REPORT_TIME">用户举报时间</th>
+						<th col="BADNESS_CUST_PROVICE">被举报号码归属省</th>
+						<th col="FOURTH_TYPE_CODE_NAME">四级服务类型</th>
+						<th col="FIFTH_TYPE_CODE_NAME">五级服务类型</th>
+						<th col="SERV_REQUEST_TYPE_NAME">六级服务类型</th>
+						<th col="SEVEN_TYPE_CODE_NAME">七级服务类型</th>
+						<th col="REPORT_TYPE_CODE_NAME">举报对象类型</th>
+						<th col="RSRV_STR2">分拣结果类别</th>
+						<th col="IMPORTANT_LEVEL">重要程度</th>
+						<th col="STATE_NAME">处理状态</th>
+						<th col="HASTEN_STATE">催办状态</th>
+						<th col="REPEAT_REPORT_NAME">是否重复举报</th>
+						<th col="TAG">下载附件</th>
+						<th col="IS_BLACK">举报用户是否黑名单</th>
+						<th col="OPERATE_STEP">预处理情况</th>
+						<th col="FOURTH_TYPE_CODE" style="display:none">四级服务类型</th>
+						<th col="FIFTH_TYPE_CODE" style="display:none">五级服务类型</th>
+						<th col="SERV_REQUEST_TYPE" style="display:none">六级服务类型</th>
+						<th col="SEVEN_TYPE_CODE" style="display:none">七级服务类型</th>
+						<th col="REPORT_TYPE_CODE" style="display:none">举报对象类型</th>
+						
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="BadnessTableInfos" id="BadnessTableInfos">
+				<tr jwcid="@Foreach" source="ognl:badInfos" value="ognl:badInfo" id="badInfos" index="ognl:rowIndex" element="tr">
+					<td><input jwcid="@Checkbox" name="revcIdCheckBox" id="revcIdCheckBox" value=ognl:badInfo.IS_CHECKED onclick="return setServerType(this);"/></td>
+					
+					<span jwcid="@Conditional" condition="ognl:!'03'.equals(badInfo.REPORT_TYPE_CODE)"> 
+ 						<td><span jwcid="@Insert" value="ognl:badInfo.INFO_RECV_ID"></span></td>
+					</span>
+					<span jwcid="@Conditional" condition="ognl:'03'.equals(badInfo.REPORT_TYPE_CODE)"> 
+ 						<td>
+							<span jwcid="@Redirect" value="ognl:badInfo.INFO_RECV_ID" content="ognl:badInfo.INFO_RECV_ID" onclick="openStickList($(this).attr('content'));"></span>
+						</td>
+					</span>
+					
+					<td><span jwcid="@Insert" value="ognl:badInfo.BADNESS_INFO"></span></td>
+					<td>
+						<span jwcid="@Redirect" value="ognl:(badInfo.RECV_CONTENT!=null && badInfo.RECV_CONTENT.length()>8) ? badInfo.RECV_CONTENT.substring(0, 8) + '...' : badInfo.RECV_CONTENT" content="ognl:badInfo.RECV_CONTENT" onclick="$.showSucMessage('举报内容：', $(this).attr('content'));"></span>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.OPERATE_STEP"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.REPORT_SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.REPORT_CUST_NAME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', badInfo.REPORT_CUST_PROVINCE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', badInfo.RECV_PROVINCE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.REPORT_TIME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', badInfo.BADNESS_INFO_PROVINCE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_INFO_FOURTH_TYPE_CODE', badInfo.FOURTH_TYPE_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_INFO_FIFTH_TYPE_CODE', badInfo.FIFTH_TYPE_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_INFO_SERV_REQUEST_TYPE', badInfo.SERV_REQUEST_TYPE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_INFO_SEVEN_TYPE_CODE', badInfo.SEVEN_TYPE_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('REPORT_TYPE_CODE', badInfo.REPORT_TYPE_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.RSRV_STR2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('IMPORTANT_LEVEL', badInfo.IMPORTANT_LEVEL)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.STATE_NAME"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_INFO_STATE', badInfo.HASTEN_STATE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.REPEAT_REPORT_NAME"></span></td>
+					<td>
+				     	<a jwcid="@Any" href="ognl:encodeUrl('attach?action=download&fileId='+ badInfo.FILE_ID +'&realName=' + pageutil.getFtpFile(badInfo.FILE_ID).get('FILE_NAME'))">
+					   		<span jwcid="@Insert" value="ognl:badInfo.TAG"/>
+						</a>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.IS_BLACK"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.OPERATE_STEP"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:badInfo.FOURTH_TYPE_CODE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:badInfo.FIFTH_TYPE_CODE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:badInfo.SERV_REQUEST_TYPE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:badInfo.SEVEN_TYPE_CODE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:badInfo.REPORT_TYPE_CODE"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="badInfoNav" id="badInfoNav" cond="badInfoPart" part="badInfoTablePart" listener="queryBadnessInfo" pageSize="10" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+<div jwcid="mytab@Tabset" >
+<div jwcid="@TabsetContent" title="举报处理">
+	 
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-9" jwcid="dealRemarkInfoPart@Part" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">修改举报对象类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_DEAL_ASSORT" id="cond_DEAL_ASSORT" desc="修改举报对象类型" 
+						source="ognl:pageutil.getStaticList('REPORT_TYPE_CODE')"   onchange="changeReportType();"
+						value="ognl:dealInfo.DEAL_ASSORT" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">四级服务类型：</span></span>
+				<span class="e_select"  jwcid="FourthTypeCodePart@Part"><span><span>
+					<select jwcid="@Select" name="cond_FOURTH_TYPE_CODE" id="cond_FOURTH_TYPE_CODE" 
+						source="ognl:fourthTypeCodes" onchange="changeFourthType();"
+						value="ognl:dealInfo.FOURTH_TYPE_CODE" textField="DATA_NAME"  nullable="no" valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">五级服务类型：</span>
+				<span class="e_select"  jwcid="FifthTypeCodePart@Part"><span><span>
+					<select jwcid="@Select" name="cond_FIFTH_TYPE_CODE" id="cond_FIFTH_TYPE_CODE" 
+						source="ognl:fifthTypeCodes" onchange="changeFifthType();"
+						value="ognl:dealInfo.FIFTH_TYPE_CODE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">六级服务类型：</span>
+				<span class="e_select"  jwcid="ServRequestTypePart@Part"><span><span>
+					<select jwcid="@Select" name="cond_SVC_TYPE_ID" id="cond_SVC_TYPE_ID" 
+						source="ognl:servRequestTypes" onchange="changeRequestType();"
+						value="ognl:dealInfo.SVC_TYPE_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">七级服务类型：</span>
+				<span class="e_select"  jwcid="SeventhTypeCodePart@Part"><span><span>
+					<select jwcid="@Select" name="cond_SERVEN_TYPE_CODE" id="cond_SERVEN_TYPE_CODE" 
+						source="ognl:sevenTypeCodes" 
+						value="ognl:dealInfo.SERVEN_TYPE_CODE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">处理信息：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_DEAL_RAMARK" id="cond_DEAL_RAMARK" desc="处理信息" nullable="no"
+						source="ognl:pageutil.getStaticList('BAD_INFO_DEAL_RESULT')" 
+						value="ognl:dealInfo.DEAL_RAMARK" textField="DATA_NAME"  valueField="DATA_ID"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">预处理意见：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_PRETREATMENT" id="cond_PRETREATMENT" desc="预处理意见" nullable="no"
+						source="ognl:pageutil.getStaticList('BAD_INFO_OPERATE_STEP')" 
+						value="ognl:dealInfo.PRETREATMENT" textField="DATA_NAME"  valueField="DATA_ID"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">联系电话：</span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="cond_CONTACT_PHONE" id="cond_CONTACT_PHONE" datatype="mbphone"
+				  		desc="联系电话"	 value="ognl:dealInfo.CONTACT_PHONE"/>
+				</span></span>
+			</li>
+			<li class="li col-2">
+				<span class="label">处理意见补充说明：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+					<textarea type="text" jwcid="@TextArea" id="cond_DEAL_REMARK_MAKEUP" name="cond_DEAL_REMARK_MAKEUP" value="ognl:dealInfo.DEAL_REMARK_MAKEUP"  rows="8" maxsize="2000" desc="参数信息" />
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<span jwcid="SubmitPart@csserv:CSSubmit" submitText="本地举报处理" beforeAction="submitBadnessInfos()" isReset="false" print="false" isRender="false" area="" element="span"/>
+		<button type="button" id="bBcommit" name="bBcommit" class="e_button-page-ok" onclick="tempDeal();"><i class="e_ico-save"></i><span>临时说明提交</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+﻿<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>平台业务最后办理记录查询</title>
+	<script language="JavaScript" jwcid="@Script" src="scripts/iorder/icsserv/component/person/usercheck/UserCheck.js"></script>
+	<script language="JavaScript" jwcid="@Script" src="iorder/person/platlastquery/scripts/QueryPlatSvcLastNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">平台业务最后办理记录查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">
+			<div jwcid="UserPlatsvcCond@Part" class="c_form c_form-label-5 c_form-border c_form-col-3 c_form-submit">
+				<ul>
+					<li class="required">
+						<div class="label">服务号码：</div>
+						<div class="value">
+							<input type="text" jwcid="cond_SERIAL_NUMBER@TextField"
+								name="cond_SERIAL_NUMBER" onenterAction="queryUserPlatsvcs();"
+								value="ognl:getData().getString('SERIAL_NUMBER','')" desc="手机号码"
+								nullable="no" datatype="mbphone" />
+						</div>
+					</li>
+					<li>
+						<div class="label">企业编码：</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="cond_SP_CODE"
+								name="cond_SP_CODE" value="ognl:cond.cond_SP_CODE" desc="企业编码" />
+						</div>
+					</li>
+					<li>
+						<div class="label">业务编码：</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="cond_BIZ_CODE"
+								name="cond_BIZ_CODE" value="ognl:cond.cond_BIZ_CODE" desc="业务编码" />
+						</div>
+					</li>
+					<li>
+						<div class="label">业务平台：</div>
+						<div class="value" jwcid="selectList@Part">
+							<select name="cond_BIZ_TYPE_CODE"
+								jwcid="@Select"
+								source="ognl:selectList" onchange="changeServiceIdType();"
+								valueField="DATA_ID" textField="DATA_NAME"
+								value="ognl:cond.cond_BIZ_TYPE_CODE" desc="业务平台"
+								addDefault="yes" />
+						</div>
+					</li>
+				
+					
+					<li style="display:none">
+						<div class="label">操作编码：</div>
+						<div class="value">
+							<select name="cond_OPER_CODE" jwcid="cond_OPER_CODE@Select"
+								source="ognl:pageutil.getStaticList('PLATSVCOPERCODE')"
+								valueField="DATA_ID" textField="DATA_NAME"
+								value="ognl:cond.cond_OPER_CODE" desc="操作编码" addDefault="yes" />
+						</div>
+					</li>
+				
+				</ul>
+				<div class="submit">
+					<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="queryUserPlatsvcs();">
+						<span class="e_ico-search"></span><span>查询</span>
+					</button>
+				</div>
+			</div>
+			<div class="c_space"></div>
+			<div jwcid="PlatsvcLastList@Part">
+				<!-- 表格 开始 -->
+				<table name="UserPlatsvcTable" class="c_table c_table-border c_table-lite c_table-row-8" jwcid="@Table">
+					<thead>
+						<tr>
+							<th ontap="$.sortTable(this)"><span>业务流水</span></th>
+								<th ontap="$.sortTable(this,'date')"><span>受理时间</span></th>
+							<th ontap="$.sortTable(this,'date')"><span>执行时间</span></th>
+							<th ontap="$.sortTable(this,'int')"><span>完工时间</span></th>
+							<th><span>受理渠道</span></th>
+							<th ontap="$.sortTable(this,'int')"><span>受理员工</span></th>
+							<th ontap="$.sortTable(this)"><span>企业代码</span></th>
+							<th ontap="$.sortTable(this,'int')"><span>业务代码</span></th>
+							<th ontap="$.sortTable(this)"><span>平台类型</span></th>
+							<th ontap="$.sortTable(this)"><span>交易编码</span></th>
+							<th ontap="$.sortTable(this,'int')"><span>操作类型</span></th>
+							<th ontap="$.sortTable(this)"><span>发送平台时间</span></th>
+							<th ontap="$.sortTable(this,'int')"><span>一级应答码</span></th>
+							<th ontap="$.sortTable(this)"><span>一级应答码描述</span></th>
+							 <th col="PLAT_SYN_ID" style="display:none">活动类型</th>
+                            <th col="BUSI_SIGN" style="display:none">是否有权限</th>
+                            <th col="SUBSCRIBE_ID" style="display:none">实例ID</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+							element="tr" index="ognl:rowIndex"
+							class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td data-title="业务流水"><span jwcid="@Insert"
+								value="ognl:info.TRADE_ID"
+								raw="true" />
+							</td>
+							<td data-title="受理时间"><span jwcid="@Insert"
+								value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)"
+								raw="true" />
+							</td>
+							<td data-title="执行时间"><span jwcid="@Insert" 
+								value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.EXEC_TIME)"
+								raw="true" />
+							</td>
+							<td data-title="完工时间"><span jwcid="@Insert" 
+							value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.FINISH_DATE)"
+								raw="true" />
+							</td>
+							<td data-title="受理渠道"><span jwcid="@Insert"
+								value="ognl:info.TRADE_DEPART_ID" raw="false" />
+							</td>
+							<td data-title="受理员工"><span jwcid="@Insert"
+								value="ognl:info.TRADE_STAFF_ID"
+								raw="true" />
+							</td>
+							<td data-title="企业代码"><span jwcid="@Insert" value="ognl:info.SP_CODE"
+								raw="true" />
+							</td>
+							<td data-title="业务代码"><span jwcid="@Insert"
+								value="ognl:info.BIZ_CODE"
+								raw="true" />
+							</td>
+							<td data-title="平台类型"><span jwcid="@Insert" value="ognl:info.BIZ_NAME"
+								raw="true" />
+							</td>
+							<td data-title="交易编码"><span jwcid="@Insert" value="ognl:info.BUSI_SIGN"
+														raw="true" />
+							</td>
+							<td data-title="操作类型" class="key"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PLATSVCOPERCODE',info.OPER_CODE)"
+								raw="true" />
+							</td>
+							<td data-title="发送平台时间"><span jwcid="@Insert"
+								value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.PLAT_SEND_TIME)"
+								raw="true" />
+							</td>
+							<td data-title="一级应答码"><span jwcid="@Insert"
+								value="ognl:info.REMOTE_RSLT_CODE1"
+								raw="true" />
+							</td>
+							<td data-title="一级应答码描述"><span jwcid="@Insert" value="ognl:info.REMOTE_RSLT_DESC1"
+								raw="true" />
+							</td>
+							
+							  <td style="display:none">
+                                <span jwcid="@Insert"
+                                      value="ognl:info.PLAT_SYN_ID"></span></td>
+                            <td style="display:none">
+                                <span jwcid="@Insert"
+                                      value="ognl:info.BUSI_SIGN"></span></td>
+                            <td style="display:none">
+                                <span jwcid="@Insert"
+                                      value="ognl:info.SUBSCRIBE_ID"></span></td>
+						
+						</tr>
+					</tbody>
+				</table>
+				<!-- 表格 结束 -->
+				
+				
+	
+				 <!-- 提交 开始 -->
+				 
+				 <div class="c_box">
+				<div class="c_submit">
+				<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="checkSubmitBefore();">
+						<span>重新发送</span>
+					</button>
+
+				</div>
+				</div>
+    			
+            <!-- 提交 结束 -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

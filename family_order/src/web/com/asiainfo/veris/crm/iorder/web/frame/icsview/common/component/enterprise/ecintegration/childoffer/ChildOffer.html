@@ -1,0 +1,548 @@
+<div jwcid="@Part" element="div" class="c_popupItem" id="CHILD_OFFER_SETUP_ITEM">
+    <div id="ChildOfferSetupHead" class="c_header">
+        <div class="back" ontap="closeChildOfferPopupItem();"><span jwcid="@Insert" value="ognl:ecOffer.OFFER_NAME"></span></div>
+    </div>
+    <div name="ChildOfferSetupScroll" class="c_scroll c_scroll-float c_scroll-header" hScroll="false" hScrollbar="false" checkDOMChanges="false">
+        <div class="l_padding l_padding-u l_padding-phone-0">
+            <!-- 子群组集团商品信息 开始 -->
+            <div jwcid="@Conditional" condition="ognl:info.HAS_EC_OFFER==true">
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">集团商品</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="childEcOfferBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li>
+                            <div class="main"><span jwcid="@Insert" value="ognl:ecOffer.OFFER_NAME" /></div>
+                            <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_OFFER_CHA==true">
+                                <div class="side" jwcid="@Any" EC_MEB_TYPE="EC" OFFER_ID="ognl:ecOffer.OFFER_ID" OFFER_CODE="ognl:ecOffer.OFFER_CODE" ontap="openOfferChaPopupItem(this, 'EC');"><span class="e_tag e_tag-red">待设置</span></div>
+                                <div class="more"></div>
+                            </div>
+                            <input jwcid="@Hidden" name="CHILD_EC_OFFER_ID" value="ognl:ecOffer.OFFER_ID" />
+                            <input jwcid="@Hidden" name="CHILD_EC_OFFER_CODE" value="ognl:ecOffer.OFFER_CODE" />
+                            <div id="EC_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:ecOffer"></span></div>
+                        </li>
+                        <li class="required" element="li" jwcid="@Conditional" condition="ognl:info.SHOW_SERIAL_NUMBER==true">
+                            <div class="label">服务号码</div>
+                            <div class="value">
+                                <input type="text" jwcid="@Any" name="CHILD_EC_SERIAL_NUMBER_INPUT" id="CHILD_EC_SERIAL_NUMBER_INPUT" value="ognl:info.SERIAL_NUMBER" desc="服务号码" />
+                                <input jwcid="@Hidden" name="CHILD_EC_IF_RES_CODE" value="ognl:info.IF_RES_CODE" />
+                                <input jwcid="@Hidden" name="CHILD_EC_REAL_SERIAL_NUMBER" id="CHILD_EC_REAL_SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" />
+                                <input jwcid="@Hidden" name="CHILD_EC_RES_TYPE_CODE" value="ognl:info.RES_TYPE_CODE"></input>
+                                <input jwcid="@Hidden" name="CHILD_EC_SERIAL_NUMBER_SUCCESS" value="ognl:info.SERIAL_NUMBER_SUCCESS"></input>
+                            </div>
+                            <label class="fn"><span class="e_ico-check" ontap="checkAccesssNum();"></span></label>
+                            <!-- 这里必须加提示，在 li 上加 tip 属性即可 -->
+                        </li>
+                        <li id="i_acctDealPart" class="link required">
+                            <div class="label">账户操作</div>
+                            <div class="value">
+                                <span jwcid="@Segment" name="cond_ACCT_DEAL" source="ognl:info.ACCT_DEAL_LIST" value="ognl:info.ACCT_DEAL" textField="DATA_NAME" valueField="DATA_ID" disabled="ognl:info.SHOW_ACCT_COMBINE==false?true:false" onchange="acctDealChange(this);"></span>
+                            </div>
+                            <div id="CHILD_EC_ACCOUNT_DATA" style="display:none;"></div>
+                        </li>
+                        <li id="i_acctSelPart" style="display:" class="link required" ontap="showAcctAddPopup(this);">
+                            <div class="label">新增账户</div>
+                            <div class="value">
+                            </div>
+                            <div class="more"></div>
+                        </li>
+                        <li id="i_acctCombPart" style="display:none" class="link required" ontap="showAcctCombPopup(this);">
+                            <div class="label">已有账户</div>
+                            <div class="value">
+                            </div>
+                            <div class="more"></div>
+                        </li>
+                        <li id="i_payPlanPart" class="link required" ontap="initPayPlanItem();">
+                            <div class="label">付费类型</div>
+                            <div class="value">
+                                <span id="payPlanTexts"></span>
+                                <input type="hidden" jwcid="@Any" id="payPlanValue" name="payPlanValue" value="ognl:info.PLAN_TYPE_CODE" />
+                            </div>
+                            <div class="more"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_OFFER_GROUP==true || (ecSubOfferList!=null||ecSubOfferList.size()>0)">
+                    <!-- 标题 开始 -->
+                    <div class="c_title">
+                        <div class="text">集团商品_子商品</div>
+                        <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_OFFER_GROUP==true">
+                            <div class="fn" name="addEcSubOfferButton" id="addEcSubOfferButton">
+                                <ul>
+                                    <li jwcid="@Any" OFFER_ID="ognl:ecOffer.OFFER_ID" ontap="openGroupOfferListPopupItem(this, 'EC');">
+                                        <span class="e_ico-add"></span><span>新增</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="EC_SelGroupOffer" style="display:none"><span jwcid="@Insert" value="ognl:info.EcMustSelGroupOfferData"></span></div>
+                    </div>
+                    <!-- 标题 结束 -->
+                    <div jwcid="@Part" id="childEcOfferSubPart" class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                        <ul id="childEcOfferSubList">
+                            <li jwcid="@Foreach" source="ognl:ecSubOfferList" value="ognl:ecSubOffer" element="li">
+                                <div class="main">
+                                    <div jwcid="@Any" class="title" tip="ognl:ecSubOffer.OFFER_NAME">
+                                        【<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_NAME"></span>
+                                    </div>
+                                    <div class="content content-auto">
+                                        <span jwcid="@Insert" value="ognl:ecSubOffer.START_DATE.substring(0,10)"></span>~<span jwcid="@Insert" value="ognl:ecSubOffer.END_DATE.substring(0,10)"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:ecSubOffer.HAS_OFFER_CHA==true">
+                                    <div class="side" jwcid="@Any" EC_MEB_TYPE="EC" OFFER_ID="ognl:ecSubOffer.OFFER_ID" OFFER_CODE="ognl:ecSubOffer.OFFER_CODE" ontap="openOfferChaPopupItem(this, 'EC');"><span class="e_tag e_tag-red">待设置</span></div>
+                                    <div class="more"></div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:ecSubOffer.SELECT_FLAG==0">
+                                    <div class="fn">
+                                        <span class="e_ico-delete e_dis"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:ecSubOffer.SELECT_FLAG!=0">
+                                    <div class="fn" jwcid="@Any" OFFER_ID="ognl:ecSubOffer.OFFER_ID" ontap="deleteSubOffer(this, 'EC');">
+                                        <span class="e_ico-delete"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div jwcid="@Conditional" condition="ognl:info.HAS_ESPG_OFFER==true">
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">集团商品</div>
+                </div>
+                <input jwcid="@Hidden" name="CHILD_EC_OFFER_ID" value="ognl:ecOffer.OFFER_ID" />
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="childEcOfferBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li>
+                            <div class="main"><span jwcid="@Insert" value="ognl:ecOffer.OFFER_NAME" /></div>
+                            <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_OFFER_CHA==true">
+                                <div class="side" jwcid="@Any" EC_MEB_TYPE="EC" OFFER_ID="ognl:ecOffer.OFFER_ID" OFFER_CODE="ognl:ecOffer.OFFER_CODE" ontap="openOfferChaPopupItem(this, 'EC');"><span class="e_tag e_tag-red">待设置</span></div>
+                                <div class="more"></div>
+                            </div>
+                            <input jwcid="@Hidden" name="CHILD_EC_OFFER_ID" value="ognl:ecOffer.OFFER_ID" />
+                            <input jwcid="@Hidden" name="CHILD_EC_OFFER_CODE" value="ognl:ecOffer.OFFER_CODE" />
+                            <div id="EC_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:ecOffer"></span></div>
+                        </li>
+                        <li class="required">
+                            <div class="label">服务号码</div>
+                            <div class="value">
+                                <input type="text" jwcid="@Any" name="CHILD_EC_SERIAL_NUMBER_INPUT" id="CHILD_EC_SERIAL_NUMBER_INPUT" value="ognl:info.SERIAL_NUMBER" desc="服务号码" />
+                                <input jwcid="@Hidden" name="CHILD_EC_IF_RES_CODE" value="ognl:info.IF_RES_CODE" />
+                                <input jwcid="@Hidden" name="CHILD_EC_REAL_SERIAL_NUMBER" id="CHILD_EC_REAL_SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" />
+                                <input jwcid="@Hidden" name="CHILD_EC_RES_TYPE_CODE" value="ognl:info.RES_TYPE_CODE"></input>
+                                <input jwcid="@Hidden" name="CHILD_EC_SERIAL_NUMBER_SUCCESS" value="ognl:info.SERIAL_NUMBER_SUCCESS"></input>
+                            </div>
+                            <label class="fn"><span class="e_ico-check" ontap="checkAccesssNum();"></span></label>
+                            <!-- 这里必须加提示，在 li 上加 tip 属性即可 -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">甩单录入人员</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="espOrderStaffPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li class="link required">
+                            <div class="label">选择员工：</div>
+                            <div class="value">
+                                <span class="e_mix">
+                                    <input jwcid="@TextField" name="attr_ORDERSTAFF" id="attr_ORDERSTAFF" disabled="disabled" desc="选择员工" nullable="no" />
+                                    <input jwcid="@Hidden" id="attr_ORDERPHONE" name="attr_ORDERPHONE" desc="ESP订购员工电话" />
+                                    <input jwcid="@Hidden" id="attr_ORDERSTAFFID" name="attr_ORDERSTAFFID" desc="ESP订购员工工号" />
+                                    <span class="e_ico-check" ontap="showOrderStaff();"></span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_OFFER_GROUP==true || (ecSubOfferList!=null||ecSubOfferList.size()>0)">
+                    <!-- 标题 开始 -->
+                    <div class="c_title">
+                        <div class="text">集团商品_子商品</div>
+                        <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_OFFER_GROUP==true">
+                            <div class="fn" name="addEcSubOfferButton" id="addEcSubOfferButton">
+                                <ul>
+                                    <li jwcid="@Any" OFFER_ID="ognl:ecOffer.OFFER_ID" Deal_Type="esp" ontap="openGroupOfferListPopupItem(this, 'EC');">
+                                        <span class="e_ico-add"></span><span>新增</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="EC_SelGroupOffer" style="display:none"><span jwcid="@Insert" value="ognl:info.EcMustSelGroupOfferData"></span></div>
+                    </div>
+                    <!-- 标题 结束 -->
+                    <div jwcid="@Part" id="childEcOfferSubPart" class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                        <ul id="childEcOfferSubList">
+                            <li jwcid="@Foreach" source="ognl:ecSubOfferList" value="ognl:ecSubOffer" element="li">
+                                <div class="main">
+                                    <div jwcid="@Any" class="title" tip="ognl:ecSubOffer.OFFER_NAME">
+                                        【<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_NAME"></span>
+                                    </div>
+                                    <div class="content content-auto">
+                                        <span jwcid="@Insert" value="ognl:ecSubOffer.START_DATE.substring(0,10)"></span>~<span jwcid="@Insert" value="ognl:ecSubOffer.END_DATE.substring(0,10)"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:ecSubOffer.HAS_OFFER_CHA==true">
+                                    <div class="side" jwcid="@Any" EC_MEB_TYPE="EC" OFFER_ID="ognl:ecSubOffer.OFFER_ID" OFFER_CODE="ognl:ecSubOffer.OFFER_CODE" ontap="openOfferChaPopupItem(this, 'EC');"><span class="e_tag e_tag-red">待设置</span></div>
+                                    <div class="more"></div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:ecSubOffer.SELECT_FLAG==0">
+                                    <div class="fn">
+                                        <span class="e_ico-delete e_dis"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:ecSubOffer.SELECT_FLAG!=0">
+                                    <div class="fn" jwcid="@Any" OFFER_ID="ognl:ecSubOffer.OFFER_ID" ontap="deleteSubOffer(this, 'EC');">
+                                        <span class="e_ico-delete"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div jwcid="@Conditional" condition="ognl:info.HAS_INS_ESPG_OFFER==true">
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">集团商品</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="childEcOfferBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li>
+                            <div class="main" id="EC_INS_OFFER_NAME"><span jwcid="@Insert" value="ognl:ecOffer.OFFER_NAME" /></div>
+                            <input jwcid="@Hidden" name="CHILD_EC_OFFER_ID" value="ognl:ecOffer.OFFER_ID" />
+                            <div id="EC_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:ecOffer"></span></div>
+                        </li>
+                        <li>
+                            <div class="label">服务号码</div>
+                            <div class="value">
+                                <input jwcid="@TextField" name="CHILD_EC_SERIAL_NUMBER_INPUT" id="CHILD_EC_SERIAL_NUMBER_INPUT" value="ognl:ecOffer.SERIAL_NUMBER" disabled="disabled" desc="服务号码" />
+                                <input jwcid="@Hidden" name="CHILD_EC_REAL_SERIAL_NUMBER" id="CHILD_EC_REAL_SERIAL_NUMBER" value="ognl:ecOffer.SERIAL_NUMBER" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">甩单录入人员</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="espOrderStaffPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li class="link required">
+                            <div class="label">选择员工：</div>
+                            <div class="value">
+                                <span class="e_mix">
+                                    <input jwcid="@TextField" name="attr_ORDERSTAFF" id="attr_ORDERSTAFF" disabled="disabled" desc="选择员工" nullable="no" />
+                                    <input jwcid="@Hidden" id="attr_ORDERPHONE" name="attr_ORDERPHONE" desc="ESP订购员工电话" />
+                                    <input jwcid="@Hidden" id="attr_ORDERSTAFFID" name="attr_ORDERSTAFFID" desc="ESP订购员工工号" />
+                                    <span class="e_ico-check" ontap="showOrderStaff();"></span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_INS_CHILD_OFFER==true">
+                    <!-- 标题 开始 -->
+                    <div class="c_title">
+                        <div class="text">集团商品_子商品</div>
+                    </div>
+                    <!-- 标题 结束 -->
+                    <div jwcid="@Part" id="childEcOfferSubPart" class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                        <ul id="childEcOfferSubList">
+                            <li jwcid="@Foreach" source="ognl:ecSubOfferList" value="ognl:ecSubOffer" element="li">
+                                <div class="main">
+                                    <div jwcid="@Any" class="title" tip="ognl:ecSubOffer.OFFER_NAME">
+                                        【<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_NAME"></span>
+                                    </div>
+                                    <div class="content content-auto">
+                                        <span jwcid="@Insert" value="ognl:ecSubOffer.START_DATE.substring(0,10)"></span>~<span jwcid="@Insert" value="ognl:ecSubOffer.END_DATE.substring(0,10)"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <input jwcid="@Hidden" name="HAS_EC_INS_OFFER" id="HAS_INS_ESPG_OFFER" value="ognl:info.HAS_INS_ESPG_OFFER" />
+            </div>
+            <div jwcid="@Conditional" condition="ognl:info.HAS_EC_INS_OFFER==true">
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">集团商品</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="childEcOfferBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li>
+                            <div class="main" id="EC_INS_OFFER_NAME"><span jwcid="@Insert" value="ognl:ecOffer.OFFER_NAME" /></div>
+                            <input jwcid="@Hidden" name="CHILD_EC_OFFER_ID" value="ognl:ecOffer.OFFER_ID" />
+                            <div id="EC_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:ecOffer"></span></div>
+                        </li>
+                        <li>
+                            <div class="label">服务号码</div>
+                            <div class="value">
+                                <input jwcid="@TextField" name="CHILD_EC_SERIAL_NUMBER_INPUT" id="CHILD_EC_SERIAL_NUMBER_INPUT" value="ognl:ecOffer.SERIAL_NUMBER" disabled="disabled" desc="服务号码" />
+                                <input jwcid="@Hidden" name="CHILD_EC_REAL_SERIAL_NUMBER" id="CHILD_EC_REAL_SERIAL_NUMBER" value="ognl:ecOffer.SERIAL_NUMBER" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div jwcid="@Conditional" condition="ognl:ecOffer.HAS_INS_CHILD_OFFER==true">
+                    <!-- 标题 开始 -->
+                    <div class="c_title">
+                        <div class="text">集团商品_子商品</div>
+                    </div>
+                    <!-- 标题 结束 -->
+                    <div jwcid="@Part" id="childEcOfferSubPart" class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                        <ul id="childEcOfferSubList">
+                            <li jwcid="@Foreach" source="ognl:ecSubOfferList" value="ognl:ecSubOffer" element="li">
+                                <div class="main">
+                                    <div jwcid="@Any" class="title" tip="ognl:ecSubOffer.OFFER_NAME">
+                                        【<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:ecSubOffer.OFFER_NAME"></span>
+                                    </div>
+                                    <div class="content content-auto">
+                                        <span jwcid="@Insert" value="ognl:ecSubOffer.START_DATE.substring(0,10)"></span>~<span jwcid="@Insert" value="ognl:ecSubOffer.END_DATE.substring(0,10)"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <input jwcid="@Hidden" name="HAS_EC_INS_OFFER" id="HAS_EC_INS_OFFER" value="ognl:info.HAS_EC_INS_OFFER" />
+            </div>
+            <!-- 子群组集团商品信息 结束 -->
+            <!-- 【定制】可选成员商品 开始 -->
+            <div jwcid="@Conditional" condition="ognl:info.HAS_DZ_MEB_OFFER==true">
+                <div jwcid="@Conditional" condition="ognl:mebOffer.HAS_OFFER_GROUP==true">
+                    <div class="c_title">
+                        <div class="text">集团定制信息</div>
+                        <div class="fn" name="addDZMebSubOfferButton" id="addDZMebSubOfferButton">
+                            <ul>
+                                <li jwcid="@Any" OFFER_ID="ognl:mebOffer.OFFER_ID" ontap="openGroupOfferListPopupItem(this, 'DZ_MEB');">
+                                    <span class="e_ico-add"></span><span>新增</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <input jwcid="@Hidden" name="BBOSS_TAG" value="ognl:mebOffer.BBOSS_TAG" desc="BBOSS定制" />
+                        <div id="DZ_MEB_SelGroupOffer" style="display:none"><span jwcid="@Insert" value="ognl:info.MebMustSelGroupOfferData"></span></div>
+                        <input jwcid="@Hidden" name="CHILD_DZ_MEB_OFFER_ID" value="ognl:mebOffer.OFFER_ID" />
+                        <div id="DZ_MEB_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:grpPackageList"></span></div>
+                    </div>
+                    <div jwcid="@Part" id="DZ_childMebOfferSubPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                        <ul id="DZ_childMebOfferSubList">
+                            <li jwcid="@Foreach" source="ognl:mebSubOfferList" value="ognl:mebSubOffer" element="li" OFFER_ID="ognl:mebSubOffer.OFFER_ID" id="ognl:'DZ_MEB_'+mebSubOffer.OFFER_ID">
+                                <div class="main">
+                                    <div class="title">
+                                        【<span jwcid="@Insert" value="ognl:mebSubOffer.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:mebSubOffer.OFFER_NAME"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:mebSubOffer.SELECT_FLAG==0">
+                                    <div class="fn">
+                                        <span class="e_ico-delete e_dis"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:mebSubOffer.SELECT_FLAG!=0">
+                                    <div class="fn" jwcid="@Any" OFFER_ID="ognl:mebSubOffer.OFFER_ID" ontap="deleteSubOffer(this, 'DZ_MEB');">
+                                        <span class="e_ico-delete"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 【定制】可选成员商品 结束 -->
+            <!-- 集团定制 only展示，变更时使用 开始 -->
+            <div jwcid="@Conditional" condition="ognl:info.ONLY_SHOW_DZ_OFFER==true">
+                <div class="c_title">
+                    <div class="text">集团定制信息</div>
+                    <div id="DZ_MEB_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:grpPackageList"></span></div>
+                </div>
+                <div jwcid="@Part" id="DZ_childMebOfferSubPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul id="DZ_childMebOfferSubList">
+                        <li jwcid="@Foreach" source="ognl:grpPackageList" value="ognl:grpPackage" element="li">
+                            <div class="main">
+                                <div class="title">
+                                    【<span jwcid="@Insert" value="ognl:grpPackage.ELEMENT_ID"></span>】<span jwcid="@Insert" value="ognl:grpPackage.ELEMENT_NAME"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 集团定制 only展示，变更时使用 结束 -->
+            <!-- 子群组成员商品信息 开始 -->
+            <div jwcid="@Conditional" condition="ognl:info.HAS_MEB_OFFER==true">
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">成员商品</div>
+                </div>
+                <!-- 标题 结束 -->
+                <div jwcid="@Part" id="childMebOfferBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+                    <ul>
+                        <li>
+                            <div class="main"><span jwcid="@Insert" value="ognl:mebOffer.OFFER_NAME"></span></div>
+                            <div jwcid="@Conditional" condition="ognl:mebOffer.HAS_OFFER_CHA==true">
+                                <div class="side" jwcid="@Any" EC_MEB_TYPE="MEB" OFFER_ID="ognl:mebOffer.OFFER_ID" OFFER_CODE="ognl:mebOffer.OFFER_CODE" ontap="openOfferChaPopupItem(this, 'MEB');"><span class="e_tag e_tag-red">待设置</span></div>
+                                <div class="more"></div>
+                            </div>
+                            <input jwcid="@Hidden" name="CHILD_MEB_OFFER_ID" value="ognl:mebOffer.OFFER_ID" />
+                            <div id="MEB_OFFER_DATA" style="display:none"><span jwcid="@Insert" value="ognl:mebOffer"></span></div>
+                        </li>
+                        <li class="link required" id="roleInfoPart">
+                            <div class="label">成员角色</div>
+                            <div class="value">
+                                <span jwcid="@Select" name="CHILD_MEB_REL_SUBSCRIBER_ROLE" source="ognl:info.ROLE_INFO" textField="ROLE_B" valueField="ROLE_CODE_B" value="ognl:info.REL_SUBSCRIBER_ROLE" addDefault="false"></span>
+                            </div>
+                        </li>
+                         <li class="link required">
+                            <div class="label">付费方式</div>
+                            <div class="value">
+								<span jwcid="@Select" name="CHILD_MEB_PAY_PLAN" source="ognl:info.MEB_PAY_PLAN_LIST" textField="PAY_PLAN_NAME" valueField="PAY_PLAN_CODE" value="ognl:info.MEB_PAY_PLAN" addDefault="false" desc="付费方式"></span>
+							</div>
+                        </li>
+                        <li class="link" style="display:none">
+                            <div class="label">立即生效</div>
+                            <div class="value">
+                                <span jwcid="@Switch" name="CHILD_MEB_EFFECT_NOW" value="1" onValue="1" onText="是" offValue="0" offText="否"></span>
+                                <input jwcid="@Hidden" name="IS_CHANGE_EFFECT" value="false" />
+                            </div>
+                        </li>
+                        <div jwcid="@Conditional" condition="ognl:info.IF_CENTRETYPE != null">
+                            <li>
+                                <div class="label">融合IMS信息</div>
+                                <div class="value">
+                                    <input type="text" jwcid="@Any" disabled="disabled" value="ognl:info.CENTRETYPE_NAME" />
+                                </div>
+                                <input jwcid="@Hidden" name="CHILD_MEB_IF_CENTRETYPE" value="ognl:info.IF_CENTRETYPE" />
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+                <div jwcid="@Conditional" condition="ognl:mebOffer.HAS_OFFER_GROUP==true">
+                    <!-- 标题 开始 -->
+                    <div class="c_title">
+                        <div class="text">成员商品_子商品</div>
+                        <div class="fn" name="addMebSubOfferButton" id="addMebSubOfferButton">
+                            <ul>
+                                <li jwcid="@Any" OFFER_ID="ognl:mebOffer.OFFER_ID" ontap="openGroupOfferListPopupItem(this, 'MEB');">
+                                    <span class="e_ico-add"></span><span>新增</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="MEB_SelGroupOffer" style="display:none"><span jwcid="@Insert" value="ognl:info.MebMustSelGroupOfferData"></span></div>
+                    </div>
+                    <!-- 标题 结束 -->
+                    <div jwcid="@Part" id="childMebOfferSubPart" class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+                        <ul id="childMebOfferSubList">
+                            <li jwcid="@Foreach" source="ognl:mebSubOfferList" value="ognl:mebSubOffer" element="li">
+                                <div class="main">
+                                    <div class="title">
+                                        【<span jwcid="@Insert" value="ognl:mebSubOffer.OFFER_CODE"></span>】<span jwcid="@Insert" value="ognl:mebSubOffer.OFFER_NAME"></span>
+                                    </div>
+                                    <div class="content content-auto">
+                                        <span jwcid="@Insert" value="ognl:mebSubOffer.START_DATE.substring(0,10)"></span>~<span jwcid="@Insert" value="ognl:mebSubOffer.END_DATE.substring(0,10)"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:mebSubOffer.HAS_OFFER_CHA==true">
+                                    <div class="side" jwcid="@Any" EC_MEB_TYPE="MEB" OFFER_ID="ognl:mebSubOffer.OFFER_ID" OFFER_CODE="ognl:mebSubOffer.OFFER_CODE" ontap="openOfferChaPopupItem(this, 'MEB');"><span class="e_tag e_tag-red">待设置</span></div>
+                                    <div class="more"></div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:mebSubOffer.SELECT_FLAG==0">
+                                    <div class="fn">
+                                        <span class="e_ico-delete e_dis"></span>
+                                    </div>
+                                </div>
+                                <div jwcid="@Conditional" condition="ognl:mebSubOffer.SELECT_FLAG!=0">
+                                    <div class="fn" jwcid="@Any" OFFER_ID="ognl:mebSubOffer.OFFER_ID" ontap="deleteSubOffer(this, 'MEB');">
+                                        <span class="e_ico-delete"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 子群组成员商品信息 结束 -->
+            <!-- 成员列表 开始 -->
+            <div jwcid="@Conditional" condition="ognl:info.SHOW_MEB_LIST==true">
+                <div jwcid="@MemberList" addMemberTypeList="ognl:info.ADD_MEMBER_TYPE_LIST" filePath="ognl:info.FILE_PATH" importXmlPath="ognl:info.IMPORT_XML_PATH" 
+                exportXmlPath="ognl:info.EXPORT_XML_PATH" chkSvcName="ognl:info.CHECK_SVC_NAME" ecOfferCode="ognl:info.EC_PROD_OFFER_CODE" ecUserId="ognl:ecOffer.USER_ID" 
+                initMebSvc="ognl:info.INIT_MEB_SVC" operType="ognl:info.CHILD_OFFER_OPER_TYPE" delMebList="ognl:info.CHILD_DELMEB_DATA" 
+                bpmTempletId='ognl:ecOffer.BPM_TEMPLET_ID' serialNumber='ognl:ecOffer.SERIAL_NUMBER'></div>
+            </div>
+            <!-- 成员列表 结束 -->
+            <div class="c_space"></div>
+            <!-- 提交 开始 -->
+            <div class="c_submit c_submit-center">
+                <button type="button" class="e_button-r e_button-l e_button-navy" ontap="hidePopup(this);">取消</button>
+                <button type="button" class="e_button-r e_button-l e_button-blue" id="CHILD_OFFER_SUBMIT" ontap="saveChildOfferData(this);">确定</button>
+            </div>
+            <!-- 提交 结束 -->
+            <div class="c_space"></div>
+        </div>
+    </div>
+    <input jwcid="@Hidden" name="CHILD_OFFER_OPER_TYPE" value="ognl:info.CHILD_OFFER_OPER_TYPE" desc="操作类型：AddMeb,DelMeb,CrtUser,DstUser,ChgWn" />
+    <!-- 弹窗 开始 -->
+    <div jwcid="@Popup" name="popup06" class="c_popup c_popup-full">
+        <div class="c_popupGroup">
+            <div class="c_popupItem" id="orderPopupItem">
+                <div class="c_scroll c_scroll-float">
+                    <div id="orderHead" class="c_header">
+                        <div class="back" ontap="backPopup(this);" id="orderPopupBack">请选择ESP订购员工</div>
+                    </div>
+                    <div class="c_space"></div>
+                    <div class="c_fn">
+                        <div class="left">
+                            <div class="text"></div>
+                        </div>
+                        <div class="right" jwcid="orderForm@Part">
+                            <span class="label">员工姓名：</span>
+                            <input style="width:18em;" jwcid="@TextField" id="cond_OrderStaffName" name="cond_OrderStaffName" value="" desc="员工姓名" />
+                            <button class="e_button-blue" onclick="orderFormQuery();"><span class="e_ico-search"></span><span>查询</span></button>
+                        </div>
+                    </div>
+                    <div class="c_space"></div>
+                    <div class="l_queryFn" jwcid="orderParts@Part" element="div">
+                        <div class="l_queryResult">
+                            <table name="orderTable" id="orderTable" class="c_table c_table-checkbox c_table-border c_table-hasGrid" jwcid="@Table">
+                                <thead>
+                                    <tr>
+                                        <th col="AUDIT_STAFF_ID">员工工号</th>
+                                        <th col="AUDIT_STAFF_ID">员工姓名</th>
+                                        <th col="CITY_CODE">所在地市</th>
+                                        <th col="EPARCHY_CODE">所在地州</th>
+                                        <th col="DEPART_ID">部门编号</th>
+                                        <th col="DEPART_NAME">部门名称</th>
+                                        <th col="STAFF_PHONE">联系电话</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr jwcid="@Foreach" source="ognl:staffInfos" value="ognl:staffInfo" element="tr">
+                                        <td class="e_center" align="center"><span jwcid="@Redirect" value="ognl:staffInfo.STAFF_ID" onclick="setReturnValueOrder(this);" staff_id="ognl:staffInfo.STAFF_ID" raw="false" staff_phone="ognl:staffInfo.SERIAL_NUMBER1"></span></td>
+                                        <td align="center"><span jwcid="@Insert" value="ognl:staffInfo.STAFF_NAME" raw="false"></span></td>
+                                        <td align="center"><span jwcid="@Insert" value="ognl:staffInfo.CITY_CODE" raw="false"></span></td>
+                                        <td align="center"><span jwcid="@Insert" value="ognl:staffInfo.EPARCHY_CODE" raw="false"></span></td>
+                                        <td align="center"><span jwcid="@Insert" value="ognl:staffInfo.DEPART_ID" raw="false"></span></td>
+                                        <td align="center"><span jwcid="@Insert" value="ognl:staffInfo.DEPART_NAME" raw="false"></span></td>
+                                        <td align="center"><span jwcid="@Insert" value="ognl:staffInfo.SERIAL_NUMBER1" raw="false"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div jwcid="ChildOfferSerialNumberPart@Part"></div>

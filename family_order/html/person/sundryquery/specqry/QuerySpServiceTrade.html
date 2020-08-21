@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/specqry/scripts/specqry.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+		<div class="c_box">
+			<div class="c_title" name="title" id="title">
+				<div class="text">查询条件</div>
+			</div>
+			<!-- 活动详情 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-6" jwcid="submit_part@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label e_required"  >SP业务代码：</span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" value="ognl:condition.cond_SP_SVC_ID"  name = "cond_SP_SVC_ID" 
+								desc="SP业务代码" maxsize="40" nullable="no"/>
+							</span></span>
+						</li>
+						<li class="li"  id="monitor_type_li">
+							<span class="label"  >业务状态：</span>
+							<span class="e_select"><span><span>
+								<input type="text" jwcid="@Select" name="cond_BIZ_STATUS"  source="ognl:pageutil.getStaticList('SP_BIZ_STATUS')" 
+								textField="DATA_NAME"  valueField="DATA_ID"  addDefault="false"  value="ognl:condition.cond_BIZ_STATUS" nullable="no"  desc="业务状态"  />
+							</span></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit e_right">
+						<button class="e_button-form"  onclick="sundryQuery('','querySpServiceTrade');"><i class="e_ico-search"></i><span>查询</span></button>
+						<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+					</div>
+				</div>
+		</div>
+				<div  jwcid="result_Table@Part" optimize="true">
+
+			        <div class="c_title">
+						  <div class="text">查询结果</div>
+						  <div class="fn" >
+									<div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+							      		<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="5005"
+										  	config="export/sundryquery/specqry/QuerySpServiceTradeList.xml" fileName="新业务产品资料查询" cond=submit_part/>
+								  	</div>
+									<button class="l_ml" type="button" onclick="$.printArea('print_Table','新业务产品资料查询打印','60%')">
+										<i class="e_ico-print"></i><span>打印</span>
+									</button> 
+						  </div>
+			  	    </div>
+			  	    <div jwcid="print_Table@Part" optimize="true">
+			  	    	<div class="c_scroll c_scroll-x">
+						<div class="c_table c_table-row-10">
+							<table jwcid="@Table"  id="DeptTable" name="DeptTable">
+								<thead>
+						  			<tr>
+										<th>SP企业代码</th>
+										<th>SP名称</th>
+										<th>SP简称</th>
+										<th>SP业务代码</th>
+										<th>业务名称</th>
+										<th>服务描述</th>
+										<th>业务类型编码</th>
+										<th>访问模式</th>
+										<th>价格（元）</th>
+										<th>计费类型</th>
+										<th>业务状态</th>
+										<th>Provision的链接地址</th>
+										<th>Provision端口号</th>
+										<th>业务使用方法描述</th>
+										<th>业务的介绍网址</th>
+										<th>押金类型编码</th>
+										<th>押金金额(元)</th>
+										<th>订购方式</th>
+										<th>业务类型</th>
+										<th>客服电话</th>
+										<th>服务属性</th>
+										<th>联系人</th>
+										<th>备注</th>
+										<th>SP英文名称</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"  >
+											<td><span jwcid="@Insert" value="ognl:info.SP_CODE"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.SP_NAME"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.SP_SHORT_NAME"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.BIZ_CODE"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.BIZ_NAME"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.BIZ_DESC"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'SP_BIZ_TYPE', info.BIZ_TYPE_CODE)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.ACCESS_MODE"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PRICE"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'SPBIZ_BILL_TYPE', info.BILL_TYPE)"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'SP_BIZ_STATUS', info.BIZ_STATUS)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PROV_ADDR"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.PROV_PORT"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.USAGE_DESC"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.INTRO_URL"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'TD_S_FOREGIFT', info.FOREGIFT_TYPE)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.FOREGIFT"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.SP_NAME_EN"/></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- end table -->
+					</div>
+				</div>
+				</div>
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" cond="submit_part" pageSize="10"  listener="querySpServiceTrade" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+				
+		</div>						  
+</div>				
+
+</div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+</html>

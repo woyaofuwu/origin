@@ -1,0 +1,32 @@
+SELECT PARTITION_ID,
+       to_char(user_id) user_id,
+       foregift_code,
+       to_char(money) money,
+       cust_name,
+       pspt_id,
+       to_char(FOREGIFT_IN_DATE, 'yyyy-mm-dd hh24:mi:ss') FOREGIFT_IN_DATE,
+       to_char(FOREGIFT_OUT_DATE, 'yyyy-mm-dd hh24:mi:ss') FOREGIFT_OUT_DATE,
+       to_char(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       remark,
+       RSRV_NUM1,
+       RSRV_NUM2,
+       RSRV_NUM3,
+       RSRV_NUM4,
+       RSRV_NUM5,
+       rsrv_str1,
+       rsrv_str2,
+       rsrv_str3,
+       rsrv_str4,
+       rsrv_str5,
+       to_char(RSRV_DATE1, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1,
+       to_char(RSRV_DATE2, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2,
+       to_char(RSRV_DATE3, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE3,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       RSRV_TAG3
+  FROM tf_f_user_foregift
+ WHERE user_id = TO_NUMBER(:USER_ID)
+  AND foregift_code =:FOREGIFT_CODE
+   AND partition_id = MOD(TO_NUMBER(:USER_ID), 10000)

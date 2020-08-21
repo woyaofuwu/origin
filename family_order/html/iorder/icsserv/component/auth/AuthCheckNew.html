@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>身份校验</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/common/des/des.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/auth/AuthCheckNew.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/phone/MBOP.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/phone/common.js"></script>
+	<script jwcid="@Script" src="v5/jcl/ui/component/base/segment.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="c_header e_show-phone">
+	<div class="back" id="authBackBtn" name="authBackBtn" ontap="backPopup(this)"></div>
+</div>
+<div id="authCheckForm">
+	<div class="c_box l_padding c_box-gray">
+		<div class="c_list c_list-s c_list-phone-col-1 c_list-line c_list-border" id="TYPEDIV">
+			<ul>
+				<li>
+					<div class="label">补换卡分类</div>
+					<div class="value">
+						<span class="e_segment">
+							<span  id="CHAN_CARD" idx="0" val="1" >换卡</span>
+                            <span id="REMA_CARD"  idx="1" val="0" class="e_dis">补卡</span>
+							<input type="hidden" name="mySegment" id="mySegment" nullable="no" des="补换卡分类"/>
+                        </span>
+						<!--<input jwcid="@Radio" name="SELECT_TYPE" id="CHAN_CARD" value="1" onclick="$.authCheck.checkRadio()" checked="true" />换卡-->
+						<!--<input jwcid="@Radio" name="SELECT_TYPE" id="REMA_CARD" value="0" onclick="$.authCheck.checkRadio()" checked="false" disabled="true" />补卡-->
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="c_list c_list-s c_list-phone-col-1 c_list-line c_list-border" >
+			<ul>
+				<li>
+					<div class="label">验证方式</div>
+					<div class="value">
+						<div class="e_group">
+							<span class="e_groupRight" id="PsptScanPart">
+									<button class="e_button e_button-blue" id="PsptScanBtn" onclick="scanIDCard();">
+										<span>获取二代身份证信息</span>
+									</button>
+							</span>
+							<div class="e_groupMain">
+							  <span jwcid="@Select" name="cond_CHECK_MODE" source="ognl:checkMode" addDefault="false" textField="value" valueField="key" desc="验证方式" onChange="$.authCheck.setAuthCheckArea();$.authCheck.resetSize();" />
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<input jwcid="@Any" type="hidden" id="TRADE_TYPE_CODE" name="TRADE_TYPE_CODE" value="ognl:info.TRADE_TYPE_CODE" desc="TRADE_TYPE_CODE" />
+			<input jwcid="@Any" type="hidden" id="HIGH_PRIV" name="HIGH_PRIV" value="ognl:info.HIGH_PRIV" desc="HIGH_PRIV" />
+			<input jwcid="@Any" type="hidden" id="E_NAME" name="E_NAME" value="" desc="E_NAME" />
+			<input jwcid="@Any" type="hidden" id="E_ADDRESS" name="E_ADDRESS" value="" desc="E_ADDRESS" />
+			<input jwcid="@Any" type="hidden" id="REMOTECARD_RIGHT" name="REMOTECARD_RIGHT" value="ognl:info.REMOTECARD_RIGHT" desc="REMOTECARD_RIGHT" />
+            <input jwcid="@Any" type="hidden" id="FRONTBASE64" name="FRONTBASE64" value="" desc="FRONTBASE64" />
+			<input jwcid="@Any" type="hidden" name="AUTH_CHECK" id="AUTH_CHECK" value="AUTH_CHECK" />
+		</div>
+		<div class="c_space"></div>
+		<div class="c_list c_list-phone-col-1 c_list-s c_list-line c_list-border">
+			<ul>
+				<li name="checkMode0">
+					<div class="label">证件类型</div>
+					<div class="value">
+						<span jwcid="@Select" name="cond_PSPT_TYPE_CODE" addDefault="false" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')" selected="ognl:getParameter('PSPT_TYPE_CODE')" textField="DATA_NAME" valueField="DATA_ID" onChange="$.authCheck.checkId()" desc="证件类型" />
+					</div>
+				</li>
+				<li name="checkMode0">
+					<div class="label">证件号码</div>
+					<div class="value">
+						<input type="text" id="cond_PSPT_ID" name="cond_PSPT_ID" value="" desc="证件号码" datatype="pspt" nullable="no" />
+					</div>
+				</li>
+				<li id="checkMode2">
+					<div class="label">SIM卡号(或白卡号)</div>
+					<div class="value">
+						<input type="text" id="cond_SIM_NO" name="cond_SIM_NO" value="" />
+					</div>
+				</li>
+				<li>
+					<div class="label">服务号码</div>
+					<div class="value">
+						<input jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:getParameter('SERIAL_NUMBER')" disabled="true" />
+					</div>
+				</li>
+				<li id="checkMode1">
+					<div class="label">服务密码</div>
+					<div class="value">
+						<div class="e_mix">
+							<input type="password" id="cond_USER_PASSWD" name="cond_USER_PASSWD" value="" datatype="pinteger" desc="服务密码" maxLength="6" equalsize="6" />
+							<button class="e_button-blue" id="IMG_cond_USER_PASSWD" name="IMG_cond_USER_PASSWD" title="密码小键盘输入" onclick="return $.authCheck.inputPassWD(this);">
+								<span>小键盘</span>
+							</button>
+						</div>
+					</div>
+				</li>
+				<li id="checkMode3">
+					<div class="label">验证码</div>
+					<div class="value">
+						<div class="e_mix">
+							<button class="e_button-blue" id="SendVerifyCodeBtn" name="SendVerifyCodeBtn" title="验证码">
+								<span>发送验证码</span>
+							</button>
+							<input type="text" id="cond_VERIFY_CODE" name="cond_VERIFY_CODE" value="" datatype="pinteger" desc="验证码" maxLength="6" equalsize="6" />
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="c_submit c_submit-full">
+		<input jwcid="@Hidden" name="USER_CHECK" value="ognl:getParameter('USER_CHECK','false')" />
+		<input jwcid="@Hidden" name="DISABLED_AUTH" value="ognl:getParameter('DISABLED_AUTH','')" />
+		<input jwcid="@Hidden" name="HANDLER" value="ognl:getParameter('HANDLER','POP_AUTH_PARAMS')" />
+		<button class="e_button-navy e_button-l" onClick="$.authCheck.cancelAuthCheck();">
+			<span>取消</span>
+		</button>
+		<div jwcid="@Conditional" condition="ognl:getVisit().getInModeCode() == 1">
+			<button id="IvrBtn" class="e_button-navy e_button-l" onClick="$.authCheck.chkIvrPasswd();">
+				<span>IVR校验</span>
+			</button>
+		</div>
+		<button id="auth_ok_btn" name="auth_ok_btn" class="e_button-blue e_button-l" onClick="$.authCheck.submitAuthCheck()">
+			<span>确定</span>
+		</button>
+	</div>
+	<object style="display:none" id="LittleKey" classid="CLSID:11AF41BD-EFFF-462C-94A5-EDC27B737FC0" codebase="/tools/LittleKey.cab"></object>
+</div>
+
+</body>
+
+</html>

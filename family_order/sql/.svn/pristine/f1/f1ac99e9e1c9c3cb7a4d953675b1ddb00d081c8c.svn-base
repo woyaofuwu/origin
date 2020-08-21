@@ -1,0 +1,21 @@
+SELECT cust.GROUP_ID,
+       cust.CUST_ID,
+       cust.CUST_NAME,
+       cust.CLASS_ID,
+       cust.JURISTIC_TYPE_CODE,
+       cust.JURISTIC_NAME,
+       cust.ENTERPRISE_TYPE_CODE,
+       cust.CALLING_TYPE_CODE,
+       u.PRODUCT_ID,
+       u.SERIAL_NUMBER,
+       u.USER_ID,
+       uu.START_DATE
+  FROM TF_F_CUST_GROUP cust,TF_F_USER u,TF_F_RELATION_UU uu
+ WHERE cust.CUST_ID =u.CUST_ID
+  AND uu.USER_ID_B = TO_NUMBER(:USER_ID)
+  AND uu.PARTITION_ID= MOD(TO_NUMBER(:USER_ID),10000)
+  AND SYSDATE BETWEEN uu.START_DATE AND uu.END_DATE
+  AND u.USER_ID = uu.USER_ID_A
+  AND u.PARTITION_ID = MOD(uu.USER_ID_A, 10000)
+  AND u.REMOVE_TAG='0'
+  AND u.product_id in ( SELECT product_id FROM ucr_cen1.TD_B_PTYPE_PRODUCT)

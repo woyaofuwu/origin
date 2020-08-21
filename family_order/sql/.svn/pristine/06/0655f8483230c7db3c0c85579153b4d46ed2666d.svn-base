@@ -1,0 +1,2 @@
+INSERT INTO TI_B_DM_BUSISUB(operate_id1,paramcode,functionid,paramname,paramvalue,para1,para2)
+ VALUES(:OPERATE_ID1,:PARAMCODE,:FUNCTIONID,:PARAMNAME,:PARAMVALUE,:PARA1,:PARA2)

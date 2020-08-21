@@ -1,0 +1,1 @@
+update tf_f_user_np t set t.np_destroy_time = sysdate where user_id = :USER_ID

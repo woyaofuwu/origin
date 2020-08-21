@@ -1,0 +1,1 @@
+SELECT count(1) recordcount FROM dual where substr(to_char(sysdate,'YYYY-MM-DD'),9,2) > '20'

@@ -1,0 +1,5 @@
+SELECT      
+    *       
+ FROM TF_B_TRADE_ECRECEP_MEB
+ WHERE trade_id = :TRADE_ID
+ AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))

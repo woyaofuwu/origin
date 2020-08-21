@@ -1,0 +1,3 @@
+UPDATE td_b_discnt
+   SET discnt_code=:DISCNT_CODE,discnt_name=:DISCNT_NAME,discnt_explain=:DISCNT_EXPLAIN,b_discnt_code=:B_DISCNT_CODE,a_discnt_code=:A_DISCNT_CODE,obj_type_code=:OBJ_TYPE_CODE,enable_tag=:ENABLE_TAG,define_months=:DEFINE_MONTHS,months=:MONTHS,discnt_type_code=:DISCNT_TYPE_CODE,start_date=TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),end_date=TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS'),tag_set=:TAG_SET,rsrv_str1=:RSRV_STR1,rsrv_str2=:RSRV_STR2,rsrv_str3=:RSRV_STR3,rsrv_str4=:RSRV_STR4,rsrv_str5=:RSRV_STR5,update_staff_id=:UPDATE_STAFF_ID,update_depart_id=:UPDATE_DEPART_ID,update_time= sysdate  
+ WHERE discnt_code = :DISCNT_CODE

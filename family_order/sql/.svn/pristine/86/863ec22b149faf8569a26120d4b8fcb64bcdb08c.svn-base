@@ -1,0 +1,16 @@
+UPDATE TF_B_EOP_BOMC T
+SET    T.OPER_TYPE       = :OPER_TYPE,
+       T.DEAL_STATE      = :DEAL_STATE,
+       T.DEAL_PERSON     = :DEAL_PERSON,
+       T.CONTACT_PERSON  = :CONTACT_PERSON,
+       T.CONTACT_PHONE   = :CONTACT_PHONE,
+       T.IS_CORRECT      = :IS_CORRECT,
+       T.UPDATE_TIME     = to_date(:UPDATE_TIME, 'yyyy-MM-dd hh24:Mi:ss'),
+       T.ELIMINATE_TIME  = to_date(:ELIMINATE_TIME, 'yyyy-MM-dd hh24:Mi:ss'),
+       T.PROBLEM_REASON  = :PROBLEM_REASON,
+       T.RESULT_TIME     = to_date(:RESULT_TIME, 'yyyy-MM-dd hh24:Mi:ss'),
+       T.BOMC_ORDER_CODE = :BOMC_ORDER_CODE,
+       T.DEALDESC        = :DEALDESC,
+       T.DEALRESULT      = :DEALRESULT
+WHERE  1 = 1
+AND    T.BOMC_ORDER_CODE = :BOMC_ORDER_CODE

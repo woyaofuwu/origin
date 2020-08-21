@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>租机业务</title>
+<script jwcid="@Script" language="JavaScript" src="person/rentmobile/scripts/rentmobiletrade.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="242"  tradeAction="refreshPartAtferAuth(data)"></div>
+    <div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	
+	<div jwcid="ResInfoPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-text c_form-col-3 c_form-label-5">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">SIM卡号：</span>
+					<span class="text" jwcid="@Insert" name="SIM_CARD_NO" id="SIM_CARD_NO" value="ognl:resInfo.SIM_CARD_NO" 
+							desc="SIM卡号"/>
+				</li>
+				<li class="li">
+					<span class="label">IMSI号：</span>
+					<span class="text" jwcid="@Insert" name="IMSI_NO" id="IMSI_NO" value="ognl:resInfo.IMSI_NO" 
+							desc="IMSI号"/>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+        <span class="text">租机业务</span>
+    </div>
+    <div jwcid="rentMobileInfoPart@Part">
+	<div class="c_form c_form-text c_form-col-3 c_form-label-5">
+		<ul class="ul">
+		<!--  
+			<li class="li">
+				<span class="label"><span class="">租机状态：</span></span>
+                <span class="e_select"><span><span>
+               		<select jwcid="@Select" name="RENT_TAG" id="RENT_TAG"
+							source="ognl:rentTags"
+							textField="PARAM_NAME" valueField="PARAM_CODE" titleField="PARAM_NAME"
+                			value="ognl:info.RENT_TAG"
+							desc="租机状态"
+							onchange="changeRentTag()"
+                			nullable="no"
+                       />
+                </span></span></span>
+			</li>
+			-->
+			<li class="li">
+				<span class="label"><span class="">租机状态：</span></span>
+                <span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="RENT_TAG_NAME" id="RENT_TAG_NAME" nullable="no"	readonly="true" desc="租机状态" value="ognl:rentTag.RENT_TAG_NAME"/>
+					<input jwcid="@Hidden" id="RENT_TAG" name="RENT_TAG"  value="ognl:rentTag.RENT_TAG" desc="租机状态"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">租机类型：</span></span>
+                <span class="e_select"><span><span>
+               		<select jwcid="@Select" name="RENT_TYPE_CODE" id="RENT_TYPE_CODE"
+							source="ognl:rentTypeCodes"
+							textField="PARAM_NAME" valueField="PARAM_CODE" titleField="PARAM_NAME"
+                			value="ognl:info.RENT_TYPE_CODE"
+							desc="租机类型"
+                			nullable="no"
+                       />
+                </span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">租机方式：</span></span>
+                <span class="e_select"><span><span>
+               		<select jwcid="@Select" name="RENT_MODE_CODE" id="RENT_MODE_CODE"
+							source="ognl:pageutil.getStaticList('RENT_MODE_CODE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                			value="ognl:info.RENT_MODE_CODE"
+							desc="租机方式"
+                			nullable="no"
+                       />
+                </span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="">租&nbsp;&nbsp;期：</span></span>
+                <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="RENT_DATE" id="RENT_DATE" format="yyyy-MM-dd"
+				  	nullable="no"	desc="租期"	 value="ognl:info.RENT_DATE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">押金金额：</span></span>
+                <span class="e_elements">
+					<span class="e_label e_label-right"><span>元</span></span>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" id="MONEY" name="MONEY" datatype="numeric" value="ognl:info.MONEY" onblur="addForeGift()" desc="押金金额"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="">预存款：</span></span>
+                <span class="e_elements">
+					<span class="e_label e_label-right"><span>元</span></span>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" id="PAY_MONEY" name="FUTURE_MONEY" onblur="addPayMoney()"  value="ognl:info.PAY_MONEY" desc="预存款"/>
+					</span></span>
+				</span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="e_required">发票号码：</span></span>
+                <span class="e_input"><span>
+				<input type="text" jwcid="@TextField" name="INVOICE_NO" id="INVOICE_NO"
+				  					nullable="no"	desc="发票号码"	 value="ognl:info.INVOICE_NO"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" id="bquery" name="bquery" onclick="queryRentMobile()"><i class="e_ico-search"></i><span>查询</span></button>
+			<!-- <button type="button" class="e_button-form" id="jquery" name="jquery" onclick="btnCountClick()"><i class="e_ico-config"></i><span>计算</span></button> -->
+		</div>
+	</div>
+	</div>
+	
+	<!-- 列表开始 -->
+	<div class="c_scroll c_scroll-table-10" jwcid="RentMobilePart@Part" id="RentMobilePart"  style="display:''">
+		<div class="c_table">
+			<table jwcid="@Table" id="RentMobileTable" name="RentMobileTable">
+			<thead>
+				<tr>
+					<th col="RENT_CHECKED">选择</th>
+					<th col="PARA_CODE3">号码</th>
+					<th col="PARA_CODE4" style="display:none">租机计费号码</th>
+	   				<th col="PARA_CODE5" style="display:none">国际区号</th>
+	   				<th col="RENT_TYPE_CODE" style="display:none">租机类型</th>
+					<th col="START_DATE" style="display:none">开始时间</th>
+					<th col="MONEY" style="display:none">租机费用</th>
+					<th col="RENT_MODE_CODE" style="display:none">租机方式</th>
+	 				<th col="PARA_CODE8">IMEI</th>
+	 				<th col="RSRV_DATE" style="display:none">租金结算期</th>
+				</tr>
+			</thead>
+			<tbody id="RentMobileTable_Body">
+				<tr jwcid="@Foreach" source="ognl:rentMobiles" value="ognl:rentMobile" index="ognl:rowIndex" element="tr">
+					<td><input jwcid="@Checkbox" type="checkbox" id="rentMobileCheck" name="rentMobileCheck"
+								value="ognl:rentMobile.PARA_CODE3"/>
+					<td><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE3"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE4"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE5"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.RENT_TYPE_CODE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.START_DATE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.MONEY"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.RENT_MODE_CODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE8"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.RSRV_DATE"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- 
+	<div class="c_scroll c_scroll-table-10" jwcid="RefundMobilePart@Part" id="RefundMobilePart" style="display:none">
+		<div class="c_table">
+			<table jwcid="@Table" id="RefundMobileTable" name="RefundMobileTable">
+			<thead>
+				<tr>
+					<th col="RENT_CHECKED">选择</th>
+					<th col="RENT_SERIAL_NUMBER">号码</th>
+					<th col="PARA_CODE4" style="display:none">租机计费号码</th>
+	   				<th col="PARA_CODE5" style="display:none">国际区号</th>
+	   				<th col="PARA_CODE2">租机类型</th>
+	   				<th col="START_DATE">开始时间</th>
+					<th col="MONEY" style="display:none">租机费用</th>
+					<th col="RENT_MODE_CODE" style="display:none">租机方式</th>
+	 				<th col="PARA_CODE8">IMEI</th>
+	 				<th col="RSRV_DATE" style="display:none">租金结算期</th>
+				</tr>
+			</thead>
+			<tbody id="RefundMobileTable_Body">
+				<tr jwcid="@Foreach" source="ognl:rentMobiles" value="ognl:rentMobile" index="ognl:rowIndex" element="tr">
+					<td><input jwcid="@Checkbox" type="checkbox" id="refundMobileCheck" name="refundMobileCheck"
+								value="ognl:rentMobile.RENT_SERIAL_NUMBER"/>
+					<td><span jwcid="@Insert" value="ognl:rentMobile.RENT_SERIAL_NUMBER"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE4"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:rentMobile.START_DATE"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.MONEY"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.RENT_MODE_CODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:rentMobile.PARA_CODE8"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:rentMobile.RSRV_DATE"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+	 -->
+	<!-- 列表结束 -->
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart" element="div"/>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

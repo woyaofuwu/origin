@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>一级BOSS台账查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/interboss/ibossquery/scripts/queryibtrade.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		获取信息无数据!
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">一级BOSS台账查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-4 c_form-label-7" jwcid="queryInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_IDITEMRANGE" id="cond_IDITEMRANGE" desc="手机号码" nullable="no" value="ognl:cond.IDITEMRANGE"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">请求时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="cond_REQTIME" id="cond_REQTIME" desc="请求时间" nullable="no" value="ognl:cond.REQTIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">业务类型：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_TRADE_TYPE"  id="cond_TRADE_TYPE" 
+						source="ognl:tradeTypeList" textField="REMARK" valueField="ALL_ELEMENT"
+						value="ognl:cond.TRADE_TYPE" desc="业务类型"  nullable="yes" />
+					</span></span></span>
+			</li>
+			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="query" name="query" onclick="return queryIbTradeForm();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="IbTradeInfoPart@Part">
+	<div class="c_scroll c_scroll-x">
+	<div class="c_table c_table-row-5">
+		<table jwcid="@Table" name="ibTradeTable" id="ibTradeTable" scroll="true">
+			<thead>
+	  			<tr>
+				    <th col="REMARK" >业务类型</th>
+					<th col="BIPCODE" >业务编码</th>
+					<th col="ACTIVITYCODE" >交易编码</th>
+					<th col="TRANSIDO" >交易流水</th>
+					<th col="ORIGDOMAIN" >发起方机构</th>
+					<th col="OSNDUNS" >发起方省份</th>
+					<th col="REQTIME" >收到请求时间</th>
+					<th col="RSPTIME" >应答请求时间</th>
+					<th col="RSPCODE" >响应代码</th>
+					<th col="RSPDESC" >响应描述</th>
+					<th col="RESULTCODE" >执行结果代码</th>
+					<th col="RESULTINFO" >执行结果信息</th>
+					<th col="RSRV_STR1" >RSRV_STR1</th>
+					<th col="RSRV_STR2" >RSRV_STR2</th>
+					<th col="RSRV_STR3" >RSRV_STR3</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="IbTradeInfos" id="IbTradeInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.REMARK"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.BIPCODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACTIVITYCODE"></span></td>
+					<td class="e_right">
+						<a jwcid="@Redirect" transido="ognl:info.TRANSIDO" value="ognl:info.TRANSIDO" onclick="javascript:origdomaindetail($(this).attr('transido'));"  />
+					</td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('IBOSS_ORG_DOMAIN', info.ORIGDOMAIN)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('IBOSS_OSNDUNS', info.OSNDUNS)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.REQTIME)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.RSPTIME)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSPCODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSPDESC"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RESULTCODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RESULTINFO"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="pageNav" id="pageNav" cond="queryInfoPart" part="IbTradeInfoPart" listener="queryIbTradeInfo" pageSize="30" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div>
+</div>
+<div id="logpopup" style="display:none">
+	<div jwcid="logInfoPart@Part">
+	<div class="c_scroll c_scroll-x" style="height:300px;">
+	<div class="c_table c_table-row-5">
+	<table jwcid="@Table" name="logTable" id="logTable" scroll="true">
+			<thead>
+	  			<tr>
+				    <th col="IBSYSID" >系列ID</th>
+					<th col="XML_REQUEST_HEAD" >请求报文头</th>
+					<th col="XML_REQUEST_BODY" >请求报文体</th>
+					<th col="XML_RESPONE" >响应报文</th>
+					<th col="HTTP_REQUEST_STRING" >请求串</th>
+					<th col="HTTP_RESPONSE_STRING" >响应串</th>
+					<th col="BML_BUFFER_REQ" >请求BML</th>
+					<th col="BML_BUFFER_RES" >响应BML</th>
+					<th col="SRC_DOMAIN" >应用域名</th>
+					<th col="REMARK" >注释</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="logInfos" id="logInfos">
+				<tr jwcid="@Foreach" source="ognl:TradeLogList" value="ognl:TradeLog" id="TradeLogList" index="ognl:rowIndex" element="tr">
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.IBSYSID"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.XML_REQUEST_HEAD"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.XML_REQUEST_BODY"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.XML_RESPONE"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.HTTP_REQUEST_STRING"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.HTTP_RESPONSE_STRING"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.BML_BUFFER_REQ"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.BML_BUFFER_RES"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.SRC_DOMAIN"></span></td>
+					<td class="wrap"><span jwcid="@Insert" value="ognl:TradeLog.REMARK"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	</div>
+</div>
+</body>
+</html>

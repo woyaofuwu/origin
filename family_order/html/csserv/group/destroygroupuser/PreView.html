@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/group/destroygroupuser/PreView.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div id="previewInfoPart">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:grpCustInfo"/>
+</div>
+<div class="c_box">
+	<span jwcid="@saleserv:GroupUserInfo" groupUserInfo="ognl:grpUserInfo"/>
+</div>
+<div class="c_box">
+	<span jwcid="@saleserv:GroupAccountInfo" accInfo="ognl:grpAcctInfo"/>
+</div>
+<!-- 区域 结束 -->
+<div class="c_box">
+	<div jwcid="@saleserv:ProductElementView" model="ognl:userProduct" headText="（集团产品）" headField="PRODUCT_NAME" showHeads="包名,元素标识,元素类型,元素名称" showFields="PACKAGE_NAME,ELEMENT_ID,ELEMENT_TYPE_NAME,ELEMENT_NAME" />
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-5">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">注销原因：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" 	
+						name="param_REMOVE_REASON" id="param_REMOVE_REASON"	
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_B_REMOVE_REASON_GROUP')" 
+						value="ognl:info.REMOVE_REASON"
+						nullable="no"
+						textField="DATA_NAME"
+                        valueField="DATA_ID"
+						desc="销户原因" />
+				</span></span></span>
+			</li>
+			
+			<li class="li col-2">
+				<span class="label"><span class="e_required">备注：</span></span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+					<textarea
+						jwcid="@TextArea" 
+						name="param_REMARK" 
+						id="param_REMARK"
+						type="text"
+						value="ognl:info.pamRemark"
+						nullable="no"
+						desc="备注"
+						raw="true" style="height:36px;"></textarea>
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<div class="c_box" jwcid="@Conditional" condition="ognl:info.AUDIT_INFO_SHOW!=null && info.AUDIT_INFO_SHOW == 'true'">
+	<div class="c_title">
+		<div class="text">稽核信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+            <li class="li">
+                <span class="label"><span class="e_required">稽核人员：</span></span> 
+                <span class="e_elements">
+					<button type="button" class="e_button-right"
+						onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+						<i class="e_ico-check"></i><span></span>
+					</button> 
+                    <span class="e_input e_input-left"><span> <input
+							type="text" jwcid="@TextField"
+							name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+							value=""
+							text="" nullable="no"
+							readonly="true"/>
+					</span></span>
+				</span>
+            </li>
+		</ul>
+	</div>
+</div>
+<input type="button" id="bsubmit" value="下一步" class="e_button"  style="display:none" />
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#bsubmit").bind("click", function() {
+    	if(!$.validate.verifyAll('previewInfoPart')){
+    		return false;
+    	}
+    	if($("#AUDIT_STAFF_ID")&&$("#AUDIT_STAFF_ID").val() == ""){
+			alert("请选择稽核人员！");
+			return false;
+		}
+		return true;
+	});
+});
+</script>
+</html>

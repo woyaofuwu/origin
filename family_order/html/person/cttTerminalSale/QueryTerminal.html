@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: AccountInfo.html,v 1.7 2013/04/22 08:16:44 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>铁通终端查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/cttTerminalSale/scripts/QueryTerminal.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		获取信息无数据!
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">铁通终端信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3" jwcid="cond@Part" name="cond" id="cond" element="div">
+		<ul class="ul">
+			 <li class="li">
+				<span class="label">营销类型编码：</span>
+				<span class="e_input"><span>
+				  	<input type="text" jwcid="@TextField" id="cond_SALETYPE_CODE" name="cond_SALETYPE_CODE" value="ognl:cond.cond_SALETYPE_CODE" datatype="numeric" nullable="yes"  desc="营销类型编码" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">资源种类：</span>
+				<span class="e_select"><span><span>
+				 <select name="cond_RES_KIND_CODE" jwcid="cond_RES_KIND_CODE@Select"
+						source="ognl:page.pageutil.getStaticList('CTT_TERMIAL_SALE_TYPE')"
+						valueField="DATA_ID" textField="DATA_NAME"
+						value="ognl:cond.cond_RES_KIND_CODE" nullable="no" desc="资源种类" 
+						addDefault="true"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="querybtn" id="querybtn" class="e_button-form" onclick="queryCttTerminal()"><i class="e_ico-search"></i><span>查询</span></button>
+			<button jwcid="@Any" name="choosedbtn" id="choosedbtn" class="e_button-form" onclick="chooseCttTerminal()"><span>确定</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="terminalList@Part">
+	<div class="c_scroll c_scroll-x style="height:500px"">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="terminalInfo" id="terminalInfo">
+			<thead>
+	  			<tr>
+	  				<th col="X_SELECTED"></th>
+					<th col="SALETYPE_CODE">营销类型代码</th>
+					<th col="SALETYPE_DESC">营销类型描述</th>
+					<th col="RES_TYPE">资源类型</th>
+					<th col="KIND_NAME">资源种类</th>
+					<th col="MODEL_DESC">型号</th>
+					<th col="SALEPRICE">物品价格</th>
+					<th col="UPDATE_TIME">更新时间</th>
+					<th col="UPDATE_STAFF_ID">更新员工</th>
+					<th col="UPDATE_DEPART_ID">更新部门</th>
+					<th col="VALID_TAG">启用状态</th>
+					<th col="REMARK">备注</th>
+					<th col="RES_KIND_CODE" style="display:none"></th>
+					<th col="MODEL_CODE" style="display:none"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					    <td><input type="radio" jwcid="@Any" rowIndex="ognl:rowIndex" name="CHOOSE_TERMINAL" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALETYPE_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALETYPE_DESC" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RES_TYPE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.KIND_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.MODEL_DESC" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALEPRICE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.VALID_TAG" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.RES_KIND_CODE" raw="false"/></td>
+						<td style="display:none;"><span jwcid="@Insert" value="ognl:info.MODEL_CODE" raw="false"/></td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	
+	<div jwcid="pagin@NavBar" name="pagin" cond="cond"
+			count="ognl:paginCount"  listener="qryTerminalInfo"
+			pageSize = "10"
+			part="terminalList" />
+			
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div>
+</div></div></body>
+
+</html>

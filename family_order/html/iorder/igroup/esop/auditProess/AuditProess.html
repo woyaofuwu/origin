@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/auditProess/script/auditProess.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">审核</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+			<div class="c_title">
+				<div class="text">客户信息</div>
+			</div>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">客户名称</div>
+						<div class="value"><input jwcid="@TextField" id="CUST_NAME" name="CUST_NAME" readonly="readnoly" value="ognl:groupInfo.CUST_NAME"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">客户编码</div>
+						<div class="value"><input jwcid="@TextField" id="GROUP_ID" name="GROUP_ID" readonly="readnoly"  value="ognl:groupInfo.GROUP_ID" /></div>
+					</li>
+					<li class="link" ontap="showPopup('qryPopup1','qryCustInfos');">
+						<div class="label">其他客户信息</div>
+						<div class="value"></div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+		
+			
+			<div class="c_title">
+				<div class="text">产品信息</div>
+			</div>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">产品名称</div>
+						<div class="value"><input jwcid="@TextField" id="PRODUCT_NAME" name="PRODUCT_NAME" readonly="readnoly" value="ognl:offer.OFFER_NAME"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">产品编码</div>
+						<div class="value"><input jwcid="@TextField" id="PRODUCT_ID" name="PRODUCT_ID" readonly="readnoly"  value="ognl:offer.OFFER_CODE" /></div>
+					</li>
+					<li class="link" ontap="showPopup('offerOtherPopup', 'moreOfferPopupItem', true);">
+						<div class="label">其他产品信息</div>
+						<div class="value"></div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- 产品特征 开始 -->
+			<div jwcid="OtherPart@Part" id="OtherPart">
+	 			<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr"/>
+			</div>
+			<!-- 产品特征 结束 -->
+			
+			<div class="c_title">
+				<div class="text">其他信息</div>
+			</div>
+			
+			<div class="c_list c_list-line c_list-border ">
+				<ul>
+					<li class="link merge-3">
+						<div class="label">附件上传</div>
+						<div class="value"><span class="e_mix">
+							<input jwcid="@TextField" name="ATTACH_FILE_NAME" value="" ontap="showPopup('popup01','attachPopupItem',true);" readonly="true"/>
+							<input jwcid="@Hidden" name="ATTACH_FILE_ID_STR" value="ognl:info.ATTACH_FILE_ID_STR"/>
+							<span style="display:none" id="ATTACH_FILE_LIST"></span>
+							<span class="e_ico-upload" ontap="showPopup('popup01','attachPopupItem',true);"></span>
+						</span></div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitAudit();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+	</div>
+	
+	<div jwcid="@Popup" name="popup01">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="attachPopupItem">
+			<div jwcid="@Upload"
+				filePath="EOP/other"
+				name="fileupload"
+				title="附件上传"
+				ftpCode="eosdata"
+				fileSize="20"
+				fileLimit="10"
+				needSuffix="false"
+			></div>
+		</div>
+		</div>
+	</div>
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup1" id="qryPopup1">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryCustInfos">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);">返回</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding">
+					<!-- 参数 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户级别:</span>
+								<span class="value" jwcid="@Insert" id="CLASS_NAME" name="CLASS_NAME" value="ognl:groupInfo.CLASS_NAME"/>
+							</li>
+							<li>
+								<span class="label">客户地址:</span>
+								<span class="value" jwcid="@Insert" id="GROUP_ADDR" name="GROUP_ADDR" value="ognl:groupInfo.GROUP_ADDR"/>
+							</li>
+							<li>
+								<span class="label">客户所属市县:</span>
+								<span class="value" jwcid="@Insert" id="CITY_NAME" name="CITY_NAME" value="ognl:groupInfo.CITY_NAME"/>
+							</li>
+							<li>
+								<span class="label">所属行业:</span>
+								<span class="value" jwcid="@Insert" id="CALLING_TYPE_NAME" name="CALLING_TYPE_NAME" value="ognl:groupInfo.CALLING_TYPE_NAME"/>
+							</li>
+							<li>
+								<span class="label">子行业类别:</span>
+								<span class="value" jwcid="@Insert" id="SUB_CALLING_TYPE_NAME" name="SUB_CALLING_TYPE_NAME" value="ognl:groupInfo.SUB_CALLING_TYPE_NAME"/>
+							</li>
+							<li>
+								<span class="label">客户邮箱:</span>
+								<span class="value" jwcid="@Insert" id="EMAIL" name="EMAIL" value="ognl:groupInfo.EMAIL"/>
+							</li>
+							<li>
+								<span class="label">客户邮编:</span>
+								<span class="value" jwcid="@Insert" id="POST_CODE" name="POST_CODE" value="ognl:groupInfo.POST_CODE"/>
+							</li>
+							<li>
+								<span class="label">客户联系人:</span>
+								<span class="value" jwcid="@Insert" id="RSRV_STR2" name="RSRV_STR2" value="ognl:groupInfo.RSRV_STR2"/>
+							</li>
+							<li>
+								<span class="label">联系人电话:</span>
+								<span class="value" jwcid="@Insert" id="RSRV_STR7" name="RSRV_STR7" value="ognl:groupInfo.RSRV_STR7"/>
+							</li>
+						</ul>
+					</div>
+					<!-- 参数 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!-- 弹窗结束 -->
+	<!-- 弹窗开始 -->
+	<div  jwcid="@Popup" class="c_popup c_popup-full c_popup-fixed" name="offerOtherPopup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="moreOfferPopupItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this)">其他产品信息</div>
+				</div>
+				<div jwcid="@Scroller" name="offerScroll" class="c_scroll c_scroll-float c_scroll-header e_phone-scroll-infoTop" vScroll="false">
+					<div class="l_padding l_padding-u">
+					<div class="c_title">
+						<div class="text">附件列表</div>
+					</div>
+					<div class="c_space-c"></div>
+					<div class="c_list c_list-border c_list-line c_list-phone-col-1">
+						<div jwcid="refreshtable@Part">
+							<!-- 表格 开始 -->
+							<div class="c_scroll c_scroll-table-15">
+								<div class="c_table">
+									<table>
+										<thead>
+											<tr>
+												<th col="FILE_ID"><span>文件ID</span></th>
+												<th col="FILE_TYPE"><span>附件类型</span></th>
+												<th col="ATTACH_NAME"><span>文件名称</span></th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr jwcid="@Foreach" source="ognl:fileInfos"
+												value="ognl:fileInfo" element="tr" index="ognl:rowIndex">
+												<td data-title="文件ID"><span jwcid="@Insert" value="ognl:fileInfo.FILE_ID"
+													raw="true" /></td>
+												<td data-title="附件类型"><span jwcid="@Insert" value="ognl:fileInfo.FILE_TYPE"
+													raw="true" /></td>	
+												<td data-title="文件名称"><span jwcid="@Insert" value="ognl:fileInfo.ATTACH_NAME"
+													raw="true" /></td>
+												<td><a jwcid="@Any"
+													href="ognl:encodeUrl('attach?action=download&fileId='+ fileInfo.FILE_ID +'&realName=' + pageutil.getFtpFile(fileInfo.FILE_ID).get('FILE_NAME'))">下载</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 表格 结束 -->
+						</div>
+					</div>
+					
+					   <div jwcid="OfferAttrPart@Part">
+						<div jwcid="@Conditional" condition="ognl:workformData.grpProductAttrList != null && workformData.grpProductAttrList.size() > 0">
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">客户侧业务信息</div>
+							</div>
+							<!-- 标题 结束 -->
+							<div class="c_box c_box-border">
+								<div class="c_space"></div>
+								<div class="e_center"></div>
+								<!-- 参数 开始 -->
+								
+								<div  class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-auto">
+									<ul>
+										<li jwcid="@Foreach" source="ognl:workformData.grpProductAttrList" value="ognl:productAttr" element="li">
+											<span class="label"><span  jwcid="@Insert" value="ognl:productAttr.ATTR_NAME" />：</span>
+											<span class="value"><span jwcid="@Insert" value="ognl:productAttr.ATTR_VALUE" /></span>
+										</li>
+									</ul>
+								</div>
+								<!-- 参数 结束 -->
+							</div>
+						</div>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:workformData.mebProductAttrList != null && workformData.mebProductAttrList.size() > 0">
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">客户侧成员信息</div>
+							</div>
+							<!-- 标题 结束 -->
+							
+							<div class="c_space-c"></div>
+							<div class="c_list c_list-border c_list-line">
+								<div jwcid="refreshtable2@Part">
+									<!-- 表格 开始 -->
+									<div class="c_scroll c_scroll-table-15">
+										<div class="c_table">
+											<table name="myTable" id="myTable" jwcid="@Table">
+												<thead>
+												 	<tr>
+														<th  jwcid="@Foreach" source="ognl:trDetails" value="ognl:trDetail" element="th">
+															<span jwcid="@Insert" value="ognl:trDetail.PARAMVALUE" raw="false" />
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr jwcid="@Foreach" source="ognl:edits" value="ognl:edit" element="tr" rowIndex="ognl:rowIndex">
+														<td  jwcid="@Foreach" source="ognl:trDetails" value="ognl:trDetail"  data-title="ognl:trDetail.PARAMVALUE" element="td">
+															<span jwcid="@Insert" value="ognl:edit.getString(trDetail.PARAMNAME)" raw='true' /> 
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!-- 表格结束 -->
+								</div>
+							</div>
+						</div>
+						<div class="c_space"></div>
+						<!-- 提交 开始 -->
+						<div class="c_submit c_submit-center">
+							<button type="button" class="e_button-r e_button-l e_button-blue"  ontap="hidePopup(this)">关闭</button>
+						</div>
+						<!-- 提交 结束 -->
+						<div class="c_space"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 弹窗结束 -->
+	
+	<!-- 滚动 结束 -->
+	<div style="display:none" id="EOS_COMMON_DATA"><span jwcid="@Insert" value="ognl:info.EOS_COMMON_DATA" desc="url请求信息"/></div>
+	
+	<script>
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo);
+		}
+	</script>
+</body>
+</html>

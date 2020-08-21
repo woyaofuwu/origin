@@ -1,0 +1,237 @@
+﻿<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无手机宽带拆机</title>
+<script jwcid="@Script" src="iorder/person/broadband/nophonewidenet/nophonewidedestroy/scripts/NoPhoneWideDestroy.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/fee/FeeMgr.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back">无手机宽带拆机</div>
+</div>
+<!-- 标题栏 结束 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div  class="l_padding">
+<!-- 区域 开始 -->
+		<div jwcid="AuthPart@icsserv:Auth"  authType="04" tradeTypeCode="685"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>	
+		
+		<div class="c_title">
+			   	<div class="text">拆机方式</div>
+		</div>
+		
+		<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border">
+			<ul >
+				<li jwcid="@Foreach" ontap="changedestorytype(this)"
+				class="ognl:type.DATA_ID == info.DESTORYTYPE ? 'link checked' : 'link'" source="ognl:typeList" value="ognl:type" element="li" >
+					<div class="main">
+						<div jwcid="@Insert" value="ognl:type.DATA_NAME"></div>
+						<span  jwcid="@Any" value="ognl:type.DATA_ID" ></span>
+					</div>
+				</li>
+				<input  jwcid="@TextField" type="hidden" name="DESTORYTYPE" id="DESTORYTYPE"  value="ognl:info.DESTORYTYPE" />
+			</ul>
+		</div>
+
+		<!-- 认证 结束 -->
+	
+		<div class="c_title">
+			   	<div class="text">信息</div>
+		</div>
+  		<!--  刷新区域 开始-->
+	
+		<!-- 账户信息  开始 -->
+		<div class="c_param c_param-label-7 c_param-phone-col-1 c_param-border c_param-col-2">
+			<ul>
+				<div jwcid="BusiInfoPart@Part">
+					<li><div class="label">欠费信息(元)：</div>
+						<div class="value">
+							<span jwcid="@Insert"
+									name="OWE_FEE" id="OWE_FEE" value="ognl:info.OWE_FEE"
+									desc="欠费信息" disabled="true" />
+						</div> 
+					</li>
+					<li><div class="label">帐户余额(元)：</div>
+						<div class="value">
+						 	<span jwcid="@Insert"
+									name="LEFT_MONEY" id="LEFT_MONEY"
+									value="ognl:info.LEFT_MONEY" desc="帐户余额" disabled="true" />
+						</div>
+					</li>
+					<li><div class="label">押金余额(元)：</div>
+						<div class="value">
+						 	<span jwcid="@Insert"
+									name="FOREGIFT" id="FOREGIFT" value="ognl:info.FOREGIFT"
+									desc="押金余额" disabled="true" />
+						</div>
+					</li>
+				</div>
+				<div jwcid="wideInfoPart@Part">
+					<li>
+						<div class="label">宽带类型：</div>
+						<div class="value">
+							<span jwcid="@Insert" name="WIDETYPENAME" id="WIDETYPENAME"   value="ognl:info.WIDE_TYPE_NAME" desc="标准地址"/>
+						</div>
+					</li>
+					<li>
+						<div class="label">标准地址：</div>
+						<div class="value">
+							<span jwcid="@Insert" name="STAND_ADDRESS" id="STAND_ADDRESS"   value="ognl:wideInfo.STAND_ADDRESS" desc="标准地址"/>
+						</div>
+					</li>
+					<li>
+						<div class="label">详细地址：</div>
+						<div class="value">
+							<span jwcid="@Insert" name="DETAIL_ADDRESS" id="DETAIL_ADDRESS"   value="ognl:wideInfo.DETAIL_ADDRESS" desc="详细地址"/>
+						</div>
+					</li>
+					<div jwcid="@Conditional" condition='ognl:"3".equals(info.WIDE_TYPE_CODE)' element="div">
+						
+						<li>
+							<div class="label">光猫串号：</div>
+							<div class="value">
+								<span jwcid="@Insert" name="MODEM_CODE" id="MODEM_CODE" value="ognl:info.MODEM_CODE" desc="光猫串号"/>
+							</div>
+							<span type="hidden" jwcid="@TextField" name="MODEM_CODE_HI" id="MODEM_CODE_HI" value="ognl:info.MODEM_CODE" desc="光猫串号"/>
+							<input type="hidden" jwcid="@TextField" name="MODEM_FEE" id="MODEM_FEE" value="ognl:info.MODEM_FEE" desc="光猫押金"/>
+						</li>
+						<li>
+							<div class="label">是否退光猫：</div>
+							<div jwcid="@Switch" name="MODEM_RETUAN" id="MODEM_RETUAN" value="ognl:info.MODEM_RETUAN" onchange="modem_is_return(this)"	onText="是" offText="否"
+								onValue="1" offValue="0" desc="是否退光猫"/>
+						</li>
+						<li>
+							<div class="label">申领模式：</div>
+							<div class="value">
+								<span jwcid="@Insert" name="MODEM_MODE_NAME" id="MODEM_MODE_NAME" value="ognl:info.MODEM_MODE_NAME" desc="光猫申领模式"/>
+							</div>
+							<input type="hidden" jwcid="@TextField" name="MODEM_MODE" id="MODEM_MODE" value="ognl:info.MODEM_MODE" desc="光猫申领模式"/>
+						</li>
+						<li style="display:'none'">
+							<div class="label">押金状态：</div>
+							<div class="value">
+								<span jwcid="@Insert" name="MODEM_FEE_STATE_NAME" id="MODEM_FEE_STATE_NAME" value="ognl:info.MODEM_FEE_STATE_NAME" desc=""/>
+							</div>
+							<input type="hidden" jwcid="@TextField" name="MODEM_FEE_STATE" id="MODEM_FEE_STATE" value="ognl:info.MODEM_FEE_STATE" desc=""/>
+						</li>
+						<li>
+							<div class="label">有效开始时间：</div>
+							<div class="value">
+								<span jwcid="@Insert" name="MODEM_START_DATE" id="MODEM_START_DATE" value="ognl:info.MODEM_START_DATE" desc=""/>
+							</div>
+						</li>
+						<li>
+							<div class="label">有效截止时间：</div>
+							<div class="value">
+								<span jwcid="@Insert" name="MODEM_END_DATE" id="MODEM_END_DATE" value="ognl:info.MODEM_END_DATE" desc=""/>
+							</div>
+						</li>
+						<li id="MODEM_DEPOSIT_ID" style="display:'none'">
+							<div class="label">光猫押金：</div>
+							<div class="value">
+								<span jwcid="@Insert" name="MODEM_DEPOSIT" id="MODEM_DEPOSIT" value="ognl:info.MODEM_DEPOSIT" desc="光猫押金"/>
+							</div>
+							<span type="hidden" jwcid="@TextField" name="MODEM_DEPOSIT_HI" id="MODEM_DEPOSIT_HI" value="ognl:info.MODEM_DEPOSIT" desc="光猫押金"/>
+						</li>
+					</div>
+				</div>
+				<div  jwcid="hiddenPart@Part">
+					<input jwcid="@Hidden" name="WIDE_TYPE" id="WIDE_TYPE"  value="ognl:wideInfoParam.WIDE_TYPE"/>
+				 	<input jwcid="@Hidden" name="NOPHONE_SERIAL_NUMBER" id="NOPHONE_SERIAL_NUMBER" value="" />
+				</div>
+			</ul>
+		</div>
+		<!-- 账户信息  结束 -->
+
+		<!-- 区域 开始 -->
+		<div id="div_reason"  style="display:none">
+		
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">销号原因</div>
+			</div>
+			<!-- 标题 结束 -->
+			
+			<!-- 表单 开始 -->
+			<div jwcid="destroyReasonPart@Part">
+				<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border" >
+					<ul >
+						<li jwcid="@Foreach" ontap="destoryReasonChange(this)"
+						class="link" source="ognl:pageutil.getStaticList('DESTORY_REASON')" value="ognl:reason" element="li" >
+							<div class="main">
+								<div jwcid="@Insert" value="ognl:reason.DATA_NAME"></div>
+								<span  jwcid="@Any" value="ognl:reason.DATA_ID" ></span>
+							</div>
+						</li>
+						<input  jwcid="@TextField" type="hidden" name="DESTORYREASON" id="DESTORYREASON"  value="" />
+					</ul>
+				</div>
+				<div class="c_list c_list-col-1 c_list-phone-col-1 c_list-s c_list-line c_list-border" id="reasonremark" style="display:none">
+					<ul>
+						<li>
+							<div class="label">其他原因备注</div>
+							<div class="value"><input type="text" jwcid="@TextField" id="REASONELSE" name ="REASONELSE" value="" desc="备注"  datatype="text" onchange="reasonElseChange(this)" /></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- 区域 开始 -->
+		<div id="div_predestory"  style="display:none">
+		
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">预约拆机信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-col-3 c_list-phone-col-1 c_list-s c_list-line c_list-border" jwcid="destroyInfoPart@Part">
+				<ul>
+					<li jwcid="@Any" class="ognl:info.DESTORYTIME == null ? 'link checked' : 'link'"  ontap="checkDestroyTime(this)" >
+						<div class="main">
+							<div jwcid="@Insert" value="未选择预约拆机时间"></div>
+							<span  jwcid="@Any" value="" ></span>
+						</div>
+					</li>
+					<li jwcid="@Foreach" ontap="checkDestroyTime(this)"
+							class="ognl:time.DATA_ID == info.DESTORYTIME ? 'link checked' : 'link'" source="ognl:timeList" value="ognl:time" element="li" >
+						<div class="main">
+							<div jwcid="@Insert" value="ognl:time.DATA_NAME"></div>
+							<span  jwcid="@Any" value="ognl:time.DATA_ID" ></span>
+						</div>
+					</li>
+					<input  jwcid="@TextField" type="hidden" name="DESTORYTIME" id="DESTORYTIME"  value="" />
+					
+					<li  class="link" style="display:none">
+						<div class="label">预约拆机状态</div>
+						<div class="value">
+							<span jwcid="@Insert" name="DESTORY_STATE" id="DESTORY_STATE" value="ognl:destroyInfo.DESTORY_STATE" desc="预约拆机状态"/>
+						</div>
+					</li>
+					<li class="link" style="display:none">
+						<div class="label">预约拆机时间</div>
+						<div class="value">
+							<span jwcid="@Insert" name="DESTORY_TIME" id="DESTORY_TIME" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', destroyInfo.DESTORY_TIME)" desc="预约拆机时间"/>
+						</div>
+					</li>
+				</ul>
+				
+				 <input jwcid="@Hidden" name="WIDE_TYPE_CODE" id="WIDE_TYPE_CODE"  value="ognl:info.WIDE_TYPE_CODE"/>
+				 <input jwcid="@Hidden" name="HIDDEN_STATE" id="HIDDEN_STATE" value="ognl:destroyInfo.DESTORY_TIME" />
+				 <input jwcid="@Hidden" name="CHECK_DESTROY_TIME" id="CHECK_DESTROY_TIME" value="" />
+				 <input jwcid="@Hidden" name="WIDE_MODE_FEE" id="WIDE_MODE_FEE" value="" />
+			 
+			</div>
+			<!-- 表单结束 -->
+		</div>
+		<!-- 区域 结束 -->
+
+		<div class="c_space"></div>
+		<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="submitselect()" area="AuthPart,selectTypePart,wideInfoPart,destroyInfoPart,hiddenPart"  isReset="true" element="div"/>
+	</div>
+</div>
+</body>
+</html>

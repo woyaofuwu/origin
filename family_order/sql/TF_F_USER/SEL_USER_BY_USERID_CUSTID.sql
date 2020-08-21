@@ -1,0 +1,1 @@
+select t.* from tf_f_user t where t.user_id=:USER_ID and t.cust_id=:CUST_ID

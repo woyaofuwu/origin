@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>电子渠道兑奖信息查询</title>
+<script language="JavaScript" src="person/sundryquery/uec/scripts/queryueclottyactive.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">电子渠道兑奖信息查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			<span class="label"><span class="">用户号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" 
+					name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+					value="ognl:condition.cond_SERIAL_NUMBER" nullable="yes"	desc="服务号码：" /> </span></span>
+		    </li>
+		    <li class="li">
+				<span class="label"><span class="e_required">活动名称：</span></span>
+				<span class="e_select"><span><span>
+					 <input type="text" jwcid="@Select" name="cond_ACTIVITY_NUMBER"  
+					 source="ognl:pageutil.getStaticList('UECLOTTERY_ACTIVITY_NUMBER')" 
+					 onchange="return activechange(this)"
+					 textField="DATA_NAME"  valueField="DATA_ID"  addDefault="true"  
+					 value="ognl:condition.cond_BIZ_STATUS" nullable="no"  desc="活动名称" />
+									
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span jwcid="PrizePart@Part">
+				<span class="label"><span class="e_required">奖项：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_PRIZE_TYPE_CODE" name="cond_PRIZE_TYPE_CODE" source="ognl:prizes" 
+					valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.BATCH_OPER_TYPE"
+					 nullable="no" desc="奖项" />
+				</span></span></span>
+				</span>
+			</li>
+		    <li class="li">
+			<span class="label"><span class="e_required">开始时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_BEGIN_DATE" id="cond_BEGIN_DATE"
+					value="ognl:condition.cond_BEGIN_DATE" nullable="no" maxName="cond_END_DATE" desc="开始时间：" /> </span></span>
+		    </li>
+		     <li class="li">
+			<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_END_DATE" id="cond_END_DATE"
+					value="ognl:condition.cond_END_DATE" nullable="no" minName="cond_BEGIN_DATE" desc="结束时间：" /> </span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return querylottys();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_title">
+		<div class="text">查询结果</div>
+		<div class="fn"></div>
+	</div>
+	<div class="c_table ">
+		<table jwcid="@Table" name="FcardTable" id="FcardTable" scroll="true">
+			<thead>
+				<tr>
+					 <th>月份</th>
+                     <th>活动名称</th>
+                     <th>用户号码</th>
+                     <th>抽奖时间</th>
+                     <th>获奖情况</th>
+                     <th>奖品领取标识</th>
+                     <th>领取时间</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="orderInfos" id="orderInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">								
+					    <td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('UECLOTTERY_ACTIVITY_NUMBER', info.ACTIVITY_NUMBER)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('UECLOTTERY_PRIZE_TYPE_CODE'+info.ACTIVITY_NUMBER, info.PRIZE_TYPE_CODE)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('UECLOTTERY_EXEC_FLAG', info.EXEC_FLAG)" raw="false"></span></td>
+                        <td><span jwcid="@Insert" value="ognl:info.EXEC_TIME" raw="false"></span></td>
+                        
+                        
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="querylottys" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<title></title>
+<script jwcid="@Script" language="JavaScript"
+	src="iorder/person/familytradeoptimal/scripts/familygroup.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 头部 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">群组信息查询</div>
+	</div>
+
+	<!-- 主流程 开始 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding l_padding-u">
+			<div class="c_title">
+				<div class="text">群组信息查询</div>
+			</div>
+			<div class="c_space-c"></div>
+			<!-- 标题开始 -->
+			<div jwcid="body@Part">
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div jwcid="BossQueryInfoPart@Part"
+					class="c_list c_list-col-3 c_list-phone-col-1 c_list-line c_list-border"
+					id="bossquery" name="bossquery">
+					<ul>
+						<li class="link required">
+							<div class="label">业务类型</div>
+							<div class="value">
+								<span jwcid="@Select" name="BUSINESS_TYPE" id="BUSINESS_TYPE"
+									source="ognl:pageutil.getStaticList('BUSINESS_TYPES')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID"
+									titleField="DATA_NAME" desc="业务类型" nullable="no"
+									addDefault="false"></span>
+							</div></li>
+						<li>
+							<div class="label">业务订购实例ID</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="PRODUCT_OFFERING_ID"
+									id="PRODUCT_OFFERING_ID" value="" desc="业务订购实例ID" />
+							</div></li>
+						<li>
+							<div class="label">客户标识</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="CUSTOMER_PHONE"
+									id="CUSTOMER_PHONE" value="" datatype="mbphone" maxLength="11"
+									desc="客户标识" />
+							</div></li>
+
+						<li>
+							<div class="label">成员类型</div>
+							<div class="value">
+								<span jwcid="@Select" name="MEM_TYPE" id="MEM_TYPE"
+									source="ognl:pageutil.getStaticList('MEM_TYPES')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID"
+									titleField="DATA_NAME" desc="成员类型" addDefault="false"></span>
+							</div></li>
+
+						<li>
+							<div class="label">成员区号</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="MEM_AREA_CODE"
+									id="MEM_AREA_CODE" value="" datatype="mbphone" maxLength="11"
+									desc="成员区号" />
+							</div></li>
+
+						<li>
+							<div class="label">成员号码</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="MEM_NUMBER"
+									id="MEM_NUMBER" value="" datatype="mbphone" maxLength="11"
+									desc="客户标识" />
+							</div></li>
+
+						<li>
+							<div class="label">业务版本号</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="BIZ_VERSION"
+									id="BIZ_VERSION" value="1.0.0" desc="业务版本号" />
+							</div></li>
+						<li>
+							<div class="label">产品编码</div>
+							<div class="value">
+								<span jwcid="@Select" name="PRODUCT_CODE" id="PRODUCT_CODE"
+									source="ognl:pageutil.getStaticList('PRODUCT_TYPES')" value="1"
+									textField="DATA_NAME" valueField="DATA_ID"
+									titleField="DATA_NAME" desc="产品编码" addDefault="false"></span>
+							</div></li>
+					</ul>
+				</div>
+
+				<!-- 提交 开始 -->
+				<div class="c_submit c_submit-center">
+					<button class="e_button-r e_button-l e_button-green"
+						onclick="bossgroupquery();">
+						<i class="e_ico-search"></i><span>查询</span>
+					</button>
+				</div>
+				<!-- 提交 结束 -->
+				<!-- 表单 结束 -->
+
+				<div class="c_box" jwcid="ShowResultpart@Part">
+					<div class="c_title">
+						<span class="text">查询信息列表</span>
+					</div>
+					<div jwcid="InforMationRealTimePart@Part"
+						id="InforMationRealTimePart">
+						<div class="c_title">
+							<span class="text">群组信息列表</span>
+						</div>
+						<div class="c_scroll c_scroll-table-5 " style="height: 200px;">
+							<div class="c_table">
+								<!-- 成员实时显示 -->
+								<table jwcid="showResultRealTimeTable@Table"
+									id="showResultRealTimeTable" name="showResultRealTimeTable"
+									rowClick="clickRow">
+									<thead>
+										<tr>
+											<th col="CHOICE">选择</th>
+											<th col="PRODUCT_CODE">产品编码</th>
+											<th col="PRODUCT_OFFERING_ID">业务订购实例ID</th>
+											<th col="POID_CODE">群组编码</th>
+											<th col="POID_LABLE">业务订购实例标签</th>
+											<th col="CUSTOMER_PHONE">客户标识</th>
+											<th col="MEM_COUNT">成员有效个数</th>	
+											<th col="EFF_TIME">生效时间</th>											
+											<th col="EXP_TIME">失效时间</th>		
+										</tr>
+									</thead>
+									<tbody id="showResultRealTimeTable_Body">
+										<tr jwcid="@Foreach" source="ognl:mebInfos"
+											value="ognl:mebInfo" element="tr" index="ognl:rowIndex"
+											class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td align="center"><input type="radio"
+												name="radioselect" id='"radio"+ rowIndex' jwcid="@Any"
+												value="" PRODUCT_CODE="ognl:mebInfo.PRODUCT_CODE"
+												PRODUCT_OFFERING_ID="ognl:mebInfo.PRODUCT_OFFERING_ID"
+												POID_CODE="ognl:mebInfo.POID_CODE"
+												POID_LABLE="ognl:mebInfo.POID_LABLE"
+												CUSTOMER_PHONE="ognl:mebInfo.CUSTOMER_PHONE"
+												onclick="UpdateInfo(this)" />
+											</td>
+											<td><span jwcid="@Insert"
+												value="ognl:mebInfo.PRODUCT_CODE" />
+											</td>
+											<td><span jwcid="@Insert"
+												value="ognl:mebInfo.PRODUCT_OFFERING_ID" />
+											</td>
+											<td><span jwcid="@Insert" value="ognl:mebInfo.POID_CODE" />
+											</td>
+											<td><span jwcid="@Insert"
+												value="ognl:mebInfo.POID_LABLE" />
+											</td>
+											<td><span jwcid="@Insert"
+												value="ognl:mebInfo.CUSTOMER_PHONE" />
+											</td>
+													<td><span jwcid="@Insert"
+												value="ognl:mebInfo.MEM_COUNT" />
+											</td>
+											<td><span jwcid="@Insert"
+												value="ognl:mebInfo.EFF_TIME" />
+											</td>
+											<td><span jwcid="@Insert"
+												value="ognl:mebInfo.EXP_TIME" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--隐藏区域开始 放群组表格数据-->
+				<div style="display: none" jwcid="hiddentableInfoPart@Part">
+					<input style="display: none" jwcid="@TextField"
+						id="HID_BUSINESS_TYPE" desc="业务类型" name="HID_BUSINESS_TYPE"
+						value="" /> <input style="display: none" jwcid="@TextField"
+						id="HID_MEM_NUMBER" desc="成员号码，变更成员标签时必填" name="HID_MEM_NUMBER"
+						value="" />
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

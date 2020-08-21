@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户IMEI查询</title>
+<script language="JavaScript" src="person/sundryquery/userimei/scripts/queryuserimei.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户IMEI查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER"
+											id="cond_SERIAL_NUMBER"
+											value="ognl:condition.cond_SERIAL_NUMBER" nullable="no"
+											datatype="mbphone"  desc="服务号码：" /> </span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryUserImei();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form"  onclick="resetCondition()"><i class="e_ico-search"></i><span>重 置</span></button>
+			<button type="button" class="e_button-form"  onclick="closeNavFrameByLocation()"><i class="e_ico-search"></i><span>取 消</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	
+	<div class="c_title">
+		<div class="text">查询结果</div>
+		<div class="fn">
+		      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+			      <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100997"
+					  config="export/sundryquery/other/QueryUserIMEI.xml" fileName="用户IMEI信息" cond=QueryCondPart/>
+					<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+						<i class="e_ico-print"></i><span>打印</span>
+				    </button>
+			  </div>
+	     </div>
+	</div>
+	<div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="FcardTable" id="FcardTable" scroll="true">
+			<thead>
+				<tr>
+					<th>服务号码</th>
+					<th>用户IMEI</th>
+					<th>导入时间</th>
+					<th>购机IMEI</th>
+					<th>购机类型</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="orderInfos" id="orderInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">								
+					    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUserImei" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

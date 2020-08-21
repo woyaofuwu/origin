@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<script jwcid="@Script" language="JavaScript" src="person/fastauth/fastauthapply/scripts/SelectStaff.js"></script>
+<script language="javascript"><!--
+$(document).ready(function(){
+	Wade.org.initStaffSelect();
+});
+function staffReturnValues(staff_id,staff_name){
+	$.setReturnValue(['condition_STAFF_NAME',staff_name,'condition_STAFF_ID',staff_id],true);
+	
+}
+// --></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">员工查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">业务区：</span>
+							<input jwcid="@biz:AreaField" name="cond_AREA_CODE" id="cond_AREA_CODE" value="ognl:condition.cond_AREA_CODE" text="ognl:condition.cond_AREA_CODE" desc="归属业务区"/>	
+						</li>
+						<li class="li">
+							<span class="label">归属部门：</span>
+							<input jwcid="@biz:DeptField" name="cond_DEPART_ID" id="cond_DEPART_ID" value="ognl:condition.cond_DEPART_ID" text="ognl:condition.cond_DEPART_ID" areaName="cond_AREA_CODE" desc="归属部门"/>	
+						</li>
+						<li class="li"><span class="label">员工名称:</span> <span
+								class="e_input"><span><input jwcid="@TextField"
+										name="cond_STAFF_NAME" id="cond_STAFF_NAME"
+										value="ognl:condition.cond_STAFF_NAME" desc="员工名称"  /></span></span>
+						</li>
+						
+						<li class="li">
+							<span class="label">性别：</span>
+							<span class="e_select"><span><span>
+							        <select jwcid="@Select" name="cond_SEX" id="cond_SEX" source="ognl:pageutil.getStaticList('STAFF_SEX')"
+				                                    addDefault="false" value="ognl:condition.cond_SEX" desc="性别"  
+				                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+							</span></span></span>
+					    </li>
+                        <li class="li"><span class="label">服务号码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+									value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" datatype="mbphone" /></span></span>
+						</li>
+                        <li class="li"><span class="label">员工工号：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_STAFF_ID" id="cond_STAFF_ID"
+									value="ognl:condition.cond_STAFF_ID" desc="员工工号" maxLength="8" maxsize="8" onkeyup="this.value=this.value.toUpperCase()"
+									onkeydown="if(event.keyCode==13||event.keyCode==8||(event.keyCode>=65&&event.keyCode<=90)||(!event.shiftKey&&event.keyCode>=48&&event.keyCode<=57)||(!event.shiftKey&&event.keyCode>=96&&event.keyCode<=105)){return true;}else{return false;}"/></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryStaffs(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="StaffPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+				 <div class="c_table ">
+					<table jwcid="@Table" name="ResultTable" id="ResultTable">
+						<thead>
+						<tr>
+							<th><input type="checkbox" id="staffs_ctrl" name="staffs_ctrl" onclick="checkedAll('staffs', checked)"/></th>
+		      				<th col="STAFF_ID">员工工号</th>
+							<th col="STAFF_NAME">员工名称</th>
+							<th>服务号码</th>
+							<th>性别</th>
+							<th>归属部门</th>
+							<th>归属业务区</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><input type="checkbox" id="staffs" name="staffs" jwcid="@Checkbox" value="ognl:info.STAFF_ID + ';' + info.STAFF_NAME"/></td>
+							<td>
+	                             <a jwcid="@Redirect" 
+				    			value="ognl:info.STAFF_ID" name="STAFF_ID" id="STAFF_ID" source="ognl:info"  staff_id="ognl:info.STAFF_ID" staff_name="ognl:info.STAFF_NAME"
+				    			onclick="staffReturnValues(getAttribute('staff_id'), getAttribute('staff_name'))"/>
+						    </td>
+							<td class="e_lSet"><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"/></td>
+							<td class="e_rSet"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+							<td class="e_lSet"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('STAFF_SEX', info.SEX)" raw="false"/></td>
+							<td class="e_lSet"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEPART_ID)" raw="false"/></td>
+							<td class="e_lSet"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)" raw="false"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="StaffPart" listener="queryStaffs" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				</div>
+	</div>
+	<div class="c_submit l_mt">
+		<div class="bottom e_cSet">
+			<input type="button" id="bselect" name="bselect" value="选择" class="e_button" onclick="Wade.org.selectStaffs()"/>
+			<input type="button" id="bcleanup" name="bcleanup" value="清除" class="e_button" onclick="Wade.org.cleanupSelect();"/>
+			<input type="button" id="bcancel" name="bcancel" value="返回" class="e_button" onclick="return null;"/>
+		</div>
+	</div>
+	<input jwcid="@Any" type="hidden" id="check_dept_kind" name="check_dept_kind" value="" decode="false" />
+	<input jwcid="@Any" type="hidden" id="need_stafftag" name="need_stafftag" value="" decode="false" />
+	<input jwcid="@Any" type="hidden" id="staff_tags" name="staff_tags" value="" decode="false" />
+	
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

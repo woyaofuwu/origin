@@ -1,0 +1,33 @@
+SELECT TRADE_ID,
+       ACCEPT_MONTH,
+       SERIAL_NUMBER,
+       USER_ID,
+       SERIAL_NUMBER_B,
+       USER_ID_B,
+       BIZ_TYPE_CODE,
+       BIZ_CODE,
+       FORCE_OBJECT,
+       TO_CHAR(SEND_DATE, 'yyyy-mm-dd hh24:mi:ss') SEND_DATE,
+       STATE_CODE,
+       TO_CHAR(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       REMARK,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5,
+       RSRV_DATE1,
+       RSRV_DATE2,
+       RSRV_DATE3,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       RSRV_TAG3,
+       SCORE_TAG,
+       TO_CHAR(REPLY_DATE, 'yyyy-mm-dd hh24:mi:ss') REPLY_DATE
+  FROM TF_F_USER_DANDELION_RECV A
+ WHERE A.FORCE_OBJECT = :FORCE_OBJECT
+   AND A.SERIAL_NUMBER_B = :SERIAL_NUMBER_B
+   AND A.STATE_CODE = '0'
+   AND SYSDATE BETWEEN A.SEND_DATE AND A.SEND_DATE + 3

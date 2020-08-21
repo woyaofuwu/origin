@@ -1,0 +1,4 @@
+UPDATE tf_f_user_vpmn
+   SET area_code=:AREA_CODE,scp_code=:SCP_CODE,vpmn_type=:VPMN_TYPE,sub_state=:SUB_STATE,func_tlags=:FUNC_TLAGS,inter_feeindex=:INTER_FEEINDEX,out_feeindex=:OUT_FEEINDEX,outgrp_feeindex=:OUTGRP_FEEINDEX,subgrp_feeindex=:SUBGRP_FEEINDEX,pre_ip_no=:PRE_IP_NO,pre_ip_disc=:PRE_IP_DISC,othor_ip_disc=:OTHOR_IP_DISC,trans_no=:TRANS_NO,max_close_num=:MAX_CLOSE_NUM,max_num_close=:MAX_NUM_CLOSE,person_maxclose=:PERSON_MAXCLOSE,max_outnum=:MAX_OUTNUM,max_users=:MAX_USERS,pkg_start_date=TO_DATE(:PKG_START_DATE, 'YYYY-MM-DD HH24:MI:SS'),pkg_type=:PKG_TYPE,discount=:DISCOUNT,limit_fee=TO_NUMBER(:LIMIT_FEE),zone_max=:ZONE_MAX,zonefree_num=:ZONEFREE_NUM,zone_fee=TO_NUMBER(:ZONE_FEE),mt_maxnum=:MT_MAXNUM,aip_id=:AIP_ID,rsrv_str1=:RSRV_STR1,rsrv_str2=:RSRV_STR2,rsrv_str3=:RSRV_STR3,rsrv_str4=:RSRV_STR4,rsrv_str5=:RSRV_STR5  
+ WHERE user_id=TO_NUMBER(:USER_ID)
+   AND vpmn_id=:VPMN_ID

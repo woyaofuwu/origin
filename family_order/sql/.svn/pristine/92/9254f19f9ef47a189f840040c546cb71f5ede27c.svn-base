@@ -1,0 +1,20 @@
+SELECT to_char(trade_id) trade_id,to_char(order_id) order_id,to_char(bpm_id) bpm_id,a.trade_type_code,
+  in_mode_code,a.priority,subscribe_state,next_deal_tag,product_id,a.brand_code,to_char(user_id) user_id,
+  to_char(cust_id) cust_id,to_char(acct_id) acct_id,serial_number,cust_name,
+  to_char(accept_date,'yyyy-mm-dd hh24:mi:ss') accept_date,accept_month,trade_staff_id,trade_depart_id,
+  trade_city_code,trade_eparchy_code,term_ip,a.eparchy_code,city_code,olcom_tag,
+  to_char(exec_time,'yyyy-mm-dd hh24:mi:ss') exec_time,to_char(finish_date,'yyyy-mm-dd hh24:mi:ss') finish_date,
+  to_char(oper_fee) oper_fee,to_char(foregift) foregift,to_char(advance_pay) advance_pay,invoice_no,fee_state,
+  to_char(fee_time,'yyyy-mm-dd hh24:mi:ss') fee_time,fee_staff_id,cancel_tag,
+  to_char(cancel_date,'yyyy-mm-dd hh24:mi:ss') cancel_date,cancel_staff_id,cancel_depart_id,cancel_city_code,
+  cancel_eparchy_code,process_tag_set,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,
+  rsrv_str8,rsrv_str9,rsrv_str10,c.trade_type remark
+  FROM tf_b_trade a,td_s_tradetype_limit b,td_s_tradetype c
+ WHERE a.user_id=TO_NUMBER(:USER_ID)
+   AND a.trade_type_code = b.limit_trade_type_code
+   AND a.trade_type_code = c.trade_type_code
+   AND (a.eparchy_code = b.eparchy_code OR b.eparchy_code = 'ZZZZ')
+   AND (a.eparchy_code = c.eparchy_code OR c.eparchy_code = 'ZZZZ')
+   AND b.trade_type_code = 9000
+   AND SYSDATE BETWEEN b.start_date AND b.end_date
+   AND SYSDATE BETWEEN c.start_date AND c.end_date

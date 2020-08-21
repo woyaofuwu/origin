@@ -1,0 +1,10 @@
+--IS_CACHE=Y
+Select m.MENU_ID, mr.RELATION_MENU_ID PARENT_MENU_ID,
+     m.CHAN_ID, m.BRAND_CODE, m.MENU_EPARCHY, m.MENU_LEVEL, m.MENU_CODE, m.MENU_NAME, a.PARAM_NAME, a.PARAM_MIN_VALUE
+     From TD_S_CHANNEL_MENU m, TD_M_MENU_RELATION mr, TD_S_CHANNEL_MENU_ATTR a
+	 	 where 1 = 1 
+     and m.MENU_ID = :MENU_ID
+     and m.MENU_ID = mr.CURRENT_MENU_ID
+     and m.MENU_ID = a.MENU_ID(+)
+     and mr.RELATION_TYPE = '0'
+     Order By m.MENU_ID

@@ -1,0 +1,398 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<script jwcid="@Script" type="text/javascript" src="igroup/applyrequirement/script/applyrequirement.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">开通申请</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 集团信息 开始 -->
+	<!-- <div class="c_list e_show-phone">
+		<ul>
+			<li ontap="showPopup('UI-group','UI-groupInfo')">
+				<div class="ico"><span class="e_ico-group e_green"></span></div>
+				<div class="main">
+					<div class="content">湖南长沙天心区文化市场综合行管理部</div>
+				</div>
+				<div class="more"></div>
+			</li>
+		</ul>
+	</div> -->
+	<!-- 集团信息 结束 -->
+
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">客户信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div jwcid="@Part" id="groupBasePart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">集团编码</div>
+						<div class="value">
+							<input jwcid="@TextField" name="cond_GROUP_ID_INPUT" value="ognl:groupInfo.GROUP_ID" onkeydown="queryGroupInfo(this, event);" nullable="no" desc="集团编码"/>
+							<input jwcid="@Hidden" name="cond_CUST_ID" value="ognl:groupInfo.CUST_ID"/>
+							<input jwcid="@Hidden" name="cond_GROUP_ID" value="ognl:groupInfo.GROUP_ID"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">客户名称</div>
+						<div class="value"><input jwcid="@TextField" name="cond_CUST_NAME" value="ognl:groupInfo.CUST_NAME" disabled="true"/></div>
+					</li>
+					<li class="link">
+						<div class="label">客户服务等级</div>
+						<div class="value"><input jwcid="@Select" name="cond_SERV_LEVEL" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CUSTGROUP_SERV_LEVEL')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:groupInfo.SERV_LEVEL" disabled="true"/></div>
+					</li>
+					<li class="link required merge-2">
+						<div class="label">客户地址</div>
+						<div class="value"><input jwcid="@TextField" name="cond_GROUP_ADDR" value="ognl:groupInfo.GROUP_ADDR" disabled="true"/></div>
+					</li>
+					<li class="link" ontap="showPopup('popup01','moreCustomerPopupItem',true)">
+						<div class="label">其他客户信息</div>
+						<div class="value"><input type="text"  readonly="readonly" /></div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">产品信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div jwcid="OfferPart@Part" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">操作类型</div>
+						<div class="value">
+							<input jwcid="@Select" name="cond_OPER_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('APPLY_REQUIREMENT_OPER_TYPE')" 
+								textField="DATA_NAME" valueField="DATA_ID" addDefault="false" value="ognl:info.OPER_TYPE" 
+								nullable="no" desc="操作类型" onchange="changeOperType();"/>
+						</div>
+					</li>
+					<li class="link required" ontap="initOfferCatalog();">
+						<div class="label">选择产品</div>
+						<div class="value"><span class="e_mix">
+							<input jwcid="@TextField" name="cond_OFFER_NAME" id="cond_OFFER_NAME" value="ognl:offer.OFFER_NAME" disabled="disabled"/>
+							<span class="e_ico-check"></span>
+						</span></div>
+					</li>
+					<li class="link required" style="display:none;" id="OFFER_CODE_LI" >
+						<div class="label">产品编码</div>
+						<div class="value"><input jwcid="@TextField" name="cond_OFFER_CODE" id="cond_OFFER_CODE" value="ognl:offer.OFFER_CODE" disabled="disabled"/></div>
+					</li>
+					<div jwcid="@Conditional" condition="ognl:info.SHOW_PARAM_PART == 2 && info.OPER_TYPE == 20">
+						<li class="link required" id="DATALINE_OPER_TYPE_LI">
+							<div class="label">产品服务</div>
+							<div class="value">
+								<span jwcid="@Segment" name="DATALINE_OPER_TYPE" textField="DATA_NAME" valueField="DATA_ID" 
+								source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('DATALINE_OPER_TYPE')" value="ognl:info.DATALINE_OPER_TYPE" 
+								onchange="datalineOperTypeOnChange();"></span>
+							</div>
+						</li>
+						<li class="link required" style="display:none;" id="DATALINE_SERIAL_NUMBER_LI">
+							<div class="label">产品服务号码</div>
+							<div class="value">
+								<input jwcid="@Select" name="DATALINE_SERIAL_NUMBER" source="ognl:info.DATALINE_SERIAL_NUMBER_LIST" 
+									textField="SERIAL_NUMBER" valueField="SERIAL_NUMBER" value="ognl:info.DATALINE_SERIAL_NUMBER" 
+									nullable="yes" desc="产品服务号码" />
+							</div>
+						</li>
+					</div>
+					<input jwcid="@Hidden" name="cond_OFFER_ID" id="cond_OFFER_ID" value="ognl:offer.OFFER_ID" desc="商品标识" />
+					<input jwcid="@Hidden" name="cond_BRAND_CODE" id="cond_BRAND_CODE" value="ognl:offer.BRAND_CODE" desc="商品品牌" />
+					<input jwcid="@Hidden" name="MEB_OFFER_CODE" id="MEB_OFFER_CODE" value="ognl:info.MEB_OFFER_CODE" />
+					<input jwcid="@Hidden" name="MEB_OFFER_ID" id="MEB_OFFER_ID" value="ognl:info.MEB_OFFER_ID" />
+					<input jwcid="@Hidden" name="MEB_OFFER_NAME" id="MEB_OFFER_NAME" value="ognl:info.MEB_OFFER_NAME" />
+					<span id="BUSI_SPEC_RELE" style="display:none;" desc="流程信息"><span jwcid="@Insert" value="ognl:info.BUSI_SPEC_RELE"></span></span>
+					<span id="NODE_TEMPLETE" style="display:none;" desc="流程节点信息"><span jwcid="@Insert" value="ognl:info.NODE_TEMPLETE"></span></span>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			
+			<div jwcid="ParamPart@Part" style="display:none">
+				<div jwcid="@Conditional" condition="ognl:info.SHOW_PARAM_PART == 1">
+					<!-- 标准产品 属性区域 开始 -->
+					<div class="c_title">
+						<div class="text">产品参数</div>
+					</div>
+					<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+						<ul>
+							<li jwcid="@Any" class="link required" ontap="ognl:'initOfferCha(&#39;OFFER_CHA_'+offer.OFFER_ID+'&#39;);'">
+								<div class="content link">
+									<div class="main">产品参数</div>
+									<div class="side"><span class="e_tag e_tag-red">待设置</span></div>
+									<div class="more"></div>
+								</div>
+								<input jwcid="@Hidden" name="ognl:'OFFER_CHA_'+offer.OFFER_ID" id="ognl:'OFFER_CHA_'+offer.OFFER_ID" value="" />
+							</li>
+						</ul>
+					</div>
+					<!-- 标准产品 属性区域 结束 -->
+				</div>
+				<div jwcid="@Conditional" condition="ognl:info.SHOW_PARAM_PART == 2">
+					<!-- 普通专线产品 开始 -->
+					<div jwcid="DataLineApplyParamPopup@ecserv:DataLineApplyParam" offerName="ognl:offer.OFFER_NAME"></div>
+					<!-- 普通专线产品 结束 -->
+				</div>
+				
+				<div jwcid="@Conditional" condition="ognl:info.SHOW_PARAM_PART == 3">
+					<!-- BBOSS商品 开始 -->
+					<div jwcid="BbossApplyParamPopup@ecserv:BbossApplyParam" ></div>
+					<!-- BBOSS商品 结束 -->
+				</div>
+				<input jwcid="@Hidden" name="SHOW_PARAM_PART" value="ognl:info.SHOW_PARAM_PART" />
+			</div>
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">其他信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link" ontap="showPopup('popup01','UI-moreAccount',true)">
+						<div class="label">账户信息</div>
+						<div class="value"><input type="text"  readonly="readnoly" /></div>
+						<div class="more"></div>
+					</li>
+					<li class="link" ontap="showPopup('popup01','UI-moreContacts',true)">
+						<div class="label">联系人信息</div>
+						<div class="value"><input type="text"  readonly="readnoly" /></div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space-c"></div>
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border ">
+				<ul>
+					<li class="link merge-3">
+						<div class="label">附件上传</div>
+						<div class="value"><span class="e_mix">
+							<input type="text" />
+							<span class="e_ico-upload"></span>
+						</span></div>
+					</li>
+					<li class="link merge-3">
+						<div class="label">操作意见</div>
+						<div class="value"><input type="text" name="" value=""></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitApply();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+		<input type="hidden" id="OFFER_CHA_HIDDEN_ID" value="" desc="当前设置的商品特征应保存到的对于隐藏域id" />
+		<input jwcid="@Hidden" name="offerchalist" id="offerchalist" value="" desc="" />
+	</div>
+<!-- 滚动 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup01">
+
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="moreCustomerPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">其他客户信息</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="@Part" id="moreCustPart" class="l_padding">
+					<!-- 集团客户基本信息 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户级别：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CLASS_ID"></span></span>
+							</li>
+							<li>
+								<span class="label">客户联系人：</span>
+								<span class="value">湖南</span>
+							</li>
+							<li>
+								<span class="label">客户联系电话：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.GROUP_CONTACT_PHONE"></span></span>
+							</li>
+							<li>
+								<span class="label">客户邮编：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.POST_CODE"></span></span>
+							</li>
+							<li>
+								<span class="label">客户邮箱：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.EMAIL"></span></span>
+							</li>
+							<li>
+								<span class="label">客户服务等级：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CUSTGROUP_SERV_LEVEL', groupInfo.SERV_LEVEL)"></span></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 集团客户基本信息 结束 -->
+					<!-- 集团客户附加信息 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户所属地州：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.EPARCHY_NAME"></span></span>
+							</li>
+							<li>
+								<span class="label">客户所属市县：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CITY_NAME"></span></span>
+							</li>
+							<li>
+								<span class="label">集团客户行业：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:groupInfo.CALLING_TYPE_NAME"></span></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 集团客户附加信息 结束 -->
+					<!-- 集团客户经理信息 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户经理：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.CUST_MANAGER_NAME"></span></span>
+							</li>
+							<li>
+								<span class="label">客户经理工号：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.CUST_MANAGER_ID"></span></span>
+							</li>
+							<li>
+								<span class="label">客户经理电话：</span>
+								<span class="value"><span jwcid="@Insert" value="ognl:custMgrInfo.SERIAL_NUMBER"></span></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 集团客户经理信息 结束 -->
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup02" class="c_popup c_popup-half c_popup-half-hasBg">
+	<div class="c_popupGroup">
+		<div jwcid="GrpOfferCatalogPopup@ecserv:GrpOfferCatalog" upCatalogId="1000"></div>
+		
+		<!-- 产品特征 开始 -->
+		<div jwcid="offerChaPopupItem@Part" class="c_popupItem" id="offerChaPopupItem">
+			<div id="offerChaHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="offerChaBack">商品特征</div>
+			</div>
+			<!-- 动态参数页面 -->
+			<!-- <div jwcid="offerChaPage@Part" id="offerCha"> -->
+ 				<div jwcid="@ecserv:BuilderLayout" layouts="ognl:inAttr"/>
+			<!-- </div> -->
+		</div>
+		<!-- 产品特征 结束 -->
+	</div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 集团信息 开始 -->
+<div class="c_popup" id="UI-group">
+	<div class="c_popupBg" id="UI-popup_bg"></div>
+	<div class="c_popupBox">
+		<div class="c_popupWrapper" id="UI-popup_wrapper">
+			<div class="c_popupGroup">
+				<div class="c_popupItem" id="UI-groupInfo">
+					<div class="c_header">
+						<div class="back" ontap="hidePopup(this)">集团详细信息</div>
+					</div>
+					<div class="c_scroll c_scroll-float c_scroll-header">
+						<div class="l_padding">
+							<!-- 参数 开始 -->
+							<div class="c_param c_param-border">
+								<ul>
+									<li>
+										<span class="label">联系人：</span>
+										<span class="value">乔斯·韦登</span>
+									</li>
+									<li>
+										<span class="label">联系电话：</span>
+										<span class="value">139 9987 6654</span>
+									</li>
+									<li>
+										<span class="label">企业类型：</span>
+										<span class="value">机关法人</span>
+									</li>
+									<li>
+										<span class="label">企业大类：</span>
+										<span class="value">信息传输、计算机服务和软件业</span>
+									</li>
+									<li>
+										<span class="label">地址：</span>
+										<span class="value">湖省长沙天心区广福路广福小区一区</span>
+									</li>
+								</ul>
+							</div>
+							<!-- 参数 结束 -->
+							<!-- 标题 开始 -->
+							<div class="c_title">
+								<div class="text">客户经理</div>
+							</div>
+							<!-- 标题 结束 -->
+							<!-- 参数 开始 -->
+							<div class="c_param c_param-label-6 c_param-border">
+								<ul>
+									<li>
+										<span class="label">客户经理姓名：</span>
+										<span class="value">[63402] 林道哲</span>
+									</li>
+									<li>
+										<span class="label">联系电话：</span>
+										<span class="value">132 9987 6654</span>
+									</li>
+									<li>
+										<span class="label">邮箱：</span>
+										<span class="value">lindz@chinamobile.com</span>
+									</li>
+								</ul>
+							</div>
+							<!-- 参数 结束 -->
+							<div class="c_space"></div>
+							<!-- 提交 开始 -->
+							<div class="c_submit c_submit-full">
+								<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+							</div>
+							<!-- 提交 结束 -->
+							<div class="c_space"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 集团信息 结束 -->
+
+
+</body>
+</html>

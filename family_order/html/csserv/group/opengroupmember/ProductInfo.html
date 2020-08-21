@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团成员用户开户-产品信息</title>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/group/opengroupmember/ProductInfo.js"></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div id="productInfoPart">
+    <!-- 区域 开始 -->
+	<div class="c_box">	
+		<!-- 表单 开始 -->	
+		<div class="c_form">
+			<ul class="ul">
+				<li class="li">
+					<span class="label" id="COLUM_NAME_DISPLAY">
+						<span class="e_required">服务号码：</span>
+					</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" id="SERIAL_NUMBER" name="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" desc="服务号码" disabled="disabled"  nullable="no" />
+					</span></span> 
+				</li>
+			</ul>			
+		</div>
+	</div><!-- 区域 结束 -->
+
+	<!-- 区域 开始 -->
+	<div class="c_box">	  
+	   <!--tab页开始-->	  
+	   <div jwcid="mytab@Tabset">	   
+	   	    
+	   	<!--产品信息tabpan begin-->
+	    	<div jwcid="@TabsetContent" id ="productinfotabset" title="产品信息">
+			<div class="l_col s_iframe-close s_iframe-lower">
+				<!-- 第 1 栏 开始 -->
+				<div class="l_left" style="width:49%;">
+					<!-- 区域 开始 -->
+					<div class="c_box">
+						<!-- 标题 开始 -->
+		                <div class="c_title">
+							<div class="text">待选区</div>
+						</div>
+						<!-- 标题 结束 -->
+						<!-- 分栏 开始 -->
+						<div class="l_col l_col-close">
+							<div jwcid="offerList@csserv:OfferList" 
+		                           element="div"
+		                           svcParam="ognl:cond"
+		                           serviceName="CS.PackageSVC.getMemberProductPackages"
+		                           productId="ognl:cond.MEB_PRODUCT_ID"
+		                           switchGroupService="CS.PackageSVC.getMemberPackageElements" 
+		                           categoryId="100000000017,100000000014">
+		                    </div>
+						</div>
+						<!-- 分栏 结束 -->
+					</div>
+					<!-- 区域 结束 -->
+				</div>
+			    <div class="l_auto">
+					<!-- 区域 开始 -->
+					<div class="c_box">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">已选区</div>
+						</div>
+		                <div jwcid="selectedElements@saleserv:SelectedElements" 
+			                 initCallSvc="CS.SelectedElementSVC.getGrpUserOpenElements" 
+			                 callAddElementSvc="CS.SelectedElementSVC.dealSelectedElements" 
+			                 initParam="ognl:cond"
+			                 element="div">
+			            </div>
+						<!-- 表格 结束 -->
+					</div>
+					<!-- 区域 结束 -->
+				</div>
+			<!-- 第 2 栏 结束 -->
+			</div>
+			<!-- 分栏 结束 -->
+		</div>        
+	    <!--产品信息tabpan end--> 		   
+		
+		<!-- 产品参数 开始 -->
+	    <div jwcid="@Conditional" condition="ognl:productCtrlInfo.ParamInfo.ATTR_VALUE != null">
+			<div jwcid="@TabsetContent" id ="prama" title="产品参数信息" >
+				<input jwcid="@Hidden" id ="pramaPage" name="pramaPage" value="ognl:productCtrlInfo.ParamInfo.ATTR_VALUE" />
+				<input jwcid="@Hidden" name="jsFilePath" id="jsFilePath" value="ognl:productCtrlInfo.jsFile.ATTR_VALUE"/>
+				<span jwcid="productParamPart@saleserv:ProductParamDynamicHtml" element="div" param="ognl:dynParam"/>
+		    </div>
+		</div>
+		<!-- 产品参数 结束 -->
+		
+		<!-- 资源信息 开始 -->
+		<div jwcid="@TabsetContent" id="resourceInfo" title="资源信息"> 				
+				<div class="c_table c_table-row-15">				
+					<table>
+						<thead>
+							<tr>
+								<th>资源类型</th>
+								<th>资源号码</th>
+								<th>校验成功</th>
+								<th>不可修改</th>
+							</tr>
+						</thead>						
+						<tbody jwcid="_DEPART@Part" optimize="true" element="tbody">	
+							<tr jwcid="@Foreach" source="ognl:resList" value="ognl:info" element="tr">
+								<td><span jwcid="@Insert" value="ognl:info.RES_TYPE" /></td>
+								<td id="memRes">
+									<span class="e_input"><span>
+										<input type="text" jwcid="@TextField" id="resourcesn" name="resourcesn" value="ognl:info.RES_ID" maxlength="15" resId="ognl:info.RES_ID" restypecode="ognl:info.RES_TYPE_CODE" restype="ognl:info.RES_TYPE" 
+											onkeypress="if(event.keyCode==13){checkResSn(this.value,$(this).attr('restypecode'),$(this).attr('restype'))};"></input>
+									</span></span>
+								</td>
+								<td><a jwcid="@Any" id="checkSuccess" name="checkSuccess"></a></td>
+								<td><a jwcid="@Any" id="modifyTag" name="modifyTag"></a></td>
+							</tr>							
+					   </tbody>
+					</table>
+				 </div>				
+		 	</div>
+			<!-- 资源信息 结束 -->						
+		</div><!--tab页结束--> 					
+	</div><!-- 区域 结束 -->
+</div>
+
+<div jwcid="elementAttr@saleserv:ElementAttr" element="div"></div>
+
+<input jwcid="@TextArea" name="TAG" id="TAG" value="ognl:tag"  style="display:none"/>
+
+<input jwcid="@TextArea"  id="CUST_INFO" name="CUST_INFO" value="ognl:custInfo" style="display:none"/>	
+<input jwcid="@TextArea"  id="ACCT_INFO" name="ACCT_INFO" value="ognl:acctInfo" style="display:none"/>
+<input jwcid="@TextArea"  id="USER_INFO" name="USER_INFO" value="ognl:userInfo" style="display:none"/>
+
+<input jwcid="@TextArea"  id="PMEM_CUST_INFO" name="PMEM_CUST_INFO" value="ognl:memCustInfo" style="display:none"/>	
+<input jwcid="@TextArea"  id="PMEM_ACCT_INFO" name="PMEM_CUST_INFO" value="ognl:memAcctInfo" style="display:none"/>
+<input jwcid="@TextArea"  id="PMEM_USER_INFO" name="PMEM_CUST_INFO" value="ognl:memUserInfo" style="display:none"/>
+
+<input jwcid="@TextArea"  id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:productId" style="display:none"/>
+<input jwcid="@TextArea"  id="GROUP_ID" name="GROUP_ID" value="ognl:groupId" style="display:none"/>
+<input jwcid="@TextArea"  id="PRODUCT_CTRL_INFO" name="PRODUCT_CTRL_INFO" value="ognl:productCtrlInfo" style="display:none"/>
+
+<div jwcid="RES_DEPART@Part" optimize="true">
+   <input jwcid="@TextArea"  id="RES_NUMBER" name="RES_NUMBER" value="ognl:resNumber" style="display:none"/>
+   <input jwcid="@TextArea"  id="DYNATABLE_RES_RECORD" name="DYNATABLE_RES_RECORD" value="ognl:resList" style="display:none"/>
+</div>
+
+<input type="hidden" id="SELECTED_ELEMENTS" name="SELECTED_ELEMENTS"  value="[]"/>
+
+<input type="button" id="bnext" value="下一步" class="e_button" onclick="if(!nextCheck()){return false;}"  style="display:none"/>
+	
+</div></div>
+	
+</body>
+</html>

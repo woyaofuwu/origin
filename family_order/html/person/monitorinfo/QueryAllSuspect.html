@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>嫌疑短信查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/monitorinfo/scripts/queryallsuspect.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" id="contentPart">
+	<div class="c_title">
+		<div class="text">嫌疑短信查询</div>
+	</div>
+	
+	<div jwcid="QueryCondPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="HeadQueryPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询方式：</span></span>
+					<span class="e_select"><span><span>
+               		<select jwcid="@Select" name="QUERY_TYPE" id="QUERY_TYPE"
+							source="ognl:pageutil.getStaticList('QUERYMONITORINFO_QUERYTYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="QUERY_TYPE"
+                			value="1"
+                			onchange="changeQueryType()"
+							desc="查询方式"
+                			nullable="no"
+                       />
+                </span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">归属省份：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PROV_CODE" id="PROV_CODE"
+							source="ognl:pageutil.getStaticList('BAD_PROVINCE_CODE')" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="PROV_CODE"
+                			value="ognl:editInfo.PROV_CODE"
+                			default="1"
+							desc="归属省份"
+                       />
+                </span></span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="NormalQueryPart@Part" style="display:''">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">发送方式：</span></span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="RECEIVE_TYPE" id="RECEIVE_TYPE" 
+						source="ognl:pageutil.getStaticList('WHITE_RECEIVETYPE')" addDefault="false"
+						value="ognl:editInfo.RECEIVE_TYPE" textField="DATA_NAME" valueField="DATA_ID"  desc="发送方式"  titleField="RECEIVE_TYPE" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">开始号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="START_SERIAL_NUMBER" name="START_SERIAL_NUMBER"  nullable="no" datatype="mbphone"
+						desc="开始号码"	value="ognl:editInfo.START_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="END_SERIAL_NUMBER" name="END_SERIAL_NUMBER"  nullable="no" datatype="mbphone"
+						desc="结束号码"	value="ognl:editInfo.END_SERIAL_NUMBER" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="DayQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询日期：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="DATE_REPORT" name="DATE_REPORT"  
+						desc="查询日期"	value="ognl:editInfo.DATE_REPORT" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_form c_form-col-3 c_form-label-7" jwcid="TimeQueryPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">查询开始日期：</span></span>
+					<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="DATE_START" name="DATE_START"  
+						desc="查询日期"	value="ognl:editInfo.DATE_START" />
+				</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">查询结束日期：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" id="DATE_END" name="DATE_END"  
+						desc="结束日起"	value="ognl:editInfo.DATE_END" />
+				</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<div class="c_submit">
+		<div class="right">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return querySuspectInfos()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="remarkPart">
+	<div class="c_submit">
+		<div class="right">
+			<div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="92111"
+						  config="export/monitorinfo/AllSuspectList.xml" fileName="嫌疑短信列表" beforeAction="exportBeforeAction"
+						 cond="QueryCondPart" params="ognl:'TAG_PARAM=3&&STAFF_ID=' + getVisit().getStaffId()"/>
+			</div>
+		</div>
+		
+	</div>
+    <!-- 表格 开始 -->
+	<div jwcid="MonitorInfoPart@Part" id="MonitorInfoPart" style="display:''">
+	<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" id="MonitorInfoTable" name="MonitorInfoTable" scroll="true">
+			<thead>
+				<tr>
+					<th col="INTF_ID">流水号</th>
+		      		<th col="ACCEPT_MONTH">处理月份</th>		
+		      		<th col="IN_TIME">入库时间</th>
+                    <th col="START_DATE">发送时间</th>
+                    <th col="ENTER_DATE">处理时间</th>
+                    <th col="SERIAL_NUMBER">主叫号码</th>
+                    <th col="X_CALL_EDMPHONECODE">被叫号码</th>
+                    <th col="DATA_TYPE">短信属性</th>
+                    <th col="REASON_CODE">违规原因</th>       
+                    <th col="DATA_ALL">违规流量值</th>
+                    <th col="RESULT_MESSAGE">违规关键字</th>
+					<th col="NOTICE_CONTENT">短信内容</th>
+					<th col="PROVINCE_CODE">省份代码</th>
+					<th col="EXEC_TIME">执行时间</th>
+				</tr>
+			</thead>
+			<tbody id="MonitorInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.INTF_ID"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.IN_TIME)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.START_DATE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.ENTER_DATE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.X_CALL_EDMPHONECODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WHITE_SUSPECTSMSTYPE', info.DATA_TYPE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WHITE_SUSPECTAGAINST', info.REASON_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA_ALL"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.RESULT_MESSAGE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.NOTICE_CONTENT"></span></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', info.PROVINCE_CODE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.EXEC_TIME)"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" name="queryNav" id="queryNav" cond="QueryCondPart" part="MonitorInfoPart" listener="querySuspectInfos" pageSize="10" count="ognl:count"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>

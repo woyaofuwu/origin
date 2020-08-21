@@ -1,0 +1,68 @@
+<div class="c_space"></div>
+<!-- 查询条件开始 -->
+		
+<div class="c_title">
+	<div class="text">资费服务信息</div>
+</div>
+<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">	
+	<ul>
+		<li class="link">
+			<div class="label">产品包</div>
+			<div class="value">
+				<span jwcid="@Select" class="e_select" name="packageSelects" source="ognl:groups" 
+					textField="PACKAGE_NAME" valueField="PACKAGE_VAL" addDefault="false" onchange="changePackage();"></span>
+			</div>
+		</li>
+		<li class="link">
+			<div class="label" jwcid="refreshPart@Part">资费或服务</div>
+			<div class="value" jwcid="elementPart@Part">
+				<span jwcid="@Select" class="e_select" name="elementSelects" source="ognl:childOffers" 
+					textField="OFFER_NAME" valueField="OFFER_ID"></span>
+			</div>
+			<label class="fn"><span class="e_ico-add"  ontap="addElement();"></span></label>
+		</li>
+	</ul>
+</div>
+<div class="c_space"></div>
+<div class="c_list c_list-line c_list-col-2 c_list-border c_list-phone-col-1" >
+	<ul id="selectedUL">
+		<li jwcid="@Foreach" id="ognl:'li_'+forceOffer.OFFER_ID" source="ognl:forceOffers" value="ognl:forceOffer" element="li">
+			<div class="fn">
+				<input jwcid="@Checkbox" disabled="ognl:forceOffer.FORCE_TAG='1'?'true':'false'" name="ognl:'checkelement_'+forceOffer.OFFER_ID" id="ognl:'checkelement_'+forceOffer.OFFER_ID" offer_id="ognl:forceOffer.OFFER_ID"
+				checked="true" ontap="clickElement(this);"/>
+			</div>
+			<div class="main">
+				<div class="title">
+					<span jwcid="@Insert" name="NAME" value="ognl:'【'+forceOffer.OFFER_CODE+'】'+forceOffer.OFFER_NAME" />
+					<input jwcid="@Hidden" name="ognl:'Attr_'+forceOffer.OFFER_ID" value="" />
+					<input jwcid="@Hidden" name="SELECT_OFFER_ID" value="ognl:forceOffer.OFFER_ID" elementId="ognl:forceOffer.OFFER_CODE" elementName="ognl:forceOffer.OFFER_NAME" pakcageId="ognl:forceOffer.PACKAGE_ID" state="exist"/>
+				</div>
+				<!-- 此处两个div不能换行，否则影响页面展示效果 -->
+				<div class="content">
+					<span jwcid="@Insert" name="TIME"  value="ognl:forceOffer.START_DATE+'~'+(forceOffer.END_DATE==null?'2050-12-31 23:59:59':forceOffer.END_DATE)" />
+				</div>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:(forceOffer.OFER_CODE == '0' && forceOffer.EXT_FLAG == 'true')">
+				<div class="side" jwcid="@Any" OFFER_ID ="ognl:forceOffer.OFFER_ID" USER_ID="" OFFER_INS_ID="" ontap = "offerSimpleCha.initOfferSimpleCha(this);"><span class="e_tag e_tag-red">待设置</span></div>
+				<div class="more"></div>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:(forceOffer.OFER_CODE != '0' && forceOffer.EXT_FLAG == 'true')">
+				<div class="side" jwcid="@Any" OFFER_ID ="ognl:forceOffer.OFFER_ID" USER_ID="ognl:forceOffer.USER_ID" OFFER_TYPE="ognl:forceOffer.OFFER_TYPE" OFFER_INS_ID="ognl:forceOffer.OFFER_INS_ID" ontap = "offerSimpleCha.initOfferSimpleCha(this);"><span class="e_tag e_tag-green">已设置</span></div>
+				<div class="more"></div>
+			</div>
+			<div jwcid="@Any" id="ognl:'OFFER_DATA_'+forceOffer.OFFER_ID" name="ognl:'OFFER_DATA_'+forceOffer.OFFER_ID" style="display:none"><span jwcid="@Insert" value="ognl:forceOffer"></span></div>
+		</li>
+	</ul>	
+</div>	
+<input jwcid="@Hidden" name="MAIN_OFFER_ID" value="ognl:mainOfferId" />
+
+<div jwcid="@Popup" name="popup" class="c_popup c_popup-half" mask="false">	
+<!-- ===========================================第一层弹出 开始============================================ -->
+<div class="c_popupGroup">
+	<!-- 价格特征 开始 -->
+	<div jwcid="offerSimpleChaPopupItem@OfferSimpleCha"></div>
+	<!-- 价格特征 结束 -->	
+</div>
+				
+
+</div>

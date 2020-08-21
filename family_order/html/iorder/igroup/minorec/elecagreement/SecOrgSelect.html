@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<body jwcid="@Body">
+<div class="c_header">
+	<div class="back" ontap="closeThisPopup();">资源仓库树</div>
+	<div class="fn">
+		<span class="e_segment" id="UI-sg">
+			<span id="SEG_TREE" class="e_segmentOn" ontap="switchTreePart();">选择</span>
+			<span id="SEG_QRY"  ontap="switchQueryPart();">搜索</span>
+		</span>
+		<!--script>new segment("UI-sg")</script-->
+	</div>
+</div>
+<!-- 树 开始 -->
+<div id="UI-tree" class="c_scroll c_scroll-white c_scroll-float c_scroll-header c_scroll-submit">
+	<div jwcid="@Tree" id="SEC_ORG_TREE" name="SEC_ORG_TREE" listener="loadSecOrgTree" params="ognl:info" checkBoxType="radio" async="true"/>
+</div>
+<!-- 树 结束 -->	
+<!-- 查询 开始  -->
+<div id="UI-search" class="l_float l_float-header" style='display:none'>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-padding" id="qryCond">
+		<ul>
+			<li>
+				<div class="label">搜索：</div>
+				<div class="value">
+					<span class="e_mix e_mix-search">
+<!--							<span jwcid="@Select" name="QUERY_TYPE" source="ognl:info.QUERY_TYPE_SEL_LIST" -->
+<!--								textField="TEXT" valueField="VALUE" class="e_select e_select-s e_select-r"-->
+<!--								value="ognl:info.QUERY_TYPE">-->
+<!--							</span>-->
+						<input type="text" jwcid="@Any" name="qry_KEY_WORD" id="qry_KEY_WORD" placeholder="请输入部门编码或部门名称搜索" onenterAction="alert('r');" value="ognl:condition.ORG" desc="仓库搜索条件"/>
+						<button type="button" ontap="searchOrgInfo();"><span class="e_ico-search"></span></button>
+					</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="c_line"></div>
+	<!-- 表单 结束 -->
+	<div class="c_scroll c_scroll-white c_scroll-float c_scroll-submit" style="top:4em">
+<!--	 列表 开始 -->
+	<div class="c_list c_list-line" jwcid="searchPart@Part">
+		<ul jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="ul">
+			<li>
+				<label class="group link">
+					<div class="fn">
+						<input type="radio" jwcid="@Radio" orgID="ognl:info.ORGANIZE_ID" disabled="ognl:'false' == info.CHK ? true : false" 
+							orgCode="ognl:info.CODE" orgName="ognl:info.ORGANIZE_NAME" name="SEL_ORG" onclick="org_selAction(this);"/>
+					</div>
+					<div class="side" style='width: 20em; text-align: left;' >[<span jwcid="@Insert" value="ognl:info.CODE"></span>]<span jwcid="@Insert" value="ognl:info.ORGANIZE_NAME"></span></div>					
+				</label>
+			</li>
+		</ul>
+	</div>
+<!--	 列表 结束 -->
+	<div class="c_line"></div>
+	</div>
+</div>
+<!-- 查询  结束 -->
+
+<input jwcid="@Hidden" name="ROOT_ORG" id="ROOT_ORG" value="ognl:info.ROOT_ORG" encode="false"/>
+<input jwcid="@Hidden" name="ROOT_STORE" id="ROOT_STORE" value="ognl:info.ROOT_STORE" encode="false"/>
+<input jwcid="@Hidden" name="ORG_ROLE_TYPE_ID'" id="ORG_ROLE_TYPE_ID'" value="ognl:info.ORG_ROLE_TYPE_ID" encode="false"/>
+<input jwcid="@Hidden" name="PRIV_CODE" id="PRIV_CODE" value="ognl:info.PRIV_CODE" encode="false"/>
+<input jwcid="@Hidden" name="IS_SEL_ROOT" id="IS_SEL_ROOT" value="ognl:info.IS_SEL_ROOT" encode="false"/>
+<input jwcid="@Hidden" name="POP_MODE" id="POP_MODE"  value="ognl:info.POP_MODE"   encode="false"/>
+<input jwcid="@Hidden" name="DEPART_KIND_CODE" id="DEPART_KIND_CODE"  value="ognl:info.DEPART_KIND_CODE"   encode="false"/>
+
+<!-- 提交 开始 -->
+<div class="l_bottom">
+	<div class="c_submit c_submit-full">
+		<button class="e_button-l e_button-navy" id="cancelBtn" ontap="closeThisPopup();"><span>取消</span></button>
+		<button class="e_button-l e_button-blue" id="clearBtn"  ontap="clearThisPopupValue();"><span>清除</span></button>
+	</div>
+</div>
+<!-- 提交 结束 -->
+</body>
+<script language="javascript">
+//<!--
+$("#SEC_ORG_TREE").checkBoxAction(function(e, nodeData){
+	var id = nodeData.id;
+	var text = nodeData.text;
+	var valueCode = $.params.get("VALUECODE");
+	var valueName = $.params.get("VALUENAME");
+	var popMode = $.params.get("POP_MODE");
+	var afterAction= $.params.get("AFTER_ACTION");
+	var obj = {};
+	obj[valueCode] = id;
+	obj[valueName] = text;
+	if("S" == popMode|| "" == popMode || popMode == null){
+		setPopupReturnValue(this, obj);
+	}else{
+		backPopup(this, obj);
+	}
+	if(afterAction){
+		afterAction = 'parent.' +afterAction+'();'
+		eval(afterAction);
+	}
+});
+
+function closeThisPopup(){
+	var popMode = $.params.get("POP_MODE");
+	if("S" == popMode){
+		setPopupReturnValue(this,'a','a',true);
+	}else{
+		backPopup(this);
+	}	
+}
+
+function clearThisPopupValue(){
+	var valueCode = $.params.get("VALUECODE");
+	var valueName = $.params.get("VALUENAME");
+	var popMode = $.params.get("POP_MODE");
+	var afterAction= $.params.get("AFTER_ACTION");
+	var obj = {};
+	obj[valueCode] = '';
+	obj[valueName] = '';
+	if("S" == popMode|| "" == popMode || popMode == null){
+		setPopupReturnValue(this, obj);
+	}else{
+		backPopup(this, obj);
+	}
+	if(afterAction){
+		afterAction = 'parent.' +afterAction+'();'
+		eval(afterAction);
+	}
+}
+
+function searchOrgInfo(){
+	if(!queryAll('qryCond')){
+		return false;
+	}
+	var keyWord = $("#qry_KEY_WORD").val();
+	if(keyWord == null || keyWord ==''){
+		alert('请输入部门编码或部门名称搜索');
+		return false;
+	}
+	$.ajax.submit("qryCond", "searchOrgInfo", '', 'searchPart');	
+}
+
+function org_selAction(obj){
+	var orgID = $(obj).attr("orgID");
+	var Code = $(obj).attr("orgCode");
+	var orgName = $(obj).attr("orgName");
+	var valueCode = $.params.get("VALUECODE");
+	var valueName = $.params.get("VALUENAME");
+	var popMode = $.params.get("POP_MODE");
+	var afterAction= $.params.get("AFTER_ACTION");
+	var obj = {};
+	obj[valueCode] = orgID;
+	obj[valueName] = "["+Code+"]"+orgName;
+	if("S" == popMode || "" == popMode || popMode == null){
+		setPopupReturnValue(this, obj);
+	}else{
+		backPopup(this, obj);
+	}
+	if(afterAction){
+		afterAction = 'parent.' +afterAction+'();'
+		eval(afterAction);
+	}
+}
+
+function switchTreePart(){
+	$("#UI-search").css('display','none');
+	$("#UI-tree").css('display','');
+	$('#SEG_TREE').attr('class','e_segmentOn');
+	$('#SEG_QRY').attr('class','');
+}
+
+function switchQueryPart(){
+	$("#UI-search").css('display','');
+	$("#UI-tree").css('display','none');
+	$('#SEG_TREE').attr('class','');
+	$('#SEG_QRY').attr('class','e_segmentOn');
+}
+//-->
+</script>
+</html>

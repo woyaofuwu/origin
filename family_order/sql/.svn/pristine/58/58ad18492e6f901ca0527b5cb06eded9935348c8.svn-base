@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'ResFactory' KEY, eparchy_code VALUE1, res_type_code VALUE2, FACTORY_CODE VALUE3, FACTORY VRESULT
+  FROM TD_M_RES_FACTORY
+ WHERE 'ResFactory' = :KEY

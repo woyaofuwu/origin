@@ -1,0 +1,19 @@
+update td_o_blackuser_sms
+   set start_scout_time = to_date(:START_SCOUT_TIME,'yyyy-mm-dd hh24:mi:ss'),
+       end_scout_time   = to_date(:END_SCOUT_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       out_reason       = :OUT_REASON,
+       out_num          = :OUT_NUM,
+       msgid            = :MSGID,
+       start_time       = to_date(:START_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       END_TIME         = to_date(:END_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       EPARCHY_CODE     = :EPARCHY_CODE,
+       msg_content      = :MSG_CONTENT,
+       remark           = :REMARK,
+       rsrv_str1        = :RSRV_STR1,
+       rsrv_str2        = :RSRV_STR2,
+       rsrv_str3        = :RSRV_STR3,
+       update_time      = SYSDATE,
+       upate_staff      = :UPATE_STAFF,
+       update_depart    = :UPDATE_DEPART
+ WHERE init_serinum = :INIT_SERINUM
+   and called_serinum = :CALLED_SERINUM

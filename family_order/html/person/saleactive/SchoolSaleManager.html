@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<!-- <script jwcid="@Script"  src="person/saleactive/scripts/schoolsalemanager.js" ></script> -->
+<script type="text/javascript">
+function querySchoolSaleDetail()
+{	
+	$.ajax.submit('QueryPart', 'querySchoolSaleDetail', null, 'ResultDataPart', function(data){
+		if(data.get('ALERT_INFO') && data.get('ALERT_INFO') != '')
+		{
+			alert(data.get('ALERT_INFO'));
+		}
+		$.endPageLoading();
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+function delSchoolSaleDetail()
+{
+	var tabChecks = $("input[name=checkid]");
+	for(var i =0; i<tabChecks.length;i++)
+	{
+		if(tabChecks[i].checked)
+		{
+			if(!confirm("确认删除吗？"))
+			{
+				return false;
+			}
+			$.ajax.submit('', 'deleteSchoolSale', '&ORDER_ID='+$("#checkid").val(), 'ResultDataPart', function(data){
+				if(data.get('ALERT_INFO') && data.get('ALERT_INFO') != '')
+				{
+					alert(data.get('ALERT_INFO'));
+				}
+				querySchoolSaleDetail();
+			},
+			function(error_code,error_info){
+				$.endPageLoading();
+				alert(error_info);
+		    });
+		}else{
+			alert("请选择一条记录！");
+			return;
+		}
+	}
+}
+function clickCheckbox(obj){
+	var inputs = $("input[name=checkid]");
+	var j=0;
+	for(var i = 0 ;i<inputs.length;i++){
+		var input = inputs[i];
+		if(input.getAttribute("type") == "checkbox"){
+			var strChecked = input.checked ? true : false;
+			if(strChecked){	
+				j++;
+				if(j>1){
+					alert("只能选择一条！");
+					obj.checked=false;
+					return false;
+				}
+				$("#btnDel").attr('disabled',false);
+			}	
+		}	
+	}
+}
+function addSchoolSaleDetail(obj)
+{
+	$.ajax.submit('RefreshTable', 'addSchoolSale', '', 'RefreshTable', function(data){
+		if(data.get('ALERT_INFO') && data.get('ALERT_INFO') != '')
+		{
+			alert(data.get('ALERT_INFO'));
+		}
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });	
+}
+
+function addExpress(orderId,value,state){
+	var str2 = $("#"+orderId+"_0").val();
+	if(""==str2){
+		alert("物流公司不能为空！");
+		$("#"+orderId+"_0").focus();
+		return;
+	}
+	if(""==value){
+		alert("快递单号不能为空！");
+		$("#"+orderId+"_1").focus();
+		return;
+	}
+	$.ajax.submit('', 'editSchoolSale',  '&ORDER_ID='+orderId+'&RSRV_STR2='+str2+'&RSRV_STR3='+value+'&ORDER_STATUS='+state, '', function(data){
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });	
+}
+function openStickList(value)
+{	
+	$.ajax.submit('', 'checkFileExsist', '&ORDER_ID='+value, 'DetailPopupPart', function(data){
+		result = data.get('RESULT_MESSAGE')
+		if(result=="0"){
+			alert("校园营销订单信息不存在！");
+			return;
+		}else if(result=="1"){
+			alert("学生照片内容附件尚未送达，请稍后再试！");
+			return;
+		}else{
+			$("#DetailPopup").css('display','');
+			modfiyName();
+		}	
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });	
+}
+function submitpopup()
+{
+	$.ajax.submit('DetailPopupPart', 'editSchoolSale',  '', '', function(data){
+		$("#DetailPopup").css('display','none');
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });	
+}
+function modfiyName()
+{
+	var imgTab = $.table.get("ImgTable").getTableData(null,true);
+	if(imgTab.length == 0)
+	{
+		return false;
+	}		
+	var fileDatas = new Wade.DatasetList();
+	for(var i=0;i<imgTab.length;i++){
+		var data = new Wade.DataMap();
+		data.put('FILE_ID', imgTab.get(i).get("FILE_ID"));//文件ID
+		data.put('REAL_NAME',imgTab.get(i).get("REAL_NAME"));
+		fileDatas.add(data);
+	}
+	$.ajax.submit('', 'modifyFileName', '&FILE_DS='+fileDatas+'&ACCEPT_DATE='+$("#ACCEPT_DATE").val(), '', function(data){
+		
+	},
+	function(error_code,error_info){
+		$.endPageLoading();
+		alert(error_info);
+    });	
+}
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">2014校园营销</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">服务号码：</span>
+					<span class="e_input"><span>		
+					<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="服务号码" disabled="false" /></span>
+					</span>
+			</li>
+			<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="e_input"><span>		
+					<input type="text" jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" value="ognl:cond.PSPT_ID" desc="证件号码" disabled="false" /></span>
+					</span>
+			</li>
+			<li class="li">
+				<span class="label">订单类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="ORDER_TYPE" id="ORDER_TYPE" 
+								 source="ognl:pageutil.getStaticList('SCHOOL_ORDER_TYPE')" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								 value="ognl:cond.ORDER_TYPE" desc="订单类型"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">订单状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="ORDER_STATUS" id="ORDER_STATUS" 
+								 source="ognl:pageutil.getStaticList('SCHOOL_ORDER_STATUS')" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								 value="ognl:cond.ORDER_STATUS" desc="订单状态"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">开始日期：</span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="START_DATE" id="START_DATE" value="ognl:cond.START_DATE" desc="登记日期(起始)"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束日期：</span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="END_DATE" id="END_DATE" value="ognl:cond.END_DATE" desc="登记日期(终止)"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return querySchoolSaleDetail();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="ResultDataPart@Part">
+	
+		<div class="c_title c_title-2">
+			<div class="text">展示列表</div>
+			<div class="fn">
+					<button id="btnAdd" class="e_button" onclick="openNav('新增校园营销活动','saleactive.SchoolSaleAdd','','')" >
+					<i class="e_ico-add"></i><span>新增</span></button>
+					<div jwcid="@Conditional" condition="ognl:Infos.size>0">
+					    <button id="btnDel" class="e_button" onclick="delSchoolSaleDetail();" disabled="disabled">
+					<i class="e_ico-del"></i><span>删除</span></button>
+					</div>
+			</div>
+		</div>
+			
+		<div class="c_scroll c_scroll-x">
+			<div class="c_table c_table-row-40">
+				<table>
+					<thead>
+						<tr>
+						<th></th>
+						<th>订单编号</th>
+						<th>订单接收时间</th>
+						<th>订单类型</th>
+						<th>客户姓名</th>
+						<th>身份证号码</th>
+						<th>生源省编码</th>
+						<th>生源市编码</th>
+						<th>目标省编码</th>
+						<th>目标市编码</th>
+						<th>学校名</th>
+						<th>老号码</th>						
+						<th>号码</th>
+						<th>号码状态</th>
+						<th>开通套餐</th>
+						<th>套餐生效时间</th>
+						<th>订单地址</th>
+						<th>收件人</th>
+						<th>联系电话</th>
+						<th>邮编</th>
+						<th>营业员姓名</th>
+						<th>营业员工号</th>
+						<th>营业员联系方式</th>
+						<th>数量</th>
+						<th>赠送编码1</th>
+						<th>赠送编码2</th>
+						<th>赠送编码3</th>
+						<th>购机合约套餐</th>
+						<th>购机合约状态</th>
+						<th>购机IMEI</th>
+						<th>订单状态</th>
+						<th>订单更新时间</th>
+						<th>工单流水号</th>
+						<th>激活时间</th>
+						<th>物流公司</th>
+						<th>快递单号</th>
+						<th>nano-SIM卡</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >	
+							<span jwcid="@Conditional" condition="ognl:getVisit().getStaffId().toUpperCase()!=info.INPUT_STAFF_ID.toUpperCase()">
+						  <td><input type="checkbox" id="checkid" name="checkid" disabled="disabled" jwcid="@Checkbox" value="ognl:info.ORDER_ID"/></td>
+						 </span>
+						 <span jwcid="@Conditional" condition="ognl:getVisit().getStaffId().toUpperCase()==info.INPUT_STAFF_ID.toUpperCase()">
+						  <td><input type="checkbox" id="checkid" name="checkid" jwcid="@Checkbox" value="ognl:info.ORDER_ID" onclick="return clickCheckbox(this);"/></td>
+						 </span>
+						<span jwcid="@Conditional" condition="ognl:(0==info.ORDER_TYPE||1==info.ORDER_TYPE||2==info.ORDER_TYPE)&&(9==info.ORDER_STATUS||0==info.ORDER_STATUS)"> 
+  						    <td><a jwcid="@Any" parameters="ognl:info" value="ognl:info.ORDER_ID" onclick="openStickList(this.getAttribute('value'));">
+  						    <span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false"/></a></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:3==info.ORDER_TYPE||4==info.ORDER_TYPE||5==info.ORDER_TYPE||((9!=info.ORDER_STATUS&&0!=info.ORDER_STATUS))"> 
+	 						<td><a jwcid="@Insert" value="ognl:info.ORDER_ID" raw="false"/></td>
+						</span>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_ORDER_TYPE',info.ORDER_TYPE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALE_CITY_CODE',info.SOURCE_PROVINCE_ID)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALE_AREA_CODE',info.SOURCE_CITY_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALE_CITY_CODE',info.DEST_PROVINCE_ID)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALE_AREA_CODE',info.DEST_CITY_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.COLLEGE_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OLD_SERIAL_NUMBER" raw="false"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_PHONE_STATUS',info.PHONE_STATUS)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_OPEN_DISCNT',info.OPEN_DISCNT)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACTION_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ORDER_ADDRESS" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SENDEE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CONTACT_PHONE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ZIP_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_PHONE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.COUNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_GIFT_CODE',info.GIFT_CODE1)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_GIFT_CODE',info.GIFT_CODE2)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_GIFT_CODE',info.GIFT_CODE3)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CONTRACT_DISCNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_CONTRACT_STATUS',info.CONTRACT_STATUS)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CONTRACT_IMEI" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SCHOOL_ORDER_STATUS',info.ORDER_STATUS)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="false"/></td>
+				    	<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="false"/></td>
+				    	<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+				    	<span jwcid="@Conditional" condition="ognl:2!=info.ORDER_STATUS"> 
+	 						<td> <input type="text" jwcid="@Any"  id="ognl:info.ORDER_ID+'_0'" name="ognl:info.ORDER_ID+'_0'" value="ognl:info.RSRV_STR2"  maxsize="50" desc="物流公司" class="e_input"/></td>
+				    	    <td><input type="text" jwcid="@Any"  id="ognl:info.ORDER_ID+'_1'" name="ognl:info.ORDER_ID+'_1'" order_status="ognl:info.ORDER_STATUS" order_id="ognl:info.ORDER_ID" value="ognl:info.RSRV_STR3" maxsize="50" desc="快递单号" onblur="addExpress($(this).attr('order_id'),$(this).attr('value'),$(this).attr('order_status'))" class="e_input"/></td>
+						</span>
+						<span jwcid="@Conditional" condition="ognl:2==info.ORDER_STATUS"> 
+	 						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="false"/></td>
+				    	    <td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="false"/></td>
+						</span>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('IS_NANO_SIM',info.RSRV_STR4)" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="pageinfo" id="pageinfo" listener="querySchoolSaleDetail" pageSize="10" cond="QueryPart" part="ResultDataPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+
+
+
+<!-- 弹窗开始 -->
+<div class="c_popup" id="DetailPopup" style="display:none">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox">
+			<div class="c_popupTitle">
+				<div class="text">审核信息</div>
+				<div class="fn"><a href="#nogo" class="close" onclick="$('#DetailPopup').css('display','none');"></a></div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				   	 <div jwcid="DetailPopupPart@Part">	
+				   	<span jwcid="@Conditional" condition="ognl:(0==info.ORDER_TYPE||1==info.ORDER_TYPE)&&9==info.ORDER_STATUS">
+			    				<div class="c_scroll" style="height:180px">
+									<table  jwcid="@Table" id="ImgTable" name="ImgTable">
+										<thead>
+											<tr>
+											<th col="BLOCK_NAME">附件展示</th>
+											<th col="URL" style="display:none"></th>
+											<th col="FILE_ID" style="display:none"></th>
+											<th col="REAL_NAME" style="display:none"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr"  index="ognl:rowIndex" >	
+											<td><a jwcid="@Any"  parameters="ognl:info" value="ognl:info.BLOCK_NAME"  aa="ognl:info.URL" onclick="window.open($(this).attr('aa'));"/> </td>
+												<td><img jwcid="@Any" src="ognl:info.URL"  /> </td>
+												<td><input type="text" jwcid="@Any" id="FILE_ID" name="FILE_ID" value="ognl:info.FILE_ID" desc="fileId" style="display:none"/> </td>
+												<td><input type="text" jwcid="@Any" id="REAL_NAME" name="REAL_NAME" value="ognl:info.BLOCK_NAME" desc="图片名称" style="display:none"/> </td>
+										</tr>
+										</tbody>
+									</table>
+							  </div>
+							</span>
+				 <span jwcid="@Conditional" condition="ognl:(0==info.ORDER_TYPE||1==info.ORDER_TYPE)&&9==info.ORDER_STATUS">
+						<div class="c_form c_form-col-2 c_form-label-7" >
+						<ul class="ul">
+								<li class="li">
+									<span class="label"><span class="e_required">处理意见：</span></span>
+										<span class="e_select"><span><span>
+									<select id='ORDER_STATUS' name="ORDER_STATUS" desc="处理意见" class="e_select" nullable="no">
+										 <option value="0">审核通过</option>
+				                     <option value="1">审核不通过</option>   
+									</select>
+									</span></span></span>		
+								</li>
+								<li class="li">
+								<span class="label">处理补充说明：</span>
+										<span class="e_textarea">
+											<span class="e_textareaTop"><span></span></span>
+											<span class="e_textareaContent"><textarea jwcid="@TextArea" name="REMARK" id="REMARK" value="ognl:cond.REMARK" desc="备注" style="height:60px;"></textarea></span>
+											<span class="e_textareaBottom"><span></span></span>
+										</span>
+								</li>
+								</ul>
+								</div>
+					</span>	
+					  <span jwcid="@Conditional" condition="ognl:2==info.ORDER_TYPE||0==info.ORDER_STATUS">
+					  <div class="c_form c_form-col-2 c_form-label-7" >
+						<ul class="ul">
+								<li class="li">
+									<span class="label"><span class="e_required">激活意见：</span></span>
+										<span class="e_select"><span><span>
+									<select id='ORDER_STATUS' name="ORDER_STATUS" desc="激活意见" class="e_select" nullable="no">
+										 <option value="2">激活成功</option>
+									</select>
+									</span></span></span>		
+								</li>
+								<li class="li">
+								<span class="label">激活补充说明：</span>
+										<span class="e_textarea">
+											<span class="e_textareaTop"><span></span></span>
+											<span class="e_textareaContent"><textarea jwcid="@TextArea" name="REMARK" id="REMARK" value="ognl:cond.REMARK" desc="激活补充说明" style="height:60px;"></textarea></span>
+											<span class="e_textareaBottom"><span></span></span>
+										</span>
+								</li>
+								</ul>
+								</div>
+					  </span>
+					
+					  <input type="text" jwcid="@Any" id="ORDER_ID" name="ORDER_ID" value="ognl:info.ORDER_ID" desc="订单号" style="display:none"/>
+					  <input type="text" jwcid="@Any" id="ACCEPT_DATE" name="ACCEPT_DATE" value="ognl:info.ACCEPT_DATE" desc="受理日期" style="display:none"/>
+	 						<div class="submitPlace"></div>
+						<div class="submit" align="center">
+							<button type="button" onclick="submitpopup();"  class="e_button-form"><i class="e_ico-ok"></i><span>确定</span></button>
+							&nbsp;&nbsp;
+							<button type="button" id="cancelButton" onclick="$('#DetailPopup').css('display','none');" class="e_button-form"><i class="e_ico-cancel"></i><span>取消</span></button>
+						</div>
+				    	</div>
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 弹窗结束 -->
+
+</div></div>
+
+
+</body>
+</html>

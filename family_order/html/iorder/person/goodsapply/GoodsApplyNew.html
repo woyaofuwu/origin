@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<title>积分礼品领取</title>
+<script jwcid="@Script" language="JavaScript" src="iorder/person/goodsapply/scripts/GoodsApplyNew.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll c_scroll-float">
+	<div class="l_padding">
+<div class="l_query">
+<div class="l_queryFn">
+	<div class="c_fn">
+		<div class="left">
+			<button type="button" id="getGiftBtn" ontap="getGift()" disabled="true"><i class="e_ico-ok"></i><span>领取</span></button>
+			<button type="button" id="msgResendBtn" onclick="resendSMS()" disabled="true"><i class="e_ico-send"></i><span>短信重发</span></button>
+		</div>
+		<div class="right" jwcid="AuthPart@Part">
+			<span class="label required">服务号码：</span>
+				<input type="text" name="SERIAL_NUMBER" jwcid="SERIAL_NUMBER@TextField" value="ognl:commInfo.SERIAL_NUMBER" onchange="return refreshPartAtferAuth();" nullable="no" maxsize="40" desc="服务号码"/>
+			<div class="e_space"></div>
+			<button class="e_button-blue" id="bquery" onclick="return refreshPartAtferAuth()" ><span class="e_ico-search"></span><span>查询</span></button>
+		</div>
+		<div jwcid="HiddenInfoPart@Part" style="display:none">
+			<input jwcid="@Hidden" name="HID_SERIAL_NUM" id="HID_SERIAL_NUM" value="" desc="HID_SERIAL_NUM"/>
+		</div>
+	</div>
+</div>
+<div jwcid="ResultPart@Part">
+<div class="l_queryResult">
+	<table jwcid="@Table"  id="sortedTable" name="sortedTable" rowClick="tableRowClick" 
+		class="c_table c_table-checkbox">
+    		<thead>
+  			<tr>
+  				<th >操作</th>
+  				<th >序号</th>
+				<th col="RULE_ID" >礼品ID</th>
+	      		<th col="RULE_NAME" >礼品名称</th>
+	      		<th col="SERIAL_NUMBER" >手机号</th>
+	      		<th col="SCORE" >积分</th>
+	      		<th col="REMAIN_NUM" >未领数量</th>
+	      		<th col="GET_NUM" >已领数量</th>
+	      		<th col="GET_QUANCODE" >已领券码</th>
+                   <th col="GOODS_STATE" >状态</th>
+	      		<th col="DATE_LIMIT" >到期时间</th>
+	      		<th col="DATE_STATE_DESC" >期限状态</th>
+	      		<th col="GET_DATE" >领取时间</th>
+	      		<th col="EXCHANGE_STAFF_ID" >受理工号</th>
+	      		<th col="EXCHANGE_STAFF_ID" >受理部门</th>
+	      		<th col="DATE_STATE" style="display:none">DATE_STATE</th>
+	      		<th col="TRADE_ID" style="display:none">TRADE_ID</th>
+	      		<th col="USER_ID" style="display:none">USER_ID</th>
+	      		<th col="ACCEPT_MONTH" style="display:none">ACCEPT_MONTH</th>
+	      		<th col="GET_DATE" style="display:none">GET_DATE</th>
+	      		<th col="STATE" style="display:none">STATE</th>
+	      		<th col="QUANCODE" style="display:none">QUANCODE</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				<td><input type="radio" name="RADIO_LIST" id="RADIO_LIST"  jwcid="@Radio" value="ognl:info.RULE_ID" quancode="ognl:info.QUANCODE" dateState="ognl:info.DATE_STATE" state="ognl:info.STATE"  tradeId="ognl:info.TRADE_ID" serialNum="ognl:info.SERIAL_NUMBER" userId="ognl:info.USER_ID" acceptMon="ognl:info.ACCEPT_MONTH" ruleID="ognl:info.RULE_ID" ruleName="ognl:info.RULE_NAME" remainNum="ognl:info.REMAIN_NUM" getNum="ognl:info.GET_NUM" getQuan="ognl:info.GET_QUANCODE"/></td>
+				<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+				<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.SCORE" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.REMAIN_NUM" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.GET_NUM" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.GET_QUANCODE" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.GOODS_STATE" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.DATE_LIMIT" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.DATE_STATE_DESC" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.GET_DATE" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.EXCHANGE_STAFF_ID" raw="false"/></td>
+				<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.EXCHANGE_DEPART_ID)" raw="false"/></td>
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.DATE_STATE" /></td> 
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.TRADE_ID" /></td> 
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID" /></td> 
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" /></td>  
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.GET_DATE" /></td> 
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.STATE" /></td>   
+				<td style="display:none"><span jwcid="@Insert" value="ognl:info.QUANCODE" /></td>        
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="l_queryPage">
+	<div class="c_page c_page-border">
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="HiddenInfoPart" part="ResultPart"  listener="queryUserScoreGoodsList"  pageSize="10"  count="ognl:recordCount"></div>
+	</div>
+</div>
+</div>
+<!--受理信息结束-->
+</div>
+</div></div>
+<!-- 验证码弹窗开始 -->
+<div jwcid="@Popup" id="myPopup" name="myPopup" class="c_popup c_popup-half c_popup-half-hasBg">
+	<div class="c_popupGroup">
+		<div id="myPopup_item" class="c_popupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">请输入验证码</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding">
+					<div class="c_list-s c_list-line c_list-border">
+						<ul>
+							<li class="link required">
+								<div class="label">验证码</div>
+								<div class="value"><input type="text" id="VERIFICATION_CODE" name="VERIFICATION_CODE"/></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full"><button ontap="checkVerificationCode()" class="e_button-l e_button-r e_button-blue" type="button">确定</button></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 验证码弹窗结束 -->
+</body>
+</html>

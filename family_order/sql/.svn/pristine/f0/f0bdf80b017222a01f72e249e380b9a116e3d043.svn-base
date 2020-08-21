@@ -1,0 +1,1 @@
+SELECT 'CustName' KEY,cust_id VALUE1,'-1' VALUE2,cust_name VRESULT FROM tf_f_customer WHERE 'CustName'=:KEY

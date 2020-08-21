@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body jwcid=@Body onload="batchDetialQuery"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	
+	<div class="c_title">
+		<div class="fn">
+			<span jwcid="@Export"
+			name="exportFile" 
+			serviceName="2320" 
+			config="export/bat/BatDealListAll.xml"
+			fileName="批量明细结果列表"
+			cond="TaskInfoPart11"
+			ftpSite="personserv"
+			beforeAction=""
+			action=""
+			fileType="{'.xls':'.xls'}"
+			></span>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div class="c_form" jwcid="TaskInfoPart11@Part" id="TaskInfoPart11" style="display:none">
+			<input jwcid="@TextField" type="text" id="BATCH_ID" name="BATCH_ID" value="ognl:condition.BATCH_ID" readOnly="true"/>
+			<input jwcid="@TextField" type="text" id="CANCEL_TAG" name="CANCEL_TAG" value="ognl:condition.CANCEL_TAG" readOnly="true"/>
+			<input jwcid="@TextField" type="text" id="DEAL_STATE" name="DEAL_STATE" value="ognl:condition.DEAL_STATE" readOnly="true"/>
+			<input jwcid="@TextField" type="text" id="BATCH_OPER_TYPE" name="BATCH_OPER_TYPE" value="ognl:condition.BATCH_OPER_TYPE" readOnly="true"/>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="TaskDataPartInfo@Part" element="div">
+
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+			<thead>
+				<tr>
+					<th col="OPERATE_ID">业务流水号</th>
+					<th col="BATCH_OPER_TYPE">处理类型</th>
+					<th col="REFER_TIME">提交时间</th>
+					<th col="SERIAL_NUMBER">用户号码</th>
+					<th col="CANCEL_DATE">返销时间</th>
+					<th col="CANCEL_STAFF_ID">返销员工</th>
+					<th col="DEAL_TIME">最后处理时间</th>
+					<th col="DEAL_STATE" style="display:none">处理状态</th>
+					<th col="DEAL_RESULT">处理结果</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:dealInfos" value="ognl:dealInfo" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:dealInfo.OPERATE_ID" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_BATCHTYPE','BATCH_OPER_TYPE','BATCH_OPER_NAME',dealInfo.BATCH_OPER_TYPE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:dealInfo.REFER_TIME" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:dealInfo.SERIAL_NUMBER" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:dealInfo.CANCEL_DATE" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:dealInfo.CANCEL_STAFF_ID" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:dealInfo.DEAL_TIME" raw="true" /></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAT_TASK_STATE_TAG', dealInfo.DEAL_STATE)" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:dealInfo.DEAL_RESULT" raw="true" /></td>
+					
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="TaskInfoPart11"  part="TaskDataPartInfo" listener="batchDetialQuery" pageSize="10" count="ognl:batchTaskListCount"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div>
+</body>
+<script language="javascript" type="text/javascript">
+	$(document).ready(function(){
+		$.beginPageLoading("努力加载明细中。。。");
+		$.ajax.submit('TaskInfoPart11', 'batchDetialQuery', null, 'TaskDataPartInfo', function(data){
+			$.endPageLoading();
+		},
+		function(error_code,error_info){
+			$.endPageLoading();
+			alert(error_info);
+	    });
+	});
+</script>
+</html>

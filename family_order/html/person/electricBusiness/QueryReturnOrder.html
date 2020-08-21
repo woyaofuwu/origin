@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head jwcid="@Head">
+		<title>退款订单查询及处理</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<script jwcid="@Script" src="person/electricBusiness/scripts/QueryReturnOrder.js" />
+	</head>
+
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+				<div class="c_box">
+					<div class="c_title">
+						<div class="text">
+							退款订单查询及处理
+						</div>
+					</div>
+					<div class="c_form c_form-col-2 c_form-label-7"
+						jwcid="QueryCondPart@Part" style="width: 98%">
+						<ul class="ul">
+							<li class="li">
+								<span class="label">服务号码：</span>
+								<span class="e_input"><span> <input
+											jwcid="@TextField" name="cond_SERIAL_NUMBER"
+											id="cond_SERIAL_NUMBER"
+											value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码"
+											datatype="mbphone" maxlength="11" /> </span>
+								</span>
+							</li>
+							<li class="li">
+								<span class="label">订单号：</span>
+								<span class="e_input"><span> <input
+											jwcid="@TextField" name="cond_TID" id="cond_TID"
+											value="ognl:condition.cond_TID" desc="订单号" datatype="numchar"
+											maxlength="40" /> </span>
+								</span>
+							</li>
+							<li></li>
+							<li class="li" id="LI_BEGIN_TIME" name="LI_BEGIN_TIME">
+								<span class="label"><span class="e_required">开始时间：</span>
+								</span>
+								<span class="e_input"><span> <input type="text"
+											jwcid="@DateField" name="cond_BEGIN_TIME"
+											id="cond_BEGIN_TIME" value="ognl:condition.cond_BEGIN_TIME"
+											nullable="no" desc="开始时间：" /> </span>
+								</span>
+							</li>
+							<li class="li" id="LI_END_TIME" name="LI_END_TIME">
+								<span class="label"><span class="e_required">结束时间：</span>
+								</span>
+								<span class="e_input"><span> <input type="text"
+											jwcid="@DateField" name="cond_END_TIME" id="cond_END_TIME"
+											value="ognl:condition.cond_END_TIME" nullable="no"
+											desc="结束时间：" /> </span>
+								</span>
+							</li>
+						</ul>
+						<div class="submitPlace"></div>
+						<div class="submit">
+							<button class="e_button-form" id="query" name="query"
+								onclick="return queryInfo()">
+								<i class="e_ico-search"></i><span>查询</span>
+							</button>
+						</div>
+					</div>
+					<!-- 表格区开始-->
+					<div jwcid="results@Part" element="div">
+						<div class="c_title c_title-2">
+							<div class="text">
+								查询结果
+							</div>
+						</div>
+						<div class="c_table c_table-row-10 c_scroll c_scroll-x">
+							<table jwcid="@Table" name="resultsTable" id="resultsTable">
+								<thead>
+									<tr>
+										<th datatype="string">
+											退款单编码
+										</th>
+										<th datatype="string">
+											合作渠道编码
+										</th>
+										<th datatype="string">
+											退款类型
+										</th>
+										<th datatype="string">
+											订单编码
+										</th>
+										<th datatype="string">
+											订单总金额
+										</th>
+										<th datatype="string">
+											买家名称
+										</th>
+										<th datatype="string">
+											发起退款时间
+										</th>
+										<th datatype="string">
+											电商退款状态
+										</th>
+										<th datatype="string">
+											买家是否退货
+										</th>
+										<th datatype="string">
+											退款金额
+										</th>
+										<th datatype="string">
+											支付总金额
+										</th>
+										<th datatype="string">
+											产品名称
+										</th>
+										<th datatype="string">
+											产品价格
+										</th>
+										<th datatype="string">
+											退货数量
+										</th>
+										<th datatype="string">
+											退货时间
+										</th>
+										<th datatype="string">
+											退款原因
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+										element="tr" index="ognl:rowIndex"
+										class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										<td>
+											<span jwcid="@Any"> <span jwcid="@Redirect"
+												value="ognl:info.REFUND_ID"
+												param="ognl:'&REFUND_ID='+info.REFUND_ID+'&CHANNEL_ID='+info.CHANNEL_ID+'&REFUND_TYPE='+info.REFUND_TYPE"
+												raw="true" onclick="showSubPage($(this).attr('param'))" /> </span>
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.CHANNEL_ID"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.REFUND_TYPE"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TID" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRADE_MONEY"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.BUYER_NICK"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.REFUND_TIME"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.REFUND_STATUS"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.HAS_GOOD_RETURN"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.REFUND_MONEY"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.PAY_MONEY" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.PRODUCT_TITLE"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.PRODUCT_PRICE"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.NUM" raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.RETURN_BACK_TIIME"
+												raw="false" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.REFUND_REASON"
+												raw="false" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 翻页 开始 -->
+					<div jwcid="@NavBar" name="qryInfoNav" id="qryInfoNav" cond="QueryCondPart" part="results" listener="queryReturnOrderInfo" pageSize="10" count="ognl:count"></div>
+					<!-- 翻页 结束 -->
+					<!-- 表格区结束 -->
+				</div>
+	</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO tf_a_payother_log(charge_id,carrier_code,carrier_id,operate_time,cancel_tag,partition_id,eparchy_code,usecust_name,bank_name,bank_acct,buddy_address,contact,link_phone,purpose_declare,dealinfo)
+ VALUES(TO_NUMBER(:CHARGE_ID),:CARRIER_CODE,:CARRIER_ID,TO_DATE(:OPERATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:CANCEL_TAG,:PARTITION_ID,:EPARCHY_CODE,:USECUST_NAME,:BANK_NAME,:BANK_ACCT,:BUDDY_ADDRESS,:CONTACT,:LINK_PHONE,:PURPOSE_DECLARE,:DEALINFO)

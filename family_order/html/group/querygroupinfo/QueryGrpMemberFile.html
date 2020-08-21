@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: QuerySaleActiveFile.html,v 1.1 2014/7/29 07:07:40 SUNGQ3 Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/querygroupinfo/QueryGrpMemberFile.js"></script>
+<title>集团产品成员附件查询</title>
+</head>
+
+<body jwcid="@Body">
+
+<div class="m_wrapper">
+	<div class="m_wrapper2">
+			<!-- 开始查询区域 -->
+		    <div class="c_box">
+			    <div class="c_title">
+				     <div class="text">集团产品成员附件查询</div>
+			    </div>
+			    <div jwcid="ConditionPart@Part">
+			        <div class="c_form c_form-col-3 c_form-label-6">
+					    <ul class="ul">
+					    	<li class="li">
+								<span class="label"><span>集团客户编码：</span></span>
+								<span class="e_input e_input-left"><span>
+				 					 <input type="text" id="GROUP_ID" name="GROUP_ID" jwcid="@TextField"  
+										value="ognl:condition.GROUP_ID" datatype="text" nullable="yes" desc="集团客户编码"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>集团产品编码：</span></span>
+								<span class="e_input e_input-left"><span>
+									<input type="text" id="SERIAL_NUMBER_A" name="SERIAL_NUMBER_A" jwcid="@TextField"  
+										value="ognl:condition.SERIAL_NUMBER_A" datatype="text" nullable="yes" desc="集团产品编码"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>开始时间：</span></span>
+								<span class="e_elements" id="PSPT_INPUT">
+									<span class="e_input e_input-left"><span>
+									    <input jwcid="@DateField" name="START_DATE" id="START_DATE" maxName="END_DATE" format="yyyy-MM-dd" time="true" 
+									    nullable="yes" readOnly="true" value="ognl:condition.START_DATE"  desc="开始时间"/>
+									</span></span>
+								</span>
+							</li>
+							<li class="li">
+								<span class="label"><span>结束时间：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@DateField" name="END_DATE" id="END_DATE" minName="START_DATE" format="yyyy-MM-dd" time="true"
+									 nullable="yes" readOnly="true" value="ognl:condition.END_DATE" desc="结束时间"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>集团成员号码：</span></span>
+								<span class="e_input e_input-left"><span>
+									<input type="text" id="SERIAL_NUMBER_B" name="SERIAL_NUMBER_B" jwcid="@TextField"  
+										value="ognl:condition.SERIAL_NUMBER_B" datatype="text" nullable="yes" desc="集团成员号码"/>
+								</span></span>
+							</li>
+					    </ul>
+					    <div class="submitPlace"></div>
+						<div class="submit">
+							<button id="queryBtn" name="queryBtn" class="e_button-form" onclick="return queryGrpMemberFile();"><i class="e_ico-search"></i><span>查询</span></button>
+						</div>
+			         </div>
+			    </div>
+		  </div>
+		  <!-- 结束查询区域 -->
+		  
+		  <!-- 列表显示区域开始 -->
+		  <div class="c_box">
+		    <div class="c_title">
+			   <div class="text">查询结果</div>
+			   <div class="fn"> 
+                  </div>
+		    </div>
+		    
+		    <!-- 表格 开始 -->
+			<div jwcid="QueryListPart@Part" element="div">
+				<div class="c_scroll c_scroll-x c_scroll-table-10">
+				<div class="c_table">
+					<table jwcid="@Table" name="UnfinishTrade">
+						<thead>
+							<tr>
+								<th col="TRADE_ID_SUB"><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox2" name="viceCheckBox2"
+									onclick="checkedAll('viceCheckBox',checked)" />选择</th>	
+									
+								<th col="FILE_ID">文件下载</th>
+								<th col="FILE_ID">文件ID</th>
+								<th col="GROUP_ID">集团客户编码</th>
+								<th col="CUST_NAME">集团客户名称</th>
+								<th col="SERIAL_NUMBER_A">集团产品编码</th>
+								<th col="SERIAL_NUMBER_B">成员号码</th>
+								<th col="TRADE_TYPE">交易名称</th>
+								<th col="CREATE_STAFF">创建工号</th>
+								<th col="CREATE_TIME">创建时间</th>
+								<th col="FILE_NAME">文件名</th>
+								<th col="TRADE_ID">流水号</th>
+							</tr>
+						</thead>
+						<tbody  jwcid="@Any" name="UnfinishTrade_Body" id="UnfinishTrade_Body">
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+									value="ognl:info.FILE_ID" /></td>
+								
+								<td><a jwcid="@Any" href="ognl:encodeUrl('attach?action=download&fileId='+ info.FILE_ID +'&realName=' + pageutil.getFtpFile(info.FILE_ID).get('FILE_NAME'))">下载</a></td>
+								
+								<td><span jwcid="@Insert" value="ognl:info.FILE_ID" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_A" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE" raw="false"/></td>										
+								<td><span jwcid="@Insert" value="ognl:info.CREATE_STAFF" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.CREATE_TIME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.FILE_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="false"/></td>
+													
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 分页 开始 -->
+				<div jwcid="@NavBar" name="LogNav" id="LogNav" cond="ConditionPart" part="QueryListPart" listener="queryGrpMemberFiles" pageSize="15" count="ognl:logCount"></div>
+				<!-- 分页 结束 -->
+			</div>
+			
+			<div class="c_submit">
+				<button class="e_button-page-ok" id="deleteBtn" name="deleteBtn"  
+					onclick="deleteFile();"><i class="e_ico-ok"></i><span>删除文件</span></button>					
+			</div>
+				
+		</div>
+		<!-- 列表显示区域结束 -->	 
+			   
+	</div>
+</div>
+</body>
+
+</html>

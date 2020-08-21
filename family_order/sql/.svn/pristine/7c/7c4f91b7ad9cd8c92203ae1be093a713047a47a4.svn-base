@@ -1,0 +1,27 @@
+--IS_CACHE=N
+SELECT COUNT(1) 统计数
+  FROM TF_F_USER_SVC B
+ WHERE B.USER_ID =
+       (SELECT A.USER_ID
+          FROM TF_F_USER A
+         WHERE A.SERIAL_NUMBER = 'KD' || '_' || TO_NUMBER(:MOBILE_NUM)
+           AND A.REMOVE_TAG = 0)
+   AND EXISTS (SELECT 1
+          FROM TF_F_USER_SALE_ACTIVE   T,
+               TD_S_COMMPARA           C,
+               PM_EXT_CHA@DBLK_IUPCDB1 E
+         WHERE T.PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+           AND T.USER_ID = TO_NUMBER(:USER_ID)
+           AND T.PRODUCT_ID IN (69908001, 69908015, 69908012)
+           AND T.END_DATE > SYSDATE
+           AND T.PROCESS_TAG = '0'
+           AND T.PACKAGE_ID = C.PARA_CODE1
+           AND C.PARAM_ATTR = 66
+           AND C.PARAM_NAME = '宽带1+营销活动'
+           AND 150000000000 + T.PACKAGE_ID = E.EXT_CHA_ID
+           AND E.STATUS = '1'
+           AND E.FROM_TABLE_NAME = 'TD_B_PACKAGE_EXT'
+           AND E.FIELD_NAME = 'RSRV_STR24'
+           AND E.FIELD_VALUE LIKE '%' || B.SERVICE_ID || '%')
+   AND B.END_DATE > SYSDATE
+   AND ROWNUM < 2

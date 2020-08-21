@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>非BOSS收款补录</title>
+<script jwcid="@Script" src="person/nonbossfee/scripts/nonbossfee.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">费用补录</div>
+	</div>
+	<!-- 标题 结束 -->
+	<form jwcid="@Form" id="Form0">
+	<div jwcid="AddFeeListPart@Part" class="c_form c_form-col-5 c_form-label-6" element="div">
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label"><span class="e_required">项目名称：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="FEE_NAME" id="FEE_NAME"
+							source="ognl:feetype" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.FEE_NAME" 
+							desc="项目名称" nullable="no" onchange="selectFeeName()"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">成本中心：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="COST_CENTER" id="COST_CENTER"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('COST_CENTER')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:getVisit().getStaffId().substring(0,4)" 
+							desc="成本中心" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li col-2">
+					<span class="label"><span class="e_required">发票项目：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="INVOICE_TYPE" id="INVOICE_TYPE" source="ognl:invoicetype"
+	                                    addDefault="true" value="ognl:fee.INVOICE_TYPE" disabled="false" desc="发票项目" nullable="no" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" />
+					
+					</span></span></span>
+			</li> 
+			<li class="li" id="taxList" style="display:''">
+					<span class="label"><span class="e_required">应税类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="TAX_TYPE" id="TAX_TYPE" source="ognl:taxtype"
+	                                    addDefault="true" value="ognl:fee.TAX_TYPE" disabled="false" desc="应税类型" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+					
+					</span></span></span> 
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="e_required">税率(%)：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="TAX_RATE" id="TAX_RATE" value="ognl:fee.TAX_RATE" desc="税率" datatype="numeric" nullable="no"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+					<span class="label"><span class="e_required">金额<input type="checkbox" jwcid="@Any" name="FEE_CHECKBOX" id="FEE_CHECKBOX" class="e_checkbox"  onclick="selectCheckbox('FEE')"/></span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="FEE" id="FEE" value="ognl:fee.FEE" desc="金额"  disabled="true"  datatype="numeric" nullable="no" onchange="countPrice('FEE')"/>
+					</span></span>
+			</li>
+			
+			<li class="li">
+					<span class="label"><span class="e_required">不含税价款<input jwcid="@Checkbox" name="TAX_CHECKBOX" id="TAX_CHECKBOX" value="" disabled="false"  checked="false" onclick="selectCheckbox('NOTAX')"/></span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="FEE_NOTAX" id="FEE_NOTAX" value="ognl:fee.FEE_NOTAX" desc="不含税价款" disabled="true" datatype="numeric" nullable="no" onchange="countPrice('FEE_NOTAX')"/>
+					</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="e_required">税款：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="TAX_PRICE" id="TAX_PRICE" value="ognl:fee.TAX_PRICE" desc="税款" disabled="true" datatype="numeric" nullable="no"/>
+				</span></span>
+			</li>
+			
+			<li class="li col-2">
+				
+				<span class="label"><span class="e_required">单位全称：</span></span>
+					<span class="e_select"><span><span>
+						 <select jwcid="@Select" name="PAY_NAME_REMARK" id="PAY_NAME_REMARK" source="ognl:compname"
+	                                    addDefault="true" value="" disabled="false" desc="付款单位全称" nullable="no" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" onchange="autoselpayname()"/>
+				</span></span></span>
+			</li>	
+			<li class="li">
+				<span class="label"><span class="e_required">用户类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PAY_NAME" id="PAY_NAME"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAY_USER_NAME')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.PAY_NAME" 
+							desc="用户类型" nullable="no" disabled="true"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">付款方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="FEE_PAY_MODE" id="FEE_PAY_MODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('HAND_GATHER_PAY_MODE')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.FEE_PAY_MODE" 
+							desc="付款方式" nullable="no" />
+				</span></span></span>
+			</li>
+			 
+			<li class="li">
+					<span class="label">仅打印发票:</span>
+					<span class="e_Checkbox"> 
+						 <input jwcid="@Checkbox" name="ONLY_PRINT" id="ONLY_PRINT" value=""  checked="false"  />
+					</span> 
+			</li>
+			
+			<li class="li col-2">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="FEE_REMARK" id="FEE_REMARK"  value="ognl:fee.FEE_REMARK"  maxLength="125"  desc="备注"/>
+				</span></span>			
+			</li>
+			<li class="li col-2">
+				<span class="label">补充说明：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="ADD_REMARK" id="ADD_REMARK"  value="ognl:fee.ADD_REMARK"  maxLength="125" desc="补充说明"  />
+				</span></span>			
+			</li>
+			<li class="li">
+				<button type="button" class="e_button-right"  id="addFeeBtn"><i class="e_ico-add"></i><span>暂存</span></button>
+				<button type="reset" class="e_button-left"  id="resetBtn"><i class="e_ico-reset"></i><span>重置</span></button>			
+			</li>
+		</ul>
+	</div>
+	<div class="c_title l_mt">
+		<div class="text">费用列表</div>
+		<div class="fn">
+			<a href="#nogo" class="e_button" id="clearListBtn"><i class="e_ico-delete"></i><span>清空列表</span></a>
+		</div>
+	</div>
+	<div class="c_scroll c_scroll-x c_scroll-table-11 ">
+	<div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>项目名称</th>
+					<th>成本中心</th>
+					<th>发票项目 </th>
+					<th>应税类型</th>
+					<th>税率(%) </th>
+					<th>金额</th>
+					<th>不含税价款</th>
+					<th>税款</th>
+					<th>单位全称</th>
+					<th>用户类型</th>
+					<th>付款方式</th>
+					<th>仅打印发票</th>
+					<th>备注</th>
+					<th>补充说明</th>
+				</tr>
+			</thead>
+			<tbody id="FeeListPart"></tbody>
+		</table>
+	</div>
+	</div>
+	 
+	</form>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeCheck()" disabledBtn="false" area="PayMoneyPart" element="div"/>
+</div>	
+
+</div></div>
+</body>
+</html>

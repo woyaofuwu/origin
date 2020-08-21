@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>一卡多号副号取消</title>
+<script jwcid="@Script"  src="scripts/csserv/component/person/eform/CommonEForm.js" ></script>
+<script jwcid="@Script" src="person/onePsptMultiUser/scripts/OnePsptMultiUser.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div jwcid="InfoPart@Part">
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<div class="c_title">
+				<div class="text">一证多名解除绑定</div>
+			</div>
+			<ul class="ul">
+				<li class="li"><span class="label"><span
+						class="e_required">服务号码：</span></span> <span class="e_input"><span>
+							<input jwcid="@TextField" name="SERIAL_NUMBER"
+							id="SERIAL_NUMBER" value="ognl:SERIAL_NUMBER" />
+					</span></span></li>
+				<li class="li"><span class="label"><span
+						class="e_required">工单编号：</span></span> <span class="e_input"><span>
+							<input jwcid="@TextField" name="STAFF_ID" id="STAFF_ID"
+							value="ognl:STAFF_ID" desc="工单编号" />
+					</span></span></li>
+				<li class="li"></li> 
+				<li class="li"><span class="label"><span
+						class="e_required">证件类型：</span></span> <span class="e_select"><span><span>
+								<select id="PSPT_TYPE_CODE" jwcid="@Select"
+								name="PSPT_TYPE_CODE"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_S_PASSPORTTYPE2')"
+								textField="DATA_NAME" valueField="DATA_ID"
+								value="ognl:custInfo.PSPT_TYPE_CODE" desc="证件类型"
+								addDefault="false" />
+						</span></span></span></li>
+				<li class="li">
+					<span class="label"><span class="e_required">证件号码：</span></span>
+					<span class="e_elements">
+				       <!-- <button type="button" class="e_button-right" name="ShotImgButton" onclick="identification('custInfo_PIC_ID','custInfo_PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button> -->
+					   <button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>
+					   <input  jwcid="@Any"  type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+					<span class="e_input">
+						<span>
+							<input type="text" jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" value="" datatype="pspt" maxsize="20" maxLength="20"
+                        	 desc="证件号码" nullable="no"  />
+                         </span>
+                    </span>
+                    </span>
+				</li>	
+			</ul>
+				<input jwcid="@Hidden" name="USER_LIST" id="USER_LIST" value="ognl:userList"/>
+				<input jwcid="@Hidden" name="IS_UNIT_PSPT_TYPE" id="IS_UNIT_PSPT_TYPE" value="ognl:isUnitPsptType"/>
+		</div>
+	</div>
+	<!-- 区域 开始 -->
+ 	<div class="c_box"> 
+ 	
+<!--  		<div jwcid="SubmitPart@saleserv:CSSubmit" area="InfoPart" listener="onSubmitBaseTrade" beforeAction="submitCheck(this)" isGrp="false" disabledBtn="false" element="div"/> -->
+ 	
+ 		<div jwcid="SubmitPart@csserv:CSSubmit" 
+ 			disabledBtn="false" beforeAction="submitCheck(this)" 
+ 			cancelRule="false" isReset="true" listener="onTradeSubmit"
+ 			refreshPart="InfoPart" area="InfoPart" element="div" />
+		<!-- 提交 结束 -->
+ 	</div> 
+<!-- 		<button onclick="submitCheck(this)">提交</button> -->
+	<!-- 区域 结束 -->
+</body>
+</html>

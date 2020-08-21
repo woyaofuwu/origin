@@ -1,0 +1,3 @@
+update TF_F_TERMINALORDER 
+ set TRADE_ID = :TRADE_ID
+ where ID = :NETID

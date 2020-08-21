@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="iorder/igroup/grpaccttransfer/script/grpaccttransfer.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/igroup/common/grpbusipage.js"></script>
+<title>集团付费关系变更(新)</title>
+</head>
+
+<body jwcid="@Body">
+
+<!-- 主流程开始 -->					       
+
+    <div class="c_header e_show-phone">
+    	<div class="back" ontap="closeNav();">集团付费关系变更</div>
+    </div>
+						
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding l_padding-u">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">选择集团已订购产品</div>
+				<div class="fn">
+					<ul>
+						<li id="UI_show" ontap="toggleshow()" ><span class="e_ico-unfold"></span>显示账户信息</li>
+						<li id="UI_hide" ontap="togglehide()" style="display:none;"><span class="e_ico-fold"></span>隐藏账户信息</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+
+       	<!-- 列表 开始 -->
+		<div class="c_list c_list-line c_list-border c_list-col-3" jwcid="productInfoPart@Part">
+			<ul>
+			    <li jwcid="@Foreach" source="ognl:productInfos" value="ognl:productInfo" element="li" id="ognl:'cata_'+productInfo.USER_ID" PRODUCT_ID="ognl:productInfo.PRODUCT_ID" USER_ID="ognl:productInfo.USER_ID" ontap="chooseOfferAfterAction(this)">
+			       <div class="main">
+			            <div class="title">
+			               <span jwcid="@Insert" name="PRODUCT_NAME" value="ognl:productInfo.PRODUCT_NAME" />
+			            </div>
+			            <div class="content">
+			                                            集团产品编码:<span jwcid="@Insert" name="USER_ID" value="ognl:productInfo.USER_ID" />
+			            </div>
+			       </div>
+			    </li>
+			</ul>
+		</div>
+		<!-- 列表 结束 -->			
+			
+		<!-- 账户信息开始 -->			
+		<div jwcid="acctPart@Part" element="div" style="display:none">
+			<div class="c_title">
+				<div class="text">账户信息</div>
+			</div>
+			
+			<div id="accountInfo" class="c_param c_param-border c_param-col-3"  >
+				<ul>
+									<li>
+										<span class="label">账户名称：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:info.PAY_NAME" raw="true"/></span>
+									</li>
+									<li>
+										<span class="label">账户标识：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="true"/></span>
+									</li>
+									<li>
+										<span class="label">账户说明：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></span>
+									</li>
+								    <li>
+										<span class="label">账户类别：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:info.PAY_MODE_NAME" raw="true"/></span>
+									</li>
+									<li>
+										<span class="label">银行名称：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:info.BANK" raw="true"/></span>
+									</li>
+									<li>
+										<span class="label">银行账号：</span>
+										<span class="value"><span jwcid="@Insert" value="ognl:info.BANK_ACCT_NO" raw="true"/></span>
+									</li>
+				</ul>
+				<input jwcid="@Hidden" id="GRP_USER_EPARCHYCODE" name="GRP_USER_EPARCHYCODE" value="ognl:info.EPARCHY_CODE" encode="false" />
+			</div>	
+		</div>
+		<!-- 账户信息结束 -->
+						
+		
+					
+		<!-- 付费变更信息开始 -->			 
+        <div jwcid="paymodePart@Part" element="div" style="display:none"> 
+        <div class="c_title">
+				<div class="text">付费计划信息</div>
+			</div>
+			<!-- 列表 开始 -->
+			<div class="c_list c_list-line c_list-border c_list-col-3">
+			  <ul>
+			    <li jwcid="@Foreach" source="ognl:payPlans" value="ognl:payPlan" element="li" id="ognl:'cata_'+payPlan.PLAN_ITEM_NUM">
+			        <div jwcid="@Conditional" condition="ognl:payPlan.PLAN_ITEM_NUM==0">
+			                 <div class="main">
+			                    <div class="title">
+			                         <span jwcid="@Insert" value="ognl:payPlan.PLAN_NAME" />
+			                    </div>
+			                 <div class="content">
+			                                                       账目列表:<span jwcid="@Insert" name="COUNT" value="ognl:payPlan.PLAN_ITEM_NUM"/>
+			                 </div>
+			                 </div>
+			                 <div class="fn"><input id="USERPAYPLAN_PLANCODE_CHECK" name="USERPAYPLAN_PLANCODE_CHECK" type="checkbox" value="ognl:payPlan.PLAN_TYPE"  jwcid="@Checkbox" checked="ognl:payPlan.CHECKED=='true'?true:false"/>
+			                 </div>
+			        </div>
+			        <div jwcid="@Conditional" condition="ognl:payPlan.PLAN_ITEM_NUM!=0">
+			             <div class="group link" ontap="showPopup('qryPopup','qryPopupItem')">
+			             <div class="content">
+								<div class="pic"><span class="e_ico-file e_ico-pic"></span></div>
+			                 <div class="main">
+			                    <div class="title">
+			                         <span jwcid="@Insert" value="ognl:payPlan.PLAN_NAME" />
+			                    </div>
+			                 <div class="content">
+			                                                       账目列表:<span jwcid="@Insert" name="COUNT" value="ognl:payPlan.PLAN_ITEM_NUM"/>
+			                 </div>
+			                 </div>
+			                 <div class="more"></div>
+			                 <div class="fn"><input id="USERPAYPLAN_PLANCODE_CHECK" name="USERPAYPLAN_PLANCODE_CHECK" type="checkbox" value="ognl:payPlan.PLAN_TYPE"  jwcid="@Checkbox" checked="ognl:payPlan.CHECKED=='true'?true:false"/>
+			                 </div>
+			                 </div>
+			                 </div>
+			        </div>
+	       
+			       </li>
+			  </ul>
+			</div>
+			<!-- 列表 结束 -->
+            <div class="c_space"></div>	
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border">
+				<ul>
+					<li>
+						<div class="label">备注</div>
+						<div class="value"><textarea class="e_textarea" id="param_REMARK" name="param_REMARK"></textarea></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+
+	<input jwcid="@Hidden" id="USER_ID" name="USER_ID" value="ognl:condition.USER_ID" encode="false" />
+	<input jwcid="@Hidden" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:condition.PRODUCT_ID" encode="false" />
+	<textarea jwcid="@TextArea" id="OLD_PAYPLANEDIT_PLANINFOS" name="OLD_PAYPLANEDIT_PLANINFOS" value="ognl:payPlanList" style="display: none"/>
+    <input jwcid="@Hidden" name="PAYPLAN_INFOS" id="PAYPLAN_INFOS" value="[]"/>
+        </div>                         
+		<!-- 付费变更信息结束 -->
+		
+		<div class="c_space"></div>	
+			
+		<div id="OpenSubmit" class="c_submit c_submit-center">
+			<button class="e_button-l e_button-r e_button-navy" type="button" ontap="window.reloadNav();">重置</button>
+			<button class="e_button-l e_button-r e_button-green" type="button" ontap ="submit();">提交</button>
+		</div>
+		
+		<div style="display:none"><div jwcid="SubmitPart@icsserv:CSSubmit" element="div" isGrp="true"></div></div>
+		<div class="c_space"></div>	
+	</div>
+	
+</div>
+<!-- 主流程结束 -->
+
+<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+		<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryPopupItem">
+						<div class="c_header">
+							<div class="back" ontap="hidePopup(this)">集团付费账目列表</div>
+						</div>
+						<div class="c_scroll c_scroll-float c_scroll-header" jwcid="infoListPart@Part">
+							<!-- 列表 开始 -->
+							<div class="c_list c_list-line">
+								<ul>
+									 <li jwcid="@Foreach" source="ognl:grpItems" value="ognl:grpItem" element="li" id="ognl:'cata_'+grpItem.PLAN_ITEM_NUM" >
+			                             <div class="main">
+			                                  <div class="title">
+			                                       <span jwcid="@Insert" value="ognl:grpItem.ITEM_DESC" />
+			                                  </div>
+                                         </div>       
+                                     </li>
+								</ul>
+							</div>
+							<!-- 列表 结束 -->
+							<div class="c_line"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+	<!-- 弹窗 结束 -->
+
+</body>
+
+<script type="text/javascript">
+window.onload=function(){
+	if (ifGetEc()) {
+		getGrpCustInfo();
+	}	
+}
+</script>
+
+
+</html>

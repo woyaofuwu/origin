@@ -1,0 +1,58 @@
+<div element="div" class="c_popupItem" id="GroupOfferListPopupItem">
+	<div id="GroupOfferHead" class="c_header">
+		<div class="back" ontap="backPopup(this);">商品组</div>
+	</div>
+	<div jwcid="@Scroller" name="groupOffersDiv" class="c_scroll c_scroll-float c_scroll-submit c_scroll-header">
+		<div jwcid="GroupOffersPart@Part" class="c_scrollContent">
+			<div jwcid="@Foreach" source="ognl:groupList" value="ognl:group" element="div">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text"><span jwcid="@Insert" name="GROUP_NAME" value="ognl:group.GROUP_NAME" /></div>
+					<div class="fn">
+						<ul>
+							<li jwcid="@Any" id="ognl:'fold_'+group.GROUP_ID" ontap="showOffers(this.id);" style="display:none"><span class="e_ico-unfold"></span></li>
+							<li jwcid="@Any" id="ognl:'unfold_'+group.GROUP_ID" ontap="hideOffers(this.id);" style="display:"><span class="e_ico-fold"></span></li>
+						</ul>
+					</div>
+					<input jwcid="@Hidden" id="ognl:'MUST_SEL_OFFER_'+group.GROUP_ID" name="ognl:'MUST_SEL_OFFER_'+group.GROUP_ID" value="ognl:group.MUST_SELECT_OFFERS" desc="记录组内必选商品"/>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 列表 开始 -->
+				<div jwcid="@Any" class="c_list c_list-line" id="ognl:group.GROUP_ID" MIN_NUM="ognl:group.MIN_NUM" MAX_NUM="ognl:group.MAX_NUM" SELECT_FLAG="ognl:group.SELECT_FLAG"
+				 	LIMIT_TYPE="ognl:group.LIMIT_TYPE" OFFER_ID="ognl:group.OFFER_ID" OFFER_CODE="ognl:group.OFFER_CODE">
+					<ul>
+						<li class="link" jwcid="@Foreach" source="ognl:group.GROUP_COM_REL_LIST" value="ognl:offer" element="li">
+							<div class="main">
+								<div class="title">
+									<span jwcid="@Insert" name="OFFER_ID_OFFER_NAME" value="ognl:'【'+offer.OFFER_CODE+'】'+offer.OFFER_NAME" />
+								</div>
+								<div class="content content-auto">
+									<span jwcid="@Insert" name="OFFER_NAME" value="ognl:offer.DESCRIPTION" />
+								</div>
+							</div>
+							<div class="fn">
+								<input jwcid="@Checkbox" name="selGroupOffer" SELECT_FLAG="ognl:offer.SELECT_FLAG" 
+								 OFFER_ID="ognl:offer.OFFER_ID" OFFER_TYPE="ognl:offer.OFFER_TYPE" OFFER_NAME="ognl:offer.OFFER_NAME" 
+								 START_DATE="ognl:offer.START_DATE"  END_DATE="ognl:offer.END_DATE" OFFER_CODE="ognl:offer.OFFER_CODE" 
+								 HAS_PRICE_CHA="ognl:offer.HAS_PRICE_CHA" id="ognl:'grpOffer_'+group.GROUP_ID+'_'+offer.OFFER_ID"/>
+							</div>
+							<div class="c_line"></div>
+						</li>
+					</ul>
+				</div>
+				<!-- 列表 结束 -->
+			</div>
+		</div>
+	</div>
+	<div class="l_bottom">
+
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-full">
+			<button type="button" class="e_button-l e_button-navy" ontap="backPopup(this);">取消</button>
+			<button type="button" class="e_button-l e_button-blue" ontap="submitGroupOffers(this);">确定</button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	<input type="hidden" id="SET_GROUPOFFER_OFFER_ID" name="SET_GROUPOFFER_OFFER_ID" value="" desc="正在设置商品组的商品标识" />
+	<input type="hidden" id="SET_GROUPOFFER_ECMEB_TYPE" name="SET_GROUPOFFER_ECMEB_TYPE" value="" desc="正在设置商品组的商品类型EC/MEB" />
+</div>

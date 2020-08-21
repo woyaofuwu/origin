@@ -1,0 +1,1 @@
+SELECT to_char(OPEN_DATE,'yyyy-mm-dd') OPEN_DATE from tf_f_user where serial_number = :SERIAL_NUMBER AND remove_tag ='0'

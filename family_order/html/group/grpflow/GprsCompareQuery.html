@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团电子流量包比对查询</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpflow/GprsCompareQuery.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">集团电子流量包比对查询</div>
+	</div>
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">集团编码：</span> 
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_GROUP_ID" id="cond_GROUP_ID" value="ognl:condition.cond_GROUP_ID" desc="集团编码" nullable="yes" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span>
+					<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:condition.cond_START_DATE" desc="开始时间"  datatype="date" format="yyyy-MM-dd"/>
+				</span></span>
+			</li>
+			<li class="li">
+	            <span class="label">结束时间：</span>
+				<span class="e_input"><span>
+					<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" value="ognl:condition.cond_END_DATE" desc="结束时间"  datatype="date" format="yyyy-MM-dd" />
+				</span></span>		
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return qryGrpsCompareLogs();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	<!-- 费用信息开始 -->
+	<div class="c_title">
+		<div class="text">查询结果</div>
+	</div>
+	<div jwcid="QueryResultPart@Part">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>集团编码</th>
+						<th>集团名称</th>
+						<th>流量包面值(元)</th>
+						<th>流量包大小(M)</th>
+						<th>BOSS余额</th>
+						<th>平台余额</th>
+						<th>比对时间</th>
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PACK_PRICE" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PACK_VALUE" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.STOCK_COUNT" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.PLAT_COUNT" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.IN_DATE" /></td>
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<span jwcid="@NavBar" name="pageNavConti" id="pageNavConti" cond="queryForm" listener="qryGrpsCompareLogs" part="QueryResultPart" count="ognl:count"/>	 
+	</div>
+	<!-- 费用信息 结束 -->
+	
+</div>
+	
+</div></div>
+</body>
+
+</html>

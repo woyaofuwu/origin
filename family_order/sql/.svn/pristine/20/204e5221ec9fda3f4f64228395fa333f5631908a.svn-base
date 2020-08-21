@@ -1,0 +1,11 @@
+
+UPDATE TD_RULE_BIZ
+   SET start_date=TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+   end_date = TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+   eparchy_code=:EPARCHY_CODE,
+   update_time=SYSDATE,
+   remark=:REMARK,
+   RSRV_STR1=:RSRV_STR1,
+   TIPS_INFO=:TIPS_INFO,
+   RULE_BIZ_DESC=:RULE_BIZ_DESC
+ WHERE rule_biz_id = :RULE_BIZ_ID

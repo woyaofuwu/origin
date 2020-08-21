@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: ReserveTradeArchive.html,v 1.1 2009/12/16 20:29:05 wangmo Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>变更亲亲网短号</title>
+<script jwcid="@Script" language="JavaScript" src="person/familytradeoptimal/scripts/familyshortcodebusioptimal.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+        <span class="text">变更亲亲网短号</span>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="287" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+</div>
+<div class="c_box" jwcid="OperInfoPart@Part">
+	<div class="c_title">
+		<span class="text">操作信息</span>
+	</div>
+	<div class="c_form c_form-col-2 c_form-label-6">
+		<ul class="ul">
+			<li class="li" id="VALID_MEMBER_NUMBER_AREA">
+				<span class="label"><span>当前生效成员数：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="VALID_MEMBER_NUMBER" id="VALID_MEMBER_NUMBER" value="0" desc="当前生效成员数"
+					disabled="true" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="c_box">
+	<div class="c_title">
+		<span class="text">亲亲网成员列表</span>
+	</div>
+	<div jwcid="UUInfoPart@Part" id="UUInfoPart">
+	<div class="c_table c_table-row-5">
+		<table jwcid="@Table" id="UUInfoTable" name="UUInfoTable" rowClick="clickRow">
+      	<thead>
+		  	<tr>
+				<th col="INST_ID_B" style="display:none">实例编码</th>
+				<th col="SERIAL_NUMBER_B">成员号码</th>
+				<th col="SHORT_CODE_B">成员短号</th>
+				<th col="START_DATE">开始时间</th>
+				<th col="END_DATE">结束时间</th>
+			</tr>
+		</thead>
+		<tbody id="viceInfoTable_Body">
+			<tr jwcid="@Foreach" source="ognl:UUInfos" value="ognl:UUInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				<td  style="display:none"><span jwcid="@Insert" value="ognl:UUInfo.INST_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:UUInfo.SERIAL_NUMBER_B"/></td>
+				<td><span jwcid="@Insert" value="ognl:UUInfo.SHORT_CODE"/></td>
+				<td><span jwcid="@Insert" value="ognl:UUInfo.START_DATE"/></td>
+				<td><span jwcid="@Insert" value="ognl:UUInfo.END_DATE"/></td>						 
+
+			</tr>
+		</tbody>
+		</table>
+	</div>
+	<div class="c_form" id="MEB_SHORT_CHANGE">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">成员号码：</span>
+				<span class="e_input"><span>
+					<select jwcid="@TextField" name="MEB_SERIAL_NUMBER" id="MEB_SERIAL_NUMBER" value="" desc="成员号码" disabled="true"/>
+				</span></span>
+				<li class="li">
+					<span class="label">成员原短号：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="OLD_SHORT_CODE" id="OLD_SHORT_CODE" source="ognl:pageutil.getStaticList('FAMILY_SHORT')"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="" desc="成员原短号" disabled="true"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">成员新短号：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="NEW_SHORT_CODE" id="NEW_SHORT_CODE" source="ognl:pageutil.getStaticList('FAMILY_SHORT')"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="" desc="成员新短号" nullable="no"/>
+					</span></span></span>
+				</li>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit"><button type="button" class="e_button-form" id="bChange" name="bChange" onclick="changeShortCode()"><i class="e_ico-ok"></i><span>变更</span></button></div>
+	</div>
+	</div>
+	<div class="c_form c_form-label-4 c_form-col-1">
+	    <ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="REMARK@TextField" id="REMARK" name="REMARK"
+	                 value=""
+					 desc="备注" disabled=""/>
+				</span></span>
+			</li>
+	    </ul>
+    </div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params="" listener="" refreshPart="" area="AuthPart,OperInfoPart" element="div"/>	
+</div>
+<!--受理信息结束-->
+</div></div></body>
+</html>

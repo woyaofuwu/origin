@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>补卡（写卡）</title>
+    <script jwcid="@Script" src="iorder/person/simcardmgr/scripts/remotecard.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js"></script>
+    <script jwcid="@Script" src="v5/jcl/ui/component/base/segment.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<!--<div class="c_header e_show-phone">-->
+    <!--<div class="back">换卡</div>-->
+<!--</div>-->
+<!-- 标题栏 结束 -->
+<div class="c_scroll c_scroll-float">
+    <div class="l_padding">
+        <div class="c_tip" style="display: none;" name="ALERT_INFO_DIV" id="ALERT_INFO_DIV">
+            <span name="ALERT_INFO" id="ALERT_INFO"> </span>
+        </div>
+        <!-- 认证 开始 -->
+        <div jwcid="AuthPart@icsserv:Auth" authType="ognl:info.authType" tradeTypeCode="ognl:info.TRADE_TYPE_CODE"
+             tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+        <div id="spInfo" class="e_hide">
+            <div class="c_space-c"></div>
+            <div jwcid="userInfoPart@Part"
+                 class="c_param c_param-phone-col-1 c_param-label-7 c_param-col-3 c_param-border">
+                <ul>
+                    <li>
+                        <span class="label">原SIM卡类型：</span>
+                        <span class="value">
+                                 <span class="text" jwcid="@Insert"
+                                       value="ognl:pageutil.getStaticValueDataSource('res','RES_TYPE','RES_TYPE_ID' ,'RES_TYPE_NAME', oldCard.RES_TYPE_CODE)"></span>
+                             </span>
+                    </li>
+                    <li>
+                        <span class="label">原SIM卡号：</span>
+                        <span class="value">
+                                 <span class="text" jwcid="@Insert" value="ognl:oldCard.SIM_CARD_NO"></span>
+                             </span>
+                    </li>
+                    <li>
+                        <span class="label">原IMSI号：</span>
+                        <span class="value">
+                                 <span class="text" jwcid="@Insert" value="ognl:oldCard.IMSI"></span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 认证 结束 -->
+        <!-- 业务受理 开始 -->
+        <div class="c_title">
+            <div class="text">业务受理</div>
+        </div>
+        <div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+            <ul>
+                <li class="required">
+                    <div class="label">办理人</div>
+                    <div class="value">
+						<span class="e_segment">
+							<span idx="0" val="1">本人</span>
+							<span idx="1" val="2">经办人</span>
+							<input type="hidden" name="mySegment" id="mySegment" nullable="no"/>
+						</span>
+                    </div>
+                </li>
+                <li id="span_CUST">
+                    <div class="label">&nbsp;</div>
+                    <div class="value">
+                        <button type="button" class="e_button-blue" name="ShotImgButton"
+                                onclick="identification('custInfo_PIC_ID','custInfo_PIC_STREAM')"><i
+                                class="e_ico-camera"></i><span>客户摄像</span></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="c_space-c"></div>
+	  <div id="span_AGENT" style="display:none">
+		<div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border">
+			<ul>
+				<li class="required">
+					<span class="label"><span id="span_AGENT_PSPT_TYPE_CODE">经办人证件类型</span></span>
+					<div class="value">
+								<span class="e_select" jwcid="@Select" name="custInfo_AGENT_PSPT_TYPE_CODE"
+							id="custInfo_AGENT_PSPT_TYPE_CODE"
+							source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value=""
+							desc="经办人证件类型" disabled="false"/>
+					</div>
+				</li>
+				<li class="required">
+					<div class="label"><span id="span_AGENT_PSPT_ID">经办人证件号码</span></div>
+					<div class="value">
+						<div class="e_mix">
+						<input type="text" jwcid="@TextField" name="custInfo_AGENT_PSPT_ID"
+							id="custInfo_AGENT_PSPT_ID" value="" datatype="pspt" maxsize="20" maxLength="20"
+							desc="经办人证件号码" disabled="true"/>
+						<span class="e_ico-scan" onclick="clickScanPspt2()" id="ReadCardButton"
+							name="ReadCardButton"></span>
+						</div>
+					</div>
+				</li>
+				<li class="required">
+					<div class="label"><span id="span_AGENT_CUST_NAME">经办人名称</span></div>
+					<div class="value">
+						<div class="e_mix">
+						<input type="text" jwcid="@TextField" name="custInfo_AGENT_CUST_NAME"
+							id="custInfo_AGENT_CUST_NAME"
+							value="" maxsize="48" maxLength="48" desc="经办人名称" disabled="true"/>
+						<span class="e_ico-camera" id="AGENT_SHOT_IMG" name="ReadCardButton"
+							onclick="identification('custInfo_AGENT_PIC_ID','custInfo_AGENT_PIC_STREAM')"></span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	  </div>
+        <!-- 业务受理 结束 -->
+
+        <!-- 区域 开始 -->
+        <!-- 新SIM 开始 -->
+        <div class="c_space-c"></div>
+        <div class="c_list c_list-s c_list-phone-col-1 c_list-line c_list-border">
+            <ul>
+                <li class="required e_show-phone">
+                    <div class="label">新SIM卡号</div>
+                    <div class="value">
+                        <input type="text">
+                    </div>
+                </li>
+                <li class="required  merge-2">
+                    <div class="label">新SIM卡号</div>
+                    <div class="value">
+                        <div class="e_mix">
+                            <span class="e_show-phone" style="flex:1;"></span>
+                            <input jwcid="@TextField" class="e_hide-phone" name="SIM_CARD_NO" id="SIM_CARD_NO"
+                                   value="ognl:newCard.SIM_CARD_NO" nullable="no" desc="SIM卡号"
+                                   onblur="checkSimCardInfo()"/>
+                            <button type="button" class="e_button-blue" onclick="checkSimCardInfo()"><i
+                                    class="e_ico-check"></i><span>校验</span></button>
+                            <div jwcid="@icsserv:WriteCard" mode="1" readBeforeAction="beforeReadCard()"
+                                 readAfterAction="afterReadCard(data)"
+                                 writeAfterAction="afterWriteCard(data)"/>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="c_space c_space-c"></div>
+        <!-- 新SIM 结束 -->
+        <div jwcid="NewCardInfo@Part"
+             class="e_hide c_param c_param-phone-col-1 c_param-label-7 c_param-col-2 c_param-border">
+            <ul>
+                <li>
+                    <span class="label">新SIM卡类型：</span>
+                    <span class="value">
+                                <span class="text" jwcid="@Insert" value="ognl:newCard.RES_TYPE_CODE"></span>
+                            </span>
+                </li>
+                <li>
+                    <span class="label">新IMSI卡号：</span>
+                    <span class="value">
+                                <span jwcid="@Insert" id="IMSI" name="IMSI" value="ognl:newCard.IMSI"></span>
+                            </span>
+                </li>
+            </ul>
+        </div>
+        <div class="c_space"></div>
+        <div jwcid="remarkPark@Part">
+            <div class="c_list c_list-s c_list-line c_list-border">
+                <ul>
+                    <li>
+                        <div class="label">备注</div>
+                        <div class="value">
+                            <input  name="REMARK" id="REMARK" value="" type="text">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="display:none">
+            <object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+        </div>
+        <!-- 参数列表 结束 -->
+        <!-- 提交 开始 -->
+        <div class="c_space"></div>
+        <div class="c_submit c_submit-center">
+            <div jwcid="@icsserv:SimCardCheck" beforeAction="setSerialNumber()"
+                 afterAction="verifySimCard(data)"
+                 fieldId="SIM_CARD_NO"/>
+            <span jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="beforeSubmit()" isRender="false"
+                  class="c_submit c_submit-center" area="AuthPart,userInfoPart,NewCardInfo,hiddenInfoPart,remarkPark" element="span"/>
+        </div>
+        <!-- 提交 结束 -->
+        <!-- 区域 结束 -->
+        <div style="display:none" jwcid="hiddenInfoPart@Part">
+            <input style="display:none" jwcid="@TextField" id="NEW_SIM_CARD_INFO" name="NEW_SIM_CARD_INFO"
+                   value=""/>
+            <input style="display:none" jwcid="@TextField" id="OLD_SIM_CARD_INFO" name="OLD_SIM_CARD_INFO"
+                   value=""/>
+            <!-- 是否补换卡的时候同时开机 -->
+            <input style="display:none" jwcid="@TextField" id="OPEN_MOBILE_TAG" name="OPEN_MOBILE_TAG" value="1"/>
+            <!-- 是否补换卡的时候同时开机 -->
+            <input style="display:none" jwcid="@TextField" id="USER_SVC_STATE_TAG" name="USER_SVC_STATE_TAG"
+                   value="false"/><!-- 用户是否处于停机状态 -->
+            <input style="display:none" jwcid="@TextField" id="IS_SCORE" name="IS_SCORE" value="1"/>
+            <!-- 用户是否处于停机状态 -->
+            <input style="display:none" jwcid="@TextField" id="IS_CHECKED" name="IS_CHECKED" value="1"/>
+            <input style="display:none" jwcid="@TextField" id="NEW_SIM_CARD_NO" name="NEW_SIM_CARD_NO" value=""/>
+
+            <!-- REQ201705270006_关于人像比对业务优化需求 -->
+            <!-- 携入标识   1是携入   非1 不是携入 -->
+            <input jwcid="@Hidden" id="NPTag" name="NPTag" value="ognl:npTagAndWxTag.NPTAG" desc="携入标识"/>
+            <!-- 固话标识   1是固话  非1 不是固话-->
+            <input jwcid="@Hidden" id="WXTag" name="WXTag" value="ognl:npTagAndWxTag.WXTAG" desc="无线固话标识"/>
+            <input jwcid="@Hidden" id="custInfo_PIC_ID" name="custInfo_PIC_ID" value="" desc="客户照片ID"/>
+            <input jwcid="@Hidden" id="custInfo_PIC_STREAM" name="custInfo_PIC_STREAM" value="" desc="拍摄人像照片流"/>
+            <input jwcid="@Hidden" id="custInfo_PIC_PATH" name="custInfo_PIC_PATH" value="" desc="拍摄人像照片移动端存放路径"/>
+            <input jwcid="@Hidden" id="custInfo_PSPT_TYPE_CODE" name="custInfo_PSPT_TYPE_CODE" value="" desc="客户证件类型"/>
+            <input type="hidden" id="UCA_CUST_NAME" name="UCA_CUST_NAME" value="" desc="客户名称"/>
+            <input type="hidden" id="AUTH_CHECK_MODE" name="AUTH_CHECK_MODE" value="" desc="验证方式"/>
+
+            <input jwcid="@Hidden" id="custInfo_AGENT_PIC_ID" name="custInfo_AGENT_PIC_ID" value="" desc="经办人照片ID"/>
+            <input jwcid="@Hidden" id="custInfo_AGENT_PIC_STREAM" name="custInfo_AGENT_PIC_STREAM" value=""
+                   desc="拍摄经办人人像照片流"/>
+            <input jwcid="@Hidden" id="custInfo_AGENT_PIC_PATH" name="custInfo_AGENT_PIC_PATH" value=""
+                   desc="拍摄经办人人像照片移动端存放路径"/>
+            <input jwcid="@Hidden" id="custInfo_AGENT_BACKBASE64" name="custInfo_AGENT_BACKBASE64" value=""
+                   desc="经办人身份证反面照"/>
+            <input jwcid="@Hidden" id="custInfo_AGENT_FRONTBASE64" name="custInfo_AGENT_FRONTBASE64" value=""
+                   desc="经办人身份证正面照"/>
+        </div>
+    </div>
+</div>
+<script>
+    window["mySegment"] = new Wade.Segment("mySegment");
+    $("#mySegment").val("1");
+    $("#mySegment").change(function () {
+        if ($("#mySegment").val() == "1") {
+            changeMethod1();
+        }
+        if ($("#mySegment").val() == "2") {
+            changeMethod2();
+        }
+    });
+</script>
+</body>
+</html>

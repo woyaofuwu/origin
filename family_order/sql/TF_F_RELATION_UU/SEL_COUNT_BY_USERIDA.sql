@@ -1,0 +1,1 @@
+select  count(*) count from tf_f_relation_uu t where t.user_id_a=:USER_ID_A and end_date>sysdate

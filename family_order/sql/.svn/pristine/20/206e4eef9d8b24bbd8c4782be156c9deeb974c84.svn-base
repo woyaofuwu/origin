@@ -1,0 +1,20 @@
+select t.recon_id,
+       t.p_ibsysid,
+       t.bill_date,
+       t.direction,
+       t.out_ord_id,
+       t.trade_id,
+       t.serial_number,
+       t.app_id,
+       t.goods_id,
+       t.bill_type,
+       t.fee,
+       t.pfee,
+       t.fee_type,
+       t.order_type,
+       t.status,
+       t.finish_time,
+       t.pay_type,
+       t.result
+  from TI_B_ZHSYT_RECON_RESULT t
+ where to_char(to_date(BILL_DATE, 'yyyy-mm-dd'), 'yyyy-mm-dd') =:SETTLEDATE

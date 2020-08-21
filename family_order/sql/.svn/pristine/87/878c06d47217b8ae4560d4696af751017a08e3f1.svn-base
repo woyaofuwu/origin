@@ -1,0 +1,30 @@
+SELECT TRADE_ID,
+       ACCEPT_MONTH,
+       TRADE_TYPE_CODE,
+       IN_MODE_CODE,
+       SERIAL_NUMBER,
+       CHANGE_SERIAL_NUMBER,
+       CARD_KIND_CODE,
+       CARD_NO,
+       CHANGE_RESULT_CODE,
+       TO_CHAR(CHANGE_TIME, 'yyyy-mm-dd hh24:mi:ss') CHANGE_TIME,
+       REMARK,
+       RSRV_NUM1,
+       RSRV_NUM2,
+       RSRV_NUM3,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5,
+       TO_CHAR(RSRV_DATE1, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE1,
+       TO_CHAR(RSRV_DATE2, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE2,
+       TO_CHAR(RSRV_DATE3, 'yyyy-mm-dd hh24:mi:ss') RSRV_DATE3,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       RSRV_TAG3
+  FROM TF_B_CHANGETRADE A
+ WHERE 1 = 1
+   AND A.CARD_NO = :CARD_NO
+   AND A.SERIAL_NUMBER = :SERIAL_NUMBER
+   AND A.CHANGE_SERIAL_NUMBER = :CHANGE_SERIAL_NUMBER

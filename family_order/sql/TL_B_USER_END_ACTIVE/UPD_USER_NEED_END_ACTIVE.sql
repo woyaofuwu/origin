@@ -1,0 +1,6 @@
+update TL_B_USER_END_ACTIVE t
+set t.status=:STATUS,T.REMARK=:REMARK,T.RSRV_STR5=:RSRV_STR5,t.update_time=sysdate,t.update_staff_id='SUPERUSR',t.update_depart_id='36601'
+where t.user_id=:USER_ID
+AND T.SERIAL_NUMBER=:SERIAL_NUMBER
+AND T.ACCEPT_MONTH=to_number(:ACCEPT_MONTH)
+AND T.RELATION_TRADE_ID=:RELATION_TRADE_ID

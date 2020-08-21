@@ -1,0 +1,2 @@
+INSERT INTO tf_f_postinfo(partition_id,id,id_type,post_name,post_tag,post_content,post_typeset,post_cyc,post_address,post_code,email,fax_nbr,start_date,end_date,update_time)
+ VALUES(mod(TO_NUMBER(:ID),10000),TO_NUMBER(:ID),:ID_TYPE,:POST_NAME,:POST_TAG,:POST_CONTENT,:POST_TYPESET,:POST_CYC,:POST_ADDRESS,:POST_CODE,:EMAIL,:FAX_NBR,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),sysdate)

@@ -1,0 +1,19 @@
+INSERT INTO TF_B_USER_SMSSEND
+  (TRADE_ID,
+   USER_ID,
+   SMS_ID,
+   SERIAL_NUMBER,
+   SMS_TYPE,
+   SMS_CONTENT,
+   STATE,
+   UPDATE_TIME)
+VALUES
+  (
+   :TRADE_ID,
+   :USER_ID,
+   TO_NUMBER(:SMS_ID),
+   :SERIAL_NUMBER,
+   :SMS_TYPE,
+   :SMS_CONTENT,
+   :STATE,
+   to_date(:UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss'))

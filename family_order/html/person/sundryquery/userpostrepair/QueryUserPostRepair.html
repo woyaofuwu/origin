@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>查询邮寄补录信息</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/userpostrepair/scripts/queryuserpostrepair.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取邮寄补录信息无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">邮寄补录信息查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-7" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">处理状态：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_PROCESS_TAG" id="cond_PROCESS_TAG" desc="处理状态" 
+									source="ognl:pageutil.getStaticList('REPAIR_POST_PROCESS_TAG')" 
+									value="ognl:condition.cond_PROCESS_TAG" textField="DATA_NAME" nullable="no" valueField="DATA_ID"  titleField="DATA_NAME"/>
+							</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">登记时间 从：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" desc="登记时间 从"/>
+								</span></span>
+							</span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">到：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" afterAction="chgEndDateSynStartDate(this,'cond_START_DATE')" nullable="no" value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" desc="到"/>
+								</span></span>
+							</span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryUserPostRepair(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+						<button type="button" class="e_button-form"  onclick="resetWeb()">
+						  <i class="e_ico-search"></i><span>重 置</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="ResultPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					        <div class="button">
+				    		  <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+				    		      <button type="button" id="unchecked" name="unchecked" onclick="return checkedOther('RepairsCheck')">
+				                     <i class="e_ico-unselect"></i><span>反选</span></button>
+				                   <span jwcid="@Conditional" condition="ognl:condition.EXPORT==true">
+									   <span jwcid="@Export" name="export1" id = "export1" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100981"
+									      config="export/sundryquery/other/QueryPostRepairList.xml" fileName="补寄信息" cond=QueryCondPart/>						
+								   </span>
+							      
+							  </div>
+						    </div>
+				     </div>
+		  	     </div>	  	     
+		  	     <div class="c_scroll c_scroll-table-10">
+				 <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="postTable" id="postTable" scroll="true">
+						<thead>
+						<tr>
+							<th><input col="IS_CHECKED" type="checkbox" id="trash_ctrl" name="trash_ctrl" onclick="checkedAll('RepairsCheck', checked)"/></th>
+							<th col="RSRV_STR1" style="display:none">流水号</th>
+						    <th>手机号码</th>
+						    <th onclick="Wade.dom.sortTable('sortedTable',2,'string')">补寄月份</th>
+							<th>邮政投递</th>
+							<th>移动E信</th>
+							<th>邮寄邮编</th>
+							<th>邮寄名称</th>
+							<th onclick="Wade.dom.sortTable('sortedTable',7,'string')">补寄原因</th>
+							<th>邮寄地址</th>
+							<th onclick="Wade.dom.sortTable('sortedTable',9,'string')">登记时间</th>
+							<th onclick="Wade.dom.sortTable('sortedTable',10,'string')">处理时间</th>
+							<th>备注</th>
+						</tr>
+						</thead>
+						<tbody jwcid="@Any" name="PostTableInfos" id="PostTableInfos">
+				          <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+							<td><input jwcid="@Checkbox" name="RepairsCheck" id="RepairsCheck" value="ognl:info.IS_CHECKED" /></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.RSRV_STR1" /></td>
+						    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" /></td>
+						    <td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" /></td>		
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR8" /></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('REPAIR_POST_INFO_REASON', info.RSRV_NUM1)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR10" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_DATE1" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_DATE2" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="ResultPart" listener="queryUserPostRepair" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	    </div>
+	  </div>
+	  
+	  <!-- 区域 开始 -->
+<div class="c_box">
+<div jwcid="mytab@Tabset" >
+<div jwcid="@TabsetContent" title="处理区域">
+	 
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-4 c_form-label-11" jwcid="DealPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">处理结果：</span>
+					<span class="e_input"><span><input jwcid="@TextField"
+						name="PROCESS_REMARK" id="PROCESS_REMARK"
+						value="ognl:condition.PROCESS_REMARK" desc="处理结果" /></span></span>
+				</li>
+			</ul>
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button type="button" id="bWcommit" name="bWcommit" onclick="submitModifyRepairPost();" class="e_button-page-ok"><i></i><span>处理</span></button>
+	</div>
+	<!-- 提交 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div>
+
+</div></div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+update TF_B_TICKET
+   set TICKET_STATE_CODE = :NEW_STATE_CODE
+ where TRADE_ID = :TRADE_ID
+partition_id = to_number(substr(:TRADE_ID,length(:TRADE_ID)-3))
+   and TICKET_STATE_CODE = :TICKET_STATE_CODE
+   and TICKET_TYPE_CODE = :TICKET_TYPE_CODE

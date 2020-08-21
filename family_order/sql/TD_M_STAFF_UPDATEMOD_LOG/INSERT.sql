@@ -1,0 +1,2 @@
+INSERT INTO td_m_staff_updatemod_log(mod_code,mod_version,mod_buildno,must_update_tag,reg_update_tag,remark,update_time,update_staff_id,update_depart_id,mod_size,update_method,del_tag)
+ VALUES(:MOD_CODE,:MOD_VERSION,:MOD_BUILDNO,:MUST_UPDATE_TAG,:REG_UPDATE_TAG,:REMARK, sysdate,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:MOD_SIZE,:UPDATE_METHOD,:DEL_TAG)

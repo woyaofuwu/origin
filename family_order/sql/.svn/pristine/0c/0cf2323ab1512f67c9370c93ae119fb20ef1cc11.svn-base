@@ -1,0 +1,19 @@
+SELECT TRANSACTION_ID,
+       SERIAL_NUMBER,
+       ORDER_NO,
+       CHANNEL_TYPE,
+       ACCEPT_DATE,
+       CARD_TYPE,
+       CARD_MONEY,
+       BUY_COUNT,
+       HOME_PRO,
+       PAYMENT,
+       SETTLE_DATE,
+       CARD_BUSIPROP,
+       PUBLIC_KEY_ID,
+       STATUS,
+       FILE_NAME
+  FROM TI_B_ELECTCARD_BATSELL T
+     WHERE SERIAL_NUMBER = :SERIAL_NUMBER
+     AND ACCEPT_DATE >= TRUNC(to_date(:START_DATE, 'yyyy-MM-dd'))
+     AND ACCEPT_DATE < TRUNC(to_date(:END_DATE, 'yyyy-MM-dd')+1)

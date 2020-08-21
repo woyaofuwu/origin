@@ -1,0 +1,142 @@
+<input jwcid="@Hidden" id="SALEDEPOSIT_COMPONENT_ID" name="SALEDEPOSIT_COMPONENT_ID" value="ognl:id"/>
+<div class="">
+	<div class="c_table c_table-border c_table-line">
+		<table id="SaleDepositTable" name="SaleDepositTable">
+			<colgroup>
+				<col style="width:50px;"></col>
+				<col style="width:24px;"></col>
+				<col></col>
+				<col style="width:300px;"></col>
+				<col style="width:300px;"></col>
+			</colgroup>
+			<tbody>
+				<tr class="even">
+					<td class="e_center" rowspan="20"><strong>预存</strong></td>
+					<td class="e_center">选择</td>
+					<td class="e_center">名称</td>
+					<td class="e_center">月份数</td>
+					<td class="e_center">赠送他人</td>
+				</tr>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="ognl:'DEPOSIT_PARAM_AREA'+rowIndex" index="ognl:rowIndex" element="tr">
+					<td class="e_center">
+						<input type="checkbox" jwcid="@Checkbox"
+							name="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID" 
+							id="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID" 
+							value="ognl:info.DISCNT_GIFT_ID"
+							element_id="ognl:info.DISCNT_GIFT_ID"
+							element_name="ognl:info.DISCNT_GIFT_NAME"
+							element_type_code="ognl:info.ELEMENT_TYPE_CODE"
+							start_date="ognl:info.START_DATE"
+							end_date="ognl:info.END_DATE"
+							elements_area="ognl:'DEPOSIT_PARAM_AREA'+rowIndex"
+							fee="ognl:info.FEE"
+							fee_mode="ognl:info.FEE_MODE"
+							fee_type_code="ognl:info.FEE_TYPE_CODE"
+							pay_mode="ognl:info.PAY_MODE"
+							in_deposit_code="ognl:info.IN_DEPOSIT_CODE"
+							out_deposit_code="ognl:info.OUT_DEPOSIT_CODE"
+							gift_use_tag="ognl:info.GIFT_USE_TAG"
+							check_tag="ognl:info.CHECK_TAG"
+							nullable_tag="ognl:info.NULLABLE_TAG"
+                        	index="ognl:rowIndex"
+                        	isEdit="ognl:info.IS_EDIT"
+                        	payment_id="ognl:info.PAYMENT_ID"
+                        	deposit_type="ognl:info.DEPOSIT_TYPE"
+                            deposit_high_value="ognl:info.DEPOSIT_HIGH_VALUE"
+                            deposit_low_value="ognl:info.DEPOSIT_LOW_VALUE"
+                            checked="ognl:info.MAIN_TAG == 1 || info.DEFAULT_TAG == 1 || info.FORCE_TAG == 1"
+                            disabled="ognl:info.MAIN_TAG == 1 || info.FORCE_TAG == 1"
+							onclick="marketActivityModule.spCheckBoxOnclickAction(this.id)" />
+							
+						<textarea id="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID+'_ATTR'" name="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID+'_ATTR'" jwcid="@TextArea" value="ognl:info.ATTR_ITEMAS" style="display:none;"></textarea>
+						<textarea id="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID+'_FEE_LIST'" name="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID+'_FEE_LIST'" jwcid="@TextArea" value="ognl:info.DEPOSIT_FEE_LIST" style="display:none;"></textarea>
+						
+					</td>
+					
+					<td class="wrap">
+					<!--  
+					<div jwcid="@Conditional" condition='ognl:"true".equals(info.IS_EDIT)'>
+						<a href="#nogo" class="e_ico-play e_ico-pic-xs" jwcid="@Any"  style="float:right;"
+				                elementId="ognl:info.ELEMENT_ID" 
+				                depositType="ognl:info.DEPOSIT_TYPE" 
+				                elementTypeCode="ognl:info.ELEMENT_TYPE_CODE"
+				                depositRelId="ognl:info.REL_ID" 
+				                customTag = "ognl:info.CUSTOM_TAG"
+				                assignMode="ognl:info.ASSIGN_MODE"
+				                depositEnableMode="ognl:info.ENABLE_MODE"
+				                checkboxId = "ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID"
+				                onclick="marketActivityModule.showAttr(this)"></a>   
+				     </div> -->
+						<span jwcid="@Insert" value="ognl:info.DISCNT_GIFT_ID+'|'+info.DISCNT_GIFT_NAME"" class='ognl:"true".equals(info.IS_EDIT)?"e_strong":""'/>
+					</td>
+					<!--月份数-->
+					<td class="e_center">
+						<span jwcid="@Insert" value="ognl:info.MONTHS" raw="false"/>
+					</td>
+					
+					<!--赠送他人-->
+					<td class="e_center">
+						<div jwcid="@Conditional" condition='ognl:info.GIFT_USE_TAG == 1 || info.GIFT_USE_TAG == 2'>
+							<span class="e_input"><span>
+                            <input jwcid="@TextField" name="ognl:'DEPOSIT_'+rowIndex+'_DEPOSIT_USER_ID'" id="ognl:'DEPOSIT_'+rowIndex+'_DEPOSIT_USER_ID'" 
+								chkboxid="ognl:'DEPOSIT_CB_'+rowIndex+'_'+info.DISCNT_GIFT_ID"
+								value="ognl:info.USER_ID" 
+								enterAction="return marketActivityModule.checkDepositGiftUser(this);"
+								onblur="return marketActivityModule.checkDepositGiftUser(this);"
+								datatype="mbphone" maxLength="15" desc="赠送人服务号码" title="请输入赠送人服务号码" class="e_input"
+								disabled="true"/>
+                            </span></span>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:info.GIFT_USE_TAG != 1 && info.GIFT_USE_TAG != 2">不能赠送</div>
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+	<!--
+	<div jwcid="@Conditional" condition='ognl:"1".equals(moreGiftFlag)'>
+		<div class="c_list c_list-form c_list-col-2 c_list-phone-col-1" jwcid="gifeFeeInfo@Part">
+			<ul class="ul">
+				<li class="link required">
+					<div class="label">赠送金额</div>
+					<div class="value">
+						<span class="e_mix">
+							<input  jwcid="@TextField" name="GIFT_FEE_VALUE" id="GIFT_FEE_VALUE" value="" 
+									nullable="no" desc="赠送金额" />
+						</span>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">赠送号码</div>
+					<div class="value">
+						<span class="e_mix">
+							<input  jwcid="@TextField" name="GIFT_SERIAL_NUMBER" id="GIFT_SERIAL_NUMBER" value="" 
+									nullable="no" desc="赠送号码" />
+									<button type="button" id="add" name="add" class="e_button-orange" ontap="marketActivityModule.checkGiftMember()"><span class="e_ico-add"></span><span>校验</span></button>
+						</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="c_list" jwcid="gifeFeeTable@Part">
+			<ul >
+				<li class="link" id="gifeFeeTable" name="gifeFeeTable" jwcid="@Foreach" source="ognl:members" value="ognl:member" index="ognl:rowIndex" element="li"
+				snb="ognl:member.GIFT_SERIAL_NUMBER" gfv="ognl:member.GIFT_FEE_VALUE" tag="ognl:member.X_TAG">
+					<div class="main">
+						<div class="content" style="display:none"><span class="label">X_TAG</span><span class="value" jwcid="@Insert" value="ognl:member.X_TAG"></span></div>
+						<div class="content"><span class="label">赠送号码：</span><span class="value" jwcid="@Insert" value="ognl:member.GIFT_SERIAL_NUMBER"></span></div>
+						<div class="content"><span class="label">赠送金额：</span><span class="value" jwcid="@Insert" value="ognl:member.GIFT_FEE_VALUE"></span></div>
+					</div>
+					<div class="fn"><span id="del" name="del" jwcid="@Any"  
+						tag="ognl:member.X_TAG" sn="ognl:member.GIFT_SERIAL_NUMBER" gfv="ognl:member.GIFT_FEE_VALUE" ontap="marketActivityModule.delGiftFeeMember(this);" class="e_ico-delete"></span></div>
+				</li>
+			</ul>
+		</div>
+	</div>  -->
+	
+</div>
+<!-- 表格 结束 -->
+<input jwcid="@TextField" name="SALEDEPOSIT_EPARCHY_CODE" id="SALEDEPOSIT_EPARCHY_CODE" value="ognl:eparchyCode"  style="display:none"/>
+<input jwcid="@TextField" name="GIFT_FEE_STR" id="GIFT_FEE_STR" value="ognl:giftFeeStr"  style="display:none"/>

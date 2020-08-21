@@ -1,0 +1,7 @@
+INSERT INTO tf_f_user_purchase(user_id,serial_number,purchase_attr,purchase_desc,purchase_mode,purchase_info,trade_id,rpay_mpfee,feeitem_code,rpay_foregift,foregift_code,rpay_deposit,rpay_deposit_code,left_deposit,mrtn_fee,rtn_type,rtn_months,left_months,gpay_deposit,gpay_deposit_code,left_gdeposit,mgift_fee,gift_type,gtotal_months,gleft_months,month_fee,ntotal_months,nleft_months,device_type,imei,assure_no,discnt_code,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,process_tag,staff_id,depart_id,start_date,end_date,finish_date,remark)
+SELECT a.user_id,a.serial_number,a.purchase_attr,a.purchase_desc,a.purchase_mode,a.purchase_info,a.trade_id,a.rpay_mpfee,a.feeitem_code,a.rpay_foregift,a.foregift_code,a.rpay_deposit,a.rpay_deposit_code,a.left_deposit,a.mrtn_fee,a.rtn_type,a.rtn_months,a.left_months,a.gpay_deposit,a.gpay_deposit_code,a.left_gdeposit,a.mgift_fee,a.gift_type,a.gtotal_months,a.gleft_months,a.month_fee,a.ntotal_months,a.nleft_months,a.device_type,a.imei,a.assure_no,a.discnt_code,a.rsrv_str1,a.rsrv_str2,a.rsrv_str3,a.rsrv_str4,a.rsrv_str5,a.rsrv_str6,a.rsrv_str7,a.rsrv_str8,a.rsrv_str9,a.rsrv_str10,'3',:STAFF_ID,:DEPART_ID,a.start_date,sysdate,sysdate,a.remark
+  FROM tf_f_user_purchase a
+ WHERE a.user_id=:USER_ID
+   AND a.trade_id = :TRADE_ID
+   AND a.process_tag='0'
+   AND sysdate<a.end_date

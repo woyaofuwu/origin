@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT SI_PRODUCT_ID paracode,SI_PRODUCT_NAME paraname FROM td_b_si_product
+ WHERE sysdate BETWEEN start_date AND end_date
+ and (:TRADE_EPARCHY_CODE IS NULL OR :TRADE_EPARCHY_CODE IS NOT NULL)

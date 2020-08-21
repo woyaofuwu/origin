@@ -1,0 +1,9 @@
+select S.USER_ID, S.PRODUCT_ID, S.PACKAGE_ID, S.CAMPN_TYPE
+  from TF_F_USER_SALEACTIVE_BOOK S
+ where S.USER_ID = :USER_ID
+   and S.PARTITION_ID = mod(TO_NUMBER(:USER_ID), 10000)
+   and S.PRODUCT_ID_B = :PRODUCT_ID
+   and S.PACKAGE_ID_B = :PACKAGE_ID
+   and S.DEAL_STATE_CODE = '0'
+   and S.BOOK_TYPE = '1'
+   and s.END_DATE > sysdate

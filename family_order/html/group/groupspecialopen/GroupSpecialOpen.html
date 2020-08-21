@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团业务特殊开机</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/groupspecialopen/GroupSpecialOpen.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+<div jwcid="SelectGroupPart@Part">
+		<span jwcid="@saleserv:PopupGrpSnList" infos="ognl:infos" hidden='ognl:hidden' grprefreshPart="BasePart,ServicPart" listenerName="getGroupInfo"/>
+	</div>
+<div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 表单 开始 -->
+	<div class="c_form " jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">查询方式：</span>
+			 	<span class="e_select"><span><span>
+					<select name="QUERYTYPE" jwcid="@Select" id="QUERYTYPE"
+							textField="DATA_NAME" valueField="DATA_ID" 
+							source="ognl:pageutil.getStaticList('QUERYTYPE')" 
+							value="ognl:condition.QUERYTYPE" desc="查询方式" 
+							onchange="changeQueryType();"
+							nullable="no" addDefault="false"/>  
+				</span></span></span>  
+			</li>
+			<li class="li">
+			<div id="selectGroupPart" style="display:none">
+				<span jwcid="@saleserv:SelectGroup" refreshPart="OrderedPart,BasePart,GroupInfoPart" selectGroupListener="getGroupBaseInfo" />
+			</div>
+			</li>
+			<li class="li">
+			<div id="memSerPart" > 
+				<span class="label">成员服务号码：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="@TextField" 
+					       value="ognl:condition.cond_SERIAL_NUMBER" onkeydown="var e=$.event.fix(event);if(event.keyCode==13) {searchMemberBySerialNumber();e.stop();}" 
+					       nullable="no" maxsize="16" datatype="numeric" desc="成员服务号码"/>
+				</span></span> 
+			</div>
+			</li> 
+			<li class="li">
+			<div id="groupProductIdPart" style="display:none"> 
+				<span class="label">集团产品编码：</span>
+				<span class="e_input"><span>
+					<input type="text" name="cond_GRP_SN" id="cond_GRP_SN" jwcid="@TextField"
+						value="ognl:condition.GRP_SN" onkeydown="var e=$.event.fix(event);if (e.which == 13) {searchByGroupSerialNumber();e.stop();}"
+					 	nullable="no" maxlength="15" desc="集团产品编码" />
+				</span></span> 
+			</div>
+			</li>
+			<li class="li col-3">
+			<div style="display:none" jwcid="OrderedPart@Part" > 
+				<span class="label">已订购产品：</span>
+				<span class="e_selec"><span>
+					<select jwcid="@Select" name="USER_ID" id="USER_ID" desc="集团产品选择"
+        	                source="ognl:products"	textField="PRODUCT_NAME" valueField="USER_ID" 
+					        value="ognl:condition.USER_ID" onchange="searchProduct()"/> 
+			     </span></span>
+			</div> 
+			</li>
+		</ul>
+	</div></div>
+	<!-- 表单 结束 -->
+	
+	<!-- 集团客户基本信息 开始 -->
+	<div jwcid="GroupInfoPart@Part" style="display:none">
+		<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:info"/>
+	</div>
+	<!-- 集团客户基本信息 结束 -->	
+
+	<!-- 基本信息 -->
+	<div class="c_box">	
+		<div class="c_title">
+			<div class="text">基本信息</div>
+		</div>
+	
+	<div class="c_form c_form-text c_form-col-3 c_form-label-10" jwcid="BasePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">集团客户编码：</span>
+				<span class="e_input"><span>
+					<input type="text" name="cond_GROUP_ID" jwcid="cond_GROUP_ID@TextField" value="ognl:condition.GROUP_ID" disabled="true" desc="集团客户编码"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">集团客户名称：</span>
+				<span class="e_input"><span>
+					<input type="text" name="cond_CUST_NAME" jwcid="cond_CUST_NAME@TextField" value="ognl:condition.CUST_NAME" disabled="true" desc="集团客户名称"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">集团产品编码：</span>
+				<span class="e_input"><span>
+					<input type="text" name="SERIAL_NUMBER" jwcid="SERIAL_NUMBER@TextField" value="ognl:condition.SERIAL_NUMBER" disabled="true" desc="集团产品编码"/>
+					
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">集团用户编码：</span>
+				<span class="e_input"><span>
+					<input type="text" name="cond_USER_ID" jwcid="cond_USER_ID@TextField" value="ognl:condition.USER_ID" disabled="true" desc="集团用户编码"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">集团客户经理：</span>
+				<span class="e_input"><span>
+					<input type="text" name="GROUP_MGR_CUST_NAME" jwcid="GROUP_MGR_CUST_NAME@TextField" value="ognl:condition.GROUP_MGR_CUST_NAME" disabled="true" desc="集团客户经理"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">归属市县：</span>
+				<span class="e_input"><span>
+					<input type="text" name="CITY_NAME" jwcid="CITY_NAME@TextField" value="ognl:condition.CITY_NAME" disabled="true" desc="归属市县"/>
+				</span></span>					
+			</li>			
+		</ul>
+	</div>
+	<!-- 基本信息 结束 -->
+	<!-- 已订购服务信息 开始 -->
+	<div class="c_box">	
+		<div class="c_title">
+			<div class="text">已订购服务信息</div>
+		</div>
+		
+		<div jwcid="ServicPart@Part">
+		<div class="c_scroll c_scroll-x style="height:500px""><div class="c_table c_table-row-10">
+			<table jwcid="ServicTable@Table" name="ServicTable">
+				<thead>
+			  		<tr>
+			  			<th id="X_TAG" style="display:none">TAG<br /></th>
+			  			<th id="sercheck">选择</th>
+						<th id="SERVICE_NAME">服务名称</th>
+						<th id="NOW_STATE">当前服务状态</th>
+			  			<th id="LAST_PARSE">最后一次暂停时间</th>
+			  		</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:services" value="ognl:svc" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><input id="sercheck" name="sercheck" jwcid="@Checkbox" value="ognl:svc.SERVICE_ID"  disabled="ognl:svc.NOW_STATE=='正常'?true:false"/></td>
+						<td><span jwcid="SERVICE_NAME@Insert" value="ognl:svc.SERVICE_NAME"/></td>
+						<td><span jwcid="NOW_STATE@Insert" value="ognl:svc.NOW_STATE"/></td>
+						<td><span jwcid="LAST_PARSE@Insert" value="ognl:svc.LAST_PARSE"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+	</div>
+	<!-- 已订购服务信息 结束 -->
+	
+	<div class="c_form c_form-text c_form-col-2 c_form-label-13" jwcid="otherPart@Part" >
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">保持正常状态的时长（小时）：</span></span>
+				<span class="e_input"><span>
+					<input type="text" name="NORMAL_TIME" jwcid="NORMAL_TIME@TextField" value="ognl:condition.NORMAL_TIME" datatype="integer" nullable="no"  desc="保持正常状态的时长"/>
+				</span></span>					
+			</li>
+		</ul>
+	</div>	
+	
+	   <input type="hidden" jwcid="@Any" name="SELECT_USER_ID" id="SELECT_USER_ID" value="ognl:condition.SELECT_USER_ID"/>
+	   <input type="hidden" jwcid="@Any" name="SELECT_PRODUCT_ID" id="SELECT_PRODUCT_ID" value="ognl:condition.SELECT_PRODUCT_ID"/>
+	   <input type="hidden" jwcid="@Any" name="SELECT_OPER_TYPE" id="SELECT_OPER_TYPE" value="ognl:condition.SELECT_OPER_TYPE"/>
+	   <input type="hidden" jwcid="@Any" name="SELECT_FIRST" id="SELECT_FIRST" value="ognl:condition.SELECT_OPER_TYPE"/>
+	   <input type="button" id="groupChooseButton" value="abcdefg" class="e_button" onclick="chooseGroupButton();" style="display:none"/>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="QueryCondPart,BasePart,ServicPart,otherPart" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+</div></div></div>
+</body>
+</html>

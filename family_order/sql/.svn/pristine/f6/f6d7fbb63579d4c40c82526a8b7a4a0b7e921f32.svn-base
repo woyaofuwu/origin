@@ -1,0 +1,3 @@
+INSERT INTO tf_f_postinfo(id,PARTITION_ID,id_type,post_name,post_tag,post_content,post_typeset,post_cyc,post_address,post_code,email,fax_nbr,start_date,end_date,update_time)
+SELECT a.id, a.PARTITION_ID,a.id_type, a.post_name, a.post_tag, a.post_content, a.post_typeset, a.post_cyc, a.post_address, a.post_code, a.email, a.fax_nbr, a.start_date, a.end_date, sysdate
+ FROM tf_b_trade_postinfo_bak a WHERE a.trade_id = :TRADE_ID

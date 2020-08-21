@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript"
+	src="person/bat/batextractnoactivation/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript"
+	src="person/bat/batextractnoactivation/scripts/batExtractnoactivationInfo.js"></script>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<div class="l_col">
+				<!-- 活动详情 开始 -->
+				<div class="c_title">
+					<div class="text">条件区</div>
+				</div>
+				<div class="c_form c_form-col-2">
+					<div class="" jwcid="submit_part@Part">
+						<ul class="ul">
+							<li class="li" id="sn"><span class="label"><span>起始服务号码：</span> </span> <span class="e_input"><span><input
+										jwcid="@TextField" name="cond_START_SERIALNUMBER"
+										id="cond_START_SERIALNUMBER"
+										onblur="completeEndSn(this, 'cond_END_SERIALNUMBER');"
+										onkeyup="synOnKeyup(this, 'cond_END_SERIALNUMBER');"
+										value="ognl:condition.cond_START_SERIALNUMBER" desc="起始服务号码"
+										datatype="mbphone" maxsize="11" /> </span> </span>
+							</li>
+							<li class="li" id="sn"><span class="label"><span>终止服务号码：</span> </span> <span class="e_input"><span><input
+										jwcid="@TextField" name="cond_END_SERIALNUMBER"
+										id="cond_END_SERIALNUMBER"
+										value="ognl:condition.cond_END_SERIALNUMBER" desc="终止服务号码"
+										maxsize="11" datatype="mbphone" /> </span> </span>
+							</li>
+
+						</ul>
+					</div>
+
+					<div class="submitPlace"></div>
+					<div class="submit e_right">
+						<button class="e_button-form"
+							listener="ognl:listeners.queryExtractnoactivationInfo"
+							onclick="return query();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+						<button class="e_button-form" onclick="return reset();">
+							<i class="e_ico-reset"></i><span>重置</span>
+						</button>
+					</div>
+				</div>
+				<div jwcid="result_Table@Part" optimize="true">
+					<div id="exportarea"
+						class="c_scroll c_scroll-x style='height:auto'">
+						<div class="c_title">
+						<div class="text">结果区</div>
+							<div class="fn">
+								<span jwcid="@Export" name="exportFileUserPart"
+									ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}"
+									serviceName="180427"
+									config="export/bat/BatExtractNoActivation.xml"
+									fileName="批量号码激活情况信息" cond="submit_part" />
+								<button class="l_ml" type="button"
+									onclick="$.printArea('print_Table','批量号码激活情况信息打印','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+								</button>
+							</div>
+
+						</div>
+						<div jwcid="print_Table@Part">
+							<div class="c_table">
+								<table jwcid="@Table" id="DeptTable">
+									<thead>
+										<tr>
+											<th>已售号码</th>
+											<th>状态</th>
+											<th>当前套餐</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+											element="tr" index="ognl:rowIndex"
+											class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert"
+												value="ognl:info.SERIAL_NUMBER" raw="false"></span></td>
+											<td><span jwcid="@Insert" value="ognl:info.ACCT_TAG"
+												raw="false" /></td>
+											<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"
+												raw="false" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- end table -->
+					</div>
+					<!-- 翻页（替换为页面组件） 开始 -->
+					<span jwcid="@NavBar" name="pageNav" cond="submit_part"
+						pageSize="20" listener="queryExtractnoactivationInfo"
+						part="result_Table" count="ognl:pageCount" />
+					<!-- 翻页 结束 -->
+				</div>
+			</div>
+			<div class="c_title">
+				<div class="text">导入区</div>
+			</div>
+			<div class="c_box">
+				<div class="c_form c_form-col-2 c_form-label-11"
+					jwcid="DataImportPart@Part">
+					<ul class="ul">
+						<li class="li"><span class="label"><span
+								class="e_required">上传前请查看模板格式：</span> </span> <span class="text">
+								<a jwcid="@Any" id="A_TEMPLATE_DATA_XLS"
+								name="A_TEMPLATE_DATA_XLS"
+								href="ognl:encodeUrl('attach?action=downloadweb&filePath='+'template/person/batextractnoactivation/BatextractnoInfoImport.xls')">
+									<span jwcid="@Insert" value="[点击下载]"></span> </a> </span>
+						</li>
+						<li jwcid="@Any" class="li"><span class="label"><span
+								class="e_required">导入文件：</span> </span> <span class="text"> <span
+								jwcid="@Import" name="FILE_ID" ftpSite="personserv"
+								fileSize="10" fileTypes="excel" serviceName="180426"
+								config="import/bat/BatExtractNoActivation.xml" desc="导入文件"
+								nullable="no" cond="" params=""
+								afterAction="queryBadUserInfo4Import(this)" /> </span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

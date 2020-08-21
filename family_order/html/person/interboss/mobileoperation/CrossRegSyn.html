@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: OpenMobile.html,v 1.5 2013/04/17 07:58:35 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>跨区入网资料同步</title> 
+<script language="JavaScript" src="person/interboss/mobileoperation/scripts/crossregservice.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="2211" element="div"></div>
+	<!-- 认证 结束 -->
+
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">客户信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-text c_form-col-2" jwcid="custInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text">
+					<input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfo.CUST_NAME" maskType="start" maskPosition="1" 
+					   maskLength="100" desc="客户名称" disabled="true"  />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">客户性别：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SEX',custInfo.SEX)" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', custInfo.PSPT_TYPE_CODE)" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">证件有效期：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:custInfo.PSPT_END_DATE" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:custInfo.PSPT_ADDR" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">联系人姓名：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:custInfo.CONTACT" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">联系电话：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:custInfo.CONTACT_PHONE" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">居住地址：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:custInfo.HOME_ADDRESS" raw="false">
+				</span>
+				</span>
+			</li> 
+			<li class="li">
+				<span class="label">当前品牌：</span>
+				<span class="text">
+					<input   jwcid="@Insert"   value="ognl:pageutil.getStaticValue('TD_S_BRAND', 'BRAND_CODE', 'BRAND', userInfo.BRAND_CODE)"   />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">开户时间：</span>
+				<span class="text">
+					<input  jwcid="@Insert"   value="ognl:userInfo.OPEN_DATE"   />
+				</span>
+			</li>
+			
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">跨区用户资料</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8"   jwcid="CustCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">跨区手机号码：</span></span>
+				<span class="e_elements" id="SERIAL_NUMBER_INPUT">
+				<button type="button" class="e_button-right" onclick="checkUserInfo();"><i class="e_ico-check"></i><span>校验</span></button>
+				<span class="e_input e_input-left" ><span>
+					<input jwcid="@TextField" id="cond_MOBILENUM" name="cond_MOBILENUM" value="ognl:condition.cond_MOBILENUM" 
+				     desc="跨区手机号码" nullable = "no"  datatype="mbphone" />
+				</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">客户级别：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_CLASS_LEVEL" name="cond_CLASS_LEVEL" 
+								source="ognl:pageutil.getStaticList('VIPCLUBMEMBER_VIPCLASS')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.RSRV_STR4"
+								titleField="DATA_NAME" nullable="no" desc="客户级别" />
+				</span></span></span>
+			</li>
+			<li class="li" >
+				<span class="label">可兑换积分(M值)：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="cond_SCORE_VALUE" name="cond_SCORE_VALUE" value="ognl:condition.RSRV_STR2" 
+				     desc="积分额" nullable = "no"  />
+				</span></span>
+			</li>
+			<li class="li" >
+				<span class="label">积分类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="cond_SCORE_TYPE_CODE" name="cond_SCORE_TYPE_CODE" 
+								source="ognl:pageutil.getStaticList('SCORE_BRAND')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.RSRV_STR3"
+								titleField="DATA_NAME" nullable="no" desc="积分类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="cond_REMARK" maxlength="100" id ="cond_REMARK" value="ognl:condition.REMARK" desc="备注"/></span></span>
+			</li>
+		</ul> 
+	</div>
+	<!-- 表单 结束 -->
+	<div jwcid="submitPartOne@Part" id="submitPartOne" >
+		<input  id="VALID_FLAG" name="VALID_FLAG" jwcid="@Hidden" value="ognl:userInfo.VALID_FLAG" desc="号码校验标志" />
+	</div>
+	<div jwcid="submitPartTwo@Part" id="submitPartTwo" >
+		<input  id="cond_USER_ID" name="cond_USER_ID"  jwcid="@Hidden" value="ognl:userInfo.USER_ID" desc="用户编码" />
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit"  isReset="true"   area="AuthPart,CustCondPart,submitPartOne,submitPartTwo" element="div"/>
+	<!-- 提交 结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

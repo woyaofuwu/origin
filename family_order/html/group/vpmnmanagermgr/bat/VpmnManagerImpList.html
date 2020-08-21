@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/vpmnmanagermgr/bat/VpmnDispatchList.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<!--div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div-->
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">VPMN客户经理批量导入</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">处理状态：</span>
+				<span class="e_select"><span><span>  
+					<select jwcid="@Select" name="cond_DEAL_STATE" id="cond_DEAL_STATE" 
+						source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CMSIMPORTBAT_DEALSTATE')" 
+						textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_DEAL_STATE" nullable="no" 
+						/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入标志：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_IMPORT_ID" name="cond_IMPORT_ID" jwcid="cond_IMPORT_ID@TextField"  
+						value="ognl:condition.cond_IMPORT_ID" datatype="text" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入文件名：</span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_IMPORT_FILENAME" name="cond_IMPORT_FILENAME" jwcid="cond_IMPORT_FILENAME@TextField"  
+						value="ognl:condition.cond_IMPORT_FILENAME" datatype="text" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入起始时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_START_DATE@DateField" name="cond_START_DATE" value="ognl:condition.cond_START_DATE" 
+						format="yyyy-MM-dd" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">导入终止时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_END_DATE@DateField" name="cond_END_DATE" value="ognl:condition.cond_END_DATE" 
+						format="yyyy-MM-dd" />
+				</span></span>
+			</li> 
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="qryVpmnManagerImp();" listener="ognl:listeners.qryVpmnManagerImp"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>		
+	</div>
+	</div>
+	<!--信息展示区-->
+	<div jwcid="RefreshPart@Part">
+	<div class="fctTop e_clear">
+		<div class="fctLeft">
+			<div class="fn">
+				<span jwcid="@Import" name="FILE_ID" ftpSite="groupserv" id="FILE_ID"
+					fileSize="10" fileType="excel" serviceName="9020"
+					config="import/bat/group/VpmnManagerImport.xml"
+					params="IMPORT_TYPE=VPMNMGR"
+					filePath="upload/import"
+					cond="" desc="导入文件"
+					beforeAction="" 
+					action=""
+					/>
+					&nbsp;&nbsp;&nbsp;
+				<span class="e_tip">按模板要求格式，填写好数据，确定后再提交。&nbsp;&nbsp;&nbsp;
+					<a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&filePath=template/bat/group/VpmnManagerImport.xls')">[下载模板]</a>
+				</span>
+			</div>
+		</div> 
+	</div> 
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th>导入标志</th>
+					<th>导入文件名</th>
+					<th>处理状态</th>
+					<th>导入时间</th>
+					<th>导入员工</th>
+					<th>导入部门</th>
+					<th>备注</th>
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+					<td>
+						<a jwcid="@Redirect" source="ognl:info" 
+							importid="ognl:info.IMPORT_ID" 
+							value="ognl:info.IMPORT_ID" onclick="$.popupPageExternal('group.vpmnmanagermgr.bat.VpmnManagerImpEdit', 'queryThisImportInfo', '&IMPORT_ID='+getAttribute('importid'),'本次导入明细',820,650)" raw="true"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.IMPORT_FILENAME" raw="false"/></td>
+					<td>
+						<a jwcid="@Redirect" source="ognl:info" 
+							state="ognl:info.DEAL_STATE" 
+							importid="ognl:info.IMPORT_ID" 
+							isDeal="0"
+							value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CMSIMPORTBAT_DEALSTATE', info.DEAL_STATE)" 
+							onclick="dealDispatch(this)" raw="false"/>
+					</td> 
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.RSRV_DATE15)" raw="false"/></td>	
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.STAFF_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEPART_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+				</tr>  
+			</tbody>
+		</table>
+	</div></div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="RefreshPart" listener="qryVpmnManagerImp"  pageSize="20" needCoun="false" count="ognl:pageCounts"/>
+	<!-- 翻页 结束 -->
+	</div>
+	<!--信息展示区 结束-->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script></script>
+</body>
+</html>

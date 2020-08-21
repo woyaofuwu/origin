@@ -1,0 +1,36 @@
+SELECT A.ORDER_SEQ,
+       A.ORDER_ID,
+       A.ORDER_SUB_ID,
+       A.USER_ID,
+       A.ITEM_ID,
+       -- (SELECT B.ITEM_NAME FROM TD_B_UPMS_GIFT B WHERE b.item_id=a.item_id AND b.state='0') ITEM_NAME,
+       A.ITEM_NUM,
+       A.PROC_STATE,
+       A.ORDER_STATE,
+       A.DELIV_PROVINCE,
+       A.CITY,
+       A.DISTRICT,
+       A.CUS_ADD,
+       A.CUS_TEL,
+       A.CUS_ADDCODE,
+       A.TIME_REQUEST,
+       A.RSRV_STR1,
+       A.RSRV_STR2,
+       A.RSRV_STR3,
+       A.RSRV_STR4,
+       A.RSRV_STR5,
+       A.RSRV_STR6,
+       A.RSRV_STR7,
+       A.RSRV_STR8,
+       A.RSRV_STR9,
+       A.RSRV_STR10,
+       TO_CHAR(A.REG_DATE, 'yyyy-mm-dd hh24:mi:ss') REG_DATE,
+       TO_CHAR(A.UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       A.UPDATE_STAFF_ID,
+       A.UPDATE_DEPART_ID,
+       A.REMARK
+  FROM TF_F_USER_UPMS_ORDER A
+ WHERE 1 = 1
+   AND A.USER_ID = :USER_ID
+   AND A.ORDER_SEQ = :ORDER_SEQ
+ ORDER BY A.UPDATE_TIME DESC, A.ORDER_SEQ DESC

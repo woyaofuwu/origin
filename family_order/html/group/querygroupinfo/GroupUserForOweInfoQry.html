@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>集团产品欠费情况查询</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" src="scripts/group/querygroupinfo/GroupUserForOweInfoQry.js"></script>    
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 提示区域 开始 --> 
+	<div class="c_box" jwcid="refreshHintBar@Part">
+	<!-- 提示 开始 -->
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+      <!-- 提示 结束 --> 
+	</div>
+	<!-- 提示区域 结束 --> 
+			
+	<!-- 区域 开始 -->
+	<div class="c_box" id="pageForm">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">查询条件</div> 
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!-- 表单 开始 -->
+		<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+			<div class="c_form c_form-label-5">
+				<ul class="ul">
+					<li class="li">
+						<span class="label"><span class="e_required">集团归属市县：</span></span>
+                        <span class="e_select"><span><span>
+                            <select name="cond_GRP_CITYCODE" jwcid="@Select" 
+							    textField="DATA_NAME" valueField="DATA_ID" 
+							    source="ognl:pageutil.getStaticList('GRP_USER_FOR_OWE')" 
+							    value="ognl:condition.cond_GRP_CITYCODE" desc="集团归属市县" 
+							     nullable="yes" addDefault="false"/>
+						</span></span></span>
+					</li>
+					<li class="li" id="QryByEcCode">
+						<span class="label" id="ConditionLabel"><span>集团客户编码：</span></span>
+					        <span class="e_input"><span>
+					            <input type="text" id="cond_GROUP_ID" name="cond_GROUP_ID" jwcid="@TextField" 
+					            	value="ognl:condition.cond_GROUP_ID" desc="集团客户编码" maxsize="20" />
+					    </span></span>
+					</li>
+					<li class="li">
+					    <span class="label" id="ConditionLabel"><span>客户经理工号：</span></span>
+					    <span class="e_input"><span>
+					            <input type="text" id="cond_CUST_MANAGER_ID" name="cond_CUST_MANAGER_ID" 
+					            	jwcid="@TextField" value="ognl:condition.cond_CUST_MANAGER_ID" desc="客户经理工号" maxsize="20"/>
+					    </span></span>
+					</li>
+				</ul>
+				
+				<div class="submitPlace"></div>
+				<div class="submit">
+				    <button class="e_button-form" id="bquery" onclick="return qryClick()" >
+				        <i class="e_ico-search"></i><span>查询</span>
+				    </button>
+				</div>
+			</div>
+		</div>
+		<!-- 表单结束 -->
+		
+		<!--信息展示区-->
+		<div class="c_box">
+			<div align="right">
+			<div class="fn">
+				<span jwcid="@Export" id="exportFile" name="exportFile" serviceName="96209" 
+					config="export/querygroupinfo/GroupUserForOweInfoExport.xml"
+					fileName="集团产品欠费情况查询" cond="QueryCondPart"
+					ftpSite="groupserv" beforeAction="" action="" />				
+			</div>
+			</div>
+			<div jwcid="RefreshPart@Part">
+				<!-- 表格 开始 -->
+				<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+				<table>
+					<thead>
+					<tr>
+						<th>集团归属市县</th>
+	                    <th>集团名称</th>
+	                    <th>集团编码</th>
+	                    <th>集团客户经理</th>
+	                    <th>客户经理工号</th>
+	                    <th>集团账户</th>
+	                    <th>集团产品名称</th>
+	                    <th>产品编码</th>
+	                    <th>产品欠费(元)</th>
+	                    <th>产品状态</th>
+	                    <th>欠费起始账期</th>
+	                    <th>最大欠费账期</th>
+					</tr>
+					</thead>  
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',info.CITY_CODE)" raw="false"/></td>
+	                    <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+	                    <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TF_F_CUST_MANAGER_STAFF','CUST_MANAGER_ID','CUST_MANAGER_NAME',info.CUST_MANAGER_ID)"  raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.PRODUCT_OWE/100)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageUtil.getStaticValue('USER_STATE_CODESET',info.PRODUCT_STATE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_START_CYCLE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_END_CYCLE" raw="false"/></td>
+					</tr>  
+					</tbody>
+				</table>
+				</div></div> 
+				<!-- 表格 结束 -->
+				<!-- 翻页 开始 -->
+	    		<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="QueryCondPart" part="RefreshPart"
+	    			 listener="queryInfos"  pageSize="20" needCoun="false" count="ognl:infoCount"/>
+				<!-- 翻页 结束 -->
+	
+			</div>
+		</div>
+		<!--信息展示区 结束-->
+		
+	</div>
+	<!-- 区域 结束 -->
+	
+</div></div>
+</body>
+</html> 

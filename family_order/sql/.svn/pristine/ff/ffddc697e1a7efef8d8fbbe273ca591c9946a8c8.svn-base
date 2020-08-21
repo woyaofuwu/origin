@@ -1,0 +1,7 @@
+UPDATE TF_B_CONSTRUCTION_ADDR
+   SET DEAL_TAG       = :DEAL_TAG,
+	   DEAL_DATE      = TO_DATE(:DEAL_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+       DEAL_STAFF_ID  = :DEAL_STAFF_ID,
+	   RSRV_STR1      = :RSRV_STR1,
+       REMARK         = :REMARK
+ WHERE TRADE_ID = :TRADE_ID

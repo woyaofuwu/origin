@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/changepostinfo/scripts/postrepairinfo.js" ></script>
+</head>
+<body  jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="91" element="div"/>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box" >
+	<div jwcid="PostInfoPart@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" >
+		<ul class="ul">
+			<li class="li" id="postTag" disabled="true">
+				<span class="label">邮寄标志：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="postinfo_POST_TAG" id="postinfo_POST_TAG" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+							source="ognl:pageutil.getStaticList('POSTINFO_POSTTAG')"  value="ognl:oldPostInfo.POST_TAG" desc="邮递标志" disabled="true"/>
+				</span></span></span>
+			</li> 
+			<span id="postMothodDiv" >
+				<li class="li col-3">
+				<span class="label"><span class="e_required">邮寄方式：</span></span>
+				<div class="c_fn">
+					<ul> 
+					<li jwcid="@Foreach" source="ognl:pageutil.getStaticList('REPAIRPOST_POSTTYPESET')" value="ognl:info" element="li">
+					<input jwcid="@Checkbox" value="ognl:info.DATA_ID" name="POST_TYPESET" id="POST_TYPESET"
+						   checked="ognl:(oldPostInfo.POST_TYPESET==null?'no':oldPostInfo.POST_TYPESET).indexOf(info.DATA_ID)==-1?'false':'true'" onclick="setPostTypeChange(this);"/>
+					<span jwcid="@Insert" value="ognl:info.DATA_NAME"/>
+					<input style="display:none"  jwcid="@TextField" name="postinfo_POST_TYPESET" id="postinfo_POST_TYPESET" value="ognl:oldPostInfo.POST_TYPESET" desc="邮寄方式"/>
+					</li>
+				</div>
+			</li>
+
+			</span>
+			<span id="postContentDiv" >
+				<li class="li col-3" id="postContent">
+
+					<span class="label"><span id="span_POST_CONTENT"><span>邮政投递：</span>
+					</span>
+					</span>
+					<div class="c_fn">
+						<ul>
+							<li jwcid="@Foreach" source="ognl:pageutil.getStaticList('REPAIR_POSTTYPE_CONTENT')"value="ognl:info" element="li">
+								<input jwcid="@Checkbox" value="ognl:info.DATA_ID" name="POSTTYPE_CONTENT" id="POSTTYPE_CONTENT"
+									checked="ognl:(oldPostInfo.POSTTYPE_CONTENT==null?'no':oldPostInfo.POSTTYPE_CONTENT).indexOf(info.DATA_ID)==-1?'false':'true'" />
+								<span jwcid="@Insert" value="ognl:info.DATA_NAME" />
+								<input style="display: none" jwcid="@TextField" name="postinfo_POSTTYPE_CONTENT" id="postinfo_POSTTYPE_CONTENT"
+									value="ognl:oldPostInfo.POSTTYPE_CONTENT" desc="邮证投递内容" />
+							</li>
+						</ul>
+					</div>
+				</li> 
+			</span>
+			<span id="emailContentDiv" >
+				<li class="li col-3" id="emailContent" >
+				
+					<span class="label"><span id="span_EMAIL_CONTENT"><span>Email投递：</span></span></span>
+					<div class="c_fn">
+						<ul>
+						<li jwcid="@Foreach" source="ognl:pageutil.getStaticList('EMAILTYPE_CONTENT')" value="ognl:info" element="li">
+						<input jwcid="@Checkbox" value="ognl:info.DATA_ID" name="EMAILTYPE_CONTENT" id="EMAILTYPE_CONTENT"
+							   checked="ognl:(oldPostInfo.EMAILTYPE_CONTENT==null?'no':oldPostInfo.EMAILTYPE_CONTENT).indexOf(info.DATA_ID)==-1?'false':'true'"/>
+						<span jwcid="@Insert" value="ognl:info.DATA_NAME"/>
+						<input style="display:none"  jwcid="@TextField" name="postinfo_EMAILTYPE_CONTENT" id="postinfo_EMAILTYPE_CONTENT" value="ognl:oldPostInfo.EMAILTYPE_CONTENT" desc="EMAIL投递内容"/>
+						</li>
+												
+														
+						</ul>
+	
+					</div>
+				</li>
+			</span>
+			
+			<span id="postInfoDiv" >
+				<li class="li col-2" >
+					<span class="label"><span id="span_address"><span>邮寄地址：</span></span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_POST_ADDRESS" id="postinfo_POST_ADDRESS" value="ognl:oldPostInfo.POST_ADDRESS"  maxsize="128" desc="邮递地址"/></span></span>
+				</li>
+				<li class="li">
+					<span class="label">邮寄邮编：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_POST_CODE" id="postinfo_POST_CODE" value="ognl:oldPostInfo.POST_CODE"  maxsize="6" equsize="6" maxLength="6" datatype="numeric" desc="邮递编码"/></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">邮寄名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_POST_NAME" id="postinfo_POST_NAME" value="ognl:oldPostInfo.POST_NAME" nullable="no" maxsize="48" desc="邮递名称" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_fax"><span>传真电话：</span></span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_FAX_NBR" id="postinfo_FAX_NBR" value="ognl:oldPostInfo.FAX_NBR"  datatype="numeric" minsize="7" maxsize="32" desc="传真电话" onchange="faxChecked()"/></span></span>
+				</li>
+				<li class="li" >
+					<span class="label"><span><span id="span_email">Email：</span></span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_EMAIL" id="postinfo_EMAIL" value="ognl:oldPostInfo.EMAIL"  maxsize="64" datatype="email" desc="Email地址"/></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">补寄月份：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_REPAIR_MONTH" id="postinfo_REPAIR_MONTH" value="ognl:oldPostInfo.REPAIR_MONTH" 
+						  onblur="checkMonth()" nullable="no" maxsize="48" desc="补寄月份" datatype='pinteger'/></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">补寄原因：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="postinfo_REPAIR_REASON" id="postinfo_REPAIR_REASON" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+							source="ognl:pageutil.getStaticList('REPAIR_POST_INFO_REASON')"  desc="补寄原因" />
+				    </span></span></span>
+				</li>
+				
+			</span>
+			
+			<li class="li col-3" id="remark" disabled="true">
+				<span class="label">备注：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="postinfo_REMARK" id="postinfo_REMARK" value="ognl:oldPostInfo.REMARK"  maxsize="100" desc="备注"/></span></span>
+			</li>
+			
+		</ul>
+	</div> 
+	<!-- 表单 结束 -->
+		   <!-- 隐藏数据-->
+                <input id="postinfo_POST_TYPE" type="hidden" name="postinfo_POST_TYPE" style="display:none"/>
+                <input id="postinfo_POST_CONTENT" type="hidden" name="postinfo_POST_CONTENT" style="display:none"/>
+                <input id="postinfo_EMAIL_CONTENT" type="hidden" name="postinfo_EMAIL_CONTENT" style="display:none"/>
+                
+                <input id="OLD_POST_TYPE" type="hidden" name="OLD_POST_TYPE" style="display:none"/>
+                <input id="OLD_EMAIL_TYPE" type="hidden" name="OLD_EMAIL_TYPE" style="display:none"/>
+
+                <!--隐藏数据 结束-->
+	</div> 
+	<!-- 补录信息 开始 -->
+	<div  jwcid="PostRepairPart@Part">
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">补录信息</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-5"><div class="c_table">
+			<table  jwcid="@Table" name="PostRepairTable" id="PostRepairTable" scroll="true">
+				<thead>
+					<tr>
+						<th col="RSRV_STR4">补寄月份</th>
+						<th  col="PROCESS_TAG">是否已处理</th>
+						<th  col="REMARK">备注</th>
+						<th  col="RSRV_STR2">邮政投递</th>
+						<th  col="RSRV_STR3" >移动E信</th>
+						<th  col="RSRV_DATE1" >登记时间</th>
+						<th  col="RSRV_NUM1" >补寄原因</th>
+						<th  col="RSRV_DATE2">补寄时间</th>					
+					</tr>					
+				</thead>
+			 <tbody  jwcid="@Any" name="repairpart" id="repairpart">
+				<tr jwcid="@Foreach" source="ognl:postRepairInfos" value="ognl:repairInfo" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:repairInfo.RSRV_STR4" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('REPAIR_POST_PROCESS_TAG', repairInfo.PROCESS_TAG)"/></td>
+					<td><span jwcid="@Insert" value="ognl:repairInfo.REMARK" /></td>
+					<td><span jwcid="@Insert" value="ognl:repairInfo.RSRV_STR2" /></td>
+					<td><span jwcid="@Insert" value="ognl:repairInfo.RSRV_STR3" /></td>
+					<td><span jwcid="@Insert" value="ognl:repairInfo.RSRV_DATE1" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('REPAIR_POST_INFO_REASON', repairInfo.RSRV_NUM1)"/></td>
+					<td><span jwcid="@Insert" value="ognl:repairInfo.RSRV_DATE2"/></td>
+				</tr>
+			</tbody>
+				
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+	
+	</div>
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkFinal()" isReset="true" area="AuthPart,PostInfoPart" element="div"/>
+	<!-- 提交 结束 -->
+</div> 
+<!-- 区域 结束 -->
+
+
+</div></div></body>
+</html>

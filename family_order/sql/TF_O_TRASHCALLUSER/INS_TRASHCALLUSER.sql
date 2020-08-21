@@ -1,0 +1,2 @@
+INSERT INTO tf_o_trashcalluser(serial_number,state,start_date,end_date,rsrv_str1,rsrv_str2,rsrv_str3,update_staff_id,update_depart_id,update_time)
+ VALUES(:SERIAL_NUMBER,:STATE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/billingdelay/script/billingdelay.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">计费延期</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+			<div class="c_space"></div>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required" >
+						<div class="label">开通单订单流水号</div>
+						<div class="value"><input type="text" jwcid="@TextField" id="cond_IBSYSID"  name="cond_IBSYSID" value="ognl:info.IBSYSID"  desc="开通单订单流水号" /></div>
+					</li>
+					<li class="link" ontap="showPopup('qryPopup2','chooseOfferItem');">
+						<div class="label">集团编码</div>
+						<div class="value"><span class="e_mix">
+						<input type="text" jwcid="@TextField" id="cond_GROUP_ID"  name="cond_GROUP_ID" value="ognl:info.GROUP_ID"  desc="集团编码" />
+						<span class="e_ico-check"></span>
+						</span>
+						</div>
+					</li>
+					<li class="link required" >
+						<div class="label"></div>
+						<div class="value" onclick="qryInfos();">
+							<span class="e_group">
+								<span class="e_grouplife">
+									<button class="e_button-blue">
+										<span class="e_ico-search"></span>
+										<span>查询</span>
+									</button>
+								</span>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div id="OrderPart">
+			<div class="c_title">
+				<div class="text">订单级信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+					<ul>
+					<li class="link required">
+						<div class="label">主题</div>
+						<div class="value">
+							<input jwcid="@TextField" name="pattr_TITLE" id="pattr_TITLE" value="ognl:info.TITLE" nullable="no" desc="主题" "/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">工单紧急程度</div>
+						<div class="value">
+							<input jwcid="@Select" name="pattr_URGENCY_LEVEL" id="pattr_URGENCY_LEVEL" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('URGENCY_LEVEL')" textField="DATA_NAME" valueField="DATA_ID" 
+							value="ognl:info.URGENCY_LEVEL" nullable="no" desc="工单紧急程度" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			</div>
+			
+			<div class="c_title">
+				<div class="text">计费方式信息</div>
+			</div>
+			
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div jwcid="BillingMode@Part">
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" >
+				<ul>
+					<li class="link required">
+						<div class="label">工单提交时间</div>
+						<div class="value"><input jwcid="@TextField" id="ACCEPT_DATE" name="ACCEPT_DATE" readonly="readnoly" value="ognl:bilingData.ACCEPT_DATE"/></div>
+					</li>
+					<li class="link required" style="display:none">
+						<div class="label">当前计费时间</div>
+						<div class="value"><input jwcid="@TextField" id="END_DATE" name="END_DATE" readonly="readnoly" value="ognl:bilingData.END_DATE"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">变更计费方式</div>
+						<div class="value"><select id="NEW_ACCEPTTANCE_PERIOD" name="NEW_ACCEPTTANCE_PERIOD" jwcid="@Select" source="ognl:pageutil.getStaticList('EOP_BILLING_DELAY')" textField="DATA_NAME" valueField="DATA_ID" onchange="changeAccpt();"/></div>
+					</li>
+				</ul>
+			</div>
+			<input type="hidden" jwcid="@Any" id="START_DATE" name="START_DATE" value="ognl:bilingData.START_DATE"/>
+			<input type="hidden" jwcid="@Any" id="pattr_IBSYSID" name="pattr_IBSYSID" value="ognl:bilingData.IBSYSID" desc="开通单订单号"/>
+			<input type="hidden" jwcid="@Any" id="pattr_BUSI_CODE" name="pattr_BUSI_CODE" value="ognl:bilingData.BUSI_CODE"/>
+			<input type="hidden" jwcid="@Any" id="pattr_PRODUCT_NAME" name="pattr_PRODUCT_NAME" value="ognl:bilingData.PRODUCT_NAME"/>
+			<input type="hidden" jwcid="@Any" id="MONTH_INTERVAL" name="MONTH_INTERVAL" value="ognl:bilingData.MONTH_INTERVAL"/>
+			</div>
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">客户信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_box c_box-border" jwcid="GroupInfo@Part">
+				<!-- 参数 开始 -->
+				<div class="c_param c_param-col-3 c_param-phone-col-1 c_param-label-11">
+					<ul>
+						<li>
+							<span class="label">客户级别：</span>
+							<span class="value" id="CLASS_NAME" name="CLASS_NAME" jwcid="@Insert" value="ognl:groupInfo.CLASS_NAME"/>
+						</li>
+						<li>
+							<span class="label">客户地址：</span>
+							<span class="value" id="GROUP_ADDR" name="GROUP_ADDR" jwcid="@Insert" value="ognl:groupInfo.GROUP_ADDR"/>
+						</li>
+						<li>
+							<span class="label">客户所属市县：</span>
+							<span class="value" id="CITY_NAME" name="CITY_NAME" jwcid="@Insert" value="ognl:groupInfo.CITY_NAME"/>
+						</li>
+						<li>
+							<span class="label">所属行业：</span>
+							<span class="value" id="CALLING_TYPE_NAME" name="CALLING_TYPE_NAME" jwcid="@Insert" value="ognl:groupInfo.CALLING_TYPE_NAME"/>
+						</li>
+						<li>
+							<span class="label">子行业类别：</span>
+							<span class="value" id="SUB_CALLING_TYPE_NAME" name="SUB_CALLING_TYPE_NAME" jwcid="@Insert" value="ognl:groupInfo.SUB_CALLING_TYPE_NAME"/>
+						</li>
+						<li>
+							<span class="label">客户邮箱：</span>
+							<span class="value" id="EMAIL" name="EMAIL" jwcid="@Insert" value="ognl:groupInfo.EMAIL"/>
+						</li>
+						<li>
+							<span class="label">客户邮编：</span>
+							<span class="value" id="POST_CODE" name="POST_CODE" jwcid="@Insert" value="ognl:groupInfo.POST_CODE"/>
+						</li>
+						<li>
+							<span class="label">客户联系人：</span>
+							<span class="value" id="RSRV_STR2" name="RSRV_STR2" jwcid="@Insert" value="ognl:groupInfo.RSRV_STR2"/>
+						</li>
+						<li>
+							<span class="label">联系人电话：</span>
+							<span class="value" id="RSRV_STR7" name="RSRV_STR7" jwcid="@Insert" value="ognl:groupInfo.RSRV_STR7"/>
+						</li>
+					</ul>
+				</div>
+				<input type="hidden" jwcid="@Any" id="CUST_NAME" name="CUST_NAME" value="ognl:groupInfo.CUST_NAME"/>
+				<input type="hidden" jwcid="@Any" id="GROUP_ID" name="GROUP_ID" value="ognl:groupInfo.GROUP_ID"/>
+			</div>
+			<!-- 表单 结束 -->
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">延期计费历史记录</div>
+			</div>
+			<!-- 标题 结束 -->
+			<div jwcid="oldBilingInfo@Part">
+			<div class="l_queryResult">
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<div class="c_box c_box-border">
+					<!-- 参数 开始 -->
+					<div class="c_table">
+					<table jwcid="@Table" name="myTable2">
+						<thead>
+							<tr>
+								<th class="e_center" col="OPEN_IBSYSID">开通订单号</th>
+								<th class="e_center" col="IBSYSID">延期订单号</th>
+								<th class="e_center" col="NEW_ACCEPTTANCE_PERIOD">延期方式</th>
+								<th class="e_center" col="PRODUCT_ID">产品编码</th>
+								<th class="e_center" col="PRODUCT_NAME">产品名称</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:oldBilingDatas" value="ognl:oldBilingData" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+								productNo="ognl:oldBilingData.PRODUCTNO" ibsysid="ognl:oldBilingData.IBSYSID" userid="ognl:oldBilingData.USER_ID">
+								
+								<td class="e_center"><span jwcid="@Insert" value="ognl:oldBilingData.OPEN_IBSYSID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:oldBilingData.IBSYSID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:oldBilingData.NEW_ACCEPTTANCE_PERIOD"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:oldBilingData.PRODUCT_ID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:oldBilingData.PRODUCT_NAME"　raw="false"/></td>
+							</tr>
+						</tbody>
+						</table>
+				</div>
+				</div>
+									
+			</div>
+			<div class="l_queryMsg" jwcid="@Conditional" condition="ognl:oldBilingDatas == null || oldBilingDatas.size() == 0">
+			<!-- 无数据提示 开始 -->
+			<div class="c_msg">
+				<div class="wrapper">
+					<div class="emote"></div>
+					<div class="info">
+						<div class="text">
+							<div class="title">无数据</div>
+							<div class="content">未查询到相关数据</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 无数据提示 结束 -->
+			</div>
+			</div>
+			</div>
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">专线信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div jwcid="LineInfo@Part">
+			<div class="l_queryResult">
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<div class="c_box c_box-border">
+					<!-- 参数 开始 -->
+					<div class="c_table">
+					<table jwcid="myTable1@Table" name="myTable1">
+						<thead>
+							<tr>
+								<th class="e_center">
+									<input type="checkbox" id="checkbox"  name="checkbox" ontap="checkedAll('TRADES', this.checked)" class="e_checkbox"/>			  
+								</th>
+								<th class="e_center" col="LINE_STATE">专线状态</th>
+								<th class="e_center" col="END_DATE">当前计费时间</th>
+								<th class="e_center" col="PRODUCT_ID">产品编码</th>
+								<th class="e_center" col="PRODUCT_NAME">产品名称</th>
+								<th class="e_center" col="IBSYSID">订单号</th>
+								<th class="e_center" col="PRODUCTNO">专线实例号</th>
+								<th class="e_center" col="BIZSECURITYLV">业务保障等级</th>
+								<th class="e_center" col="TRADENAME">专线名称</th>
+								<th class="e_center" col="PORTACONTACT">A端用户技术联系人</th>
+								<th class="e_center" col="PORTACONTACTPHONE">A端用户技术联系人电话</th>
+								<th class="e_center" col="USER_ID" style="display:none">用户编码</th>
+							</tr>
+						</thead>
+						<tbody id="myTbody">
+							<tr jwcid="@Foreach" source="ognl:pattrs" value="ognl:pattr" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+								productNo="ognl:pattr.PRODUCTNO" ibsysid="ognl:pattr.IBSYSID" userid="ognl:pattr.USER_ID">
+					 			<td class="e_center" >
+  					 				<input  jwcid="@Checkbox" type="checkbox"  id="TRADES" name="TRADES"  disabled="ognl:pattr.IS_SEL==0? 'false':'true'"
+  					 				PRODUCTNO="ognl:pattr.PRODUCTNO" USERID="ognl:pattr.USER_ID" />	
+								</td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.LINE_STATE"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.END_DATE"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.PRODUCT_ID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.PRODUCT_NAME"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.IBSYSID"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.PRODUCTNO"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.BIZSECURITYLV"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.TRADENAME"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.PORTACONTACT"　raw="false"/></td>
+								<td class="e_center"><span jwcid="@Insert" value="ognl:pattr.PORTACONTACTPHONE"　raw="false"/></td>
+								<td class="e_center" style="display:none"><span jwcid="@Insert" value="ognl:pattr.USER_ID"　raw="false"/></td>
+							</tr>
+						</tbody>
+						</table>
+				</div>
+				</div>
+									
+			</div>
+			<div class="l_queryMsg" jwcid="@Conditional" condition="ognl:pattrs == null || pattrs.size() == 0">
+			<!-- 无数据提示 开始 -->
+			<div class="c_msg">
+				<div class="wrapper">
+					<div class="emote"></div>
+					<div class="info">
+						<div class="text">
+							<div class="title">暂时没有数据</div>
+							<div class="content">请输入查询条件</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 无数据提示 结束 -->
+			</div>
+			</div>
+			</div>
+			
+			<div id="FILE_PART" style="display:none">
+			<div class="c_title">
+				<div class="text">附件</div>
+			</div>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" >
+				<ul>
+					<li class="link required">
+						<div class="label">计费延期审核文件</div>
+						<div class="value"><span id="simpleupload" name="simpleupload" jwcid="@SimpleUpload" ftpCode="eosdata" filePath="EOP/other"/></div>
+						<span style="display:none" jwcid="@Any" id="uploadDate"></span>
+					</li>
+				</ul>
+			</div>
+			</div>
+			
+			<!-- 表单 结束 -->
+			<div jwcid="busiInfo@Part">
+			<div style="display:none" id="EOS_COMMON_DATA"><span jwcid="@Insert" value="ognl:info.EOS_COMMON_DATA" desc="url请求信息"/></div>
+			<div style="display:none" id="EOS_BUSI_DATA"><span jwcid="@Insert" value="ognl:busiInfo.EOS_BUSI_DATA" desc="流程信息"/></div>
+			</div>
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy" onclick="$.nav.close();">取消</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" onclick="submit();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+	</div>
+	<!-- 滚动 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" id="qryPopup2" name="qryPopup2" class="c_popup c_popup-fixed">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="chooseOfferItem">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);">查询工单</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="qryInfo@Part" class="l_padding">
+					<div class="c_list c_list-line c_list-border">
+						<ul>
+							<li class="link required">
+								<div class="label">集团编码：</div>
+								<div class="value"><input id="cond2_GROUP_ID" name="cond2_GROUP_ID" jwcid="@TextField" desc="集团编码"/></div>
+							</li>
+							<li class="link">
+								<div class="label">开始时间：</div>
+								<div class="value"><input id="cond2_START_DATE" name="cond2_START_DATE" jwcid="@DateField" dropDown="true" value="" format="yyyy-MM-dd" desc="开始时间"/></div>
+							</li>
+							<li class="link">
+								<div class="label">结束时间：</div>
+								<div class="value"><input id="cond2_END_DATE" name="cond2_END_DATE" jwcid="@DateField" dropDown="true" value="" format="yyyy-MM-dd" desc="结束时间"/></div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="showSubscribeList();">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_popup c_popup-full" jwcid="@Popup" name="qryPopup1" id="qryPopup1">
+				<div jwcid="SubscribeInfo@Part" class="c_popupGroup">
+					<div class="c_popupItem" id="moreSubscribe">
+						<div class="c_header">
+							<div class="back" ontap="hidePopup(this)">返回</div>
+						</div>
+						
+						<div class="c_scroll c_scroll-float c_scroll-header">
+						<div class="l_padding l_padding-u">
+							<div class="c_table">
+						<table name="SubscribeTable" class="c_table c_table-checkbox" jwcid="@Table">
+							<thead>
+								<tr>
+				                	<th class="e_center">工单流水号</th>
+				                    <th class="e_center">集团编码</th>
+				                    <th class="e_center">工单主题</th>
+				                    <th class="e_center">工单紧急程度</th>
+				                    <th class="e_center">产品编码</th>
+				                    <th class="e_center">产品名称</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:subscribeDatas" value="ognl:subscribeData" element="tr">
+									<td class="e_center" align="center"><span jwcid="subscribeIBSYSID@Redirect" value="ognl:subscribeData.IBSYSID" onclick="setSubscribeReturnValue(this);" ibsysid="ognl:subscribeData.IBSYSID" raw="false" groupid="ognl:subscribeData.GROUP_ID" ></span></td>
+									<td class="e_center"><span jwcid="subscribeGROUP_ID@Insert" value="ognl:subscribeData.GROUP_ID" raw="false"></span></td>
+									<td class="e_center"><span jwcid="subscribeRSRV_STR4@Insert" value="ognl:subscribeData.RSRV_STR4"  raw="false"></span></td>
+									<td class="e_center"><span jwcid="subscribeRSRV_STR3@Insert" value="ognl:subscribeData.RSRV_STR3"  raw="false"></span></td>	
+									<td class="e_center"><span jwcid="subscribePRODUCT_ID@Insert" value="ognl:subscribeData.PRODUCT_ID"  raw="false"></span></td>
+									<td class="e_center"><span jwcid="subscribePRODUCT_NAME@Insert" value="ognl:subscribeData.PRODUCT_NAME"  raw="false"></span></td>
+								</tr>
+							</tbody>
+						</table>
+						</div>	
+						</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	<script>
+		//Wade.setRatio();
+		//window["UI-popup01"] = new Wade.Popup("UI-popup01");
+		//window["UI-popup02"] = new Wade.Popup("UI-popup02");
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo);
+		}
+	</script>
+
+</body>
+</html>

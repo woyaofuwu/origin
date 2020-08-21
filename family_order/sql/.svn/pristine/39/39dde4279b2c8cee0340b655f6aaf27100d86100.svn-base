@@ -1,0 +1,14 @@
+SELECT '302' INFO_CODE,
+       DECODE(DISCNT_CODE,
+              '1237',
+              '1',
+              '1238',
+              '2') INFO_VALUE
+  FROM TF_F_USER_DISCNT T
+ WHERE T.USER_ID = :USER_ID
+   AND DISCNT_CODE IN ('1237', '1238')
+   AND T.START_DATE =
+       (SELECT MAX(START_DATE) START_DATE
+          FROM TF_F_USER_DISCNT T
+         WHERE T.USER_ID = :USER_ID
+           AND DISCNT_CODE IN ('1237', '1238'))

@@ -1,0 +1,2 @@
+INSERT INTO tf_o_trashmsguser(serial_number,id_type,cust_type,state_code,start_date,end_date,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(:SERIAL_NUMBER,:ID_TYPE,:CUST_TYPE,:STATE_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

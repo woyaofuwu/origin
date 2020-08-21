@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<title>有价卡退卡</title>
+	<script jwcid="@Script" src="iorder/person/valuecard/scripts/valuecard.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+
+			<!-- 认证 开始 -->
+			<div jwcid="AuthPart@icsserv:Auth" tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="419" element="div"></div>
+			<!-- 认证 结束 -->
+			<!-- 参数列表 开始 -->
+			<div jwcid="UCAViewPart@Part" style="display:none;">
+				<div class="c_form c_form-label-5 c_form-col-2">
+					<ul>
+						<li>
+							<span class="label">客户名称：</span>
+							<span class="e_input">
+								<span>
+									<input jwcid="@TextField" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME" desc="客户名称" />
+								</span>
+							</span>
+						</li>
+						<li>
+							<span class="label">证件类型：</span>
+							<span class="e_input">
+								<span>
+									<input jwcid="@TextField" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)" disabled="true" desc="证件类型" />
+								</span>
+							</span>
+						</li>
+						<li>
+							<span class="label">证件号码：</span>
+							<span class="e_input">
+								<span>
+									<input jwcid="@TextField" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" disabled="true" desc="证件号码" />
+								</span>
+							</span>
+
+						</li>
+						<li>
+							<span class="label">证件地址：</span>
+							<span class="e_input">
+								<span>
+									<input jwcid="@TextField" name="PSPT_ADDR" id="PSPT_ADDR" disabled="true" value="ognl:custInfoView.PSPT_ADDR" desc="证件有效期" />
+								</span>
+							</span>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+			<!-- 参数列表 结束 -->
+		
+			<!-- 区域 结束 -->
+
+
+
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">销售信息</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-border c_form-col-2 c_form-submit-h" jwcid="QueryCondPart@Part">
+				<div class="submit">
+					<button id="addButtom" name="addButtom" class="e_button-blue" onkeyup="if(window.event.keyCode==13){addValueCardGive('B', table2.getData(true));}" onclick="addValueCard('B', table2.getData(true));">
+						<span class="e_ico-import"></span>
+						<span>加入</span>
+					</button>
+				</div>
+				<ul>
+					<li class="link required">
+						<div class="label">起始卡号：</div>
+						<div class="value">
+							<input jwcid="@TextField" id="START_CARD_NO" name="START_CARD_NO" value="ognl:info.PARA_CODE1" enterAction="" desc="起始卡号" maxsize="80" autoComplete="Off" onkeyup="startCardKeyUp()" />
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">截止卡号：</div>
+						<div class="value">
+							<span class="e_mix">
+								<input jwcid="@TextField" id="END_CARD_NO" name="END_CARD_NO" value="ognl:info.PARA_CODE1" enterAction="" desc="截止卡号" maxsize="80" autoComplete="Off" />
+								
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_space"></div>
+			<div jwcid="BasicInfosPart@Part">
+				<table id="table1" jwcid="@Table" name='table1' class="c_table c_table-lite c_table-border c_table-row-3">
+					<thead>
+						<tr>
+							<th>卡号</th>
+							<th>卡类型</th>
+							<th>生产厂家</th>
+							<th>有价卡状态</th>
+							<th>有效日期</th>
+							<th>销售标识</th>
+							<th>归属库存位置</th>
+							<th>入库时间</th>
+							<th>入库员工</th>
+							<th>销售时间</th>
+							<th>销售员工</th>
+							<th>销售金额（元）</th>
+						</tr>
+					</thead>
+					<tbody jwcid="@Any" name="aaaa" id="aaaa">
+						<tr jwcid="@Foreach" source="ognl:basicInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+							<td>
+								<span jwcid="@Insert" value="ognl:info.VALUE_CARD_NO" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_SKU','RES_SKU_ID', 'RES_SKU_NAME',info.RES_KIND_CODE)" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_SUPPLIER','SUPPLIER_NO', 'SUPPLIER_NAME',info.FACTORY_CODE)" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_STATE_DEF',new java.lang.String[]{'RES_TYPE_ID','TABLE_COL','STATE_CODE'}, 'STATE_NAME',new java.lang.String[]{'3','RES_STATE',info.RES_STATE})" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.END_DATE" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SALE_TAG" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.STOCK_ID)" raw="false" />
+							</td>
+
+							<td>
+								<span jwcid="@Insert" value="ognl:info.IN_TIME" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.IN_STAFF_ID)" raw="false" />
+							</td>
+
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SALE_TIME" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.SALE_STAFF_ID)" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SALE_MONEY/100" raw="false" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+			<!-- 表格 结束 -->
+			<!-- 表格 开始 -->
+			<div class="c_space"></div>
+			<div jwcid="SaleInfosPart@Part">
+				<table id="table2" jwcid="@Table" name='table2' class="c_table c_table-lite c_table-border c_table-row-3">
+					<thead>
+						<tr>
+							<th col="RES_KIND_CODE_NAME">卡类型</th>
+							<th col="startCardNo">开始卡号</th>
+							<th col="endCardNo">结束卡号</th>
+							<th col="VALUE_CODE_NAME">卡面值（元）</th>
+							<th col="singlePrice">单价（元）</th>
+							<th col="totalPrice">总价（元）</th>
+							<th col="rowCount">数量</th>
+							<th col="valueCode" style="display:none"> </th>
+							<th col="advise_price" style="display:none"> </th>
+							<th col="activateInfo" style="display:none"> </th>
+							<th col="devicePrice" style="display:none"> </th>
+							<th col="RES_KIND_CODE" style="display:none"> </th>
+							<th col="activeFlag" style="display:none"> </th>
+							<th col="DEL" class="fn">删除</th>
+						</tr>
+					</thead>
+					<tbody jwcid="@Any" name="aaaa" id="aaaa">
+						<tr jwcid="@Foreach" source="ognl:saleInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValueDataSource('res','RES_SKU','RES_SKU_ID', 'RES_SKU_NAME',info.RES_KIND_CODE)" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.startCardNo" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.endCardNo" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.advise_price)/100+'元'" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.singlePrice)" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.totalPrice)" raw="false" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.rowCount" raw="false" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:info.valueCode" raw="false" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:info.advise_price" raw="false" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:info.activateInfo" raw="false" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:info.devicePrice" raw="false" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:info.RES_KIND_CODE" raw="false" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:info.activeFlag" raw="false" />
+							</td>
+							<td class="fn">
+								<span class="e_ico-delete" onclick="deleteRow1(this.parentNode.parentNode.rowIndex, 'B')"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+			<!-- 表格 结束 -->
+			<div class="c_space"></div>
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-s c_list-col-3 c_list-phone-col-1 c_list-line c_list-border" jwcid="paramsPart@Part">
+				<ul>
+					<li class="link required">
+						<div class="label">付款方式</div>
+						<div class="value">
+							<span jwcid="@Select" name="BACK_PAY_MONEY_CODE" id="BACK_PAY_MONEY_CODE" value="ognl:condition.PAY_MONEY_CODE" nullable="no" source="ognl:pageutil.getStaticList('TD_S_PAYMONEY_BACK')" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" desc="付款方式" onchange="">
+							</span>
+						</div>
+					</li>
+					<li class="link merge-2">
+						<div class="label">备注</div>
+						<div class="value">
+							<input type="text" id="remark" name="remark" />
+							<input jwcid="@TextField" type="hidden" id="X_CODING_STR" name="X_CODING_STR" value="X_CODING_STR_VALUE" />
+							<input jwcid="@TextField" type="hidden" id="RES_KIND_CODE" name="RES_KIND_CODE" value="B" />
+							<input jwcid="@TextField" type="hidden" id="IS_DEL" name="IS_DEL" value="false" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始  -->
+			<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="checkBeforeSubmit()" isReset="true" area="AuthPart,UCAViewPart,QueryCondPart,paramsPart" element="div" />
+			<!-- 提交 结束 -->
+		
+			<!-- 区域 结束 -->
+		</div>
+	</div>
+</body>
+
+</html>

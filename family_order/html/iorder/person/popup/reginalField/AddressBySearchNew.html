@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>标准地址查询</title>
+	<script jwcid="@Script" src="iorder/person/popup/reginalField/scripts/addressAdd.js" language="JavaScript"/>
+	<script jwcid="@Script" src="iorder/person/popup/reginalField/scripts/AddressStand.js" language="JavaScript" />
+</head>
+
+<body jwcid="@Body">
+
+<div class="c_scroll">
+	<div class="l_padding">
+		<div id="QueryCond" class="c_list c_list-col-4 c_list-phone-col-1 c_list-s c_list-line c_list-border" style="" >
+			<ul>
+				<li class="link">
+					<div class="label">业务区</div>
+					<div class="value">
+						<span name="AREA_CODE2" jwcid="AREA_CODE2@Select" id="AREA_CODE2"
+					       		source="ognl:pageutil.getStaticList('COP_AREA_CODE')" 
+					       		value="ognl:condition.AREA_CODE1" 
+					       		onchange="setAreaCode(this)"
+					       		textField="DATA_NAME" valueField="DATA_ID"></span>
+					</div>
+				</li>
+				<li class="link merge-3">
+					<div class="label">名称/简称</div>
+					<div class="value">
+						<span id="e_mix" class="e_mix">
+							<input jwcid="addressSearch@Suggest"
+								textField="REGION_NAME"
+								valueField="value"
+								name="addressSearch"
+								id="addressSearch"
+								page="res.popup.AddressQryNew"
+								listener="loadAddressSvc"
+								dynamic="true"
+								searchCode="REGION_NAME"
+								optionEnterAction="addressAdd.optionEnterAction"
+								optionClickAction="addressAdd.optionEnterAction"
+								placeholder="关键字间加“空格”快速查询结果，如“金龙”+空格+“移动”+“10层”" />
+							<button type="button" class="e_button-blue" ontap="ajaxSubmitQry('','queryReginalsAll','&AREA_CODE='+$('#AREA_CODE2').val()+'&REGION_NAME='+$('#addressSearch').val(),'DataTablePart');"><span class="e_ico-search"></span><span>查询</span></button>
+							<button type="button" class="e_button-green" ontap="addressTreeSelect();"><i class="e_ico-search"></i><span>树状地址查询</span></button> 
+						</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<!-- 表格 开始 -->
+		<div class="c_title">
+			<div class="text">列表浏览区</div>
+		</div>
+	 	<div jwcid="DataTablePart@Part" optimize="true">
+ 			<input jwcid="cond_NUM@TextField" name="cond_NUM" value="ognl:condition.DATACOUNT" encode="false" datatype="text" style="display:none"/>
+			<table name="mytable" class="c_table c_table-border c_table-hasGrid c_table-row-10" jwcid="@Table">
+				<thead>
+	  				<tr>
+	  					<th style="display:none">设备ID</th>
+	  					<th>宽带制式</th>	  	
+						<th>地址名称</th>
+						<th>是否交维</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" name="REGION_LINE" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"  
+						REGION_NAME="ognl:info.REGION_NAME" DEVICE_ID="ognl:info.DEVICE_ID" REGION_SEL="1" ontap ="setEditPartDate(this);">
+				  		<td style="display:none"><span jwcid="@Insert" value="ognl:info.DEVICE_ID" raw="false"/></td>
+				  		<td class="e_center" style="width:100px"><span jwcid="@Insert" value="ognl:info.OPEN_TYPE" raw="false"/></td>
+				  		<td><span jwcid="@Insert" value="ognl:info.REGION_NAME" raw="false"/></td>
+				  		<td><span jwcid="@Insert" value="ognl:info.IS_MAINTAIN" raw="false"/></td>	
+           			</tr>
+           			<span jwcid="@Conditional" condition="ognl:count == 0">
+     						<tr style="color:red"><td style="width:100px"></td><td rowspan="2" align="center"> 该地址没有开通宽带的能力,请确认!</td></tr>
+     	      			</span>
+				</tbody>
+			</table>
+			<div jwcid="NavBar@NavBar" name="ReginalsNav" cond="QueryCond,ExtraField" part="DataTablePart" listener="queryReginalsAll" count="ognl:count"/>
+			<div id="ExtraField" style="display:none">
+				<input name="tempCount" jwcid="tempCount@Hidden" value="ognl:condition.tempCount" />
+				<input name="REGION_NAME" jwcid="REGION_NAME@Hidden" value="ognl:condition.REGION_NAME" />
+			</div>
+		</div>
+					
+	</div>
+</div>	    
+<div jwcid="@Popup"  name="topSetBoxInfopopup" id="topSetBoxInfopopup">
+	<div class="c_popupGroup">
+		<div id="topSetBoxInfopopup_item" class="c_popupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">业务能力</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding">
+					<div id="editPart" jwcid="editPart@Part" optimize="true">
+						<div class="c_list">
+							<ul>
+								<input class="e_input" type="text" name="ROWCOUNT" jwcid="ROWCOUNT@TextField" value="ognl:condition.ROWCOUNT" readOnly=true style="display:none"/>
+								<li class="link" jwcid="@Foreach" source="ognl:infoss" value="ognl:info" element="li" index="ognl:rowIndex">		             
+									<div class="main">
+										<div class="content content-auto">
+											<div class="c_param">
+												<ul>
+													<li>
+														<span class="label">宽带制式：</span>
+														<span jwcid="@Insert" value="ognl:info.OPEN_TYPE" raw="false"/>
+													</li>
+													<li>
+														<span class="label">总端口数：</span>
+														<span jwcid="@Insert" value="ognl:info.CAPACITY" raw="false"/>
+													</li>
+													<li>
+														<span class="label">可用端口：</span>
+														<span jwcid="@Insert" value="ognl:info.CAPACITY_CANUSED" raw="false"/>
+													</li>
+													<li>
+														<span class="label">设备名称：</span>
+														<span jwcid="@Insert" value="ognl:info.DEVICE_NAME" raw="false"/>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>				
+		    
+</body>
+    <script type="text/javascript" language="javascript">
+    $(document).ready(function(){
+    	//	$.Search.get("addressSearch").setParams("&AREA_CODE="+$("#AREA_CODE2").val());
+    		$("#e_mix span").find("button").remove();
+    		$("#addressSearch").change(function(e, text, val){
+//    			var serviceName = $("#Ul_Search_addressSearch li[class=focus]").attr("REGION_NAME");
+//    			$("#addressSearch").val(serviceName);
+    			var serviceName = $("#addressSearch").val();
+//    			$("#Div_Search_addressSearch").css("visibility","hidden");
+    			ajaxSubmit(this,'queryReginalByRegional','&REGION_NAME='+serviceName,'DataTablePart',function(data){
+//    				$("tr[REGION_SEL]").addClass("on");
+    			},null,null);
+    			
+    			ajaxSubmit(this,'queryDeviceByReginal','&REGION_NAME='+serviceName,'editPart',null,null,null);
+    		});
+    	});
+	</script>
+</html>

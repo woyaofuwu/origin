@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>专线解挂</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/hangworkform/script/HangWorkForm.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="c_header e_show-phone">
+		<div class="back">查询模版</div>
+		<div class="fn">
+			<span ontap="showPopup('qryPopup','qryPopupItem')" class="e_ico-search"></span>
+			<span class="e_ico-menu" x-wade-float="fnLayer" ontap="toggleFloatLayer('fnLayer','block')"></span>
+			
+		</div>
+	</div>
+	<div class="l_query l_query-submit"><!--  class="l_query l_query-submit" -->
+		<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">专线解挂查询</div>
+				</div>
+				<div class="right">
+					
+					<div class="e_space"></div>
+					<!--<button class="e_button-blue" onclick="LayoutWorkForm();"><span class="e_ico-search"></span><span>挂起查询</span></button>
+					<span class="e_space"></span>
+					<button class="e_button-blue" onclick="ExplanationWorkForm();"><span class="e_ico-search"></span><span>解挂查询</span></button> -->
+					<span class="e_space"></span>
+					<button class="e_button-blue" ontap="showPopup('qryPopup','qryPopupItem',true)"><span>查询</span><span class="e_ico-next"></span></button>
+					
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+		<div class="e_space"></div>
+		<div class="l_queryResult">
+			<!-- 表格 开始 -->
+			<div name="myScroller" jwcid="@Scroller" vScrollbar="true" bounce="true">
+				<div class="c_table c_table-checkbox" id="refreshtable" jwcid="refreshtable@Part">
+					<table jwcid="@Table" name="myTable" class="c_table c_table-row-3"  >
+						<thead>
+							<tr>
+								<th><input type="checkbox" onclick="checkedOther('monitorids');" /></th>
+								<th>业务类型</th>
+					  			<th>产品编码名称</th>
+								<th>专线实例号</th>
+								<th>订单号</th>
+								<th>集团客户编号</th>
+								<th>集团客户名称</th>
+								<th>专线名称</th>
+								<th>业务范围</th>
+								<th>挂起单位</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><input jwcid="@Checkbox" id="monitorids" name="monitorids" SUBSCRIBE_ID="ognl:info.SUBSCRIBE_ID" IBSYSID="ognl:info.PRODUCT_NO" value="ognl:info.PRODUCT_NO+'_'+(info.BIZRANGECITY==null?'0':info.BIZRANGECITY)+'_'+info.CITYNAME" BIZRANGECITY="ognl:info.BIZRANGECITY==null?'0':info.BIZRANGECITY" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.BUSI_NAME" raw="false"/></td>
+		                        <td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+		                        <td><span jwcid="@Insert" value="ognl:info.PRODUCT_NO" raw="false"/></td>
+		                        <td><span jwcid="@Insert" value="ognl:info.SERIALNO" raw="false"/></td>
+		                        <td><span jwcid="@Insert" value="ognl:info.CUSTOM_NO" raw="false"/></td>
+		                        <td><span jwcid="@Insert" value="ognl:info.CUSTOM_NAME" raw="false"/></td>
+		                        <td><span jwcid="@Insert" value="ognl:info.TRADE_NAME" raw="false"/></td>
+		                      	<td><span jwcid="@Insert" value="ognl:info.BIZ_RANGE" raw="false"/></td>
+		                      	<td><span jwcid="@Insert" value="ognl:info.CITYNAME" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div></div>
+			</div>
+		<!-- 表格 结束 -->
+		<div class="l_queryMsg" id="queryMsg">
+			<!-- 无数据提示 开始 -->
+			<div class="c_msg">
+				<div class="wrapper">
+					<div class="emote"></div>
+					<div class="info">
+						<div class="text">
+							<div class="title">暂时没有数据</div>
+							<div class="content">请输入查询条件</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 无数据提示 结束 -->
+		</div>
+		<div class="c_space"></div>
+		<div class="l_querySubmit" style="width:auto; left:0.71em; right:0.71em; margin-left:0; text-align:center;" jwcid="querySubmit@Part"><!--  class="l_querySubmit" -->
+			<div class="c_list c_list-line c_list-border c_list-col-3  e_left ">
+				<ul>
+					<li class="link required">
+						<div class="label">申请人联系电话</div>
+						<div class="value"><input type="text"  jwcid="@TextField" id="LINK_PHONE_CODE" name="LINK_PHONE_CODE" value="ognl:condition.LINK_PHONE_CODE" nullable="no" desc="申请人联系电话"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">申请人姓名</div>
+						<div class="value"><input type="text"  jwcid="@TextField" id="LINK_NAME" name="LINK_NAME" value="ognl:condition.LINK_NAME" nullable="no" desc="申请人姓名"/></div>
+					</li>
+					<!-- <li class="link required" id="cond_HANG_DAT">
+						<div class="label">延长时间(天)</div>
+						<div class="value"><input type="text" jwcid="@TextField" id="HANG_DAT" name="HANG_DAT" value="ognl:condition.HANG_DAT"/></div>
+					</li> -->
+				</ul>
+				
+			</div>
+			<!-- 表单 开始 -->
+			<div class="c_list c_list-line c_list-border e_left" id="cond_CONTENT">
+				<ul>
+					<li class="link required">
+						<div class="label">解挂原因</div>
+						<div class="value"><input type="text" jwcid="@TextField"  id="CONTENT" name="CONTENT" value="ognl:condition.CONTENT" nullable="no" desc="解挂原因"/></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- <div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-green">提交</button>
+			</div> -->
+			<div class="c_submit c_submit-center">
+				<button class="e_button-l e_button-r e_button-navy" type="button" ontap="window.reloadNav();">重置</button>
+				<button class="e_button-l e_button-r e_button-green" id="submitButton" type="button" ontap="submit()">提交</button>
+			</div>
+		</div> 
+		
+	</div>
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+					<div class="c_popupGroup">
+						<div class="c_popupItem" id="qryPopupItem">
+							<div class="c_header">
+								<div class="back" onclick="hidePopup(this);">解挂查询</div>
+							</div>
+							<div jwcid="@Scroller" name="ftth"  class="c_scroll c_scroll-float c_scroll-header">
+										<div class="l_padding" jwcid="queryForm@Part">
+											<div class="c_list c_list-line c_list-border">
+												<ul>
+													<!-- <li class="required">
+														<div class="label">操作选项</div>
+														<div class="value">
+															<span class="e_segment e_right">
+																<span idx="0" id="op1" val="1" class="e_segmentOn" onclick="segment('1');" >挂起查询</span>
+																<span idx="1" id="op2" val="2" onclick="segment('2');">解挂查询</span>
+																<input type="hidden" jwcid="@TextField" name="QueryType" id="QueryType" value="1"/>
+																<input  type="text" jwcid="@TextField"  id="HANG_NODE" name="HANG_NODE" value="1"  style="display:none" />
+															</span>
+														</div>
+													</li> -->
+													<li class="link required">
+														<div class="label">订单号</div>
+														<div class="value"><input type="text" jwcid="@TextField" id="cond_IBSYSID"  name="cond_IBSYSID" value="ognl:condition.IBSYSID"  desc="定单流水号" nullable="no" /></div>
+													</li>
+													<li class="link required">
+														<div class="label">集团客户编码</div>
+														<div class="value"><input type="text" jwcid="@TextField" id="cond_GROUPID"  name="cond_GROUPID" value="ognl:condition.GROUPID"  desc="集团客户编码" nullable="no" /></div>
+													</li>
+													<li class="link required">
+														<div class="label">专线实例号</div>
+														<div class="value"><input type="text" jwcid="@TextField" id="cond_PRODUCTNO"  name="cond_PRODUCTNO" value="ognl:condition.PRODUCTNO"  desc="专线实例号" nullable="no" /></div>
+													</li>
+													<li class="link" style="display:none;">
+														<div class="label">订单号</div>
+														<div class="value"><input type="text" jwcid="@TextField" id="cond_SERIALNO"  name="cond_SERIALNO" value="ognl:condition.SERIALNO"  desc="订单号" /></div>
+													</li>
+													<input  type="text" jwcid="@TextField"  id="HANG_NODE" name="HANG_NODE" value="1"  style="display:none" />
+												</ul>
+											</div>
+											<div class="e_space"></div>
+											<div class="c_submit c_submit-full">
+												<button class="e_button-l e_button-r e_button-blue" onclick="LayoutWorkForm();"><span class="e_ico-search"></span><span>查询</span></button>
+											</div>
+										</div>
+							</div>
+		</div>
+		</div>
+		
+	</div>
+	<!-- 弹窗 结束 -->
+	<script>window["qryPopup"] = new Wade.Popup("qryPopup");</script>
+	<!-- 弹窗 结束 -->
+	<script>
+		Wade.setRatio();
+		window["qryPopup"] = new Wade.Popup("qryPopup");
+	</script>
+
+
+
+</body>
+</html>

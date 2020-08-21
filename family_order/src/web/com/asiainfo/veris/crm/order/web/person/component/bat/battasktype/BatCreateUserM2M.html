@@ -1,0 +1,459 @@
+<div class="c_box" jwcid="MustInfoPart@Part">
+
+<div class="c_box">
+	<input jwcid="@Hidden" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:eparchyCode"/>
+	<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value=""/>
+	<input jwcid="@Hidden" name="PRE_FLAG" id="PRE_FLAG" value="ognl:editInfo.PRE_FLAG"/>
+	<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+	<input jwcid="@Hidden" name="CHECK_DEPART_ID" id="CHECK_DEPART_ID" value="ognl:info.CHECK_DEPART_ID"/>
+	<div class="c_title">
+		<div class="text">产品</div>
+		<div class="fn">
+			
+			<button class="l_ml" jwcid="@Button" name="productSelectBtn" id="productSelectBtn" onclick="checkBeforeProduct()">
+				<i class="e_ico-menu"></i><span>产品目录</span>
+			</button>
+		</div>
+	</div>
+
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="ProductTypePart@Part">
+		<ul class="ul">
+			<li class="li"><span class="label">
+			   <span class="e_required">品牌：</span></span> <span class="e_input"><span>
+				  <input jwcid="@TextField" name="BRAND" id="BRAND" 
+				  value="ognl:editInfo.PRODUCT_TYPE_NAME" disabled="true" desc="当前品牌" />
+			   </span></span></li>
+			<li class="li"><span class="label"><span
+					class="e_required">产品类型：</span></span> <span class="e_select"><span><span>
+							<select jwcid="@Select" name="PRODUCT_TYPE_CODE"
+							id="PRODUCT_TYPE_CODE" source="ognl:productTypeList"
+							textField="PRODUCT_TYPE_NAME" valueField="PRODUCT_TYPE_CODE"
+							value="ognl:editInfo.PRODUCT_TYPE_CODE"
+							onchange="productTypeChange()" addDefault="false" desc="当前产品" />
+					</span></span></span></li>
+			<li class="li">
+				<span class="label"><span class="e_required">产品：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PRODUCT_NAME" id="PRODUCT_NAME" value="ognl:editInfo.PRODUCT_NAME" disabled="true"/>
+					</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+
+<div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:49%;" id ="preChoosePart">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+                <div class="c_title">
+					<div class="text">待选区</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 分栏 开始 -->
+				<div class="l_col l_col-close">
+					<div jwcid="offerList@csserv:OfferList" 
+                           element="div" 
+                           categoryId="100000000114,100000000008"></div>
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	    <div class="l_auto">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">已选区</div>
+				</div>
+                <div jwcid="selectedElements@csserv:SelectedElements" 
+                    renderCallSvc="CS.SelectedElementSVC.getUserOpenElements" 
+                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg" 
+                    afterRenderAction="disableElements(data)"
+                    basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                    tradeTypeCode="10"
+                    element="div"></div>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	<!-- 第 2 栏 结束 -->
+	 <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+</div>
+
+<div jwcid="productTree@csserv:ProductSelect" productTypeCode="0000" returnValueId="NEW_PRODUCT_ID" afterAction="afterChangeProduct(productId,productName,brandCode,brandName)" element="div"></div>
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">附加信息</div>
+	</div>
+	
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span class="e_required">客户名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="CUST_NAME" name="CUST_NAME" value="ognl:info.CUST_NAME" nullable="no" rows="1" 
+					desc="客户名称" onchange="batcreateuserpm2m.chkCustName('CUST_NAME')" onblur="batcreateuserpm2m.afterChkCustName('CUST_NAME')"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span>联系电话：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="PHONE" id="PHONE" value="ognl:info.PHONE" mixsize="7" maxLength="18" 
+					  maxsize="32" desc="联系电话"/></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span class="e_required">用户类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="USER_TYPE_CODE" id="USER_TYPE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_B_USERTYPE_M2M')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.USER_TYPE_CODE"
+							desc="用户类型" nullable="no"/>
+				</span></span></span>
+			</li>
+			
+			<li class="li col-1">
+				<span class="label"><span class="e_required">证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+							
+							 source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_S_PASSPORTTYPE_PWLW')"
+                             textField="DATA_NAME"  valueField="DATA_ID"  value="ognl:info.DATA_ID"
+							
+							    
+							
+							
+							desc="证件类型" nullable="no" onchange="batcreateuserpm2m.chkPsptTypeCode('PSPT_TYPE_CODE')"/>
+				</span></span></span>
+			</li>
+			
+			
+			<!-- 
+			source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE','EPARCHY_CODE','0899')"
+			textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE" value="ognl:info.PSPT_TYPE_CODE"
+			-->
+			
+			
+			<li class="li col-1">
+				<span class="label"><span class="e_required" id="span_PSPT_ID">证件号码：</span></span>										
+					<span class="e_input"><span>
+						<input type="text" jwcid=@TextField id="PSPT_ID" name="PSPT_ID" value="ognl:info.PSPT_ID" nullable="no" rows="1" 
+						desc="证件号码" onchange="batcreateuserpm2m.chkPsptId('PSPT_ID')" onblur="batcreateuserpm2m.afterChkPsptId('PSPT_ID')"/>
+					</span></span>									
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_BIRTHDAY">出生日期：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" id="BIRTHDAY" name="BIRTHDAY" value="ognl:info.BIRTHDAY" desc="出生日期" maxName="PSPT_END_DATE"/>
+				</span></span>
+			</li>
+			<li class="li col-2" id="psptAddrDIV">
+				<span class="label"><span class="e_required">证件地址：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="PSPT_ADDR" id="PSPT_ADDR" value="ognl:info.PSPT_ADDR" maxsize="128"
+                      maxLength="128" disabled="false" nullable="no" desc="证件地址" onchange="batcreateuserpm2m.chkPsptAddr('PSPT_ADDR')"/></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span class="e_required">证件有效期：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="PSPT_END_DATE" id="PSPT_END_DATE" value="ognl:info.PSPT_END_DATE" nullable="no" desc="证件有效期" min="ognl:page.pageutil.getSysDate()"/></span>
+                </span>
+			</li>
+			
+			<li class="li col-1" >
+				<span class="label"><span class="e_required">应用行业：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="CALLING_TYPE_CODE" id="CALLING_TYPE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('WLW_APPLY_INDUSTRY')" addDefault="false"
+							textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.CALLING_TYPE_CODE"
+							desc="应用行业" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label">通信地址：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="POST_ADDRESS" id="POST_ADDRESS" value="ognl:info.POST_ADDRESS"
+                      maxLength="128" maxsize="128" desc="通信地址" onchange="batcreateuserpm2m.chkPsptAddr('POST_ADDRESS')"/></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span>邮政编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="POST_CODE" name="POST_CODE" value="ognl:info.POST_CODE" datatype="numeric" equsize="6" desc="邮政编码"/>
+				</span></span>
+			</li>
+			
+		</ul>
+	</div>
+	<div id="enterprisePart" class="c_form c_form-col-3 c_form-label-8" style="display:none">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span id="span_legalperson">法人：</span> </span>
+				<span class="e_input"><span> <input
+							jwcid="@TextField" name="legalperson" value="" desc="法人" onchange="batcreateuserpm2m.verifyEnterpriseCard()" /> </span> </span>
+			</li>			
+			<li class="li">
+				<span class="label"><span id="span_termstartdate">营业开始日期：</span> </span>
+				<span class="e_input"> <span> <input  
+							jwcid="@TextField" name="termstartdate" value="" desc="营业开始日期"  onchange="batcreateuserpm2m.verifyEnterpriseCard()"  
+							 /> </span> </span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_termenddate">营业结束日期：</span> </span>
+				<span class="e_input"> <span> <input  
+							jwcid="@TextField" name="termenddate" value="" desc="营业结束日期"
+							 onchange="batcreateuserpm2m.verifyEnterpriseCard()"  /> 
+							 </span></span>
+			</li>	
+			<li class="li">
+				<span class="label"><span id="span_startdate">成立日期：</span> </span>
+				<span class="e_input"> <span> <input  
+							jwcid="@TextField" name="startdate" value="" desc="成立日期"
+							 onchange="batcreateuserpm2m.verifyEnterpriseCard()"  /> </span> </span>
+			</li>																	
+		</ul>
+	</div>
+	<div id="orgPart" class="c_form c_form-col-3 c_form-label-8" style="display:none">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span id="span_orgtype">机构类型：</span></span>
+				<span class="e_input"><span> <input
+							jwcid="@TextField" name="orgtype" value="" desc="机构类型"  onchange="batcreateuserpm2m.verifyOrgCard()" /> </span> </span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_effectiveDate">有效日期：</span></span>
+				<span class="e_input"> <span> <input  
+							jwcid="@TextField" name="effectiveDate" value="" desc="有效日期"  onchange="batcreateuserpm2m.verifyOrgCard()" 
+							  /> </span> </span>
+			</li>
+			<li class="li">
+				<span class="label"><span id="span_expirationDate">失效日期：</span></span>
+				<span class="e_input"> <span> <input  
+							jwcid="@TextField" name="expirationDate" value="" desc="失效日期" onchange="batcreateuserpm2m.verifyOrgCard()" 
+							  /> </span> </span>
+			</li>									
+		</ul>
+	</div>		
+
+	
+	<!-- 表单 开始 -->
+	<div id="AgentFieldPart" class="c_form c_form-col-3 c_form-label-8">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span id="span_AGENT_CUST_NAME" class="e_required">经办人名称：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="AGENT_CUST_NAME" name="AGENT_CUST_NAME" value="ognl:info.AGENT_CUST_NAME" maxsize="48" 
+					desc="经办人名称" onchange="batcreateuserpm2m.chkCustName('AGENT_CUST_NAME')"
+					onblur="batcreateuserpm2m.afterChkAgentCustName('AGENT_CUST_NAME')"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_AGENT_PSPT_TYPE_CODE" class="e_required">经办人证件类型：</span></span>				
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" id="AGENT_PSPT_TYPE_CODE" name="AGENT_PSPT_TYPE_CODE"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE','EPARCHY_CODE','1090')" 
+								textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE" value="ognl:info.AGENT_PSPT_TYPE_CODE"
+								desc="经办人证件类型" onchange="batcreateuserpm2m.chkPsptTypeCode('AGENT_PSPT_TYPE_CODE')"
+								onblur="batcreateuserpm2m.afterChkAgentPsptTypeCode('AGENT_PSPT_TYPE_CODE')"/>
+				</span></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_AGENT_PSPT_ID" class="e_required">经办人证件号码：</span></span>
+				<span class="e_elements">
+					    <button type="button" class="e_button-right"  id="AGENT_SHOT_IMG" name="ReadCardButton" onclick="batcreateuserpm2m.identification('custInfo_AGENT_PIC_ID','custInfo_AGENT_PIC_STREAM')"><i class="e_ico-check"></i><span>经办人摄像</span></button>               
+						<button type="button" class="e_button-right"  id="SCAN_PSPT2" name="ReadCardButton2" onclick="batcreateuserpm2m.clickScanPspt2()"><i class="e_ico-check"></i><span>扫描</span></button>					
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="AGENT_PSPT_ID" name="AGENT_PSPT_ID" value="ognl:info.AGENT_PSPT_ID" maxsize="32" 
+					desc="经办人证件号码" onchange="batcreateuserpm2m.chkPsptId('AGENT_PSPT_ID')"
+					onblur="batcreateuserpm2m.afterChkAgentPsptId('AGENT_PSPT_ID')"/>
+				</span></span>
+					<input jwcid="@Hidden" id="custInfo_AGENT_PIC_ID" name="custInfo_AGENT_PIC_ID" value="" desc="经办人照片ID"/>						
+					<input jwcid="@Hidden" id="custInfo_AGENT_PIC_STREAM" name="custInfo_AGENT_PIC_STREAM" value="" desc="拍摄经办人人像照片流"/>	
+				</span>
+			</li>
+			<li class="li col-3">
+				<span class="label"><span id="span_AGENT_PSPT_ADDR" class="e_required">经办人证件地址：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="AGENT_PSPT_ADDR" name="AGENT_PSPT_ADDR" value="ognl:info.AGENT_PSPT_ADDR" 
+							maxsize="128" desc="经办人证件地址" onchange="batcreateuserpm2m.chkPsptAddr('AGENT_PSPT_ADDR')"
+							onblur="batcreateuserpm2m.afterChkAgentPsptAddr('AGENT_PSPT_ADDR')"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span id="span_USE">使用人姓名：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="USE" name="USE" value="ognl:info.USE" 
+					 desc="使用人姓名" onchange="batcreateuserpm2m.chkCustName('USE')"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_USE_PSPT_TYPE_CODE">使用人证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="USE_PSPT_TYPE_CODE" id="USE_PSPT_TYPE_CODE" 
+					        source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE','EPARCHY_CODE','1090')" 
+							textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE" value="ognl:info.USE_PSPT_TYPE_CODE" 
+                        	desc="使用人证件类型"  disabled="false"  onchange="batcreateuserpm2m.chkPsptTypeCode('USE_PSPT_TYPE_CODE')"/>
+				</span></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_USE_PSPT_ID">使用人证件号码：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="USE_PSPT_ID" id="USE_PSPT_ID" 
+					  value="ognl:info.USE_PSPT_ID" maxsize="20" maxLength="20"
+                        desc="使用人证件号码"  disabled="false" onchange="batcreateuserpm2m.chkPsptId('USE_PSPT_ID')"/>
+                </span></span>
+			</li>
+			<li class="li col-3">
+				<span class="label"><span id="span_USE_PSPT_ADDR">使用人证件地址：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" 
+				      name="USE_PSPT_ADDR" id="USE_PSPT_ADDR"  value="ognl:info.USE_PSPT_ADDR" 
+					  maxLength="128" maxsize="128" desc="使用人证件地址"  
+					  onchange="batcreateuserpm2m.chkPsptAddr('USE_PSPT_ADDR')" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span id="span_RSRV_STR2" class="e_required">责任人姓名：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="RSRV_STR2" name="RSRV_STR2" value="ognl:info.RSRV_STR2" 
+					 desc="责任人姓名" onchange="batcreateuserpm2m.chkCustName('RSRV_STR2')" nullable="no" />
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_RSRV_STR3" class="e_required">责任人证件类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="RSRV_STR3" name="RSRV_STR3" 
+							source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PASSPORTTYPE','PSPT_TYPE_CODE','PSPT_TYPE','EPARCHY_CODE','1090')" 
+							textField="PSPT_TYPE" valueField="PSPT_TYPE_CODE" value="ognl:info.RSRV_STR3"
+							desc="责任人证件类型" onchange="batcreateuserpm2m.chkPsptTypeCode('RSRV_STR3')" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_RSRV_STR4" class="e_required">责任人证件号码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right"  id="RSRV_STR4_IMG" name="ShotImgButton" onclick="batcreateuserpm2m.identification('custInfo_RSRV_STR4_PIC_ID','custInfo_RSRV_STR4_PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>				
+					<button type="button" class="e_button-right"  id="RSRV_STR4_PSPT" name="ReadCardButton" onclick="batcreateuserpm2m.clickScanPspt4()"><i class="e_ico-check"></i><span>扫描</span></button>							
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="RSRV_STR4" id="RSRV_STR4" 
+						  value="ognl:info.RSRV_STR4" maxsize="20" maxLength="20"
+	                        desc="责任人证件号码"  disabled="false" onchange="batcreateuserpm2m.chkPsptId('RSRV_STR4')" nullable="no" />
+	                </span></span>
+                    <input jwcid="@Hidden" id="custInfo_RSRV_STR4_PIC_ID" name="custInfo_RSRV_STR4_PIC_ID" value="" desc="责任人照片ID"/>						
+					<input jwcid="@Hidden" id="custInfo_RSRV_STR4_PIC_STREAM" name="custInfo_RSRV_STR4_PIC_STREAM" value="" desc="责任人拍摄人像照片流"/>
+					<div style="display:none">
+						<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+					</div>		                
+                </span>
+			</li>
+			<li class="li col-3">
+				<span class="label"><span id="span_RSRV_STR5" class="e_required">责任人证件地址：</span></span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" 
+				      name="RSRV_STR5" id="RSRV_STR5"  value="ognl:info.RSRV_STR5" 
+					  maxLength="128" maxsize="128" desc="责任人证件地址"  
+					  onchange="batcreateuserpm2m.chkPsptAddr('RSRV_STR5')"  nullable="no" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span id="span_PAY_NAME" class="e_required">账户名称：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="PAY_NAME" value="ognl:info.PAY_NAME" 
+							desc="账户名称" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span id="span_PAY_MODE_CODE" class="e_required">账户类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PAY_MODE_CODE" 
+							source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE','REMARK','割接批量导入')" 
+							textField="PAY_MODE" valueField="PAY_MODE_CODE" value="ognl:info.PAY_MODE_CODE"
+							desc="账户类型" nullable="no" onchange="batcreateuserpm2m.checkPayModeCode()"/>
+				</span></span></span>
+			</li>
+			<li class="li col-1" id="ACCTDAYLi">
+				<span class="label"><span id="span_ACCT_DAY" class="e_required">用户结账日：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="ACCT_DAY_YW" name="ACCT_DAY_YW" 
+						source="ognl:info.acctInfoDays"
+						textField="PARAM_NAME" valueField="PARA_CODE1" value="ognl:info.ACCT_DAY" 
+						desc="用户结账日" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li col-1" id="SuperBankCodeLi">
+				<span class="label"><span id="span_SUPER_BANK_CODE">上级银行：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="SUPER_BANK_CODE" 
+							source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')"
+							textField="SUPER_BANK" valueField="SUPER_BANK_CODE" value="ognl:info.SUPER_BANK_CODE"
+							desc="上级银行" onchange="batcreateuserpm2m.checkSuperBankCode()" disabled=true/>
+				</span></span></span>
+			</li>
+			<li class="li col-1" id="BankCodeLi">
+				<span class="label"><span id="span_BANK_CODE">银行名称：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right" id="QryBankBtn" onclick="batcreateuserpm2m.qryBanks()"><i class="e_ico-check"></i><span></span></button>
+					<span class="e_input e_input-left"><span>
+					<input type="text" jwcid="@Any" id="BANK" name="BANK" readOnly="readOnly" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_B_BANK','BANK_CODE','BANK', info.BANK_CODE)" desc="银行名称"/>
+					<input jwcid="@Hidden" id="BANK_CODE" name="BANK_CODE" value="ognl:info.BANK_CODE" desc="银行名称" disabled=true/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li col-1" id="BankAcctNoLi">
+				<span class="label"><span id="span_BANK_ACCT_NO">银行账号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="BANK_ACCT_NO" value="ognl:info.BANK_ACCT_NO" 
+							desc="银行帐号" disabled=true/>
+				</span></span>
+			</li>
+			<!--<li class="li" id="bankAgreementNoLi">
+				<span class="label"><span id="span_BANK_AGREEMENT_NO">银行协议号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="BANK_AGREEMENT_NO" name="BANK_AGREEMENT_NO" value="ognl:info.RSRV_STR6" desc="银行协议号" disabled="true"/>
+				</span></span>
+			</li>-->
+
+		</ul>
+	</div>
+	<!-- 表单 结束 -->	
+		
+	
+	<!-- 表单 开始  -->
+	<div class="c_form c_form-col-3 c_form-label-6">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">用户密码：</span></span>
+				<span class="e_elements">
+				<span class="e_button-right">
+				<div jwcid="PasswordSetPart@csserv:PasswordSet" beforeAction="batcreateuserpm2m.PasswdbeforeAction()" afterAction="batcreateuserpm2m.PasswdafterAction(data)" element="div"/>
+	            </span>
+					<!--button type="button" class="e_button-right" name="addNewPasswd" id="addNewPasswd" onclick="checkAddNewPasswd();"><i class="e_ico-add"></i><span>设置</span></button-->
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@Password" name="USER_PASSWD" id="USER_PASSWD" value="ognl:info.USER_PASSWD" 
+								readonly="true" hidden="true" desc="用户密码" nullable="no"/>
+					</span></span>
+				</span>
+			</li>
+		</ul>
+	</div>			
+	<!-- 表单 结束 -->
+	
+</div>
+</div>

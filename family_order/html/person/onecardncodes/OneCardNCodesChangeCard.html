@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>一卡双号补换卡</title>
+<script jwcid="@Script" src="person/onecardncodes/scripts/onecardncodeschangecard.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+<!-- 认证 开始 -->
+<div jwcid="AuthPart@csserv:Auth"  tradeTypeCode="321"  tradeAction="refreshPartAtferAuth(data)"  element="div"></div>
+<!-- 认证 结束 -->
+<div class="c_form c_form-text c_form-col-2 c_form-label-7" jwcid="userInfoPart@Part"> 
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label">客户名称：</span> 
+				<span class="text" jwcid="@Insert"   value="ognl:custInfo.CUST_NAME" desc="客户名称"/>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"  
+							value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfo.PSPT_TYPE_CODE)"></span>
+			</li>			
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:custInfo.PSPT_ADDR"></span>
+			</li> 
+			<li class="li">
+				<span class="label">产品名称：</span>
+				<!-- <span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+												value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_B_PRODUCT','PRODUCT_ID','PRODUCT_NAME',userInfo.PRODUCT_ID)" ></span> -->
+				<span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+												value="ognl:userInfo.PRODUCT_NAME" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">当前品牌：</span>
+				<input style="display:none" jwcid="@TextField" id="BRAND" name="BRAND" value="ognl:userInfo.BRAND_CODE"/><!-- 2013-7-6 today add --> 
+				<input style="display:none" jwcid="@TextField" id="USERID" name="USERID" value="ognl:userInfo.USER_ID"/><!-- 2013-7-8 today add -->
+				<input style="display:none" jwcid="@TextField" id="PRODUCTID" name="PRODUCTID" value="ognl:userInfo.PRODUCT_ID"/><!-- 2013-7-10 today add -->
+				<!-- <span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+							 value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_S_BRAND','BRAND_CODE','BRAND',userInfo.BRAND_CODE)" ></span> -->
+				<span class="text" jwcid="@Insert" name="CUST_TYPE" id="CUST_TYPE"  
+							 value="ognl:userInfo.BRAND" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">开户时间：</span>
+				<span class="text" jwcid="@Insert"  value="ognl:userInfo.OPEN_DATE" ></span> 
+			</li> 
+			<li class="li">
+				<span class="label">用户状态：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:userInfo.STATE_NAME" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">原SIM卡号：</span>
+				<span class="text" jwcid="@Insert"  id="SIM_CARD_NO_M"  name="SIM_CARD_NO_M" 
+							 value="ognl:resInfo.RES_CODE" ></span>  
+			</li> 
+			<li class="li">
+				<span class="label">原IMSI号：</span>
+				<span class="text" jwcid="@Insert"  
+							 value="ognl:resInfo.IMSI" ></span>  
+			</li>
+			<li class="li">
+				<span class="label">新SIM卡号：</span>				
+				<span class="e_input"><span><input jwcid="@TextField" name="commInfo_NEWRES_CODE" id="commInfo_NEWRES_CODE"  value="ognl:resInfo.NEWRES_CODE"   
+							enterAction="checkNewMSim();"		desc="SIM卡号码" disabled="false" /></span></span>										
+			</li>
+			<li class="li">
+				<span class="label">新IMSI号：</span>				
+				<span class="e_input"><span><input jwcid="@TextField" name="commInfo_IMSI" id="commInfo_IMSI" disabled="true"
+							 value="ognl:resInfo.SIMCARDNO_A" /></span> </span> 
+				<span class="text" jwcid="@TextField" name="commInfo_IMSIBAK" id="commInfo_IMSIBAK" disabled="true" style="display:none"
+							 value="ognl:resInfo.RES_CODE" ></span> 			 
+			</li>
+			<li>   
+			 
+			</li>
+		</ul>
+</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text" jwcid="QueryListPart@Part">副号码客户资料</div>
+	</div>
+	
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-2" jwcid="userInfoPart_newSim@Part" >
+		<ul class="ul">		
+			<li class="li col-2">
+				<span class="label ">副号码：</span> 
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" disabled="true" value="ognl:ouser_info.SERIAL_NUMBER" desc="客户名称"/>
+				<span class="text" jwcid="@TextField" name="f_serial_number" id="f_serial_number"  style="display:none"
+							 value="ognl:ouser_info.SERIAL_NUMBER" ></span>  <!-- today 2013-7-12 add -->
+			</li>
+			<li class="li col-2">
+				<span class="label">客户名称：</span> 
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" disabled="true" value="ognl:ocust_info.CUST_NAME" desc="客户名称"/>
+			</li>
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" disabled="true"
+							value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',ocust_info.PSPT_TYPE_CODE)"></span>
+			</li>
+			<li class="li">
+				<span class="label">证件地址：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" disabled="true"
+							value="ognl:ocust_info.PSPT_ADDR"></span>
+			</li> 
+		<li class="li">
+				<span class="label">产品名称：</span>
+				<!-- <span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+												value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_B_PRODUCT','PRODUCT_ID','PRODUCT_NAME',ouser_info.PRODUCT_ID)" ></span> -->
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+												value="ognl:ouser_info.PRODUCT_NAME" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">当前品牌：</span>
+				<!-- <span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_S_BRAND','BRAND_CODE','BRAND',ouser_info.BRAND_CODE)" ></span> -->
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:ouser_info.BRAND" ></span>
+			</li> 
+			<li class="li">
+				<span class="label">开户时间：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:ouser_info.OPEN_DATE" ></span> 
+			</li> 
+			<li class="li">
+				<span class="label">用户状态：</span>
+				<span class="text" jwcid="@Insert" name="custInfo_CUST_TYPE" id="custInfo_CUST_TYPE" disabled="true"
+							 value="ognl:ouser_info.STATE_NAME" ></span>
+			</li>
+			<li class="li">
+				<span class="label">原SIM卡号：</span>
+				<span class="text" jwcid="@Insert"  id="RES_CODE" 
+							 value="ognl:fresinfo.RES_CODE" ></span>  
+			</li> 					
+			<li class="li">
+				<span class="label">原IMSI号：</span>
+				<span class="text" jwcid="@Insert"  id="IMSI_O" 
+							 value="ognl:fresinfo.IMSI" ></span>  
+			</li>
+			<li class="li">
+				<span class="label">新SIM卡号：</span>				
+				<span class="e_input"><span><input jwcid="@TextField" name="commInfo_SIMNO" id="commInfo_SIMNO" disabled="true"
+							 value="ognl:resInfo.SIMCARDNO_B" /></span> </span> 
+				<span class="text" jwcid="@TextField" name="commInfo_SIMNO1" id="commInfo_SIMNO1" disabled="true" style="display:none"
+							 value="ognl:resInfo.SIMCARDNO_B" ></span> 			 
+			</li>
+			<li class="li">
+				<span class="label">新IMSI号：</span>				
+				<span class="e_input"><span><input jwcid="@TextField" name="commInfo_IMSI1" id="commInfo_IMSI1" disabled="true"
+							 value="ognl:resInfo.IMSI_B" /></span> </span> 
+				<span class="text" jwcid="@TextField" name="commInfo_IMSI1bak" id="commInfo_IMSI1bak" disabled="true" style="display:none"
+							 value="ognl:resInfo.IMSI_B" ></span> 			 
+			</li> 			 
+	<input jwcid="@TextField" name="fDoubleTag" id="fDoubleTag" value="ognl:fresinfo.RES_FDOUBLE_TAG"   style="display:none"  desc="副卡DOUBLETAG标志"/>
+    <input jwcid="@TextField" name="mSimChangeTag" id="mSimChangeTag" value="0"  style="display:none"  desc="主SIM卡改变标志"/>
+    <input jwcid="@TextField" name="fSimChangeTag" id="fSimChangeTag" value="0"  style="display:none" desc="副SIM卡改变标志"/>
+	<input jwcid="@TextField" name="mDoubleTag" id="mDoubleTag"  value="ognl:resInfo.RES_MDOUBLE_TAG"  style="display:none"   desc="主卡DOUBLETAG标志"  />
+	<input jwcid="@TextField" name="tradeTypeCode" id="tradeTypeCode" value="ognl:getParameter('TRADE_TYPE_CODE','321')"  style="display:none"    />		
+	<input jwcid="@TextField" name="KI_A" id="KI_A" value="ognl:resInfo.KI_A"  style="display:none"  desc="kia"/>
+	<input jwcid="@TextField" name="KI_B" id="KI_B" value="ognl:resInfo.KI_B"  style="display:none"  desc="kib"/>
+	
+			
+			<li>   
+			 
+			</li>
+		</ul>
+	</div> 
+	 
+	<!-- 参数列表 结束 -->
+	<!-- 提交 开始 -->
+	<div class="c_submit">
+		<span jwcid="SubmitPart@csserv:CSSubmit" isRender="false"  isReset="true" resetAction="window.location.reload();" listener="onTradeSubmit" refreshPart="" area="userInfoPart_newSim,userInfoPart,AuthPart" element="span"/>
+	</div>
+
+	<!-- 提交 结束-->
+</div>
+<!-- 区域 结束 -->
+
+ 
+
+</div></div>
+</body>
+</html>

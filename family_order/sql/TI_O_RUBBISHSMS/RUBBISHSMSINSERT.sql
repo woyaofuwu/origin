@@ -1,0 +1,2 @@
+INSERT INTO ti_o_rubbishsms(rubbish_sms_id,serial_number,bind_serial_number,update_date,info_content,oper_type_code)
+ VALUES(TO_NUMBER(:RUBBISH_SMS_ID),:SERIAL_NUMBER,:BIND_SERIAL_NUMBER,TO_DATE(:UPDATE_DATE,'YYYY-MM-DD HH24:MI:SS'),:INFO_CONTENT,:OPER_TYPE_CODE)

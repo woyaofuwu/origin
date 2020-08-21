@@ -1,0 +1,122 @@
+<span jwcid="dynamicOfferParam@Part">
+	<div class="c_scroll c_scroll-float c_scroll-header">
+		<div class="l_padding">
+			<div jwcid="GgciTableEditPart@Part" element="div">
+				<div class="c_space"></div>
+				<div class="c_list c_list-s c_list-form">
+					<ul class="ul">
+						<li class="link">
+							<div class="label required">项目名称</div>
+							<div class="value">
+								<input type="text" name="GGCI_PROJ_NAME" jwcid="@TextField" value="" desc="项目名称" />
+							</div>
+						</li>
+						<li class="link">
+							<div class="label required">收费名称</div>
+							<div class="value">
+								<span class="e_mix">
+								<span jwcid="@Select" id="GGCI_FEE_TYPECODE" name="GGCI_FEE_TYPECODE" source="ognl:GgciFeetypecodes" textField="DATA_NAME" valueField="DATA_ID" value="" desc="优惠" onchange="onchangeFeeType();"> </span>
+								<input jwcid="@Hidden" id="GGCI_FEE_NAME" name="GGCI_FEE_NAME" value="" />
+								<span class="e_ico-help" id="GGCI_FEE_TYPECODE_tip" tip=""></span>
+								</span>
+							</div>
+						</li>
+						<li class="link">
+							<div class="label required">收费金额（元）</div>
+							<div class="value">
+								<input type="text" name="GGCI_FEE_NUM" jwcid="@TextField" value="0" desc="收费金额" />
+							</div>
+						</li>
+						<li class="link">
+							<div class="label required">生效时间</div>
+							<div class="value">
+								<input name="GGCI_START_DATE" jwcid="@DateField" now="true" readonly="readonly" dropDown="true" value="" format="yyyy-MM-dd" />
+							</div>
+						</li>
+						<li class="link">
+							<div class="label required">收费截止时间</div>
+							<div class="value">
+								<input name="GGCI_END_DATE" jwcid="@DateField" readonly="readonly" dropDown="true" value="" format="yyyy-MM-dd" />
+							</div>
+						</li>
+						<li class="link">
+							<div class="label">备注</div>
+							<div class="value">
+								<input type="text" name="GGCI_REMARK" jwcid="@TextField" value="" desc="备注" />
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<div class="c_submit c_submit-full">
+					<button class="e_button-form e_button-blue e_button-r e_button-l" type="button" id="bcreate" name="bcreate" onclick="return addGgciTableRow();">
+						<i class="e_ico-add"></i>
+						<span>新增</span>
+					</button>
+
+					<button class="e_button-form e_button-blue e_button-r e_button-l" type="button" id="bupdate" name="bupdate" onclick="return updateGgciTableRow();">
+						<i class="e_ico-edit"></i>
+						<span>修改</span>
+					</button>
+
+					<button class="e_button-form e_button-blue e_button-r e_button-l" type="button" id="bdelete" name="bdelete" onclick="return deleteGgciTableRow();">
+						<i class="e_ico-delete"></i>
+						<span>删除</span>
+					</button>
+				</div>
+			</div>
+			<div jwcid="HiddenPart@Part" element="div">
+				<input jwcid="@Hidden" name="pam_GGCI_TABLE_DATA" value="" />
+				<input jwcid="@Hidden" name="hidden_SYS_DATE_NOW" value="ognl:info.SYS_DATE_NOW" />
+			</div>
+			<div class="c_space"></div>
+			<!-- 表格 开始 -->
+			<div optimize="true">
+				<table jwcid="@Table" name="GgciTable" id="GgciTable" class="c_table c_table-min-3 c_table-lite c_table-border">
+					<thead>
+						<tr>
+							<th col="GGCI_PROJ_NAME">项目名称</th>
+							<th col="GGCI_FEE_TYPECODE" style="display:none">收费类型编码</th>
+							<th col="GGCI_FEE_NAME">收费名称</th>
+							<th col="GGCI_FEE_NUM">收费金额（元）</th>
+							<th col="GGCI_START_DATE">生效时间</th>
+							<th col="GGCI_END_DATE">收费截止时间</th>
+							<th col="GGCI_REMARK">备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:info.VISP_INFO" value="ognl:element" index="ognl:rowIndex" element="tr">
+							<td>
+								<span jwcid="@Insert" value="ognl:element.GGCI_PROJ_NAME" raw="true" />
+							</td>
+							<td style="display:none">
+								<span jwcid="@Insert" value="ognl:element.GGCI_FEE_TYPECODE" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:element.GGCI_FEE_NAME" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:element.GGCI_FEE_NUM" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:element.GGCI_START_DATE" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:element.GGCI_END_DATE" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:element.GGCI_REMARK" raw="true" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 表格 结束 -->
+			<div class="c_space"></div>
+			<div class="c_submit-full">
+				<button type="button" class="e_button-r e_button-l e_button-blue" OFFER_ID="ognl:cond.OFFER_ID"  ontap="validateParamPage(this);">确定</button>
+				<button type="button" class="e_button-r e_button-l e_button-navy" ontap="backPopup(this)">取消</button>
+			</div>
+		</div>
+	</div>
+</span>

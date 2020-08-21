@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>转派任务查询</title>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/queryworklist/script/queryworklist.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div jwcid="@Conditional" condition="ognl:condition.INFO_STATUS!=9" element="div" class="left">
+				<div class="text">转派待办任务查询</div>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:condition.INFO_STATUS==9" element="div" class="left">
+				<div class="text">转派已办任务查询</div>
+			</div>
+			<div class="right">
+				<div class="e_mix" ontap="showPopup('popup','qryConditionPopupItem',true)">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div jwcid="allPart@Part" >
+		<div class="l_queryResult">
+			<div jwcid="ResultPart@Part" >
+				<div class="c_table">
+					<table name="myTable" id="myTable" jwcid="@Table">
+						<thead>
+							<tr>
+								<th>
+									<input type="checkbox" id="checkbox"  name="checkbox" ontap="checkedAll('CHECK_TAG', this.checked)" class="e_checkbox"/>			  
+								</th>
+								<th>待办类型</th>
+								<th>订单号</th>
+								<th>工单主题</th>
+								<th>办理状态</th>
+								<th>产品名称</th>
+								<th>集团名称</th>
+								<th>集团编码</th>
+								<th>当前节点</th>
+								<th>当前节点处理人</th>
+								<th>客户经理工号</th>
+								<th>处理时间</th>
+								<th>发起时间</th>
+							</tr>
+						</thead>
+						<tbody name="myTbody" id="myTbody">
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" >					    
+								<td>
+									<input type="checkbox"  id="CHECK_TAG" name="CHECK_TAG" jwcid="@Any" info_groupid="ognl:info.GROUP_ID"
+									value="ognl:info.INST_ID" info_auth="ognl:info.RECE_OBJ" info_ibsysid="ognl:info.IBSYSID" info_nodename="ognl:info.NODE_NAME"
+									info_topic="ognl:info.INFO_TOPIC" info_productname="ognl:info.PRODUCT_NAME" info_custname="ognl:info.CUST_NAME"/>	
+								</td>
+								<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('INFO_CHILD_TYPE',info.INFO_CHILD_TYPE)"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.IBSYSID"></span></td>
+								<div jwcid="@Conditional" condition="ognl:info.INFO_STATUS!=9">
+									<td>
+											<span jwcid="@Insert" value="ognl:info.INFO_TOPIC"></span>
+									</td>
+									<td>
+										<span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('INFO_INFOSTATUS',info.INFO_STATUS)"></span>
+									</td>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:info.INFO_STATUS==9">
+									<td>
+											<span jwcid="@Insert" value="ognl:info.INFO_TOPIC"></span>
+									</td>
+									<td>已处理</td>
+								</div>
+								<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.GROUP_ID"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.NODE_NAME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValueDataSource(getVisit(), 'sys', 'TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.RECE_OBJ)"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.RECE_OBJ"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.END_TIME"></span></td>
+								<td><span jwcid="@Insert" value="ognl:info.INFO_SEND_TIME"></span></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="l_queryPage">
+					<!-- 分页 开始 -->
+						<div class="c_page c_page-border"
+			            	jwcid="@NavBar"
+			                 name="myNavbar"
+			                 id="myNavbar" 
+			                 cond="CondPart"
+			                 count="ognl:count"
+			                 listener="queryWorkList"
+			                 part="ResultPart"
+			                 pageSize="20">
+						</div>
+						<!-- 分页 结束 -->
+					</div>
+				</div>
+			</div>
+		</div>
+			
+		
+		<div class="c_space"></div>
+		<div id="transferPart" jwcid="transferPart@Part">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">转派信息</div>
+						</div>
+					</div>
+			</div>
+			<div class="l_querySubmit" style="width:auto; left:0.71em; right:0.71em; margin-left:0; text-align:center;" jwcid="querySubmit@Part"><!--  class="l_querySubmit" -->
+				<div class="c_list c_list-line c_list-border c_list-col-3  e_left ">
+					<ul>
+						<li class="link required" ontap="showPopup('popup08','staffPopupItem',true);">
+							<div class="label">转派后员工工号</div>
+							<div class="value">
+								<span class="e_mix">
+				                 <input jwcid="@TextField" id="pattr_newStaffId" name="pattr_newStaffId"   desc="转派后员工工号" nullable="no" onchange="upperCase(this);"   />
+		   	 					<span class="e_ico-check"></span>
+				             	</span>
+				             </div>
+						</li>
+						<li >
+							<div class="label">备注</div>
+							<div class="value">
+				                 <input jwcid="@TextField" id="pattr_remark" name="pattr_remark"   desc="备注"    />
+				             </div>
+						</li>
+						<li class="link required" ontap="openNav('转派记录查询', 'igroup.esop.QueryTransferWorkList','','', '')">
+							<div class="label">转派记录查询</div>
+						</li>
+					</ul>
+					
+				</div>
+				
+				<!-- 表单 结束 -->
+				<div class="c_space"></div>
+	
+				<div class="c_submit c_submit-center">
+					<button type="button" class="e_button-r e_button-l e_button-green" onclick="transferWorkListSubmit(this);">提交</button>
+				</div>
+			</div> 
+		</div>
+		
+		
+	</div>
+
+</div>
+
+
+<div jwcid="@Popup" name="popup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryConditionPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">查询</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="CondPart@Part" class="l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+							<li>
+								<div class="label">待办主题：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_INFO_TOPIC" value="ognl:condition.INFO_TOPIC"/></div>
+							</li>
+							<li>
+								<div class="label">待办类型：</div>
+								<div class="value"><input jwcid="@Select" name="cond_INFO_CHILD_TYPE" source="ognl:condition.INFO_CHILD_TYPE" value="ognl:condition.INFO_CHILD_TYPE" textField="DATA_NAME" valueField="DATA_ID" /></div>
+							</li>
+							
+							<li jwcid="@Conditional" condition="ognl:condition.INFO_STATUS!=9" element="li">
+								<div class="label">办理状态：</div>
+								<div class="value"><input jwcid="@Select" name="cond_INFO_STATUS" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('INFO_INFOSTATUS')" value="ognl:condition.INFO_STATUS" textField="DATA_NAME" valueField="DATA_ID" disabled="disabled" /></div>
+							</li>
+							<li jwcid="@Conditional" condition="ognl:condition.INFO_STATUS==9" element="li" style="display:none;">
+								<input jwcid="@Hidden" name="cond_INFO_STATUS" value="ognl:condition.INFO_STATUS" />
+							</li>
+							<li>
+								<div class="label">发起时间（起）：</div>
+								<div class="value"><input name="cond_START_DATE" jwcid="@DateField" dropDown="true" value="ognl:condition.START_DATE" format="yyyy-MM-dd" /></div>
+							</li>
+							<li>
+								<div class="label">发起时间（止）：</div>
+								<div class="value"><input name="cond_END_DATE" jwcid="@DateField" dropDown="true" value="ognl:condition.END_DATE" format="yyyy-MM-dd" /></div>
+							</li>
+							<li>
+								<div class="label">订单号：</div>
+								<div class="value"><input name="cond_IBSYSID" jwcid="@TextField"  value="ognl:condition.IBSYSID"  /></div>
+							</li>
+							<li>
+								<div class="label">集团编码：</div>
+								<div class="value"><input name="cond_GROUP_ID" jwcid="@TextField"  value="ognl:condition.GROUP_ID" /></div>
+							</li>
+							<li>
+								<div class="label">集团名称：</div>
+								<div class="value"><input name="cond_CUST_NAME" jwcid="@TextField"  value="ognl:condition.CUST_NAME" /></div>
+							</li>
+							<li >
+								<div class="label">员工工号：</div>
+								<div class="value">
+				                <input jwcid="@TextField" id="cond_oldStaffId" name="cond_oldStaffId" value="ognl:condition.oldStaffId"  desc="员工工号" nullable="no" disabled="ognl:condition.oldStaff_flag==0?'':'disabled'" onchange="upperCase(this);"/>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button class="e_button-l e_button-r e_button-blue" type="button" ontap="queryWorkList(); hidePopup('popup');">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="popup08" >
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="staffPopupItem">
+				<div id="auditHead" class="c_header">
+					<div class="back" ontap="backPopup(this);" id="staffPopupBack">选择员工</div>
+				</div>
+				<div jwcid="@Scroller" name="ftth" class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_fn">
+					<div class="left">
+						<div class="text"></div>
+					</div>
+						<div class="right"  jwcid="staffForm@Part">
+							<span class="label">员工姓名：</span>
+							<input   jwcid="@TextField" id="cond_StaffName"  name="cond_StaffName" value=""  desc="员工姓名"/>
+							<button class="e_button-blue" onclick="staffQuery();"><span class="e_ico-search"></span><span>查询</span></button>
+						</div>
+						<div class="right"  jwcid="staffForm2@Part">
+							<span class="label">员工工号：</span>
+							<input   jwcid="@TextField" id="cond_StaffId"  name="cond_StaffId" value=""  desc="员工工号" onblur="toUpperStr()"/>
+							<button class="e_button-blue" onclick="staffIdQuery();"><span class="e_ico-search"></span><span>查询</span></button>
+						</div>
+					</div>
+					<div class="l_queryFn" jwcid="staffParts@Part" element="div">
+						<div class="l_queryResult">		
+							<div class="c_table">
+							<table name="auditTable" id="auditTable" class="c_table c_table-checkbox" jwcid="@Table">
+								<thead>
+									<tr>
+					                	<th col="AUDIT_STAFF_ID">员工工号</th>
+					                    <th col="AUDIT_STAFF_ID">员工姓名</th>
+					                    
+									</tr>
+								</thead>
+								<tbody>
+									 <tr jwcid="@Foreach" source="ognl:staffInfos" value="ognl:info" element="tr">
+										<td class="e_center" align="center"><span jwcid="@Redirect" value="ognl:info.STAFF_ID" onclick="setReturnValue(this);" staff_id="ognl:info.STAFF_ID" raw="false" ></span></td>
+										<td align="center"><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+function staffQuery(){
+	$.beginPageLoading("数据查询中...");
+	ajaxSubmit("staffForm",'qryStaffinfo',null,'staffParts',function(data){
+		$.endPageLoading();
+	},function(error_code,error_info,derror){
+		$.endPageLoading();
+		showDetailErrorInfo(error_code,error_info,derror);
+	});
+}
+function staffIdQuery(){
+	$.beginPageLoading("数据查询中...");
+	ajaxSubmit("staffForm2",'qryStaffIdinfo',null,'staffParts',function(data){
+		$.endPageLoading();
+	},function(error_code,error_info,derror){
+		$.endPageLoading();
+		showDetailErrorInfo(error_code,error_info,derror);
+	});
+}
+
+function setReturnValue(el){
+	var staffId = $(el).attr("staff_id");
+	$("#pattr_newStaffId").val(staffId);
+	backPopup("popup08", "staffPopupItem", true);
+}
+function toUpperStr(){
+	var staffId = document.getElementById("cond_StaffId");
+	staffId.value = staffId.value.toUpperCase();
+}
+</script>
+
+</body>

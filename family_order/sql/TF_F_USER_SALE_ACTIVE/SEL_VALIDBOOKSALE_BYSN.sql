@@ -1,0 +1,29 @@
+SELECT RES_NO,
+       RES_TYPE_CODE,
+       RES_STATE_CODE,
+       OCCUPY_TYPE_CODE,
+       RANDOM_NO,
+       TO_CHAR(OCCUPY_TIME, 'yyyy-mm-dd hh24:mi:ss') OCCUPY_TIME,
+       OCCUPY_DEPART_ID,
+       OCCUPY_STAFF_ID,
+       TO_CHAR(VALID_TIME, 'yyyy-mm-dd hh24:mi:ss') VALID_TIME,
+       SERIAL_NUMBER,
+       TERMINAL_MODEL_CODE,
+       PRODUCT_ID,
+       PACKAGE_ID,
+       IN_MODE_CODE,
+       STAFF_ID,
+       PRODUCT_NAME,
+       PACKAGE_NAME,
+       STOCK_ID,
+       CITY_CODE,
+       TRADE_ID,
+       TERMINAL_ID,
+       TO_CHAR(USE_TIME, 'yyyy-mm-dd hh24:mi:ss') USE_TIME,
+       USE_DEPART_ID,
+       USE_STAFF_ID
+FROM TF_R_TERMINALOCCUPY a
+WHERE 1 = 1
+   AND A.RES_NO = :SERIAL_NUMBER
+   AND A.RES_STATE_CODE=:PROCESS_TAG
+   AND A.VALID_TIME > Sysdate

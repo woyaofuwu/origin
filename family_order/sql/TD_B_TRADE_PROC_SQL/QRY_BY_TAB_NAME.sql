@@ -1,0 +1,17 @@
+--IS_CACHE=Y
+SELECT TAB_NAME,
+       SEL_SQL,
+       ADD_SQL,
+       ADD_SQL1,
+       UPD_SQL,
+       UPD_SQL1,
+       DEL_SQL,
+       DEL_SQL1,
+       TRADE_ROUTE,
+       USER_ROUTE,
+       PROC_TYPE,
+       STATE
+  FROM TD_B_TRADE_PROC_SQL
+ WHERE TAB_NAME = :TAB_NAME
+   AND PROC_TYPE = :PROC_TYPE
+   AND STATE = '1'

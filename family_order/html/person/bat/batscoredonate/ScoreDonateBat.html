@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" src="scripts/person/bat/batscoredonate/batscoredonate.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量导入</div>
+	</div>
+	<div class="c_form c_form-col-mix" jwcid="SubmitCondPart@Part">
+		<ul class="ul c_form-col-3">
+			<li class="li">
+				<div jwcid="NewBatchId@Part">
+					<span class="label"><span class="e_required">批次号：</span></span>
+					<span class="e_elements" id="BATCH_ID_INPUT">
+						<button type="button" class="e_button-right" onclick="return initBatchId()"><i class="e_ico-check"></i><span>更换批次号</span></button>
+						<span class="e_input e_input-left">
+							<span>
+								<input type="text" jwcid="@TextField" readonly="true" name="BATCH_ID" id="BATCH_ID" 
+									desc="批次号码" value="ognl:batchId.BATCH_ID" nullable="no"/>
+							</span>
+						</span>
+					</span>
+				</div>
+			</li>
+
+				<li class="li">
+					<span class="label"><span class="e_required">上传文件：</span></span>
+					<span class="e_elements"><!-- 替换为页面组件 -->
+						<span class="e_elements">
+								<input jwcid="@Upload" name="cond_STICK_LIST" id="cond_STICK_LIST" ftpSite="personserv"  
+										fileSize="20" fileTypes="*.xls" desc="导入文件" nullable="no"/>
+						</span>
+					</span>
+				</li>
+								
+				<li class="li">
+					<span class="label">模版下载：</span>
+					<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=GrpUserScoreDonateImport.xls&filePath=template/bat/ScoreDonateBatImport.xls')">[点击下载]</a></span>
+				</li>
+				<li class="li">
+				</li>
+			</ul>
+    </div>
+    <div class="c_submit">
+		<button type="button" class="e_button-page-ok" onclick="return importBatData()" id="importKey" ><i class="e_ico-import"></i><span>导入</span></button>
+		<button type="button" class="e_button-page-ok" onclick="checkAndSubmit()" id="submitKey"><i class="e_ico-ok"></i><span>提交</span></button>
+		<button type="button" class="e_button-page" onclick="return resetPage()"><i class="e_ico-reset"></i><span>重置</span></button>
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+			<div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="99331"
+				config="export/sundryquery/ScoreDonateBatExp.xml" fileName="集团统付用户积分转赠批量办理结果" 
+				cond="QueryPart" />
+			</div>		
+		</div>
+	<div class="c_form c_form-col-4 c_form-label-7" jwcid="QueryPart@Part">
+	<ul class="ul">
+			<li class="li">
+				<span class="label">批次号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_BATCH_ID" id="cond_BATCH_ID" value="ognl:cond.BATCH_ID" desc="批次号" datatype="numeric"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">受理工号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_TRADE_STAFF_ID" id="cond_TRADE_STAFF_ID" value="ognl:tradeStaffId" desc="受理工号"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">转出手机号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_SERIAL_NUMBER_OUT" id="cond_SERIAL_NUMBER_OUT" value="ognl:cond.SERIAL_NUMBER_OUT" desc="转出手机号"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">转入手机号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_SERIAL_NUMBER_IN" id="cond_SERIAL_NUMBER_IN" value="ognl:cond.SERIAL_NUMBER_IN" desc="转入手机号"/></span></span>
+			</li>
+	</ul>
+	<ul class="ul">
+			<li class="li">
+				<span class="label">状态：</span>
+				<span class="e_select"><span><span>
+					 <select  jwcid="@Select" name="cond_STATUS" id="cond_STATUS" 
+								 source="ognl:pageutil.getStaticList('DONATE_STATUS')"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+								 value="ognl:cond.STATUS" desc="状态"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_IMPORT_START" id="cond_IMPORT_START" value="" maxName="IMPORT_END" desc="开始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input"><span><input type="text" jwcid="@DateField" name="cond_IMPORT_END" id="cond_IMPORT_END" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', cond.IMPORT_END)" minName="IMPORT_START" desc="结束时间"/></span></span>
+			</li>
+	</ul>
+	<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return queryImportData()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="ImportDataPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10"><div class="c_table">
+		<table jwcid="@Table" id="ImportDataPartTable">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>批次号</th>
+					<th>转出号码</th>
+					<th>转入号码</th>
+					<th>集团统付账户ID</th>
+					<th>转赠积分值</th>
+					<th>导入时间</th>
+					<th>转赠受理时间</th>
+					<th>受理工号</th>
+					<th>状态</th>
+					<th>错误信息</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >
+					<td class="e_center"><span jwcid="@Insert" value="ognl:rowIndex+1"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.BATCH_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_OUT"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_IN"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCT_ID" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.DONATE_SCORE" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.IMPORT_TIME == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.IMPORT_TIME)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME == null ? '' : formatDate('yyyy-MM-dd HH:mm:ss', info.ACCEPT_TIME)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('DONATE_STATUS', info.STATUS)" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.DONATE_RESULT" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+				<div jwcid="@NavBar"  name="pagin" id="pagin" listener="queryImportData" pageSize="10" cond="QueryPart" part="ImportDataPart" count="ognl:count"/>
+		<!-- 翻页 结束 -->
+		</div>
+</div>
+</body>
+</html>

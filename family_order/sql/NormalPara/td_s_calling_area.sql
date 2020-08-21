@@ -1,0 +1,1 @@
+SELECT calling_area_code paracode,calling_area_name paraname FROM td_s_calling_area where :TRADE_EPARCHY_CODE IS NOT NULL OR :TRADE_EPARCHY_CODE IS NULL

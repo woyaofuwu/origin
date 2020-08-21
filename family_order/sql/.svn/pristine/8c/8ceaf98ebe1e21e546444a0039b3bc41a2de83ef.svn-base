@@ -1,0 +1,17 @@
+SELECT SUB_IBSYSID,
+       IBSYSID,
+       ACCEPT_MONTH,
+       SEQ,
+       GROUP_SEQ,
+       NODE_ID,
+       ATTR_CODE,
+       ATTR_NAME,
+       ATTR_VALUE,
+       PARENT_ATTR_CODE,
+       RECORD_NUM,
+       UPDATE_TIME,
+       RSRV_STR1,
+       RSRV_STR2
+  FROM TF_B_EOP_ATTR A
+ WHERE A.SUB_IBSYSID = :SUB_IBSYSID
+   AND A.GROUP_SEQ = :GROUP_SEQ

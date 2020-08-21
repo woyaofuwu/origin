@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT date1 
+FROM TD_B_calendar
+WHERE date2 = :LUNAR_DATE

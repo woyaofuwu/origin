@@ -1,0 +1,1 @@
+UPDATE td_s_commpara SET para_code12 = :PARA_CODE12 WHERE ROWID = :ROWID

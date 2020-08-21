@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script language="JavaScript" src="scripts/saleserv.js"></script>
+		<script language="JavaScript" src="person/hintinfo/scripts/hintmanage.js"></script>
+		<title>优惠描述管理</title>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+				<!-- 区域 开始 -->
+				<div class="c_box">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">优惠描述</div>
+							<div class="tip"><span class="e_tip">温馨提示：优惠名称支持模糊查询</span></div>
+							<div class="fn"><button type="button" onclick="openImportDiscnt()"><i class="e_ico-import"></i><span>批量导入</span></button></div>
+						</div>
+						<!-- 标题 结束 -->
+						<!-- 表单 开始 -->
+						<div class="c_form" jwcid="QueryCondPart@Part">
+							<ul class="ul">
+								<li class="li">
+									<span class="label">优惠编码：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name="cond_DISCNT_CODE" id="cond_DISCNT_CODE" value="ognl:condition.DISCNT_CODE" desc="优惠编码"    nullable="no"/>
+									</span></span> 
+								</li>
+								<li class="li">
+									<span class="label" >优惠名称：</span>
+									<span class="e_input"><span>
+										<input type="text" jwcid="@TextField" name="cond_DISCNT_NAME"  id="cond_DISCNT_NAME" value="ognl:condition.DISCNT_NAME" desc="优惠名称"   nullable="no"/>
+									</span></span>
+								</li>
+							</ul>
+					<div class="submitPlace"></div>
+				    <div class="submit">
+					<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryDiscntInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+					</div>
+				</div>
+					<!-- 表单 结束 -->
+					<!-- 表格 开始 -->
+					<div jwcid="QueryListPart@Part" element="div">
+						<div class="c_scroll c_scroll-x style="height:242px"">
+							<div class="c_table c_table-row-10">
+								<table jwcid="@Table" name="DMCancelTable" id="HintTable">
+									<thead>
+										<tr>
+											<th col="DISCNT_CODE" >优惠编码</th>
+											<th col="DISCNT_NAME">优惠名称</th>
+											<th col="DISCNT_EXPLAIN">优惠描述</th>
+											<th col="START_DATE">生效时间</th>
+											<th col="END_DATE">失效时间</th>
+											<th col="UPDATE_DEPART_ID">更新部门</th>
+											<th col="UPDATE_STAFF_ID">更新员工</th>
+											<th col="UPDATE_TIME">更新时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<span jwcid="@Conditional" condition="ognl:clicked">
+												<td><a jwcid="@Redirect" value="ognl:info.DISCNT_CODE" discntCode="ognl:info.DISCNT_CODE"
+															source="ognl:info" onclick="openUpdateDiscnt($(this).attr('discntCode'));"/></td>
+											</span>
+											
+											<span jwcid="@Conditional" condition="ognl:!clicked"> 
+						 						<td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE" ></span></td>
+											</span>
+											<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" /></td>
+											<span jwcid="@Conditional" condition="ognl:clicked">
+												<td><a jwcid="@Redirect" value="ognl:info.DISCNT_EXPLAIN" discntCode="ognl:info.DISCNT_CODE"
+															source="ognl:info" onclick="openUpdateDiscnt($(this).attr('discntCode'));"/></td>
+											</span>
+											
+											<span jwcid="@Conditional" condition="ognl:!clicked"> 
+						 						<td><span jwcid="@Insert" value="ognl:info.DISCNT_EXPLAIN" ></span></td>
+											</span>
+											<td><span jwcid="@Insert" value="ognl:info.START_DATE" /></td>
+											<td><span jwcid="@Insert" value="ognl:info.END_DATE" /></td>
+											<td><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID" /></td>
+											<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" /></td>
+											<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						 <!-- 分页 开始 -->
+						 <div jwcid="@NavBar" name="DiscntNav" id="DiscntNav" cond="QueryCondPart" part="QueryListPart" listener="queryDiscntInfo" pageSize="10" count="ognl:queryDiscntInfoCount"></div>
+						 <!-- 分页 结束 -->
+					</div>
+					<!-- 表格 结束 -->
+					 
+				</div>
+				<!-- 区域 结束 -->
+			</div>
+		</div>
+	</body>
+<script language="javascript">
+$(document).ready(function(){
+	init(); 
+});
+</script>
+</html>

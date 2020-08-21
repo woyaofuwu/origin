@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>合约计划受理</title>
+<script jwcid="@Script" language="JavaScript" src="person/contractsale/scripts/contractsale.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+		<div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="displaySwitch(this,'custInfoPart')"><i
+				class="e_ico-unfold"></i><span>展示客户信息</span>
+			</a>
+		</div>
+	</div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" tradeTypeCode="240" orderTypeCode="256" tradeAction="refreshPartAtferAuth(data)"></div>
+	<!-- 认证 结束 -->
+	<!--客户信息开始-->
+	<div style="display:none;" id="custInfoPart" jwcid="custInfoPart@Part">
+        <div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+    </div>
+	<!--客户信息 结束-->
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+	    <span class="text">选择终端</span>
+	</div>
+    <div class="c_form">
+        <ul class="ul">
+            <li class="li">
+				<span class="label"><span class="e_required">促销员工：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="SALE_STAFF_ID" id="SALE_STAFF_ID" value="ognl:info.SALE_STAFF_ID"
+							desc="促销员工" nullable="no" onkeyup="this.value=this.value.toUpperCase()"/>
+				</span></span>
+			</li>
+            <li class="li">
+				<span class="label"><span class="e_required">终端IMEI号：</span></span>
+                <span class="e_input"><span>
+                      <input jwcid="@TextField" name="goods_RES_CODE" id="goods_RES_CODE" value=""/>
+                </span></span>
+			</li>
+			
+			<input type="text" jwcid="@TextField" id="DEVICE_MODEL_CODE" name="DEVICE_MODEL_CODE" value="ognl:contractinfo.DEVICE_MODEL_CODE" 
+			desc="机型" disabled="true" class="e_input" style="display:none"/>
+			<input jwcid="@Hidden" id="RES_CHECK_FLAG" name="RES_CHECK_FLAG" value="false"/>
+    	</ul>
+    	<div class="submitPlace"></div>
+    	<div class="submit">
+			<button class="e_button-form" id="checkResButton" name="checkResButton"><i id="checkResIco" class="e_ico-check"></i><span jwcid="@Insert" id="checkResButtonName" value="校验"/></button>
+    	</div>
+    	<ul class="ul">
+    		<li class="li">
+				<span class="label">机型：</span>
+		    	<span class="text">
+			    	<span jwcid="@Insert" id="DEVICE_MODEL" value=""/>
+				</span>
+			</li>
+    	</ul>
+    </div>
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box">
+	<!-- 合约选择区 开始 -->
+	<div class="c_title">
+	    <span class="text">选择合约</span>
+	</div>
+    <div class="c_form" jwcid="ContractPart@Part" id="ContractPart">
+	    <ul id="ContractSaleTable" name="ContractSaleTable">
+	    	<li class="li"> 
+		    	<span class="label">合约方案：</span>
+	            <span class="e_select"><span><span>
+		            <select jwcid="@Select" name="CONTRACT_ID" id="CONTRACT_ID"
+							source="ognl:contractsales" textField="PRODUCT_NAME" 
+							valueField="PRODUCT_ID" titleField="PRODUCT_NAME"
+	            			value="ognl:contractsale.PRODUCT_ID"
+	            			onchange="queryProductInfos(this)"
+							desc="合约计划"
+		            />
+	            </span></span></span>
+            </li>
+            <li class="li" id="CONTRACT_PRICE_DESC_PART" style="display:none">
+				<span class="label">合约价：</span>
+		    	<span class="text e_red">
+			    	<span jwcid="@Insert" id="CONTRACT_PRICE_DESC" value="0"/>元
+				</span>
+			</li>
+	    </ul>
+    </div>
+	<!-- 合约选择区 结束-->
+	<!-- 产品选择区 开始-->
+    <div jwcid="ContractDetailPart@Part" id="ContractDetailPart" style="display:none">
+		<div class="c_form c_form-col-1 c_form-label-6">
+			<ul class="ul">
+			    <div jwcid="ElementPart@Part" id="ElementPart">
+					<!--语音产品开始-->
+					<div jwcid="@Conditional" condition='ognl:voices != null && voices.size > 0'>
+						<li class="li">
+							<span class="label">语音产品：</span>
+							<div class="c_fn c_fn-multiple c_fn-col-3">
+								<div jwcid="@Foreach" source="ognl:voices" value="ognl:voice" index="ognl:rowIndex1" class="title">
+									<div class="title"><span jwcid="@Insert" value="ognl:voice.PRODUCT_NAME"/></div>
+									<ul>
+										<li jwcid="@Foreach" source="ognl:voice.VOICE_DISCNTS" value="ognl:voiceDiscnt" index="ognl:rowIndex2" element="li">
+											<label>
+								    		<input type="checkbox" jwcid="@Checkbox" 
+												id="ognl:voiceDiscnt.ELEMENT_ID+'_'+voiceDiscnt.ELEMENT_TYPE_CODE+'_'+rowIndex2"
+								    			name="ognl:voiceDiscnt.ELEMENT_ID+'_'+voiceDiscnt.ELEMENT_TYPE_CODE+'_'+rowIndex2"
+							    				value="ognl:voiceDiscnt.ELEMENT_ID"
+							    				price="ognl:voiceDiscnt.PRICE"
+						    					productId="ognl:voice.PRODUCT_ID"
+						    					packageId="VOICE"
+						    					elementId="ognl:voiceDiscnt.ELEMENT_ID"
+						    					elementTypeCode="ognl:voiceDiscnt.ELEMENT_TYPE_CODE"
+						    					elementName="ognl:voiceDiscnt.ELEMENT_NAME"
+						    					checked="ognl:'TRUE'.equals(voiceDiscnt.EXIST)"
+						    					isExist="ognl:voiceDiscnt.EXIST"
+						    					onclick="elementOnClick(this)"
+											/><span jwcid="@Insert" value="ognl:voiceDiscnt.ELEMENT_NAME"/>
+								            </label>
+										</li>
+									</ul>
+								</div>
+								<!--这里应该还要改下，尽量别写死-->
+								<input jwcid="@TextField" id="VOICE_MAX_LIMIT" name="VOICE_MAX_LIMIT" value="1" style="display:none"/>
+								<input jwcid="@TextField" id="VOICE_PACKAGE_KIND_CODE" name="VOICE_PACKAGE_KIND_CODE" value="YY" style="display:none"/>
+							</div>
+						</li>
+					</div>
+					<!--语音产品结束-->
+					<!--其他营销资源开始-->
+			    	<li jwcid="@Foreach" source="ognl:groups" value="ognl:group" index="ognl:rowIndex1" element="li" class="li">
+			    		<span jwcid="@Insert" value="ognl:group.PACKAGE_NAME+'：'" class="label"/>
+			    		<div class="c_fn c_fn-col-3">
+				    		<ul>
+						        <li jwcid="@Foreach" source="ognl:group.SALE_ELEMENTS" value="ognl:saleElement" index="ognl:rowIndex2" element="li">
+						            <label>
+						    		<input type="checkbox" jwcid="@Checkbox" 
+										id="ognl:saleElement.ELEMENT_ID+'_'+saleElement.ELEMENT_TYPE_CODE+'_'+rowIndex2"
+						    			name="ognl:saleElement.ELEMENT_ID+'_'+saleElement.ELEMENT_TYPE_CODE+'_'+rowIndex2"
+					    				value="ognl:saleElement.ELEMENT_ID"
+					    				price="ognl:saleElement.PRICE"
+				    					elementId="ognl:saleElement.ELEMENT_ID"
+				    					packageId="ognl:saleElement.PACKAGE_ID"
+				    					elementTypeCode="ognl:saleElement.ELEMENT_TYPE_CODE"
+				    					checked="ognl:'TRUE'.equals(saleElement.EXIST)"
+				    					elementName="ognl:saleElement.ELEMENT_NAME"
+				    					isExist="ognl:saleElement.EXIST"
+				    					onclick="elementOnClick(this)"
+									/><span jwcid="@Insert" value="ognl:saleElement.ELEMENT_NAME"/>
+						            </label>
+						    	</li>
+						    </ul>
+					    </div>
+			    		<input jwcid="@TextField" id="ognl:group.PACKAGE_ID+'_MAX_LIMIT'" name="ognl:group.PACKAGE_ID+'_MAX_LIMIT'" value="ognl:group.MAX_NUMBER" style="display:none"/>
+			    		<input jwcid="@TextField" id="ognl:group.PACKAGE_ID+'_PACKAGE_KIND_CODE'" name="ognl:group.PACKAGE_ID+'_PACKAGE_KIND_CODE'" value="ognl:group.PACKAGE_KIND_CODE" style="display:none"/>
+						<!--<input jwcid="@TextField" id="ognl:group.PACKAGE_ID+'_MIN_LIMIT'" name="ognl:group.PACKAGE_ID+'_MIN_LIMIT'" value="ognl:group.MIN_NUMBER" style="display:none"/>-->
+			    	</li>
+		    	</div>
+		    	<!--其他营销资源结束-->
+				<div jwcid="ConsumeElementPart@Part" id="ConsumeElementPart">
+			    	<li class="li">
+			    		<span jwcid="@Insert" value="最低消费套餐:" class="label"/>
+			    		<div class="c_fn c_fn-col-3">
+				    		<ul>
+						        <li jwcid="@Foreach" source="ognl:consumeElements" value="ognl:consumeElement" index="ognl:rowIndex2" element="li">
+						            <label>
+						    		<input type="checkbox" jwcid="@Checkbox" 
+										id="ognl:'CONSUME_'+rowIndex2"
+										name="ognl:'CONSUME_'+rowIndex2"
+					    				price="ognl:consumeElement.PRICE"
+				    					packageId="VIRTUAL_CONSUME"
+				    					elementName="ognl:consumeElement.ELEMENT_NAME"
+				    					isExist="TRUE"onclick="consumeElementOnClick(this)"/>
+				    				<span jwcid="@Insert" value="ognl:consumeElement.ELEMENT_NAME"/>
+						            </label>
+						    	</li>
+						    </ul>
+					    </div>
+			    		<input jwcid="@TextField" id="VIRTUAL_CONSUME_MAX_LIMIT" name="VIRTUAL_CONSUME_MAX_LIMIT" value="1" style="display:none"/>
+						<input jwcid="@TextField" id="VIRTUAL_CONSUME_PACKAGE_KIND_CODE" name="VIRTUAL_CONSUME_PACKAGE_KIND_CODE" value="VIRTUAL_CONSUME" style="display:none"/>
+			    	</li>
+		    	</div>
+			</ul>
+		</div>
+        <div id="displayPart" class="c_form c_form-col-3 c_form-label-6">
+		    <ul class="ul">
+	            <li class="li">
+					<span class="label">合约时长：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="CONTRACT_MONTH" id="CONTRACT_MONTH"
+							source="ognl:contractMonths" textField="ATTR_FIELD_NAME" 
+							valueField="ATTR_FIELD_CODE" titleField="ATTR_FIELD_NAME"
+                			value="" onchange="calFee();" addDefault="false" desc="合约时长"/>
+	                </span></span></span>
+				</li>
+				<!--
+				<li class="li">
+                	<span class="label">保底消费额：</span>
+	                <span class="e_input"><span>
+	                	<input jwcid="@TextField" id="inputfee" name="inputfee" type="text" value="" oldvalue="" onblur="return checkinputfee();" />
+	                </span></span>
+                </li>
+                -->
+				<!--
+				<li class="li">
+					<span class="label">折扣：</span>
+	                <span class="e_select"><span><span>
+	                <select jwcid="@Select" name="CONTRACT_DISCOUNT" id="CONTRACT_DISCOUNT"
+								source="ognl:contractDiscounts"
+								textField="ATTR_FIELD_NAME" valueField="ATTR_FIELD_CODE" titleField="ATTR_FIELD_NAME"
+	                			value=""
+                    			onchange="checkDiscountQualifyAndCalFee();"
+								desc="折扣"
+	                />
+	                </span></span></span>
+				</li>
+				-->
+		    </ul>
+	    </div>
+	    <div class="c_tip"><span jwcid="@Insert" id="contractPreView" value="" raw="true"/></div>
+	    <input type="text" jwcid="@TextField" id="CREDIT_CLASS" name="CREDIT_CLASS" value="ognl:contractinfo.CREDIT_CLASS" 
+			desc="信用等级" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="CONTRACT_TYPE" name="CONTRACT_TYPE" value="ognl:contractinfo.CONTRACT_TYPE" 
+			desc="合约类型" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="CONTRACT_CODE" name="CONTRACT_CODE" value="ognl:contractinfo.CONTRACT_CODE" 
+			desc="合约下发编码" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="MATERIAL_CODE" name="MATERIAL_CODE" value="ognl:contractinfo.MATERIAL_CODE" 
+			desc="物料编码" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="NET_PRICE" name="NET_PRICE" value="ognl:contractinfo.NET_PRICE" 
+			desc="裸机价格" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="ORIGINAL_NET_PRICE" name="NET_PRICE" value="ognl:contractinfo.NET_PRICE" 
+			desc="原始裸机价格" disabled="true" class="e_input" style="display:none"/>		
+   		<input type="text" jwcid="@TextField" id="CONTRACT_PRICE" name="CONTRACT_PRICE" value="ognl:contractinfo.CONTRACT_PRICE" 
+			desc="合约价格" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="ORIGINAL_CONTRACT_PRICE" name="CONTRACT_PRICE" value="ognl:contractinfo.CONTRACT_PRICE" 
+			desc="原始合约价格" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="SUBSIDY_RATE" name="SUBSIDY_RATE" value="ognl:contractinfo.SUBSIDY_RATE" 
+			desc="补贴率" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="RETURN_RATE" name="RETURN_RATE" value="ognl:contractinfo.RETURN_RATE" 
+			desc="分返比例" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="DISCT_RULE_CODE" name="DISCT_RULE_CODE" value="ognl:contractinfo.DISCT_RULE_CODE" 
+			desc="折价规则" disabled="true" class="e_input" style="display:none"/>
+        <input type="text" jwcid="@TextField" id="DEPOSIT_FEE" name="DEPOSIT_FEE" value="ognl:contractinfo.DEPOSIT_FEE" 
+			desc="预存金额" disabled="true" class="e_input" style="display:none"/>
+        <input type="text" jwcid="@TextField" id="OPER_FEE" name="OPER_FEE" value="ognl:contractinfo.OPER_FEE" 
+			desc="购机款" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="GIFT_FEE" name="GIFT_FEE" value="ognl:contractinfo.GIFT_FEE" 
+			desc="赠金" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="CAMPN_TYPE" name="CAMPN_TYPE" value="ognl:contractinfo.CAMPN_TYPE" 
+			desc="营销活动类型" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="SALEACTIVE_PACKAGE_ID" name="SALEACTIVE_PACKAGE_ID" value="ognl:contractinfo.SALEACTIVE_PACKAGE_ID" 
+			desc="营销活动编码" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="DISCNT_GIFT_ID" name="DISCNT_GIFT_ID" value="ognl:contractinfo.DISCNT_GIFT_ID" 
+			desc="A元素编码" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="CONSUME" name="CONSUME" value="0" 
+			desc="最低消费" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="ORIGINAL_CONSUME" name="ORIGINAL_CONSUME" value="0" 
+			desc="原始最低消费" disabled="true" class="e_input" style="display:none"/>
+		<input type="text" jwcid="@TextField" id="CONTRACT_DISCOUNT" name="CONTRACT_DISCOUNT" value="ognl:contractinfo.DISCOUNT" 
+			desc="折扣" disabled="true" class="e_input" style="display:none"/>
+		<textarea id="CUSTOM_RETURNRATE_CONFIG" name="CUSTOM_RETURNRATE_CONFIG" jwcid="@TextArea" value="ognl:contractinfo.CUSTOM_RETURNRATE_CONFIG" style="display:none"></textarea>
+		<input jwcid="@Hidden" id="CAN_SUBMIT_FLAG" name="CAN_SUBMIT_FLAG" value="false"/>
+    </div>
+</div>
+
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_form c_form-col-1" id="remarkArea" name="remarkArea" style="display:none;">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+						<textarea id="REMARK" name="REMARK" jwcid="@TextArea" style="height:36px;" value="" maxsize="100" desc="备注" rows="3"/>
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_submit">
+		<div class="left"><label><input type="checkbox" id="remarkBox" name="remarkBox"  onclick="checkRemark();" class="e_checkbox"/>备注</label></div>
+		<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" params=""  isRender="false" listener="" refreshPart="" area="AuthPart" element="div"/>
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></body>
+</html>

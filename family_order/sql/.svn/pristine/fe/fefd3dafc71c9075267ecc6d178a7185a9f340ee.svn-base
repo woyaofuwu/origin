@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+SELECT integrate_item_code RSRV_NUM1,integrate_item PARA_CODE8,' ' PARA_CODE1,-1 RSRV_NUM2,-1 RSRV_NUM3,' ' PARA_CODE2,' ' PARA_CODE3,' ' PARA_CODE4,' ' PARA_CODE5,' ' PARA_CODE6 ,' ' PARA_CODE7,' ' PARA_CODE9 FROM td_a_integrateitem order by integrate_item_code

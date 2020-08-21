@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>携出预审核结果查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/checknpoutresultquery/scripts/CheckNpOutResultQuery.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取携出预审核结果查询无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">携出预审核结果查询</div>
+					<div class="fn">
+						<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201806190001"
+									  config="export/checknpoutresult/CheckNpOutResultQuery.xml" fileName="携出预审核查询结果"
+									 cond="QueryCondPart" params="ognl:'TEST_PARAM=1'"/>
+					
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						
+                        <li class="li"><span class="label">号码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="SERIAL_NUMBER" id="SERIAL_NUMBER"
+									value="" desc="服务号码" autoComplete="Off" /></span></span>
+						</li>
+                        <li class="li">
+							<span class="label"><span class="e_required">起始时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="START_DATE" id="START_DATE" nullable="no" value="ognl:condition.START_DATE" maxName="FINISH_DATE" desc="起始时间"/>
+								</span></span>
+							</span>
+						 </li>
+						 <li class="li">
+							<span class="label"><span class="e_required">终止时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+								    <input jwcid="@DateField" name="FINISH_DATE" id="FINISH_DATE"  nullable="no" value="ognl:condition.FINISH_DATE" minName="START_DATE" desc="终止时间"/>
+								</span></span>
+							</span>
+						 </li>
+						<li class="li">
+							<span class="label"> <span class="e_required">归属市县：</span></span>
+							<span class="e_elements"><!-- 替换为页面组件 -->
+					
+							<span class="e_select"><span><span>
+							<select  jwcid="@Select"  name="CITY_CODE" id="CITY_CODE" source="ognl:pageutil.getStaticList('AREA_CODE_NP')"
+									textField="DATA_NAME" valueField="DATA_ID" title="TEXT" value=""
+									desc="网络类型"/>
+							</span></span></span>
+							</span>
+						</li>						
+						
+						<li class="li">
+							<span class="label">短信结果：</span>
+							<span class="e_elements"><!-- 替换为页面组件 -->
+					
+							<span class="e_select"><span><span>
+							<select  jwcid="@Select"  name="IS_RESULT_NP_OUT" id="IS_RESULT_NP_OUT" source="ognl:pageutil.getStaticList('RESULT_NP_OUT')"
+								textField="DATA_NAME" valueField="DATA_ID" title="TEXT" value=""
+								desc="网络类型"/>
+							</span></span></span>
+							</span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return getQuery(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				
+
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+		  	    </div>	  
+
+		  	     
+		  	    <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>号码</th>
+							<th>业务区</th>
+							<th>短信时间</th>
+							<th>短信结果</th>
+							<th>姓名</th>
+							<th>主套餐名称</th>
+							<th>近三月消费情况  </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('AREA_CODE_NP',info.CITY_CODE)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SMS_TIME == null ? '' :formatDate('yyyy-MM-dd HH:mm:ss', info.SMS_TIME)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('RESULT_NP_OUT',info.SMS_RESULT)" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.FEE" raw="false"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryCheckNpOut" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO tf_f_specific_discnt(id,id_type_code,disn_type_code,start_acyc_id,end_acyc_id,refer_item_code,effect_item_code,discnt_mode,rsrv_num1,rsrv_num2,rsrv_num3,rsrv_num4,rsrv_num5,rsrv_str1,rsrv_str2,remark,update_time,update_depart_id,update_staff_id)
+ VALUES(TO_NUMBER(:ID),:ID_TYPE_CODE,:DISN_TYPE_CODE,:START_ACYC_ID,:END_ACYC_ID,:REFER_ITEM_CODE,:EFFECT_ITEM_CODE,:DISCNT_MODE,:RSRV_NUM1,:RSRV_NUM2,:RSRV_NUM3,TO_NUMBER(:RSRV_NUM4),TO_NUMBER(:RSRV_NUM5),:RSRV_STR1,:RSRV_STR2,:REMARK,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_DEPART_ID,:UPDATE_STAFF_ID)

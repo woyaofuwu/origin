@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: OpenMobile.html,v 1.5 2013/04/17 07:58:35 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>短信白名单处理</title> 
+<script language="JavaScript" src="person/monitorinfo/scripts/createredmember.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="292" element="div"></div>
+	<!-- 认证 结束 -->
+
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">客户信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-text c_form-col-2" jwcid="custInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text">
+					<input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfo.CUST_NAME" maskType="start" maskPosition="1" 
+					   maskLength="100" desc="客户名称"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">客户性别：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SEX',custInfo.SEX)" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">当前品牌：</span>
+				<span class="text">
+					<input   jwcid="@Insert"   value="ognl:userInfo.BRAND_NAME"   />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">当前产品：</span>
+				<span class="text">
+					<input  jwcid="@Insert"   value="ognl: userInfo.PRODUCT_NAME"   />
+				</span>
+			</li> 
+			<input  id="hidden_IS_FORBIDENED" name="hidden_IS_FORBIDENED" jwcid="@Hidden" value="ognl:userInfo.IS_FORBIDENED" desc="是否禁查标志"/>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<div jwcid="QueryPartTwo@Part" id="QueryPartTwo" >
+		<input  id="USER_ID" name="USER_ID" jwcid="@Hidden" value="ognl:userInfo.USER_ID" desc="用户编码"/>
+	</div>
+	
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-1" jwcid="openMobilePart@Part">
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label"><label><input type="checkbox" name="TIME_SELECT" id="TIME_SELECT" jwcid="@Checkbox" onclick="setEndTime()"/>结束时间：</label></span>
+				<span class="e_elements e_dis" >
+					<input type="text" disabled="true" jwcid="@DateField" name="END_DATE" id="END_DATE"  value="ognl:userInfo.END_DATE" format="yyyy-MM-dd" desc="结束时间" min="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.util.SysDateMgr@getSysTime()" nullable="no"/>
+				</span>
+			</li> 
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_input"><span><input type="text" jwcid="@TextField" name="REMARK" maxlength="100" id ="REMARK" value="" desc="备注"/></span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit"  beforeAction="createMember()"  area="QueryPartTwo,AuthPart,custInfoPart,openMobilePart" element="div"/>
+	<!-- 提交 结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

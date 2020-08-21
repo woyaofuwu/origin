@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_simcardcompfee(trade_id,simcardnum,fee,total_fee,pay_money_code,sim_type_code,start_value,end_value,rsrv_str1,rsrv_str2,rsrv_str3,remark,update_staff_id,update_depart_id,update_time)
+ VALUES(TO_NUMBER(:TRADE_ID),TO_NUMBER(:SIMCARDNUM),TO_NUMBER(:FEE),TO_NUMBER(:TOTAL_FEE),:PAY_MONEY_CODE,:SIM_TYPE_CODE,:START_VALUE,:END_VALUE,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:REMARK,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

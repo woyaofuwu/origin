@@ -1,0 +1,2 @@
+INSERT INTO tf_f_outnetgroup(out_group_id,out_group_name,start_date,end_date)
+ VALUES(:OUT_GROUP_ID,:OUT_GROUP_NAME,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'))

@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/vpmnmanagermgr/VpmnManagerDispatch.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">VPMN客户经理分配</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+			    <span class="label"><span class="e_required">员工编码：</span></span>
+				<span class="e_elements"><span>
+					<input jwcid="@biz:StaffField" id="cond_STAFF_ID" name="cond_STAFF_ID" type="text" 
+						value="ognl:condition.cond_STAFF_ID" text="ognl:condition.POP_cond_STAFF_ID"/>
+				</span></span>				
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return qryVpmnManagerList();" listener="ognl:listeners.qryVpmnManagerList"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		
+	</div>
+	</div>
+	<!--信息展示区-->
+	<div jwcid="RefreshPart@Part">
+	<div class="fctTop e_clear">
+		<div class="fn">
+			<button type="button" class="l_ml" onclick="checkedOther('vpmnManagerList');">
+				<i class="e_ico-unselect"></i><span>反选</span>
+			</button>
+		</div>
+	</div>
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead>
+				<tr>
+					<th class="sign">
+						<input type="checkbox" name="checkbox" onclick="checkedAll('vpmnManagerList', checked);"/>
+                    </th> 
+					<th>客户经理编码</th>
+					<th>客户经理姓名</th>
+					<th>VPMN编码</th>
+					<th>VPMN权限</th>
+					<th>联系电话</th>
+					<th>业务区</th>
+					<th>开始时间</th>
+					<th>结束时间</th>
+					<th>更新员工</th>
+					<th>更新部门</th>
+					<th>备注</th> 
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+					<td>
+             			<input type="checkbox" name="vpmnManagerList" jwcid="@Any" 
+            				   value="ognl:info.CUST_MANAGER_ID+'&'+info.USER_PRODUCT_CODE+'&'+info.RIGHT_CODE+'&'+info.START_DATE+'&'+info.END_DATE" 
+            				   raw="false"/>
+              		</td>
+					<td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.CUST_MANAGER_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.USER_PRODUCT_CODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('VPN_MEMBER_STAFFRIGHT',info.RIGHT_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.LINK_PHONE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',info.AREA_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.START_DATE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.END_DATE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.UPDATE_STAFF_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.UPDATE_DEPART_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="RefreshPart" listener="qryVpmnManagerList"  pageSize="20" needCoun="false" count="ognl:pageCounts"/>
+	<!-- 翻页 结束 -->
+	</div>
+	<!--信息展示区 结束-->
+	<!--信息提交区域 开始 --> 
+	<div class="c_form" jwcid="MgrInfoPart@Part">
+	<div class="c_form c_form-col-4">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">客户经理编码：</span></span>
+				<span class="e_elements"><span>
+					<input jwcid="MANAGER_ID@biz:StaffField" id="MANAGER_ID" name="MANAGER_ID" type="text" 
+						value="ognl:disManager" text="ognl:disManager"/>
+				</span></span>
+			</li>
+		</ul>
+		<input type="hidden" jwcid="isSuccess@TextField" id="isSuccess" name="isSuccess" value="ognl:isSuccess" desc="标志" />
+		<input type="hidden" jwcid="resultCode@TextField" id="resultCode" name="resultCode" value="ognl:resultCode" />
+		<input type="hidden" jwcid="vpmnManagerList2@Hidden" id="vpmnManagerList2" name="vpmnManagerList2" value="ognl:vpmnManagerList2" encode="false"/>
+	</div>
+	
+	<div class="c_submit">
+		<button class="e_button-form" id="addBtn" onclick="doDispatch()"><i class="e_ico-add"></i><span>分配</span></button>
+	</div>
+	</div>
+	<!--信息提交区域 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script></script>
+</body>
+</html>

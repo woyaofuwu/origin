@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+select calling_sub_type_code,calling_sub_type_name from td_s_callingsubtype where calling_type_code =:CALLING_TYPE_CODE

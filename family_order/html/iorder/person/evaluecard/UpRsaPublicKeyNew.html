@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>安全密钥上行更新界面</title>
+    <script jwcid="@Script" language="JavaScript" src="iorder/person/evaluecard/scripts/EValueCard.js"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            var PRO_KEY = $("#PRO_KEY").val();
+            if (PRO_KEY == "false") {
+                document.getElementById("prokey_ul").style.display = "none";//隐藏
+            }
+            if (PRO_KEY == "true") {
+//                $("#contentPart").css("display", "");
+                showPopup('contentPart','contentPart_item',true);
+                $("#other_prokey_ul").css("display", "none");  //隐藏
+                $("#passwdul").css("display", "none");//隐藏
+                $("#other_prokey_bt").css("display", "none");//隐藏
+                $("#buttonpart").css("display", "none");//隐藏
+            }
+            $("#queryMsg").removeClass("e_hide");
+        });
+
+    </script>
+</head>
+<body jwcid="@Body">
+<!--点击增加 开始-->
+<div class="l_query">
+    <div name="contentPart" jwcid="@Popup">
+        <div class="c_popupGroup">
+            <div id="contentPart_item" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this);">安全密钥上行更新</div>
+                </div>
+                <div class="c_list c_list-border c_list-line c_list-phone-col-1 c_list-col-1"
+                     jwcid="NormalSubmitPart@Part">
+                    <input id="edit_PASSWD_ID" name="SECRPASSWD_ID" value="" type="hidden"/>
+                    <input jwcid="@TextField" type="hidden" id="PRO_KEY" name="PRO_KEY"
+                           value="ognl:hasRsaKey('PRO_KEY')"/>
+                    <ul class="ul" id="prokey_ul">
+                        <li class="link">
+                            <div class="label">
+                                <span>省公司公钥：</span>
+                            </div>
+                            <div class="value">
+                                <button type="button" id="updateProBt" name="updateProBt" onclick="updateProvince()"><i
+                                        class="e_ico-skip"></i><span>省公钥一键更新</span></button>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="ul" id="other_prokey_ul">
+                        <li class="link required">
+                            <div class="label">公钥联系人号码</div>
+                            <div class="value">
+                                <input jwcid="@TextField" id="edit_SERIAL_NUMBER" name="SERIAL_NUMBER"
+                                       value="ognl:condition.SERIAL_NUMBER" desc="公钥联系人号码" maxsize="11"
+                                       datatype="mbphone"
+                                       nullable="no"/>
+                            </div>
+                        </li>
+                        <li class="link required">
+                            <span class="label">归属公司</span>
+                            <div class="value">
+                                <input jwcid="@TextField" id="edit_REMARK" name="REMARK" value="ognl:condition.REMARK"
+                                       desc="归属公司"
+                                       nullable="no"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul id="passwdul">
+                        <li class="link merge-2 required">
+                            <div class="label">公钥信息</div>
+                            <div class="value">
+                    <textarea class="e_textarea-row-1" jwcid="@TextArea" value="ognl:condition.SECR_PASSWD"
+                              name="SECR_PASSWD" id="edit_SECR_PASSWD" desc="公钥信息" nullable="no"></textarea>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="c_space"></div>
+                <div class="c_submit e_center" id="other_prokey_bt">
+                    <button class="e_button-blue" id="badd" name="badd" onclick="UpdatePublicKey();"><i
+                            class="e_ico-ok"></i><span>提交</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div jwcid="QueryListPart@Part">
+    <div class="l_queryFn">
+        <!--<div class="c_title">-->
+        <!--<div class="text">安全密钥列表</div>-->
+        <!--</div>-->
+        <!-- 操作功能 -->
+        <div class="c_fn">
+            <div class="left">
+                <button class="e_button-blue" onclick="addRsainfo(this)"><i class="e_ico-add"></i><span>新增</span>
+                </button>
+                <div class="e_space"></div>
+                <button class="e_button-blue" onclick="editRsaInfo(this)"><i class="e_ico-edit"></i><span>修改</span>
+                </button>
+                <div class="e_space"></div>
+                <button class="e_button-blue" onclick="deletRsaInfo(this)"><i class="e_ico-delete"></i><span>删除</span>
+                </button>
+            </div>
+            <div class="right" jwcid="QueryPart@Part">
+                <!-- 搜索条件 开始 -->
+                    <input type="text" jwcid="@TextField" placeholder="公钥联系人号码" name="SERIAL_NUMBER" id="SERIAL_NUMBER"
+                           value="ognl:condition.SERIAL_NUMBER" desc="公钥联系人号码" maxsize="11" datatype="mbphone"/>
+                    <div class="e_space"></div>
+                    <button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN"
+                            onClick="return qryRsaPublicKey();"><i class="e_ico-search"></i><span>查询</span></button>
+                <!-- 搜索条件 结束 -->
+            </div>
+        </div>
+    </div>
+    <div class="l_queryResult">
+            <div class="c_scroll c_scroll-table-6">
+                <div class="c_table">
+                    <table jwcid="@Table" name="infosTable" id="infosTable" scroll="true">
+                        <thead>
+                        <tr>
+                            <th col="PASSWD_ID">公钥ID</th>
+                            <th col="SERIAL_NUMBER">公钥联系人号码</th>
+                            <th col="HOME_PRO">公钥提供方</th>
+                            <th col="STAFF_ID">操作员工</th>
+                            <th col="UPDATE_TIME">更新时间</th>
+                            <th col="MODIFY_TAG">更新标志</th>
+                            <th col="RSRV_STR1">归属公司</th>
+                            <th col="SECR_PASSWD" style="display:none"><span>隐藏公钥信息</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex"
+                            class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                            <td><span jwcid="@Insert" value="ognl:info.PASSWD_ID" raw="true" id="passwdid"/></td>
+                            <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" id="serial"/></td>
+                            <td><span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('EVALUECARD_HOMEPRO', info.HOME_PRO)"
+                                      raw="true" id="homepro"/></td>
+                            <td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true" id="staffid"/></td>
+                            <td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="true" id="uptime"/></td>
+                            <td><span jwcid="@Insert"
+                                      value="ognl:pageutil.getStaticValue('EVALUECARD_REQUESTTYPE',info.MODIFY_TAG)"
+                                      raw="true"
+                                      id="reqtype"/></td>
+                            <td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true" id="rsrv_str1"/></td>
+                            <td style="display:none"><span jwcid="@Insert" value="ognl:info.PASSWD_VALUE"></span></td>
+                            <td style="display: none;"><span jwcid="@Insert" value="ognl:info.PASSWD_VALUE" raw="true"
+                                                             id="passwdval"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+    </div>
+    <div class="l_queryMsg e_hide" id="queryMsg">
+        <div class="c_msg">
+            <div class="wrapper">
+                <div class="emote"></div>
+                <div class="info">
+                    <div class="text">
+                        <div class="title">暂时没有数据</div>
+                        <div class="content">请输入查询条件</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="l_queryPage">
+        <!-- 翻页 开始 -->
+        <div jwcid="@NavBar" needStat="false" name="queryNav" id="queryNav" cond="QueryPart" part="QueryListPart"
+             listener="qryRsaPublicKey" pageSize="5" count="ognl:count"></div>
+        <!-- 翻页 结束 -->
+    </div>
+    </div>
+</div>
+</body>
+</html>

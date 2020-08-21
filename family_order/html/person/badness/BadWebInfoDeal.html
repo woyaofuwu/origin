@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" language="JavaScript" src="person/badness/scripts/badwebinfodeal.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+		<div class="c_title  c_title-1">
+				<div class="text">查询条件</div>
+		</div>
+		<div class="c_form" jwcid="QueryCondPart@Part">
+					<div class=""  jwcid="queryPart@Part" >
+							<ul class="ul ">
+								<li class="li " >
+									<span class="label" >员工工号：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name = "cond_STAFF_ID"    value="ognl:condition.STAFF_ID" desc="员工工号" maxLength="18"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label">员工姓名：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name = "cond_STAFF_NAME"   value="ognl:condition.STAFF_NAME" desc="员工姓名"  maxLength="50"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label">网站地址：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" name = "cond_WEB_ADDR"   value="ognl:condition.WEB_ADDR" desc="网站地址"  maxLength="500"/>
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label">网站来源：</span>
+									<span class="e_select">
+										<span>
+											<span>
+												<select jwcid="@Select" name="cond_WEB_SOURCE" id="cond_WEB_SOURCE" 
+													source="ognl:pageutil.getStaticList('WEB_SOURCE')" desc="网站来源"
+													value="ognl:condition.cond_WEB_SOURCE" textField="DATA_NAME"
+													valueField="DATA_ID"  titleField="DATA_NAME"/>
+											</span>
+										</span>
+									</span>									
+								</li>
+								<li class="li">
+									<span class="label">操作类型：</span>
+									<span class="e_select">
+										<span>
+											<span>
+												<select id="cond_MODIFY_TAG"  name="cond_MODIFY_TAG" >
+													  <option value="">--全部--</option>
+													  <option value="0" selected="selected">新增</option>
+													  <option value="1">删除</option>
+												</select>
+											</span>
+										</span>
+									</span>									
+								</li>								
+								</ul>
+							<div class="submitPlace" ></div>
+							<div class="submit"  >
+								<button class="e_button-form" onclick="return queryData();" ><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+							
+			 	</div>
+			 		<!-- 删除全部标志 -->
+   					<input jwcid="@Hidden" name="del_all_flag" id="del_all_flag" value="" />
+			</div>
+			<!-- 导出-->
+			<div class="submit e_left" >
+				<span class="fn">
+					<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201606121101" 
+							 config="export/badness/BadWebInfoDeal.xml" fileName="10086端口识别诈骗维护"   cond="QueryCondPart" />
+				</span>
+			</div>			
+			<!-- 活动详情 开始 -->
+			<div jwcid="refresh_table@Part" element="div">
+					<div class="c_scroll c_scroll-table-10 c_scroll-x">
+						<div class=""  >
+								<div class="c_table">
+								<table jwcid="@Table"  name="paramTable"  rowClick="tableRowClick" 	>
+									<thead>
+										<tr>
+											<th col="ID"  id="col_ID" style="display:none">唯一标识</th>
+											<!-- 主键为STAFF_ID(操作人), WEB_ADDR(网站地址), WEB_NAME(网站名称) -->
+											<th col="WEB_ADDR_old"   style="display:none">网站地址(老的)</th>
+											<th col="WEB_NAME_old"   style="display:none">网站中文名称(老的)</th>
+											<th col="STAFF_ID"  id="col_STAFF_ID" >员工工号</th>
+											<th col="STAFF_NAME"  id="col_STAFF_NAME" >员工姓名</th>
+											<th col="UPDATE_TIME"  id="col_UPDATE_TIME" >操作时间</th>
+											<th col="MODIFY_TYPE" id="col_MODIFY_TYPE" >操作类型</th>
+											<th col="MODIFY_TAG" id="MODIFY_TAG" style="display: none">操作类型编码</th>
+					                        <th col="WEB_ADDR" id="col_WEB_ADDR" >网站地址</th>
+											<th col="WEB_NAME" id="col_WEB_NAME" >网站中文名称</th>
+											<th col="WEB_SOURCE" id="col_WEB_SOURCE" >网站来源</th>
+											<th col="WEB_SOURCE_CODE"  id="col_WEB_SOURCE_CODE" style="display:none">网站来源编码</th>
+											<th col="REMARKS" id="col_REMARKS" >备注</th>
+										</tr>
+									</thead>
+									<tbody >
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"	element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.ID" raw="false"/></td>
+											<!--  -->
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.WEB_ADDR" raw="false"/></td>
+											<td style="display:none"><span jwcid="@Insert" value="ognl:info.WEB_NAME" raw="false"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="true"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.MODIFY_TYPE" raw="true"/></td>
+					                        <td style="display: none"><span jwcid="@Insert" value="ognl:info.MODIFY_TAG" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.WEB_ADDR" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.WEB_NAME" raw="true"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WEB_SOURCE', info.WEB_SOURCE)" raw="true"/></td>
+					                        <td style="display:none"><span jwcid="@Insert" value="ognl:info.WEB_SOURCE" raw="false"/></td>
+					                        <td><span jwcid="@Insert" value="ognl:info.REMARKS" raw="true"/></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				      <!-- 翻页（替换为页面组件） 开始 -->
+			          <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="queryPart" part="refresh_table"  listener="queryBadWebInfo"  pageSize="10"  count="ognl:pageCount"/>
+			          <!-- 翻页 结束 -->
+			    </div>
+				<div class="c_form c_form-col-3">
+					<div class="" jwcid="editPart@Part" >
+					     <!-- 删除标志 -->
+					     <input jwcid="@TextField" type="hidden" id="MODIFY_TAG" name="MODIFY_TAG" value=""/>
+						<ul class="ul ">
+							<li class="li">
+								<span class="label"><span class="e_required">网站地址：</span></span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name = "WEB_ADDR" value="ognl:temp.WEB_ADDR" desc="网站地址" maxLength="500"  datatype="text" nullable="no"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">网站中文名称：</span></span>
+								<span class="e_input"><span>
+								<input type="text" jwcid="@TextField" name = "WEB_NAME"   value="ognl:temp.WEB_NAME" desc="网站中文名称" nullable="no" maxLength="500" datatype="text"/>
+								</span></span>
+							</li>
+							<li class="li">
+							   <!--  
+								<span class="label"><span class="e_required">网站来源：</span></span>
+								<span class="e_input">
+									 <span>
+										<input type="text" jwcid="@TextField"  name = "WEB_SOURCE"   value="ognl:temp.WEB_SOURCE" desc="网站来源" nullable="no"  maxLength="500" datatype="text"/>
+									 </span>
+								</span>
+								-->
+								<span class="label e_required">网站来源：</span>
+								<span class="e_select">
+									<span>
+										<span>
+											<select jwcid="@Select" name="WEB_SOURCE" id="WEB_SOURCE" 
+												source="ognl:pageutil.getStaticList('WEB_SOURCE')" desc="网站来源"
+												value="ognl:temp.WEB_SOURCE" textField="DATA_NAME"
+												valueField="DATA_ID"  titleField="DATA_NAME" nullable="no" />
+										</span>
+									</span>
+								</span>								
+								
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">备注信息：</span></span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField"  name = "REMARKS"   value="ognl:temp.REMARKS" desc="备注" nullable="no" maxLength="500" datatype="text"/>
+								</span></span>
+							</li>
+						</ul>
+							<div class="submitPlace"></div>
+							<div class="submit">
+								<button class="e_button-form" onclick="return addLimit();" ><i class="e_ico-add"></i><span>新增</span></button>
+								<button class="e_button-form" onclick="return editLimit();" ><i class="e_ico-modify"></i><span>修改</span></button>
+								<button class="e_button-form" onclick="return delLimit();" ><i class="e_ico-delete"></i><span>删除</span></button>
+								<button class="e_button-form" onclick="return delAllLimit();" ><i class="e_ico-delete"></i><span>删除全部</span></button>
+								<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+							</div>
+				  </div>
+				</div>
+				<div class="c_form c_form-col-3" jwcid="SubmitImportBadwebinfo@Part" >				
+				   <!-- 导入 -->
+					<ul class="ul">
+						<li class="li col-2">
+							<span class="label"><span>批量文件：</span></span>
+							<span class="e_elements"><!-- 替换为页面组件 -->
+								<span class="e_elements">
+										<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+												fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="yes"/>
+								</span>
+							</span>
+						</li>
+						<li class="li">
+							<span class="label">模版下载：</span>
+							<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=10086端口识别诈骗维护信息导入模板.xls&filePath=template/person/badness/BadWebInfoDealImport.xls')">[点击下载]</a></span>
+						</li>							
+					</ul>
+					<ul>
+						<li></li>
+						<li>
+							<button type="button" class="e_button-page-ok" onclick="return importOcsData()"><i class="e_ico-import"></i><span>导入</span></button>
+						</li>
+					</ul>
+			    </div>				
+			<div class="c_submit">
+				<button class="e_button-page-ok" onclick="return submitDepts();" ><i class="e_ico-ok"></i><span>提交</span></button>
+			</div>
+			
+</div>
+<!-- 提交 开始 -->
+<input jwcid="@Hidden" name="NGBOSS_STAFF_ID" value="ognl:staffInfo.NGBOSS_STAFF_ID"/>
+<input jwcid="@Hidden" name="NGBOSS_STAFF_NAME" value="ognl:staffInfo.NGBOSS_STAFF_NAME"/>
+
+<!-- 提交 结束 -->
+<div class="" jwcid="submit_part@Part" >
+	<input jwcid="@Hidden" name="edit_table" value=""/>
+</div>
+</div></div>
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>能力开放平台日对账查询</title>
+<script jwcid="@Script" src="person/interboss/openchkacctrecqry/scripts/openChkAcctRecQry.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	 
+	<div jwcid="CondPart@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">对账日期：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField"  name="cond_RECON_DATE" id="cond_RECON_DATE" nullable="no" disabled="false" value="ognl:cond.RECON_DATE"  
+								format="yyyyMMdd" desc="对账日期"/>
+				    </span></span>
+			</li>
+			<li class="li">
+					<span class="label">对账差异类型：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_RESULT_TYPE" id="cond_RESULT_TYPE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('OPEN_CHK_ACCT_REC_RESULT_TYPE')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="cond.RESULT_TYPE" 
+							desc="对账差异类型" />
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_submit e_right">
+		<button type="button" class="e_button-form" id="SearchBtn" onclick="queryOpenChkAcctRecLList();"><i class="e_ico-search"></i><span>查询</span></button>
+		<button type="button" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+	</div>
+	 
+<div class="c_box">
+	 
+	<div jwcid="ResultPart0@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+		    <li class="li"><span class="label">BOSS多笔数：</span> 
+			              <span  class="text"><span> 
+						        <input jwcid="@Insert"
+										name="BOSS_MORE_NUMB" id="BOSS_MORE_NUMB" value="ognl:commInfo.BOSS_MORE_NUMB"
+										desc="BOSS多笔数" disabled="true" />
+								</span></span>
+			</li>
+			<li class="li"><span class="label">BOSS多总金额：</span> 
+			              <span  class="text"><span> 
+						        <input jwcid="@Insert"
+										name="BOSS_MORE_AMOUNT_PAY" id="BOSS_MORE_AMOUNT_PAY"  value="ognl:commInfo.BOSS_MORE_AMOUNT_PAY"
+										desc="BOSS多总金额" disabled="true" />
+								</span></span>
+			</li>
+			<li class="li"><span class="label">平台多笔数：</span> 
+			              <span  class="text"><span> 
+						        <input jwcid="@Insert"
+										name="BOSS_LESS_NUMB" id="BOSS_LESS_NUMB"  value="ognl:commInfo.BOSS_LESS_NUMB"
+										desc="平台多笔数" disabled="true" />
+								</span></span>
+			</li>
+			<li class="li"><span class="label">平台多总金额 ：</span> 
+			              <span  class="text"><span> 
+						        <input jwcid="@Insert"
+										name="BOSS_LESS_AMOUNT_PAY" id="BOSS_LESS_AMOUNT_PAY" value="ognl:commInfo.BOSS_LESS_AMOUNT_PAY"
+										desc="平台多总金额 " disabled="true" />
+								</span></span>
+			</li>
+		</ul>
+	</div>
+	
+	<div jwcid="ResultPart@Part">
+		<!--执行查询结果-->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="sortedTable">
+	     		<thead>
+		  			<tr>
+		  				<th >序号</th>
+		  				<th col="RESULT_TYPE">差异类型</th>
+						<th col="EXERN_ORDER" >外部渠道订单编号</th>
+						<th col="INNER_ORDER" >内部渠道订单编号</th>
+						<th col="SERIAL_NUMBER" >用户手机号</th>
+						<th col="EXERN_CHENNEL" >外部渠道编码</th>	
+						<th col="GOODS_CODE" >商品编码</th>	
+						<th col="GOODS_RATE" >商品价格</th>	
+						<th col="UDISCOUNT" >商品折扣率</th>	
+						<th col="AMOUNT_PAY" >商品应付金额</th>
+						<th col="OPR_NUM" >订购时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESULT_TYPE" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.EXERN_ORDER" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.INNER_ORDER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.EXERN_CHENNEL" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.GOODS_CODE" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.GOODS_RATE" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.UDISCOUNT" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.AMOUNT_PAY" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.OPR_NUM" raw="false"/></td>  
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="CondPart" part="ResultPart" 
+	      listener="qryOpenChkAcctRecList" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

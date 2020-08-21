@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/auditPeriod/script/auditPeriodRestartContract.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">审核</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动(替换为 java 组件) 开始 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+		<div class="l_padding l_padding-u l_padding-phone-0">
+			<div class="c_title">
+				<div class="text">客户信息</div>
+			</div>
+			<div class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">客户名称</div>
+						<div class="value"><input jwcid="@TextField" id="CUST_NAME" name="CUST_NAME" readonly="readnoly" value="ognl:groupInfo.CUST_NAME"/></div>
+					</li>
+					<li class="link required">
+						<div class="label">客户编码</div>
+						<div class="value"><input jwcid="@TextField" id="GROUP_ID" name="GROUP_ID" readonly="readnoly"  value="ognl:groupInfo.GROUP_ID" /></div>
+					</li>
+					<li class="link" ontap="showPopup('qryPopup1','qryCustInfos');">
+						<div class="label">其他客户信息</div>
+						<div class="value"></div>
+						<div class="more"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="c_title">
+				<div class="text">合同信息</div>
+			</div>
+			<div jwcid="newContractPart@Part" id="newContractPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1" style="">
+				<ul>
+				<li class="link required">
+					<div class="label">集团客户号</div>
+					<div class="value"><input jwcid="@TextField" name="C_CUST_ID" value="ognl:info.C_CUST_ID" disabled="true" desc="集团客户号" /></div>
+				</li>
+				<li class="link required">
+					<div class="label">合同编码</div>
+					<div class="value"><input jwcid="@TextField" name="C_CONTRACT_ID" value="ognl:info.C_CONTRACT_ID" disabled="true" desc="合同编码" /></div>
+				</li>
+				<!-- 
+				<li class="link required">
+					<div class="label">合同协议编码</div>
+					<div class="value"><input jwcid="@TextField" name="C_PROTOCOL_CODE" value="ognl:info.C_PROTOCOL_CODE"  desc="合同协议编码" nullable="no"/></div>
+				</li>
+				 -->
+				<li class="link required">
+					<div class="label">合同名称</div>
+					<div class="value">
+					<span tip="提示：填写合同名称，如为格式协议，建议统一命名为：XX专线业务协议（XX客户）!">
+					<input jwcid="@TextField" name="C_CONTRACT_NAME" value="ognl:info.C_CONTRACT_NAME"  desc="合同名称" nullable="no" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">合同级别</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_CONTRACT_LEVEL" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GROUPCONTRACT_CONTRACTLEVEL')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="true" value="ognl:info.C_CONTRACT_LEVEL" desc="合同级别" disabled="true" />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">附件类型</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_POATT_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CONTRACT_POATT_TYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="true" value="ognl:info.C_POATT_TYPE" nullable="no" desc="附件类型" disabled="true" />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">是否自动续约</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_CONTRACT_IS_AUTO_RENEW" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CONTRACT_IS_AUTO_RENEW')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="false" value="ognl:info.C_CONTRACT_IS_AUTO_RENEW" onchange="" nullable="no" desc="是否自动续约" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">续约后到期时间</div>
+						<div class="value">
+						<input name="C_RENEW_END_DATE" jwcid="C_RENEW_END_DATE@DateField" now="true" dropDown="true" format="yyyy-MM-dd HH:mm:ss" desc="续约后到期时间" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">自动续约周期</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_CONTRACT_AUTO_RENEW_CYCLE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CONTRACT_SS_AUTO_RENEW_CYCLE')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="false" value="ognl:info.C_CONTRACT_AUTO_RENEW_CYCLE" onchange="" nullable="no" desc="自动续约周期" disabled="true" />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">签约资费</div>
+					<div class="value">
+					<span tip="提示：请如实填写业务协议的签约总资费!" >
+					<input jwcid="@TextField" name="C_CONT_FEE" value="ognl:info.C_CONT_FEE" desc="签约资费" nullable="no" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li>
+					<div class="label">优惠方案</div>
+					<div class="value">
+					<span tip="提示：请填写折扣率及其他在协议中明确的优惠约定!" >
+					<input jwcid="@TextField" name="C_PERFER_PALN" value="ognl:info.C_PERFER_PALN" desc="优惠方案" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">合同类型</div>
+					<div class="value">
+					<span tip="提示：营销协议指营销活动类协议；服务协议指双方对于服务方面的补充约定!" >
+						<input jwcid="@Select" name="C_CONTRACT_TYPE_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CONTRACT_TYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="false" value="ognl:info.C_CONTRACT_TYPE_CODE" nullable="no"  desc="合同类型" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">合同签订类型</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_CONTRACT_WRITE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GROUPCONTRACT_WRITETYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="false" value="ognl:info.C_CONTRACT_WRITE_TYPE" nullable="no" desc="合同签订类型" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">合同签订地市</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_CONTRACT_WRITE_CITY" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GLOBAL_PROVINCE_CODE')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="false" value="ognl:info.C_CONTRACT_WRITE_CITY" nullable="no" desc="合同签订地市" disabled="true" />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">合同项目经理</div>
+					<div class="value"><input jwcid="@TextField" name="C_CONTRACT_WRITER" value="ognl:info.C_CONTRACT_WRITER" desc="合同项目经理" nullable="no" disabled="true" /></div>
+				</li>
+				<li class="link">
+					<div class="label required">合同签订日期</div>
+						<div class="value">
+						<input name="C_CONTRACT_WRITE_DATE" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.C_CONTRACT_WRITE_DATE" format="yyyy-MM-dd HH:mm:ss" desc="合同签订日期" nullable="no" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label required">合同有效起始日期</div>
+						<div class="value">
+						<input name="C_CONTRACT_START_DATE" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.C_CONTRACT_START_DATE" format="yyyy-MM-dd HH:mm:ss" desc="合同有效起始日期" nullable="no" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label required">合同有效终止日期</div>
+						<div class="value">
+						<input name="C_CONTRACT_END_DATE" jwcid="C_CONTRACT_END_DATE@DateField" now="true" dropDown="true" value="ognl:info.C_CONTRACT_END_DATE" format="yyyy-MM-dd HH:mm:ss" desc="合同有效终止日期" nullable="no" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">客户合同签订人</div>
+					<div class="value">
+					<span tip="提示：请填写合同签订人，例如客户经理!" >
+					<input jwcid="@TextField" name="C_CONTRACT_MANAGER" value="ognl:info.C_CONTRACT_MANAGER"   desc="客户合同签订人" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">合同决策人</div>
+					<div class="value">
+					<span tip="提示：填写签约决策人，如无特殊情况，客户经理可作为合同决策人!" >
+					<input jwcid="@TextField" name="C_CONTRACT_CONMAN" value="ognl:info.C_CONTRACT_CONMAN" desc="合同决策人" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label required">合同录入日期</div>
+						<div class="value">
+						<input name="C_CONTRACT_IN_DATE" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.C_CONTRACT_IN_DATE" format="yyyy-MM-dd HH:mm:ss" desc="合同录入日期" nullable="no" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">合同竣工日期</div>
+						<div class="value">
+						<input name="C_CONTRACT_COMPLETE_DATE" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.C_CONTRACT_COMPLETE_DATE" format="yyyy-MM-dd HH:mm:ss" desc="合同竣工日期" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">经办人客户经理</div>
+					<div class="value"><input jwcid="@TextField" name="C_CLERK_STAFF_ID" value="ognl:info.C_CLERK_STAFF_ID"  desc="经办人客户经理" disabled="true" /></div>
+				</li>
+				<li class="link">
+					<div class="label">合同受理点</div>
+					<div class="value">
+					<span tip="提示：请填写双方签约所在市县名称!" >
+					<input jwcid="@TextField" name="C_CONTRACT_RECV_SITE" value="ognl:info.C_CONTRACT_RECV_SITE"   desc="合同受理点" disabled="true" />
+					</span>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">合同受理日期</div>
+						<div class="value">
+						<input name="C_RSRV_DATE2" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.C_RSRV_DATE2" format="yyyy-MM-dd HH:mm:ss" desc="合同受理日期" disabled="true" />
+					</div>
+				</li>
+				<li>
+					<div class="label required">合同附件</div>
+						<div class="value">
+							<input name="CONTRACT_FILE_LIST" jwcid="@SimpleUpload" title="附件上传"  
+							value="ognl:info.CONTRACT_FILE_LIST" filePath="EOP/contract" ftpCode="eosdata" 
+							nullable="no"/>
+							<input jwcid="@Hidden" name="C_FILE_LIST" value="ognl:info.C_FILE_LIST" desc="合同附件"/>
+							<input jwcid="@Hidden" name="C_FILE_LIST_NAME" value="ognl:info.C_FILE_LIST_NAME" desc="合同附件名称" nullable="no"/>
+						</div>
+				</li>
+				<li class="link">
+					<div class="label">原合同协议编码</div>
+					<div class="value"><input jwcid="@TextField" name="C_RELA_CONTRACT_ID" value="ognl:info.C_RELA_CONTRACT_ID"  desc="原合同协议编码" disabled="true" /></div>
+				</li>
+				<li class="link required">
+					<div class="label">合同状态</div>
+					<div class="value">
+						<input jwcid="@Select" name="C_CONTRACT_STATE_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CONTRACT_STATE')" textField="DATA_NAME" valueField="DATA_ID" 
+						addDefault="true" value="ognl:info.C_CONTRACT_STATE_CODE" onchange="" nullable="no" desc="合同状态" disabled="true"/>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">发展人</div>
+					<div class="value"><input jwcid="@TextField" name="C_DEVELOP_STAFF_ID" value="ognl:info.C_DEVELOP_STAFF_ID"  desc="发展人" disabled="true" /></div>
+				</li>
+				<li class="link">
+					<div class="label">发展部门</div>
+					<div class="value"><input jwcid="@TextField" name="C_DEVELOP_DEPART_ID" value="ognl:info.C_DEVELOP_DEPART_ID"  desc="发展部门" disabled="true" /></div>
+				</li>
+				<li class="link">
+					<div class="label">合同内容</div>
+					<div class="value"><input jwcid="@TextField" name="C_CONTRACT_CONTENT" value="ognl:info.C_CONTRACT_CONTENT"  desc="合同内容" disabled="true" /></div>
+				</li>
+				<li class="link">
+					<div class="label">合同说明</div>
+					<div class="value"><input jwcid="@TextField" name="C_REMARK" value="ognl:info.C_REMARK"  desc="合同说明" disabled="true" /></div>
+				</li>
+				<li class="link">
+					<div class="label required">产品有效起始日期</div>
+						<div class="value">
+						<input name="C_PRODUCT_START_DATE" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.C_PRODUCT_START_DATE" format="yyyy-MM-dd HH:mm:ss" desc="产品有效起始日期" nullable="no" disabled="true" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label required">产品有效终止日期</div>
+						<div class="value">
+						<input name="C_PRODUCT_END_DATE" jwcid="C_PRODUCT_END_DATE@DateField" now="true" value="ognl:info.C_PRODUCT_END_DATE"  dropDown="true" format="yyyy-MM-dd HH:mm:ss" desc="产品有效终止日期" nullable="no" disabled="true" />
+					</div>
+				</li>
+			</ul>
+		</div>
+				
+			
+			<div style="display:none" id="EOS_COMMON_DATA"><span jwcid="@Insert" value="ognl:info.EOS_COMMON_DATA" desc="url请求信息"/></div>
+			<input type="hidden" jwcid="@TextField" id="NODE_ID" name="NODE_ID" value="ognl:info.NODE_ID" desc="节点ID"/>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy" onclick="$.nav.close();">取消</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" onclick="submit();">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+		</div>
+	</div>
+	<!-- 滚动 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup1" id="qryPopup1">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryCustInfos">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);">返回</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding">
+					<!-- 参数 开始 -->
+					<div class="c_param c_param-border c_param-label-6">
+						<ul>
+							<li>
+								<span class="label">客户级别:</span>
+								<span class="value" jwcid="@Insert" id="CLASS_NAME" name="CLASS_NAME" value="ognl:groupInfo.CLASS_NAME"/>
+							</li>
+							<li>
+								<span class="label">客户地址:</span>
+								<span class="value" jwcid="@Insert" id="GROUP_ADDR" name="GROUP_ADDR" value="ognl:groupInfo.GROUP_ADDR"/>
+							</li>
+							<li>
+								<span class="label">客户所属市县:</span>
+								<span class="value" jwcid="@Insert" id="CITY_NAME" name="CITY_NAME" value="ognl:groupInfo.CITY_NAME"/>
+							</li>
+							<li>
+								<span class="label">所属行业:</span>
+								<span class="value" jwcid="@Insert" id="CALLING_TYPE_NAME" name="CALLING_TYPE_NAME" value="ognl:groupInfo.CALLING_TYPE_NAME"/>
+							</li>
+							<li>
+								<span class="label">子行业类别:</span>
+								<span class="value" jwcid="@Insert" id="SUB_CALLING_TYPE_NAME" name="SUB_CALLING_TYPE_NAME" value="ognl:groupInfo.SUB_CALLING_TYPE_NAME"/>
+							</li>
+							<li>
+								<span class="label">客户邮箱:</span>
+								<span class="value" jwcid="@Insert" id="EMAIL" name="EMAIL" value="ognl:groupInfo.EMAIL"/>
+							</li>
+							<li>
+								<span class="label">客户邮编:</span>
+								<span class="value" jwcid="@Insert" id="POST_CODE" name="POST_CODE" value="ognl:groupInfo.POST_CODE"/>
+							</li>
+							<li>
+								<span class="label">客户联系人:</span>
+								<span class="value" jwcid="@Insert" id="RSRV_STR2" name="RSRV_STR2" value="ognl:groupInfo.RSRV_STR2"/>
+							</li>
+							<li>
+								<span class="label">联系人电话:</span>
+								<span class="value" jwcid="@Insert" id="RSRV_STR7" name="RSRV_STR7" value="ognl:groupInfo.RSRV_STR7"/>
+							</li>
+						</ul>
+					</div>
+					<!-- 参数 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">关闭</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	
+	<script>
+		//Wade.setRatio();
+		//window["UI-popup01"] = new Wade.Popup("UI-popup01");
+		//window["UI-popup02"] = new Wade.Popup("UI-popup02");
+		function getCustInfo(){
+			var groupCustInfo = $.enterpriseLogin.getInfo().get("CUST_INFO");
+			console.log(groupCustInfo);
+		}
+	</script>
+
+</body>
+</html>

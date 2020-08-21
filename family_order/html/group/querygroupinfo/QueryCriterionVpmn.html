@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/querygroupinfo/groupinfoquery.js"></script>   
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body" style="ognl:'background:url(/watermarkimg/ShowImageServer?staff_id='+page.visit.staffId+') repeat;'">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+<div class="c_box" id="pageForm">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">非规范子VPMN查询</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">查询方式：</span>
+				<span class="e_select"><span><span> 
+                    <select name="cond_QueryType" jwcid="@Select" 
+						textField="DATA_NAME" valueField="DATA_ID" 
+						source="ognl:pageutil.getStaticList('AB_VPMN_Query_Type')" 
+						value="ognl:condition.cond_QueryType" desc="查询方式"  
+						onchange="changeVpmnTypeQuery()"
+						nullable="no" addDefault="false"/>
+				</span></span></span>
+			</li> 
+			<span id="QueryTypeOne">
+			<li class="li">
+				<span class="label" id="ConditionLabel">母VPMN编号：</span>
+				<span class="e_input"><span> 
+					<input type="text" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="@TextField" value="ognl:condition.cond_SERIAL_NUMBER" desc="母VPMN编号" maxsize="20" nullable="no"  />	 
+				</span></span>
+			</li>
+			</span>
+			<span id="QueryTypeTwo" style="display:none">
+			<li class="li">
+				<span class="label" id="ConditionLabel">子VPMN编号：</span>
+				<span class="e_input"><span> 
+					<input type="text" id="cond_SERIAL_NUMBER_A" name="cond_SERIAL_NUMBER_A" jwcid="@TextField" value="ognl:condition.cond_SERIAL_NUMBER_A" desc="子VPMN编号" maxsize="20"/>	 
+				</span></span>
+			</li>
+			</span>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit"><button class="e_button-form" id="bquery" onclick="return RemoveSixVpmnMebQuery();" ><i class="e_ico-search"></i><span>查询</span></button></div>
+	</div>
+	</div>	
+	<!-- 表单 结束 -->
+	<div jwcid="refreshtable@Part"> 
+	<!-- 导出 开始 --> 
+	<div class="c_title c_title-2">
+		<span class="text">非规范子VPMN查询</span> 
+		<span class="fn"> 
+		    <span jwcid="@Export"
+		    	id="exportFile"
+				name="exportFile" 
+				serviceName="96205" 
+				config="export/querygroupinfo/QueryCriterionVpmn.xml"
+				fileName="非规范子VPMN查询记录导出"
+				cond="QueryCondPart"
+				ftpSite="groupserv"
+				beforeAction="exportBeforeAction" 
+				action="">
+			</span> 
+		</span> 
+	</div> 
+	<!-- 导出 结束 -->
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead> 
+				<tr> 
+					<th>VPMN规范标识</th>
+					<th>VPMN类型</th>
+					<th>集团用户标识</th>
+					<th>VPMN编码</th>
+					<th>VPMN名称</th>
+					<th>客户经理工号</th>
+					<th>分管客户经理</th>
+					<th>VPMN归属市县</th>
+					<th>VPMN成立时间</th>
+				</tr>
+			</thead>     
+			<tbody>
+			<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+				<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+				<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="true"/></td>     
+                <td><span jwcid="@Insert" value="ognl:info.VPN_NO" raw="true"/></td>  
+                <td><span jwcid="@Insert" value="ognl:info.VPN_NAME" raw="true"/></td>     
+                <td><span jwcid="@Insert" value="ognl:info.CUST_MANAGER" raw="true"/></td> 
+				<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.CUST_MANAGER)" raw="true"/></td> 
+				<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',info.CITY_CODE)" raw="true"/></td>  
+				<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.IN_DATE)" raw="true"/></td>  
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	</div> 
+	<!-- 表格 结束 --> 
+
+	<!-- 翻页 开始  
+    <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="refreshtable" listener="queryInfos"  pageSize="100" needCoun="false" count="ognl:pageCounts"/>
+	  翻页 结束 -->
+	 
+	</div> 
+</div>
+<!-- 区域 结束 -->
+</div></div> 
+</body> 
+</html> 
+ 

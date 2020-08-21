@@ -1,0 +1,5 @@
+     UPDATE TF_B_EOP_ATTR SET ATTR_VALUE = '' 
+     WHERE 1 = 1
+     AND IBSYSID = :IBSYSID
+     AND NODE_ID = 'apply'
+     AND ATTR_CODE = 'PRODUCTNO'

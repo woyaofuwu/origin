@@ -1,0 +1,3 @@
+DELETE FROM tf_b_trade_other
+ WHERE trade_id=TO_NUMBER(:TRADE_ID) 
+ AND RSRV_VALUE_CODE = :RSRV_VALUE_CODE

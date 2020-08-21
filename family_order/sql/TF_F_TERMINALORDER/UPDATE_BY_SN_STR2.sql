@@ -1,0 +1,11 @@
+update TF_F_TERMINALORDER
+   set RSRV_STR2       = :RSRV_STR2,
+       USE_PRODUCT_ID  = :USE_PRODUCT_ID,
+       USE_PACKAGE_ID  = :USE_PACKAGE_ID,
+       UPDATE_STAFF_ID = :UPDATE_STAFF_ID,
+       TERMINAL_ID     = :TERMINAL_ID,
+       USER_ID         = :USER_ID,
+       TRADE_ID        = :TRADE_ID,
+       UPDATE_TIME     = sysdate
+ where SERIAL_NUMBER = :SERIAL_NUMBER
+   and ORDER_ID = :NET_ORDER_ID

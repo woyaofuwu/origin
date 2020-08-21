@@ -1,0 +1,22 @@
+SELECT TRADE_ID,
+       SERIAL_NUMBER,
+       SP_CODE,
+       SERVICE_CODE,
+       OPER_CODE,
+       START_DATE,
+       START_TIME,
+       STATUS,
+       FILE_NO,
+       CONTENT,
+       ACT_MODE,
+       FEE,
+       SEND_TIME,
+       SMS_TYPE,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR6
+  FROM TP_F_USER_CHARGEREMIND
+ WHERE SEQ  = :TRADE_ID
+   AND SERIAL_NUMBER = :SERIAL_NUMBER
+   AND (STATUS = '9' OR STATUS = '6')

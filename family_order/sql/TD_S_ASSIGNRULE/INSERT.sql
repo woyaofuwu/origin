@@ -1,0 +1,5 @@
+INSERT INTO td_s_assignrule(eparchy_code,res_type_code,depart_id,depart_code,depart_name,depart_frame,valid_flag,area_code,parent_depart_id,manager_id,order_no,warnning_value_u,warnning_value_d,start_date,end_date,depart_level,rsrv_tag1,rsrv_tag2,rsrv_tag3,rsrv_date1,rsrv_date2,rsrv_date3,rsrv_str1,rsrv_str2,rsrv_str3,remark,update_time,update_staff_id,update_depart_id,depart_kind_code,stock_level,rsrv_str4,rsrv_str5)
+SELECT
+:EPARCHY_CODE,:RES_TYPE_CODE,:DEPART_ID,:DEPART_CODE,:DEPART_NAME,:DEPART_FRAME,:VALID_FLAG,:AREA_CODE,:PARENT_DEPART_ID,:MANAGER_ID,TO_NUMBER(:ORDER_NO),TO_NUMBER(:WARNNING_VALUE_U),TO_NUMBER(:WARNNING_VALUE_D),TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_NUMBER(:DEPART_LEVEL),:RSRV_TAG1,:RSRV_TAG2,:RSRV_TAG3,TO_DATE(:RSRV_DATE1,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:RSRV_DATE2,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:RSRV_DATE3,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,depart_kind_code,:STOCK_LEVEL,'',''
+FROM td_m_depart
+WHERE depart_id=:DEPART_ID

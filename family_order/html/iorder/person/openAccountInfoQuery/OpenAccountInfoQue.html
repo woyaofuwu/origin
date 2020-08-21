@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>跨地域异常开户信息查询</title>
+<script jwcid="@Script"  src="iorder/person/openAccountInfoQuery/scripts/OpenAccountInfoQue.js?v=20181027"></script>
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">跨地域异常开户信息查询</div>
+	<div class="fn">
+		<span class="e_ico-search" ontap=""></span>
+	</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<!-- 滚动（替换为 java 组件） 开始 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+						
+			<!-- 查询输入区域开始-->
+			<div class="c_title">
+				<div class="text">跨地域异常开户信息查询</div>
+				<!-- 导出开始 -->
+				<div class = "fn">
+	            <span jwcid="@Export" name="exportFile"
+					  fileTypes="{'.xls':'.xlsx'}" taskId="2019082800"
+					  ftpCode="personserv"
+					  configFile="export/openareawaring/OpenAreaWaringExport.xml"
+					  fileName="异常开户信息导出" cond="ParamsPart">
+	            </span>
+				</div>
+				<!-- 导出结束 -->
+			</div>
+			<div jwcid="ParamsPart@Part" class="c_list c_list-col-4 c_list-s  c_list-line c_list-border">
+				<ul class="ul">
+					<li>
+						<div class="label">工号归属市县</div>
+						<div class="value">
+							<input jwcid="@TextField" name="cond_RSRV_STR5" id="cond_RSRV_STR5" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',condition.cond_RSRV_STR5)" desc="渠道归属市县" disabled="true"/>
+						</div>
+					</li> 					
+					<li>
+						<div class="label">开户起始日期：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" readonly="true" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" dropDown="true" desc="起始时间" />
+						</div>
+					</li>
+					
+					<li>
+						<div class="label">开户终止日期：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" readonly="true" value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" dropDown="true" desc="终止时间" />
+						</div>
+					</li>				
+					<li class="required">
+						<div class="label">开户工号</div>
+						<div class="value">
+						<span class = "e_mix">
+						<input jwcid="@TextField" name="cond_RSRV_STR2" id="cond_RSRV_STR2" nullable="no"  maxlength="15" value="ognl:condition.cond_RSRV_STR2"" desc="工号"/>
+						<button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="queryOpenAccountInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+						</span>
+						</div>
+					</li>									
+				</ul>
+			</div>
+			<!-- 查询输入区域结束 -->
+			<div class = "c_space"></div>	
+			<!-- 查询结果显示区域开始 -->
+			<div jwcid="QueryListPart@Part">
+			<div jwcid="table4Print@Part" optimize="true">
+				<table jwcid="@Table" name="printTable" id="printTable" class="c_table c_table-row-8 c_table-border c_table-lite c_table-hover" editMode="false">
+					<thead>                                            
+						<tr>
+
+		  					
+							<th col="RSRV_STR1" >开户时间</th>
+							<th col="RSRV_STR2" >开户工号</th>
+							<th col="RSRV_STR3" >渠道编码</th> 
+							<th col="RSRV_STR4" >渠道名称</th>
+							<th col="RSRV_STR5" >工号归属市县</th>
+							<th col="RSRV_STR6" >工号开户所在市县 </th>
+		      				<th col="RSRV_VALUE" >开户号码</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+									
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.RSRV_VALUE" raw="true" />
+							</td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div class="c_space-c"></div>
+			<div class="c_page c_page-border" jwcid="@NavBar" name="recordNav" id="recordNav" cond="ParamsPart" part="QueryListPart" listener="queryOpenAccountInfo" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+			</div>
+			<!-- 查询结果显示区域结束 -->	
+			
+	</div>	
+</div>
+</body>
+</html>

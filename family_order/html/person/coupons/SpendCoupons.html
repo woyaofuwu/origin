@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>手机维修电子优惠券查询使用</title>
+<script jwcid="@Script" language="JavaScript" src="person/coupons/scripts/SpendCoupons.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="6222"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+	</div>
+	<div jwcid="HiddenInfoPart@Part" style="display:none">
+		<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value="" desc="USER_ID"/>
+	</div>
+	
+	
+	<!-- 参数列表 结束 -->
+</div>
+ 
+<div class="c_box"> 
+	
+	<div jwcid="ResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table"  id="sortedTable" rowClick="tableRowClick" >
+	     		<thead>
+		  			<tr>
+		  				<th >操作</th>
+		  				<th >序号</th>
+						<th col="TICKET_CODE" >优惠券编号</th>
+			      		<th col="TICKET_VALUE" >优惠券金额</th>
+			      		<th col="TICKET_STATE_DESC" >优惠券状态</th>
+			      		<th col="TICKET_STATE" style="display:none">优惠券状态</th>
+			      		<th col="SERIAL_NUMBER" >客户手机号码</th>
+			      		<th col="SPEND_VALUE" >实际使用金额</th>
+			      		<th col="SPEND_TIME" >使用日期</th>
+			      		<th col="TICKET_END_DATE" >优惠券有效期</th>
+			      		<th col="UPDATE_STAFF_ID" >优惠券录入工号</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><input type="radio" name="RADIO_LIST" id="RADIO_LIST"  jwcid="@Radio" value="ognl:info.TICKET_CODE" ticketVal="ognl:info.TICKET_VALUE" ticketEndDate="ognl:info.TICKET_END_DATE" userId="ognl:info.USER_ID"  serialNum="ognl:info.SERIAL_NUMBER"  ticketState="ognl:info.TICKET_STATE" dateState="ognl:info.DATE_STATE" /></td>
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.TICKET_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TICKET_VALUE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TICKET_STATE_DESC" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.TICKET_STATE" /></td>  
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SPEND_VALUE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SPEND_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TICKET_END_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false"/></td>       
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="AuthPart,HiddenInfoPart" part="ResultPart"  listener="queryUserTicketList"  pageSize="20"  count="ognl:recordCount"></div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-6"  jwcid="editPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">使用金额：</span></span>
+					<span class="e_input" jwcid="spendValPart@Part"><span>
+							<input jwcid="@TextField" name="SPEND_VALUE" id="SPEND_VALUE" value="" desc="使用金额"  datatype="numeric" nullable="no"/>
+					</span></span> 
+				</li> 
+				<li class="li">
+					<span class="label"><span class="e_required">维修单号：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name ="REPAIR_NO" id="REPAIR_NO"  value="" desc="维修单号" datatype="text"  nullable="no"/> 
+					</span></span>
+				</li>
+			</ul>
+			<ul class="ul">
+				<li class="li col-5">
+					<span class="label"> 备注： </span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name = "REMARK" id="REMARK"  value="" desc="备注"   datatype="text" /> 
+					</span></span>
+				</li>
+			</ul>
+	</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeCheck()" disabledBtn="false" area="ResultPart" element="div"/>
+</div>
+<!--受理信息结束-->
+</div></div></body>
+</html>

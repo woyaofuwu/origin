@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>统一订购查询</title>
+<script language="JavaScript" src="person/sundryquery/unionquery/scripts/unionorderquery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">统一订购查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-2" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			<span class="label">服务号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" 
+					name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+					value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" /> </span></span>
+		    </li>
+		    <li class="li">
+				<span class="label">系统处理状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_DEAL_STATE" id="cond_DEAL_STATE" source="ognl:pageutil.getStaticList('UNION_DEAL_STATE')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="" desc="系统处理状态" />
+				</span></span></span>
+			</li>
+		    <li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_ORDER_BEGIN_TIME" id="cond_ORDER_BEGIN_TIME" maxName="cond_ORDER_END_TIME"
+					value="ognl:condition.cond_ORDER_BEGIN_TIME" nullable="no" desc="开始时间" /> 
+				</span></span>
+		    </li>
+		    <li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_input e_input-right"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_ORDER_END_TIME" id="cond_ORDER_END_TIME" minName="cond_ORDER_BEGIN_TIME"
+					value="ognl:condition.cond_ORDER_END_TIME" nullable="no" desc="结束时间" /> 
+				</span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="queryUnionOrderInfos()"><i class="e_ico-search"></i><span>查询</span></button>
+			
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_title c_title-2">
+		<div class="text">查询结果</div>
+		<div class="fn"><button type="button" class="e_button"  onclick="dealUnionOrder()"><i class="e_ico-ok"></i><span>处理</span></button></div>
+	</div>
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table ">
+		<table jwcid="@Table" name="UnionOrderTable" id="UnionOrderTable" scroll="true">
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="check_ctrl" name="check_ctrl" onclick="checkedAll('SessionOrder',checked);"/></th>
+					<th>手机号码</th>
+      				<th>会话流水</th>
+					<th>命令流水</th>						
+					<th>系统处理状态</th>
+					<th>用户发送内容</th>
+					<th>系统返回短信内容</th>
+					<th>用户请求时间</th>						
+					<th>系统返回时间</th>
+				</tr>
+			</thead>
+			<tbody  jwcid="@Any" name="orderInfos" id="orderInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'" bgcolor="ognl:info.ALARM == null ?'':'#FFCC00'">								
+					    <td>
+					    	<div jwcid="@Conditional" condition="ognl:info.SHOWSELECT == 'TRUE'">
+								<input type="checkbox" id="checkid" name="SessionOrder" jwcid="@Any" value="ognl:info.SESSION_ID+','+info.ORDER_ID"/>
+							</div>
+							<div jwcid="@Conditional" condition="ognl:info.RSRV_TAG1 == 0">
+								<a jwcid="@Redirect" value="详细" content="ognl:info.DEALINFO" onclick="MessageBox.alert('详细处理信息', $(this).attr('content'));"/>
+							</div>
+					    </td>
+					    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SESSION_ID"/></td>
+						<td>
+							<div jwcid="@Conditional" condition="ognl:info.SHOWDETAIL == 'TRUE'">
+								<a jwcid="@Redirect" value="ognl:info.ORDER_ID" sessionId="ognl:info.SESSION_ID" orderId="ognl:info.ORDER_ID" onclick="showOrderDetailInfo(this)"/>
+						    </div>
+							<div jwcid="@Conditional" condition="ognl:info.SHOWDETAIL == 'FALSE'">
+								<span jwcid="@Insert" value="ognl:info.ORDER_ID"/>
+							</div>
+						</td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('UNION_DEAL_STATE',info.DEAL_STATE)"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SEND_CONTENT"/></td>
+						<td><a jwcid="@Redirect" value="ognl:info.RSP_CONTENT" cols="18" content="ognl:info.RSP_CONTENT" onclick="MessageBox.alert('系统返回短信内容', $(this).attr('content'));"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSP_TIME"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUnionOrderInfos" pageSize="20" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+
+<!-- 处理表单 开始 -->
+<div class="c_form c_form-col-1" id="popup_deal_div" jwcid="DealInfoPart@Part" style="display:none;">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">处理意见：</span></span>
+			<span class="e_textarea">
+				<textarea 
+					jwcid="@TextArea"
+					name="dealInfo"
+					value="" 
+					rows="5"
+					desc="处理意见"
+					cols="50"
+					datatype="text"
+					nullable="no"
+				/>
+			</span>
+		</li>
+	</ul>
+	<div class="submitPlace"></div>
+	<div class="c_submit">
+		<button type="button" class="e_button-form" onclick="saveDealOrderInfo()"><i class="e_ico-ok"></i><span>提交</span></button>
+	</div>
+</div>
+<!-- 处理表单 结束 -->
+
+<!-- 详细订购信息 开始 -->
+<div id="order_detail_div" style="display:none;">
+	<!-- 表格 开始 -->
+	<div jwcid="OrderDetailPart@Part" element="div">
+		<div class="c_scroll c_scroll-x style='height:auto;'">
+		<div class="c_table ">
+			<table jwcid="@Table" name="OrderDetailTable" id="OrderDetailTable" scroll="true">
+				<thead>
+	      			<tr>
+						<th>手机号码</th>
+						<th>会话流水</th>
+						<th>命令流水</th>
+						<th>业务序号</th>
+						<th>业务类型</th>
+						<th>业务名称</th>
+						<th>服务标识</th>
+						<th>服务名称</th>
+						<th>企业代码</th>
+						<th>企业名称</th>
+						<th>业务代码</th>
+						<th>接口序号</th>
+						<th>接口返回代码</th>
+						<th>接口返回信息</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SESSION_ID"/></td>		
+						<td><span jwcid="@Insert" value="ognl:info.ORDER_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SEQUENCE_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SVC_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_CODE"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SP_NAME"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BIZ_CODE"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.INTERFACE_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESULT_CODE"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RESULT_INFO"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 详细订购信息 结束 -->
+</body>
+</html>

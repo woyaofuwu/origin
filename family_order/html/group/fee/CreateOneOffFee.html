@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团一次性费用收取</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/fee/CreateOneOffFee.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">集团客户编码</div>
+	</div>
+	
+	<div class="c_form">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 集团客户基本信息 开始 -->
+	<input type="text" jwcid="@saleserv:GroupCustInfo"/>
+	<!-- 集团客户基本信息 结束 -->
+	
+</div>
+	
+<div class="c_box">
+	
+	<div class="c_title">
+		<div class="text">一次性费用列表</div>
+	</div>
+	
+	
+	<!-- 一次性费用列表 开始 -->
+	<div jwcid="feeListPart@Part">
+		<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table">
+			<table jwcid="FeeTable@Table" name="FeeTable" rowClick="tableRowClick">
+				<thead>
+					<tr>
+						<th col="X_TAG" style="display:none">TAG</th>
+						<th col="OLD_TAG" style="display:none">OLD_TAG</th>
+						<th col="NOTE_ID" style="display:none">NOTE_ID</th>
+						<th col="RSRV_STR1">项目名称</th>
+						<th col="RSRV_STR2" style="display:none">合作模式</th>
+ 	 	                <th col="RSRV_STR2_NAME">合作模式</th>
+ 	 	                <th col="RSRV_STR3" style="display:none">项目子类</th>
+ 	 	                <th col="RSRV_STR3_NAME">项目子类</th>
+ 	 	                <th col="RSRV_STR4">产品编码</th>
+						<th col="FEE_TYPE_CODE" style="display:none">费用类别</th>
+						<th col="FEE_TYPE_NAME">费用类别</th>
+						<th col="RSRV_STR5" style="display:none">计费周期</th>
+ 	 	                <th col="RSRV_STR5_NAME">计费周期</th>
+						<th col="FEE">费用金额</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:oneFeeList" value="ognl:oneFee" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'" element="tr">
+						<td style="display:none"></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:oneFee.OLD_TAG"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:oneFee.NOTE_ID"/></td>
+	   		            <td><span jwcid="@Insert" value="ognl:oneFee.RSRV_STR1"/></td>
+	   		            <td style="display:none"><span jwcid="@Insert" value="ognl:oneFee.RSRV_STR2" raw="true"/></td>
+ 	 	                <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ONE_OFF_FEE_RSRV_STR2', oneFee.RSRV_STR2)"/></td>
+ 	 	                <td style="display:none"><span jwcid="@Insert" value="ognl:oneFee.RSRV_STR3" raw="true"/></td>
+ 	 	                <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ONE_OFF_FEE_RSRV_STR3', oneFee.RSRV_STR3)"/></td>
+ 	 	                <td><span jwcid="@Insert" value="ognl:oneFee.RSRV_STR4" raw="true"/></td>
+	   		            <td style="display:none"><span jwcid="@Insert" value="ognl:oneFee.FEE_TYPE_CODE"/></td>
+	   		            <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ONE_OFF_FEE_TYPE_CODE', oneFee.FEE_TYPE_CODE)"/></td>
+	   		            <td style="display:none"><span jwcid="@Insert" value="ognl:oneFee.RSRV_STR5" raw="true"/></td>
+ 	 	                <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ONE_OFF_FEE_RSRV_STR5', oneFee.RSRV_STR5)"/></td>
+	   		            <td><span jwcid="@Insert" value="ognl:oneFee.FEE" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+	</div>
+	<!-- 一次性费用列表 结束 -->
+	
+	<!-- 一次性费用编辑区域 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-8" jwcid="feePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">项目名称：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="RSRV_STR1@TextField" name="RSRV_STR1" type="text" value="ognl:oneFeeDetail.RSRV_STR1" nullable="no" desc="项目名称"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">合作模式：</span></span>
+				<span class="e_select"><span>
+				    <select jwcid="RSRV_STR2@Select" name="RSRV_STR2" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ONE_OFF_FEE_RSRV_STR2')" value="ognl:oneFeeDetail.RSRV_STR2" valueField="DATA_ID" textField="DATA_NAME" nullable="no" desc="合作模式"></select>
+					<input type="text" jwcid="@Any" id="RSRV_STR2_NAME" name="RSRV_STR2_NAME" desc="合作模式" style="display:none"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">项目子类：</span></span>
+				<span class="e_select"><span>
+				    <select jwcid="RSRV_STR3@Select" name="RSRV_STR3" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ONE_OFF_FEE_RSRV_STR3')" value="ognl:oneFeeDetail.RSRV_STR3" valueField="DATA_ID" textField="DATA_NAME" nullable="no" desc="项目子类"></select>
+					<input type="text" jwcid="@Any" id="RSRV_STR3_NAME" name="RSRV_STR3_NAME" desc="项目子类" style="display:none"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">产品编码：</span>
+				<span class="e_input"><span>
+					<input jwcid="RSRV_STR4@TextField" name="RSRV_STR4" type="text" value="ognl:oneFeeDetail.RSRV_STR4" desc="产品编码"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">费用类别：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="FEE_TYPE_CODE@Select" name="FEE_TYPE_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ONE_OFF_FEE_TYPE_CODE')" value="ognl:oneFeeDetail.FEE_TYPE_CODE" valueField="DATA_ID" textField="DATA_NAME" nullable="no" desc="费用类别"></select>
+					<input type="text" jwcid="@Any" id="FEE_TYPE_NAME" name="FEE_TYPE_NAME" desc="费用类别" style="display:none"/>	
+				</span></span></span>				
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">计费周期：</span></span>
+				<span class="e_select"><span>
+				    <select jwcid="RSRV_STR5@Select" name="RSRV_STR5" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ONE_OFF_FEE_RSRV_STR5')" value="ognl:oneFeeDetail.RSRV_STR5" valueField="DATA_ID" textField="DATA_NAME" nullable="no" desc="计费周期"></select>
+					<input type="text" jwcid="@Any" id="RSRV_STR5_NAME" name="RSRV_STR5_NAME" desc="计费周期" style="display:none"/>
+				</span></span>					
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">费用金额(元)：</span></span>
+				<span class="e_elements"><span>
+					<input jwcid="FEE@Flip" name="FEE" value="ognl:oneFeeDetail.FEE" minsize="0" nullable="no" readonly="false" desc="费用金额"/>
+				</span></span>					
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" id="addFee" name="addFee" onclick="return addFee();"><i class="e_ico-add"></i><span>新增</span></button>
+			<button type="button" class="e_button-form" id="updateFee" name="updateFee" onclick="return updateFee();"><i class="e_ico-edit"></i><span>修改</span></button>
+			<button type="button" class="e_button-form" id="deleteFee" name="deleteFee" onclick="return deleteFee();"><i class="e_ico-delete"></i><span>删除</span></button>
+		</div>
+		
+	</div>
+	<!-- 一次性费用编辑区域 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+	
+</div>
+	
+	
+</div></div>
+</body>
+
+</html>

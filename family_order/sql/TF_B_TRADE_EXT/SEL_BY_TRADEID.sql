@@ -1,0 +1,4 @@
+SELECT to_char(trade_id) trade_id,trade_type_code,to_char(user_id) user_id,serial_number,to_char(accept_date,'yyyy-mm-dd hh24:mi:ss') accept_date,accept_month,trade_staff_id,trade_depart_id,trade_city_code,trade_eparchy_code,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,rsrv_num1,rsrv_num2,rsrv_num3,to_char(rsrv_num4) rsrv_num4,to_char(rsrv_num5) rsrv_num5,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3 
+  FROM tf_b_trade_ext
+ WHERE trade_id=TO_NUMBER(:TRADE_ID)
+   AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))

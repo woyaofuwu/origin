@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+    <title>集团成员新增</title>  
+    <script  jwcid="@Script" src="person/addgroupmemberbyorder/scripts/AddGroupmemberByOrder.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+    <div class="c_box" jwcid="submitPart@Part">
+            <div jwcid="hiddenPart@Part">
+               <input jwcid="@Hidden" name="MEMBER_ID" id="MEMBER_ID" value="ognl:member.USER_ID" desc="集团通讯录成员有效记录"/>
+               <input jwcid="@Hidden" name="MEMBER_GROUP_CUST_NAME" id="MEMBER_GROUP_CUST_NAME" value="ognl:member.GROUP_CUST_NAME" desc="已在集团通讯录的集团客户名称"/>
+               <input jwcid="@Hidden" name="MEMBER_GROUP_ID" id="MEMBER_GROUP_ID" value="ognl:member.GROUP_ID" desc="已在集团通讯录的集团客户编码"/>
+               <input jwcid="@Hidden" name='USER_ID' value="ognl:info.USER_ID"/>
+               <input jwcid="@Hidden" name="ALERT_INFO" id="ALERT_INFO" value="" desc="提交的时候判断是否正常用户"/>
+               <input jwcid="@Hidden" name="GROUP_CUST_NAME" id="GROUP_CUST_NAME" value="" desc="存集团客户名称"/>
+               <input jwcid="@Hidden" name="CUST_ID" id="CUST_ID" value="ognl:info.CUST_ID" desc=""/>
+               <input jwcid="@Hidden" name="GROUP_CUST_ID" id="GROUP_CUST_ID" value="" desc=""/>
+               <input jwcid="@Hidden" name="GROUP_CUSTID" id="GROUP_CUSTID" value="" desc="组件集团客户编码"/>
+               <input jwcid="@Hidden" name="CUST_MANAGER_ID" id="CUST_MANAGER_ID" value="ognl:cond.CUST_MANAGER_ID" desc="客户经理"/>
+               <input jwcid="@Hidden" name="NO_PHONE" id="NO_PHONE" value="" desc="无号码录入标记"/>
+               <input jwcid="@Hidden" name="QUERY_FLAG" id="QUERY_FLAG" value="ognl:qryflag.QUERY_FLAG" desc="判断是否查询过标记"/>
+             </div>
+            <!-- 表单 开始 -->
+            <div class="c_form" jwcid="searchPart@Part">
+                <ul>
+                    <li class="li">
+                        <!-- <span class="label"><span class="e_required">服务号码：</span></span> -->
+                        <span class="li">
+                        	<select class="e_select" jwcid="@Select" name="SELECT_NUM" value="" addDefault="false"
+	                            source="ognl:pageutil.getStaticList('NUMBERORNAME')" valueField="DATA_ID" 
+	                            textField="DATA_NAME" onchange="queryStatus();"
+	                             nullable="no" desc="">
+	                        </select>
+                        </span>
+	                        
+                        <span class="e_input"><span> 
+                            <input type="text" id="SERIAL_NUMBER1" nullable="no" name="SERIAL_NUMBER1" jwcid="@TextField" value="ognl:seral.SERIAL_NUMBER1" desc="服务号码" maxsize="20"/>   
+                        </span></span>
+                    </li>
+                </ul>
+                <div class="submitPlace"></div>
+                <div class="submit"><button type="button" class="e_button-form" id="bquery" onclick="qryButton();" ><i class="e_ico-search"></i><span>查询客户资料</span></button></div>
+            </div>
+            <div class="c_title c_title-2">
+                <div class="text">附件上传</div>
+            </div>
+            <!-- 标题2 结束 -->
+            <!-- 查询条件 开始 -->
+            <div class="c_form c_form-label-9 c_form-col-3">
+                <ul class="ul">
+                    <li class="li">
+                        <span class="label"><span class="">文件上传：</span></span>
+                        <span class="e_elements"><span>
+                            <input jwcid="@SimpleUpload"
+                            name="simpleUpload" ftpSite="groupserv"
+                            filePath="bookmember" needSuffix="true"/>
+                        </span></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="c_title c_title-2">
+                <div class="text">通讯录成员导入</div>
+            </div>
+            <!-- 标题2 结束 -->
+            <div class="c_form c_form-label-9">
+                <ul class="ul">
+                     <li class="li">
+                        <span class="label"><span class="">导入通讯录成员：</span></span>
+                        <span class="e_elements"><span>
+                            <input jwcid="@SimpleUpload"
+                            name="FILE_ID" ftpSite="personserv"
+                            />
+                        </span></span>
+                    </li>
+                </ul>
+                <div class="submit">
+                    <button type="button" onclick="openHref();"><i class="e_ico-import"></i><span>下载模板</span></button>
+                    <button type="button" class="e_ico-import" id="SearchBtn" onclick="batImportBook();"><i class="e_ico-import"></i><span>导入</span></button>
+                </div>
+            </div>
+            <div class="c_title c_title-2">
+                <div class="text">客户资料</div>
+            </div>                                 
+            <div jwcid="QryResultPart@Part" class="c_form c_form-text c_form-col-3 c_form-label-12">
+                <!-- 表单 开始 -->
+                <ul>
+                    <li class="link required">
+                       <span jwcid="@saleserv:SelectGroup" ecName='集团客户名称' class="e_required" isTTGrp="ognl:info.IS_TTGRP" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="e_required">开户客户：</span></span>
+                        <span class="e_input"><span> 
+                            <input type="text" id="CUST_NAME" nullable="no" name="CUST_NAME" jwcid="@TextField" value="ognl:info.CUST_NAME" desc="开户客户" maxsize="20"/>   
+                        </span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="e_required">使用客户：</span></span>
+                        <span class="e_input"><span> 
+                            <input type="text" id="USECUST_NAME" name="USECUST_NAME" jwcid="@TextField" value="ognl:info.CUST_NAME" desc="使用客户" maxsize="20"/>   
+                        </span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="e_required">电话号码：</span></span>
+                        <span class="e_input"><span> 
+                            <input type="text" id="SERIAL_NUMBER" nullable="no" name="SERIAL_NUMBER" jwcid="@TextField" value="ognl:seral.SERIAL_NUMBER1" desc="电话号码" maxsize="20"/>   
+                        </span></span>
+                    </li>
+                    <li class="li">
+	                    <span class="label"><span class="e_required">成员类型：</span></span>
+	                    <div class="e_select">
+	                        <select class="e_select" jwcid="@Select" name="MEMBER_KIND" value="ognl:info.MEMBER_KIND"
+	                            source="ognl:pageutil.getStaticList('GRP_MEMKIND')" valueField="DATA_ID" 
+	                            textField="DATA_NAME" onchange="setMessageStatus();"
+	                             nullable="no" desc="成员类型">
+	                        </select>
+	                    </div>
+	                </li>
+	                <li class="li">
+                        <span class="label"><span class="" id="CLASS_CONTACT">是否可接触服务客户：</span></span>
+                        <div class="e_select">
+                             <select jwcid="@Select" class="e_select" name="IS_CONTACT" id="IS_CONTACT" source="ognl:pageutil.getStaticList('YESNO')"
+                                value="ognl:info.IS_CONTACT" desc="是否可接触服务客户" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="" id="CLASS_CONTACT">是否是移动号码：</span></span>
+                        <div class="e_select">
+                             <select jwcid="@Select" class="e_select" name="IS_MOBILE" id="IS_MOBILE" source="ognl:pageutil.getStaticList('YESNO')"
+                                value="ognl:info.MOBILE_FLAG" desc="是否是移动号码" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID" disabled="disabled">
+                            </select>
+                        </div>
+                    </li>
+                    <!-- <li class="li">
+                        <span class="label"><span class="e_required">归属地州：</span></span>
+                        <div class="e_select">
+	                        <input  type="hidden" jwcid="@TextField"  name="EPARCHY_CODE" id="EPARCHY_CODE" nullable="no" value="ognl:info.EPARCHY_CODE" desc="归属地州"/>
+	                        <span class="e_input"><span>
+		                        <input type="text" jwcid="@TextField" name='EPARCHY_NAME' id='EPARCHY_NAME'
+			                           value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)"
+			                          desc="归属地州"/>
+		                    </span></span>
+                        </div>
+                    </li> -->
+                    <li class="li">
+                        <span class="label"><span class="e_required">归属地州：</span></span>
+                        <div class="e_select">
+                            <span jwcid="@Select" name="EPARCHY_CODE" id="EPARCHY_CODE"
+                              source="ognl:pageutil.getStaticList('AREA_CODE')"
+                              value="ognl:info.EPARCHY_CODE" desc="归属业务区" nullable="no" textField="DATA_NAME"
+                              valueField="DATA_ID" titleField="DATA_ID" />
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="e_required">归属业务区：</span></span>
+                        <div class="e_select">
+                            <span jwcid="@Select" name="CITY_CODE" id="CITY_CODE"
+                              source="ognl:pageutil.getStaticList('CITY_CODE_GOODS')"
+                              value="ognl:info.CITY_CODE" desc="归属业务区" nullable="no" textField="DATA_NAME"
+                              valueField="DATA_ID" titleField="DATA_ID" />
+                        </div>
+                    </li>
+                    <li class="li">
+                        <div class="label">证件类型：</div>
+                        <div class="e_select">
+                            <select class="e_select" jwcid="@Select" name="USEPSPT_TYPE_CODE" id='USEPSPT_TYPE_CODE' value="ognl:info.PSPT_TYPE_CODE"
+                                source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')" valueField="DATA_ID" 
+                                textField="DATA_NAME"
+                                addDefault="true"  desc="证件类型">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="">证件号码：</span></span>
+                        <span class="e_input"><span> 
+                            <input type="text" id="USEPSPT_ID" name="USEPSPT_ID" jwcid="@TextField" value="ognl:info.PSPT_ID" desc="证件号码" maxsize="20"/>   
+                        </span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="">证件地址：</span></span>
+                        <span class="e_input"><span> 
+                            <input type="text" id="USEPSPT_ADDR" name="USEPSPT_ADDR" jwcid="@TextField" value="ognl:info.PSPT_ADDR" desc="证件地址" maxsize="20"/>   
+                        </span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label">证件有效期：</span>
+                        <span class="e_input"><span>
+                            <input type='text' jwcid='@DateField' dropDown="false" name="USEPSPT_END_DATE" id="USEPSPT_END_DATE"
+                             value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd', info.PSPT_END_DATE)" desc="证件有效期" />
+                        </span></span>
+                    </li>
+                     <li class="li">
+                        <span class="label">成员通信地址：</span>
+                        <span class="e_input"><span><input  type="text" jwcid="@TextField"  id='USEPOST_ADDR' name="USEPOST_ADDR" value="ognl:info.POST_ADDRESS" desc="成员通信地址"/></span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label">成员联系电话：</span>
+                        <span class="e_input"><span><input  type="text" jwcid="@TextField" name="USEPHONE" value="ognl:info.PHONE" desc="使用客户联系电话" maxsize="15"  datatype="text" nullable="yes"/></span></span>
+                    </li>
+                    <li class="li">
+                        <div class="label">喜欢的服务方式：</div>
+                        <div class="e_select">
+                            <select class="e_select" jwcid="@Select" name="SVC_MODE_CODE" value="ognl:info.SVC_MODE_CODE"
+                                source="ognl:pageutil.getStaticList('TD_S_SERVICE_MODE')" valueField="DATA_ID" 
+                                textField="DATA_NAME"  
+                                addDefault="true" desc="喜欢的服务方式">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="">部门：</span></span>
+                        <span class="e_input"><span><input  type="text" jwcid="@TextField" name="DEPART" id="DEPART" nullable="no"
+                        maxsize="5"  datatype="text" value="ognl:info.DEPART" desc="部门"/></span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label"><span class="">职位：</span></span>
+                        <span class="e_input"><span><input  type="text" jwcid="@TextField" name="DUTY" 
+                        maxLength="40"  maxsize="10"  nullable="no" value="ognl:info.DUTY" desc="职位"/></span></span>
+                    </li>
+                    <li class="li">
+                        <div class="label">是否898集团成员：</div>
+                        <div class="e_select">
+                             <select jwcid="@Select" class="e_select" name="GROUP_898" disabled="true" id="GROUP_898" source="ognl:pageutil.getStaticList('YESNO')"
+                                value="ognl:cond.REMARK898" desc="是否898集团成员" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label">898集团名称：</span>
+                        <span class="e_input"><span><input  type="text" jwcid="@TextField" disabled="true" name="GROUNP_NAME" id="GROUNP_NAME"
+                        maxLength="40"  maxsize="10"  nullable="no" value="ognl:cond.GROUP_CUST_NAME" desc="898集团名称"/></span></span>
+                    </li>
+                    <li class="li">
+                        <div class="label">是否属于集团V网成员：</div>
+                        <div class="e_select">
+                            <select jwcid="@Select" class="e_select" name="GROUNP_V_MEMBER" disabled="true" id="GROUNP_V_MEMBER" source="ognl:pageutil.getStaticList('YESNO')"
+                                    value="ognl:vpmn.REMARKVPMN" desc="是否属于集团V网成员" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label">集团V网对应的898名称：</span>
+                        <span class="e_input"><span><input type="text" jwcid="@TextField" disabled="true" name="VPN_NAME" id="VPN_NAME"
+                        maxLength="40"  maxsize="10"  nullable="no" value="ognl:vpmn.CUST_NAME" desc="集团V网对应的898名称"/></span></span>
+                    </li>
+                    <li class="li">
+                        <div class="label">是否已属于集团通讯录成员：</div>
+                        <div class="e_select">
+                            <select jwcid="@Select" name="GROUP_BOOK_MEMBER" id="GROUP_BOOK_MEMBER" disabled="true" source="ognl:pageutil.getStaticList('YESNO')"
+                                    value="ognl:member.GROUPBOOK" desc="是否已属于集团通讯录成员" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <span class="label">原集团通讯录编码：</span>
+                        <span class="e_input"><span><input  type="text" jwcid="@TextField" disabled="true" name="GROUP_ID" id="GROUP_ID"
+                        maxLength="40"  maxsize="10"  nullable="no" value="ognl:member.GROUP_ID" desc="原集团通讯录编码"/></span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label">原集团通讯录名称：</span>
+                        <span class="e_input"><span><input type="text" jwcid="@TextField" disabled="true" name="GROUP_CUST_NAME1" id="GROUP_CUST_NAME1"
+                        maxLength="40"  maxsize="10"  nullable="no" value="ognl:member.GROUP_CUST_NAME" desc="原集团通讯录名称"/></span></span>
+                    </li>
+                    <li class="li">
+                        <span class="label">是否迁移:</span>
+                        <div class="e_select">
+                            <select jwcid="@Select" class="e_select" name="IS_REMOVE" id="IS_REMOVE" source="ognl:pageutil.getStaticList('YESNO')"
+                                    value="ognl:info.GIFT_ITEMS" disabled="" desc="是否迁移" nullable="yes" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_ID">
+                            </select>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <div class="label">喜欢的移动业务：</div>
+                        <div class="value">
+                            <textarea class="e_textarea-row-2" jwcid="@Any" name="LIKE_MOBILE_BUSI" id="LIKE_MOBILE_BUSI" desc="喜欢的移动业务" maxsize="200">
+                                <span jwcid="@Insert" value="ognl:info.LIKE_MOBILE_BUSI"/>
+                            </textarea>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <div class="label">喜欢的优惠方式：</div>
+                        <div class="value">
+                            <textarea class="e_textarea-row-2" jwcid="@Any" name="LIKE_DISCNT_TYPE" id="LIKE_DISCNT_TYPE" desc="喜欢的优惠方式" maxsize="200">
+                                <span jwcid="@Insert" value="ognl:info.LIKE_DISCNT_TYPE"/>
+                            </textarea>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <div class="label">喜欢的活动：</div>
+                        <div class="value">
+                            <textarea class="e_textarea-row-2" jwcid="@Any" name="LIKE_ACT" id="LIKE_ACT" desc="喜欢的活动" maxsize="200">
+                                <span jwcid="@Insert" value="ognl:info.LIKE_ACT"/>
+                            </textarea>
+                        </div>
+                    </li>
+                    <li class="li">
+                        <div class="label">备注：</div>
+                        <div class="value">
+                        <textarea class="e_textarea-row-2" jwcid="@Any" name="REMARK" id="REMARK" desc="备注" maxsize="200">
+                            <span jwcid="@Insert" value="ognl:info.REMARK"/>
+                        </textarea>
+                        </div>
+                    </li>
+                </ul>
+                <!-- 表单 结束 -->
+            </div>
+            <!-- 滚动 结束 -->
+            <!-- 提交 开始 -->
+            <!-- <div jwcid="SubmitPart@saleserv:CSSubmit" area="productInfoPart" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/> -->
+            <div class="c_submit">
+               <button class="e_button-page-ok" type="button" onclick="submitData();"><i class="e_ico-ok"></i>
+               <span>提交</span></button>
+            </div>
+            <!-- 提交 结束 -->
+    </div>
+</div></div>
+
+</body>
+</html>

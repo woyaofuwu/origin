@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/booktrade/booktrade.js"></script>  
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script> 
+</head>
+<title>预约业务取消</title>
+<body>
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+
+	<div class="c_form c_form-col-2 c_form-label-6" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+					<span class="e_input"><span>
+						<input id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="@TextField" value=""desc="服务号码" datatype="text" /></span>
+					</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">订单类型：</span></span>
+					<span  class="e_select">
+					<span><span><input jwcid="@Select" name="cond_SUBSCRIBE_TYPE" id="cond_SUBSCRIBE_TYPE"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TRADE_SUBSCRIBETYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+								value="ognl:info.TRADE_SUBSCRIBETYPE" addDefault = "false"
+					    		disabled="true" />
+					</span></span>
+				</span>
+			</li>
+		</ul>
+		<input type="hidden" jwcid="@Any" id="pam_NOTIN_TRADE_ID" name="pam_NOTIN_TRADE_ID"/>
+		<input type="hidden" jwcid="@Any" id="pam_NOTIN_FOREGIFT" name="pam_NOTIN_FOREGIFT"/>
+		<input type="hidden" jwcid="@Any" id="pam_NOTIN_ALL_FEE" name="pam_NOTIN_ALL_FEE"/>
+		<input type="hidden" jwcid="@Any" id="pam_NOTIN_SERIAL_NUMBER" name="pam_NOTIN_SERIAL_NUMBER"/>
+		<input type="hidden" jwcid="@Any" id="pam_NOTIN_USER_ID" name="pam_NOTIN_USER_ID"/>
+	</div>
+	
+	<div class="c_submit">
+		<button class="e_button-form" id="bquery" onclick="return queryUserCancelTrade();" ><i class="e_ico-search"></i><span>执行查询</span></button>
+	</div>	
+	
+	
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">取消信息</div>
+	</div>
+	<div class="c_form c_form-col-2 c_form-label-6">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">取消备注：</span>
+					<span class="e_input"><span>
+						<input id="pam_NOTIN_CANCEL_REMARK" name="pam_NOTIN_CANCEL_REMARK" jwcid="@TextField" value=""desc="取消备注" datatype="text" /></span>
+					</span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">发票号：</span>
+					<span class="e_input"><span> <select id="pam_NOTIN_DETMANAGER_INFO" name="pam_NOTIN_DETMANAGER_INFO" jwcid="@TextField" value="" desc="发票号" datatype="text" /> </span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">可取消业务</div>
+	</div>
+	<!-- 表格 开始 -->
+	<div jwcid="groupCancelbook@Part" >
+	<div class="c_scroll c_scroll-table-5"><div class="c_table" >
+		<table jwcid="cancelBookTradeTable@Table" name="cancelBookTradeTable" >
+			<thead>
+				<tr>
+                    <th></th>
+					<th><span>业务流水号</span></th>
+					<th><span>业务类型</span></th>
+					<th><span>受理月份</span></th>
+					<th><span>营业费用(元)</span></th>
+					<th><span>押金费用(元)</span></th>
+					<th><span>预付费用(元)</span></th>
+					<th><span>收费标志</span></th>
+					<th><span>收费员工</span></th>
+					<th><span>受理员工</span></th>
+					<th><span>受理部门</span></th>
+					<th><span>受理地州</span></th>
+					<th><span>受理终端</span></th>
+					<th><span>备注</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:validCancelTradeList" value="ognl:validCancelTrade" element="tr" index="ognl:rowIndex" >
+					<td><span input type="radio" name="CANCEL_TRADE_ID" jwcid="@Radio" value="ognl:validCancelTrade.TRADE_ID+';'+validCancelTrade.OPER_FEE/100+';'+validCancelTrade.FOREGIFT/100+';'+validCancelTrade.ADVANCE_PAY/100+';'+validCancelTrade.SERIAL_NUMBER+';'+validCancelTrade.USER_ID" onclick="onclickTradeId();"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.TRADE_ID" raw="false"/></td>
+					<!-- 
+                    <td><a jwcid="@Redirect"  value="ognl:validCancelTrade.TRADE_ID" serial_number="ognl:validCancelTrade.SERIAL_NUMBER" trade_id="ognl:validCancelTrade.TRADE_ID" onclick="popupDialog('broadband.widenet.TradeFrame', 'initFrame', '&TRADE_ID='+ trade_id+'&SERIAL_NUMBER='+serial_number, '业务信息', '800', '400')" raw="false" /></td>
+                    -->
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE',validCancelTrade.TRADE_TYPE_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.ACCEPT_MONTH" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.OPER_FEE/100" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.FOREGIFT/100" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.ADVANCE_PAY/100" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.FEE_STATE" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', validCancelTrade.FEE_STAFF_ID)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', validCancelTrade.TRADE_STAFF_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', validCancelTrade.TRADE_DEPART_ID)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(), 'TD_M_AREA', 'AREA_CODE', 'AREA_NAME', validCancelTrade.TRADE_EPARCHY_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.TERM_IP" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:validCancelTrade.REMARK" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<div class="c_submit">
+		<button class="e_button-form" id="bquery" onclick="return cancelTradeSubmit();" ><i class="e_ico-cancel"></i><span>取消</span></button>
+	</div>
+</div>	
+</div>
+</div>
+</body>
+</html> 
+	

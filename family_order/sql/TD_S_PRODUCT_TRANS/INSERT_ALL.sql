@@ -1,0 +1,2 @@
+INSERT INTO td_s_product_trans(product_id_a,product_id_b,right_code,trans_fee,fee_mode,fee_type_code,enable_tag,start_date,end_date,update_staff_id,update_depart_id,update_time)
+ VALUES(:PRODUCT_ID_A,:PRODUCT_ID_B,:RIGHT_CODE,TO_NUMBER(:TRANS_FEE),:FEE_MODE,:FEE_TYPE_CODE,:ENABLE_TAG,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,SYSDATE)

@@ -1,0 +1,2 @@
+delete from tm_a_cardaccount
+where eparchy_code=:EPARCHY_CODE

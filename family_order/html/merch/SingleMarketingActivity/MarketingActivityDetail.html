@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<title>活动详情</title>
+<script jwcid="@Script" type="text/javascript" src="merch/SingleMarketingActivity/scripts/MarketingActivityDetail.js"></script>
+<!--  <script jwcid="@Script" type="text/javascript" src="merch/SingleMarketingActivity/scripts/MarketingActivityTwoCheck.js"></script>-->
+<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/common/tradecheck/TradeCheck.js"></script>
+<!--  <script jwcid="@Script" type="text/javascript" src="scripts/merch/shoppingCart/base/MerchBase.js"></script>-->
+</head>
+<body jwcid="@Body">
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">活动详情</div>
+	</div>
+	
+	<div class="c_scroll c_scroll-float">
+	<div class="l_edit">
+	
+		<div jwcid="MerchAuthPart@merch:MerchAuth" element="div" authType="ognl:info.AUTH_TYPE" tradeTypeCode="240" style="display:none" tradeAction="afterSubmitSerialNumber(data);" ruleErrorExecFlag="2"  />
+	
+		<div class="l_padding">
+			<div class="c_title c_title-level-2">
+				<div class="text">发展人</div>
+			</div>
+			<div jwcid="effectTagPart@Part" class="c_list c_list-border c_list-col-3 c_list-line c_list-phone-col-1">
+				<ul>
+					<li class="li required">
+						<div class="label">员工姓名</div>
+						<div class="value">
+							<span class="e_mix">
+								<input jwcid="@TextField" name="DEVELOP_STAFF_NAME" id="DEVELOP_STAFF_NAME" type="text" open="true" value="ognl:getVisit().getStaffName()" disabled="true"/>
+							    <input jwcid="@Hidden" name="INS_STAFF_ID" id="INS_STAFF_ID" value="ognl:getVisit().getStaffId()"/>
+							</span>
+						</div>
+					</li>
+					<li class="li required">
+						<div class="label">员工部门</div>
+						<div class="value">
+					 		<input jwcid="@TextField" name="DEVELOP_DEPART_NAME" id="DEVELOP_DEPART_NAME"  value="ognl:getVisit().getDepartName()" disabled="true"/>
+				      		<input jwcid="@Hidden" name="DEVELOP_DEPART_ID" id="DEVELOP_DEPART_ID" value="ognl:getVisit().getDepartId()"/>
+						</div>
+					</li>
+					<li class="li required">
+						<div class="label">员工工号</div>
+						<div class="value">
+						    <input jwcid="@TextField" name="DEVELOP_STAFF_ID" id="DEVELOP_STAFF_ID" type="text" open="true" value="ognl:getVisit().getStaffId()" disabled="true"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+		
+			<div id="showGoodsInfo" style="display:none">
+				<div class="c_title c_title-level-2">
+					<div class="text">物品信息</div>
+				</div>
+								
+				<div class="c_list c_list-border c_list-col-1 c_list-line c_list-phone-col-1">
+					<ul>
+						<li class="link" id="GoodsInfoPart" style="display:none">
+							<div class="label">物品信息</div>
+							<div class="value">
+								<input name="GOODS_INFO" id="GOODS_INFO" jwcid="@TextField" value="" class="e_left"/>
+							</div>
+						</li>
+						<li class="link" id="imeiQuery" style="display:none">
+				            <div class="label">终端串码</div>
+				            <div class="value">
+				                <input jwcid="@TextField" name="NEW_IMEI" id="NEW_IMEI" value="ognl:getParameter('NEW_IMEI','')" desc="终端串码" disabled="true" class="e_left" />
+				            </div>
+				        </li>
+				        <!--  
+						<li class="link" id="viceImeiQuery" style="display:none">
+				            <div class="label">副IMEI</div>
+				            <div class="value">
+				                <input jwcid="@TextField" name="VICE_IMEI_NO" id="VICE_IMEI_NO" value="ognl:getParameter('VICE_IMEI_NO','')" desc="副IMEI"/>
+				            </div>
+				        </li>-->
+					</ul>
+				</div>
+			</div>
+		
+			<div class="c_title c_title-level-2">
+				<div class="text">活动详情</div>
+			</div>
+			
+			<div class="c_box">
+				<div id="detailContent" style="display:none;">
+	            	<div jwcid="marketActivityModule@merch:MarketActivityModule" packageId="ognl:info.PACKAGE_ID" productId="ognl:info.PRODUCT_ID" eparchyCodeCompId="custinfo_EPARCHY_CODE" element="div" />
+			    </div>
+			</div>
+			
+			<div class="c_space"></div>
+			
+			<div class="c_box">
+			     <div class="c_list c_list-line c_list-border c_list-col-1" id="remarkArea" name="remarkArea">
+					<ul class="ul">
+						<li class="link">
+							<div class="label">备注</div>
+							<div class="value">
+								<input type="text" jwcid="@TextField" id="REMARK" name="REMARK" maxlength="100" value="" desc="备注" />
+							</div>
+						</li>
+					</ul>
+				  </div>
+			</div>
+			
+			<div class="c_space"></div>
+			
+			<!--  <div jwcid="@merch:MerchFee"></div>-->
+			
+		  	<div class="c_space"></div>
+		  	
+		  	<div class="c_submit">
+		    	<div class="c_submit-center" jwcid="MerchSubmitPart@merch:MerchSubmit"  orderTypeCode="ognl:getParameter('TRADE_TYPE_CODE','')" isShoppingCart="true" area="effectTagPart" affirmAction="closeNav();" beforeAction="onTradeSubmit();" element="div" />
+	     	</div>
+
+				<div class="c_submit c_submit-center">
+					<button type="button" id="checkSMSBtn"
+						class="e_button-l e_button-r e_button-green"
+						ontap="checkSMSButton();" style="display: none;">
+						<span>验证码</span>
+					</button>
+					<button type="button" id="AuthCodeBtn"
+						class="e_button-l e_button-r e_button-green"
+						ontap="redPackPlaceOrderCall();"
+						style="display: none;">
+						<span class="e_ico-ok"></span><span>提交</span>
+					</button>
+					<input jwcid="@Hidden" name="RED_PACK_PARAMS"
+						afterAction="afterRedPackCall()"
+						desc="弹出认证验证框关闭后触发动作" />
+				</div>
+
+
+				<div id="FEE_PLACEHOLDER"></div>
+	     	 	        
+	     	<!--  <div jwcid="saleElementAttr@merch:MarketActivityFeeItem" element="div"></div>-->
+	     	
+	     	<input jwcid="@Hidden" name="SALE_PACKAGE_ID" id="SALE_PACKAGE_ID" value="ognl:getParameter('SALE_PACKAGE_ID','')"/>
+	     	<input jwcid="@Hidden" name="SALE_PACKAGE_NAME" id="SALE_PACKAGE_NAME" value="ognl:info.SALE_PACKAGE_NAME"/>
+			<input jwcid="@Hidden" name="SALE_PRODUCT_ID" id="SALE_PRODUCT_ID" value="ognl:getParameter('SALE_PRODUCT_ID','')"/>
+			<input jwcid="@Hidden" name="SALE_CAMPN_TYPE" id="SALE_CAMPN_TYPE" value="ognl:getParameter('SALE_CAMPN_TYPE','')"/>
+			<input jwcid="@Hidden" name="DEVICE_MODE_CODE" id="DEVICE_MODE_CODE" value="ognl:getParameter('DEVICE_MODE_CODE','')"/>
+			<input jwcid="@Hidden" name="REL_OFFER_ID" id="REL_OFFER_ID" value="ognl:getParameter('REL_OFFER_ID','')"/>
+			<input jwcid="@Hidden" name="SALEACTIVE_USER_ID" id="SALEACTIVE_USER_ID" value="ognl:getParameter('SALEACTIVE_USER_ID','')"/>
+			<input jwcid="@Hidden" name="SALE_SERIAL_NUMBER" id="SALE_SERIAL_NUMBER" value="ognl:getParameter('SALE_SERIAL_NUMBER','')"/>
+			<input jwcid="@Hidden" name="SALE_EPARCHY_CODE" id="SALE_EPARCHY_CODE" value="ognl:getParameter('SALE_EPARCHY_CODE','')" />
+			<input jwcid="@Hidden" name="custinfo_EPARCHY_CODE" id="custinfo_EPARCHY_CODE" value="ognl:getParameter('SALE_EPARCHY_CODE','')" desc="用户地州"/>
+			<input jwcid="@Hidden" name="SALEACTIVE_NEED_CHECK" id="SALEACTIVE_NEED_CHECK" value="ognl:getParameter('SALEACTIVE_NEED_CHECK','')" />
+			<input jwcid="@Hidden" name="SALEACTIVE_QUERY_MODE" id="SALEACTIVE_QUERY_MODE" value="ognl:getParameter('SALEACTIVE_QUERY_MODE','')" />
+			<input jwcid="@Hidden" name="ACTIVE_TYPE" id="ACTIVE_TYPE" value="ognl:getParameter('ACTIVE_TYPE','')" />
+			<input jwcid="@Hidden" name="AFTER_CHOICEPACKAGE_EVENT" id="AFTER_CHOICEPACKAGE_EVENT" value="ognl:getParameter('AFTER_CHOICEPACKAGE_EVENT','')" />
+			<input jwcid="@Hidden" name="TERMINAL_CHANNEL_TYPE" id="TERMINAL_CHANNEL_TYPE" value="ognl:getParameter('TERMINAL_CHANNEL_TYPE','')" />
+			<input jwcid="@Hidden" name="DEVICE_MODEL_CODE" id="DEVICE_MODEL_CODE" value="ognl:getParameter('DEVICE_MODEL_CODE','')" />
+			<input jwcid="@Hidden" name="TERMINAL_DETAIL_INFO" id="TERMINAL_DETAIL_INFO" value="" />
+			<input jwcid="@Hidden" name="SALEACTIVE_EPARCHY_CODE_COMPID" id="SALEACTIVE_EPARCHY_CODE_COMPID" value="ognl:getParameter('SALEACTIVE_EPARCHY_CODE_COMPID','')" />
+			<input jwcid="@Hidden" name="SALE_STAFF_ID" id="SALE_STAFF_ID" value="ognl:getParameter('SALE_STAFF_ID','')" />
+			<input jwcid="@Hidden" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:getParameter('TRADE_TYPE_CODE','')" orderTypeCode="ognl:getParameter('ORDER_TYPE_CODE', getParameter('TRADE_TYPE_CODE',''))" />
+	     	<input jwcid="@Hidden" name="NET_ORDER_ID" id="NET_ORDER_ID" value="ognl:info.NET_ORDER_ID"/>
+	     	<input jwcid="@Hidden" name="CREDIT_PURCHASES" id="CREDIT_PURCHASES" value="ognl:info.CREDIT_PURCHASES"/>
+			<input jwcid="@Hidden" name="ALL_MONEY_NAME" id="ALL_MONEY_NAME" value="" />
+			<input jwcid="@Hidden" name="IPHONE6_IMEI" id="IPHONE6_IMEI" value="ognl:info.IPHONE6_IMEI"/>
+		    <input jwcid="@Hidden" name="GIFT_CODE" id="GIFT_CODE" value="ognl:info.GIFT_CODE"/>
+		    <input jwcid="@Hidden" name="SMS_CODE" id="SMS_CODE" value="ognl:info.SMS_CODE" desc="查询红包余额验证码"/>
+			
+    <input jwcid="@Hidden" name="CHECK_SMS_VERICODE" value="" desc="验证码"/>
+    <input jwcid="@Hidden" name="LIMIT_COUNT" value="" desc="验证码限制次数"/>
+    <input jwcid="@Hidden" name="NOTICE_CONTENT" value="" desc="提示信息"/>
+    <input jwcid="@Hidden" name="SMS_VERI_SUCCESS" value="" desc="提交后需要动态验证码验证的营销活动办理，验证成功标记：1-成功"/>
+
+
+
+			<div jwcid="saleElementDate@icsserv:ElementDateChoice" style="display:none;" confirmHandler="marketActivityModule.confirmDateChoice(this.getAttribute('itemIndex'))" element="div" ></div>
+		</div>
+	</div>
+	</div>
+	
+	    <!-- 校验验证码弹窗 开始 -->
+    <div name="checkSMSCodePopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <div id="checkSMSCodeItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">校验验证码第<span id="SMS_CHECKED_COUNT"></span>次</div>
+                </div>
+                <div class="c_form c_form-label-3 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="marketActivityModule.popupCheckSMSCode()">
+                            <span class="e_ico-check"></span><span>校验</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">验证码：</div>
+                            <div class="value">
+                                <input name="SMS_SEND"
+                                       jwcid="@TextField"
+                                       onenterAction="marketActivityModule.popupCheckSMSCode()"
+                                       placeholder="请输入验证码"
+                                       nullable="no" desc="校验验证码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="SMS_RECV"/>
+                    <input jwcid="@Hidden" name="CHECK_SMS_CODE_PARAMS"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 校验验证码弹窗 结束 -->
+
+    <!-- 校验绑定号码弹窗 开始 -->
+    <div name="checkBindSerialNumberBPopup" jwcid="@Popup"
+         class="c_popup c_popup-half c_popup-half-hasBg">
+        <div class="c_popupGroup">
+            <div id="checkBindSerialNumberBItem" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">校验绑定号码</div>
+                </div>
+                <div class="c_form c_form-label-4 c_form-submit-h">
+                    <div class="submit">
+                        <button type="button" class="e_button-blue"
+                                ontap="marketActivityModule.popupCheckBindSerialNumberB()">
+                            <span class="e_ico-check"></span><span>校验</span></button>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="label">手机号码：</div>
+                            <div class="value">
+                                <input name="bindSerialNumberB"
+                                       jwcid="@TextField"
+                                       onenterAction="marketActivityModule.popupCheckBindSerialNumberB()"
+                                       placeholder="请输入绑定手机号码"
+                                       nullable="no" datatype="mbphone"
+                                       desc="校验绑定手机号码"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <input jwcid="@Hidden" name="CHECK_BIND_SERIAL_NUMBER_B_PARAMS"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 校验绑定号码弹窗 结束 -->
+
+
+<!--  
+<script type="text/javascript">
+	window.onunload = function()
+	{
+		marketActivityModule.occupyReleaseGoods();
+	};
+</script>-->
+</body>
+</html>

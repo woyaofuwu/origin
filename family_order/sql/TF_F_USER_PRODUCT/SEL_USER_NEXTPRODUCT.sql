@@ -1,0 +1,36 @@
+SELECT P.PARTITION_ID,
+       P.USER_ID,
+       P.USER_ID_A,
+       P.PRODUCT_ID,
+       P.PRODUCT_MODE,
+       P.BRAND_CODE,
+       P.INST_ID,
+       P.CAMPN_ID,
+       P.START_DATE,
+       P.END_DATE,
+       P.UPDATE_TIME,
+       P.UPDATE_STAFF_ID,
+       P.UPDATE_DEPART_ID,
+       P.REMARK,
+       P.RSRV_NUM1,
+       P.RSRV_NUM2,
+       P.RSRV_NUM3,
+       P.RSRV_NUM4,
+       P.RSRV_NUM5,
+       P.RSRV_STR1,
+       P.RSRV_STR2,
+       P.RSRV_STR3,
+       P.RSRV_STR4,
+       P.RSRV_STR5,
+       P.RSRV_DATE1,
+       P.RSRV_DATE2,
+       P.RSRV_DATE3,
+       P.RSRV_TAG1,
+       P.RSRV_TAG2,
+       P.RSRV_TAG3,
+       P.MAIN_TAG
+  FROM TF_F_USER_PRODUCT P, TF_F_USER U
+ WHERE U.SERIAL_NUMBER = :SERIAL_NUMBER
+   AND U.REMOVE_TAG = :REMOVE_TAG
+   AND U.USER_ID = P.USER_ID
+   AND P.START_DATE > SYSDATE

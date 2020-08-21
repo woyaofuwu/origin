@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpcautionfee/GrpCautionFeeCancel.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div><ul></ul></div>
+
+<!-- 开始-->
+<div class="c_box" jwcid="addForm@Part">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="AddDelPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">产品编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER"
+					 enterAction="queryGrpCustInfo()" value="ognl:condition.SERIAL_NUMBER" desc="产品编码" nullable="no" />
+				</span></span>
+			</li>
+  		</ul>
+  		
+  		<div class="submitPlace"></div>
+  		<div class="submit">
+			<button class="e_button-form" onclick="return queryGrpCustInfo();">
+				<i class="e_ico-search"></i><span>查询</span>
+			</button>
+			<button class="e_button-form" onclick="clearGrpCautionFeeAll()">
+				<i class="e_ico-delete"></i><span>清除</span>
+			</button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+
+	<!-- 参数列表 开始 -->
+	<div jwcid="grpcustRefreshPart@Part" >
+		<span jwcid="@saleserv:GroupCustInfo" hasTitle="false" groupUserInfo="ognl:grpCustInfo"/>
+		<span jwcid="@saleserv:GroupUserInfo" hasTitle="false" groupUserInfo="ognl:grpUserInfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+	<!-- 参数列表 结束 -->
+	<div class="c_box">
+		<div class="c_title">
+			<div class="text">用户保证金信息</div>
+		</div>
+		<div class="c_form c_form-text c_form-label-8 c_form-col-2" jwcid="fuckYidongPart@Part">
+			<ul class="ul" jwcid="@Foreach" source="ognl:depositInfos" value="ognl:depositInfo" element="ul">
+				<li class="li">
+					<span class="label">保证金金额(分)：</span>
+					<span class="text" name="fuck_DEPOSIT_FEE" id="fuck_DEPOSIT_FEE">
+						<span jwcid="@Insert"  value="ognl:depositInfo.DEPOSIT_FEE" raw="false"/>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label">保证金子项：</span>
+					<span class="text" name="fuck_DEPOSIT_TYPE" id="fuck_DEPOSIT_TYPE">
+						<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('DEPOSIT_TYPE', depositInfo.DEPOSIT_TYPE)" raw="false"/>
+					</span> 
+				</li>
+				<li class="li">
+					<span class="label">创建工号：</span>
+					<span class="text" name="fuck_STAFF_ID" id="fuck_STAFF_ID">
+						<span jwcid="@Insert"  value="ognl:depositInfo.INSERT_STAFF_ID" raw="false"/>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label">创建时间：</span>
+					<span class="text" name="fuck_INSERT_TIME" id="fuck_INSERT_TIME">
+						<span jwcid="@Insert"  value="ognl:depositInfo.INSERT_TIME" raw="false"/>
+					</span>
+				</li>
+				<li class=""><hr style="border:none"></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="c_box">
+		<div class="c_title">
+			<div class="text">保证金扣罚信息</div>
+		</div>
+		<div class="c_form c_form-text c_form-col-2 c_form-label-7" jwcid="orderPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">审批工单号：</span></span>
+					<span class="e_input"><span><input type="text" name="AUDIT_ORDER" id="AUDIT_ORDER" jwcid="@TextField" 
+						value="ognl:condition.AUDIT_ORDER" maxsize="40" nullable="no" desc="审批工单号"/></span></span>					
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">保证金额(元)：</span></span>
+					<span class="e_input"><span><input type="text" name="DEPOSIT_FEE"id="DEPOSIT_FEE" jwcid="@TextField" 
+						value="ognl:condition.DEPOSIT_FEE" maxsize="11" nullable="no" desc="保证金额"/></span></span>		
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">保证金子项：</span></span>
+					<span class="e_select">
+					<select jwcid="@Select" id="DEPOSIT_TYPE" name="DEPOSIT_TYPE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('DEPOSIT_TYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" nullable="no" value="ognl:condition.DEPOSIT_TYPE" desc="保证金扣罚子项"/>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<!-- 提交 -->
+	<div class="c_submit">
+		<div jwcid="SubmitPart@saleserv:CSSubmit" area="AddDelPart,grpcustRefreshPart,orderPart" 
+			listener="cancelGrpCautionFee" beforeAction="onSubmitBaseTradeCheck()" 
+			isGrp="true" disabledBtn="false" element="div"/>		
+	</div>
+	
+</div>
+<!-- 结束-->
+
+	
+</div></div>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+
+</body>

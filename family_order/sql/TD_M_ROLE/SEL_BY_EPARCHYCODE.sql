@@ -1,0 +1,2 @@
+--IS_CACHE=Y
+SELECT ROLE_CODE, ROLE_NAME FROM td_m_role WHERE :EPARCHY_CODE IS NULL OR role_code like :EPARCHY_CODE||'%' ORDER BY role_attr,role_code

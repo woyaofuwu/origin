@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/marketing/script/marketingHandle.js"></script>
+	<title>试用营销活动到期稽核</title>
+	<link href="css/global/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body jwcid="@Body">
+	<div class="c_header e_show-phone">
+		<div class="back">试用营销活动到期稽核</div>
+		<div class="fn">
+			<button type="button" class="e_button-blue"
+				ontap="showPopup('mypop','qryInfo')">
+				<span class="e_ico-search"></span>
+			</button>
+			<button type="button" class="e_button-blue"
+				ontap="showFloatLayer('UI-layer','block')">
+				<span class="e_ico-menu"></span>
+			</button>
+
+		</div>
+	</div>
+	<div class="l_padding">
+	<div class="l_query" jwcid="ResultPart@Part" element="div">
+			<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="left" id="UI-layer">
+					<button type="button" ontap="showPopup('mypop','writeInfo')">
+					<span class="e_ico-add"></span><span>到期处理填写</span>
+					</button>
+				</div>
+				<div class="right">
+					<div class="e_mix" onclick="showPopup('mypop','qryInfo')">
+						<input type="text" />
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+			<div class="l_queryResult">
+			<!-- 表格 开始 -->
+			<div class="c_table">
+				<table jwcid="@Table" id="MarketingHandleTable" name="MarketingHandleTable">
+					<thead>
+						<tr>
+				  			<th></th>
+							<th col="IBSYSID_MARKETING">营销活动订单号</th>
+							<th col="CUSTOMNAME">集团名称</th>
+							<th col="CUSTOMNO">集团编码</th>
+							<th col="CITY_NAME">所属区域</th>
+							<th col="MARKETING_IS_SUCC">是否能促成签约</th>
+	                        <th col="ACCEPT_DATE">营销活动创建时间</th>
+	                        <th col="MARKETING_END_DATE">营销活动结束时间</th>
+	                        <th col="AUDIT_START_DATE">到期处理开始时间</th>
+	                        <th col="RESULT_CODE">当前状态</th>
+	                        <th col="APPLY_STAFF_ID">到期处理员工</th>
+	                        <th col="HANDLE_DATE">到期处理时间</th>
+	                        <th col="HANDLE_CODE">到期处理状态</th>
+	                        <th col="IBSYSID_AUDIT">相关订单号</th>
+	                        <th col="HANDLE_INFO">备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td>
+								<input type="radio" id="ckline" name="ckline"  jwcid="@Radio" value="ognl:info.IBSYSID_MARKETING"  disabled="ognl:info.RESULT_CODE==1?false:true" />
+	                        </td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.IBSYSID_MARKETING" raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.CUSTOMNAME" raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.CUSTOMNO" raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.CITY_NAME" raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('CONTRACT_IS_AUTO_RENEW',info.MARKETING_IS_SUCC)" raw="true"/></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE"  raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.MARKETING_END_DATE"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.AUDIT_START_DATE" raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('MARKETING_HANDLE',info.RESULT_CODE)" raw="true"/></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.APPLY_STAFF_ID"  raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.HANDLE_DATE"  raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('MARKETING_HANDLE_OPINION',info.HANDLE_CODE)"  raw="true"/></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.IBSYSID_AUDIT"  raw="false"></span></td>
+							<td class="e_center" align="center"><span jwcid="@Insert" value="ognl:info.HANDLE_INFO"  raw="false"></span></td>
+						</tr>
+					</tbody>
+				</table>
+				<div jwcid="@Conditional" class="l_queryMsg" condition="ognl:infos == null || infos.size() == 0" element="div">
+				<!-- 无数据提示 开始 -->
+				<div class="c_msg">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="info">
+							<div class="text">
+								<div class="title">暂时没有数据</div>
+								<div class="content">请输入查询条件</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 无数据提示 结束 -->
+			</div>
+			<div class="l_queryMsg" id="queryLoading" style="display:none;">
+				<!-- 无数据提示 开始 -->
+				<div class="c_msg c_msg-loading">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="info">
+							<div class="text">
+								<div class="title">努力加载中</div>
+								<div class="content">loading</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 无数据提示 结束 -->
+			</div>
+			</div>
+			<!-- 表格 结束 -->
+		</div>
+		<div class="l_queryPage">
+			<!-- 分页 开始 -->
+			<div class="c_page c_page-border" jwcid="@NavBar" name="queryNav" id="queryNav" cond="orderInfo" part="ResultPart" listener="queryAllMarketing" pageSize="20" count="ognl:count"></div>
+			<!-- 分页 结束 -->
+		</div>
+	</div>
+	</div>
+	<div class="c_popup" jwcid="@Popup" name="mypop">
+		<div class="c_popupGroup">
+			<div class="c_popupItem c_popupItem-show" id="qryInfo">
+				<div class="c_header">
+					<div class="back" onclick="hidePopup(this);"></div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<div class="c_list c_list-line c_list-border" jwcid="orderInfo@Part" >
+							<ul>
+								<li class="link">
+									<div class="label">营销活动订单号</div>
+									<div class="value"><input type="text" jwcid="@TextField" id="cond_IBSYSID_MARKETING"  name="cond_IBSYSID_MARKETING" value="ognl:condition.IBSYSID_MARKETING"  desc="营销活动订单号"/></div>
+								</li>
+								<li class="link">
+									<div class="label">当前状态</div>
+									<div class="value">
+										<select id="cond_RESULT_CODE" name="cond_RESULT_CODE" jwcid="@Select" value="ognl:condition.RESULT_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MARKETING_HANDLE')" 
+										textField="DATA_NAME" valueField="DATA_ID" desc="当前状态" />
+									</div>
+								</li>
+								<li class="link">
+									<div class="label">活动生成时间</div>
+									<div class="value">
+									<input name="cond_ACCEPT_DATE" jwcid="@DateField" value="ognl:condition.ACCEPT_DATE"  now="true" dropDown="true" format="yyyy-MM-dd HH:mm:ss" desc="活动生成时间" />
+								</li>
+								<li class="link">
+									<div class="label">集团客户编码</div>
+									<div class="value"><input type="text" jwcid="@TextField" id="cond_CUSTOMNO"  name="cond_CUSTOMNO" value="ognl:condition.CUSTOMNO"  desc="集团客户编码"/></div>
+								</li>
+								<li class="link">
+									<div class="label">是否促成签约</div>
+									<div class="value">
+										<select id="cond_MARKETING_IS_SUCC" name="cond_MARKETING_IS_SUCC" jwcid="@Select" value="ognl:condition.MARKETING_IS_SUCC" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CONTRACT_IS_AUTO_RENEW')" 
+										textField="DATA_NAME" valueField="DATA_ID" desc="是否促成签约" />
+									</div>
+								</li>
+								<li class="link">
+									<div class="label">活动结束时间</div>
+									<div class="value">
+									<input name="cond_MARKETING_END_DATE" jwcid="@DateField" value="ognl:condition.MARKETING_END_DATE"  now="true" dropDown="true" format="yyyy-MM-dd HH:mm:ss" desc="活动结束时间" />
+								</li>
+							</ul>
+						</div>
+						<div class="c_space"></div>
+						<!-- 查询 开始 -->
+						<div class="c_submit c_submit-full">
+							<button type="button" class="e_button-r e_button-l e_button-blue" ontap="queryAllMarketingforAudit();hidePopup(this);">查询</button>
+						</div>
+						<!-- 查询 结束 -->
+						<div class="c_space"></div>
+					</div>
+				</div>
+			</div>
+				<div class="c_popupItem" id="writeInfo">
+					<div class="c_header">
+						<div class="back" ontap="hidePopup('mypop','writeInfo')">到期稽核填写</div>
+					</div>
+					<div class="c_scroll c_scroll-float c_scroll-header">
+						<div class="l_padding">
+							<!-- 表单 开始 -->
+							<div class="c_list c_list-line c_list-border" jwcid="writeForm@Part">
+								<ul>
+									<li class="link required">
+										<div class="label">处理结果</div>
+										<div class="value">
+											<input jwcid="@Select" name="msubmit_AUDIT_OPINION"
+												source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MARKETING_AUDIT_OPINION')" 
+												textField="DATA_NAME" valueField="DATA_ID" 
+												value="ognl:condition.AUDIT_OPINION" nullable="no" desc="处理结果"/>
+										</div>
+									</li>
+									<li class="link required">
+										<div class="label">处理意见</div>
+										<div class="value"><input jwcid="@TextArea" name="msubmit_RESULT_INFO" id="msubmit_RESULT_INFO" value="ognl:condition.RESULT_INFO" nullable="no"  type="text" desc="处理意见" /></div>
+									</li>
+							</ul>
+							</div>
+							<!-- 表单 结束 -->
+							<div class="c_space"></div>
+							<!-- 提交 开始 -->
+							<div class="c_submit c_submit-full">
+								<button type="button"
+									class="e_button-r e_button-l e_button-green"
+									ontap="submitInfosForAudit()">提交</button>
+							</div>
+							<!-- 提交 结束 -->
+							<div class="c_space"></div>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO td_b_product_svcprice(product_id,service_id,b_price_code,a_price_code,start_date,end_date,update_staff_id,update_depart_id,update_time)
+ VALUES(:PRODUCT_ID,:SERVICE_ID,:B_PRICE_CODE,:A_PRICE_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,sysdate)

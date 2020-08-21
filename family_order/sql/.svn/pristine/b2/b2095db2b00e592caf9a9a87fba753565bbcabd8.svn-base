@@ -1,0 +1,2 @@
+INSERT INTO td_s_alarm(work_id,alarm_id,last_alarm_date,interval,start_date,end_date,serial_number,use_tag)
+ VALUES(:WORK_ID,:ALARM_ID,TO_DATE(:LAST_ALARM_DATE,'YYYY-MM-DD HH24:MI:SS'),:INTERVAL,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:SERIAL_NUMBER,:USE_TAG)

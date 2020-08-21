@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" language="JavaScript"  src="person/specdiscntbusiness/scripts/specdiscntbusiness.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 --><!-- 替换成业务组件 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="153" tradeAction="refreshPartAtferAuth(data);" element="div"></div>
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">可选优惠列表</div>
+		<div class="fn"></div>
+	</div>
+	<div class="c_form c_form-label-5 c_form-col-3">
+		<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">优惠名称：</span></span>
+			<span class="e_select" jwcid="chooseDiscntPart@Part"><span><span>
+				<select jwcid="@Select" name="CHOOSE_DISCNT" id="CHOOSE_DISCNT"
+					    source="ognl:chooseDiscnt" value="ognl:info.DISCNT_CODE" valueField="DISCNT_CODE"
+						textField="DISCNT_NAME" titleField="DISCNT_NAME" nullable="yes" desc="优惠名称" onchange="">
+				</select>
+            </span></span></span>
+		</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">已办理的特殊优惠</div>
+		<div class="fn">
+			<button type="button" id="add" name="add" class="l_ml" onclick="addDiscnt()"><i class="e_ico-add" ></i><span>新增</span></button>
+			<button type="button" id="del" name ="del" class="l_ml" onclick="delDiscnt(this)"><i class="e_ico-delete"></i><span>删除</span></button>
+		</div>
+	</div>
+	<div jwcid="userDiscntPart@Part">
+	<div class="c_scroll c_table c_scroll-table-5">
+		<table jwcid="@Table" name="discntTable" rowDBClick="">
+			<thead>
+				<tr>
+					<th col="DISCNT_CODE">优惠编码</th>
+					<th col="DISCNT_NAME">优惠名称</th>
+					<th col="START_DATE" format="yyyy-MM-dd HH:mm:ss">开始时间</th>
+					<th col="END_DATE" format="yyyy-MM-dd HH:mm:ss">结束时间</th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:discnt" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DISCNT_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>		
+	</div>
+	</div>
+</div>
+<div class="c_box">
+	<div class="c_form c_form-label-5 c_form-col-1">
+		<ul class="ul">
+		<li class="li">
+				<span class="label"><span class="">业务备注：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="REMARK" name="REMARK"	value='ognl: new java.lang.String("")' desc="业务备注" maxsize="100"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	
+	<input jwcid="@Hidden" name="SYS_DATE" id="SYS_DATE" value=""/>
+	<input jwcid="@Hidden" name="END_DATE" id="END_DATE" value=""/>
+	<input jwcid="@Hidden" name="LAST_DAY_THIS_MONTH" id="LAST_DAY_THIS_MONTH" value=""/>
+	<input jwcid="@Hidden" name="FIRST_DAY_NEXT_MONTH" id="FIRST_DAY_NEXT_MONTH" value=""/>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" isReset="true" area="" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

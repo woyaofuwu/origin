@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>积分礼品领取清单 </title>
+<script jwcid="@Script" src="person/goodsapply/scripts/GoodsApplyList.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	 
+	<div jwcid="CondPart@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+			<!--<li class="li">
+					<span class="label"><span class="e_required">结算月份：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_ACCEPT_MON" name ="cond_ACCEPT_MON" value="ognl:cond.ACCEPT_MONTH" desc="结算月份"  datatype="numeric"   onchange="checkData()" nullable="no"/>
+					</span></span>
+			</li>
+			
+			-->
+			<li class="li">
+					<span class="label">供应商：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_SUPPLIER" name ="cond_SUPPLIER" value="ognl:cond.SUPPLIER" desc="供应商"  />
+					</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">分公司：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_COMPANY" id="cond_COMPANY"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('COST_CENTER')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:getVisit().getStaffId().substring(0,4)" 
+							desc="分公司" />
+				</span></span></span>
+			</li>
+			<li class="li">
+					<span class="label">网点： </span> 
+					<span class="e_elements">
+					<button type="button" class="e_button-center" onclick="popupPage('createusertrade.ChooseAgent', null, '', '网点', '600', '500');"><i class="e_ico-check"></i><span>网点</span></button>
+						<span class="e_input e_input-left"><span>				
+					    <input jwcid="@TextField"  value="ognl:info.AGENT_DEPART_ID1"  name="AGENT_DEPART_ID1"  id="AGENT_DEPART_ID1" desc="网点" disabled="true"  />
+					</span></span>
+					</span>  
+			</li>
+			<li class="li">
+					<span class="label">礼品名称：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_RULE_NAME" name ="cond_RULE_NAME" value="ognl:cond.RULE_NAME" desc="礼品名称"  />
+					</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span>领取开始时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:cond.START_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>领取结束时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_END_DATE"  id="cond_END_DATE" value="ognl:cond.END_DATE" />
+				</span></span>
+			</li>
+			<li class="li" >
+			<span class="label"><span>领取起始工号：</span></span>
+				<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_START_STAFF_ID" value="ognl:cond.cond_START_STAFF_ID"  
+							onblur="completeEndSn(this, 'cond_END_STAFF_ID');" 
+							onkeyup="synOnKeyup(this, 'cond_END_STAFF_ID'); this.value=this.value.toUpperCase()" 
+						 desc="起始工号"  maxsize="8"  maxlength="8"/>
+				</span></span>
+			</li>
+			<li class="li" >
+			<span class="label"><span>领取终止工号：</span></span>
+				<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_END_STAFF_ID" value="ognl:cond.cond_END_STAFF_ID" 
+							onkeyup="this.value=this.value.toUpperCase()"
+						desc="终止工号"   maxlength="8" maxsize="8"/>
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_submit e_right">
+		<button type="button" class="e_button-form" id="SearchBtn" onclick="queryGoodsList();"><i class="e_ico-search"></i><span>查询</span></button>
+		<button type="button" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+	</div>
+	 
+	<div class="submit e_left" >
+		<span jwcid="@Conditional" condition="ognl:expTag != 0">
+		<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="9010"  beforeAction="exportBeforeAction"
+					 config="export/goodsapply/GoodsApplyList.xml" fileName="积分礼品领取清单"   cond="CondPart" />
+		</span>
+		</span>
+	</div> 
+	
+	<div jwcid="ResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="sortedTable">
+	     		<thead>
+		  			<tr>
+		  				<th >序号</th>
+						<th col="RULE_ID" >礼品ID</th>
+			      		<th col="RULE_NAME" >礼品名称</th>
+			      		<th col="SUPPLIER" >供应商</th>
+			      		<th col="DEPART_AREA_CODE" >领取分公司</th>
+	                    <th col="DEPART_NAME" >领取网点</th>
+			      		<th col="SCORE" >礼品积分值</th>
+			      		<th col="SERIAL_NUMBER">用户手机号</th>
+			      		<th col="SCORE_VALUE" >积分单价</th> 
+			      		<th col="NO_TAX_PRICE" >不含税结算单价</th>
+			      		<th col="GET_NUM" >领取数量</th> 
+			      		<th col="NO_TAX_AMOUNT" >不含税结算金额</th>
+			      		<th col="TAX_RATE" >税率</th>
+			      		<th col="TAX" >结算税额</th>
+			      		<th col="TAX_AMOUNT" >含税结算金额</th>
+			      		<!--<th col="ACCEPT_MONTH" >结算月份</th>
+			      		-->
+			      		<th col="UPDATE_TIME" >礼品领取时间</th>
+			      		<th col="EXCHANGE_TIME" >积分兑换时间</th>
+			      		
+			      		<th col="USER_CITY_CODE" >开卡归属</th>
+			      		<th col="UPDATE_STAFF_ID" >操作工号</th>
+			      		<th col="GOODS_STATE" >状态</th>
+			      		<th col="TRADE_ID" style="display:none">TRADE_ID</th>
+			      		<th col="USER_ID" style="display:none">USER_ID</th>
+			      		<th col="STATE" style="display:none">STATE</th>
+			      		
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SUPPLIER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('COST_CENTER', info.DEPART_AREA_CODE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEPART_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SCORE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.SCORE_VALUE" raw="false"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.NO_TAX_PRICE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GET_NUM" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.NO_TAX_AMOUNT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TAX_RATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TAX" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TAX_AMOUNT" raw="false"/></td>
+						<!--<td><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="false"/></td>
+						-->
+						<td><span jwcid="@Insert" value="ognl:info.UT_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ET_TIME" raw="false"/></td>
+						
+						
+						<td><span jwcid="@Insert" value="ognl:info.USER_CITY_CODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GOODS_STATE" raw="false"/></td>
+
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.TRADE_ID" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.STATE" /></td> 	 
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="CondPart" part="ResultPart" 
+	      listener="queryUserScoreGoodsList" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+</div>
+<div class="c_box"> 
+	<div class="c_title">
+			<div class="text">延期操作</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="SubmitCondPart@Part">
+		<ul class="ul"> 
+			<li class="li col-2">
+				<span class="label"><span class="e_required">批量文件：</span></span>
+				<span class="e_elements"><!-- 替换为页面组件 -->
+					<span class="e_elements">
+							<input jwcid="@Upload" name="cond_STICK_LIST"   id="cond_STICK_LIST" ftpSite="personserv"  
+									fileSize="20" fileTypes="*.xls;*.txt" desc="导入文件" nullable="no"/>
+					</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">模版下载：</span>
+				<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=礼品兑换延期导入模板.xls&filePath=template/bat/BatDelayEndDate.xls')">[点击下载]</a></span>
+			</li>
+		</ul>
+	</div>
+	<div class="submit" style="text-align:center">
+		<button type="button" class="e_button-page-ok" onclick="return importDelayData()"><i class="e_ico-import"></i><span>导入</span></button>
+	</div> 
+
+	<div class="submit e_left"  id="showBtn" style="display:none">
+		<button type="button" class="e_button" id="showListBtn" onclick="showTheLists()"><i class="e_ico-show"></i><span>显示</span></button>
+	</div> 
+	<div class="submit e_left" id="hideBtn"  style="display:none">		
+		<button type="button" class="e_button" id="hideListBtn" onclick="hideTheLists()"><i class="e_ico-hide"></i><span>隐藏</span></button>
+	</div> 
+	<div jwcid="BatResultPart@Part" style="display:none">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="batTable">
+	     		<thead>
+		  			<tr> 
+		  				<th >序号</th>
+						<th col="SERIAL_NUMBER_BAT" >手机号</th>
+			      		<th col="DELAY_MON" >延迟月份</th>
+			      		<th col="RULE_ID_BAT" >礼品ID</th>
+			      		<th col="RULE_NAME_BAT" >礼品名称</th>
+			      		<th col="END_DATE_BAT" >有效期至</th>
+	                    <th col="IMPORT_ERROR" >导入信息</th>
+			      		
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:batInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DELAY_MON" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.IMPORT_ERROR" raw="false"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div> 
+	</div>
+</div>	
+
+</div></div>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>宽带需求收集查询</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/broadband/widenet/widepreregaudit/scripts/WidePreRegAuditNew.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">宽带需求收集查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-advance');"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<!-- 区域 开始 -->
+	<div jwcid="QueryPart@Part" class="c_scroll c_scroll-float c_scroll-phone-header">
+		<!-- 表单 开始 -->
+		<div class="l_padding l_padding-side">
+			<div class="c_space"></div>
+			<div jwcid="QueryCondPart@Part" class="c_form c_form-label-5 c_form-col-3 c_form-border c_form-phone-col-1 c_form-padding">
+				<ul>
+					<li>
+						<div class="label">查询类型：</div>
+						<div class="value">
+							<select jwcid="@Select" name="WIDE_PRE_REG_QRY_TYPE" id="WIDE_PRE_REG_QRY_TYPE" onchange="changeOperQryTrade()" source="ognl:pageutil.getStaticList('WIDE_PRE_REG_TYPE')" addDefault="false" textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.WIDE_PRE_REG_QRY_TYPE" desc="宽带需求收集查询类型" nullable="no" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div jwcid="widePreRegQry@Part" id="widePreRegQry">
+				<div class="c_space-c"></div>
+				<div jwcid="WidePreRegConditionPart@Part" id="WidePreRegConditionPart">
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-label-5 c_form-col-3 c_form-border c_form-phone-col-1 c_form-submit">
+						<ul>
+							<li>
+								<div class="label">联系人姓名：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_CUST_NAME" id="cond_CUST_NAME" value="ognl:info.CUST_NAME" desc="客户姓名" />
+								</div>
+							</li>
+							<li>
+								<div class="label">服务号码：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" desc="服务号码" datatype="numeric" />
+								</div>
+							</li>
+							<li>
+								<div class="label">联系电话：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_CONTACT_SN" id="cond_CONTACT_SN" value="ognl:info.CONTACT_SN" desc="联系电话" datatype="numeric" />
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">登记状态：</div>
+								<div class="value">
+									<select jwcid="@Select" name="cond_REG_STATUS" id="cond_REG_STATUS" source="ognl:pageutil.getStaticList('WIDE_REG_STATUS')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.REG_STATUS" desc="审核状态" nullable="no" />
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">起始时间：</div>
+								<div class="value">
+									<input jwcid="@DateField" name="cond_START_DATE" readonly="true" value="ognl:info.START_DATE" desc="起始时间" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">结束时间：</div>
+								<div class="value">
+									<input jwcid="@DateField" name="cond_END_DATE" readonly="true" value="ognl:info.END_DATE" desc="结束时间" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+								</div>
+							</li>
+							<li>
+								<div class="label">安装地址：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="cond_SET_ADDR" id="cond_SET_ADDR" value="ognl:info.SET_ADDR" desc="安装地址" />
+								</div>
+							</li>
+						</ul>
+						<div class="submit">
+							<button class="e_button-blue" id="queryBtn" name="queryBtn" ontap="queryWidePreRegInfo();">
+								<span class="e_ico-search"></span>
+								<span>查询</span>
+							</button>
+						</div>
+					</div>
+					<!-- 表单 结束 -->
+				</div>
+				<div class="c_space"></div>
+				<div class="c_fn">
+					<div class="left">
+						<div class="text">查询结果</div>
+					</div>
+					<div class="right">
+						<Button style="display:none" id="notifySmsBtn" name="notifySmsBtn" onclick="notifySms()">
+							<i class="e_ico-bottom"></i>
+							<span>发送短信</span>
+						</Button>
+						<Button jwcid="@Export" name="exportFile" ftpCode="personserv" fileType="{'.xls':'.xlsx'}" taskId="16317" beforeAction="" action="" configFile="export/wideband/WidePreRegAuditList.xml" fileName="custInfo" cond="WidePreRegConditionPart">
+						</Button>
+					</div>
+				</div>
+				<div class="c_space"></div>
+				<div jwcid="WidePreRegInfoPart@Part" id="WidePreRegInfoPart">
+					<table jwcid="@Table" id="widePreRegTable" name="widePreRegTable" class="c_table c_table-lite c_table-border c_table-row-5" useScroller="true">
+						<thead>
+							<tr>
+								<th width='30px' col="INST_ID" class="e_center">
+									<input type="checkbox" onclick="checkedOther('monitorids');" />
+								</th>
+								<th col="CUST_NAME" class="e_center">联系人名称</th>
+								<th col="SERIAL_NUMBER" class="e_center">服务号码</th>
+								<th col="WBBW" class="e_center">宽带带宽</th>
+								<th col="CONTACT_SN" class="e_center">联系电话</th>
+								<th col="SET_ADDR" class="e_center">安装地址</th>
+								<th col="REG_DATE" class="e_center">登记时间</th>
+								<th col="PRE_CAUSE" class="e_center">预装原因</th>
+								<th col="REG_STATUS" class="e_center">登记状态</th>
+								<th col="ORG_REG_STATUS" class="e_center" style="display:none">原登记状态</th>
+								<th col="INST_ID" class="e_center">实例标识</th>
+								<th col="REMARK" class="e_center">备注</th>
+								<th col="UPDATE_STAFF_ID" class="e_center">操作员工</th>
+								<th col="UPDATE_DEPART_ID" class="e_center">所属部门</th>
+							</tr>
+						</thead>
+						<tbody id="widePreRegTBody">
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td class="e_center">
+									<input jwcid="@Checkbox" id="monitorids" name="monitorids" value="ognl:info.INST_ID" />
+								</td>
+								<td data-title="联系人名称" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false" />
+								</td>
+								<td data-title="服务号码" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false" />
+								</td>
+								<td data-title="宽带带宽" class="e_center">
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_CAPACITY',info.WBBW)" raw="false" />
+								</td>
+								<td data-title="联系电话" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.CONTACT_SN" raw="false" />
+								</td>
+								<td data-title="安装地址" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.SET_ADDR" raw="false" />
+								</td>
+								<td data-title="登记时间" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.REG_DATE" raw="false" />
+								</td>
+								<td data-title="预装原因" class="e_center">
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_PRE_CAUSE',info.PRE_CAUSE)" raw="false" />
+								</td>
+								<td data-title="登记状态" class="e_center">
+									<select jwcid="@Select" name="ognl:'PRE_REG_STATUS_' + rowIndex" id="ognl:'PRE_REG_STATUS_' + rowIndex" style="border:1px solid rgba(0,0,0,0)" source="ognl:pageutil.getStaticList('WIDE_REG_STATUS')" addDefault="false" textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.REG_STATUS" desc="审核状态" nullable="no" />
+								</td>
+								<td class="e_center" style="display:none">
+									<span jwcid="@Insert" value="ognl:info.REG_STATUS" raw="false" />
+								</td>
+								<td data-title="实例标识" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.INST_ID" raw="false" />
+								</td>
+								<td data-title="备注" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.REMARK" raw="false" />
+								</td>
+								<td data-title="操作员工" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false" />
+								</td>
+								<td data-title="所属部门" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID" raw="false" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- 翻页 开始 -->
+					<div class="c_space-c"></div>
+					<div jwcid="@NavBar" class="c_page c_page-border" name="preregInfoNav" id="preregInfoNav" cond="WidePreRegConditionPart" part="WidePreRegInfoPart" listener="queryWidePreRegInfo" pageSize="10" count="ognl:count"></div>
+					<!-- 翻页 结束 -->
+				</div>
+				<div class="c_space"></div>
+				<!-- 提交 开始 -->
+				<div class="c_submit c_submit-center">
+					<button jwcid="@Button" accesskey="Y" class="e_button-r e_button-l e_button-green" name="preregInfoSubmit" onclick="preregInfoSubmit()">
+						<span jwcid="@Any" class="e_ico-submit"></span>
+						<span>提交</span>
+					</button>
+				</div>
+				<!-- 提交 结束 -->
+			</div>
+			<div jwcid="widePreRegCollectQry@Part" id="widePreRegCollectQry" style="display:none">
+				<div class="c_space-c"></div>
+				<div jwcid="WidePreRegCollectConditionPart@Part">
+					<div class="c_form c_form-label-5 c_form-col-3 c_form-border c_form-phone-col-1 c_form-submit">
+						<ul>
+							<li class="required">
+								<div class="label">登记状态：</div>
+								<div class="value">
+									<select jwcid="@Select" name="collect_REG_STATUS" id="collect_REG_STATUS" source="ognl:pageutil.getStaticList('WIDE_REG_STATUS')" textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.COLLECT_REG_STATUS" excludeField="1,5,6" desc="审核状态" nullable="no" />
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">起始时间：</div>
+								<div class="value">
+									<input jwcid="@DateField" name="collect_START_DATE" readonly="true" value="ognl:info.collect_START_DATE" desc="起始时间" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+								</div>
+							</li>
+							<li class="required">
+								<div class="label">结束时间：</div>
+								<div class="value">
+									<input jwcid="@DateField" name="collect_END_DATE" readonly="true" value="ognl:info.collect_END_DATE" desc="结束时间" afterAction="" nullable="no" format="yyyy-MM-dd" dropDown="true" />
+								</div>
+							</li>
+							<li>
+								<div class="label">安装地址：</div>
+								<div class="value">
+									<input jwcid="@TextField" name="collect_SET_ADDR" id="collect_SET_ADDR" value="ognl:info.SET_ADDR" desc="安装地址" />
+								</div>
+							</li>
+						</ul>
+						<div class="submit">
+							<button class="e_button-blue" id="queryCollectBtn" name="queryCollectBtn" ontap="queryCollectInfo();">
+								<span class="e_ico-search"></span>
+								<span>查询</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="c_title">
+					<div class="text">查询结果</div>
+				</div>
+				<div jwcid="WidePreRegCollectInfoPart@Part" id="WidePreRegCollectInfoPart">
+					<table jwcid="@Table" id="widePreRegCollectTable" name="widePreRegCollectTable" class="c_table c_table-lite c_table-border c_table-row-5" useScroller="true">
+						<thead>
+							<tr>
+								<th col="HOME_ADDR" class="e_center">标准地址</th>
+								<th col="EARLY_WARNING_DATE" class="e_center">预警时间</th>
+								<th col="EARLY_WARNING_NUMBER" class="e_center">预警数量</th>
+								<th col="REG_STATUS" class="e_center">登记状态</th>
+							</tr>
+						</thead>
+						<tbody id='fmymembers'>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<td data-title="标准地址" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.HOME_ADDR" raw="false" />
+								</td>
+								<td data-title="预警时间" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.EARLY_WARNING_DATE" raw="false" />
+								</td>
+								<td data-title="预警数量" class="e_center">
+									<span jwcid="@Insert" value="ognl:info.EARLY_WARNING_NUMBER" raw="false" />
+								</td>
+								<td data-title="登记状态" class="e_center">
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WIDE_REG_STATUS',info.REG_STATUS)" raw="false" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- 翻页 开始 -->
+					<div jwcid="@NavBar" name="preregCollectInfoNav" id="preregCollectInfoNav" cond="WidePreRegCollectConditionPart" part="WidePreRegCollectInfoPart" listener="queryCollectInfo" pageSize="10" count="ognl:count"></div>
+					<!-- 翻页 结束 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

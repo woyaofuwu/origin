@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'AssureType'  KEY, ASSURE_TYPE_CODE VALUE1,'-1' VALUE2,ASSURE_TYPE VRESULT
+  FROM td_s_assuretype
+ WHERE 'AssureType' = :KEY

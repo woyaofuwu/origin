@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/score/scoretransfer/scripts/ScoreAssignee.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title" jwcid="buttonPart@Part">
+		<div class="text">受让人信息管理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-9" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			
+			<li class="li">
+				<span class="label">转让人手机号码：</span>
+			<span class="e_input"><span><input type="text"  jwcid="@TextField" name="L_MOBILE" id="L_MOBILE"   value="ognl:cond.L_MOBILE" nullable="no" datatype="mbphone" desc="转让人手机号码"/></span></span>
+</li>
+			<li class="li">
+				<span class="label">受让人状态：</span>
+				<span class="e_input"><span><select jwcid="@Select" name="ASSIGNEE_STATUS" id="ASSIGNEE_STATUS" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('LVBY_ASSIGNEE_STATUS')" value="ognl:cond.ASSIGNEE_STATUS" desc="受让人状态" nullable="no"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="return queryInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+		<!-- 表单 结束 -->
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">受让人管理</div>
+	
+	<!-- 控制区 -->
+	<div class="fn">
+			<button type="button" id="add" name="add" onclick="openAddWindow();" afterAction="refreshTask();"><i class="e_ico-add"></i><span>新增</span></button>
+			<button type="button" id="replace" name="replace" onclick="openRepalceWindow();" afterAction="refreshTask();"><i class="e_ico-add"></i><span>替换</span></button>
+		<button type="button" id="edit" name="edit" onclick="openEditWindow();" afterAction="refreshTask();"><i class="e_ico-add"></i><span>修改</span></button>
+		
+		
+	</div>
+	</div>
+	<!-- 表格 开始 -->
+		<div   jwcid="RefreshPart@Part">
+	<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+		<table jwcid="@Table" id="ResultTable" name="ResultTable">
+			<thead>
+				<tr>
+					<th></th>
+					<th col="B_MOBILE">受让人手机号码</th>
+					<th col="ASSIGNEE_NAME">受让人姓名</th>
+					<th col="VALIDNUM_TYPE">有效证件类型</th>
+					<th col="ASSIGNEE_ID">有效证件</th>
+					<th col="EFFECTIVE_DATE">生效日期</th>
+					<th col="OPERATOR_TIME">操作时间</th>
+					<th col="ORG_ID">渠道标识</th>
+					<th col="ASSIGNEE_STATUS">受让人状态</th>
+					<th col="USER_ROLE">操作员角色</th>
+					<th col="USER_ID">操作员账号	</th>
+					<th col="">操作	</th>
+				</tr>
+			</thead>
+			<tbody>
+			<input type="text" jwcid="@TextField"  name="L_MOBILE" id="L_MOBILE" value="ognl:cond.SERIAL_NUMBER" nullable="no" datatype="mbphone" desc="服务号码" style="display:none"/>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+				<td class="e_center"><input jwcid="@Any" type="checkbox" name="infos" value="ognl:info.B_MOBILE" /></td>
+						<td name="mobile"><span jwcid="@Insert" value="ognl:info.B_MOBILE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ASSIGNEE_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('VALIDNUM_TYPE',info.VALIDNUM_TYPE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ASSIGNEE_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.EFFECTIVE_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.OPERATOR_TIME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('LVBY_ORG_ID',info.ORG_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('LVBY_ASSIGNEE_STATUS',info.ASSIGNEE_STATUS)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.USER_ROLE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="true"/></td>
+					<span jwcid="@Conditional" condition="ognl:info.ASSIGNEE_STATUS=='03'">
+					<td><button type="button" name="star" onclick="getSelectedRow1(this)"><span>启用</span></button></td>
+					</span>
+					<span jwcid="@Conditional" condition="ognl:info.ASSIGNEE_STATUS=='01'">
+					<td><button  type="button"  name="del" onclick="getSelectedRow(this)" ><span>停用</span></button></td>
+					</span>
+					<span jwcid="@Conditional" condition="ognl:info.ASSIGNEE_STATUS=='02'">
+					<td>待生效中</td>
+					</span>
+				</tr> 
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="staticNav" id="staticNav" cond="QueryCondPart" part="RefreshPart" listener="getAssigneeInfo" pageSize="10" count="ognl:statiCount"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+
+</div></div></body>
+</html>

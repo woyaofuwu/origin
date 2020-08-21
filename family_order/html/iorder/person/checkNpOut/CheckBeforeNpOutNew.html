@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<title>携出号码业务限制查询</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/checkNpOut/scripts/CheckBeforeNpOutNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">携出号码业务限制查询</div>
+		<div class="fn">
+			<span class="e_ico-search"
+				ontap="showPopup('UI-popup','UI-advance');"></span> <span
+				class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<div jwcid="QryPart@Part" class="l_query">
+		<div jwcid="queryPart@Part" class="l_queryFn">
+			<div class="c_fn">
+				<div class="left">
+					<div class="text">携出号码业务限制查询</div>
+				</div>
+				<div class="right">
+					<span class="label">手机号码：</span>
+					<input type="text"
+						jwcid="@TextField" name="cond_SERIAL_NUMBER" onenterAction="queryData();"
+						value="ognl:condition.SERIAL_NUMBER" desc="手机号码" maxLength="11" nullable="no"/>
+					<span class="e_space"></span>
+					<button type="button" class="e_button-blue" onclick="queryData();">
+						<span class="e_ico-search"></span><span>查询</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- 活动详情 开始 -->
+		<div jwcid="QueryResultPart@Part">
+			<div jwcid="refresh_table@Part" class="l_queryResult">
+				<!-- 表格 开始 -->
+				<table name="paramTable" id="paramTable" class="c_table c_table-hover c_table-line" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>
+							<th col="FORBIDDEN_CODE" id="col_FORBIDDEN_CODE">限制编码</th>
+							<th col="FORBIDDEN_MSG" id="col_FORBIDDEN_MSG">限制说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+							element="tr" index="ognl:rowIndex"
+							class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td data-title="限制编码"><span jwcid="@Insert" value="ognl:info.FORBIDDEN_CODE"
+								raw="true" />
+							</td>
+							<td data-title="限制说明"><span jwcid="@Insert" value="ognl:info.FORBIDDEN_MSG"
+								raw="true" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 活动详情 结束 -->
+			<div class="l_queryPage">
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="pageNav" id="pageNav" cond="queryPart"
+					part="QueryResultPart" listener="queryCustPsptLimitInfo" pageSize="20"
+					count="ognl:pageCount"></div>
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+		<input jwcid="@Hidden" name="privateFlag" value="ognl:privateFlag" />
+		<div class="" jwcid="submit_part@Part">
+			<input jwcid="@Hidden" name="edit_table" value="" />
+		</div>
+	</div>
+</body>
+</html>

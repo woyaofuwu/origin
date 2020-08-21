@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'CallingSubTypeName' KEY,CALLING_SUB_TYPE_CODE VALUE1,'-1' VALUE2,CALLING_SUB_TYPE_NAME VRESULT
+      FROM td_s_callingsubtype
+WHERE SYSDATE BETWEEN start_date AND end_date AND 'CallingSubTypeName'=:KEY

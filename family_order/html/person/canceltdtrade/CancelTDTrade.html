@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>无线固话返销</title>
+		<script jwcid="@Script" src="scripts/csserv/common/bmpage/BmFrame.js"></script>
+		<script jwcid="@Script" language="JavaScript" src="person/canceltdtrade/scripts/canceltdtrade.js"></script>
+	</head>
+	<body jwcid="@Body">
+	    <div class="m_wrapper">
+		    <div class="m_wrapper2">
+			    <div class="c_box">
+				    <div class="c_title">
+					     <div class="text">查询条件</div>
+				    </div>
+				    <div jwcid="ConditionPart@Part">
+				        <div class="c_form c_form-col-3 c_form-label-6">
+						    <ul class="ul">
+							    <li class="li">
+									<span class="label"><span class="e_required">服务号码：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER"
+												desc="服务号码" nullable="no" />
+									</span></span>
+						        </li>
+								<li class="li">
+									<span class="label"><span class="e_required">业务类型：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE"
+												source="ognl:cancelTradeTypeList" addDefault="true"
+												textField="TRADE_TYPE" valueField="TRADE_TYPE_CODE"  value="ognl:info.TRADE_TYPE_CODE"
+												desc="业务类型" nullable="no" />
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">开始时间：</span></span>
+										<span class="e_input"><span>
+											<input jwcid="@DateField" name="START_DATE" id="START_DATE" nullable="no" 
+													value="ognl:info.START_DATE" desc="开始时间"/>
+										</span></span>
+				                </li>
+								<li class="li">
+									<span class="label"><span class="e_required">结束时间：</span></span>
+										<span class="e_input"><span>
+											<input jwcid="@DateField" name="END_DATE" id="END_DATE" nullable="no" 
+													value="ognl:info.END_DATE" desc="结束时间"/>
+										</span></span>
+								</li>   
+						    </ul>
+						    <div class="submitPlace"></div>
+							<div class="submit">
+								<button id="queryBtn" name="queryBtn" class="e_button-form"><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+				         </div>
+				    </div>
+			    </div>
+				 <div class="c_box">
+				    <div class="c_title">
+					   <div class="text">可取消业务</div>
+				    </div>
+				    <span jwcid="@csserv:TableGrid" tableId="CancelTradeTable" serviceName="CS.CancelTdTradeSVC.queryCancelTrade" 
+				          multiSelect=true scroll=true pageSize=-1 onrowselected="$.BmFrame.selTrade" ondblink="$.BmFrame.test">
+				        <span jwcid="@csserv:TableItem" name="TRADE_ID" title="业务流水号" editType="DBLink"/>
+				        <span jwcid="@csserv:TableItem" name="TRADE_TYPE_CODE" title="业务类型" displayValue="pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE',getValue('TRADE_TYPE_CODE'))"/>
+				        <span jwcid="@csserv:TableItem" name="ACCEPT_MONTH" title="受理月份"/>
+				        <span jwcid="@csserv:TableItem" name="OPER_FEE" displayValue="getValue('OPER_FEE')/100" title="营业费用(元)"/>
+				        <span jwcid="@csserv:TableItem" name="FOREGIFT" displayValue="getValue('FOREGIFT')/100" title="押金费用(元)"/> 
+				        <span jwcid="@csserv:TableItem" name="ADVANCE_PAY" displayValue="getValue('ADVANCE_PAY')/100" title="预付费用(元)"/>
+				        <span jwcid="@csserv:TableItem" name="FEE_STATE" title="收费标志"/>
+				        <span jwcid="@csserv:TableItem" name="FEE_STAFF_ID" title="收费员工"/>
+				        <span jwcid="@csserv:TableItem" name="TRADE_STAFF_ID" title="受理员工"/>
+				        <span jwcid="@csserv:TableItem" name="TRADE_DEPART_ID" title="受理部门"/>
+				        <span jwcid="@csserv:TableItem" name="TRADE_EPARCHY_CODE"  title="受理地州"/>
+				        <span jwcid="@csserv:TableItem" name="TERM_IP" title="受理终端"/>
+				        <span jwcid="@csserv:TableItem" name="REMARK" title="备注"/>
+			        </span>
+				</div>
+				<div class="c_box">
+				    <div class="c_title">
+					   <div class="text">取消信息</div>
+				    </div>
+				    <div class="c_form c_form-col-3 c_form-label-6">
+					    <ul class="ul">
+					        <li class="li">
+								<span class="label">发票号：</span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" name="INVOICE_NO" id="INVOICE_NO" value="ognl:info.INVOICE_NO" disabled=true desc="发票号" />
+								</span></span>
+						    </li>
+						    <li class="li">
+								<span class="label">营业退费：</span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" name="backOperFee" id="backOperFee" value="ognl:info.backFee" disabled=true desc="清退费用" />
+								</span></span>
+					        </li>
+					        <li class="li">
+								<span class="label">押金退费：</span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" name="backForeGift" id="backForeGift" value="ognl:info.backFee" disabled=true desc="清退费用" />
+								</span></span>
+					        </li>
+					        <li class="li">
+								<span class="label">预存退费：</span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" name="backAdvancePay" id="backAdvancePay" value="ognl:info.backFee" disabled=true desc="清退费用" />
+								</span></span>
+					        </li>
+					        <li class="li">
+								<span class="label">总共退费：</span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" name="backFee" id="backFee" value="ognl:info.backFee" disabled=true desc="清退费用" />
+								</span></span>
+					        </li>
+					    </ul>
+				    </div>
+				    <div class="c_form c_form-col-1 c_form-label-6 e_hideX">
+						 <ul class="ul">
+							<li class="li">
+								<span class="label">取消备注：</span>
+								<span class="e_textarea">
+									<span class="e_textareaTop"><span></span></span>
+									<span class="e_textareaContent">
+										<textarea style="height:18px;" jwcid="@TextArea" id="REMARK" name="REMARK" 
+										    value="ognl:info.REMARK" desc="取消备注" />
+									</span>
+									<span class="e_textareaBottom"><span></span></span>
+								</span>
+							</li>
+						 </ul>
+				    </div>
+				</div>
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+				     <button jwcid="@Button" accesskey="Y" class="e_button-page" name="CSSUBMIT_BUTTON">
+						<i jwcid="@Any" class="e_ico-submit"></i><span>提交</span>
+					</button>
+				</div>
+			    <!-- 提交 结束 -->
+			</div>
+		</div>
+	</body>
+</html>

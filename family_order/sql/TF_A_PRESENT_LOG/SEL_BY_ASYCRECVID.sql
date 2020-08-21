@@ -1,0 +1,3 @@
+SELECT to_char(asycrecv_id) asycrecv_id,eparchy_code,city_code,trade_type,to_char(user_id) user_id,to_char(acct_id) acct_id,acyc_id,deposit_code,to_char(money) money,send_time_code,sms_kind_code,notice_content,user_state_code,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,to_char(rsrv_num1) rsrv_num1,to_char(rsrv_num2) rsrv_num2,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2 
+  FROM tf_a_present_log
+ WHERE asycrecv_id=TO_NUMBER(:ASYCRECV_ID)

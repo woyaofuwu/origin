@@ -1,0 +1,1 @@
+update TF_F_WIDENET_BOOK t set t.audit_status = :AUDIT_STATUS where t.inst_id = :INST_ID

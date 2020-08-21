@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_grpmbmp_plus(partition_id,trade_id,user_id,x_tag,biz_code,info_code,info_value,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(MOD(TO_NUMBER(:TRADE_ID),10000),TO_NUMBER(:TRADE_ID),TO_NUMBER(:USER_ID),:X_TAG,:BIZ_CODE,:INFO_CODE,:INFO_VALUE,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

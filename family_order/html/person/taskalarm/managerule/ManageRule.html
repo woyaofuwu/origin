@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>业务信息查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/taskalarm/managerule/scripts/ManageRule.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取业务风险告警规则查询清单无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">业务风险告警规则查询</div>
+		  	      <div class="fn" jwcid="buttons@Part" element="div">
+					 <div jwcid="@Conditional" condition="ognl:ruleSet.size > 0">
+					     <button jwcid="@Any" name="addrule" id="addrule" value="添加" source="ognl:cond"  onclick="popupAddRuleDialog(this)" type="button">
+						     <i class="e_ico-add"></i><span>新增</span>
+					     </button>
+					     <button jwcid="@Any" name="delrule" id="delrule" value="删除" source="ognl:cond"  onclick="if (queryBox(this, 'rules')){delRule (this.getAttribute('parameters'));};" type="button">
+						     <i class="e_ico-delete"></i><span>删除</span>
+						 </button>
+						 
+						 <button jwcid="@Any" name="enablerule" id="enablerule" value="启用" source="ognl:cond"  onclick="if (queryBox(this, 'rules')){enableRule (this.getAttribute('parameters'));};" type="button">
+							     <i class="e_ico-play"></i><span>启用</span>
+						 </button>
+						 
+						 <button jwcid="@Any" name="desablerule" id="desablerule"  value="禁用" source="ognl:cond"  onclick="if (queryBox(this, 'rules')){disenableRule (this.getAttribute('parameters'));};" type="button">
+							     <i class="e_ico-cancel"></i><span>禁用</span>
+						 </button>
+				    </div>
+                  </div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+					  <li class="li"><span class="label">规则名称：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_RULE_NAME" id="cond_RULE_NAME"
+									value="ognl:cond.cond_RULE_NAME" desc="规则名称"  /></span></span>
+					  </li>
+					  <li class="li">
+							<span class="label">执行对象：</span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_CLASS_NAME"  id="cond_CLASS_NAME" 
+									source="ognl:classes" textField="PARA_CODE19" valueField="PARAM_NAME"
+									value="ognl:cond.cond_CLASS_NAME" desc="执行对象" />
+								</span></span></span>
+					  </li>
+                      <li class="li">
+							<span class="label"><span class="e_required">生效时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_TIME" id="cond_START_TIME" nullable="no" value="ognl:cond.cond_START_TIME"  desc="生效时间"/>
+								</span></span>
+							</span>
+					  </li>
+					  <li class="li">
+							<span class="label"><span class="e_required">失效时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_END_TIME" id="cond_END_TIME" nullable="no" value="ognl:cond.cond_END_TIME"  desc="失效时间"/>
+								</span></span>
+							</span>
+					  </li>
+					  <li class="li">
+							<span class="label"><span class="e_required">启用状态：</span></span>
+							<span class="e_select"><span><span>
+							        <select jwcid="@Select" name="cond_USE_TAG" id="cond_USE_TAG" source="ognl:pageutil.getStaticList('TASKALARM_RULE_STATE')"
+				                                    addDefault="true" value="ognl:cond.cond_USE_TAG" disabled="false" desc="启用状态" 
+				                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" nullable="no" defaultText="--请选择--"/>
+							</span></span></span>
+					  </li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryRulesByCond(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="RefreshPart@Part" element="div">
+				<div class="c_scroll c_scroll-table-10">
+				 <div class="c_table ">
+					<table jwcid="@Table" name="ResultTable" id="ResultTable"  sort="true">
+						<thead>
+						<tr>
+			  				<th><input col="IS_CHECKED" type="checkbox" id="checkAll" name="checkAll" onclick="checkedAll('rules', checked)"/></th>
+			  				<th col="RULE_ID"  onclick="Wade.dom.sortTable('ResultTable',0,'string')">规则标识</th>
+			  				<th onclick="Wade.dom.sortTable('ResultTable',0,'string')">规则名称</th>
+							<th>执行对象</th>
+							<th onclick="Wade.dom.sortTable('ResultTable',0,'string')">告警等级</th>
+							<th onclick="Wade.dom.sortTable('ResultTable',0,'string')">运行周期</th>
+							<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">生效时间</th>
+							<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">失效时间</th>
+							<th col="USE_TAG" onclick="Wade.dom.sortTable('ResultTable',0,'string')">启用状态</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:ruleSet" value="ognl:ruleData" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> 
+						<td class="e_center"><input jwcid="@Checkbox" name="rules" id="rules" value="ognl:ruleData.RULE_ID" /></td>
+						<td>
+							<div jwcid="@Conditional" condition='ognl:"0".equals(ruleData.USE_TAG)'>
+	                             <a jwcid="@Redirect" 
+				    			value="ognl:ruleData.RULE_ID" name="RULE_ID" id="RULE_ID" source="ognl:ruleData" cols="80" use_tag="ognl:ruleData.USE_TAG" rule_id="ognl:ruleData.RULE_ID"
+				    			onclick="popupEditRuleDialog(this)"/>
+							</div>
+
+							<div jwcid="@Conditional" condition='ognl:"1".equals(ruleData.USE_TAG)'>
+								<a jwcid="@Insert" value="ognl:ruleData.RULE_ID" raw="false" />
+							</div>
+						</td>
+						<td><span jwcid="@Insert" value="ognl:ruleData.RULE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_COMMPARA', new java.lang.String[]{'SUBSYS_CODE','PARAM_ATTR','PARAM_NAME'}, 'PARA_CODE19',new java.lang.String[]{'CSM','9983',ruleData.CLASS_NAME})" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:ruleData.ALARM_LEVEL" raw="true"/></td>
+						<td>
+							<div jwcid="@Conditional" condition='ognl:"0".equals(ruleData.CYCLE_TYPE)'>
+								<span jwcid="@Insert" value="天" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"1".equals(ruleData.CYCLE_TYPE)'>
+								<span jwcid="@Insert" value="周" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"2".equals(ruleData.CYCLE_TYPE)'>
+								<span jwcid="@Insert" value="月" raw="true"/>
+							</div>
+						</td>
+						<td><span jwcid="@Insert" value="ognl:ruleData.START_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:ruleData.END_TIME" raw="true"/></td>
+						<td>
+							<div jwcid="@Conditional" condition='ognl:"1".equals(ruleData.USE_TAG)'>
+								<span jwcid="@Insert" value="启用" raw="true"/>
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"0".equals(ruleData.USE_TAG)'>
+								<span jwcid="@Insert" value="禁用" raw="true"/>
+							</div>
+						</td>
+					</tr>                                             
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="RefreshPart" listener="queryRulesByCond" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>
+
+

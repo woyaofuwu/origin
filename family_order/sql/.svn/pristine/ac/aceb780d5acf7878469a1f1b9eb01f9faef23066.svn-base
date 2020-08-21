@@ -1,0 +1,2 @@
+INSERT INTO td_m_ressaletype(eparchy_code,res_type_code,sale_type_code,sale_type,update_time,update_staff_id,update_depart_id,remark)
+ VALUES(:EPARCHY_CODE,:RES_TYPE_CODE,:SALE_TYPE_CODE,:SALE_TYPE,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK)

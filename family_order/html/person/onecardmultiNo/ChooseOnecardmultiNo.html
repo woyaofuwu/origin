@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选号列表</title>
+	<script language="javascript"><!--
+	function followMsisdnReturnValues(chooseSerialNumber){
+		var followMsisdnS = $("#FOLLOW_MSISDN_S").val();
+		$.ajax.submit('', 'releaseUnuseNumber','&FOLLOW_MSISDN_S='+$('#FOLLOW_MSISDN_S').val()+'&SERIAL_NUMBER_B='+chooseSerialNumber, '',function(data) {	
+		}, function(error_code, error_info) 
+		{
+			$.MessageBox.error(error_code, error_info);
+		});
+		$.setReturnValue(['SERIAL_NUMBER_B',chooseSerialNumber,'FOLLOW_MSISDN_S',followMsisdnS],true);
+	}
+	
+	function releaseUnuseNumber(){
+		var followMsisdnS = $("#FOLLOW_MSISDN_S").val();
+		$.ajax.submit('', 'releaseUnuseNumber','&FOLLOW_MSISDN_S='+$('#FOLLOW_MSISDN_S').val()+'&SERIAL_NUMBER_B='+'', '',function(data) {	
+		}, function(error_code, error_info) 
+		{
+			$.MessageBox.error(error_code, error_info);
+		});
+		$.setReturnValue(['FOLLOW_MSISDN_S',followMsisdnS],true);
+	}
+	// --></script>
+</head>
+<body jwcid="@Body">
+<div class="c_box">
+	<div class="c_box" jwcid="refreshHintBar@Part">
+		<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+	</div>
+		<div jwcid="PhonePart@Part" id="PhonePart">
+			<div class="c_list c_list-table c_list-col-5" >
+				<ul class="ul" >
+					<li class="li" jwcid="@Foreach" source="ognl:phoneList" value="ognl:phoneData" index="ognl:rowIndex" element="li">
+						<a href="#nogo" jwcid="@Any" id="ognl:phoneData.ACCESS_NUMBER"  value="ognl:phoneData.ACCESS_NUMBER" class="text" CHOOSE_SERIAL_NUMBER="ognl:phoneData.ACCESS_NUMBER" onclick="followMsisdnReturnValues(getAttribute('CHOOSE_SERIAL_NUMBER'));">
+							<span jwcid="@Insert" value="ognl:phoneData.ACCESS_NUMBER" raw="true" />
+						</a>
+					</li>
+					<li class="li" style="display:none">
+						<textarea jwcid="@TextArea" name="FOLLOW_MSISDN_S" type="text" value="ognl:phoneList" title="" raw="true"></textarea>
+					</li>
+				</ul>
+		</div>
+	</div>	
+	<div class="c_submit">
+		<button class="e_button-page e_button-page-cancel" id="bcancel" name="bcancel" onclick="releaseUnuseNumber();"><i></i><span>取消</span></button>
+	</div>
+</div>
+</body>
+</html>

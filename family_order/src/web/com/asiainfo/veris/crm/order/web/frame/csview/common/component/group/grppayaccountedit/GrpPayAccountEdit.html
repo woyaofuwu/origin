@@ -1,0 +1,213 @@
+<span jwcid="@Conditional" condition="ognl:canSameAct">					
+<div class="c_title c_title-2">
+	<div class="text">合户处理</div>
+</div>
+<!-- 表单 开始 -->
+<div class="c_form c_form-col-3 c_form-label-7">
+	
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">是否合户：</span></span>
+			<span class="e_select"><span><span>
+				<select jwcid="@Select" 	
+					name="acct_SAME_ACCT" id="acct_SAME_ACCT"	
+					source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('SAME_ACCT')" 
+					onchange="changeSameAcctTag();"	
+					valueField="DATA_ID"	textField="DATA_NAME"
+					value="ognl:info.CANSAMEACCT_TAG"
+					addDefault="false"
+					desc="账户信息[是否合户]" />
+			</span></span></span>
+		</li>
+		<span id="queryPart">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+					<select name="QueryType" id="QueryType" onchange="javascript:changeQueryType()">
+                                <option value="2" selected>服务号码</option>
+                                <option value="1">集团客户编码</option>
+                                <option value="3">合同号</option>
+                             </select>
+				</span></span></span>
+			</li>
+			<li class="li" id="QueryTypeOne"  style="display:none">
+				<span class="label"><span class="e_required">集团客户编码：</span></span>
+				<span class="e_elements">
+					<button type="button" class="e_button-right"
+						onclick="$.popupPageExternal('csserv.component.group.selectgroup.SelectGroupPopupPage',null,null,'集团查询',680,480,'cond_GROUP_ID')">
+						<i class="e_ico-check"></i>
+					    <span></span>
+					</button>
+					<span class="e_input e_input-left">
+						<span>
+							<input jwcid="@Popup"  name="cond_GROUP_ID" id="cond_GROUP_ID" readOnly="false" afterAction="refeshAcctByCstId();" enterAction="refeshAcctByCstId();"/>
+						</span>
+					</span>
+				</span>
+			</li>
+			<li class="li" id="QueryTypeTwo">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" 
+						id="acct_GRP_SERIAL_NUMBER" 
+						name="acct_GRP_SERIAL_NUMBER" 
+						value="ognl:acctInfo.acct_GRP_SERIAL_NUMBER"
+						type="text" minsize="2" maxsize="50" 
+						enterAction="refeshAcctBySn();"
+						title="服务号码"/>
+				</span></span>
+			</li>
+			<li class="li" id="QueryTypeThree" style="display:none">
+				<span class="label">合同号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" 
+						id="acct_ACCT_NUMBER" 
+						name="acct_ACCT_NUMBER" 
+						value="ognl:acctInfo.acct_ACCT_NUMBER" 
+						enterAction="refeshAcctBySn();"
+						minsize="2" maxsize="100" desc="合同号"
+						title="合同号"/>
+				</span></span>
+			</li>
+		</span>
+	</ul>
+</div>
+</span>
+<!-- 表单 结束 -->
+					
+<!-- 标题 开始 -->
+<div class="c_title c_title-2">
+	<div class="text">账户信息</div>
+	<span jwcid="@Conditional"  condition='ognl:needModifyFlag'>
+		<div class="fn" id="topBtnForm">
+		  <button type="button" id="bcreateTop" onclick="createAcct();" ><i class="e_ico-add"></i><span>新增</span></button>		     
+       	  <button id="GRPPAY_ACCOUNTEDIT_REFRESH" name="GRPPAY_ACCOUNTEDIT_REFRESH" type="button" afterAction="refresh();" onclick="refresh();" class="l_ml"><i class="e_ico-refresh"></i><span>刷新</span></button>
+		    	
+		</div>
+	</span>	
+</div>
+<!-- 标题 结束 -->
+<!-- 表单 开始 -->
+<div class="c_form c_form-col-3 c_form-label-7">
+	
+	<ul class="ul">
+		<span jwcid="OtherAcctPart@Part" >
+			<li class="li">
+				<span class="label"><span class="e_required">账户列表：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" 	
+						name="acct_ACCT_ID" id="acct_ACCT_ID"	
+						source="ognl:acctInfos" 
+						onchange="refeshAcctDetailInfoByAcctId();" 
+						textField="DISPLAY_NAME"
+						valueField="ACCT_ID"
+						value="ognl:acctInfo.ACCT_ID" 
+						
+						/>
+				</span></span></span>
+			</li>
+		</span>
+	</ul>
+</div>	
+
+<div class="c_form c_form-col-3 c_form-label-7">
+	<ul class="ul">
+		
+		<div jwcid="AcctInfoPart@Part" >	
+			<li class="li">
+				<span class="label">账户名称：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" 
+						id="acct_PAY_NAME" 
+						type="text"
+						name="acct_PAY_NAME" 
+						value="ognl:acctInfo.PAY_NAME"
+						disabled="true"
+						title="账户信息[账户名称]"/>
+					
+				</span></span>
+			</li>	
+			<li class="li">
+				<span class="label">帐户类别：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" 
+						id="acct_PAY_MODE_NAME" 
+						type="text"
+						name="acct_PAY_MODE_NAME" 
+						disabled="true"
+						value="ognl:acctInfo.PAY_MODE_NAME"
+						title="账户信息[帐户类别]"/>
+					
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">上级银行：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField"
+						type="text"
+						id="acct_SUPER_BANK_NAME" 
+						name="acct_SUPER_BANK_NAME" 
+						value="ognl:acctInfo.SUPER_BANK"
+						disabled="true"
+						title="账户信息[上级银行]"/>
+				</span></span>
+				
+			</li>
+			<li class="li">
+				<span class="label">银行名称：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField"
+						type="text"
+						id="acct_BANK_NAME" 
+						name="acct_BANK_NAME" 
+						value="ognl:acctInfo.BANK"
+						disabled="true"
+						title="账户信息[银行名称]"/>
+				</span></span>
+				
+			</li>
+			<li class="li">
+				<span class="label">合同号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField"
+						type="text"
+						id="acct_CONTRACT_NO" 
+						name="acct_CONTRACT_NO" 
+						value="ognl:acctInfo.CONTRACT_NO"
+						disabled="true"
+						title="账户信息[合同号]"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">银行账号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField"
+						type="text"
+						id="acct_BANK_ACCT_NO" 
+						name="acct_BANK_ACCT_NO" 
+						value="ognl:acctInfo.BANK_ACCT_NO"
+						disabled="true"
+						desc="账户信息[银行帐号]"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">账户结余：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField"
+						type="text"
+						id="acct_ALLNEW_BALANCE" 
+						name="acct_ALLNEW_BALANCE" 
+						value="ognl:acctInfo.ALLNEW_BALANCE"
+						disabled="true"
+						desc="账户信息[账户结余]"/>
+				</span></span>
+			</li>
+			
+		</div>
+	</ul>
+</div>
+ <input jwcid="@Hidden" name="GRPPAYACCOUNTEDIT_COMPONENT_ID" id="GRPPAYACCOUNTEDIT_COMPONENT_ID" value="ognl:id"/>
+ <input jwcid="@Hidden" name="GRPPAYACCOUNTEDIT_CUST_ID" id="GRPPAYACCOUNTEDIT_CUST_ID" value="ognl:custId"/>
+ <input jwcid="@Hidden" name="GRPPAYACCOUNTEDIT_PRODUCT_ID" id="GRPPAYACCOUNTEDIT_PRODUCT_ID" value="ognl:productId"/>
+ 
+<!-- 表单 结束 -->

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head jwcid="@Head">
+    <title>代理商即将逾期回收号码清单查询</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script jwcid="@Script"  src="person/sundryquery/agentBackBillId/scripts/AgentBackBIllIdListQry.js" />
+  </head>
+  
+  <body jwcid="@Body">
+  	<div class="m_wrapper"><div class="m_wrapper2">
+    <div class="c_box">
+    	<div class="c_title">
+    		<div class="text">代理商即将逾期回收号码清单查询</div>
+    	</div>
+    	<div class="c_form c_form-col-3 c_form-label-7" jwcid="QueryCondPart@Part">
+			<ul class="ul">
+				<li class="li" id="DEPART_KIND_CODE">
+					<span class="label"><span class="e_required">部门类型：</span></span>
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="DEPART_KIND_CODE"  id="DEPART_KIND_CODE" 
+							source="ognl:departKinds" textField="DEPART_KIND" valueField="DEPART_KIND_CODE"
+							value="ognl:condition.DEPART_KIND_CODE" desc="部门类型"  nullable="no" />
+						</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">起始代理商编码：</span></span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="START_AGENT_NO" id="START_AGENT_NO" nullable="no"	
+						value="ognl:condition.START_AGENT_NO" desc="起始代理商编码" datatype="numchar" onkeyup="this.value=this.value.toUpperCase()" maxlength="40"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">终止代理商编码：</span></span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="END_AGENT_NO" id="END_AGENT_NO" nullable="no"	
+						value="ognl:condition.END_AGENT_NO" desc="终止代理商编码" datatype="numchar" onkeyup="this.value=this.value.toUpperCase()" maxlength="40"/>
+					</span></span>
+				</li>
+				<li></li>
+				<li class="li" id="LI_BEGIN_TIME" name="LI_BEGIN_TIME">
+				<span class="label"><span class="e_required">开始买断时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" 
+						name="BEGIN_TIME" id="BEGIN_TIME"
+						value="ognl:condition.BEGIN_TIME" nullable="no" desc="开始买断时间：" /> </span></span>
+			    </li>
+			    <li class="li" id="LI_END_TIME" name="LI_END_TIME">
+				<span class="label"><span class="e_required">结束买断时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" 
+						name="END_TIME" id="END_TIME"
+						value="ognl:condition.END_TIME" nullable="no" desc="结束买断时间：" /> </span></span>
+			    </li>
+			    <li class="li">
+				<span class="label">是否已延期：</span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="IS_EXTEND_TIME" id="IS_EXTEND_TIME" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('RECYCLE_IS_EXTEND_TIME')" value="ognl:condition.IS_EXTEND_TIME" desc="是否已延期"   
+					 />
+				</span></span></span>
+			</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" id="query" name="query" onclick="return queryAgentBackBillIdList()">
+					<i class="e_ico-search"></i><span>查询</span>
+				</button>
+			</div>
+		</div>
+		
+		<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+			<div class="fn">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="99330"
+				config="export/sundryquery/AgentBackBillIdListQry.xml" fileName="代理商即将逾期回收号码清单查询" 
+				cond="QueryCondPart" />
+			</div>
+		</div>
+		
+		<!-- 表格区开始-->
+		<div jwcid="results@Part" element="div">
+			<div class="c_scroll c_scroll-x c_scroll-table-10">
+				<div class="c_table">
+					<table jwcid="@Table" name="resultsTable" id="resultsTable">
+						<thead>
+						<tr>
+							<th datatype="string">部门/渠道编码</th>
+							<th datatype="string">部门/渠道名称</th>
+		      				<th datatype="string">部门/渠道类型名称</th>
+							<th datatype="string">服务号码</th>
+							<th datatype="string">SIM卡号</th>		
+							<th datatype="string">资源类型名称</th>
+							<th datatype="string">买断时间</th>
+							<th datatype="string">延期操作时间</th>
+							<th datatype="string">延期操作工号</th>
+							<th datatype="string">预计回收时间</th>
+							<th datatype="string">回收标识</th>
+							<th datatype="string">SIM卡费用</th>
+							<th datatype="string">备注</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.DEPART_CODE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DEPART_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DEPART_KIND" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.SIM_CARD_NO" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.KIND_NAME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_DATE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.STAT_MONTH" raw="true"/></td>																												
+							<td><span jwcid="@Insert" value="ognl:info.TAG" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CARD_FEE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- 翻页 开始 -->
+			<div jwcid="@NavBar" name="qryInfoNav" id="qryInfoNav" cond="QueryCondPart" part="results" listener="qryAgentBackBillIdListByCond" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+		  </div>
+		  <!-- 表格区结束 -->
+    </div>
+  </body>
+</html>

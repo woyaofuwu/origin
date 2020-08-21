@@ -1,0 +1,2 @@
+SELECT t.*,add_months( t.activate_time , :INTERVAL ) INVALID_DATE FROM TF_F_USER_ALTSN t where SERIAL_NUMBER = :SERIAL_NUMBER and STATUS = :STATUS
+                               and  RELA_TYPE = :RELA_TYPE

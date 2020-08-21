@@ -1,0 +1,1 @@
+update tf_f_user_np t set t.port_out_date = sysdate , t.apply_date = sysdate where  t.user_id = :USER_ID

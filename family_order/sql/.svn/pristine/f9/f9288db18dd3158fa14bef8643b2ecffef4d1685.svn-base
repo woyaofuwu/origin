@@ -1,0 +1,1 @@
+delete from tf_f_user_connection where user_id_a = to_number(:USER_ID_A) and user_id_b = to_number(:USER_ID_B) and type = :TYPE

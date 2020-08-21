@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: PlatOrder.html,v 1.3 2014/03/18 13:53:09 xiekl Exp $-->
+<html size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script jwcid="@Script" src="merch/merchorder/scripts/platordertab.js"></script>
+    <script jwcid="@Script" src="v5/jcl/ui/component/base/switch.js"></script>
+    <title>平台业务受理</title>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<!--<div class="c_header e_show-phone">-->
+    <!--<div class="back">平台业务受理</div>-->
+<!--</div>-->
+<!-- 标题栏 结束 -->
+    <div class="c_scroll c_scroll-float">
+     <div class="l_padding">
+        <!-- 区域 开始 -->
+        
+        <!-- 认证 开始 -->
+        <div jwcid="AuthPart@merch:MerchAuth" element="div" tradeTypeCode="3700" style="display:none;"
+             tradeAction="platOrderTab.afterSubmitSerialNumber(data)"></div>
+        <!-- 认证 结束 -->
+            
+        <div jwcid="platOrderAdd@merch:PlatOrderAdd"
+             initPlatSvcs="ognl:initPlatSvcs"
+             showAllCancel="ognl:showAllCancel"
+             showSwitch="ognl:showSwitch"
+             showKeyBusiness="ognl:showKeyBusiness"
+             disableSearch="ognl:disableSearch"
+             element="div"></div>
+
+
+        <div jwcid="userPlatSvcsList@merch:UserPlatSvcsList"
+             element="div"
+             eparchyCodeComponentId="USER_EPARCHY_CODE"></div>
+
+        <div class="c_space"></div>
+        <div class="c_submit c_submit-center">
+            <div jwcid="MerchSubmitPart@merch:MerchSubmit"
+                 beforeAction="platOrderTab.submitDatas()"
+                 params=""
+                 isReset="true"
+                 listener="submitPlat"
+                 refreshPart=""
+                 area=""
+                 isShoppingCart="true" 
+                 class="c_submit c_submit-center"
+                 element="div"/>
+        </div>
+        <div class="c_float" id="moreFn" style="width: 8em;z-index: 1000;">
+            <div class="bg" ontap="hideFloatLayer('moreFn')"></div>
+            <div class="content">
+                <div class="c_list c_list-s">
+                    <ul id="moreFnUl">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <input jwcid="@Hidden" name="disableOperation" id="disableOperation" value="ognl:disableOperation"/>
+        <input jwcid="@Hidden" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value=""/>
+        <input jwcid="@Hidden" name="showCancel" id="showCancel" value="ognl:showAllCancel"/>
+        <input jwcid="@Hidden" name="showSwitch" id="showSwitch" value="ognl:showSwitch"/>
+        <input jwcid="@Hidden" name="showKeyBusiness" id="showKeyBusiness" value="ognl:showKeyBusiness"/>
+        <input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+        <input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value=""/>
+        <input jwcid="@Hidden" name="PSPT_ID" id="PSPT_ID" value=""/>
+        <!-- 实名制信息补充 开始 -->
+        <input jwcid="@Hidden" name="IS_REAL_NAME" id="IS_REAL_NAME" value=""/>
+        <input jwcid="@Hidden" name="CUST_NAME" id="CUST_NAME" value=""/>
+        <input jwcid="@Hidden" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE" value=""/>
+        <!-- 实名制信息补充 开始 -->
+        <div class="e_hide">
+        <span jwcid="@Select" name="PLAT_BUS_TYPE"
+              source="ognl:getPage().pageutil.getStaticList('BIZ_TYPE_CODE')" textField="DATA_NAME"
+              valueField="DATA_ID"/>
+        <span jwcid="@Select"  name="PLAT_BILL_TYPE"
+              source="ognl:getPage().pageutil.getStaticList('SPBIZ_BILL_TYPE')" textField="DATA_NAME"
+              valueField="DATA_ID"/>
+        </div>
+    </div>
+    
+    </div>
+    <div name="platSvcAttr" jwcid="@Popup"
+         class="c_popup">
+        <div class="c_popupGroup">
+            <div class="c_popupItem" element="div" jwcid="elementAttr@icsserv:ElementAttr" isPlatSvc="true">
+            </div>
+        </div>
+    </div>
+    <div jwcid="@Popup" name="serviceAddPopup">
+        <div class="c_popupGroup" level="1">
+            <div class="c_popupItem" id="platAddPop">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">平台业务订购</div>
+                </div>
+                <div class="c_box c_box-blue">
+                    <div class="l_padding l_padding-u">
+                    <span class="e_mix e_mix-r" style="width:100%;">
+									<input jwcid="@TextField"  name="platSearch" onkeyup="platOrderAdd.setPlatSvc();" onfocus="platOrderAdd.checkFocus(this);" />
+									<span class="e_ico-search" onclick="platOrderAdd.setPlatSvc();"></span>
+					</span>
+                    </div>
+                </div>
+                <div class="c_scroll c_scroll-white c_scroll-float c_scroll-search c_scroll-header">
+                    <div class="c_list c_list-line" jwcid="searchResultList@Part">
+                        <ul id="platAddSearchList">
+
+                        </ul>
+                    </div>
+                    <div class="c_line"></div>
+                </div>
+            </div>
+        </div>
+        <div class="c_popupGroup" level="2">
+            <div class="c_popupItem" id="UI-detail2">
+                <div class="c_header">
+                    <div class="back" ontap="platOrderAdd.isShowTwoPop=false;backPopup(this);"></div>
+                </div>
+                <div class="c_scroll c_scroll-white c_scroll-float c_scroll-header l_padding" >
+                    <!-- 参数 开始 -->
+                    <div class="c_param c_param-label-5" jwcid="searchResultDetail@Part">
+
+                    </div>
+                    <!-- 参数 结束 -->
+                    <!--<div class="e_show-phone">-->
+                        <!--<div class="c_space"></div>-->
+                        <!--&lt;!&ndash; 提交 开始 &ndash;&gt;-->
+                        <!--<div class="c_submit c_submit-full">-->
+                            <!--<button type="button" class="e_button-r e_button-l e_button-blue" ontap="hidePopup(this)">确认</button>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; 提交 结束 &ndash;&gt;-->
+                        <!--<div class="c_space"></div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div jwcid="@Popup" name="serviceDetailPopup">
+        <div class="c_popupGroup" level="1">
+            <div class="c_popupItem" id="UI-detail">
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">
+                        <span jwcid="@Insert" id="SERVICE_NAME_HEAD_POP" value=""/>
+                    </div>
+                </div>
+                <div class="c_scroll c_scroll-white c_scroll-float c_scroll-header l_padding">
+                    <!-- 参数 开始 -->
+                    <div class="c_param c_param-label-5">
+                        <ul>
+                            <li>
+                                <span class="label">状态：</span>
+                                <span class="value e_orange">
+                                        <span jwcid="@Insert" id="SERVICE_STATUS_POP" value=""/>
+                                    </span>
+                            </li>
+                            <li>
+                                <span class="label">有效期：</span>
+                                <span class="value">
+                                 <span jwcid="@Insert" id="START_DATE_POP" value=""/>
+                                 ～<span jwcid="@Insert" id="END_DATE_POP" value=""/>
+                             </span>
+                            </li>
+                            <li>
+                                <span class="label">内置卡号：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="IN_CARD_NO_POP" value=""/>
+                            </span>
+                            </li>
+                            <li>
+                                <span class="label">业务类型：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="BUS_TYPE_POP" value=""/>
+                            </span>
+                            </li>
+                            <li>
+                                <span class="label">业务编码：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="BIZ_CODE_POP" value=""/>
+                            </span>
+                            </li>
+                            <li>
+                                <span class="label">服务商名称：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="SP_NAME_POP" value=""/>
+                            </span>
+                            </li>
+                            <li>
+                                <span class="label">服务商编码：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="SP_CODE_POP" value=""/>
+                            </span>
+                            </li>
+                            <li>
+                                <span class="label">计费类型：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="SPBIZ_BILL_TYPE_POP" value=""/>
+                            </span>
+                            </li>
+                            <li>
+                                <span class="label">价格：</span>
+                                <span class="value">
+                                        <span jwcid="@Insert" id="PRICE_POP" value=""/>
+                            </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

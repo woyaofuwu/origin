@@ -1,0 +1,142 @@
+<div class="c_option" style="top:164px; left:117px; width:220px; display:none;" id="elementPanel">
+	<div class="c_optionContent" >
+		<!-- 表单 开始 -->
+		<div id="elementPanelDiv">
+			<div class="c_form c_form-col-1 c_form-label-5">
+				<ul class="ul" id="elementPanelUL">
+					<li class = "li">
+						<span class="label"><span class="e_required">优惠编码：</span></span>
+						<span class="e_input"><span>
+							<input type="text" id="DISCNT_CODE" name="DISCNT_CODE" jwcid="@TextField" 
+							value="ognl:elementId" datatype="text" nullable="no" disabled="true"/>
+						</span></span>
+					</li>
+					<li class = "li">
+						<span class="label"><span class="e_required">开始时间：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="START_DATE" id="START_DATE" nullable="no" desc="开始时间"
+								source="ognl:info.START_DATES" textField="START_DATE_TEXT" valueField="START_DATE" 
+								value="ognl:info.START_DATE" onchange="saleactiveModule.changeStartDate(this);" addDefault="false" disabled="false"/>
+						</span></span></span>
+					</li>
+					
+					<li class = "li">
+						<span class="label"><span class="e_required">结束时间：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="END_DATE" id="END_DATE" nullable="no" desc="结束时间"
+								source="ognl:info.END_DATES" textField="END_DATE" valueField="END_DATE" 
+								value="ognl:info.END_DATE" disabled="true" addDefault="false"/>
+						</span></span></span>
+					</li>
+					<div jwcid="@Conditional" condition='ognl:"3".equals(info.END_ENABLE_TAG)'>
+					<li class = "li">
+						<span class="label"><span class="e_required">协议期：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="END_OFFSET" id="END_OFFSET" nullable="no" desc="结束时间"
+								source="ognl:info.END_OFFSETS" textField="END_OFFSET" valueField="END_OFFSET" 
+								value="ognl:info.END_OFFSET" onchange="saleactiveModule.changeEndOffSet(this);"  disabled="false" addDefault="false"/>
+						</span></span></span>
+					</li>
+					</div>
+					<div
+						jwcid="@Foreach" 
+						source="ognl:Attrs" 
+						value="ognl:attr"
+						element="div">
+					  <div jwcid="@Conditional" condition='ognl:(attr.DISPLAY_CONDITION==null) || (displayCondition == null) || (attr.DISPLAY_CONDITION != null && attr.DISPLAY_CONDITION == "DIS") || (attr.DISPLAY_CONDITION!=null&&displayCondition!=null&&attr.DISPLAY_CONDITION.indexOf(displayCondition)>=0)'>	
+						<li class = "li">
+							<span class="label"><span jwcid="@Any" class='ognl:"0".equals(attr.ATTR_CAN_NULL)?"e_required":""' ><span jwcid="@Insert" value="ognl:attr.ATTR_LABLE"/>：</span></span>
+							<div jwcid="@Conditional" condition='ognl:attr.ATTR_LABLE.length()>8'>
+								<br>
+							</div>
+							<span jwcid="@Any" class='ognl:("1".equals(attr.ATTR_TYPE_CODE)||"3".equals(attr.ATTR_TYPE_CODE))?"e_select":("5".equals(attr.ATTR_TYPE_CODE)||"6".equals(attr.ATTR_TYPE_CODE))?"":"e_input"'><span>
+		                     	<div jwcid="@Conditional" condition='ognl:"0".equals(attr.ATTR_TYPE_CODE)'>
+		                             <input
+										jwcid="@TextField" 
+										name="ognl:attr.ATTR_CODE" 
+		                         		id="ognl:attr.ATTR_CODE"
+		                             	attrCode = "ognl:attr.ATTR_CODE"
+		                             	type="text"
+										value="ognl:attr.ATTR_INIT_VALUE"
+										datatype="ognl:attr.ATTR_FIELD_TYPE"
+		                         		nullable='ognl:"0".equals(attr.ATTR_CAN_NULL)?"no":"yes"'
+		                         		disabled="ognl:((attr.DISPLAY_CONDITION==null || displayCondition == null)?'false':((attr.DISPLAY_CONDITION!=null&&displayCondition!=null&&attr.DISPLAY_CONDITION.indexOf(displayCondition)>=0)?'false':'true'))"
+		                         		minsize = 'ognl: (attr.ATTR_FIELD_MIN ==null || "".equals(attr.ATTR_FIELD_MIN))?"0":attr.ATTR_FIELD_MIN'
+		                         		maxsize = 'ognl: (attr.ATTR_FIELD_MAX ==null || "".equals(attr.ATTR_FIELD_MAX))?"999":attr.ATTR_FIELD_MAX'
+		                         		desc="ognl:attr.ATTR_LABLE"/>
+								</div>
+		                        <div jwcid="@Conditional" condition='ognl:"1".equals(attr.ATTR_TYPE_CODE)||"3".equals(attr.ATTR_TYPE_CODE)'>
+		                            <span>
+			                            <select jwcid="@Select"
+			                            	name="ognl:attr.ATTR_CODE" 
+			                         		id="ognl:attr.ATTR_CODE"
+		                                	attrCode = "ognl:attr.ATTR_CODE"
+											source="ognl:attr.PARAMS"
+											textField="ATTR_FIELD_NAME" valueField="ATTR_FIELD_CODE" titleField="ATTR_FIELD_NAME"
+				                			value="ognl:attr.ATTR_INIT_VALUE"
+				                			onchange="ognl:attr.SELFFUNC"
+				                			nullable='ognl:"0".equals(attr.ATTR_CAN_NULL)?"no":"yes"'
+				                			disabled="ognl:((attr.DISPLAY_CONDITION==null || displayCondition == null)?'false':((attr.DISPLAY_CONDITION!=null&&displayCondition!=null&&attr.DISPLAY_CONDITION.indexOf(displayCondition)>=0)?'false':'true'))"
+											desc="ognl:attr.ATTR_LABLE"/>
+		                            </span>
+								</div>
+		                        <div jwcid="@Conditional" condition='ognl:"2".equals(attr.ATTR_TYPE_CODE)'>
+		                             <input jwcid="@DateField"
+											name="ognl:attr.ATTR_CODE" 
+		                         			id="ognl:attr.ATTR_CODE"
+		                             		attrCode = "ognl:attr.ATTR_CODE"
+											value="ognl:attr.ATTR_INIT_VALUE"
+											format="yyyy-MM-dd"
+		                             		nullable='ognl:"0".equals(attr.ATTR_CAN_NULL)?"no":"yes"'
+		                             		disabled="ognl:((attr.DISPLAY_CONDITION==null || displayCondition == null)?'false':((attr.DISPLAY_CONDITION!=null&&displayCondition!=null&&attr.DISPLAY_CONDITION.indexOf(displayCondition)>=0)?'false':'true'))"
+											desc="ognl:attr.ATTR_LABLE"/>
+								</div>
+								<div jwcid="@Conditional" condition='ognl:"4".equals(attr.ATTR_TYPE_CODE)'>
+		                             <input
+										jwcid="@Any" 
+										name="ognl:attr.ATTR_CODE" 
+		                         		id="ognl:attr.ATTR_CODE"
+		                             	attrCode = "ognl:attr.ATTR_CODE"
+		                             	type="password"
+										value="ognl:attr.ATTR_INIT_VALUE"
+		                         		nullable='ognl:"0".equals(attr.ATTR_CAN_NULL)?"no":"yes"'
+		                         		disabled="ognl:((attr.DISPLAY_CONDITION==null || displayCondition == null)?null:((attr.DISPLAY_CONDITION!=null&&displayCondition!=null&&attr.DISPLAY_CONDITION.indexOf(displayCondition)>=0)?null:'true'))"
+		                         		equsize="6"
+		                         		desc="ognl:attr.ATTR_LABLE"
+		                         		/>
+								</div>
+								<div jwcid="@Conditional" condition='ognl:"5".equals(attr.ATTR_TYPE_CODE)'>
+		                             <input
+										jwcid="@Radio" 
+										name="ognl:attr.ATTR_GROUP_NAME" 
+		                         		id="ognl:attr.ATTR_CODE"
+		                             	attrCode = "ognl:attr.ATTR_CODE"
+		                             	type="radio"
+										value=""
+										attrValue = "ognl:attr.PARAMS.get(0).ATTR_FIELD_CODE"
+		                         		nullable='ognl:"0".equals(attr.ATTR_CAN_NULL)?"no":"yes"'
+		                         		disabled="ognl:((attr.DISPLAY_CONDITION==null || displayCondition == null)?null:((attr.DISPLAY_CONDITION!=null&&displayCondition!=null&&attr.DISPLAY_CONDITION.indexOf(displayCondition)>=0)?null:'true'))"
+		                         		onclick="ognl:attr.SELFFUNC"
+		                         		desc="ognl:attr.ATTR_LABLE"
+		                         		/>
+		                         	<span jwcid="@Insert" value="ognl:attr.PARAMS.get(0).ATTR_FIELD_NAME"/>
+								</div>
+		                    </span></span>
+		                  </li>  
+	                   </div>	
+				  </div>
+				</ul>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 提交 开始 -->
+		<div class="c_submit">
+			<button class="e_button-form" id="ELEMENT_ATTR_BUTTON_OK"  name="ELEMENT_ATTR_BUTTON_OK" jwcid="@Any" itemIndex="ognl:itemIndex" onclick="ognl:(null == confirmHandler || ''.equals(confirmHandler))?'saleactiveModule.confirmAttr(this.getAttribute(\'itemIndex\'))':confirmHandler"><i class="e_ico-ok"></i><span>确定</span></button>
+			<button class="e_button-form" id="ELEMENT_ATTR_BUTTON_CANCEL"  name="ELEMENT_ATTR_BUTTON_CANCEL" jwcid="@Any" itemIndex="ognl:itemIndex" onclick="saleactiveModule.cancelElementAttr(this.getAttribute('itemIndex'));"><i class="e_ico-cancel"></i><span>取消</span></button>
+		</div>
+		<!-- 提交 结束 -->
+	</div>
+	<div class="c_optionShadow"></div>
+</div>
+<input jwcid="@Hidden" name="ELEMENTATTR_COMPONENT_ID" id="ELEMENTATTR_COMPONENT_ID" value="ognl:id"/>
+<input jwcid="@Hidden" name="ATTR_ITEM_INDEX" id="ATTR_ITEM_INDEX" value="ognl:itemIndex"/>

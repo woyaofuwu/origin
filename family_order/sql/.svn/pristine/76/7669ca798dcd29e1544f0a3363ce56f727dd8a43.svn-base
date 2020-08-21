@@ -1,0 +1,1 @@
+SELECT 'DiscntIDtoName' key, A_DISCNT_ID value1,'-1' value2, A_DISCNT vresult   FROM td_b_discount WHERE 'DiscntIDtoName' = :KEY

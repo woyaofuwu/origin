@@ -1,0 +1,2 @@
+DELETE TI_B_USER_OTHER t
+WHERE t.sync_sequence=:SYNC_SEQUENCE AND t.rsrv_value_code=:RSRV_VALUE_CODE

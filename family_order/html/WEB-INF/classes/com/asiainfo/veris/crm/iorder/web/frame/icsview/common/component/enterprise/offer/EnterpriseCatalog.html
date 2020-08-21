@@ -1,0 +1,173 @@
+<div jwcid="@Any" element="div" class="c_popupItem" id="ognl:info.id">
+	<div id="OfferHead" class="c_header">
+		<div class="back" ontap="hidePopup(this);">商品目录</div>
+		<div class="fn" jwcid="prodCond@Part">
+		<span class="e_mix e_mix-search" style="width:15em;">
+			<input jwcid="@TextField"  id="PRODUCT_SEARCH_TEXT" name="PRODUCT_SEARCH_TEXT" onkeyup="enterpriseCatalog.search();" value="" class="" />
+			<button type="button" class="e_button-blue" onclick="enterpriseCatalog.search();"><span class="e_ico-search"></span></button>
+			<input jwcid="@Hidden" id="IF_EC" name="IF_EC" value="ognl:info.IS_EC" />
+		</span>
+	    </div>
+		<div jwcid="@Conditional" condition="ognl:info.IS_EC == true">
+<!-- 			<div jwcid="@OfferSearch" searchCode="PM_OFFER_EC" function="chooseOfferFromSearch" filterStrategy="com.asiainfo.veris.crm.order.web.pub.component.offer.search.strategy.MgmtDistrictFilterStrategy" filterParams='ognl:"MGMT_DISTRICT|"+info.MGMT_DISTRICT' name="offerSearch"  />
+ -->		</div>
+	</div>
+	<!-- 筛选 开始 -->
+	<div jwcid="@Scroller" name="OfferListDiv" class="c_scroll c_scroll-header c_scroll-white c_scroll-float" hScroll="false" hScrollbar="false" checkDOMChanges="true">
+		<div jwcid="OfferTypePart@Part" class="c_filter">
+			<div jwcid="@Conditional" condition="ognl:info.IS_EC == true">
+				<div class="option">
+					<ul>
+						<li jwcid="@Foreach" name="offerType" source="ognl:catalogs" value="ognl:catalog" element="li" 
+							ontap="enterpriseCatalog.chooseOfferCategory($(this));" id="ognl:catalog.CATALOG_ID" CATALOG_ID="ognl:catalog.CATALOG_ID">
+							
+							<span jwcid="@Insert" name="NAME" value="ognl:catalog.CATALOG_NAME" />
+						</li>
+					</ul>
+				</div>
+				<div class="c_space"></div>
+				<div class="option" id="EC_OFFER_TYPE">
+					<ul>
+						<li id="10012" onclick="enterpriseCatalog.chooseOfferCategory($(this));" batchTypeCode="ognl:info.BATCH_TYPE_CODE" CATALOG_ID="10012" name="offerType">已订购商品</li>
+					</ul>
+				</div>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:info.IS_EC == false">
+				<div class="option">
+					<ul id="MEB_OFFER_TYPE">
+						<li jwcid="@Foreach" name="offerType" source="ognl:catalogs" value="ognl:catalog" element="li"
+							ontap="enterpriseCatalog.chooseOfferCategory($(this));" batchTypeCode="ognl:info.BATCH_TYPE_CODE" id="ognl:catalog.CATALOG_ID" CATALOG_ID="ognl:catalog.CATALOG_ID">
+							
+							<span jwcid="@Insert" name="NAME" value="ognl:catalog.CATALOG_NAME" />
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- 筛选 结束  -->
+		
+		<!-- 滚动 开始 -->
+		<!-- 列表 开始 -->
+		<div jwcid="OfferListPart@Part" class="c_list c_list-line c_list-col-1">
+		<input jwcid="@TextField" style="display:none;" id="CHOOSE_OFFER_LISTS" name="CHOOSE_OFFER_LISTS" desc="商品列表"/>
+			<ul id="chooseOffers">
+				<li jwcid="@Foreach" source="ognl:offers" value="ognl:offer" element="li" 
+					BRAND="ognl:offer.BRAND" id="ognl:'cata_'+offer.USER_ID">
+					<div class="content">
+					<div class="main">
+						<div class="title">
+							<span jwcid="@Insert" name="OFFER_NAME" value="ognl:offer.OFFER_NAME" />
+							<span jwcid="@Hidden"  name="USER_ID" value="ognl:offer.USER_ID" />
+							<span jwcid="@Hidden"  id= "VPMN_USER_ID" name="VPMN_USER_ID" value="ognl:offer.USER_ID" />
+							
+						</div>
+						
+						<div jwcid="@Conditional" condition="ognl:offer.SERIAL_NUMBER != null && offer.SERIAL_NUMBER != ''">
+							<div class="content">
+								服务号码：<span jwcid="@Insert" name="SERIAL_NUMBER" value="ognl:offer.SERIAL_NUMBER" />
+							</div>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:offer.GROUP_ID != null && offer.GROUP_ID != ''">
+							<div class="sub">
+								<div clss="main">
+									<div class="title"></div>
+									<div class="content">
+										集团名称：<span jwcid="@Insert" name="GROUP_NAME" value="ognl:offer.GROUP_NAME" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div jwcid="@Conditional" condition="ognl:(offer.USER_ID == null || offer.USER_ID == '') ">
+						<div  class="side" style="width:100px;">
+							<button jwcid="@Any" class="e_button-s e_button-r e_button-green" OFFER_CODE="ognl:offer.OFFER_CODE" OFFER_ID="ognl:offer.OFFER_ID" OFFER_NAME="ognl:offer.OFFER_NAME" 
+								 value="ognl:offer.OFFER_ID" 
+								ontap="chooseOfferInfo(this,'CrtUs')">
+								<span class="e_ico-cart"></span>
+								<span>订购</span>
+							</button>
+						</div>
+					</div>
+					<!-- 集团目录 集团已订购 开始-->
+					<div jwcid="@Conditional" condition="ognl:offer.USER_ID != null && offer.USER_ID != '' && info.IS_EC == true">
+						<div  class="side" style="width:200px;">
+							<div jwcid="@Conditional" condition="ognl:offer.CHANGE_HIDE != 'TRUE'">
+								<button jwcid="@Any" class="e_button-s e_button-r e_button-blue" OFFER_CODE="ognl:offer.OFFER_CODE" OFFER_ID="ognl:offer.OFFER_ID" OFFER_NAME="ognl:offer.OFFER_NAME" 
+									USER_ID="ognl:offer.USER_ID" value="ognl:offer.OFFER_ID" 
+									ontap="chooseOfferInfo(this,'ChgUs')">
+									<span class="e_ico-change"></span>
+									<span>变更</span>
+								</button>
+							</div>
+						
+							<!-- bboss不展示注销按钮 -->
+							<div jwcid="@Conditional" condition="offer.DELETE_HIDE != 'TRUE'">
+								<button jwcid="@Any" class="e_button-s e_button-r e_button-red" OFFER_CODE="ognl:offer.OFFER_CODE" OFFER_ID="ognl:offer.OFFER_ID" OFFER_NAME="ognl:offer.OFFER_NAME" 
+									USER_ID="ognl:offer.USER_ID" value="ognl:offer.OFFER_ID" 
+									ontap="chooseOfferInfo(this,'DstUs')">
+									<span class="e_ico-delete"></span>
+									<span>注销</span>
+								</button>	
+							</div>
+						</div>
+					</div>
+					<!-- 集团目录 集团已订购 结束-->
+					
+					<!-- 成员目录 集团已订购 开始-->
+					<div jwcid="@Conditional" condition="ognl:(info.CATALOG_ID == '10013' || info.CATALOG_ID == '10012') && info.IS_EC == false && info.IS_BATCH == false">
+						<div  class="side"  style="width:100px;">
+							<div jwcid="@Conditional" condition="ognl:offer.BRAND_CODE != 'BOSG' && offer.BRAND_CODE != 'JKDT'">
+								<button jwcid="@Any" class="e_button-s e_button-r e_button-green" value="ognl:offer.USER_ID" ontap="chooseOfferInfo(this.value,'CrtMb');">
+									<span class="e_ico-cart"></span>
+									<span>订购</span>
+								</button>
+								<div jwcid="@Any" id="ognl:'CATADATA_'+offer.USER_ID" name="ognl:'CATADATA_'+offer.USER_ID" style="display:none">
+									<span jwcid="@Insert" value="ognl:offer.CATALOG_DATA" />
+								</div>
+							</div>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:offer.BRAND_CODE == 'BOSG' || offer.BRAND_CODE == 'JKDT'">
+							<div class="fn" jwcid="@Any" id="ognl:'unfold_'+offer.USER_ID" USER_ID="ognl:offer.USER_ID" ontap="enterpriseCatalog.showBbossSubOffers($(this).attr('USER_ID'), 'CrtMb');" style="display:"><span class="e_ico-unfold"></span></div>
+							<div class="fn" jwcid="@Any" id="ognl:'fold_'+offer.USER_ID" USER_ID="ognl:offer.USER_ID" ontap="enterpriseCatalog.hideBbossSubOffers($(this).attr('USER_ID'));" style="display:none"><span class="e_ico-fold"></span></div>
+							<div jwcid="@Any" id="ognl:'CATADATA_'+offer.USER_ID" name="ognl:'CATADATA_'+offer.USER_ID" style="display:none">
+								<span jwcid="@Insert" value="ognl:offer.CATALOG_DATA" />
+							</div>
+						</div>
+					</div>
+					<!-- 成员目录 集团已订购 结束-->
+					
+					<!-- 成员已订购  开始 -->
+					<div jwcid="@Conditional" condition="ognl:info.CATALOG_ID == '10014' && info.IS_EC == false">
+						<div  class="side" style="width:200px;">
+							<div jwcid="@Conditional" condition="ognl:offer.BRAND_CODE != 'BOSG' || offer.BRAND_CODE == 'JKDT'">
+								<button jwcid="@Any" class="e_button-s e_button-r e_button-blue" value="ognl:offer.USER_ID" ontap="chooseOfferInfo(this.value, 'ChgMb');">
+									<span class="e_ico-change"></span>
+									<span>变更</span>
+								</button>
+								<button jwcid="@Any" class="e_button-s e_button-r e_button-red" value="ognl:offer.USER_ID" ontap="chooseOfferInfo(this.value, 'DstMb');">
+									<span class="e_ico-delete"></span>
+									<span>注销</span>
+								</button>
+								<div jwcid="@Any" id="ognl:'CATADATA_'+offer.USER_ID" name="ognl:'CATADATA_'+offer.USER_ID" style="display:none">
+									<span jwcid="@Insert" value="ognl:offer.CATALOG_DATA" />
+								</div>
+							</div>
+						</div>
+						<div jwcid="@Conditional" condition="ognl:offer.BRAND_CODE == 'BOSG'">
+							<div class="fn" jwcid="@Any" id="ognl:'unfold_'+offer.USER_ID" USER_ID="ognl:offer.USER_ID" ontap="enterpriseCatalog.showBbossSubOffers($(this).attr('USER_ID'),'ChgMb');" style="display:"><span class="e_ico-unfold"></span></div>
+							<div class="fn" jwcid="@Any" id="ognl:'fold_'+offer.USER_ID" USER_ID="ognl:offer.USER_ID" ontap="enterpriseCatalog.hideBbossSubOffers($(this).attr('USER_ID'));" style="display:none"><span class="e_ico-fold"></span></div>
+							<div jwcid="@Any" id="ognl:'CATADATA_'+offer.USER_ID" name="ognl:'CATADATA_'+offer.USER_ID" style="display:none">
+								<span jwcid="@Insert" value="ognl:offer.CATALOG_DATA" />
+							</div>
+						</div>
+					</div>
+					<!-- 成员已订购  结束 -->
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- 列表 结束 -->
+		<div class="c_line"></div>
+	</div>
+</div>

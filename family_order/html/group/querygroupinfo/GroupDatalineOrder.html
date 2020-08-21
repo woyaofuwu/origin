@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/querygroupinfo/GroupDatalineOrder.js"></script>   
+</head>
+<title>集团专线在途工单处理</title>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div> 
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+			<div class="c_form c_form-col-3 c_form-label-7">
+			<div>
+			<ul>
+			<li class="li" id="QryIBSysId">
+					<span class="label" >IBSYSID：</span>
+					<span class="e_input"><span> 
+						<input type="text" id="cond_IB_SYS_ID" name="cond_IB_SYS_ID" jwcid="@TextField" value="ognl:condition.cond_IB_SYS_ID" desc="IBSYSID" maxsize="20" />	 
+					</span></span>
+			</li>
+				
+			<li class="li" id="QryByEcCode">
+					<span class="label">集团编码：</span>
+					<span class="e_input"><span> 
+						<input type="text" id="cond_GROUP_ID" name="cond_GROUP_ID" jwcid="@TextField" value="ognl:condition.cond_GROUP_ID" desc="集团编码" maxsize="20" />	 
+					</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_ENET_INFO_QUERY_STATE" textField="DATA_NAME" valueField="DATA_ID" 
+							source="ognl:pageutil.getStaticList('DATALINE_ORDER_STATE')" 
+							value="ognl:condition.cond_ENET_INFO_QUERY" desc="状态" class="e_select" />
+				</span></span></span>
+			</li> 
+			
+			<li class="li">
+				<span class="label">起始时间：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"  value="" desc="加入起始时间"/>
+					</span></span>
+				</span>
+			</li> 
+			
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" type="text" name="cond_END_DATE" id="cond_END_DATE" value="" desc="加入结束时间"/>
+					</span></span>
+				</span>
+			</li> 
+			</ul>
+			<div class="submit">
+				<button class="e_button-form" id="bquery" onclick="return dealDataline()" ><i class="e_ico-search"></i><span>处理</span></button>
+				<button class="e_button-form" id="bquery" onclick="return qryClick()" ><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	<!-- 表单 结束 -->
+		
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<div jwcid="groupNetInfo@Part" >
+	<div class="c_scroll c_scroll-x c_scroll-table-10" >
+		<div class="c_table">
+		<table jwcid="groupNetInfoTable@Table" name="groupNetInfoTable"  rowClick="tableRowClick">
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="noteitem" name="noteitem" onclick="checkedAll('itemcodes', checked)"/></th>
+					<th col="pam_NOTIN_IBSYSID">IBSYSID</th>
+					<th col="pam_NOTIN_GROUP_ID" >集团编码</th>
+					<th col="pam_NOTIN_STATE" >状态</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                   		<td><span><input type="checkbox" id="itemcodes" name="itemcodes" jwcid="@Any" value="ognl:info.IBSYSID+';'+info.GROUP_ID+';'+info.STATE"/></span></td>
+                   		<td><span jwcid="@Insert" value="ognl:info.IBSYSID" raw="false"/></td>   
+                        <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>   
+                        <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('DATALINE_ORDER_STATE',info.STATE)" raw="false"/>
+                        
+                        
+				 </tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" id="pageNav" name="pageNav" cond="QueryCondPart" part="groupNetInfo" listener="queryInfos" pageSize="15" count="ognl:infoCount"></div>
+		<!-- 翻页 结束 -->
+</div>
+<!-- 表格 结束 -->
+</div>	
+
+
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<div jwcid="groupDataline@Part" >
+	<div class="c_scroll c_scroll-x c_scroll-table-10" >
+		<div class="c_table">
+		<table jwcid="groupDatalineTable@Table" name="groupDatalineTable">
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="noteitem" name="noteitem" onclick="checkedAll('itemcodes', checked)"/></th>
+					<th onclick="Wade.dom.sortTable('dataList',0,'string')">集团编码</th>
+					<th onclick="Wade.dom.sortTable('dataList',1,'string')">集团名称</th>
+					<th onclick="Wade.dom.sortTable('dataList',3,'string')">手机号码</th>
+					<th onclick="Wade.dom.sortTable('dataList',4,'string')">加入时间</th>
+					<th onclick="Wade.dom.sortTable('dataList',5,'string')">销户时间</th>        
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                   		<td><input type="checkbox" id="itemcodes" name="itemcodes" jwcid="@Any" value="ognl:info.IBSYSID"/></td>
+                    	<td><span jwcid="@Insert" value="ognl:info.IBSYSID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>   
+                        <td><span jwcid="@Insert" value="ognl:info.STATE" raw="false"/></td> 
+                       	<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.START_DATE)" raw="false" /></td>
+                       	<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.END_DATE)" raw="false" /></td>  
+				 </tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+</div>
+</div>	
+</div>
+</div>
+</body>
+</html> 	
+			

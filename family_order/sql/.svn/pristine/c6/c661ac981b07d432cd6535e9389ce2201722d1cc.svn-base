@@ -1,0 +1,2 @@
+INSERT INTO tf_f_relation_uu(partition_id,user_id_a,serial_number_a,user_id_b,serial_number_b,relation_type_code,role_code_a,role_code_b,orderno,short_code,inst_id,start_date,end_date,update_time)
+ VALUES(:PARTITION_ID,TO_NUMBER(:USER_ID_A),:SERIAL_NUMBER_A,TO_NUMBER(:USER_ID_B),:SERIAL_NUMBER_B,:RELATION_TYPE_CODE,:ROLE_CODE_A,:ROLE_CODE_B,:ORDERNO,:SHORT_CODE,TO_NUMBER(:INST_ID),TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),sysdate)

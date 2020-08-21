@@ -1,0 +1,1 @@
+select t.*,rowid from TF_F_CUSTOMER t where t.cust_id=to_number(:CUST_ID) and t.pspt_id=:PSPT_ID

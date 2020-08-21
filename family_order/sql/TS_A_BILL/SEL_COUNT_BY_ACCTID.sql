@@ -1,0 +1,1 @@
+SELECT count(*) acyc_id FROM ts_a_bill WHERE acct_id = :ACCT_ID AND partition_id = :PARTITION_ID AND bill_id = :BILL_ID AND pay_tag <> '1' AND pay_tag <> '2' AND pay_tag <> '5' AND pay_tag <> '9'

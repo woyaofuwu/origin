@@ -1,0 +1,2 @@
+INSERT INTO tf_b_tradeinfo(trade_id,accept_month,receipt_info1,receipt_info2,receipt_info3,receipt_info4,receipt_info5,notice_content)
+ VALUES(TO_NUMBER(:TRADE_ID),:ACCEPT_MONTH,:RECEIPT_INFO1,:RECEIPT_INFO2,:RECEIPT_INFO3,:RECEIPT_INFO4,:RECEIPT_INFO5,:NOTICE_CONTENT)

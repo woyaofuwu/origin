@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="iorder/person/changeservice/scripts/changeservice.js"></script>
+<title>特殊服务变更</title>
+<body jwcid="@Body">
+<div class="c_scroll"><div class="l_padding">
+<!-- 用户鉴权 开始 -->
+	<div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="110" tradeAction="refreshPartAtferAuth(data);" element="div"></div>
+	<!--<div jwcid="UCAViewPart@Part">-->
+		<!--<div jwcid="@icsserv:CustInfoView" custInfoView="ognl:custInfoView" />-->
+		<!--<div jwcid="@icsserv:UserInfoView" userInfoView="ognl:userInfoView" />-->
+	<!--</div>-->
+<div class="c_space"></div>
+<!--  用户鉴权 结束 -->
+	<div jwcid="@Tabset" class="c_tab c_tab-sp" name="mytab" slidable="false">
+	    <div class="content" title="已有服务信息">
+	      <div jwcid="userSvc@Part" element="div">
+				<table jwcid="hasUserSvc@Table"  class="c_table c_table-row-5 c_table-lite c_table-border" name="hasUserSvc" >
+					<thead>
+						<tr>
+							<div jwcid="@Conditional" condition="ognl:showDelInfo.IS_SHOW_DEL == 1">
+							<th col="TAG_NAME">是否删除</th>
+							</div>
+							<th col="SERVICE_NAME">服务名称</th>
+							<th col="START_DATE">开始时间</th>
+							<th col="END_DATE">结束时间</th>
+							<th col="MAIN_TAG">主服务标记</th>
+							<th col="INST_ID" style="display:none">唯一标识</th>
+							<th col="PRODUCT_ID" style="display:none"></th>
+							<th col="PACKAGE_ID" style="display:none"></th>
+							<th col="MODIFY_TAG" style="display:none"></th>
+							<th col="OLD_START_DATE" style="display:none"></th>
+							<th col="OLD_END_DATE" style="display:none"></th>
+							<th col="SERVICE_ID" style="display:none"></th>
+						</tr>
+					</thead>
+					<tbody >
+						<tr jwcid="@Foreach"  source="ognl:hasUserSvcs" value="ognl:hasUserSvc" element="tr" index="ognl:rowIndex">
+
+
+							<div jwcid="@Conditional" condition="ognl:showDelInfo.IS_SHOW_DEL == 1">
+							<td><div jwcid="@Conditional" condition="ognl:hasUserSvc.IS_DEL == 1">
+								<input type="checkbox"name="useridbs" id="ognl:rowIndex+'useridbs'" jwcid="@Any" value="ognl:hasUserSvc.SERVICE_ID" onClick="delUserSvc(this)"/>
+								</div>
+							</td>
+							</div>
+
+							<td><span jwcid="@Insert" value="ognl:hasUserSvc.SERVICE_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', hasUserSvc.START_DATE)"></span></td>
+							<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', hasUserSvc.END_DATE)"></span></td>
+							<td><span jwcid="@Insert" value="ognl:hasUserSvc.MAIN_TAG"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.INST_ID"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.PRODUCT_ID"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.PACKAGE_ID"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value=""></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.START_DATE"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.END_DATE"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:hasUserSvc.SERVICE_ID"></span></td>
+						</tr>
+					</tbody>
+				</table>
+			 </div>
+	    </div>
+	    <div class="content" title="新订服务信息">
+	        <div jwcid="cpeCrossLockPart@Part" element="div">
+				<table jwcid="newUserSvc@Table"  class="c_table c_table-row-5 c_table-lite c_table-border" name="newUserSvc" >
+					<thead>
+						<tr>
+							<th col ="MODIFY_NAME">新增标识</th>
+							<th col ="SERVICE_ID">服务编码</th>
+							<th col ="SERVICE_NAME">服务名称</th>
+							<th col ="START_DATE">开始时间</th>
+							<th col ="END_DATE">结束时间</th>
+							<th col="DISCNT_CODE" style="display:none">套餐编码</th>
+							<th col="PRODUCT_ID" style="display:none"></th>
+							<th col="PACKAGE_ID" style="display:none"></th>
+							<th col="NEXT_PRODUCT_ID" style="display:none"></th>
+							<th col="MODIFY_TAG" style="display:none"></th>
+						</tr>
+					</thead>
+					<tbody id="EditTableBody">
+						<tr jwcid="@Foreach"  source="ognl:newUserSvcs" value="ognl:newUserSvc" element="tr" index="ognl:rowIndex">
+							<td><span jwcid="@Insert" value="ognl:newUserSvc.MODIFY_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:newUserSvc.SERVICE_ID"></span></td>
+							<td><span jwcid="@Insert" value="ognl:newUserSvc.SERVICE_NAME"></span></td>
+							<td><span jwcid="@Insert" value="ognl:newUserSvc.START_DATE"></span></td>
+							<td><span jwcid="@Insert" value="ognl:newUserSvc.END_DATE"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.DISCNT_CODE"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.PRODUCT_ID"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.PACKAGE_ID"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.NEXT_PRODUCT_ID"></span></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:newUserSvc.MODIFY_TAG"></span></td>
+						</tr>
+					</tbody>
+				</table>
+		    </div>
+		    
+		    <div jwcid="editPart@Part" element="div">
+			<div class="c_space-c"></div>
+			<div class="c_box c_box-border">
+				<div class="c_list c_list-s c_list-col-2  c_list-line c_list-label-6">
+					<ul class="ul">
+						<li class="li">
+							<div class="label">新增服务</div>
+							<div class="value">
+										<span jwcid="@Select" name="ADD_SVC" id="ADD_SVC" textField="PARA_CODE2" valueField="PARA_CODE1" titleField="PARA_CODE2"
+											source="ognl:addSvcs" value="" desc="新增服务" nullable="no" onChange="changeState('ADD_SVC')"/>
+							</div>
+						</li>
+						<li class="li">
+							<div class="label">删除服务</div>
+							<div class="value">
+										 <select jwcid="@Select" name="DEL_SVC" id="DEL_SVC" textField="PARA_CODE2" valueField="PARA_CODE11" titleField="PARA_CODE2"
+											source="ognl:delSvcs" value="" desc="删除服务" nullable="no" onChange="changeState('DEL_SVC')"/>
+							</div>
+						</li>
+						<li class="li">
+							<div class="label">起始时间</div>
+							<div class="value">
+								<input type="text" jwcid="@DateField" dropDown="true" name="NEW_START_DATE" id="NEW_START_DATE"   format="yyyy-MM-dd HH:mm:ss" desc="起始时间" onafterAction="changestarttime()" value="ognl:@com.ailk.bizcommon.util.SysDateMgr@getSysDate()"/>
+							</div>
+						</li>
+						<li class="li" id="NEW_END_DATE_SPAN1">
+							<div class="label">终止时间</div>
+							<div class="value">
+								<input type="text" jwcid="@DateField" dropDown="true" name="NEW_END_DATE" id="NEW_END_DATE" format="yyyy-MM-dd HH:mm:ss" desc="终止时间" onafterAction="changeendtime()" value="ognl:editInfo.NEW_END_DATE"/>
+							</div>
+						</li>
+						<li class="li e_hide" id="NEW_END_DATE_SPAN">
+							<div class="label">终止时间</div>
+							<div class="value"  >
+								<select jwcid="@Select" name="NEW_END_DATE_SEL" id="NEW_END_DATE_SEL"  source="ognl:pageutil.getStaticList('ROAM_ENDDATE_SEL_TYPE')"
+										textField="DATA_NAME" valueField="DATA_ID"  value="" desc="终止时间"   onChange="changeEndDateState()"/>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="c_line"></div>
+				<div class="l_padding e_right">
+					<button class="e_button-blue e_dis" onclick="return addSvc();" id="add" disabled="true"><i class="e_ico-add"></i><span>新增</span></button>
+					<button class="e_button-blue e_dis" onclick="return delSvc();" id="del" disabled="true"><i class="e_ico-delete"></i><span>删除</span></button>
+					<button class="e_button-blue e_dis" onclick="resetSvc();" id="reset" disabled="true"><i class="e_ico-reset"></i><span>清空</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="c_space"></div>
+<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="submitBeforeAction()" listener="submitTrade"  isReset="true" area="AuthPart" element="div" />
+
+</div></div>
+</body>
+
+</html>

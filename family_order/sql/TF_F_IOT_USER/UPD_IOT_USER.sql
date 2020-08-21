@@ -1,0 +1,19 @@
+update TF_F_IOT_USER
+  set PARTITION_ID = :PARTITION_ID,
+    USER_ID = :USER_ID,
+    SERIAL_NUMBER = :SERIAL_NUMBER,
+    IMSI = :IMSI,
+    APN1 = :APN1,
+    APN2 = :APN2,
+    APN3 = :APN3,
+    APN4 = :APN4,
+    APN5 = :APN5,
+    OPEN_DATE = to_date(:OPEN_DATE,'yyyy-mm-dd hh24:mi:ss'),
+    CALLING_TYPE_CODE = :CALLING_TYPE_CODE,
+    GROUP_NAME = :GROUP_NAME,
+    PROVINCIAL_ROAM_TAG = :PROVINCIAL_ROAM_TAG,
+    OPRFLAG = :OPRFLAG,
+    CUST_MANAGER_NAME = :CUST_MANAGER_NAME,
+    IN_DATE = to_date(:IN_DATE,'yyyy-mm-dd hh24:mi:ss'),
+    UPDATE_TIME = to_date(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss')
+  where USER_ID = :USER_ID

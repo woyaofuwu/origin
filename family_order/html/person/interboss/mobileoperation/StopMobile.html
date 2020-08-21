@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>异地停机</title>
+<script language="JavaScript" src="person/interboss/mobileoperation/scripts/ibossmobile.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	 <!-- 标题 开始 -->
+	   <div class="c_title">
+		 <div class="text">路由信息</div>
+	   </div>
+	   <!-- 标题 结束 -->
+	   <!-- 表单 开始 -->
+	   <div class="c_form c_form-label-5 c_form-col-3" jwcid="AddrCondPart@Part">
+	      <ul class="ul">
+	        
+	         <li class="li">
+	            <span class="label">手机号码：</span>
+	            <span class="e_input"><span>
+	               <input jwcid="@TextField" id="MOBILENUM" name="MOBILENUM" value="ognl:condition.MOBILENUM" desc="手机号码"
+	               maxLength="11" onBlur = "changeValueBySn()"/>
+	            </span></span>
+	         </li>
+	         
+	     </ul>
+	</div>
+	   <!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="CustCondPart@Part">
+		<ul class="ul">
+			
+			
+			
+			<li class="li" id="idcardtype">
+				<span class="label">证件类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="IDCARDTYPE" name="IDCARDTYPE" 
+								source="ognl:pageutil.getStaticList('IBOSS_PSPT_TYPE_CODE')" 
+								valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.IDCARDTYPE"
+								titleField="DATA_NAME" nullable="no" desc="证件类型" />
+				</span></span></span>
+			</li>
+			<li class="li" id = "idcardnum">
+				<span class="label">证件号码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" id="IDCARDNUM" name="IDCARDNUM" value="ognl:condition.IDCARDNUM" desc="证件号码" nullable="no"/>
+				</span></span>
+			</li>
+			
+			<!-- add by zhongsong 客服接入方式才出现 ocx密码控件-->
+			<!-- <div style="display: none" >
+		 		<object classid="clsid:94C28672-1D0B-42B6-950D-B769D9AD8068" visible="false" id="pwd" name="pwd" width="1" height="1" /> 									
+			</div>-->
+			
+			<li class="li" id="userpasswd">
+				<span class="label">客服密码：</span>
+				<span class="e_elements">
+					<button class="e_button-right" id="IMG_USER_PASSWD" name="IMG_USER_PASSWD" title="密码小键盘输入" onclick="return $.authCheck.inputPassWD(this);"><span>小键盘</span></button>
+					<span class="e_input e_input-left"><span><input type="password" id="USER_PASSWD" name="USER_PASSWD" value="" datatype="pinteger" desc="服务密码" maxLength="8" equalsize="8" nullable="no"/></span></span>
+				</span>
+			</li>
+			
+			<li class="li" id = "custname">
+					<span class="label"><span class="e_required">用户姓名：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="CUST_NAME1" name="CUST_NAME1"  nullable="no"
+						desc="用户姓名" value="" />
+					</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form" onclick="return queryCustInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-9 c_form-col-3 c_form-text" jwcid="CustInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:info.CUST_NAME" 
+							desc="联系人姓名"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span class="text" jwcid="@Insert" name="IDCARDTYPE" id="IDCARDTYPE"
+							value="ognl:pageutil.getStaticValue('IBOSS_PSPT_TYPE_CODE', info.IDCARDTYPE)"
+							desc="证件类型" />
+			</li>
+			<li class="li" >
+				<span class="label">证件号码：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="IDCARDNUM" id="IDCARDNUM" value="ognl:info.IDCARDNUM" 
+							desc="证件号码" />
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">客户级别：</span>
+				<span class="text" jwcid="@Insert" name="LEVEL" id="LEVEL"
+							value="ognl:pageutil.getStaticValue('VIPCLUBMEMBER_VIPCLASS', info.LEVEL)"
+							desc="客户级别" />
+			</li>
+			
+			<li class="li">
+				<span class="label">用户品牌：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="BRAND_CODE" id="BRAND_CODE" value="ognl:pageutil.getStaticValue('INTERBOSS_BRAND',info.BRAND_CODE)" 
+							desc="用户品牌"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">用户状态：</span>
+				<span class="text"><span>
+					<input jwcid="@Insert" name="USER_STATE_CODESET" id="USER_STATE_CODESET" value="ognl:pageutil.getStaticValue('INTERBOSS_STATUS',info.USER_STATE)" 
+							desc="用户状态"/>
+				</span></span>
+			</li>
+			
+			
+			
+			<input type="hidden"  jwcid="@Any" id="TRADE_TYPE_CODE"      name="TRADE_TYPE_CODE"       value="ognl:condition.TRADE_TYPE_CODE"  />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="MobileTradePart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">业务原因：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" id="REASON" name="REASON" 
+							source="ognl:pageutil.getStaticList('STOPMOBILE_REASON')" 
+							valueField="DATA_ID" textField="DATA_NAME" value="ognl:condition.REASON"
+							titleField="DATA_NAME" nullable="no" desc="业务原因"/>
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenPart@Part">
+    	<input  jwcid="@Any"  type="hidden" id="UserCheckFlag" name="UserCheckFlag" value="0" desc="身份校验标志"/>
+	   <input  jwcid="@Any"  type="hidden" id="IDENT_CODE" name="IDENT_CODE" value="0"/>
+	   <input type="hidden"  jwcid="@Any" id="DISABLED_FLAG"      name="DISABLED_FLAG"       value="ognl:hiddenInfo.DISABLED_FLAG"  />
+	   <input type="hidden"  jwcid="@Any" id="IDCARDTYPE_BAK"      name="IDCARDTYPE_BAK"       value="ognl:hiddenInfo.IDCARDTYPE"  />
+	   <input type="hidden"  jwcid="@Any" id="IDCARDNUM_BAK"      name="IDCARDNUM_BAK"       value="ognl:hiddenInfo.IDCARDNUM"  />
+	   <input type="hidden"  jwcid="@Any" id="CUST_NAME_BAK"      name="CUST_NAME_BAK"       value="ognl:hiddenInfo.CUST_NAME"  />
+	   <input type="hidden"  jwcid="@Any" id="BRAND_CODE_BAK"      name="BRAND_CODE_BAK"       value="ognl:hiddenInfo.BRAND_CODE"  />
+   </div>
+       <input type="hidden"  jwcid="@Any"  id="sn_readonly"  value="ognl:condition.SN_READONLY" />	
+    <!-- 隐藏区域 结束 -->
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit()" isReset="true" print="false"   area="AddrCondPart,CustCondPart,MobileTradePart,hiddenPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

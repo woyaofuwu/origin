@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" type="text/javascript" src="scripts/group/vpmnsaleactive/VpmnSaleActive.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body" onload="init();"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团V网营销活动受理</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label"><span class="e_required">活动类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_ACTIVE_TYPE"
+							id="cond_ACTIVE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('VPMN_ACTIVE_TYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_ACTIVE_TYPE" desc="活动类型" nullable="no" 
+							onchange="queryCampnNames(this);" />
+				</span></span></span>			   
+			</li>
+			<li class="li">
+				<span class="label"><span>归属地州：</span></span>
+				<span class="e_input"><span>
+					<input type="text" name="cond_EPACHY_NAME" jwcid="cond_EPACHY_NAME@TextField" value="ognl:getVisit().getLoginEparchyName()" maxsize="10" disabled="true" desc="归属地州"/>
+				</span></span>
+			</li> 
+		</ul>
+	</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+
+<!-- 分享有礼编辑区 start -->
+<div class="c_box" id="SaleCheckPart" jwcid="SaleCheckPart@Part" style="display:none">
+<div class="c_title c_title-2">
+	<span class="text">分享有礼</span> 
+</div>
+<div class="c_form">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">被推荐号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="cond_SERIAL_NUMBER@TextField"  
+					value="ognl:condition.cond_SERIAL_NUMBER" enterAction="getVpnInfo()" />
+			</span></span>
+		</li>
+		<li class="li">
+			<!--<div id="authForGroupPart" jwcid="authForGroupPart@Part" optimize="true" style="display:">
+				<span jwcid="@saleserv:AuthForGroup" tradeTypeCode="ognl:condition.cond_Trade_Type" afterAuthAction="authAfterFunction()"/>
+			</div>-->
+		</li>
+		<li class="li">
+			<span class="label"><span class="e_label">推荐号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" id="cond_SERIAL_NUMBER_A" name="cond_SERIAL_NUMBER_A" jwcid="cond_SERIAL_NUMBER_A@TextField"  
+					value="ognl:condition.cond_SERIAL_NUMBER_A" enterAction="checkVpmn()" />
+			</span></span>
+		</li>
+	</ul> 
+</div>
+</div>
+<!-- 分享有礼编辑区 end -->
+
+<!-- 区域 开始 -->
+
+<!-- V网免费体验编辑区 start -->
+<div class="c_box" id="FeeCheckPart" jwcid="FeeCheckPart@Part" style="display:none">
+<div class="c_title c_title-2">
+	<span class="text">V网免费体验</span> 
+</div>
+<div class="c_form">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">被推荐号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" id="cond_SERIAL_NUMBER_IN" name="cond_SERIAL_NUMBER_IN" jwcid="cond_SERIAL_NUMBER_IN@TextField"  
+					value="ognl:condition.cond_SERIAL_NUMBER_IN" enterAction="checkUuInfo()" datatype="text" />
+			</span></span>
+		</li>
+		<li class="li">
+			<span class="label"><span class="e_label">推荐号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" id="cond_SERIAL_NUMBER_B" name="cond_SERIAL_NUMBER_B" jwcid="cond_SERIAL_NUMBER_B@TextField"  
+					value="ognl:condition.cond_SERIAL_NUMBER_B" enterAction="checkVpmn()" datatype="text" />
+			</span></span>
+		</li>
+	</ul>
+	<input type="hidden" jwcid="@Any" name="IS_CHK_SERIAL_NUMBER" id="IS_CHK_SERIAL_NUMBER" value="0"/>
+</div>
+</div>
+<!-- V网免费体验编辑区 end -->
+
+<!-- 区域 开始 -->
+
+<!-- 双网有礼活动编辑区 start -->
+<div class="c_box" id="BothWebActivePart" jwcid="BothWebActivePart@Part" style="display:none">
+<div class="c_title c_title-2">
+	<span class="text">双网有礼活动</span> 
+</div>
+<div class="c_form">
+	<ul class="ul">
+		<li class="li">
+			<span class="label"><span class="e_required">被推荐号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" id="cond_SERIAL_NUMBER_BOTH" name="cond_SERIAL_NUMBER_BOTH" jwcid="cond_SERIAL_NUMBER_BOTH@TextField"  
+					value="ognl:condition.cond_SERIAL_NUMBER_BOTH" enterAction="checkVpmnAndUuInfo()" />
+			</span></span>
+		</li>
+		<li class="li">
+			<span class="label"><span class="e_required">推荐号码：</span></span>
+			<span class="e_input"><span>
+				<input type="text" id="cond_SERIAL_NUMBER_C" name="cond_SERIAL_NUMBER_C" jwcid="cond_SERIAL_NUMBER_C@TextField"  
+					value="ognl:condition.cond_SERIAL_NUMBER_C" enterAction="checkVpmn()" datatype="text" />
+			</span></span>
+		</li>
+	</ul>
+	<input type="hidden" jwcid="@Any" name="IS_CHK_SERIAL_NUMBER_C" id="IS_CHK_SERIAL_NUMBER_C" value="0"/>
+</div>
+</div>
+<!-- 双网有礼活动编辑区 end -->
+
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm5">
+	<!-- 标签页区-客户信息 start -->
+	<div id="groupCustinfoPage" jwcid="groupCustinfoPage@Part">
+	<div class="c_title c_title-2">
+		<span class="text">客户信息</span> 
+	</div>
+	<div class="c_form c_form-label-7 c_form-col-2">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>客户名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="CUST_NAME" name="CUST_NAME" jwcid="CUST_NAME@TextField"  
+						value="ognl:info.CUST_NAME" disabled="true" datatype="text" class="e_input" desc="客户名称" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>居住邮编：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="POST_CODE" name="POST_CODE" jwcid="POST_CODE@TextField"  
+						value="ognl:info.POST_CODE" disabled="true" datatype="text" class="e_input" desc="居住邮编" />
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>联系电话：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="PHONE" name="PHONE" jwcid="PHONE@TextField"  
+						value="ognl:info.PHONE" disabled="true" datatype="text" class="e_input" desc="联系电话" />
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>居住地址：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="HOME_ADDRESS" name="HOME_ADDRESS" jwcid="HOME_ADDRESS@TextField"  
+						value="ognl:info.HOME_ADDRESS" disabled="true" datatype="text" class="e_input" desc="居住地址" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	</div>
+	<!-- 标签页区-客户信息 end -->
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm6">
+	<!-- 标签页区-用户信息 start -->
+	<div id="groupUserinfoPage" jwcid="groupUserinfoPage@Part">
+	<div class="c_title c_title-2">
+		<span class="text">用户信息</span> 
+	</div>
+	<div class="c_form c_form-label-7 c_form-col-2">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>品牌名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="BRAND" name="BRAND" jwcid="BRAND@TextField"  
+						value="ognl:info.BRAND" disabled="true" datatype="text" class="e_input" desc="品牌名称" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>业务区：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="CITY_NAME" name="CITY_NAME" jwcid="CITY_NAME@TextField"  
+						value="ognl:info.CITY_NAME" disabled="true" datatype="text" class="e_input" desc="业务区" />
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>产品名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="PRODUCT_NAME" name="PRODUCT_NAME" jwcid="PRODUCT_NAME@TextField"  
+						value="ognl:info.PRODUCT_NAME" disabled="true" datatype="text" class="e_input" desc="产品名称" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>开户日期：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="OPEN_DATE" name="OPEN_DATE" jwcid="OPEN_DATE@TextField"  
+						value="ognl:info.OPEN_DATE" disabled="true" datatype="text" class="e_input" desc="开户日期" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm7">
+	<!-- 按钮区域 start -->
+	<div id="buttonDiv" jwcid="buttonDiv@Part" >
+		<!-- 提交 开始 -->
+		<!-- div jwcid="SubmitPart@saleserv:CSSubmit" id="bsubmit" area="" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/-->
+		<div class="c_submit" align="center" id="bsubmitDiv" style="display:none">
+			<button jwcid="@Button" id="bsubmit" name="bsubmit" class="e_button-page-ok"><i class="e_ico-ok"></i><span>提交</span></button>
+		</div>
+		<div jwcid="SubmitPart@saleserv:CSSubmit" area="QueryCondPart,SaleCheckPart,FeeCheckPart,BothWebActivePart,groupCustinfoPage,groupUserinfoPage,groupVpnPart" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+		<!-- 提交 结束 -->
+		<!-- 刷新隐藏域 start -->						
+		<div id="groupVpnPart" jwcid="groupVpnPart@Part" optimize="true">
+			<input type="hidden" jwcid="@Any" name="CUST_NAME_A" id="CUST_NAME_A" value="ognl:custdata.CUST_NAME"/>
+			<input type="hidden" jwcid="@Any" name="INFO" id="INFO" value="ognl:info"/>
+		</div>
+		<!-- 刷新隐藏域 end -->
+		<div class="submit" style="display:none">
+			<button class="e_button-page" id="bquery" listener="ognl:listeners.queryVpnInfo" onclick="return queryOper(this);" ><span>成员号码</span></button>
+		</div>	
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script>
+</script>
+</body>
+</html> 

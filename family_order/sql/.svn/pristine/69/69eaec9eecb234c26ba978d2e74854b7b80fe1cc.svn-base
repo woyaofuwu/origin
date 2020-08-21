@@ -1,0 +1,15 @@
+SELECT '02' PRODUCT_MODE,
+               P.PACKAGE_NAME NAME,
+               T.SERVICE_ID,
+               T.TAG,
+               T.RSRV_STR4 SMS_SHOW_MODE
+          FROM TD_B_QRY_RULE_CONFIG T, TF_F_USER_SALE_ACTIVE P
+         WHERE T.ID_TYPE = 'K'
+           AND (T.TAG IS NULL OR T.TAG <> 'N')
+           AND T.ID = P.PACKAGE_ID
+           AND P.END_DATE > SYSDATE
+           AND P.USER_ID = :USER_ID
+           AND P.PARTITION_ID = MOD(:USER_ID, '10000')
+           AND (T.SERV_TYPE = 'S' OR T.SERV_TYPE = 'Z')
+           AND (T.EPARCHY_CODE = :EPARCHY_CODE OR T.EPARCHY_CODE = 'ZZZZ')
+           AND SYSDATE BETWEEN T.START_DATE AND T.END_DATE

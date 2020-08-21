@@ -1,0 +1,1 @@
+select t.*  from tf_b_trade t where t.trade_type_code='640' and t.subscribe_state<>'9' and t.rsrv_str1=:SERIAL_NUMBER

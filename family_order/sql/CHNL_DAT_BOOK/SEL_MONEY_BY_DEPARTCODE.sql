@@ -1,0 +1,9 @@
+SELECT B.money,D.DEPART_ID,d.depart_code
+  FROM TF_CHL_ACCT A,TF_CHL_DATBOOK B, TD_M_DEPART D
+ WHERE D.DEPART_ID = B.CHNL_ID
+ AND A.CHNL_ID = B.CHNL_ID
+ AND A.CHNL_ACCT_ID = B.CHNL_ACCT_ID
+ AND A.STATE <> 'R0X'
+ AND d.depart_code = :DEPART_CODE
+ AND b.chnl_deposit = '8'
+ AND b.chnl_obj_type = '001'

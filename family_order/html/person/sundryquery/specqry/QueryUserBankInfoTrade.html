@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<title>手机缴费通定制信息查询</title>
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/monitorinfo/scripts/querypage.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/specqry/scripts/specqry.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_tip"> 
+1.要求【起始服务号码、终止服务号码】范围不能超过200~
+<br/> 
+2.建议【开始日期、结束日期】时间段不能太大，会影响查询速度~
+
+	</div>
+</div>
+<div class="l_col">
+			<!-- 活动详情 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5">
+				<div class="" jwcid="submit_part@Part" >
+						<ul class="ul">
+						
+							<li class="li" >
+							<span class="label e_required" >起始服务号码：</span>
+								<span class="e_input"><span>
+								
+										<input type="text"  jwcid="@TextField" id="START_SERIALNUMBER" name = "START_SERIALNUMBER" value=""  
+											onblur="completeEndSn(this, 'END_SERIALNUMBER');" 
+											onkeyup="synOnKeyup(this, 'END_SERIALNUMBER');" 
+										 desc="起始服务号码" maxsize="11" nullable="no"  />
+								</span></span>
+							</li>
+							<li class="li" >
+							<span class="label e_required" >终止服务号码：</span>
+								<span class="e_input"><span>
+										<input type="text"  jwcid="@TextField" id="END_SERIALNUMBER" name = "END_SERIALNUMBER" value="" desc="终止工号"  maxsize="11" nullable="no"  />
+								</span></span>
+							</li>
+							
+							<li class="li" >
+							<span class="label e_required" >定制状态：</span>
+							<span class="e_elements"><!-- 替换为页面组件 -->
+					
+							<span class="e_select"><span><span>
+								<select  jwcid="@Select"  name="MAKE_STATE" id="MAKE_STATE" source="ognl:pageutil.getStaticList('MAKE_STATE')"
+									textField="DATA_NAME" valueField="DATA_ID" title="TEXT" value=""
+									desc="网络类型"/>
+							</span></span></span>
+						   </span>
+							</li>
+							<li class="li"  >
+								<span class="label e_required">开始日期：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField"  id = "START_DATE" name="START_DATE" value="ognl:condition.cond_START_DATE" desc="开始日期" nullable="no"  />
+								</span></span>
+							</li>
+							<li class="li" >
+								<span class="label e_required">结束日期：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField" id="END_DATE" name="END_DATE" value="" 
+									 desc="结束日期" nullable="no" />
+								</span></span>
+							</li>
+						</ul>
+					</div>
+
+						<div class="submitPlace"></div>
+						<div class="submit e_right"  >
+							<button class="e_button-form"  onclick="queryUserBankInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+							<button class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>重置</span></button>
+						</div>
+				</div>
+				<div  jwcid="result_Table@Part" optimize="true">
+			    <div id="exportarea"  class="c_scroll c_scroll-x style='height:auto'">
+			        <div class="c_title c_title-2">
+					 <div class="text">查询结果</div>
+			  	    </div>
+			  	    		<div  jwcid="print_Table@Part" optimize="true">
+							<div class="c_table">
+							<table jwcid="@Table"  id="DeptTable" >
+							<thead>
+						  			<tr>
+										<th>手机号码</th>
+										<th>办理时间</th>
+										<th>定制状态</th>
+										<th>定制终端</th>
+										<th>推荐人编号</th>
+										<th>更新时间</th>
+										<th>更新员工编号</th>
+										<th>更新员工部门</th>
+										<th>开始时间</th>
+										<th>结束时间</th>
+										<th>取消工号</th>
+										<th>取消部门</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('MAKE_STATE', info.MAKE_STATE)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.MAKE_TERMINAL"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.COMMENDER_ID"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID', 'DEPART_NAME', info.UPDATE_DEPART_ID)"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+											<td><span jwcid="@Insert" value="ognl:info.CANCEL_STAFF_ID"/></td>
+											<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID', 'DEPART_NAME', info.CANCEL_DEPART_ID)"/></td>
+										</tr>
+									</tbody>
+							</table>
+							<!-- end table -->
+					</div>
+				</div>		
+					<!-- 翻页（替换为页面组件） 开始 -->
+		         <span jwcid="@NavBar" name="pageNav" id ="pageNav" cond="submit_part" pageSize="20"  listener="queryUserBankInfo" part="result_Table" count="ognl:pageCount"/>
+		       <!-- 翻页 结束 -->
+			</div>
+			</div>			
+						
+</div></div>
+
+
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+<script type="text/javascript">
+</script>
+</html>

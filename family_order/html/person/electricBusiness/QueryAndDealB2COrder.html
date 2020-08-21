@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head jwcid="@Head">
+    <title>销售订单查询</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script jwcid="@Script"  src="person/electricBusiness/scripts/QueryAndDealB2COrder.js" />
+  </head>
+  
+  <body jwcid="@Body">
+  	<div class="m_wrapper"><div class="m_wrapper2">
+    <div class="c_box">
+    	<div class="c_title">
+    		<div class="text">销售订单查询</div>
+    	</div>
+    	<div class="c_form c_form-col-2 c_form-label-7" jwcid="QueryCondPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">服务号码：</span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"	
+						value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" datatype="mbphone"  maxlength="11"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">订单号：</span> 
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_TID" id="cond_TID"	
+						value="ognl:condition.cond_TID" desc="订单号" datatype="numchar" maxlength="40"/>
+					</span></span>
+				</li>
+				<li></li>
+				<li class="li" id="LI_BEGIN_TIME" name="LI_BEGIN_TIME">
+				<span class="label"><span class="e_required">开始时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" 
+						name="cond_BEGIN_TIME" id="cond_BEGIN_TIME"
+						value="ognl:condition.cond_BEGIN_TIME" nullable="no" desc="开始时间：" /> </span></span>
+			    </li>
+			    <li class="li" id="LI_END_TIME" name="LI_END_TIME">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" 
+						name="cond_END_TIME" id="cond_END_TIME"
+						value="ognl:condition.cond_END_TIME" nullable="no" desc="结束时间：" /> </span></span>
+			    </li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" id="query" name="query" onclick="return queryInfo()">
+					<i class="e_ico-search"></i><span>查询</span>
+				</button>
+			</div>
+		</div>
+		<!-- 表格区开始-->
+		<div jwcid="results@Part" element="div">
+		        <div class="c_title c_title-2">
+				 <div class="text">查询结果</div>
+		  	     </div>
+		            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="resultsTable" id="resultsTable">
+						<thead>
+						<tr>
+							<th datatype="string">订单编码</th>
+							<th datatype="string">合作渠道订单编码</th>
+							<th datatype="string">合作渠道编码</th>
+							<th datatype="string">创建时间</th>
+							<th datatype="string">支付时间</th>
+							<th datatype="string">买家名称</th>
+							<th datatype="string">实付金额</th>
+							<th datatype="string">商品金额</th>
+							<th datatype="string">是否配送</th>
+							<th datatype="string">订单状态</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td>
+								<span jwcid="TID@Any" > 
+									<span jwcid="@Redirect" value="ognl:info.TID" param="ognl:info.TID"
+									 raw="true" onclick="javascript:popupPage('electricBusiness.QuerySubOrder','querySubOrderInfo','&TID='+$(this).attr('param'),'销售子订单信息','1100','800')"/>
+								</span>
+							</td>
+							<td><span jwcid="@Insert" value="ognl:info.OUT_TID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CHANNEL_ID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CREATE_TIME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PAY_TIME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BUYER_NICK" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PAYMENT" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TOTAL_FEE" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.DISTRIBUTION" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.STATUS" raw="true"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+			<!-- 翻页 开始 -->
+			<div jwcid="@NavBar" name="qryInfoNav" id="qryInfoNav" cond="QueryCondPart" part="results" listener="queryInfo" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+		  </div>
+		  <!-- 表格区结束 -->
+    </div>
+  </body>
+</html>

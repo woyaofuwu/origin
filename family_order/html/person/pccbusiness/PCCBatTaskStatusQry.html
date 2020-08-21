@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryUserDiscnt.html,v 1.4 2013/04/17 08:35:53 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>批量操作任务执行状态查询</title>
+<script language="JavaScript" src="person/pccbusiness/scripts/pccbusiness.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">批量操作任务执行状态查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="">任务类型：</span></span>
+				<span class="e_select"><span><span>
+				<select jwcid="@Select" name="cond_SERVICE_TYPE" id="cond_SERVICE_TYPE"
+							source="ognl:pageutil.getStaticList('BUSINESSTYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" value=""
+							desc="任务类型" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li">
+                <span class="label"><span class="e_required">平台：</span></span>
+                <span class="e_select"><span><span>
+                <select jwcid="@Select" name="cond_SYSTEM_TYPE" id="cond_SYSTEM_TYPE"
+                            source="ognl:pageutil.getStaticList('SYSTEMTYPE')"
+                            textField="DATA_NAME" valueField="DATA_ID" value=""
+                            desc="所属系统" nullable="no" />
+                </span></span></span>
+            </li>
+			<li class="li">
+				<span class="label"><span class="" >服务号码：</span> </span>
+				<span class="e_input"><span>
+				<input  id="cond_USR_IDENTIFIER" name="cond_USR_IDENTIFIER" value="" desc="用户服务号码"  class="e_input" type="text"  nullable="yes"/>
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+		    <li class="li">
+				<span class="label"><span class="" >经分流水号：</span> </span>
+				<span class="e_input"><span>
+				<input  id="cond_BASS_FLOW_ID" name="cond_BASS_FLOW_ID" value="" desc="经分流水号"  class="e_input" type="text"  nullable="yes"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">导入时间：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_IN_DATE" id="cond_IN_DATE" value="" desc="导入时间" format="yyyy-MM-dd"/>
+				</span></span>
+			</li>
+			
+		</ul>
+		<div class="submit">
+		    <button  id="bquery"  name="bquery" class="e_button-form" onclick="if(!queryTask()){return false;}"><i class="e_ico-search"></i><span> 查  询  </span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x style="height:242px"">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table"  name="QueryListTable">
+			<thead>
+				<tr>
+							<th>任务执行状态</th>
+															<th>任务ID</th>
+															<th>PCRF/SPR网元名称</th>
+															<th>执行开始时间</th>
+															<th>执行结束时间</th>
+															<th>任务状态</th>
+															<th>执行任务总数</th>
+															<th>执行成功命令数</th>
+															<th>日志文件名</th>
+				</tr>
+			</thead>
+			<tbody>
+				   <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PCCBATTASKRESULTCODE',info.RESULT_CODE)"/></td>
+													<td><span jwcid="@Insert" value="ognl:info.TASK_ID"/></td>
+													<td><span jwcid="@Insert" value="ognl:info.EP_SN"/></td>
+													<td><span jwcid="@Insert" value="ognl:info.START_TIME"/></td>
+													<td><span jwcid="@Insert" value="ognl:info.END_TIME"/></td>
+							  					    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PCCBATTASKSTATUS', info.STATUS)"/></td>				
+													<td><span jwcid="@Insert" value="ognl:info.TOTAL"/></td>
+													<td><span jwcid="@Insert" value="ognl:info.SUCCESS"/></td>
+													<td><span jwcid="@Insert" value="ognl:info.ACKFILE"/></td>
+						 
+						
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	</div>
+	
+	<!-- 分页 开始 -->
+	<div jwcid="@NavBar" name="paginNav" id="paginNav" cond="QueryListPart" part="QueryListPart" listener="querySaleActive" pageSize="10" count="ognl:count"></div>	
+	<!-- 分页 结束 -->
+	<!-- 表格 结束 -->
+	
+</div>
+</div></div></body>
+</html>

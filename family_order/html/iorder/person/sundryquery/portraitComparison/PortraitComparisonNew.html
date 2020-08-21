@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="iorder/person/sundryquery/portraitComparison/scripts/portraitComparison.js" ></script>
+<script jwcid="@Script"  src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js" ></script>
+
+</head>
+<body jwcid="@Body">
+<div class="c_scroll"><div class="l_padding">
+
+
+<!--  开始 -->
+<div class="c_title">
+    <div class="text">请先进行人像比对</div>
+</div>
+<div class="c_box">
+	<div jwcid="CustInfoPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_list c_list-s c_list-col-3 c_list-border c_list-line c_list-label-8" >
+			<ul class="ul">
+				<li class="link required">
+					<div class="label">证件类型</div>
+					<div class="value">
+						<span jwcid="@Select" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE_PCN')"
+	                            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.PSPT_TYPE_CODE"
+	                            desc="证件类型"  disabled="false" nullable="no"/>
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">客户名称</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" value="ognl:custInfo.CUST_NAME" maxsize="48" maxLength="48" disabled="false"
+	                                   nullable="no" desc="客户名称" onchange="checkCustName('custInfo_CUST_NAME')"/>
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">客户性别</div>
+					<div class="value">
+						<span jwcid="@Select" name="custInfo_SEX" id="custInfo_SEX" source="ognl:pageutil.getStaticList('SEX')"
+	                                    value="ognl:custInfo.SEX" disabled="false" desc="客户性别" nullable="yes"
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+					</div>
+				</li>
+				<li class="link merge-2 required" id="psptDIV">
+					<div class="label">证件号码</div>
+					<div class="value">
+                        <div class="e_mix">
+                            <input  jwcid="@Any"  type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+                            <input type="text" jwcid="@TextField" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" value="ognl:custInfo.PSPT_ID" datatype="pspt" maxsize="20" maxLength="20"desc="证件号码" nullable="no" disabled="false" />
+					        <button type="button" class="e_button-blue" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>
+							<button type="button" class="e_button-blue"  name="ShotImgButton" onclick="identification('custInfo_PIC_ID','custInfo_PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>
+						</div>
+                            <input jwcid="@Hidden" id="custInfo_PIC_ID" name="custInfo_PIC_ID" value="ognl:custInfo.custInfo_PIC_ID" desc="客户照片ID"/>
+					        <input jwcid="@Hidden" id="custInfo_PIC_STREAM" name="custInfo_PIC_STREAM" value="ognl:custInfo.custInfo_PIC_STREAM" desc="拍摄人像照片流"/>
+					        <input jwcid="@Hidden" id="custInfo_BACKBASE64" name="custInfo_BACKBASE64" value="ognl:custInfo.custInfo_BACKBASE64" desc="身份证反面照"/>
+					        <input jwcid="@Hidden" id="custInfo_FRONTBASE64" name="custInfo_FRONTBASE64" value="ognl:custInfo.custInfo_FRONTBASE64" desc="身份证正面照"/>
+					        <input jwcid="@Hidden" id="custInfo_SCAN_TAG" name="custInfo_SCAN_TAG" value="1" desc="客户扫描标志"/>
+					        <div style="display:none">
+					        	<object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+					        </div>
+                    </div>
+				</li>
+				<li class="link required">
+					<div class="label">证件有效期</div>
+					<div class="value">
+						<input type="text" jwcid="@DateField" dropDown="true" format="yyyy-MM-dd" name="custInfo_PSPT_END_DATE" id="custInfo_PSPT_END_DATE" value="ognl:custInfo.PSPT_END_DATE"
+							   onafterAction="verifyDate(this,'less')" min="ognl:page.pageutil.getSysDate()"  nullable="no"  desc="证件有效期"   />
+					</div>
+				</li>
+				<li class="link merge-2 required" id="psptAddrDIV">
+					<div class="label">证件地址</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" value="ognl:custInfo.PSPT_ADDR" maxsize="128"
+	                 maxLength="128"    disabled="false"  nullable="no"   desc="证件地址"  />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label"><span id="span_BIRTHDAY">出生日期</span></div>
+	                <div class="value">
+					   <input type="text" jwcid="@DateField"  dropDown="true" format="yyyy-MM-dd" name="custInfo_BIRTHDAY" value="ognl:custInfo.BIRTHDAY" desc="出生日期"
+							  onafterAction="verifyDate(this,'more')" nullable="no" maxName="custInfo_PSPT_END_DATE"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+
+<!-- 资料变更 结束 -->
+
+</div>
+	<div class="c_space-2"></div>
+	<div class="c_submit c_submit_center">
+		<button class="e_button-l e_button-r e_button-navy" id="bcancel" name="bcancel" onclick="redirectToHomeTab(this)"><i></i><span>返回</span></button>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO tf_f_outnetgroup_phone(out_group_id,phone_code,net_type_code,start_date,end_date)
+ VALUES(:OUT_GROUP_ID,:PHONE_CODE,:NET_TYPE_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'))

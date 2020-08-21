@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>宽带用户投诉信息查询</title>
+		<script jwcid="@Script" language="JavaScript" src="person/broadband/widenet/querywidenetusercomplaints/scripts/querywidenetusercomplaints.js"></script>
+	</head>
+	<body jwcid="@Body">
+	    <div class="m_wrapper">
+		    <div class="m_wrapper2">
+			    <div class="c_box">
+				    <div class="c_title">
+					     <div class="text">宽带用户投诉信息查询</div>
+				    </div>
+				    <div jwcid="ConditionPart@Part">
+				        <div class="c_form c_form-col-3 c_form-label-10">
+						    <ul class="ul">
+						        <li class="li">
+									<span class="label"><span class="">宽带业务区：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="CITY_CODE" id="CITY_CODE"
+												source="ognl:pageutil.getStaticList('JOB_CALL_CITYCODE')" addDefault="true"
+												textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.CITY_CODE"
+												desc="宽带业务区"  />
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="">宽带开户时间(起始)：</span></span>
+									<span class="e_elements" id="PSPT_INPUT">
+										<span class="e_input e_input-left"><span>
+										    <input jwcid="@DatePopup"
+												name="WIDENET_START_DATE"
+												readonly="true"
+												value="ognl:pageutil.getSysDate()"
+												desc="宽带开户时间(起始)"
+												afterAction=""
+												format="yyyy-MM-dd"
+											/>
+										</span></span>
+									</span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="">宽带开户时间(终止)：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@DatePopup"
+											name="WIDENET_END_DATE"
+											readonly="true"
+											value="ognl:info.END_DATE"
+											desc="宽带开户时间(终止)"
+											afterAction=""
+											format="yyyy-MM-dd"
+										/>
+									</span></span>
+								</li>
+							    <li class="li">
+									<span class="label"><span class="">当前使用套餐：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="WIDENET_PRODUCT_ID" id="WIDENET_PRODUCT_ID"
+												source="ognl:widenetProductSet" addDefault="true"
+												textField="PRODUCT_NAME" valueField="PRODUCT_ID"  value="ognl:info.WIDENET_PRODUCT_ID"
+												desc="当前使用套餐"  />
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="">联系电话：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@TextField" name="PHONE" id="PHONE" value="ognl:info.PHONE" 
+												desc="联系电话" datatype="numeric" />
+									</span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="">是否满意：</span></span>
+									<span class="e_select"><span><span>
+										<select jwcid="@Select" name="SATISFIED" id="SATISFIED"
+												source="ognl:pageutil.getStaticList('COMPLAINT_SATISFIED')" addDefault="true"
+												textField="DATA_NAME" valueField="DATA_ID"  value="ognl:info.SATISFIED"
+												desc="是否满意"  />
+									</span></span></span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">投诉时间(起始)：</span></span>
+									<span class="e_elements" id="PSPT_INPUT">
+										<span class="e_input e_input-left"><span>
+										    <input jwcid="@DatePopup"
+												name="COMPLAINT_START_DATE"
+												readonly="true"
+												value="ognl:pageutil.getSysDate()"
+												desc="投诉时间(起始)"
+												afterAction=""
+												nullable="no"
+												format="yyyy-MM-dd"
+											/>
+										</span></span>
+									</span>
+								</li>
+								<li class="li">
+									<span class="label"><span class="e_required">投诉时间(终止)：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@DatePopup"
+											name="COMPLAINT_END_DATE"
+											readonly="true"
+											value="ognl:info.END_DATE"
+											desc="投诉时间(终止)"
+											afterAction=""
+											nullable="no"
+											format="yyyy-MM-dd"
+										/>
+									</span></span>
+								</li>
+						    </ul>
+						    <div class="submitPlace"></div>
+							<div class="submit">
+								<button id="queryBtn" name="queryBtn" class="e_button-form"><i class="e_ico-search"></i><span>查询</span></button>
+							</div>
+				         </div>
+				    </div>
+			    </div>
+			    <div class="c_box">
+				    <div class="c_title">
+					   <div class="text">查询结果</div>
+				    </div>
+				    <span jwcid="@csserv:TableGrid" tableId="UserComplaintsTable" 
+				          serviceName="SS.QueryWidenetUserComplaints.queryUserComplaints" 
+				          pageSize=-1 scroll=true>
+				        <span jwcid="@csserv:TableItem" name="SERIAL_NUMBER" title="宽带号码"/>
+				        <span jwcid="@csserv:TableItem" name="CUST_NAME" title="客户姓名"/>
+				        <span jwcid="@csserv:TableItem" name="CITY_NAME" title="宽带业务区"/>
+				        <span jwcid="@csserv:TableItem" name="PHONE" title="联系电话"/>
+				        <span jwcid="@csserv:TableItem" name="WIDENETOPEN_DATE" title="宽带开户时间"/>
+				        <span jwcid="@csserv:TableItem" name="PRODUCT_NAME" title="当前使用套餐"/>
+				        <span jwcid="@csserv:TableItem" name="COMPLAINT_CONTENT" title="投诉问题内容"/>
+				        <span jwcid="@csserv:TableItem" name="COMPLAINT_DATE" title="投诉时间"/>
+				        <span jwcid="@csserv:TableItem" name="COMPLAINT_RESULT" title="投诉解决情况"/>
+				        <span jwcid="@csserv:TableItem" name="COMPLAINT_SATISFIED" title="是否满意"/>
+			        </span>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

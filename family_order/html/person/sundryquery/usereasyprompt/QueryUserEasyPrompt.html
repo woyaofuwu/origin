@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>便捷服务意见查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/usereasyprompt/scripts/QueryUserEasyPrompt.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取便捷服务意见清单无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">便捷服务意见查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-7" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+					
+					    <li class="li"  id="sn"><span class="label">服务号码开始：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER1" id="cond_SERIAL_NUMBER1"
+									onblur="setEndStaffID()" 
+									value="ognl:condition.cond_SERIAL_NUMBER1" desc="服务号码开始" datatype="mbphone" /></span></span>
+						</li>
+					    <li class="li"  id="sn"><span class="label">服务号码结束：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER2" id="cond_SERIAL_NUMBER2"
+									value="ognl:condition.cond_SERIAL_NUMBER2" desc="服务号码结束"  datatype="mbphone" /></span></span>
+						</li>
+
+					    <li class="li">
+							<span class="label">短信建议类型：</span>
+							<span class="e_select"><span><span>
+							        <select jwcid="@Select" name="cond_SMS_TYPE_CODE" id="cond_SMS_TYPE_CODE" source="ognl:pageutil.getStaticList('SMS_TYPE_CODE')"
+				                                    addDefault="false" value="ognl:condition.cond_SMS_TYPE_CODE" disabled="false" desc="短信建议内容" 
+				                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+							</span></span></span>
+						</li>
+					    <li class="li">
+							<span class="label">开始时间：</span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_ACCEPT_DATE1" id="cond_ACCEPT_DATE1" value="ognl:condition.cond_ACCEPT_DATE1" maxName="cond_ACCEPT_DATE2" desc="开始时间"/>
+								</span></span>
+							</span>
+						 </li>
+						 <li class="li">
+							<span class="label">结束时间：</span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+								    <input jwcid="@DateField" name="cond_ACCEPT_DATE2" id="cond_ACCEPT_DATE2"  afterAction = "setStartDate()" value="ognl:condition.cond_ACCEPT_DATE2" minName="cond_ACCEPT_DATE1" desc="结束时间"/>
+								</span></span>
+							</span>
+						 </li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryUserEasyPrompt(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100970"
+								  config="export/sundryquery/other/QueryEasyPtList.xml" fileName="便捷服务意见查询信息" cond=QueryCondPart/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	    <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">便捷服务意见编号</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">短信接入通道</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">短信建议类型</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">省份编号</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">电话号码</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">发送时间</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">建议内容</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">受理部门</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">受理人员</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">受理状态</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">受理时间</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">接入代码</th>
+							<th onclick="javascript:$.sortTable(this,'string', null, 'desc')">短信状态</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.TRACE_ID" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.SMS_KIND_CODE" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.SMS_TYPE_CODE" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.EPARCHY_CODE" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.CONTENT" raw="true"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.DEAL_DEPARTID)" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.DEAL_STAFFID)" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.DEAL_STATE" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.DEAL_TIME" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.IN_MODE_CODE" raw="false"/></td>
+							<td class = "e_lSet"><span jwcid="@Insert" value="ognl:info.STATE" raw="false"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				
+				<!-- 表格 结束 -->
+				
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUserEasyPrompt" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+	     </div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>		

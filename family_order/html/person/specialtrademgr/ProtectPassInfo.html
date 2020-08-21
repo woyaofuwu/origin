@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: OpenMobile.html,v 1.5 2013/04/17 07:58:35 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>密码保护设置</title> 
+<script language="JavaScript" src="person/specialtrademgr/scripts/protectpassinfo.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="2211" element="div"></div>
+	<!-- 认证 结束 -->
+
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-5 c_form-text c_form-col-3" jwcid="custInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">号码：</span>
+				<span class="text">
+					<input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:userInfo.SERIAL_NUMBER"  />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">开通状态：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('USER_STATE_CODESET',userInfo.USER_STATE_CODESET)" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">归属市县：</span>
+				<span class="text">
+				<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_CUSTCITY','CITY_CODE','CITY_NAME',userInfo.CITY_CODE)" raw="false">
+				</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">当前产品：</span>
+				<span class="text">
+					<input  jwcid="@Insert"   value="ognl:userInfo.PRODUCT_NAME"   />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">开通密保时间：</span>
+				<span class="text">
+					<input   jwcid="@Insert"   value="ognl:info.START_TIME"   />
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">最近修改时间：</span>
+				<span class="text">
+					<input   jwcid="@Insert"   value="ognl:info.UPDATE_TIME"   />
+				</span>
+			</li>
+			
+		</ul>
+		
+	</div>
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:AcctInfoView" acctInfoView="ognl:acctInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+	<!-- 表单 结束 -->
+	<div jwcid="QueryPartTwo@Part" id="QueryPartTwo" >
+		<textarea jwcid="@TextArea" id="PROTECT_USER_SVC" name="PROTECT_USER_SVC" value="ognl:userInfo.PROTECT_USER_SVC" desc="服务属性" style="display:none"/>
+		<textarea jwcid="@TextArea" id="PROTECT_PASS" name="PROTECT_PASS" value="ognl:userInfo.PROTECT_PASS" desc="密码保护属性" style="display:none"/>
+		<input  id="FLAG" name="FLAG" jwcid="@Hidden" value="ognl:userInfo.FLAG" />
+	</div>
+</div>
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">问题设置</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="CustInfoTwoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label" ><span class="e_required">问题一：</span></span>
+				<span class="e_select"><span><span> <select jwcid="@Select" name="otherinfo_QUESTION_FIRST"
+						id="otherinfo_QUESTION_FIRST" source="ognl:pageutil.getStaticList('QUESTION_AND_ANSWER')" textField="DATA_NAME" valueField="DATA_ID"
+						value="ognl:info.QUESTION_FIRST" desc="问题一" nullable="no" onchange="setCustomQuestionFirst();" /> </span> </span> </span>
+			</li>
+			<li class="li" id="CUSTOM_QUESTION_FIRST" style="display:none">
+				<span class="label"><span id="span_CUSTOM_QUESTION_FIRST" class="">自定义问题：</span></span> 
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_CUSTOM_QUESTION_FIRST"  id="otherinfo_CUSTOM_QUESTION_FIRST" value="ognl:info.CUSTOM_QUESTION_FIRST"   desc="自定义问题"  />
+				</span></span>
+			</li> 
+			<li class="li col-2" id="CUSTOM_ANSWER_FIRST">
+				<span class="label"><span class="e_required">答案：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_ANSWER_FIRST"  id="otherinfo_ANSWER_FIRST" value="ognl:info.ANSWER_FIRST" nullable="no"  desc="答案"  />
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label" ><span class="e_required">问题二：</span></span>
+				<span class="e_select"><span><span> <select jwcid="@Select" name="otherinfo_QUESTION_SECOND"
+						id="otherinfo_QUESTION_SECOND" source="ognl:pageutil.getStaticList('QUESTION_AND_ANSWER')" textField="DATA_NAME" valueField="DATA_ID"
+						value="ognl:info.QUESTION_SECOND" desc="问题二" nullable="no" onchange="setCustomQuestionSecond();" /> </span> </span> </span>
+			</li>
+			<li class="li" id="CUSTOM_QUESTION_SECOND" style="display:none">
+				<span class="label"><span id="span_CUSTOM_QUESTION_SECOND" class="">自定义问题：</span></span> 
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_CUSTOM_QUESTION_SECOND"  id="otherinfo_CUSTOM_QUESTION_SECOND" value="ognl:info.CUSTOM_QUESTION_SECOND"    desc="自定义问题"  />
+				</span></span>
+			</li>
+			<li class="li col-2" id="CUSTOM_ANSWER_SECOND">
+				<span class="label"><span class="e_required">答案：</span></span> 
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_ANSWER_SECOND"  id="otherinfo_ANSWER_SECOND" value="ognl:info.ANSWER_SECOND" nullable="no"  desc="答案"  />
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label" ><span class="e_required">问题三：</span></span>
+				<span class="e_select"><span><span> <select jwcid="@Select" name="otherinfo_QUESTION_THIRD"
+						id="otherinfo_QUESTION_THIRD" source="ognl:pageutil.getStaticList('QUESTION_AND_ANSWER')" textField="DATA_NAME" valueField="DATA_ID"
+						value="ognl:info.QUESTION_THIRD" desc="问题三" nullable="no" onchange="setCustomQuestionThird();" /> </span> </span> </span>
+			</li>
+			<li class="li" id="CUSTOM_QUESTION_THIRD" style="display:none">
+				<span class="label"><span id="span_CUSTOM_QUESTION_THIRD" class="">自定义问题：</span></span> 
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_CUSTOM_QUESTION_THIRD"  id="otherinfo_CUSTOM_QUESTION_THIRD" value="ognl:info.CUSTOM_QUESTION_THIRD"    desc="自定义问题"  />
+				</span></span>
+			</li>
+			<li class="li col-2"  id="CUSTOM_ANSWER_THIRD">
+				<span class="label"><span class="e_required">答案：</span></span> 
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_ANSWER_THIRD"  id="otherinfo_ANSWER_THIRD" value="ognl:info.ANSWER_THIRD" nullable="no"  desc="答案"  />
+				</span></span>
+			</li>
+			
+			<li class="li " >
+				<span class="label"><span class="e_required">电子邮箱：</span></span> 
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="otherinfo_EMAIL"   id="otherinfo_EMAIL" value="ognl:info.EMAIL" nullable="no"  desc="电子邮箱"  />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkAll()"   isReset="true"   area="AuthPart,CustInfoTwoPart,QueryPartTwo" element="div"/>
+	<!-- 提交 结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+<script language="javascript">
+$(document).ready(function(){
+	init();
+});
+</script>
+</body>
+</html>

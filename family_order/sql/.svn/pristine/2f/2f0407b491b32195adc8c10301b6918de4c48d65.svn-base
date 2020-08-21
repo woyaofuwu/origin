@@ -1,0 +1,16 @@
+SELECT 
+       SCORE_TYPE_CODE,
+       SCORE,
+       SCORE_CHANGED,
+       VALUE_CHANGED,
+       ACTION_COUNT,
+       GOODS_NAME,
+       to_char(UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss') UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       RSRV_STR1,
+       USER_ID
+
+  FROM TF_B_TRADE_SCORE
+ WHERE TRADE_ID = :TRADE_ID
+   AND ACCEPT_MONTH = TO_NUMBER(SUBSTR(:TRADE_ID, 5, 2))

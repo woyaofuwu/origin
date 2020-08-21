@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+SELECT COLOR_CODE paracode, COLOR paraname
+FROM td_s_device_color
+WHERE device_type_code = '0'
+AND (:TRADE_EPARCHY_CODE IS NULL OR :TRADE_EPARCHY_CODE IS NOT NULL)

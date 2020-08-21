@@ -1,0 +1,3 @@
+SELECT to_char(id) id,to_char(bpm_id) bpm_id,to_char(token_id) token_id,to_char(trade_id) trade_id,trade_type_code,to_char(user_id) user_id,err_code,err_desc,err_detail_desc,to_char(err_time,'yyyy-mm-dd hh24:mi:ss') err_time,deal_tag,deal_desc,to_char(deal_time,'yyyy-mm-dd hh24:mi:ss') deal_time,deal_staff_id,deal_depart_id,rsrv_str1,rsrv_str2,rsrv_str3 
+  FROM tl_bpm_error_log
+ WHERE bpm_id=TO_NUMBER(:BPM_ID)

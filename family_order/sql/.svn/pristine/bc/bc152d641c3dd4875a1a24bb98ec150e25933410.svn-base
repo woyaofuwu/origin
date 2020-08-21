@@ -1,0 +1,4 @@
+UPDATE TF_B_TRADE_CREDIT T
+   SET T.START_DATE = TO_DATE(:FINISH_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+       T.END_DATE   = TRUNC(TO_DATE(:FINISH_DATE, 'yyyy-mm-dd hh24:mi:ss') + 3)
+ WHERE T.TRADE_ID = :TRADE_ID

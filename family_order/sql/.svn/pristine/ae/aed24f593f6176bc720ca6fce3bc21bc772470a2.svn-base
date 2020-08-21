@@ -1,0 +1,20 @@
+select t.ibsysid,
+       t.accept_month,
+       t.main_ibsysid,
+       t.attr_code,
+       t.staff_id,
+       t.city_code,
+       t.depart_id,
+       t.city_code_a,
+       t.eparchy_code,
+       t.valid_date,
+       t.accept_date,
+       t.remark,
+       t.attr_main_value,
+       t.attr_value,
+       t.attr_type,
+       t.rsrv_str1,
+       t.rsrv_str2,
+       t.rsrv_str3
+  from TF_B_EOP_MODI_TRACE t
+  where t.MAIN_IBSYSID = :MAIN_IBSYSID

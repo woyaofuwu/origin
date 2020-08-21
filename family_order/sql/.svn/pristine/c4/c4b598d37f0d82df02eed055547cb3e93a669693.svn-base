@@ -1,0 +1,1 @@
+UPDATE TS_CHL_SBTRADELOG SET boss_respond_time=TO_DATE(:BOSS_RESPOND_TIME, 'YYYY-MM-DD HH24:MI:SS'),deal_tag=:DEAL_TAG,deal_info=:DEAL_INFO,remark=:REMARK WHERE trade_id=:TRADE_ID

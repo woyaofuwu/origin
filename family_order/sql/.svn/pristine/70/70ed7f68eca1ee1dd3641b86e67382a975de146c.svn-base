@@ -1,0 +1,4 @@
+UPDATE TF_F_POSTINFO SET 
+END_DATE= to_date(:END_DATE,'yyyy-mm-dd hh24:mi:ss'),UPDATE_TIME = to_date(:UPDATE_TIME,'yyyy-mm-dd hh24:mi:ss') , UPDATE_STAFF_ID = :UPDATE_STAFF_ID, UPDATE_DEPART_ID = :UPDATE_DEPART_ID, REMARK = :REMARK
+WHERE 
+PARTITION_ID = MOD(to_number(:USER_ID),10000) and ID = to_number(:ID) and ID_TYPE = :ID_TYPE and POST_CONTENT = :POST_CONTENT and POST_TYPESET = :POST_TYPESET and START_DATE = to_date(:START_DATE,'yyyy-mm-dd hh24:mi:ss')

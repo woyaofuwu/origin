@@ -1,0 +1,17 @@
+SELECT T.BUSIFORM_NODE_ID,
+       T.BUSIFORM_ID,
+       T.EXEC_MONTH,
+       T.STEP_ID,
+       T.DATA0,
+       T.DATA1,
+       T.DATA2,
+       T.DATA3,
+       T.DATA4,
+       T.DATA5,
+       T.DATA6,
+       T.DATA7,
+       T.DATA8,
+       T.DATA9
+  FROM TF_BH_EWE_TRANSFER T
+ WHERE T.BUSIFORM_NODE_ID = :BUSIFORM_NODE_ID
+   AND T.STEP_ID = :STEP_ID

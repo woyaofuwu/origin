@@ -1,0 +1,2 @@
+INSERT INTO td_m_staff_id_relation(staff_id,external_sys_type,use_staff_id,staff_passwd,update_time)
+ VALUES(:STAFF_ID,:EXTERNAL_SYS_TYPE,:USE_STAFF_ID,:STAFF_PASSWD,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'))

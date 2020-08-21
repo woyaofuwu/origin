@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryOrderPlayRecord.html,v 1.5 2013/06/20 06:29:48 pengsy3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>黑名单查询</title>
+<script type="text/javascript"
+	src="iorder/person/sundryquery/queryreadrecord/scripts/ziyoubusinessqry.js">
+</script>
+</head>
+<body jwcid="@Body">
+	<div class="l_query l_query-nopage">
+		<div class="l_queryFn">
+			<!-- 功能 开始 -->
+			<div class="c_fn">
+				<div class="right">
+					<div class="e_mix"
+						ontap="showPopup('qryPopup','qryPopupItem');">
+						<input type="text" />
+						<button class="e_button-blue" type="button">
+							<span class="e_ico-search"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- 功能 结束 -->
+		</div>
+
+		<!-- 查询区域开始 -->
+		<div class="l_queryResult" jwcid="QryResultPart@Part" element="div" style="display: block;">
+			<!-- 表格 开始 -->
+				<div class="c_table c_table-even"> 
+					<table jwcid="@Table" name="infosTable" id="infosTable" scroll="true">
+					<thead>
+			  			<tr>
+							<th>查询结果记录序号</th>
+							<th>手机号码</th>
+							<th>被屏蔽业务</th>
+							<th>最后屏蔽时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR0" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true"/></td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+			<!-- 表格 结束 -->
+			<!-- 无数据提示 开始 -->
+				<div class="c_msg" id="msgNodata" style="display: none;">
+					<div class="wrapper">
+						<div class="emote"></div>
+						<div class="text">
+							<div class="title">暂无数据</div>
+							<div class="content">请输入查询条件</div>
+						</div>
+					</div>
+				</div>
+				<div class="l_queryPage c_page c_page-border">
+					<div jwcid="@NavBar"
+						name="navbar1"
+						cond="QryCondPart"  
+						count="ognl: infocount" 
+						listener="queryOtherRecord" 
+						part="QryResultPart" 
+						pageSize="ognl:rowPage" 
+					></div>
+				</div>
+			<!-- 无数据提示 结束 -->
+		</div>
+	 </div>
+	
+	<!-- 查询条件区 结束 -->
+	<!-- 查询条件区 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="qryPopupItem">
+				<div class="c_header">
+					<div class="back" ontap="hidePopup(this);">查询条件</div>
+				</div>
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="c_scrollContent l_padding">
+						<div class="c_list c_list-form" jwcid="QryCondPart@Part">
+							<ul>
+								<li class="link">
+									<div class="label">
+										<span>服务号码</span>
+									</div>
+									<div class="value">
+										<input type="text" jwcid="@Any" name="QRYINFO0" datatype="mbphone" value=""
+											id="QRYINFO0" desc="服务号码"
+										 nullable="no"/>
+									</div>
+								</li>
+							<li class="link">
+									<div class="label">
+										<span>查询方式</span>
+									</div>
+									<div class="value">
+										<span jwcid="@Select" name="QRYINFO1" id="QRYINFO1"
+										source="ognl:pageutil.getStaticList('IS_DISABLE_BUSINESS')" textField="DATA_NAME"
+										valueField="DATA_ID" nullable="no"
+										desc="类型"> </span>
+									</div>	
+							</li>
+							</ul>
+							<div class="c_line"></div>
+						</div>
+						
+						<div class="c_space"></div>
+						<div class="c_submit c_submit-full">
+							<button class="e_button-l e_button-r e_button-blue" type="button"
+								id="qryButton" ontap="queryBlackList();"><span class="e_ico-search"></span><span>查询</span></button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- 查询条件区 结束 -->
+	<div jwcid="HiddenPart@Part" element="div">
+        <!-- 服务公共入参 -->
+        <input type="text" jwcid="@Any" name="KIND_ID" id="KIND_ID" value="BIP2C092_T2002092_0_0" desc="类别ID" style="display:none"/>
+        <input type="text" jwcid="@Any" name="SVCTYPEID" id="SVCTYPEID" value="0103030307" desc="服务请求分类编码" style="display:none"/>
+        <input type="text" jwcid="@Any" name="CONTACTCHANNEL" id="CONTACTCHANNEL" value="0" desc="渠道" style="display:none"/>
+        <input type="text" jwcid="@Any" name="SERVICETYPEID" id="SERVICETYPEID" value="42" desc="业务类别" style="display:none"/>
+        <input type="text" jwcid="@Any" name="OPERATETYPEID" id="OPERATETYPEID" value="01001" desc="操作类别" style="display:none"/>
+    </div>
+</body>
+
+
+</html>

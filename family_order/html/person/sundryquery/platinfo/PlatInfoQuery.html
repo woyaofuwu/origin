@@ -1,0 +1,393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>自有业务查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/platinfo/scripts/platinfoquery.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">自有业务查询</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">业务平台：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="BIZ_TYPE_CODE" id="BIZ_TYPE_CODE" desc="业务平台" nullable="no"
+						source="ognl:pageutil.getStaticList('PLATQRY_BIZ_TYPE_CODE')" onchange="changeTypeCode()"
+						value="ognl:editInfo.BIZ_TYPE_CODE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">操作：</span></span>
+				<span class="e_select" jwcid="OperCodePart@Part"><span><span>
+					<select jwcid="@Select" name="OPER_CODE" id="OPER_CODE" 
+						source="ognl:operCodes" onchange="afterSelectOper(this);" desc="操作" nullable="no"
+						value="ognl:editInfo.OPER_CODE" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span> 
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" nullable="no"	
+					value="ognl:editInfo.cond_SERIAL_NUMBER" desc="服务号码" datatype="mbphone" />
+				</span></span>
+			</li>
+			<li></li>
+			<li class="li" id="LI_BEGIN_TIME" name="LI_BEGIN_TIME">
+			<span class="label"><span class="">开始时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_BEGIN_TIME" id="cond_BEGIN_TIME"
+					value="ognl:editInfo.cond_BEGIN_TIME" nullable="no" desc="开始时间：" /> </span></span>
+		    </li>
+		    <li class="li" id="LI_END_TIME" name="LI_END_TIME">
+			<span class="label"><span class="">结束时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" 
+					name="cond_END_TIME" id="cond_END_TIME"
+					value="ognl:editInfo.cond_END_TIME" nullable="no" desc="结束时间：" /> </span></span>
+		    </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="query" name="query" onclick="return queryPlatInfo();">
+				<i class="e_ico-search"></i><span>查询</span>
+			</button>
+		</div>
+	</div>
+	</div>
+	
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10" jwcid="InfoTablePart@Part">
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable1" id="infoTable1" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>套餐标识</th>
+					<th>套餐名称</th>
+					<th>套餐状态</th>
+					<th>频道标识</th>
+					<th>频道名称</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable2" id="infoTable2" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>业务功能</th>
+					<th>操作时间</th>
+					<th>操作结果</th>
+					<th>外部操作内容</th>
+					<th>接口类型</th>
+					<th>套餐或频道ID</th>
+					<th>请求来源</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable3" id="infoTable3" scroll="true"  style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>外部错误码</th>
+					<th>接口类型</th>
+					<th>频道ID</th>
+					<th>终端能力标识</th>
+					<th>终端版本号</th>
+					<th>广电会话号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA8"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA9"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable4" id="infoTable4" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作类型</th>
+					<th>套餐ID</th>
+					<th>操作时间</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>请求来源</th>
+					<th>外部错误码</th>
+					<th>接口类型</th>
+					<th>交易流水号</th>
+					<th>操作流水号</th>
+					<th>终端能力标识</th>
+					<th>终端版本号</th>
+					<th>广电会话号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA8"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA9"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA10"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA11"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA12"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA13"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable5" id="infoTable5" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>请求类型</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>请求来源</th>
+					<th>外部错误码</th>
+					<th>接口类型</th>
+					<th>交易流水号</th>
+					<th>操作流水号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA8"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA9"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable6" id="infoTable6" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>操作类型</th>
+					<th>内部错误码</th>
+					<th>外部错误码</th>
+					<th>操作结果</th>
+					<th>接口类型</th>
+					<th>终端能力标识</th>
+					<th>终端版本号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA8"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable7" id="infoTable7" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>外部错误码</th>
+					<th>CELLID</th>
+					<th>SGDDID</th>
+					<th>LOCFLAG</th>
+					<th>LBAP结果码</th>
+					<th>GIS结果码</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA8"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA9"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable8" id="infoTable8" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>频道ID</th>
+					<th>套餐ID</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>外部错误码</th>
+					<th>终端能力标识</th>
+					<th>终端版本号</th>
+					<th>广电会话号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA8"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA9"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable9" id="infoTable9" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>外部错误码</th>
+					<th>请求来源</th>
+					<th>终端能力标识</th>
+					<th>终端版本号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA7"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable10" id="infoTable10" scroll="true" style="display:none">
+			<thead>
+				<tr>
+				    <th>操作时间</th>
+					<th>操作结果</th>
+					<th>内部错误码</th>
+					<th>外部错误码</th>
+					<th>终端能力标识</th>
+					<th>终端版本号</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA5"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA6"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	
+		<div class="c_table">
+		<table jwcid="@Table" name="infoTable11" id="infoTable11" scroll="true" style="display:none">
+			<thead>
+				<tr>
+					    <th>套餐标识</th>
+						<th>订购状态</th>
+						<th>订购/退订时间</th>
+						<th>订购渠道</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="infos" id="infos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.DATA1"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="qryInfoNav" id="qryInfoNav" cond="QueryCondPart" part="InfoTablePart" listener="queryPlatInfo" pageSize="10" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+</div>
+</body>
+</html>

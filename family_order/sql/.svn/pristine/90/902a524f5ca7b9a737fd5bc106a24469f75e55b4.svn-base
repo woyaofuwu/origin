@@ -1,0 +1,2 @@
+INSERT INTO ti_o_credit_work(intrade_id,trade_id,trade_type_code,user_id,in_time,exec_time,sub_policy_id,manage_tag,leave_real_fee,credit_value,update_time,update_staff_id,update_depart_id,remark,process_tag,olcom_work_id,process_remark,eparchy_code)
+ VALUES(TO_NUMBER(:INTRADE_ID),TO_NUMBER(:TRADE_ID),:TRADE_TYPE_CODE,TO_NUMBER(:USER_ID),sysdate,TO_DATE(:EXEC_TIME,'YYYY-MM-DD HH24:MI:SS'),:SUB_POLICY_ID,:MANAGE_TAG,TO_NUMBER(:LEAVE_REAL_FEE),TO_NUMBER(:CREDIT_VALUE),sysdate,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK,:PROCESS_TAG,:OLCOM_WORK_ID,:PROCESS_REMARK,:EPARCHY_CODE)

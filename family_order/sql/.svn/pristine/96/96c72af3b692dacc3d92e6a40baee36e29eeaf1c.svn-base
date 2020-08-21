@@ -1,0 +1,2 @@
+INSERT INTO td_m_device_factory(eparchy_code,device_type_code,factory_code,factory,update_time,update_staff_id,update_depart_id,remark)
+ VALUES(:EPARCHY_CODE,:DEVICE_TYPE_CODE,:FACTORY_CODE,:FACTORY,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK)

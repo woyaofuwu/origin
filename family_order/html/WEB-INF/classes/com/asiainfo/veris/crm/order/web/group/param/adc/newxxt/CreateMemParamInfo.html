@@ -1,0 +1,73 @@
+<!-- 表单 开始 -->
+<div class="c_form">
+	<ul class="ul">
+		<li class="li">
+			<span class="label">付费号码：</span>
+			<span class="e_input"><span>
+				<input jwcid="@TextField" name="pam_NOTIN_SERIAL_NUMBER" id="pam_NOTIN_SERIAL_NUMBER" type="text" disabled="true"
+						value="ognl:info.pam_NOTIN_SERIAL_NUMBER"
+						desc="付费号码：" />
+			</span> </span>
+			<span><input jwcid="@TextField" name="pam_GRP_USER_ID" id="pam_GRP_USER_ID"  value="ognl:info.pam_GRP_USER_ID" type="text"  style="display:none" /></span>
+			<span><input jwcid="@TextField" name="pam_GROUP_ID" id="pam_GROUP_ID"  value="ognl:info.pam_GROUP_ID" type="text" style="display:none" /></span>
+		</li>
+	</ul>
+</div>
+<!-- 表单 结束 -->
+
+<!-- 表格 开始 -->
+<div class="c_table c_table-row-10" id="powerDiv">
+	<table>
+		<thead>
+			<tr>
+				<th col="pam_NOTIN_IS_SELECTED">选择</th>
+				<th col="pam_NOTIN_OUT_SN">家长号码</th>
+				<th col="pam_NOTIN_OPER_TYPE">操作类型</th>
+				<th col="pam_NOTIN_REDIRECT">操作</th>
+			</tr>
+		</thead>
+
+		<tbody id="stuParamlistPart">
+			<tr jwcid="@Foreach" source="ognl:info.SNLIST" value="ognl:condition"  index="ognl:rowIndex" element="tr">
+
+				<td class="e_center">
+					<input  jwcid="@Checkbox"  name="ognl:'pam_NOTIN_ctag'+rowIndex" id="ognl:'pam_NOTIN_ctag'+rowIndex" value="ognl:condition.rowIndex" indexvalue="ognl:rowIndex"
+					checked="ognl:condition.checked == 'true'" onclick="validateCheckbox(this)"/>
+				</td>
+
+
+
+				<td class="edit">
+				   <span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="ognl:'pam_NOTIN_OUT_SN'+rowIndex" id="ognl:'pam_NOTIN_OUT_SN'+rowIndex"
+						  value="ognl:condition.pam_NOTIN_OUT_SN"	desc="家长号码：" maxsize="11"  datatype="mbphone"	   disabled="ognl:condition.pam_NOTIN_OUT_SN != null?'true':'false'"/>
+					</span></span>
+				</td>
+
+				<td class="edit">
+				  <span class="e_select"><span><span>
+					<select jwcid="@Select" name="ognl:'pam_NOTIN_OPER_TYPE'+rowIndex" id="ognl:'pam_NOTIN_OPER_TYPE'+rowIndex"	addDefault="false"
+							source="ognl:condition.OPER_TYPES"
+							value="ognl:condition.pam_NOTIN_OPER_TYPE"
+							textField="DATA_NAME" valueField="DATA_ID"  desc="操作类型" />
+				  </span></span></span>
+				</td>
+
+				<td class="e_center">
+					<textarea jwcid="@TextArea"  name="ognl:'pam_NOTIN_STU_PARAM_LIST'+rowIndex"   id="ognl:'pam_NOTIN_STU_PARAM_LIST'+rowIndex" value="ognl:condition.pam_NOTIN_STU_PARAM_LIST"  style="display:none"/>
+					<a jwcid="@Redirect" id="pam_NOTIN_REDIRECT" name="pam_NOTIN_REDIRECT"
+						paramlistname="ognl:'pam_NOTIN_STU_PARAM_LIST'+rowIndex"
+						rowindex="ognl:rowIndex"
+						radioName ="ognl:'pam_NOTIN_ctag'+rowIndex"
+						onclick="setMemParamInfo(this);"
+						afterAction="setSaveMemPage()"
+						value="设置成员参数"  />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 表格 结束 -->
+
+
+

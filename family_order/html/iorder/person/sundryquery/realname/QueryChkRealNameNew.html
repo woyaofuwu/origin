@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>用户实名制信息查询</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/sundryquery/realname/scripts/QueryChkRealNameNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">用户实名制信息查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div jwcid="QueryPart@Part" class="l_query">
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<!-- 查询区域 开始 -->
+			<div class="c_fn">
+				<div class="left" jwcid="ExportPart@Part">
+					<div jwcid="@Conditional" condition="ognl:infos.size > 0">
+						<span jwcid="@Export" name="exportFileUserPart"
+							ftpCode="personserv" fileType="{'.xls':'.xlsx'}" taskId="100966"
+							configFile="export/sundryquery/other/QueryUserRealNameInfoList.xml"
+							fileName="用户实名制查询信息" cond=QueryCondPart />
+						<button type="button" class="l_ml"
+							onclick="javascript:$.printArea('QueryListPart','打印预览','60%')">
+							<i class="e_ico-print"></i><span>打印</span>
+						</button>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:infos.size <= 0">
+						<div class="text">用户实名制信息查询</div>
+					</div>
+				</div>
+				
+				<div class="right">
+					<span class="label">服务号码：</span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+						value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" onenterAction="sel_bef_chkSearchForm();"
+						datatype="mbphone" maxsize="11" nullable="no" />
+					<span class="e_label"><input type="checkbox" jwcid="@Checkbox" id="cond_NORMAL_USER_CHECK" name="cond_NORMAL_USER_CHECK"
+						value="ognl:condition.cond_NORMAL_USER_CHECK" checked="checked" /><span>在网用户</span></span>
+					<span class="e_space e_space-2"></span>
+					<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="sel_bef_chkSearchForm();"> <span class="e_ico-search"></span><span>查询</span></button>
+					<span class="e_space"></span>
+					
+					<input jwcid="@Hidden" id="cond_USER_ID" name=cond_USER_ID value="ognl:condition.cond_USER_ID" desc="选择的用户" />
+				</div>
+			</div>
+			<!-- 查询区域  结束 -->
+		</div>
+		<div jwcid="QueryListPart@Part">
+			<div jwcid="QueryResultPart@Part" class="l_queryResult">
+				<!-- 提示 开始 -->
+				<div class="c_tip c_tip-red" name="prompting" id="prompting" style="display: none">提示：获取用户实名制信息无数据！</div>
+				<!-- 提示 结束 -->
+				<!-- 表格 开始 -->
+				<table name="printTable" id="printTable" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>
+							<th>服务号码</th>
+							<th>客户名称</th>
+							<th>用户标识</th>
+							<th ontap="$.sortTable(this, 'int')">实名制</th>
+							<th ontap="$.sortTable(this, 'int')">业务类型</th>
+							<th ontap="$.sortTable(this, 'int')">受理员工</th>
+							<th ontap="$.sortTable(this, 'int')">受理时间</th>
+							<th ontap="$.sortTable(this, 'int')">客户注销标志</th>
+							<th>原客户名称</th>
+							<th>原证件号码</th>
+							<th>备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td data-title="服务号码"><span jwcid="@Insert" value="ognl:info.PARA_CODE2" /></td>
+							<td data-title="客户名称" class="key"><span jwcid="@Insert" value="ognl:info.PARA_CODE10 " /></td>
+							<td data-title="用户标识"><span jwcid="@Insert" value="ognl:info.PARA_CODE3 " /></td>
+							<td data-title="实名制"><span jwcid="@Insert" value="ognl:info.PARA_CODE4" /></td>
+							<td data-title="业务类型"><span jwcid="@Insert" value="ognl:info.PARA_CODE7" /></td>
+							<td data-title="受理员工"><span jwcid="@Insert" value="ognl:info.PARA_CODE5 " /></td>
+							<td data-title="受理时间"><span jwcid="@Insert" value="ognl:info.PARA_CODE6" /></td>
+							<td data-title="客户注销标志"><span jwcid="@Insert" value="ognl:info.PARA_CODE11" /></td>
+							<td data-title="原客户名称"><span jwcid="@Insert" value="ognl:info.PARA_CODE12" /></td>
+							<td data-title="原证件号码"><span jwcid="@Insert" value="ognl:info.PARA_CODE13" /></td>
+							<td data-title="备注"><span jwcid="@Insert" value="ognl:info.REMARK" /></td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 表格 结束 -->
+			</div>
+			<div class="l_queryPage">
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart"
+					part="QueryListPart" listener="queryRealNameInfo" pageSize="10"
+					count="ognl:count"></div>
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+		<!-- 区域 结束 -->
+	</div>
+	<!-- 弹窗 开始 -->
+	<div id="UI-popup" name="UI-popup" jwcid="@Popup">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="UI-search">
+				<div class="c_header">
+					<div class="back" ontap="backPopup('UI-popup');">查询条件</div>
+				</div>
+				<div class="l_padding">
+					<!-- 表单 开始 -->
+					<div class="c_list c_list-s c_list-border c_list-line c_list-phone-col-1">
+						<ul>
+							<li class="required">
+								<div class="label">服务号码</div>
+								<div class="value"><input type="text"/></div>
+							</li>
+						</ul>
+					</div>
+					<!-- 表单 结束 -->
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button name="QUERY_BTN_PHONE" id="QUERY_BTN_PHONE" class="e_button-blue" ontap="sel_bef_chkSearchForm();"> <span class="e_ico-search"></span><span>查询</span></button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 弹窗 结束 -->
+</body>
+</html>

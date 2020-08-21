@@ -1,0 +1,194 @@
+<div class="c_list  c_list-col-3 c_list-border c_list-line">
+    <ul>
+        <li class="link" ontap="showPopup('postInfoPop','postInfoPopItem')">
+            <div class="label">邮件信息</div>
+            <div class="value">
+                <input type="text" readonly="readonly"/>
+            </div>
+            <div class="more"></div>
+        </li>
+    </ul>
+</div>
+<div class="c_space-c"></div>
+<!-- 区域 开始 -->
+<div jwcid="@Popup" name="postInfoPop" class="c_popup c_popup-fixed">
+    <div class="c_popupGroup">
+        <div class="c_popupItem" id="postInfoPopItem">
+            <div jwcid="@Any" id="PostInfoCmp" requiredField="ognl:requiredField" isHidden="ognl:isHidden">
+                <!-- 标题 开始 -->
+                <!--<div class="c_title e_cur-hand">-->
+                <!--<div class="text">邮寄信息</div>-->
+                <!--<div class="fn">-->
+                <!--<a href="#nogo" class="e_button" id="PostInfoVisiblPart"><i class="e_ico-fold"></i><span>隐藏邮寄信息</span></a>-->
+                <!--</div>-->
+                <!--</div>-->
+                <div class="c_header">
+                    <div class="back" ontap="hidePopup(this)">
+                        邮寄信息
+                    </div>
+                </div>
+                <!-- 标题 结束 -->
+                <div id="PostInfoPart">
+                    <div class="c_scroll c_scroll-float c_scroll-header">
+                        <div class="l_padding">
+                    <!-- 表单 开始 -->
+                    <div class="c_list  c_list-col-1 c_list-border c_list-line">
+                        <ul class="ul">
+                            <li class="link">
+                                <div class="label"><span id="span_POST_TAG" class="required">邮递标志</span></div>
+                                <div class="value">
+                        <span jwcid="@Segment" name="POST_TAG"
+                              source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('POSTINFO_POSTTAG')"
+                              textField="DATA_NAME" valueField="DATA_ID"
+                              value="ognl:(''.equals(postInfo.POST_TAG)||postInfo.POST_TAG==null)?'0':postInfo.POST_TAG"
+                              desc="邮递标志"
+                              onchange=""/>
+
+                                    <!--<span jwcid="@Select" class="e_select" name="POST_TAG"-->
+                                    <!--source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('POSTINFO_POSTTAG')"-->
+                                    <!--addDefault="false"-->
+                                    <!--textField="DATA_NAME" valueField="DATA_ID" value="ognl:postInfo.POST_TAG"-->
+                                    <!--desc="邮递标志"-->
+                                    <!--onchange=""/>-->
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label"><span id="span_POST_CYC">邮寄周期</span></div>
+                                <div class="value">
+					<span jwcid="@Segment" name="POST_CYC"
+                          source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('POSTINFO_POSTCYC')"
+                          textField="DATA_NAME" valueField="DATA_ID"
+                          value="ognl:(''.equals(postInfo.POST_CYC)||null == postInfo.POST_CYC)?'0':postInfo.POST_CYC"
+                          desc="邮寄周期"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="c_title">
+                        <div class="text">邮寄方式</div>
+                    </div>
+                    <div class="c_space-c"></div>
+                    <div class="c_list  c_list-col-2 c_list-border c_list-line">
+                        <ul>
+                            <li jwcid="@Foreach"
+                                source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MODIFYPOST_POSTTYPESET')"
+                                value="ognl:item" element="li">
+                                <div class="main">
+                                    <span jwcid="@Insert" value="ognl:item.DATA_NAME"/>
+                                </div>
+                                <div class="fn">
+                                    <input type="checkbox" class="e_checkbox" jwcid="@Checkbox"
+                                           value="ognl:item.DATA_ID" name="POST_TYPESET"
+                                           checked="ognl:postInfo.POST_TYPESET==item.DATA_ID? true :false"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="c_space-c"></div>
+                    <div class="c_list  c_list-col-2 c_list-border c_list-line" id="PostTypeContentPart">
+                        <ul>
+                            <li jwcid="@Foreach"
+                                source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('POSTTYPE_CONTENT')"
+                                value="ognl:item" element="li">
+                                <div class="main"><span jwcid="@Insert" value="ognl:item.DATA_NAME"/></div>
+                                <div class="fn">
+                                    <input type="checkbox" class="e_checkbox" jwcid="@Checkbox"
+                                           value="ognl:item.DATA_ID" name="POSTTYPE_CONTENT"
+                                           checked="ognl:postInfo.POSTTYPE_CONTENT==item.DATA_ID?true:false"/>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="c_space-c"></div>
+                    <div class="c_list  c_list-col-1 c_list-border c_list-line">
+                        <ul class="ul">
+                            <li class="li col-3" id="EmailTypeContentPart">
+                                <div class="label"><span id="span_EMAILTYPE_CONTENT">Email移动E信</span></div>
+                                <div class="c_fn">
+                                    <div class="right">
+                                        <ul>
+                                            <li jwcid="@Foreach"
+                                                source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('EMAILTYPE_CONTENT')"
+                                                value="ognl:item" element="li">
+                                                <label>
+                                                    <input type="checkbox" class="e_checkbox" jwcid="@Checkbox"
+                                                           value="ognl:item.DATA_ID" name="EMAILTYPE_CONTENT"
+                                                           checked="ognl:postInfo.EMAILTYPE_CONTENT==item.DATA_ID?true:false"/>
+                                                    <span jwcid="@Insert" value="ognl:item.DATA_NAME"/>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="li col-3" id="MmsTypeContentPart">
+                                <div class="label"><span id="span_MMSTYPE_CONTENT">MMS</span></div>
+                                <div class="c_fn">
+                                    <div class="right">
+                                        <ul>
+                                            <li jwcid="@Foreach"
+                                                source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MMSTYPE_CONTENT')"
+                                                value="ognl:item" element="li">
+                                                <label>
+                                                    <input type="checkbox" class="e_checkbox" jwcid="@Checkbox"
+                                                           value="ognl:item.DATA_ID" name="MMSTYPE_CONTENT"
+                                                           checked="ognl:postInfo.MMSTYPE_CONTENT==item.DATA_ID?true:false"/>
+                                                    <span jwcid="@Insert" value="ognl:item.DATA_NAME"/>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="c_space-c"></div>
+                    <div class="c_list  c_list-col-1 c_list-border c_list-line">
+                        <ul class="ul">
+                            <li class="li col-2">
+                                <div class="label"><span id="span_POST_ADDRESS">邮递地址</span></div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="POST_ADDRESS" value="ognl:postInfo.POST_ADDRESS"
+                                           desc="邮递地址"/>
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label"><span id="span_ZIP_CODE">邮递编码</span></div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="ZIP_CODE" value="ognl:postInfo.ZIP_CODE"
+                                           desc="邮递编码" datatype="numeric" equsize="6"/>
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label"><span id="span_POST_NAME">邮递名称</span></div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="POST_NAME" value="ognl:postInfo.POST_NAME"
+                                           desc="邮递名称"/>
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label"><span id="span_POST_FAX_NBR">传真电话</span></div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="POST_FAX_NBR" value="ognl:postInfo.POST_FAX_NBR"
+                                           desc="传真电话"/>
+                                </div>
+                            </li>
+                            <li class="link">
+                                <div class="label"><span id="span_POST_EMAIL">Email</span></div>
+                                <div class="value">
+                                    <input jwcid="@TextField" name="POST_EMAIL" value="ognl:postInfo.POST_EMAIL"
+                                           desc="Email地址"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 表单 结束 -->
+                </div>
+            </div>
+            <!-- 区域 结束 -->
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

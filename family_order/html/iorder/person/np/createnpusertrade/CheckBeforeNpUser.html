@@ -1,0 +1,124 @@
+﻿<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<title>携转查验操作</title>
+	<script jwcid="@Script" type="text/JavaScript" src="iorder/person/np/createnpusertrade/scripts/checkbeforenpuser.js"></script>
+</head>
+<body jwcid="@Body" id="createNpUserbody">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">携转查验操作</div>
+	</div>
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	  <div class="l_padding l_padding-u">
+		<div class="c_title">
+                <div class="text">基本信息</div>
+            </div>
+		<div jwcid="BaseInfoPart@Part">
+                <div class="c_list c_list-s c_list-col-2 c_list-border c_list-line">
+                    <ul>
+                        <li class="required">
+                            <div class="label">携转号码</div>
+                            <div class="value">
+                                <span class="e_mix">
+                                    <input name="SERIAL_NUMBER"
+                                           jwcid="@TextField"
+                                           value=""
+                                           onblur="checkMphone()"
+                                           datatype="mbphone" nullable="no"
+                                           desc="新开户号码"/>
+                                     <button id="CHECK_SN_BTN" type="button"
+                                             class="e_button-blue">
+                                         <span class="e_ico-check"></span>
+                                         <span>校验</span>
+                                     </button>
+                                     <span id="SN_SUCCESS_LABEL"
+                                           class="e_label e_green"
+                                           style="display: none; width: 3em;"><span class="e_ico-ok"></span></span>
+                                     <span id="SN_ERROR_LABEL"
+                                           class="e_label e_red"
+                                           style="display: none; width: 3em;"><span class="e_ico-error"></span></span>
+                               </span>
+                            </div>
+                        </li>
+                        <!-- 
+                         <li id="span_PSPT_TYPE_CODE">
+                         <div class="label">证件类型</div>
+                         <div class="value">
+                       	 	<span jwcid="@Select" name="PSPT_TYPE_CODE"
+                              source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_S_PASSPORTTYPE2')"
+                              textField="DATA_NAME" valueField="DATA_ID"
+                              value=""
+                              optionWidth="30" optionColumn="2"
+                              optionAlign="right" addDefault="false"
+                              desc="证件类型"></span>
+                          </div>
+                    	</li>
+                    	<li class="link" id="span_PSPT_ID">
+                    		<div class="label">证件号码</div>
+                    		<div class="value">
+                      		  <div class="e_mix">
+                          		  <input jwcid="@TextField" name="PSPT_ID" value="" maxsize="32" desc="证件号码"/>
+                       		 </div>
+                   			</div>
+               			</li>
+               			 -->
+                        <!-- <li class="required">
+                            <div class="label">归属运营商</div>
+                            <div class="value">
+                                <span name="HOME_OPERATOR" jwcid="@Select"
+                                      source="ognl:pageutil.getStaticList('TD_S_NPYYS')"
+                                      textField="DATA_NAME" valueField="DATA_ID"
+                                      disabled="false" desc="归属运营商" nullable="no"></span>
+                            </div>
+                        </li>
+                        <li class="required merge-2">
+                            <div class="label">网络类型</div>
+                            <div class="value">
+                                <span name="NETWORK_TYPE" jwcid="@Select"
+                                      source="ognl:pageutil.getStaticList('TD_S_NPNET')"
+                                      textField="DATA_NAME" valueField="DATA_ID"
+                                      disabled="false" desc="网络类型" nullable="no"></span>
+                            </div>
+                        </li>
+                         -->         
+                    <li>
+                    </li>
+					<li id="AUTH_AREA" class="link required" >
+					<div class="label">授权码：</div>
+					  <div class="value">
+						<div class="e_mix">
+							<input jwcid="@TextField" name="AUTH_CODE" id="AUTH_CODE" value=""
+								 maxlength="6" desc="授权码" nullable="no"/>
+						</div>
+					  </div>
+					</li>
+					<li id="AUTH_EXPIRED_AREA" class="link required" >
+					<div class="label">授权码有效期</div>
+					<div class="value">
+					<input type="text" jwcid="@DateField" dropDown="true" format="yyyy-MM-dd HH:mm" time="true" name="AUTH_CODE_EXPIRED" id="AUTH_CODE_EXPIRED" value=""  minName="ognl:@com.ailk.bizcommon.util.SysDateMgr@getSysDateYYYYMMDDHHMMSS()"
+							 maxName="" desc="授权码有效期" nullable="no" onafterAction="verifyDate(this,'less')"/>
+					</div>					
+					</li>
+                    </ul>
+                </div>
+            </div>
+        <div jwcid="CustInfoPart@icsserv:CustInfoField" isRealName="true"
+                     blackTradeType="40" hideUserTypeCode="true" hideEmail="true" requiredField="PSPT_TYPE_CODE,PSPT_ID" ></div>
+         <div class="c_space"></div>
+         <div class="c_submit c_submit-center">
+ 				<button jwcid="@Button" accesskey="Y" class="e_button-r e_button-l e_button-green" name="CSSUBMIT_BUTTON" id="CSSUBMIT_BUTTON" onclick="onTradeSubmit()">
+				<i jwcid="@Any" class="e_ico-submit"></i><span>提交</span>
+				</button>						
+			</div>
+         <!-- <div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="submitBeforeCheck()" isReset="true" disabledBtn="false" area="BaseInfoPart,CustInfoPart,HiddenPart" element="div"/> -->
+	  </div>	
+	</div>
+	<div jwcid="HiddenPart@Part">
+		<input jwcid="@Hidden" name="NP_PAGE" value="NP_PAGE" desc="是否为携转界面，过滤掉不符合规范证件"/>
+	</div>
+
+</body>
+</html>

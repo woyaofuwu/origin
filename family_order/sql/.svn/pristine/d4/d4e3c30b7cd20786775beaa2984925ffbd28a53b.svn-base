@@ -1,0 +1,2 @@
+INSERT INTO tf_f_accountdeposit_trans(eparchy_code,partition_id,acct_id,deposit_code,bcyc_id,money,start_acyc_id,end_acyc_id,input_time,deal_time,deal_tag)
+ VALUES(:EPARCHY_CODE,:PARTITION_ID,TO_NUMBER(:ACCT_ID),:DEPOSIT_CODE,:BCYC_ID,TO_NUMBER(:MONEY),:START_ACYC_ID,:END_ACYC_ID,TO_DATE(:INPUT_TIME,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:DEAL_TIME,'YYYY-MM-DD HH24:MI:SS'),:DEAL_TAG)

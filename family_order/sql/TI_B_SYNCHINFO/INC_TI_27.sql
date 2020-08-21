@@ -1,0 +1,3 @@
+BEGIN 
+  p_ss_grpincr(:TRADE_ID,:MODIFY_TAG,:USER_ID,:SYNC_SEQUENCE);
+ END;

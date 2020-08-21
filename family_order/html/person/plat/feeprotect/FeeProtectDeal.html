@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>增值业务计费安全开关办理</title>
+<script  jwcid="@Script" src="person/plat/feeprotect/scripts/feeprotectdeal.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="3701"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	
+	 <!-- 三户展示组件 开始 -->
+		<div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+	 <!-- 三户展示组件 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div jwcid="QueryListPart@Part">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">业务受理</div>
+		</div>
+		<!-- 标题 结束 -->
+
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" ><div class="c_table">
+		<table  jwcid="@Table" name="userDiscntTable"  id="userDiscntTable" scroll="true">
+				<tr>											
+					<th col="DISCNT_CODE" style="width:10%"><span>安全保护类型编码</span></th>
+					<th col="DISCNT_NAME"><span>安全保护类型</span></th>
+					<th col="DISCNT_START_DATE" style="width:10%"><span>开关生效时间</span></th>
+					<th col="DISCNT_END_DATE" style="width:10%"><span>开关失效时间</span></th>
+				</tr>
+			<tr jwcid="@Foreach" source="ognl:feeProtectDiscntInfos" value="ognl:feeProtectDiscntInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td> <div jwcid="@Insert" value="ognl:feeProtectDiscntInfo.ELEMENT_ID"></div></td>
+						<td><label jwcid="@Any" for="ognl:'DISCNT_'+rowIndex+'_'+feeProtectDiscntInfo.ELEMENT_ID" title="ognl:feeProtectDiscntInfo.ELEMENT_EXPLAIN">
+								<input type="checkbox"
+									   id="ognl:'DISCNT_'+rowIndex+'_'+feeProtectDiscntInfo.ELEMENT_ID" 
+									   name="ognl:'DISCNT_'+rowIndex+'_'+feeProtectDiscntInfo.ELEMENT_ID"
+															jwcid="@Checkbox" value="ognl:feeProtectDiscntInfo.ELEMENT_ID" 
+															package_id="ognl:feeProtectDiscntInfo.PACKAGE_ID"
+															element_id="ognl:feeProtectDiscntInfo.ELEMENT_ID"
+															element_name="ognl:feeProtectDiscntInfo.ELEMENT_NAME"
+															checked="ognl:feeProtectDiscntInfo.CHECKED" 
+															oldchecked="ognl:feeProtectDiscntInfo.OLD_CHECKED"
+															start_date="ognl:feeProtectDiscntInfo.START_DATE"
+															end_date="ognl:feeProtectDiscntInfo.END_DATE"
+															inst_id="ognl:feeProtectDiscntInfo.INST_ID"
+															onClick="clickElement(this);"/>
+													<span jwcid="@Insert" value="ognl:feeProtectDiscntInfo.ELEMENT_NAME"></span>
+												</label>
+						</td>
+						<td>
+								<div class="e_input"><input	type="text" jwcid="@TextField" name="ognl:'DISCNT_START_'+feeProtectDiscntInfo.ELEMENT_ID" 
+												value="ognl:feeProtectDiscntInfo.START_DATE" readonly="true" desc="开关生效日期" 
+												style="ognl:'true'==feeProtectDiscntInfo.CHECKED?'display:':'display:none'"/>
+												</div>
+						</td>
+						<td>
+								<div class="e_input"><input	type="text" jwcid="@TextField" name="ognl:'DISCNT_END_'+feeProtectDiscntInfo.ELEMENT_ID"
+												value="ognl:feeProtectDiscntInfo.END_DATE" readonly="true" desc="开关失效日期" 
+												style="ognl:'true'==feeProtectDiscntInfo.CHECKED?'display:':'display:none'"/> 
+												</div>
+						</td>
+					</tr>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+   <!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeAction()" area="AuthPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+<!--</div> -->
+<!-- 隐藏区域开始 -->
+	<div jwcid="hiddenPart@Part">
+	<input jwcid="@Any" type="text" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value="" style="display:none"/>
+	</div>
+<!-- 隐藏区域结束 -->
+
+</div></div></body>
+</html>

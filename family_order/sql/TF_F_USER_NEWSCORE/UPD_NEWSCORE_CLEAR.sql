@@ -1,0 +1,1 @@
+UPDATE tf_f_user_newscore SET score=0,rsrv_num2=score WHERE user_id=:USER_ID

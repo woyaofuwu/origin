@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html size="s"  >
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="right"  jwcid="urlSenderForm@Part">
+		<!-- 滚动（替换为 java 组件） 开始 -->
+		<div class="c_title">
+			<div class="text">转派员工信息</div>
+		</div>
+		<div class="c_space"></div>
+		<div class="l_padding l_padding-u">
+		<div class="c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1" id="StaffTransferItem">
+			<ul>
+				<li class="">
+		             <div class="label">url地址：</div>
+		             <div class="value">
+		                 <input  type="text" id="pattr_url" name="pattr_url"   desc="url地址"   />
+		             </div>
+		        </li>
+		        <li class="">
+		             <div class="label">SVC：</div>
+		             <div class="value">
+		                 <input  type="text" id="pattr_svc" name="pattr_svc"   desc="SVC"  />
+		             </div>
+		        </li>
+				<li class="link required">
+					<div class="label">参数信息：</div>
+		             <div class="value">
+		                 <input jwcid="@TextField" id="pattr_paramName" name="pattr_paramName" value="ognl:pattr.paramName"  desc="参数信息" nullable="no"  />
+		             </div>
+				</li>
+			</ul>
+			
+			<ul>
+			</ul>
+			
+		</div>	
+		<div class="c_space"></div>
+		<div class="c_space"></div>
+		
+		<div class="c_list c_list-line c_list-border c_list-col-1" >
+			<ul>
+				<li class="link required">
+<!-- 					<textarea style="width:100%;" class="e_textarea-row-4" id="pattr_paramContent" name="pattr_paramContent" ></textarea>
+ -->					<textarea id="pattr_paramContent" type="text" style="width:100%;" value="ognl:content"  name="pattr_paramContent" desc="备注" class="e_textarea-row-4"></textarea>
+<!-- 					<textarea  jwcid="@TextField" name="pattr_paramContent" id="pattr_paramContent" value="" rows="10"desc="XML串"/>
+ -->				</li>
+			</ul>
+		</div>
+		<div class="c_space"></div>
+		<!-- 提交 开始 -->
+		<div class="c_submit c_submit-center">
+	<!-- 				<button type="button" class="e_button-r e_button-l e_button-navy" onclick="$.nav.close();">取消</button>
+	 -->				<button type="button" class="e_button-r e_button-l e_button-green" onclick="checkConfirm(this);">提交</button>
+		</div>
+		<!-- 提交 结束 -->
+		<div class="c_space"></div>
+		</div>
+		</div>
+	</div>
+	<!-- 弹窗 开始 -->
+
+<script type="text/javascript">
+function  checkConfirm(obj){
+	debugger;
+	if($.validate.verifyAll("StaffTransferItem")){
+		MessageBox.confirm("确认提示", "是否继续操作?", function(btn){
+			if(btn!="cancel"){
+				$.beginPageLoading("请稍后...");
+				var param="&pattr_url="+$("#pattr_url").val()+"&pattr_svc="+$("#pattr_svc").val()+"&pattr_paramName="+$("#pattr_paramName").val()+"&pattr_paramContent="+$("#pattr_paramContent").val();
+				ajaxSubmit("urlSenderForm","submit",null ,null,
+				function(data){
+					$.endPageLoading();
+					MessageBox.success("发送成功！返回数据为：", data[0].get("returnVal"),function(){
+		    		});
+				},
+				function(error_code,error_info,derror){
+					$.endPageLoading();
+					showDetailErrorInfo(error_code,error_info,derror);
+				});
+			}
+			
+			
+		}, null, null);	
+	}
+	
+}
+
+function setReturnValue(el){
+	var staffId = $(el).attr("staff_id");
+	$("#pattr_newStaffId").val(staffId);
+	backPopup("popup08", "staffPopupItem", true);
+}
+</script>
+
+</body>
+</html>

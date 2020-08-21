@@ -1,0 +1,1 @@
+select t.ec_id,t.discnt_rate,t.approval_no,t.create_time,t.create_staff_id from TF_O_DISCNT_APPROVAL t where t.approval_rslt = '1' and t.ec_id = :EC_ID

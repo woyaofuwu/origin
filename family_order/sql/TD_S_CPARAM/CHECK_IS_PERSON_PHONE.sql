@@ -1,0 +1,7 @@
+SELECT COUNT(*) RECORDCOUNT
+  FROM tf_f_user_product p
+ WHERE p.user_id = TO_NUMBER(:USER_ID)
+   AND P.PARTITION_ID = MOD(TO_NUMBER(:USER_ID), 10000)
+   AND p.main_tag = '1'
+   AND p.brand_code in ('G010','G001','G002')
+   AND SYSDATE BETWEEN P.START_DATE AND P.END_DATE  

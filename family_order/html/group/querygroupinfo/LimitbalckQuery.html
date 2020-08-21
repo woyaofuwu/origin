@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/querygroupinfo/LimitbalckQuery.js"></script>   
+</head>
+<title>用户受限表查询</title>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div> 
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form c_form-col-2 c_form-label-7">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">查询方式：</span>
+				<span class="e_select"><span><span>
+					<select name="cond_LIMITBLACK_QUERY_WAY" jwcid="@Select" 
+							textField="DATA_NAME" valueField="DATA_ID" 
+							source="ognl:pageutil.getStaticList('LIMITBLACK_QUERY_WAY')" 
+							value="ognl:condition.cond_LIMITBLACK_QUERY_WAY" desc="查询方式" 
+							onchange="chgQryType()" 
+							nullable="no" addDefault="false"/>
+				</span></span></span>
+			</li> 
+			
+			<li class="li" id="QueryTypeOne">
+				<span class="label">用户手机号码：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" nullable="no" value="ognl:condition.cond_SERIAL_NUMBER" desc="用户手机号码"/>
+					</span></span>
+				</span>
+			</li> 
+			
+			<li class="li" id="QueryTypeTwo" style="display:none">
+				<span class="label">企业名称：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="cond_CUST_NAME" id="cond_CUST_NAME" nullable="no" value="ognl:condition.cond_CUST_NAME" desc="企业名称"/>
+					</span></span>
+				</span>
+			</li> 
+			
+			<li class="li" id="QueryTypeTHREE" style="display:none">
+				<span class="label">EC基本接入号：</span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField" name="cond_BANK_ACCT_NO" id="cond_BANK_ACCT_NO" nullable="no" value="ognl:condition.cond_BANK_ACCT_NO" desc="EC基本接入号"/>
+					</span></span>
+				</span>
+			</li> 
+			
+		</ul>	
+		<div class="submit"><button class="e_button-form" id="bquery" onclick="return qryClick()" ><i class="e_ico-search"></i><span>查询</span></button></div>
+	</div>
+	</div>
+	</div>
+	
+<div class="c_box">
+	<!-- 表格 开始 -->
+	<div class="fctTop e_clear">
+			<div align="right">
+				<div class="button">
+					<ul>
+					 <button class="e_button-form" id="delBtn" onclick="return deleteRecord()"><i class="e_ico-delete"></i><span>删除</span></button>
+					 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="8806" 
+						config="export/querygroupinfo/LimitbalckQuery.xml"
+						fileName="用户受限表查询导出" cond="QueryCondPart"
+						ftpSite="groupserv" beforeAction="" action="" /> 
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+	<div jwcid="groupNetInfo@Part" >
+	<div class="c_scroll c_scroll-x c_scroll-table-15" >
+	<div class="c_table" >
+		<table jwcid="groupNetInfoTable@Table" name="groupNetInfoTable"  rowClick="tableRowClick">
+			<thead>
+				<tr>
+		  			<th><input type="checkbox" id="works_ctrl" name="works_ctrl" onclick="checkedAll('record', checked)"/></th>
+					<th onclick="Wade.dom.sortTable('dataList',0,'string')">用户手机号码</th>
+					<th onclick="Wade.dom.sortTable('dataList',1,'string')">集团名称</th>
+					<th onclick="Wade.dom.sortTable('dataList',2,'string')">EC接入号</th>
+					<th onclick="Wade.dom.sortTable('dataList',3,'string')">加入受限名单时间</th>  
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td><input type="checkbox" id="record" name="record" jwcid="@Any" value="ognl:(info.SERIAL_NUMBER+'|'+info.BIZ_IN_CODE)"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.BIZ_IN_CODE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="QueryCondPart" pageSize="15" part="groupNetInfo" listener="queryInfos" count="ognl:infoCount" ></div>
+	<!-- 翻页 结束 -->
+</div>	
+</div>
+</div>
+</div>
+</body>
+</html> 	
+			

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<title>集团产品统一付费查询</title>
+<script jwcid="@Script" language="JavaScript" src="scripts/group/querygroupinfo/GrpSpecialPayQuery.js"></script>   
+</head>
+<body jwcid="@Body">
+    <div class="m_wrapper">
+        <div class="m_wrapper2">
+        <!-- 提示区域 开始 --> 
+            <div class="c_box" jwcid="refreshHintBar@Part">
+			    <!-- 提示 开始 -->
+	            <div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+                <!-- 提示 结束 --> 
+			    </div>
+			    <!-- 提示区域 结束 --> 
+			<!-- 查询区域 开始 -->
+            <div class="c_box">
+                <!-- 标题 开始 -->
+                <div class="c_title">
+                    <div class="text">查询条件</div>
+                </div>
+                <!-- 标题 结束 -->
+                <!-- 表单 开始 -->
+                <div class="c_form c_form-col-3 c_form-label-7" jwcid="QueryCondPart@Part">
+                    <ul class="ul">
+                        <li class="li"><span class="label">查询方式：</span><span class="e_select"><span><span>
+                            <select name="cond_ENET_INFO_QUERY" jwcid="@Select" 
+							    textField="DATA_NAME" valueField="DATA_ID" 
+							    source="ognl:pageutil.getStaticList('GRP_SPECIALPAY_QUERY')" 
+							    value="ognl:condition.cond_ENET_INFO_QUERY" desc="查询方式" 
+							    onchange="chgQryType()" nullable="no" addDefault="false"/></span></span></span>
+						</li>
+						<li class="li" id="QryByEcCode">
+						    <span class="label" id="ConditionLabel"><span class="e_required">集团客户编码：</span></span>
+						        <span class="e_input"><span>
+						            <input type="text" id="cond_GROUP_ID" name="cond_GROUP_ID" jwcid="@TextField" value="ognl:condition.cond_GROUP_ID" desc="集团编码" maxsize="20" />
+						    </span></span>
+						</li>
+						<span id="QryByMebSerial" style="display:none">
+						<li class="li">
+						    <span class="label" id="ConditionLabel"><span class="e_required">手机号码：</span></span>
+						        <span class="e_input"><span>
+						            <input type="text" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="@TextField" value="ognl:condition.cond_SERIAL_NUMBER" desc="成员服务号码" maxsize="20"/>
+						    </span></span>
+						</li>
+						</span>
+						<li class="li"><span class="label">状态：</span>
+						    <span class="e_select"><span><span>
+						        <select jwcid="@Select" name="cond_STATE" textField="DATA_NAME" valueField="DATA_ID" 
+						            source="ognl:pageutil.getStaticList('SPECIAL_VALID_FLAG')" 
+						            value="ognl:condition.cond_STATE" desc="状态" class="e_select"/>
+						    </span></span></span>
+						</li>
+					</ul>
+					<div class="submit">
+					    <button class="e_button-form" id="bquery" onclick="return qryClick()" >
+					        <i class="e_ico-search"></i><span>查询</span>
+					    </button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				
+				
+				<!-- 表格 开始 -->
+				<div jwcid="groupSpecialInfo@Part" element="div">
+				    <div class="fctTop e_clear">
+				        <div align="right">
+				            <div class="button">
+				                <ul>
+				                 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="8803" 
+				                     config="export/querygroupinfo/GrpSpecialPayInfoExport.xml" 
+				                     fileName="集团产品统一付费查询" cond="QueryCondPart" 
+				                     ftpSite="groupserv" beforeAction="" action="" />
+				                </ul>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="c_scroll c_scroll-table-15" jwcid="table4Print@Part" optimize="true" >
+				    <div class="c_table c_table-row-10" >
+				        <table jwcid="@Table" name="groupSpecialInfoTable" id="groupSpecialInfoTable" >
+				            <thead>
+				                <tr>
+				                    <th>集团客户编码</th>
+				                    <th>集团客户名称</th>
+				                    <th>集团帐户标识</th>
+				                    <th>帐户名称</th>
+				                    <th>帐户类型</th>
+				                    <th>银行名称</th>
+				                    <th>银行行号</th>
+				                    <th>手机号吗</th>
+				                    <th>付费帐目</th>
+				                    <th>付费额度</th>
+				                    <th>开始时间</th>
+				                    <th>截止时间</th>
+				                    <th>办理时间</th>
+				                    <th>办理工号</th>
+				                    <th>市县</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+				                    <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.ACCT_ID" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.PAY_NAME" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE',info.PAY_MODE_CODE)" raw="false"/></td>
+				                    <td>
+				                        <span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_B_BANK','BANK_CODE','BANK',info.BANK_CODE)" raw="false"/>
+				                    </td>
+				                    <td><span jwcid="@Insert" value="ognl:info.BANK_ACCT_NO" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+				                    <td><span>
+				                        <a jwcid="@Redirect" value="ognl:info.ITEM_NAME" payitem_code="ognl:info.PAYITEM_CODE"
+				                         onclick="$.popupPage('group.querygroupinfo.GrpPayDetailItem', 'querypaydetailitem', '&cond_PAYITEM_CODE=' + $(this).attr('payitem_code'),'综合账目明细','680','480')"/>
+				                         </span>
+				                    </td>
+				                    <td><span jwcid="@Insert" value="ognl:info.PARA_CODE9" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.START_CYCLE_ID" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.PARA_CODE11" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd',info.PARA_CODE12)" raw="false" /></td>
+				                    <td><span jwcid="@Insert" value="ognl:info.PARA_CODE13" raw="false"/></td>
+				                    <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',info.CITY_CODE)" raw="false"/></td>
+				                </tr>
+				            </tbody>
+				        </table>
+				    </div>
+				    <!-- 表格 结束 -->
+				    </div>
+				    <!-- 翻页 开始 -->
+				    <div jwcid="@NavBar" name="PageNav" id="PageNav" cond="QueryCondPart" part="groupSpecialInfo" listener="queryInfos" pageSize="20" count="ognl:infoCount" ></div>
+				    <!-- 翻页 结束 -->
+				</div>
+			<!-- 查询区域 结束 -->
+			</div>
+</div></div>
+</body>
+</html> 

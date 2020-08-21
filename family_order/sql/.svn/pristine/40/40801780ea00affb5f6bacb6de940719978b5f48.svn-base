@@ -1,0 +1,2 @@
+INSERT INTO td_s_task(task_id,task_name,plug_type,plug_name,to_number(channel_id),start_date,end_date,use_tag,link_mode,user_name,pass_code,sid)
+ VALUES(:TASK_ID,:TASK_NAME,:PLUG_TYPE,:PLUG_NAME,to_number(:CHANNEL_ID),TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),to_number(:USE_TAG),:LINK_MODE,:USER_NAME,:PASS_CODE,:SID)

@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>产品转换查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/producttrans/scripts/QueryProductTrans.js"></script>
+<script jwcid="@Script" src="scripts/csserv/common/date/dateutils.js"></script>
+<script jwcid="@Script" src="person/changeproduct/scripts/changeproduct.js"></script>
+<script jwcid="@Script" src="person/changeproduct/scripts/changeproductextend.js"></script>
+
+ <script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取产品转换清单无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">产品转换查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+					    <li class="li">
+							<span class="label"><span class="e_required">产品A：</span></span>
+							<span class="e_elements">
+								<button type="button" class="e_button-right" name="productSelectBtnA" id="productSelectBtnA" onclick="selectProductA()">
+								<i class="e_ico-menu"></i><span>产品目录</span></button>
+								<span class="e_input e_input-left"><span>
+								<input type="text" jwcid="@TextField"  nullable="no" readonly=true value="ognl:cond.PRODUCT_ID_A" text="ognl:cond.PRODUCT_NAME_A"
+								       name="cond_PRODUCT_NAME_A" id="cond_PRODUCT_NAME_A" desc="产品A"/>
+								</span></span>
+							</span>	
+				        </li>	
+				        <li class="li">
+							<span class="label"><span class="e_required">产品B：</span></span>
+							<span class="e_elements">
+								<button type="button" class="e_button-right" name="productSelectBtnB" id="productSelectBtnB" onclick="selectProductB()">
+								<i class="e_ico-menu"></i><span>产品目录</span></button>
+								<span class="e_input e_input-left"><span>
+								<input type="text" jwcid="@TextField"  nullable="no" readonly=true value="ognl:cond.PRODUCT_ID_B" text="ognl:cond.PRODUCT_NAME_B"
+								       name="cond_PRODUCT_NAME_B" id="cond_PRODUCT_NAME_B" desc="产品B"/>
+								</span></span>
+							</span>	
+				        </li>	
+
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryProductTransInfo(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+		  	     </div>	  	     
+		  	     <div class="c_scroll c_scroll-table-10">
+				 <div class="c_table ">
+					<table jwcid="@Table" name="printTable" id="printTable" onclick="tableedit.clickRow()">
+						<thead>
+						<tr>
+							<th id="col_X_TAG" style="display:none">TAG</th>
+			  				<th>产品A</th>
+							<th>产品A编码</th>
+							<th>产品B</th>
+							<th>产品B编码</th>					
+							<th>是否可以转换</th>
+							<th>办理渠道</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td style="display:none"></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME_A" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID_A" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME_B" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_ID_B" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TRANS_TAG==0 ?'是':'否'" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="false"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryProductTransInfo" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+	<input jwcid="@Hidden" name="PROUDCT_A_OR_B" id="PROUDCT_A_OR_B" value=""/>
+	<input jwcid="@Hidden" name="STAFF_EPARCHY_CODE" id="STAFF_EPARCHY_CODE" value="ognl:getVisit().getStaffEparchyCode()"/>
+	<div jwcid="productTree1@csserv:ProductSelect" productTypeCode="0000" afterAction="showproductID(productId,productName);" monitor="USER_PRODUCT_ID_A" element="div"></div>
+    <div jwcid="productTree2@csserv:ProductSelect" productTypeCode="0000" afterAction="showproductID(productId,productName);" monitor="USER_PRODUCT_ID_B" element="div"></div>
+<!-- 区域 结束 -->
+</div></div>
+	
+</body>
+</html>

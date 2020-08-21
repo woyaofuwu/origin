@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/valuecard/scripts/giveValueCardDetailed.js"></script>
+</head>
+<body jwcid="@Body" >
+<div class="m_wrapper">
+<div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 条件开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">分公司：</span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE" source="ognl:pageutil.getList('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', 'AREA_LEVEL', '30')"
+	                            textField="AREA_NAME"  valueField="AREA_CODE" titleField="AREA_NAME" value="ognl:condition.cond_CITY_CODE"
+	                            desc="分公司"  disabled="ognl:condition.cityDisabledFlag"
+	                        />
+					</span></span></span>
+			</li>
+			<li class="li" >
+			<span class="label"><span >部门编码：</span></span>
+				<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_UPDATE_DEPART_ID" value="ognl:condition.cond_UPDATE_DEPART_ID" 
+						desc="部门编码"  maxsize="8" nullable="yes" disabled="ognl:condition.departDisabledFlag" />
+				</span></span>
+			</li>
+			<li class="li" >
+				<span class="label"><span>审批工单号：</span></span>
+					<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_STAFF_ID" value="ognl:condition.cond_STAFF_ID"  
+						  desc="审批工单号" nullable="yes"  />
+				   </span></span>
+			</li>			
+			<li class="li" >
+			<span class="label"><span >客户号码：</span></span>
+				<span class="e_input"><span>
+						<input type="text"  jwcid="@TextField" name = "cond_RSRV_STR7" value="ognl:condition.cond_RSRV_STR7" 
+						desc="客户号码"  maxsize="12" nullable="yes"/>
+				</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span >补录开始日期：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"   format="yyyy-MM-dd"  readOnly="true"
+							   afterAction="checkStartDate()" value="ognl:condition.cond_START_DATE"  nullable="yes" 
+							   desc="补录操作开始日期" maxName="cond_END_DATE"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span >补录结束日期：</span></span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  format="yyyy-MM-dd"  readOnly="true"
+									afterAction="getEndDate()"	value="ognl:condition.cond_END_DATE"  nullable="yes" 
+									desc="补录操作结束日期" mixName="cond_END_DATE"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span >录入开始日期：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="cond_START_RSRV_STR5_DATE" id="cond_START_RSRV_STR5_DATE"   format="yyyy-MM-dd"  readOnly="true"
+							   value="ognl:condition.cond_START_RSRV_STR5_DATE"  nullable="yes" 
+							   desc="录入开始日期" maxName="cond_START_RSRV_STR5_DATE"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label"><span >录入结束日期：</span></span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="cond_END_RSRV_STR5_DATE" id="cond_END_RSRV_STR5_DATE"  format="yyyy-MM-dd"  readOnly="true"
+									value="ognl:condition.cond_END_RSRV_STR5_DATE"  nullable="yes" 
+									desc="录入结束日期" mixName="cond_END_RSRV_STR5_DATE"/>
+					</span></span>
+			</li>			
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryValueCardInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+	<!-- 条件结束-->
+	
+  <!-- 表格 开始 -->
+  <div class="c_box">
+	<div class="c_title">
+		<div class="text">查询结果</div>	
+         <!-- 导出-->
+		<div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201606282120" 
+					 config="export/valuecard/GiveValueCardDetailed.xml" fileName="有价卡赠送清单"   cond="QueryCondPart" />
+		</div>	
+	</div>
+
+	<div jwcid="QueryDataPart@Part" element="div">
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" name="QueryListTable" id="QueryListTable" scroll="true">
+				<thead>
+					<tr>
+                        <th col="CARD_NUMBER" id='CARD_NUMBER' >卡号</th>
+						<th col="KIND_NAME" >卡类型</th>
+						
+						<th col="DEVICE_PRICE" >面值</th>
+						<th col="VALID_DATA">配置有效期</th>
+						<th col="AUDITORDERNUMBER">审批工单号</th>
+						<th col="SALE_TAG">销售标识</th>
+						<th col="LOCATION">归属库存位置</th>
+						
+						<th col="RSRV_STR5" >卡销售时间</th>
+						<th col="TRADE_STAFF_ID" >卡销售工号</th>
+						<th col="RSRV_STR6" >卡销售部门</th>
+						<th col="SALE_PRICE" >销售金额</th>
+						
+						<th col="CUST_NUMBER">客户号码</th>
+						<th col="RSRV_STR2">客户名称</th>
+						<th col="RSRV_STR3">集团名称</th>
+						<th col="RSRV_STR4">赠送人姓名</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:listInfos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					
+						<td><span jwcid="@Insert" value="ognl:info.CARD_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.KIND_NAME" raw="true" /></td>
+						
+						
+						<td><span jwcid="@Insert" value="ognl:info.DEVICE_PRICE" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.VALID_DATA" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.AUDITORDERNUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALE_TAG" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LOCATION" raw="false"/></td>					
+						
+						
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR6" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SALE_PRICE" raw="true" /></td>
+						
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NUMBER" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR3" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="true" /></td>
+						
+					</tr>
+				</tbody>
+			</table>
+		
+		</div>
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart"  part="QueryDataPart" listener="queryValueCardInfo" pageSize="10" count="ognl:pageCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域结束 -->
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+SELECT apply_id_sub,apply_id_1,trade_info,to_char(expect_time,'yyyy-mm-dd hh24:mi:ss') expect_time,fee_type,to_char(func_fee) func_fee,to_char(comu_fee) comu_fee,host_member,to_char(cust_id_b) cust_id_b,con_province,si_product_id,si_product_name,access_model,biz_code,biz_pri,access_number,is_single_pay,spay_province,spay_cust_id,host_pct,co_prov_pct,si_pct,prod_si_pct,is_local_open,can_be_done,remark,file_name,rsrv_str11,rsrv_str12,rsrv_str13,rsrv_str14,rsrv_str15,rsrv_str16,rsrv_str17,rsrv_str18,rsrv_str19,rsrv_str20 
+  FROM tf_b_trade_span_apply_sub
+ WHERE apply_id_1=:APPLY_ID_1

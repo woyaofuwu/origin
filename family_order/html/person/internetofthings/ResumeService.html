@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>物联网服务恢复</title>
+<script jwcid="@Script" language="JavaScript" src="person/internetofthings/scripts/suspendandresume.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  tradeTypeCode="272" element="div"  tradeAction="afterSubmitSerialNumber(data)"></div>
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<!-- 表格 开始 -->
+	<div jwcid="SvcStateList@Part" id="SvcStateList"  element="div">
+	<div class="c_scroll c_scroll-x style="height:500px"">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="UserSvcstateTable">
+			<thead>
+				<tr>
+						<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">恢复（勾选）</th>
+	      				<th onclick="Wade.dom.sortTable('ResultTable',2,'string')">服务ID</th>
+	      				<th onclick="Wade.dom.sortTable('ResultTable',3,'string')">服务名称</th>
+                        <th onclick="Wade.dom.sortTable('ResultTable',4,'string')">开始时间</th>
+                        <th onclick="Wade.dom.sortTable('ResultTable',5,'string')">结束时间</th>
+						<th onclick="Wade.dom.sortTable('ResultTable',6,'string')">服务状态</th>
+						<th onclick="Wade.dom.sortTable('ResultTable',7,'string')">PCRF控制策略关停状态</th>
+						<th onclick="Wade.dom.sortTable('ResultTable',8,'string')">APN名称</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="signbj"><input type="checkbox"  name="service" onclick ="check(this,'RESUME_SERVICE')" jwcid="@Checkbox"
+                                          value="ognl:info.SERVICE_ID + '&' + info.INST_ID"  disabled='ognl:("0".equals(info.STATE_CODE)&&!"2".equals(info.ServiceUsageState))' /></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_ID"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_NAME"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.START_DATE"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.END_DATE"/></td>
+                       	<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WLW_SERVICE_STATE',info.STATE_CODE)"/></td>
+                       	<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('WLW_PCRF_STATE',info.ServiceUsageState)"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.APNNAME"/></td>
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表单 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+
+<div jwcid="HiddenPart@Part" id="HiddenPart"  element="div">
+<input type="hidden"  jwcid="@Any"  name="RESUME_SERVICE" id="RESUME_SERVICE"/>
+<input type="hidden"  jwcid="@Any" name="SERIAL_NUMBER" id="SERIAL_NUMBER" />
+</div>
+
+	<div jwcid="SubmitPart@csserv:CSSubmit"  params="" isReset="true" 
+	        listener="submitTrade" 
+	        beforeAction="checkIsChange('RESUME_SERVICE')" 
+	        area="AuthPart,HiddenPart"
+	        refreshPart="" element="div"/>
+</div></div></body>
+</html>

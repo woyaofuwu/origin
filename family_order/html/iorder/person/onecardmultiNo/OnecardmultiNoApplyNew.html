@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>一卡多号业务受理</title>
+    <script jwcid="@Script" language="JavaScript" src="iorder/person/onecardmultiNo/scripts/OnecardmultiNoApply.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="c_scroll"><div class="l_padding">
+    <div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="3700" tradeAction="" element="div" />
+    <!-- 认证 结束 -->
+    <!--<div jwcid="UCAViewPart@Part">-->
+        <!--<div jwcid="@icsserv:CustInfoView" custInfoView="ognl:custInfoView" />-->
+        <!--<div jwcid="@icsserv:UserInfoView" userInfoView="ognl:userInfoView" />-->
+    <!--</div>-->
+		<div jwcid="CustInfoFieldPart@icsserv:CustInfoField" isRealName="true" hideUserTypeCode="true" hideEmail="true" blackTradeType="3700" element="div" requiredField="PSPT_TYPE_CODE,PSPT_ID,CUST_NAME,PSPT_ADDR,PHONE"/>
+
+    <!-- 区域 开始 -->
+        <!-- 标题 开始 -->
+        <div class="c_title">
+            <div class="text">业务办理区域</div>
+        </div>
+        <!-- 标题 结束 -->
+        <!-- 表单 开始 -->
+        <div class="c_list c_list-s c_list-border c_list-line c_list-col-2" jwcid="followSerialNumber@Part">
+            <ul class="ul">
+                <li class="link required">
+                    <div class="label">副号码类型</div>
+                    <div class="value">
+					<span jwcid="@Select" name="SERIAL_TYPE" id="SERIAL_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                            source="ognl:pageutil.getStaticList('FOLLOW_TYPE')" value="ognl:condition.SERIAL_TYPE" desc="副号码类型" nullable="no"/>
+                    </div>
+                </li>
+                <li class="link" style="display:none" id="getSubTypeLi">
+                    <div class="label">副号码获取方式</div>
+                    <div class="value">
+                    <span class="e_mix">
+						<span jwcid="@Select" name="SERIALB_GET_TYPE" id="SERIALB_GET_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+	                            source="ognl:pageutil.getStaticList('SERIALB_GET_TYPE')" value="ognl:condition.SERIALB_GET_TYPE"  desc="输入方式" nullable="yes" />
+	                    <button type="button" class="e_button-blue" name="getSerialNumber" id="getSerialNumber" style="display:none"
+							onclick="javascript:popupPage('选号', 'onecardmosp.ChooseOnecardmultiNoNew', 'getSerialNumber','&SERIAL_NUMBER=15248981700',null, 'c_popup c_popup-half',releaseUnuseNumber,releaseUnuseNumber);">
+	                    	<span class="e_ico-check"></span>
+	                    	<span>获取</span>
+	                	</button>
+                	</span>
+                    </div>
+                </li>
+                <li class="link" id="serialNumberB">
+                    <div class="label">副号码</div>
+                    <div class="value">
+					   <input jwcid="@TextField" name="SERIAL_NUMBER_B" id="SERIAL_NUMBER_B" value="" datatype="mbphone" desc="副号码" disabled="true"/>
+                    </div>
+                </li>
+                <li class="link" id="followMsisdns" style="display:none">
+                    <div class="label">副号码</div>
+                    <div class="value">
+					   <input jwcid="@TextField" name="FOLLOW_MSISDN_S" id="FOLLOW_MSISDN_S" value="ognl:viceNums" />
+                    </div>
+                </li>
+                <li class="link">
+                    <div class="label">吉祥号码等级</div>
+                    <div class="value">
+					<span jwcid="@Select" name="MOSP_NUMBER_LEVEL" id="MOSP_NUMBER_LEVEL" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+                            source="ognl:pageutil.getStaticList('MOSP_NUMBER_LEVEL')" value="6" desc="吉祥号码等级" nullable="yes"  addDefault="true" disabled="true"/>
+                    </div>
+                </li>
+                <li class="link required" id="SERVICE_ID" name="SERVICE_ID">
+                    <div class="label">业务名称</div>
+                    <div class="value">
+                    <span jwcid="@Select" name="OFFER_CODE" id="OFFER_CODE"
+                            source="ognl:serviceInfos" desc="业务名称" nullable="no"
+                            value="" textField="OFFER_NAME"  valueField="OFFER_CODE"  titleField="OFFER_NAME"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 表单 开始 -->
+        <!-- 表单 结束 -->
+        <div class="c_space"></div>
+        <div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" beforeAction="submitCheck(this)" listener="onTradeSubmit" area="AuthPart,followSerialNumber,CustInfoFieldPart" element="div" />
+        <!-- 提交 结束 -->
+    <!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+UPDATE tf_f_customer
+   SET cust_name=:CUST_NAME,cust_type=:CUST_TYPE,cust_state=:CUST_STATE,pspt_type_code=:PSPT_TYPE_CODE,pspt_id=:PSPT_ID,open_limit=:OPEN_LIMIT,eparchy_code=:EPARCHY_CODE,city_code=:CITY_CODE,cust_passwd=:CUST_PASSWD,score_value=TO_NUMBER(:SCORE_VALUE),credit_class=:CREDIT_CLASS,basic_credit_value=TO_NUMBER(:BASIC_CREDIT_VALUE),credit_value=TO_NUMBER(:CREDIT_VALUE),remove_tag=:REMOVE_TAG,remove_date=TO_DATE(:REMOVE_DATE, 'YYYY-MM-DD HH24:MI:SS'),develop_depart_id=:DEVELOP_DEPART_ID,develop_staff_id=:DEVELOP_STAFF_ID,in_depart_id=:IN_DEPART_ID,in_staff_id=:IN_STAFF_ID,in_date=TO_DATE(:IN_DATE, 'YYYY-MM-DD HH24:MI:SS'),remark=:REMARK,rsrv_str1=:RSRV_STR1,rsrv_str2=:RSRV_STR2,rsrv_str3=:RSRV_STR3,rsrv_str4=:RSRV_STR4,rsrv_str5=:RSRV_STR5,rsrv_str6=:RSRV_STR6,rsrv_str7=:RSRV_STR7,rsrv_str8=:RSRV_STR8,rsrv_str9=:RSRV_STR9,rsrv_str10=:RSRV_STR10  
+ WHERE partition_id=MOD(:CUST_ID,10000)
+   AND cust_id=TO_NUMBER(:CUST_ID)

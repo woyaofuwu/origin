@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: CreatePersonUser.html,v 1.13 2013/04/26 07:06:12 chenzm3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无线固话开户</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/common/developstaff/DevelopStaff.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/createtdusertrade/scripts/psptcard.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/createtdusertrade/scripts/createtdpersonuser.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/common/tradecheck/TradeCheck.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/common/validate/custvalidate.js" ></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/invoice/Invoice.js"></script>
+</head>
+<body jwcid="@Body">
+	<!--身份识别系统-->
+	<span id="PsptControlOCX" style="display:none;" ></span> 
+<div class="m_wrapper"><div class="m_wrapper2">
+<div  id="HINT" class="c_tip" style="display:none"></div>
+<!-- 隐藏区域 开始 -->
+<!-- 隐藏区域 开始 -->
+<div class="" jwcid="HidePart@Part" style="display:none">
+     <input jwcid="@Hidden" name="CHECK_RESULT_CODE" id="CHECK_RESULT_CODE" value="-1" desc="号码和sim卡校验通过标志"/>
+     <input jwcid="@Hidden" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:editInfo.EPARCHY_CODE" desc="开户号码地州"/>
+     <input jwcid="@Hidden" name="PRODUCT_ID" id="PRODUCT_ID" value="" desc="记录用户选择的主产品"/>
+     <input jwcid="@Hidden" name="REAL_NAME" id="REAL_NAME" value="1" desc="实名制标识"/>
+     <!-- sim卡信息 -->
+     <input jwcid="@Hidden" name="IMSI" id="IMSI" value="" desc="IMSI"/>
+     <input jwcid="@Hidden" name="KI" id="KI" value="" desc="KI"/>
+     <input jwcid="@Hidden" name="RES_KIND_CODE" id="RES_KIND_CODE" value="" desc="RES_KIND_CODE"/>
+     <input jwcid="@Hidden" name="RES_TYPE_CODE" id="RES_TYPE_CODE" value="" desc="RES_TYPE_CODE"/>
+</div>
+<div class="" jwcid="CardPwdPart@Part" style="display:none">
+     <!-- 密码因子 -->
+     <input jwcid="@Hidden" name="CARD_PASSWD" id="CARD_PASSWD" value="ognl:editInfo.PASSWORD" desc="初始化密码"/>
+     <input jwcid="@Hidden" name="PASSCODE" id="PASSCODE" value="ognl:editInfo.KIND" desc="密码因子"/>
+     <input jwcid="@Hidden" name="DEFAULT_PWD_FLAG" id="DEFAULT_PWD_FLAG" value="0" desc="是否使用初始密码"/>
+</div>
+<!-- 隐藏区域 结束 -->
+
+<!-- 区域 开始 -->
+		<div class="c_box">
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">基本信息</div>
+				<div class="fn">
+					<label for="other_REAL_NAME"><input name="other_REAL_NAME"
+						id="other_REAL_NAME" type="checkbox"  checked="checked"
+						value="ognl:editInfo.other_REAL_NAME"
+						onclick="createTDUser.setRealNameValue()" />实名制</label> <a href="#nogo"
+						class="e_button" onclick="checkBaseInfo(this,'BaseInfoPart');"><i
+						class="e_ico-hide"></i><span>隐藏非必填项</span></a>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+
+			<div jwcid="BaseInfoPart@Part">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-6">
+					<ul class="ul">
+						<li class="li"><span class="label"><span
+								class="e_required">新开户号码：</span></span> <span class="e_elements"
+							id="SERIAL_NUMBER_INPUT">
+								<button class="e_button-right" type="button"
+									onclick="createTDUser.checkSerialNumber();">
+									<i class="e_ico-check"></i><span>校验</span>
+								</button> <span class="e_input e_input-left"><span> <input
+										jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER"
+										value="ognl:editInfo.SERIAL_NUMBER" maxLength="11"
+										desc="新开户号码" nullable="no" datatype="mbphone" />
+								</span></span>
+						</span></li>
+						<li class="li col-2"><span class="label"><span
+								class="e_required">SIM卡号：</span></span> <span class="e_elements"
+							id="SIM_CARD_INPUT">
+								<button type="button" class="e_button-center"
+									onclick="createTDUser.checkSimCardNo()">
+									<i class="e_ico-check"></i><span>校验</span>
+								</button> <span class="e_input e_input-left"><span> <input
+										jwcid="@TextField" name="SIM_CARD_NO" id="SIM_CARD_NO"
+										value="ognl:editInfo.SIM_CARD_NO" desc="SIM卡号" nullable="no" />
+								</span></span>
+						</span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+			<!-- 表单 结束 -->
+		
+		<div jwcid="CustInfoFieldPart@csserv:CustInfoField" isRealName="true" blackTradeType="10" element="div"/>
+		<div jwcid="@csserv:AcctInfoField" />
+
+<div class="c_box">
+		
+		<div jwcid="PasswdPart@Part">
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">用户密码：</span></span>
+					<span class="e_elements">
+					<span class="e_button-right">
+					<div jwcid="PasswordSetPart@csserv:PasswordSet" beforeAction="createTDUser.passwdbeforeAction()" afterAction="createTDUser.passwdafterAction(data)" element="div"/>
+		            </span>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@Password" name="USER_PASSWD" id="USER_PASSWD" value="ognl:editInfo.USER_PASSWD" 
+									readonly="true" hidden="true" desc="用户密码" nullable="no"/>
+						</span></span>
+					</span>
+				</li>
+			</ul>
+		</div>
+		</div>
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">产品</div>
+			<div class="fn">
+				<span class="e_select e_select-left"><span><span>
+					<select id="productSearchType" name="productSearchType" onchange="createTDUser.changeSearchType(this);">
+						<option value="1">产品搜索</option>
+						<option value="2">元素搜索</option>
+					</select>
+				</span></span></span>
+				<span class="e_input e_input-center">
+					<span>
+						<input jwcid="productSearch@Search"
+							name="productSearch"
+							page="createtdusertrade.CreateTDPersonUser"
+							defaultText='产品元素搜索'
+							dynamic="true"
+							listener="search"
+							searchCode="SEARCH_NAME"
+							valueCode="SEARCH_ID"
+							optionEnterAction="createTDUser.searchOptionEnter"
+							optionClickAction="createTDUser.searchOptionEnter"
+							width="200"/>
+					</span>
+				</span>
+	         <span class="e_label e_label-right"><span>搜索</span></span>
+				<button class="l_ml" jwcid="@Button" name="productSelectBtn" id="productSelectBtn" onclick="createTDUser.checkBeforeProduct();">
+					<i class="e_ico-menu"></i><span>产品目录</span>
+				</button>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 参数列表 开始 -->
+		<div class="c_form c_form-label-6 c_form-col-3" jwcid="ProductTypePart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">品牌：</span></span>
+					<span class="e_input"><span>
+							<input jwcid="@TextField" name="BRAND" id="BRAND" value="ognl:editInfo.BRAND_CODE" disabled="true"
+									desc="当前品牌"/>
+						</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">产品类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PRODUCT_TYPE_CODE" id="PRODUCT_TYPE_CODE"
+								source="ognl:productTypeList"
+								textField="PRODUCT_TYPE_NAME" valueField="PRODUCT_TYPE_CODE" value="ognl:editInfo.PRODUCT_TYPE_CODE"
+								onchange="createTDUser.setBrandCode();"
+								addDefault="true"
+								desc="当前产品"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">产品：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="PRODUCT_NAME" id="PRODUCT_NAME" value="ognl:editInfo.PRODUCT_NAME" disabled="true"/>
+						</span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+	</div>
+
+ <div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:49%;" id ="preChoosePart">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+                <div class="c_title">
+					<div class="text">待选区</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 分栏 开始 -->
+				<div class="l_col l_col-close">
+					<div jwcid="offerList@csserv:OfferList" 
+                           element="div" 
+                           categoryId="100000000114,100000000008"></div>
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	    <div class="l_auto">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">已选区</div>
+				</div>
+                <div jwcid="selectedElements@csserv:SelectedElements" 
+                    renderCallSvc="CS.SelectedElementSVC.getUserOpenElements" 
+                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg" 
+                    afterRenderAction="createTDUser.disableElements(data)"
+                    basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                    tradeTypeCode="3820"
+                    element="div"></div>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	<!-- 第 2 栏 结束 -->
+	 <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+	</div>
+	
+   <div jwcid="@csserv:AssureInfoField" />
+   <div jwcid="@csserv:PostInfoField" />
+
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="createTDUser.onSubmit()" cancelRule="true" isReset="true" listener="onTradeSubmit" refreshPart=""  area="BaseInfoPart,CustInfoPart,AcctInfoPart,AssureInfoPart,OtherInfoPart,PostInfoPart,PasswdPart,HidePart,CardPwdPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+<div jwcid="productTree@csserv:ProductSelect" afterAction="createTDUser.afterChangeProduct(productId,productName,brandCode,brandName)" monitor="PRODUCT_TYPE_CODE" element="div"></div>	
+<!-- 区域 开始 -->
+<input jwcid="@Hidden" name="STAFF_ID" id="STAFF_ID" value="ognl:getVisit().getStaffId()"/>
+<input jwcid="@Hidden" name="INVOICE_DATA" id="INVOICE_DATA" value=""/>
+<!-- 区域 结束 -->
+
+</body>
+</html>

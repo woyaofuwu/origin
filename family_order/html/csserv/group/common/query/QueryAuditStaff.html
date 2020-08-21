@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/csserv/group/common/query/QueryAuditStaff.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form c_form-col-4 c_form-label-5">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label"><span>工号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_STAFF_ID" name="cond_STAFF_ID" jwcid="cond_STAFF_ID@TextField"  
+						value="ognl:cond.cond_STAFF_ID" datatype="text" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>姓名：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_STAFF_NAME" name="cond_STAFF_NAME" jwcid="con_STAFF_NAME@TextField"  
+						value="ognl:cond.cond_STAFF_NAME" datatype="text" />
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul"> 
+			<li class="li">
+				<div class="submitPlace"></div>
+				<div class="submit">
+					<button class="e_button-form" onclick="qryAuditStaffInfos();" listener="ognl:listeners.qryAuditStaffInfos"><i class="e_ico-search"></i><span>查询</span></button>
+				</div>
+			</li>
+		</ul>
+	</div>
+	</div>
+	<!--信息展示区-->
+	<div jwcid="RefreshPart@Part"> 
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead>
+				<tr> 
+					<th>工号</th>
+					<th>姓名</th>
+					<th>手机号码</th>
+					<th>所在地市</th>
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+					<td>
+						<a jwcid="@Redirect" source="ognl:info" 
+							auditStaffId="ognl:info.STAFF_ID"
+							value="ognl:info.STAFF_ID" onclick="$.setReturnValue(['POP_AUDIT_STAFF_ID',$(this).attr('auditStaffId'),'AUDIT_STAFF_ID',$(this).attr('auditStaffId')],true)" raw="true"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',info.CITY_CODE)" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="RefreshPart" listener="qryAuditStaffInfos"  pageSize="10" needCoun="false" count="ognl:pageCounts"/>
+	<!-- 翻页 结束 -->
+	<div class="c_submit">
+		<button class="e_button-form" id="backBtn" onclick="$.closePopupPage(true);"><i class="e_ico-back"></i><span>取消</span></button>
+	</div>
+	</div>
+	<!--信息展示区 结束-->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script></script>
+</body>
+</html>

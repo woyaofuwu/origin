@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'DepartName' KEY, DEPART_ID VALUE1, '-1' VALUE2, DEPART_NAME VRESULT
+  FROM td_m_depart
+ WHERE 'DepartName' = :KEY

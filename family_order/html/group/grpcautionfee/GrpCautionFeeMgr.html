@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpcautionfee/GrpCautionFeeMgr.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div><ul></ul></div>
+
+<!-- 开始-->
+<div class="c_box" jwcid="addForm@Part">
+
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="AddDelPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>集团产品编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="cond_SERIAL_NUMBER@TextField" name="cond_SERIAL_NUMBER"
+					 enterAction="queryCautionFeeList()" value="ognl:condition.SERIAL_NUMBER" desc="产品编码"/>
+				</span></span>
+			</li>
+  		</ul>
+  		
+  		<div class="submitPlace"></div>
+  		<div class="submit">
+			<button class="e_button-form" onclick="return queryCautionFeeList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 数据显示区域开始 -->
+	<div jwcid="ratioPart@Part" element="div">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table >
+				<thead>
+					<tr>
+						<!--  
+						<th col="USER_ID_SUB"><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox2" name="viceCheckBox2"
+								onclick="checkedAll('viceCheckBox',checked)" />选择</th>	-->
+						<th col="USER_ID">用户标识</th>
+						<th col="SERIAL_NUMBER">产品编码</th>
+						<th col="AUDIT_ORDER">审批工单号</th>
+						<th col="DEPOSIT_FEE">保证金额(单位分)</th>
+						<th col="DEPOSIT_TYPE">保证金子项</th>
+						<th col="INSERT_STAFF_ID">创建工号</th>
+						<th col="INSERT_TIME">创建时间</th>
+						<th col="UPDATE_STAFF_ID">更新工号</th>
+						<th col="UPDATE_TIME">更新时间</th>
+						<!--  
+						<th col="UPDATE_OPER">操作</th>
+						-->
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr id="tr_0" jwcid="@Foreach" source="ognl:cenpayList" value="ognl:cenpay" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+			  			<!-- 
+			  			<td><input jwcid="@Checkbox" type="checkbox" id="viceCheckBox" name="viceCheckBox"
+								value="ognl:cenpay.USER_ID" /></td>
+						-->
+						<td><span jwcid="@Insert" value="ognl:cenpay.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.AUDIT_ORDER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.DEPOSIT_FEE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('DEPOSIT_TYPE',cenpay.DEPOSIT_TYPE)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.INSERT_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.INSERT_TIME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.UPDATE_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:cenpay.UPDATE_TIME" raw="false"/></td>
+						<!-- 
+						<td>
+							<a jwcid="@Redirect" source="ognl:cenpay" value="" 
+								onclick="javascript:openNav('集团客户保证金收取', 'group.grpcautionfee.GrpCautionFeeAdd', 'onInitTrade'),'&USER_ID=' + cenpay.USER_ID" raw="true" >保证金扣罚</a>
+							<a jwcid="@Redirect" source="ognl:cenpay" value="" 
+								onclick="javascript:openNav('集团客户保证金收取', 'group.grpcautionfee.GrpCautionFeeAdd', 'onInitTrade'),'&USER_ID=' + cenpay.USER_ID" raw="true" >保证金清退</a>
+						</td>
+						-->
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<div jwcid="@NavBar" id="ratioNavBar"  name="ratioNavBar"  cond="addForm" 
+			 part="ratioPart"  listener="queryCautionFeeList"  pageSize="12"  count="ognl:cenpayCount">
+		</div>
+	</div>
+	<!-- 数据显示区域结束 -->
+	
+</div>
+<!-- 结束-->
+
+<!-- 返还比例修改删除 开始-->
+<div class="c_box" jwcid="editForm@Part">
+	<!-- 提交 -->
+	<div class="c_submit">
+		<button type="button" id="btadd" name="btadd" 
+			onclick="javascript:openNav('集团客户保证金收取', 'group.grpcautionfee.GrpCautionFeeAdd', 'onInitTrade')">
+			<i class="e_ico-add"></i><span>保证金收取</span>
+		</button>
+		<button type="button" id="btupdate" name="btupdate" 
+			onclick="javascript:openNav('集团客户保证金扣罚', 'group.grpcautionfee.GrpCautionFeePunish', 'onInitTrade')">
+			<i class="e_ico-change"></i><span>保证金扣罚</span>
+		</button>
+		<button type="button" id="btdelete" name="btdelete" 
+			onclick="javascript:openNav('集团客户保证金清退', 'group.grpcautionfee.GrpCautionFeeCancel', 'onInitTrade')">
+			<i class="e_ico-delete"></i><span>保证金清退</span>
+		</button>
+	</div>
+		
+</div>
+	
+	<!-- 隐藏区域 开始 -->
+    <div jwcid="hiddenPart@Part">
+    </div>
+	<!-- 隐藏区域 结束 -->
+	
+</div></div>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+
+</body>

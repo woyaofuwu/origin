@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>帐户变更查询</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/accountchginfo/scripts/QueryAccountChgInfo.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取帐户变更清单无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">帐户变更查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-4 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li" id="AREA_CODE">
+							<span class="label"><span class="e_required">业务区：</span></span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_TRADE_CITY_CODE"  id="cond_TRADE_CITY_CODE" 
+									source="ognl:areas" textField="AREA_NAME" valueField="AREA_CODE"
+									value="ognl:condition.cond_TRADE_CITY_CODE" desc="业务受理区"  nullable="no" />
+								</span></span></span>
+						</li>
+					    <li class="li">
+							<span class="label"><span class="e_required">开始时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+									<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" desc="开始时间"/>
+								</span></span>
+							</span>
+						 </li>
+						 <li class="li">
+							<span class="label"><span class="e_required">终止时间：</span></span>
+							<span class="e_elements">
+								<span class="e_input e_input-left"><span>
+								    <input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  nullable="no" value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" desc="终止时间"/>
+								</span></span>
+							</span>
+						 </li>
+						 <li class="li" id="PAY_MODE_CODE">
+							<span class="label">付费类型：</span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="cond_PAY_MODE_CODE"  id="cond_PAY_MODE_CODE" 
+									source="ognl:payModes" textField="PAY_MODE" valueField="PAY_MODE_CODE"
+									value="ognl:condition.cond_PAY_MODE_CODE" desc="业务受理区"  nullable="yes" />
+								</span></span></span>
+						</li>
+                        <li class="li">
+							<span class="label"><span class="e_required">起始工号：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="cond_START_STAFF_ID" id="cond_START_STAFF_ID" value="ognl:condition.cond_START_STAFF_ID" 
+									 onblur="completeEndStaffId(this, 'cond_END_STAFF_ID');"
+									 onKeyUp="synStaffIdOnkeyup(this, 'cond_END_STAFF_ID');"
+									 desc="起始工号"  maxLength="8"nullable="no" />
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">终止工号：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="cond_END_STAFF_ID" id="cond_END_STAFF_ID" value="ognl:condition.cond_END_STAFF_ID" 
+									 onKeyUp="inputCtrlForStaff(this)" desc="终止工号"  maxLength="8" nullable="no" />
+							</span></span>
+						</li>
+					
+					
+                        
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryAccountChgInfo(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100971"
+								  config="export/sundryquery/other/QueryAccountChgInfo.xml" fileName="帐户变更信息" cond=QueryCondPart/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	     </div>	
+	     
+		  	     <div jwcid="table4Print@Part" optimize="true">
+	               <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th onclick="Wade.dom.sortTable('printTable',0,'int')">用户号码</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">付费类型</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">付费名称</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">银行行号</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">银行账号</th>
+							<th onclick="Wade.dom.sortTable('printTable',1,'string')">办理时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PAYMODE','PAY_MODE_CODE', 'PAY_MODE', info.PAY_MODE_CODE)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PAY_NAME"/></td>
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_BANK','BANK_CODE', 'BANK', info.BANK_CODE)"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BANK_ACCT_NO"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryAccountChgInfo" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>		

@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>订单配送结果反馈界面</title>
+		<script jwcid="@Script"
+			src="person/electricBusiness/scripts/shoppingdeal.js"></script>
+	</head>
+	<body jwcid="@Body">
+		<div class="e_wrapper">
+			<div class="e_wrapper2">
+
+				<form jwcid="form1@Form" id="form1">
+					<!-- 输入 开始 -->
+					<div class="c_form c_form-col-2 " jwcid="QueryPart@Part">
+						<ul class="ul">
+							<li class="li">
+								<span class="label"><span class="e_required"> 订单号：</span>
+								</span>
+								<span class="e_input"> <span> <input type="text"
+											jwcid="@TextField" name="TID" id="TID" value="ognl:cond.TID"
+											desc="订单号" /> </span> </span>
+							</li>
+						</ul>
+						<div class="submitPlace"></div>
+						<div class="submit">
+							<button type="button" class="e_button-form"
+								onclick="return queryOrder();";>
+								<i class="e_ico-search"></i><span>查询</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- 输入 结束 -->
+
+					<!-- 分栏 开始 -->
+					<div jwcid="RefreshPart1@Part">
+						<div class="c_scroll c_scroll-x">
+							<div class="c_table c_table-row-10">
+								<table jwcid="@Table" id="saleActiveTable"
+									name="saleActiveTable">
+									<thead>
+										<tr>
+											<th>
+												<input col="IS_CHECKED" type="checkbox" id="badness_ctrl"
+													name="badness_ctrl"
+													onclick="checkedAll('inforecvid', checked)" />
+											</th>
+											<th>
+												订单编码
+											</th>
+											<th>
+												收货人姓名
+											</th>
+											<th>
+												收货人地址
+											</th>
+											<th>
+												收货人号码
+											</th>
+											<th>
+												子订单编码
+											</th>
+											<th>
+												商品标题
+											</th>
+											<th>
+												商品类型
+											</th>
+											<th>
+												合约IMEI
+											</th>
+											<th>
+												订单状态
+											</th>
+											<th>
+												买家名称
+											</th>
+											<th>
+												创建时间
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+											element="tr" index="ognl:rowIndex"
+											class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+											<td>
+												<input jwcid="@Checkbox" type="checkbox" name="inforecvid"
+													id="ognl:rowIndex+'TID'"
+													typeCode="ognl:info.CTRM_PRODUCT_TYPE"
+													checkParam="ognl:info.TID+','+info.OID" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.TID" raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.RECEIVER_NAME"
+													raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.RECEIVER_ADDRESS"
+													raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.RECEIVER_MOBILE"
+													raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.OID" raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.TITLE" raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.TYPE_NAME"
+													raw="false" />
+											</td>
+											<td>
+												<input type="text" id="ognl:rowIndex+'CONTRACT_IMEI'"
+													name="ognl:rowIndex+'CONTRACT_IMEI'" jwcid="@Any"
+													value="ognl:info.CONTRACT_IMEI" desc="合约IMEI"
+													class="e_input" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.ORDER_STATUS"
+													raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.BUYER_NICK"
+													raw="false" />
+											</td>
+											<td>
+												<span jwcid="@Insert" value="ognl:info.CREATE_TIME"
+													raw="false" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- 分栏 结束 -->
+					<div class="c_form c_form-label-5 c_form-col-2" id="EditPart"
+						name="EditPart">
+						<ul class="ul">
+							<li class="li col-2">
+								<span> <span class="label"><span>是否拆单：</span>
+								</span> <span calss="text"> <input name="IS_SPLIT" id="IS_SPLIT"
+											jwcid="@Checkbox" value="ognl:cond.IS_SPLIT" />
+
+								</span> </span>
+							</li>
+							<li class="li">
+								<span class="label"><span class="e_required">配送单号：</span></span>
+								<span class="e_input"><span> 
+									<input type="text" jwcid="@TextField" name="SHIPPING_ID" id="SHIPPING_ID" value="ognl:cond.SHIPPING_ID" desc="配送单号" /> 
+								</span> </span>
+							</li>
+
+							<li class="li">
+								<span class="label"><span class="e_required">物流公司：</span></span>
+								<span class="e_select"><span><span>
+									<select jwcid="@Select"
+										name="SHIPPING_COMPANY" id="SHIPPING_COMPANY"
+										source="ognl:pageutil.getStaticList('COMPANY_ID')"
+										textField="DATA_NAME" valueField="DATA_ID" title="TEXT"
+										value="ognl:cond.SHIPPING_COMPANY" desc="物流公司" /> 
+								</span></span></span>
+							</li>
+
+							<li class="li col-2">
+								<span class="label"><span class="">备注：</span></span>
+								<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent">
+									<textarea type="text" jwcid="@TextArea" id="REMARK" name="REMARK" value="ognl:info.REMARK" style="height:42px;" desc="备注" />
+								</span>
+								<span class="e_textareaBottom"><span></span></span>
+								</span>
+							</li>
+						</ul>
+
+
+
+					</div>
+					<!-- 隐藏区域 开始 -->
+					<div jwcid="hiddenPart@Part">
+						<input type="hidden" id="comminfo_PIDINFO" name="comminfo_PIDINFO" />
+					</div>
+					<!-- 隐藏区域 结束 -->
+
+					<div class="c_submit">
+						<div jwcid="SubmitPart@csserv:CSSubmit"
+							beforeAction="submitCheck()" disabledBtn="false" isReset="true"
+							area="RefreshPart1,EditPart,hiddenPart" element="div" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

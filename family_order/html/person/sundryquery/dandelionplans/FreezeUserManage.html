@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>冻结与黑名单管理</title>
+<script language="JavaScript" src="person/sundryquery/dandelionplans/scripts/freezeusermanage.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" jwcid="allPart@Part"><div class="m_wrapper2">
+<div class="c_tip" jwcid="TipBar@Part" style="display:none;">
+	<span id="tipSpan"></span>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>服务号码：</span></span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"
+					       desc="服务号码" maxLength="30" datatype="mbphone" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>号码类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_NUMBER_TYPE" id="cond_NUMBER_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('DANDELION_NUMBER_TYPE')" value="ognl:condition.NUMBER_TYPE" desc="号码类型"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryUserFreeze();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询结果</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="ResultDataPart@Part">
+			<div class="c_table c_table-row-5">
+				<table jwcid="@Table" id="phoneTable" name="phoneTable" rowClick="" >
+					<thead>
+						<tr>
+							<th col="SERIAL_NUMBER">服务号码</th>
+							<th col="USER_ID">用户ID</th>
+							<th col="NUMBER_TYPE">号码类型</th>
+							<th col="STATUS">状态</th>
+							<th col="START_DATE">开始时间</th>
+							<th col="END_DATE">结束时间</th>
+							<th col="UPDATE_TIME">更新时间</th>
+							<th col="UPDATE_STAFF_ID">更新员工</th>
+							<th col="UPDATE_DEPART_ID">更新部门</th>
+							<th col="REMARK">备注</th>
+						</tr>
+					</thead>
+					<tbody name="DeptTableValues" id="DeptTableValues">
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.NUMBER_TYPE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.STATUS" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.END_DATE" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div jwcid="@NavBar" name="page" id="page" cond="QueryCondPart"  part="ResultDataPart" listener="queryUserFreeze" pageSize="10" count="ognl:ListCount"></div>
+		</div>
+		
+		<!-- Tip开始 -->
+		<div class="c_tip" jwcid="TipInfoPart@Part">
+			<span jwcid="@Insert" value="ognl:tipInfo" raw="true"/>
+		</div>
+		<!-- Tip结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-4 c_form-label-6"  jwcid="EditPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">服务号码：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="SERIAL_NUMBER" name="SERIAL_NUMBER" value="ognl:commInfo.SERIAL_NUMBER" nullable="no" desc="服务号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">号码类型:</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="NUMBER_TYPE" id="NUMBER_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+						source="ognl:pageutil.getStaticList('DANDELION_NUMBER_TYPE')" value="ognl:commInfo.NUMBER_TYPE" desc="号码类型" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">开始时间：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="START_DATE" id="START_DATE" nullable="no" value="ognl:condition.START_DATE" desc="开始时间"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">结束时间：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="END_DATE" id="END_DATE" nullable="no" value="ognl:condition.END_DATE" desc="结束时间"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="return createPhone(this);"><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+				<!--<button type="button" class="e_button-form" id="bupdate" name="bupdate" onclick="return updatePhone(this);"><i id="ibcreate" name="ibcreate" class="e_ico-cancel"></i><span>修改</span></button>-->
+				<button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="return deletePhone(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+				<!--<button type="button" class="e_button-form" id="bdeleteall" name="bdeleteall" onclick="return deleteAllPhone(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>全删</span></button>-->
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>

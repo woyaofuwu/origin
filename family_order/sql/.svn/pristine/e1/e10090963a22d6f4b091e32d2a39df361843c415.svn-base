@@ -1,0 +1,60 @@
+SELECT A.PROSECUTION_ID PARA_CODE1,
+       A.SERIAL_NUMBER PARA_CODE2,
+       B.CUST_NAME PARA_CODE3,
+       D.AREA_NAME PARA_CODE4,
+       B.HOME_ADDRESS PARA_CODE23,
+       A.PROSECUTEE_NUMBER PARA_CODE6,
+       A.PROSECUTION_INFO PARA_CODE24,
+       A.TRADE_STAFF_ID PARA_CODE8,
+       A.TRADE_DEPART_ID PARA_CODE9,
+       TO_CHAR(A.ACCEPT_DATE, 'yyyy-mm-dd hh24:mi:ss') PARA_CODE21,
+       DECODE(A.PROSECUTION_WAY,
+              '00',
+              '10086999',
+              '01',
+              '营业厅方式',
+              '未知方式') PARA_CODE10,
+       '' PARA_CODE11,
+       '' PARA_CODE12,
+       '' PARA_CODE13,
+       '' PARA_CODE14,
+       '' PARA_CODE15,
+       '' PARA_CODE16,
+       '' PARA_CODE17,
+       '' PARA_CODE18,
+       '' PARA_CODE19,
+       '' PARA_CODE20,
+       '' PARA_CODE22,
+       '' PARA_CODE5,
+       '' PARA_CODE7,
+       '' PARA_CODE25,
+       '' PARA_CODE26,
+       '' PARA_CODE27,
+       '' PARA_CODE28,
+       '' PARA_CODE29,
+       '' PARA_CODE30,
+       '' START_DATE,
+       '' END_DATE,
+       '' EPARCHY_CODE,
+       A.REMARK REMARK,
+       '' UPDATE_STAFF_ID,
+       '' UPDATE_DEPART_ID,
+       '' UPDATE_TIME,
+       '' SUBSYS_CODE,
+       0 PARAM_ATTR,
+       '' PARAM_CODE,
+       '' PARAM_NAME
+  FROM TF_F_USER_PROSECUTION A,
+       TF_F_CUST_PERSON      B,
+       TF_F_USER             C,
+       TD_M_AREA             D
+ WHERE A.SERIAL_NUMBER = C.SERIAL_NUMBER
+   AND C.REMOVE_TAG = '0'
+   AND B.CUST_ID = C.CUST_ID
+   AND B.PARTITION_ID = MOD(C.CUST_ID, 10000)
+   AND C.CITY_CODE = D.AREA_CODE
+   AND (A.ACCEPT_DATE > TO_DATE(:PARA_CODE2, 'yyyy-mm-dd hh24:mi:ss') OR :PARA_CODE2 IS NULL)
+   AND (A.ACCEPT_DATE < TO_DATE(:PARA_CODE3, 'yyyy-mm-dd hh24:mi:ss') OR :PARA_CODE3 IS NULL)
+   AND (A.SERIAL_NUMBER = :PARA_CODE1 OR :PARA_CODE1 IS NULL)
+   AND (A.PROSECUTEE_NUMBER = :PARA_CODE4 OR :PARA_CODE4 IS NULL)
+   AND (A.PROSECUTION_WAY = :PARA_CODE5 OR :PARA_CODE5 IS NULL)

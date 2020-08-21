@@ -1,0 +1,4 @@
+SELECT COUNT(1) recordcount
+FROM tf_b_trade_purchase
+WHERE trade_id = TO_NUMBER(:TRADE_ID)
+AND ADD_MONTHS(TO_DATE(rsrv_str1,'YYYY-MM-DD'),TO_NUMBER(:MONTH))>TRUNC(SYSDATE)

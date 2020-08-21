@@ -1,0 +1,2 @@
+INSERT INTO tl_b_custcontact_tradelog(flow_id,accept_month,cust_contact_id,modify_tag,modify_desc,update_staff_id,update_depart_id,update_city_code,update_eparchy_code,update_time,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,remark)
+ VALUES(TO_NUMBER(:FLOW_ID),TO_NUMBER(:ACCEPT_MONTH),TO_NUMBER(:CUST_CONTACT_ID),:MODIFY_TAG,:MODIFY_DESC,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:UPDATE_CITY_CODE,:UPDATE_EPARCHY_CODE,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,:REMARK)

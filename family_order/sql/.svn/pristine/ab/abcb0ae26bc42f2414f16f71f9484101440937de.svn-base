@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_score(trade_id,accept_month,user_id,serial_number,score,score_changed,value_changed,remark)
+VALUES(TO_NUMBER(:TRADE_ID),TO_NUMBER(SUBSTR(:TRADE_ID,5,2)),TO_NUMBER(:USER_ID),:SERIAL_NUMBER,TO_NUMBER(:SCORE_VALUE),0,0,'清积分')

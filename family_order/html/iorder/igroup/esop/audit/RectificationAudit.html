@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<title>工单整改</title>
+	
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/audit/script/AuditWorkForm.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/pagedata/PageData.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back">工单整改</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 滚动（替换为 java 组件） 开始 -->
+	<div class="e_space"></div>
+	<div jwcid="@Scroller" name="mainScorll" class="c_scroll c_scroll-float c_scroll-phone-header e_phone-scroll-infoTop">
+	<div class="e_space"></div>
+	<!--新增业务监督检查信息区 开始  -->
+	<div class="l_queryResult c_table" id="refreshtable" jwcid="refreshtable@Part" style="height:auto;" >
+			<!-- 表格 开始 -->
+			<!-- <div class="c_table"> -->
+				<table jwcid="@Table" name="myTable">
+					<thead>
+						<tr>	
+							<th>业务类型</th>
+							<th>订单号</th>
+							<th>产品名称</th>
+							<th>集团名称</th>
+							<th>集团编号</th>
+							<th>业务创建人工号</th>
+							<th>查看专线详情</th>
+							<!-- <th jwcid="@Conditional" condition="ognl:checkRecordInfo2.PRODUCT_ID== '7012' || PRODUCT_ID== '7011'">IP地址使用费(元)</th>
+							<th jwcid="@Conditional" condition="ognl:checkRecordInfo2.PRODUCT_ID== '7012' || PRODUCT_ID== '7011'">软件应用服务费(元)</th>
+							<th jwcid="@Conditional" condition="ognl:checkRecordInfo2.PRODUCT_ID== '7012' || PRODUCT_ID== '7011'">技术支持服务费(元)</th>
+						 -->	
+						</tr>
+					</thead>
+					<tbody>
+							<td><span jwcid="@Insert" value="ognl:info.BPM_TEMPLET_NAME" class="center" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.BI_SN" raw="false" class="center" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false" class="center" /></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.ACCEPT_STAFF_ID" raw="false"/></td>
+							<td data-title="查看详情" class="fn e_center"  jwcid="@Any" ontap="queryAllDataline(this);"
+                                    IBSYSID="ognl:info.BI_SN" 
+									value="查看详情">
+                                    <span class="e_ico-search"></span>
+                             </td>
+					</tbody>
+				</table>
+		</div>
+		<div class="e_space"></div>
+	<!-- 查询模版 结束 -->
+	<div  jwcid="attachInfoPart@Part">
+		<div class="c_title">
+			<div class="text">附件</div>
+		</div>
+		<div class="c_list c_list-s">
+	      <ul jwcid="@Foreach" source="ognl:attachInfos" value="ognl:attachInfo" element="ul">
+		       <li class="link">
+		        <div class="ico">
+		         <span class="e_ico-word"></span>
+		        </div> 
+		           <a jwcid="@Any" href="ognl:'attach?action=download&fileId=' + attachInfo.FILE_ID+'&realName='+attachInfo.ATTACH_NAME"
+		          target="_blank"> <span jwcid="@Insert" value="ognl:attachInfo.ATTACH_NAME" raw="false" />
+		         </a>
+		        <div class="c_space"></div>
+		
+		       </li>
+	      	</ul>
+	     </div>
+    </div>
+	<div class="e_space"></div>
+	<div id="checkRecordPart" jwcid="checkRecordPart@Part">
+			<div  class="l_queryFn">
+					<div class="c_fn">
+						<div class="left">
+							<div class="text">审核信息</div>
+						</div>
+					</div>
+			</div>
+			<div class="l_queryResult c_list c_list-line c_list-border c_list-col-2 c_list-phone-col-1">
+				<ul>
+					<li class="link required">
+						<div class="label">整改人</div>
+						<div class="value">
+							<input jwcid="@TextField" name="STAFF_ID" value="ognl:info.STAFF_ID" nullable="no" desc="整改人"  disabled="true"/>
+						</div>
+					</li>
+					<li class="link required">
+						<div class="label">整改人电话</div>
+						<div class="value">
+							<input jwcid="@TextField" name="STAFF_PHONE" value="ognl:info.STAFF_PHONE" nullable="no" desc="整改人电话" disabled="true"/>
+						</div>
+					</li>
+					<li class="link required" ontap="showAuditStaff();">
+						<div class="label">稽核员工</div>
+						<div class="value"><span class="e_mix">
+							<input jwcid="@TextField" name="AUDITSTAFF" id="pattr_AUDITSTAFF" value=""  desc="稽核员工" nullable="no"/>
+							<span class="e_ico-check"></span>
+						</span></div>
+					</li>
+					<li class="link required" >
+						<div class="label">稽核员工手机号码</div>
+						<div class="value">
+							<input jwcid="@TextField" name="AUDITPHONE" id="pattr_AUDITPHONE" value="ognl:info.AUDITPHONE" desc="稽核员工手机号码" nullable="no"/>
+						</div>
+					</li>
+					<li class="link required ">
+						<div class="label">整改措施与结果</div>
+						<div class="value">
+							<input jwcid="@TextField" name="REMARK" value=""  desc="整改措施与结果" nullable="no"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+			<div class="c_space"></div>
+			<!-- 提交 开始 -->
+			<div class="c_submit c_submit-center">
+				<button type="button" class="e_button-r e_button-l e_button-navy" ontap="window.reloadNav();">重置</button>
+				<button type="button" class="e_button-r e_button-l e_button-green" ontap="submitAuditInfo()">提交</button>
+			</div>
+			<!-- 提交 结束 -->
+			<div class="c_space"></div>
+	</div>
+	
+	</div>
+	<!-- 滚动（替换为 java 组件） 结束 -->
+		<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup08" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="auditPopupItem">
+			<div id="auditHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" id="auditPopupBack">选择稽核员工</div>
+			</div>
+			<div class="c_fn">
+				<div class="left">
+					<div class="text"></div>
+				</div>
+					<div class="right"  jwcid="auditForm@Part">
+						<span class="label">员工姓名：</span>
+						<input style="width:18em;"  jwcid="@TextField" id="cond_StaffName"  name="cond_StaffName" value="ognl:condition.StaffName"  desc="员工姓名"/>
+						<button class="e_button-blue" onclick="auditFormQuery();"><span class="e_ico-search"></span><span>查询</span></button>
+					</div>
+				</div>
+				<div class="l_queryFn" jwcid="auditParts@Part" element="div">
+					<div class="l_queryResult">		
+						<div class="c_table">
+						<table name="auditTable" id="auditTable" class="c_table c_table-checkbox" jwcid="@Table">
+							<thead>
+								<tr>
+				                	<th col="AUDIT_STAFF_ID">员工工号</th>
+				                    <th col="AUDIT_STAFF_ID">员工姓名</th>
+				                    <th col="CITY_CODE">所在地市</th>
+				                    <th col="EPARCHY_CODE">所在地州</th>
+				                    <th col="DEPART_ID">部门编号</th>
+				                    <th col="DEPART_NAME">部门名称</th>
+				                    <th col="STAFF_PHONE">联系电话</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr">
+									<td class="e_center" align="center"><span jwcid="@Redirect" value="ognl:info.STAFF_ID" onclick="setReturnValue(this);" staff_id="ognl:info.STAFF_ID" raw="false" staff_phone = "ognl:info.SERIAL_NUMBER1" ></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.CITY_CODE"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.EPARCHY_CODE"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:info.DEPART_ID"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:info.DEPART_NAME"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER1"  raw="false"></span></td>	
+								
+								</tr>
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 弹窗结束 -->
+	<!-- 弹窗 开始 -->
+<div jwcid="@Popup" name="popup09" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="datalinePopupItem">
+			<div id="auditHead" class="c_header">
+				<div class="back" ontap="backPopup(this);" >专线信息</div>
+			</div>
+			<div class="c_fn">
+				<div class="left">
+					<div class="text"></div>
+				</div>
+			</div>
+				<div class="l_queryFn" jwcid="dataLineInfoPart@Part" element="div">
+					<div class="l_queryResult">		
+						<div class="c_table">
+						<table name="dataLineTable" id="dataLineTable" class="c_table c_table-checkbox" jwcid="@Table">
+							<thead>
+								<tr>
+				                	<th>专线实例号</th>
+				                    <th>专线带宽（兆）</th>
+				                    <th>月租费</th>
+				                    <th>安装调试费（元）</th>
+				                    <th>软件应用服务费</th>
+				                    <th>技术支持服务费</th>
+				                    <div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97011">
+				                    	<th>IP地址使用费</th>
+									</div>
+									<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97012">
+				                    	<th>SLA服务费（元/月）</th>
+									</div>
+								</tr>
+							</thead>
+							<tbody>
+								<tr jwcid="@Foreach" source="ognl:dataLineInfos" value="ognl:dataLineInfo" element="tr">
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_LINE_NO" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR1"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR2"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR3"  raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR11"  raw="false"></span></td>	
+									<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR12"  raw="false"></span></td>
+									<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97011">
+				                    	<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR10"  raw="false"></span></td>
+									</div>
+									<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == 97012">
+				                    	<td align="center"><span jwcid="@Insert" value="ognl:dataLineInfo.NOTIN_RSRV_STR16"  raw="false"></span></td>
+									</div>
+								</tr>
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 弹窗结束 -->
+	<script>
+		Wade.setRatio();
+	</script>
+
+
+
+
+</body>
+</html>

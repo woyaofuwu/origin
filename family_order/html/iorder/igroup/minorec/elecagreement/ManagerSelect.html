@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>客户经理信息选择</title>
+	<script  jwcid="@Script" src="iorder/igroup/minorec/elecagreement/script/managerSelect.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="l_query l_query-submit"  jwcid="QryInfoResultPart@Part">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="left">
+			</div>
+			<div class="right">
+				<div class="e_mix" ontap="showPopup('popup','popupt')">
+					<input type="text" id="qryInput" readonly="readonly" />
+					<button id="qryBox" class="e_button-blue" type="button" ><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>	
+	<!-- 查询结果开始 -->
+	<div class="l_queryResult" element="div"  >
+		<!-- 表格 开始 -->
+		<table jwcid="@Table" name="infosTable" id="infosTable" scroll="true">
+			<thead>
+				<tr>
+           			<th class="e_center">员工工号</th>
+           			<th class="e_center">员工名称</th>
+           			<th class="e_center">服务号码</th>
+      				<th class="e_center">性别</th>
+					<th class="e_center">归属部门</th>
+					<th class="e_center">归属业务区</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:Infos" value="ognl:Info" element="tr" index="ognl:rowIndex">
+					<td class="e_center">
+					<a jwcid="@Any" href='#nogo' STAFF_ID="ognl:info.STAFF_ID"  STAFF_NAME="ognl:info.STAFF_NAME" 
+						  		ontap="backInfo($(this))" > 	
+						<span jwcid="@Insert" value="ognl:info.STAFF_ID"/>
+					</a>
+					</td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.STAFF_NAME"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('STAFF_SEX',info.SEX)"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.DEPART_ID)"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)"/></td>
+					
+				</tr>			
+			</tbody>
+		</table>
+	</div>
+	<div class="l_queryPage">
+		<!-- 分页 开始 -->
+		<div name="navbar1" jwcid="@NavBar" cond="searchPart" count="ognl:count" listener="queryManagerInfoByParam" part="QryInfoResultPart" pageSize="10" ></div>
+		<!-- 分页 结束 -->
+	</div>
+	<div class="l_querySubmit">
+		<div class="c_submit c_submit-full">
+			<button type="button" class="e_button-r e_button-l e_button-navy" ontap="clearValue()">清除</button>
+			<button type="button" class="e_button-r e_button-l e_button-navy" ontap="backPop()">返回</button>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+
+<div>
+	<input type="hidden" jwcid="@Any" name="cond_PARAMS" id="cond_PARAMS" value="ognl:cond.PARAMS" desc='参数'/>
+</div>
+
+<!-- 简单查询条件 开始 -->
+<div jwcid="@Popup" name="popup" id='searchPopup'>
+	<!-- 查询条件弹出层   开始    -->
+	<div class="c_popupGroup">
+		<div id="popupt" class="c_popupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup('popup')">查询</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="c_scrollContent l_padding"  onkeyup="if(event.keyCode == 13){queryInfo();}">
+					<div jwcid='searchPart@Part' class="c_form c_form-col-1 c_form-phone-col-1 c_form-box c_form-label-5">
+						<ul>
+							<li>
+								<div class="label">业务区：</div>
+								<div class="value">
+									<span jwcid="@ecserv:SecDistrictSelect" popMode="F"
+									name="cond_AREA_CODE" id="cond_AREA_CODE" value="ognl:cond.AREA_CODE" text='ognl:cond.AREA_NAME' readOnly='ognl:cond.CLOSEPOPUP'
+										 	textField="AREA_NAME" checkBoxType="radio" valueField="AREA_CODE"  desc="业务区编码"
+										 	afterAction='changeDepartCounty_manager()'></span>
+								</div>
+							</li>
+							<li>
+								<div class="label">归属部门：</div>
+								<div class="value">
+									<span jwcid="@ecserv:SecOrgSelect" name="cond_DEPART_ID"   id='cond_DEPART_ID'
+												text="ognl:cond.DEPART_NAME" mgmtCounty="" readOnly='ognl:cond.CLOSEPOPUP'
+												value="ognl:cond.DEPART_ID" afterAction=""
+												 desc="所在部门" popMode="F">
+										</span>
+								</div>
+							</li>
+							<li>
+								<div class="label">员工名称：</div>
+								<div class="value">
+								<input type="text" jwcid="@TextField" name="cond_STAFF_NAME" id="cond_STAFF_NAME" value="ognl:cond.cond_STAFF_NAME" desc='员工名称'/>
+								</div>
+							</li>
+							
+							<li>
+								<div class="label">性别：</div>
+								<div class="value">
+									<span jwcid="@Select" name="cond_SEX" id="cond_SEX" value="ognl:info.cond_SEX" 
+										source="ognl:pageutil.getStaticList('STAFF_SEX')" textField="DATA_NAME" valueField="DATA_ID"  
+										desc="性别">
+									</span>	
+								</div>
+							</li>
+							<li>
+								<div class="label">服务号码：</div>
+								<div class="value">
+									<input type="text" jwcid="@TextField" id='cond_SERIAL_NUMBER' name='cond_SERIAL_NUMBER' value="ognl:cond.cond_SERIAL_NUMBER" desc="服务号码" />									
+								</div>
+							</li>
+							<li>
+								<div class="label">员工工号：</div>
+								<div class="value">
+									<input type="text" jwcid="@TextField" id='cond_STAFF_ID' name='cond_STAFF_ID' value="ognl:cond.cond_STAFF_ID"
+									 maxLength="8" maxsize="8" desc="员工工号" onkeyup="this.value=this.value.toUpperCase()" />									
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full"><button class="e_button-l e_button-r e_button-blue" type="button" ontap="queryInfo();">查询</button></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 查询条件弹出层   结束    -->
+</div>
+
+</body>
+</html>

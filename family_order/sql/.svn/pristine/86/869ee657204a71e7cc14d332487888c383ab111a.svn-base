@@ -1,0 +1,4 @@
+SELECT ibsysid,apply_type,operateid,resultstatus,to_char(accept_date,'yyyy-mm-dd hh24:mi:ss') accept_date,to_char(replydate,'yyyy-mm-dd hh24:mi:ss') replydate,phonenum,imeinum,terminalid,softwareeditionnum,configureagreement,to_char(begintime,'yyyy-mm-dd hh24:mi:ss') begintime,to_char(endtime,'yyyy-mm-dd hh24:mi:ss') endtime,add_tag,failtype,failreason,trade_eparchy_code,trade_city_code,trade_depart_id,trade_staff_id,cancel_tag,to_char(cancel_time,'yyyy-mm-dd hh24:mi:ss') cancel_time,cancel_eparchy_code,cancel_city_code,cancel_depart_id,cancel_staff_id,rsrv_str1,rsrv_str2,rsrv_str3 
+  FROM TI_B_DM_BUSI
+ WHERE operateid=:OPERATEID
+   AND apply_type=:APPLY_TYPE

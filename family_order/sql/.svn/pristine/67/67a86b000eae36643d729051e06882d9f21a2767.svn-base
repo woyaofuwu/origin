@@ -1,0 +1,4 @@
+UPDATE TF_F_USER_IMPU
+   SET END_DATE = to_date(:END_DATE, 'yyyy-mm-dd hh24:mi:ss')
+ WHERE PARTITION_ID = MOD(to_number(:USER_ID), 10000)and USER_ID = to_number(:USER_ID)
+ 	 AND SYSDATE BETWEEN START_DATE AND END_DATE

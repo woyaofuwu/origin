@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: CustomerHistoryInfo.html,v 1.7 2014/08/18 11:16:49 huanghui Exp $-->
+<head jwcid="@Head">
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/custhisinfo.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:condition.USER_ID"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:condition.EPARCHY_CODE"/>
+		<input jwcid="@TextField" id="CUST_ID" name="CUST_ID" value="ognl:condition.CUST_ID" />
+	</div>
+	<!-- 隐藏域 结束 -->
+
+	<div jwcid="scoreTab@Tabset" switchAction="myTabSwitchAction(ptitle,title)" tabStyle="c_tab c_tab-2">
+	<!-- 服务请求 开始 -->
+	<div jwcid="thServerInfoPage@TabsetContent" title="服务请求">
+		<!-- 表格 开始 -->
+		<div  jwcid="refreshArea@Part">
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+	      				<th>主叫号码</th>           
+                  		<th>受理时间</th>                  
+                  		<th>服务请求类别</th>                  
+                      	<th>工单内容</th>
+                      	<th>工单状态</th>
+	                  	<th>工单流水号</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:thServerInfos" value="ognl:thServerInfo" element="tr" index="ognl:rowIndex">
+						<td><span jwcid="@Insert" value="ognl:thServerInfo.CALL_SERIAL_MAIN" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thServerInfo.START_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thServerInfo.REMARK" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thServerInfo.CONTENT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thServerInfo.DATA_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thServerInfo.WORKFORM_ID" raw="true"/></td>
+					</tr>           
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<!-- 翻页 开始 -->
+		<!-- 
+		<div jwcid="@NavBar"  name="pagin1" id="pagin1" listener="queryThServerInfos" pageSize="10" cond="QueryCondPart" part="refreshArea" count="ognl:paginCount"/>
+		 -->
+		<!-- 翻页 结束 -->
+		</div>
+	</div>
+	<!-- 服务请求 结束 -->
+
+	<!-- 客户接触 开始 -->
+	<div jwcid="thCustomerContactInfoPage@TabsetContent" title="客户接触">
+		<!-- 表格 开始 -->
+		<div  jwcid="refreshArea2@Part">
+		<div class="c_scroll c_scroll-table-10"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+	      				<th>流水号</th>           
+                  		<th>开始时间</th>                  
+                  		<th>员工账号</th>                  
+                      	<th>受理号码</th>
+                      	<th>主叫号码</th>
+	                  	<th>被叫号码</th>
+                      	<th>接触方式</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:thCustomerContactInfos" value="ognl:thCustomerContactInfo" element="tr" index="ognl:rowIndex">
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.CALL_SERIAL_NO" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.START_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.SERIAL_NO" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.CALL_SERIAL_MAIN" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.CALL_SERIAL_PASS" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:thCustomerContactInfo.CALL_MODE" raw="true"/></td>
+					</tr>  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 
+		<div jwcid="@NavBar"  name="pagin2" id="pagin2" listener="qryTHCustomerContactInfo" pageSize="10" cond="QueryCondPart" part="refreshArea2" count="ognl:paginCount2"/>
+		 -->
+		</div>
+	</div>
+	<!-- 客户接触 结束 -->
+	
+	<!-- 相关工单 开始 -->
+	<div jwcid="yearScorePage@TabsetContent" title="相关工单">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="refreshArea3@Part"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+	      				<th>受理号码</th>
+						<th>受理时间</th>
+						<th>业务内容</th>           
+                  		<th>工单状态</th>                  
+                  		<th>流水号</th>                  
+	                    <th>服务请求类别</th>
+	                    <th>受理工号</th>
+	                  	<th>用户姓名</th>
+	                  	<th>用户级别</th>
+                      	<th>紧急程度</th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr jwcid="@Foreach" source="ognl:thRelaTradeInfos" value="ognl:thRelaTradeInfo" element="tr" index="ognl:rowIndex">
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.ACCEPT_PHONE_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.ACCEPT_TIME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.CONTENT" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.TRADE_STATUS" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.WORKFORM_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.REMARK" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.ACCEPT_STAFF_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.CUST_NAME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.DATA_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:thRelaTradeInfo.URGENCYDEGRE" raw="true"/></td>
+				</tr>     
+				</tbody>
+			</table>
+		</div>		
+		</div>
+		<!-- 表格 结束 -->
+		<!-- 表格 开始 -->
+		<!-- 
+		<div jwcid="@NavBar"  name="pagin3" id="pagin3" listener="qryTHRelaTradeInfo" pageSize="10" cond="QueryCondPart" part="refreshArea3" count="ognl:paginCount3"/>
+		 -->
+		<!-- 表格 结束 -->
+	</div>
+	<!-- 相关工单 结束 -->
+	</div>
+
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+<script language="JavaScript">
+   $(document).ready(function(){
+		onCustomerHistoryInfo();
+   });
+</script>
+</html>

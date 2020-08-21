@@ -1,0 +1,1 @@
+insert into TF_FH_USER_NP select * from TF_F_USER_NP where user_id = :USER_ID

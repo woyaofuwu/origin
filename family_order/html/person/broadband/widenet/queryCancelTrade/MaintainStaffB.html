@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>铁通外线施工B角信息维护</title>
+		<script jwcid="@Script" language="JavaScript"
+			src="person/broadband/widenet/queryCancelTrade/scripts/QueryCancelTrade.js"></script>
+	</head>
+	<body jwcid="@Body">
+		<div class="m_wrapper">
+			<div class="m_wrapper2">
+				<!-- 区域 开始 -->
+				<div class="c_box">
+					<!-- 标题 开始 -->
+					<div class="c_title">
+						<div class="text">
+							查询条件
+						</div>
+					</div>
+					<!-- 标题 结束 -->
+					<!-- 表单 开始 -->
+					<div class="c_form c_form-col-3" jwcid="QueryConditionPart@Part">
+						<input jwcid="@Hidden" name="ON_CITY_CODE" id="ON_CITY_CODE"
+							value="ognl:condition.ON_CITY_CODE" desc="登录工号归属区域" />
+						<ul class="ul">
+							<li class="li">
+								<span class="label">归属区域：</span>
+								<span class="e_select"><span><span> <select
+												id="cond_CITY_CODE" name="cond_CITY_CODE"
+												jwcid="cond_CITY_CODE@Select" valueField="AREA_CODE"
+												textField="AREA_NAME" source="ognl:areas" value="归属区域"
+												datatype="text" desc="归属区域" addDefault="true"
+												defaultText="--请选择--" /> </span> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label">员工手机号码：</span>
+								<span class="e_input"><span><input type="text"
+											jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+											value="ognl:condition.cond_SERIAL_NUMBER" desc="员工手机号码" /> </span> </span>
+							</li>
+						</ul>
+						<ul class="ul">
+							<li class="li">
+								<span class="label">员工工号：</span>
+								<span class="e_input"><span> <input type="text"
+											jwcid="@TextField" id="cond_STAFF_ID" name="cond_STAFF_ID"
+											value="ognl:condition.cond_STAFF_ID" desc="员工工号" /> </span> </span>
+							</li>
+							<li class="li">
+								<span class="label">员工姓名：</span>
+								<span class="e_input"><span> <input type="text"
+											jwcid="@TextField" id="cond_STAFF_NAME"
+											name="cond_STAFF_NAME" value="ognl:condition.cond_STAFF_NAME"
+											desc="员工姓名" /> </span> </span>
+							</li>
+						</ul>
+						<div class="submitPlace"></div>
+						<div class="submit">
+							<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+								class="e_button-form" onclick="return queryStaffB();">
+								<i class="e_ico-search"></i><span>查询</span>
+							</button>
+							<button class="e_button-form" onclick="addStaffB();">
+								<i class="e_ico-add"></i><span>新增</span>
+							</button>
+							<button class="e_button-form" onclick="modifyStaffB();">
+								<i class="e_ico-edit"></i><span>修改</span>
+							</button>
+							<button class="e_button-form" onclick="deleteStaffB();">
+								<i class="e_ico-delete"></i><span>删除</span>
+							</button>
+						</div>
+					</div>
+					<!-- 表单 结束 -->
+					<!-- 表格 开始 -->
+					<div jwcid="result_Table@Part" optimize="true">
+						<div id="exportarea"
+							class="c_scroll c_scroll-x style='height:auto'">
+							<div class="c_title c_title-2">
+								<div class="text">
+									查询结果
+								</div>
+							</div>
+							<div jwcid="print_Table@Part" optimize="true">
+								<div class="c_table">
+									<table jwcid="@Table" id="DeptTable">
+										<thead>
+											<tr>
+												<th width='30px' col="REMOVE_TAG">
+													<input type="checkbox"
+														onclick="checkedOther('monitorids');" />
+												</th>
+												<th>
+													归属区域
+												</th>
+												<th>
+													部门编码
+												</th>
+												<th>
+													部门名称
+												</th>
+												<th col="staffId">
+													员工工号
+												</th>
+												<th>
+													员工姓名
+												</th>
+												<th>
+													员工手机号码
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+												element="tr" index="ognl:rowIndex"
+												class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+												<td class="e_center">
+													<input jwcid="@Checkbox" id="monitorids" name="monitorids"
+														STAFF_ID="ognl:info.STAFF_ID" value="ognl:info.REMOVE_TAG" />
+												</td>
+												<td class="e_center">
+													<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('JOB_CALL_CITYCODE',info.CITY_CODE)" raw="true" />
+												</td>
+												<td class="e_center">
+													<span jwcid="@Insert" value="ognl:info.DEPART_CODE" />
+												</td>
+												<td>
+													<span jwcid="@Insert" value="ognl:info.DEPART_NAME" />
+												</td>
+												<td class="e_center">
+													<span jwcid="@Insert" value="ognl:info.STAFF_ID" />
+												</td>
+												<td class="e_center">
+													<span jwcid="@Insert" value="ognl:info.STAFF_NAME" />
+												</td>
+												<td class="e_center">
+													<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" />
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 表格 结束 -->
+						</div>
+						<!-- 翻页（替换为页面组件） 开始 -->
+						<span jwcid="@NavBar" name="pageNav" id="pageNav"
+							cond="QueryConditionPart" pageSize="20" listener="queryStaffB"
+							part="result_Table" count="ognl:pageCount" />
+						<!-- 翻页 结束 -->
+					</div>
+					<!-- 区域 结束 -->
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

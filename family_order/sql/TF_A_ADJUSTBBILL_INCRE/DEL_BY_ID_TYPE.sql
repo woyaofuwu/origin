@@ -1,0 +1,3 @@
+DELETE FROM tf_a_adjustbbill_incre
+ WHERE id=TO_NUMBER(:ID) AND PARTITION_ID=MOD(TO_NUMBER(:ID),10000)
+   AND id_type=:ID_TYPE

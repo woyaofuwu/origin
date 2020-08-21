@@ -1,0 +1,6 @@
+UPDATE TF_F_USER_GRPMBMP_SUB
+   SET END_DATE = sysdate
+ WHERE EC_USER_ID = to_number(:EC_USER_ID)
+   AND EC_SERIAL_NUMBER = to_number(:EC_SERIAL_NUMBER)
+   AND biz_code = :BIZ_CODE
+   AND END_DATE > sysdate

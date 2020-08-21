@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow name="CreateGroupMember" desc="集团成员新增">
+	<step
+		name="begin"
+		desc="开始"
+		nextstep="editBaseDatum"
+		/>
+	<step
+		name="editBaseDatum"
+		desc="基本资料"
+		page="csserv.group.creategroupmember.BaseInfo"
+		listener="initial"
+		nextstep="switchProduct"
+		nextbutton="bnext"
+		monitor="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,GRP_SN,MEB_USER_ID,MEB_SERIAL_NUMBER,PAY_PLAN_SEL_PLAN_TYPE,IF_BOOKING"
+		transdata="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,GRP_SN,MEB_USER_ID,MEB_SERIAL_NUMBER,BUSI_TYPE,MEB_EPARCHY_CODE,GROUP_ID,MEB_CUST_ID,USER_ACCTDAY_ACCT_DAY,USER_ACCTDAY_FIRST_DATE,USER_ACCTDAY_NEXT_ACCT_DAY,USER_ACCTDAY_NEXT_FIRST_DATE,IF_BOOKING,PAY_PLAN_SEL_PLAN_TYPE,IF_ADD_MEB,cond_CHECK_MODE"
+		submitdata="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,MEB_USER_ID,MEB_SERIAL_NUMBER,IF_BOOKING,PAY_PLAN_SEL_PLAN_TYPE,cond_CHECK_MODE,IF_ADD_MEB,MEB_EPARCHY_CODE,MEB_PRODUCT_ID"
+		/>
+	<switch name="switchProduct" expression="COMPIX_PRODUCT" default="0" desc="选择修改其他资料">
+		<case value="0" nextstep="chooseProductElement" desc="否"/>
+		<case value="D" nextstep="processCompixProduct" desc="是"/>
+		<case value="B" nextstep="processBBossProduct" desc="是"/>
+	</switch>
+	<step
+		name="processCompixProduct"
+		desc="组合产品订购"
+		page="csserv.group.creategroupmember.Power100"
+	    listener="initial"
+		nextstep="end"
+		backbutton="bback"
+		nextbutton="bsubmit"
+		/>
+	<step
+		name="processBBossProduct"
+		desc="BBoss产品订购"
+		page="csserv.group.creategroupmember.BBoss"
+	    listener="initial"
+		nextstep="createUserPreview"
+		nextbutton="bnext"
+		monitor="productGoodInfos"
+		transdata="CUST_ID,GRP_PRODUCT_ID,GRP_USER_ID,GRP_SN,MEB_USER_ID,MEB_SERIAL_NUMBER,MEB_EPARCHY_CODE,COND_CHECK_MODE"
+		submitdata="productGoodInfos"
+		/>
+	<step
+		name="chooseProductElement"
+		desc="产品订购"
+		page="csserv.group.creategroupmember.ProductInfo"
+	    listener="initial"
+		nextstep="createUserPreview"
+		nextbutton="bnext"
+		monitor="productParamPart,ROLE_CODE_B,SELECTED_ELEMENTS"
+		transdata="PRODUCT_ID,GRP_USER_ID,MEB_USER_ID,TRADE_TYPE_CODE,MEB_EPARCHY_CODE,MEB_SERIAL_NUMBER,CUST_ID,IF_ADD_MEB"
+		submitdata="DYNATABLE_RES_RECORD,SELECTED_ELEMENTS,ROLE_CODE_B,productParamPart,EFFECT_NOW,MEB_VOUCHER_FILE_LIST,AUDIT_STAFF_ID"
+		/>
+	<step
+		name="createUserPreview"
+		desc="成员新增确认"
+		page="csserv.group.creategroupmember.PreView"
+		listener="initial"
+		nextstep="end"
+		backbutton="bback"
+		submitdata="parm_REMARK,MEB_FILE_LIST,MEB_FILE_SHOW,PAGE_SELECTED_TC,MEB_VOUCHER_FILE_LIST,AUDIT_STAFF_ID,BBOSS_FLAG"
+		/>
+	<step
+		name="end"
+		desc="结束"
+		/>
+</flow>

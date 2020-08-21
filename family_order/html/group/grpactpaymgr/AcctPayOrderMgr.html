@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团代付顺序设置</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpactpaymgr/AcctPayOrderMgr.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+				<span class="label">查询方式：</span>
+				<span class="e_select"><span><span>
+					<select name="cond_QUERY_TYPE" jwcid="@Select" 
+							textField="DATA_NAME" valueField="DATA_ID" 
+							source="ognl:pageutil.getStaticList('RECOMMEND_BUSITYPE')" 
+							value="ognl:condition.cond_QUERY_TYPE" desc="查询方式" 
+							onchange="changeQueryType();"
+							nullable="no" addDefault="false"/>
+				</span></span></span>
+			</li> 
+			<li class="li">
+				<div id="PersonPart">
+					<div class="label"><span>代付服务号码：</span></div>
+					<input id="ACCT_SERIAL_NUMBER" name="ACCT_SERIAL_NUMBER" jwcid="@TextField" class="e_input" value="ognl:condition.serialNumber" type="text" 
+							datatype="text" minsize="2" maxsize="100" desc="服务号码" enterAction="getAcctInfoBySn();"/>
+				</div>
+				<div id="GroupPart"  style="display:none">
+					<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+				</div>
+			</li> 
+		</ul>
+	</div></div>
+	<!-- 表单 结束 -->
+	
+	<!-- 集团客户基本信息 开始 -->
+	<div class="c_box" id="GroupCustInfoPart"  style="display:none">
+		<input type="text" jwcid="@saleserv:GroupCustInfo"/>
+	</div>
+	<!-- 集团客户基本信息 结束 -->	
+
+	<!-- 账户列表开始 -->
+	<div class="c_box">	
+		<div class="c_title">
+			<div class="text">账户列表</div>
+		</div>
+	
+		<div jwcid="AccTablePart@Part">
+		<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table c_table-row-3">
+			<table jwcid="@Table"  id="AccTable" name="AccTable" rowClick="getRelationAA"  scroll="true" >
+				<thead>
+					<tr>
+						<th col="ACCT_ID"><span class="">账户标识</span></th>
+						<th><span class="">账户名称</span></th>
+						<th><span class="">账户类型</span></th>	
+						<th><span class="">是否默认账户</span></th>	
+						<th col="EPARCHY_CODE" style="display:none"><span class="">地市</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:acctInfos" value="ognl:acctInfo" element="tr">
+						<td><a jwcid="@Insert" value="ognl:acctInfo.ACCT_ID"/></td>
+					    <td><span jwcid=@Insert value="ognl:acctInfo.PAY_NAME"/></td>
+					    <td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PAYMODE',acctInfo.PAY_MODE_CODE)" raw="true"/></td>     
+					     <td><span jwcid=@Insert value="ognl:acctInfo.OPEN_DATE"/></td>	
+					     <td style="display:none"><span jwcid=@Insert value="ognl:acctInfo.EPARCHY_CODE"/></td>				     				     
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+	</div>
+	<!-- 账户列表 结束 -->
+	<!-- 账户关系列表 开始 -->
+	<div class="c_box">	
+		<div class="c_title">
+			<div class="text">账户关系列表</div>
+		</div>
+		
+		<div jwcid="AccRelTablePart@Part">
+		<div class="c_scroll c_scroll-x c_scroll-table-5"><div class="c_table c_table-row-3">
+			<table jwcid="AccRelTable@Table" name="AccRelTable">
+				<thead>
+			  		<tr>
+			  			<th id="col_X_TAG" style="display:none">TAG</th>
+			  			<th id="col_ACCT_ID_A">代付账户</th>
+						<th id="col_ACCT_ID_B">被代付账户</th>
+						<th id="col_ORDERNO">优先级(从1开始的数字,1优先级最高)</th>
+			  			<th id="col_START_DATE">开始时间</th>
+			  			<th id="col_END_DATE">结束时间</th>
+			  			<th id="col_INST_ID" style="display:none">INST_ID</th>
+			  		</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:payInfos" value="ognl:payInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'" >
+						<td style="display:none"></td>
+						<td><span jwcid="@Insert" value="ognl:payInfo.ACCT_ID_A" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:payInfo.ACCT_ID_B" raw="true"/></td>
+						<td><input type="text" id="ognl:'ordernum_'+rowIndex" name="ognl:'ordernum_'+rowIndex" jwcid="@Any" value="ognl:payInfo.ORDERNO" /></td>
+						<td><span jwcid="@Insert" value="ognl:payInfo.START_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:payInfo.END_DATE" raw="true"/></td>
+						<td style="display:none"><input type="text" id="ognl:'instid_'+rowIndex" name="ognl:'instid_'+rowIndex" jwcid="@Any" value="ognl:payInfo.INST_ID" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+			<textarea jwcid="@TextArea" name="pam_relay" id="pam_relay" value="ognl:relaypam.pam_relay" style="display:none"></textarea>
+			<textarea jwcid="@TextArea" name="pam_oldrelay" id="pam_oldrelay" value="ognl:relaypam.pam_oldrelay" style="display:none"></textarea>
+		</div></div>
+	</div>
+	<!-- 账户关系列表 结束 -->
+
+	<input type="text" jwcid="@Any" id="ROW_DATA" name="ROW_DATA" value="" style="display:none"/>
+	<input type="text" jwcid="@Any" id="cond_QUERY_TYPE" value="ognl:condition.cond_QUERY_TYPE" style="display:none" />
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="GroupCustInfoPart,AccTablePart,AccRelTablePart" listener="onSubmitBaseTrade" beforeAction="dealRelationAAOrder();" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+</div></div></div>
+</body>
+</html>

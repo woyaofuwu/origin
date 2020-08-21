@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+select sr.STAFF_ID, sr.STAFF_ROLE from TD_S_ECHANNAL_STAFF s,TD_S_ECHANNAL_RELATION sr
+	where 1 = 1 
+	and s.CHAN_ID = :CHAN_ID
+	and s.ID_VALUE = sr.STAFF_ID

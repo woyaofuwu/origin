@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IVR139邮箱配型库管理</title>
+<script jwcid="@Script"  src="person/ivrmail/scripts/mailcustmanage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2" jwcid="MailCustManageALLPart@Part">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">IVR139邮箱配型库管理</div>
+		<div class="tip"><span class="e_tip">此页面进行139邮箱配型库配置管理</span></div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 --><!-- 查询框 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="MailCustManageCondPart@Part">
+	<ul class="ul">
+		<li class="li" id="sn">
+			   <span class="label">客户号码：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+				desc="客户号码" nullable="no"/>
+				</span></span>
+		</li>
+		
+		<li class="li" id="sectionid">
+			    <span class="label">IVR节点：</span>
+				   <span class="e_select"><span><span>
+					<select jwcid="@Select" 
+					name="SECTION_ID" id="SECTION_ID"
+					source="ognl:pageutil.getStaticList('IVR_139MAIL_CUST_SECTIONLIST')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					addDefault="true" 
+					defaultText="--全部节点--"
+				 />
+				</span></span></span>
+		</li>
+		
+		
+		<li class="li" id="monthlimit">
+			   <span class="label">每月次数限制：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="MONTH_LIMIT" id="MONTH_LIMIT" value="ognl:cond.MONTH_LIMIT" 
+				desc="每月发送次数限制" nullable="no"/>
+				</span></span>
+		</li>
+		
+		<li class="li" id="sendcount">
+			   <span class="label">当月发送次数：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="SEND_COUNT" id="SEND_COUNT" value="ognl:cond.SEND_COUNT" 
+				desc="当月已经发送次数" nullable="no"/>
+				</span></span>
+		</li>
+		
+		
+		<li class="li" id="sdate">			
+			    <span class="label">触发起始时间：</span>
+				   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="START_DATE" id ="START_DATE" value="ognl:cond.START_DATE" desc="起始日期" format="yyyy-MM-dd HH:mm:ss" time="true"/>
+				   </span></span>
+		</li>
+		<li class="li" id="edate">			
+				 <span class="label">触发结束时间：</span>  
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="END_DATE" id ="END_DATE" value="ognl:cond.END_DATE"   desc="结束时间" format="yyyy-MM-dd HH:mm:ss" time="true"/>
+				 </span></span>
+		</li>
+		</ul>
+		
+	  	
+		<div class="submitPlace"></div>
+		<div class="button">
+			<span jwcid="@Conditional" condition="ognl:hasPriv('NGC_MAILMANAGE_IMPORT','1')">
+				<span jwcid="@Import" name="importFile" 
+						ftpSite="personserv" fileSize="30" fileTypes="excel" serviceName="101996" 
+						config="import/ivrmail/ImportList.xml"
+						desc="导入文件" nullable="no" cond="" params="" afterAction=""/>	
+			</span>
+			<span jwcid="@Conditional" condition="ognl:hasPriv('NGC_MAILMANAGE_EXPORT','1')">
+				<span jwcid="@Export" name="exportFile" ftpSite="personserv" serviceName="101995"
+								  config="export/ivrmail/ExportList.xml" fileName="查询结果导出" cond=MailCustManageCondPart/> 
+			</span>
+			<span jwcid="@Conditional" condition="ognl:hasPriv('NGC_MAILMANAGE_CLEAR','1')"  >
+				<button type="button"  class="l_ml"  onclick="confirmDeleteAll();"><i class="e_ico-refresh"></i><span>清 空</span></button>
+			</span>
+		</div>
+		<div class="submit">
+		 	<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="queryList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="MailCustManageListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table  jwcid="@Table" id="DeptTable"  name="DeptTable" rowClick="mailCustTableClick" >
+      			<thead>
+		  			<tr>
+						<th col="col_SERIAL_NUMBER">客户号码</th>
+						<th col="col_SECTION_ID" style="display:none">SECTION_ID</th>
+						<th col="col_SECTION_NAME" >节点</th>
+						<th col="col_MONTH_LIMIT">月发送次数限制</th>
+						<th col="col_LM_STARTDATE">触发开始时间</th>
+						<th col="col_LM_ENDDATE">触发结束时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">		
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.SECTION_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SECTION_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.MONTH_LIMIT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LM_STARTDATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LM_ENDDATE" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+	</div></div>
+	<div jwcid="@NavBar" name="page" id="page" cond="MailCustManageCondPart"  part="MailCustManageListPart" listener="queryList" pageSize="10" count="ognl:listCount"></div>	
+	</div>
+	<!-- 表格 结束 -->
+	
+	<div jwcid="ModifyMailCustPart@Part">
+		<div class="c_title"><div class="text">记录修改</div></div>
+		<div class="c_form c_form-col-3 c_form-label-7">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户号码：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='MODIFY_SERIAL_NUMBER' name='MODIFY_SERIAL_NUMBER' value="ognl:cond.SERIAL_NUMBER" nullable="no" desc="客户号码" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li" id="sectionid">
+				    <span class="label">IVR节点：</span>
+					   <span class="e_select"><span><span>
+						<select jwcid="@Select" 
+						name="MODIFY_SECTION_ID" id="MODIFY_SECTION_ID"
+						source="ognl:pageutil.getStaticList('IVR_139MAIL_CUST_SECTIONLIST')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+						addDefault="true" 
+						defaultText="--全部节点--"
+					 />
+					</span></span></span>
+				</li>
+				
+				<li class="li">
+					<span class="label">月发送次数限制：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@TextField" id='MODIFY_MONTH_LIMIT' name='MODIFY_MONTH_LIMIT' value="ognl:cond.MONTH_LIMIT" nullable="no" desc="节点月发送次数限制" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">触发开始时间：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@DateField" id='MODIFY_LM_STARTDATE' name='MODIFY_LM_STARTDATE' value="ognl:cond.LM_STARTDATE"  format="yyyy-MM-dd HH:mm:ss" time="true" desc="触发开始时间" /></span></span>
+					</span>
+				</li>
+				
+				<li class="li">
+					<span class="label">触发结束时间：</span>
+					<span class="e_textarea">
+					<span class="e_input" ><span><input type="text" jwcid="@DateField" id='MODIFY_LM_ENDDATE' name='MODIFY_LM_ENDDATE' value="ognl:cond.LM_ENDDATE"  format="yyyy-MM-dd HH:mm:ss" time="true"  desc="触发结束时间" /></span></span>
+					</span>
+				</li>
+				
+			</ul>
+			
+		</div>
+	</div>		
+	<div class="c_submit">
+		<span jwcid="@Conditional" condition="ognl:hasPriv('NGC_MAILMANAGE_ADD','1')">
+			<button type="button" class="e_button-page-add" onclick="addmailcust()"><i></i><span>新增</span></button>
+		</span>
+		<span jwcid="@Conditional" condition="ognl:hasPriv('NGC_MAILMANAGE_MODIFY','1')">
+			<button type="button" class="e_button-page-modify" onclick="modifymailcust()"><i></i><span>修改</span></button>
+		</span>
+		<span jwcid="@Conditional" condition="ognl:hasPriv('NGC_MAILMANAGE_DEL','1')">
+			<button type="button" class="e_button-page-del" onclick="delmailcust()"><i></i><span>删除</span></button>
+		</span>
+	</div>
+</div>
+
+
+</div></div></body>
+</html>

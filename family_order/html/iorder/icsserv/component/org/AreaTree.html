@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>区域选择树</title>
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/org/org.js"  ></script> 
+</head>
+<body jwcid="@Body">	
+	<div class="c_header">
+		<div class="back" ontap="backPopup(this);">业务区</div>
+	</div>
+	<div class="c_scroll c_scroll-float c_scroll-header">
+		<div class="l_padding">
+			<!-- tab height= 28 -->
+			<div jwcid="areaTabset@Tabset" name="areaTabset" class="c_tab c_tab-level-2" switchAction="$.org.areaTreeSwitchAction(ptitle,title)">
+					<div class="content" title="归属区域">
+						<!-- checkBoxType="radio" -->	
+						<div jwcid="areaTree@Tree" 
+							name="areaTree"
+							listener="ognl:listeners.loadAreaTree" 
+							async="true" init="false" 
+							expandPath="ognl:rootArea" 
+							checkBoxType="ognl:getParameter('checkboxtype')" 
+							showCheckBox="ognl:'true'.equals(getParameter('showcheckbox'))"></div>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:'grant'.equals(getParameter('clickflag'))">
+						<div class="content"  title="授权区域">
+							<div jwcid="grantAreaTree@Tree" 
+								name="grantAreaTree"
+								listener="ognl:listeners.loadAreaTreeByGrant" 
+								async="true" init="false" 
+								expandPath="grantAreaTree_root" 
+								checkBoxType="ognl:getParameter('checkboxtype')" 
+								showCheckBox="ognl:'true'.equals(getParameter('showcheckbox'))"></div>
+						</div>	
+					</div>
+			</div>
+			<div class="c_submit c_submit-full"><!--c_submit height=40px -->
+				<button href="#nogo" class="e_button e_button-r e_button-navy" ontap="backPopup(this);"><i></i><span>取消</span></button>
+				<button href="#nogo" class="e_button e_button-r e_button-blue" ontap="$.org.setAreaPopupReturnValue();"><i></i><span>确定</span></button>
+			</div>
+			<div class="c_space-3"></div>
+		</div>
+	</div>
+	
+	
+	<div id="treeParamArea" style="display:none">
+		<input name="datamode" jwcid="@Hidden" type="hidden" value="ognl:getParameter('datamode','')" />
+		<input name="sqlref" jwcid="@Hidden" type="hidden" value="ognl:getParameter('sqlref')" />
+		<input name="checkbox" jwcid="@Hidden" type="hidden" value="ognl:getParameter('checkbox')" />
+		<input name="firstlevel" jwcid="@Hidden" type="hidden" value="ognl:getParameter('firstlevel')" />	
+	</div>
+	
+	<div id="areaTreeParamArea" style="display:none">
+		<input name="root_id" jwcid="@Hidden" type="hidden" value="ognl:rootArea!=null?rootArea:''" />
+	</div>
+	<input name="field_name" jwcid="@Hidden" type="hidden" value="ognl:getParameter('field_name','')" />
+	
+	<script language="javascript">
+	<!--
+	$(function(){
+		$.org.loadAreaTree();
+	});
+	//-->	
+	</script>
+</body>
+</html>

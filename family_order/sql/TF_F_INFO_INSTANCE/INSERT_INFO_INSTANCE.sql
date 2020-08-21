@@ -1,0 +1,1 @@
+insert into tf_f_info_instance ( select SEQ_INST_ID.nextval, :INFO_ID, '0', staff_id, '2', to_date(:SEND_TIME, 'yyyy-mm-dd hh24:mi:ss'), :SEND_MONTH,null,null  from td_m_staff where DIMISSION_TAG='0' and LOGIN_FLAG='0' and CITY_CODE in (select AREA_CODE from td_m_area where AREA_FRAME like '%' || :EPARCHY_CODE || '%'))

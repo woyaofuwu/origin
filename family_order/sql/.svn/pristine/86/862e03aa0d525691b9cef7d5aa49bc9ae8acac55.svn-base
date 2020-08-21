@@ -1,0 +1,1 @@
+select t.*  from Tf_f_User_Product t where t.user_id=:USER_ID and t.product_id=:PRODUCT_ID

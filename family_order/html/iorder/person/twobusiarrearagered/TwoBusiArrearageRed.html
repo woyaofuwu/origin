@@ -1,0 +1,195 @@
+﻿<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>两级业务欠费红名单</title>
+	<script language="JavaScript" jwcid="@Script" src="scripts/iorder/icsserv/component/person/usercheck/UserCheck.js"></script>
+	<script language="JavaScript" jwcid="@Script" src="iorder/person/twobusiarrearagered/scripts/twobusiarrearagered.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">两级业务欠费红名单</div>
+	<div class="fn">
+		<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+		<span class="e_ico-menu" id="fnButton" ontap=""></span>
+
+
+	</div>
+</div>
+<!-- 标题栏 结束 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+		<div jwcid="QueryFormInfo@Part" class="c_form c_form-label-7 c_form-border c_form-col-3 c_form-submit">
+
+			<div class="fn">
+
+				<button type="button" class="l_ml" onclick="deleteRedDeal()" id="delButton"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button type="button" class="l_ml" onclick="addRedDeal()" id="addButton"><i class="e_ico-add"></i><span>新增</span></button>
+
+			</div>
+
+
+			<ul>
+				<li class="required">
+					<div class="label">集团编码|名称：</div>
+					<div class="value">
+						<input jwcid="cond_GROUP_ID_NAME@TextField"  name="cond_GROUP_ID_NAME" type="text" value="ognl:getData().getString('cond_GROUP_ID_NAME','')"  placeholder="集团客户编码|名称"
+							   desc="集团编码|名称" onenterAction="getListValue();" />
+					</div>
+				</li>
+
+
+
+				<li>
+					<div class="label">商品：</div>
+					<div class="value">
+						<select name="cond_OFFER_CODE"
+								jwcid="cond_OFFER_CODE@Select"
+								source="ognl:tradeTypes"
+								valueField="PARA_CODE1" textField="PARAM_NAME"
+								value="ognl:getData().getString('cond_OFFER_CODE','')" desc="商品"
+								addDefault="yes" />
+					</div>
+				</li>
+
+			</ul>
+
+			<div class="submit">
+				<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="getListValue();">
+					<span class="e_ico-search"></span><span>查询</span>
+				</button>
+				<button type="button" style="display: none" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+
+			</div>
+		</div>
+		<div class="c_space"></div>
+		<div jwcid="RedListPart@Part">
+			<!-- 表格 开始 -->
+			<table name="UserPlatsvcTable" class="c_table c_table-border c_table-lite c_table-row-8" jwcid="@Table">
+				<thead>
+				<tr>
+					<th><input jwcid="@Checkbox" name="myCheck" onclick="checkedOther('trades')"/></th>
+					<th ontap="$.sortTable(this)"><span>集团编码</span></th>
+					<th ontap="$.sortTable(this)"><span>集团名称</span></th>
+					<th ontap="$.sortTable(this,'int')"><span>商品编码</span></th>
+					<th ontap="$.sortTable(this)"><span>商品名称</span></th>
+					<th ontap="$.sortTable(this,'int')"><span>状态</span></th>
+					<th ontap="$.sortTable(this,'date')"><span>创建时间</span></th>
+					<th ontap="$.sortTable(this,'date')"><span>备注</span></th>
+
+
+				</tr>
+				</thead>
+				<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+					element="tr" index="ognl:rowIndex"
+					class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td class="e_center"><input jwcid="@Checkbox" name="trades" value="ognl:info.RED_ID"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.GROUP_ID"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.GROUP_NAME"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.OFFER_CODE"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.OFFER_NAME"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.REMOVE_TAG" raw="true"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.INSERT_DATE)" raw="false"/></td>
+					<td class="e_center"><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+
+				</tr>
+				</tbody>
+			</table>
+			<!-- 表格 结束 -->
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div class="c_space-c"></div>
+			<div class="c_page c_page-border" jwcid="PageNav@NavBar" name="PageNav" cond="QueryForm"
+				 count="ognl:pageCount" listener="queryTwoBusinessRedInfo" pageSize="10"
+				 part="RedListPart" />
+			<!-- 翻页 结束 -->
+<!--			<div class="c_box">-->
+<!--				<div class="c_submit">-->
+<!--					<button name="QUERY_BTN" id="QUERY_BTN" class="e_button-blue" ontap="checkSubmitBefore();">-->
+<!--						<span>重新发送</span>-->
+<!--					</button>-->
+
+<!--				</div>-->
+<!--			</div>-->
+
+			<!-- 提交 结束 -->
+		</div>
+	</div>
+</div>
+	
+<!-- 弹窗 开始 -->
+<!-- 弹窗 开始 -->
+
+<div class="c_box"   jwcid="ShowPopupPart@Part">
+	<div class="c_title">
+		<span class="text">两级业务欠费红名单新增</span>
+	</div>
+	<div jwcid="addInfopart@Part" id="addInfopart">
+		<div class="c_scroll c_scroll-table-5 " style="height:750px;">
+			<div class="c_table">
+
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-7 c_form-col-2" jwcid="RedCreatePart@Part">
+					<ul class="ul">
+
+						<li class="required">
+							<span class="label"><span class="e_required">集团编码：</span></span>
+							<span class="e_input"><span>
+									<input type="text" name="GROUP_ID" id="GROUP_ID" jwcid="@TextField" value="ognl:info.GROUP_ID" desc="集团编码<" nullable="no" onenterAction="getGroupName();" />
+								</span></span>
+						</li>
+						<li class="required" >
+							<span class="label"><span class="e_required">集团名称：</span></span>
+							<span class="e_input"  jwcid="insertGroupName@Part" ><span>
+										<input id="GROUP_NAME" name="GROUP_NAME" refreshParts="insertGroupName"  jwcid="@TextField" value="ognl:info.GROUP_NAME" listener="ognl:listeners.queryGroupName" rows="1" maxsize="50" desc="集团名称<"/>
+								</span></span>
+						</li>
+
+
+						<li class="required">
+							<div class="label">商品：</div>
+							<div class="value">
+								<select name="OFFER_CODE"
+										jwcid="OFFER_CODE@Select"
+										source="ognl:tradeTypes"
+										valueField="PARA_CODE1" textField="PARAM_NAME" onchange="getOfferName();"
+										value="ognl:getData().getString('OFFER_CODE','')" desc="商品"
+										addDefault="yes" />
+							</div>
+						</li>
+						<li class="required" >
+							<span class="label"><span class="e_required">商品名称：</span></span>
+							<span class="e_elements" jwcid="insertOfferName@Part">
+										<span class="e_input e_input-left"><span>
+										<input id="OFFER_NAME" name="OFFER_NAME"  refreshParts="insertOfferName"  jwcid="@TextField" value="ognl:info.OFFER_NAME" listener="ognl:listeners.queryOfferName" rows="1" maxsize="50" desc="商品名称<"/>
+										</span></span>
+								</span>
+						</li>
+						<li class="li col-2">
+							<span class="label">备注：</span>
+							<span class="e_textarea">
+									<span class="e_textareaTop"><span></span></span>
+									<span class="e_textareaContent">
+										<input id="REMARK" name="REMARK" jwcid="@TextArea" value="ognl:info.REMARK" nullable="yes" desc="备注" />
+									</span>
+									<span class="e_textareaBottom"><span></span></span>
+								</span>
+						</li>
+					</ul>
+				</div>
+				<!-- 提交 开始 -->
+				<div class="c_submit" jwcid="submitPart@Part">
+					<button type="button" class="e_button-page-ok" onclick="importSubmit2()" id="bsubmit"><i></i><span>提交</span></button>
+					<button type="button" class="e_button-page-cancel" onclick="hiddenLayer('popup')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	
+</body>
+</html>

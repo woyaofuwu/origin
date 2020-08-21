@@ -1,0 +1,1 @@
+update tf_f_user_discnt a  set  a.end_date=sysdate where a.Inst_Id=:INST_ID  and a.discnt_code =:DISCNT_CODE

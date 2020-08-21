@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>个人业务返销</title>
+<script jwcid="@Script"  src="scripts/person/bat/batcancelpage/batcancelpage.js"></script>
+<script jwcid="@Script"  src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<style>.c_option { white-space:normal;}</style>
+<div class="c_box">
+   <div class="c_title">
+		<div class="text">批量任务查询</div>
+	</div>
+	<div jwcid="QueryCondPart@Part" class="c_form c_form-col-3 c_form-label-7">
+	   <ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">查询方式：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_TYPEID" id="cond_TYPEID" 
+						source="ognl:pageutil.getStaticList('QUERY_ID')" 
+						value="DATA_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" nullable="no"
+						onchange="changeQueryType()"
+						/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">批次或号码：</span></span>
+				<span class="e_input" style="width:180px;"><span>
+				<input name="cond_NUMBER" id="cond_NUMBER" jwcid="@TextField" type="text" value="ognl:condition.cond_NUMBER" nullable = "no" desc="查询号码" class="e_input" />
+				</span></span>
+			</li>
+		</ul>
+
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="queryInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>                                                
+</div>
+</div>
+<div class="c_box">
+	<!-- 查询条件 end -->
+	
+<!-- 表格 开始 -->
+	<div class="c_title">
+		<div class="text">号码可返销服务</div>
+	</div>
+			<!-- 表格 开始 -->
+	<div id="bSerialId" name="bSerialId" style="display:none">
+	<div jwcid="TaskDataPartInfo@Part" element="div">
+
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+			<thead>
+				<tr>
+					<th><input type="checkbox" class="e_checkbox" onclick="checkedAll('idList1', checked)"/></th>
+					<th col="OPERATE_ID">处理流水号</th>
+					<th col="BATCH_TASK_ID">业务类型</th>
+					<th col="DEAL_TIME">提交时间</th>
+					<th col="DEAL_STATE">处理状态</th>
+					<th col="SERIAL_NUMBER">服务号码</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:serialNumInfos" value="ognl:serialNumInfo" index="ognl:rowIndex" element="tr">
+					<td><input type="checkbox" id = "idList1" name="idList1" jwcid="@Any" value="ognl:serialNumInfo.OPERATE_ID"  raw="true" class="e_checkbox" onclick="DealMark($(this));"/></td>
+					<td><span jwcid="@Insert" value="ognl:serialNumInfo.OPERATE_ID" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_BATCHTYPE','BATCH_OPER_TYPE','BATCH_OPER_NAME',serialNumInfo.BATCH_OPER_TYPE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:serialNumInfo.REFER_TIME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAT_DEAL_STATE', serialNumInfo.DEAL_STATE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:serialNumInfo.SERIAL_NUMBER" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="TaskInfoPart11"  part="TaskDataPartInfo" listener="queryInfo" pageSize="10" count="ognl:serialNumInfoCount"></div>
+	 -->
+	</div>
+	</div>
+	<div class="c_submit">
+		<button id="bSN" type="button" class="e_button-page-ok" onclick="submitCancel();" afterAction="" ><i></i><span>返销</span></button>
+	</div>
+
+</div>
+	
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">批次可返销统计</div>
+	</div>
+			<!-- 表格 开始 -->
+	<div id="bBatchId" name="bBatchId" style="display:none">
+	<div jwcid="QueryListPart@Part" element="div">
+
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="QueryListTable2" id="QueryListTable2">
+			<thead>
+				<tr>
+					<th><input type="checkbox" class="e_checkbox" onclick="checkedAll('idList', checked)"/></th>
+					<th col="TRADE_NUM">该批次业务总数</th>
+					<th col="CANCEL_NUM">可返销数目</th>
+					<th col="URL">明细</th>
+					<th col="BATCH_ID" style="display:none">批次号</th> 
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:batchStatInfos" value="ognl:batchStatInfo" index="ognl:rowIndex" element="tr">
+					<td><input type="checkbox" id = "idList" name="idList" jwcid="@Any" value="ognl:batchStatInfo.TRADE_NUM"  raw="true" class="e_checkbox" onclick="DealMark($(this));"/></td>
+					<td><span jwcid="@Insert" value="ognl:batchStatInfo.TRADE_NUM" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:batchStatInfo.CANCEL_NUM" raw="true"/></td>
+					<td><span jwcid="@Redirect" value="批量明细查询" batch_id="ognl:batchStatInfo.BATCH_ID" source="ognl:batchStatInfo" onclick="popupPage('bat.battaskquery.BatBatchDetial','initPageBatch','&BATCH_ID='+$(this).attr('batch_id')+'&BATCH_OPER_TYPE=CREATEPREUSER','批量信息查询',1000,600);"/></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:batchStatInfo.BATCH_ID" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	</div>
+	</div>
+	<div class="c_submit">
+	    <button id="partsbmt_btn" type="button" class="e_button-page-ok" onclick="javascript:popupDiv('needpopup',600,'部分号码批量返销导入');"><span>部分号码批量返销</span></button>
+	    <button id="bbatch" type="button" class="e_button-page-ok" onclick="submitCancel2();" afterAction="" ><i></i><span>返销</span></button>
+	</div>
+</div>
+
+	<div  id="needpopup" class="c_form c_form-col-3 c_form-label-4" jwcid="SubmitCondPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">模版下载：</span>
+					<span class="text"><a jwcid="@Any" href="ognl:encodeUrl('attach?action=downloadweb&realName=部分号码批量返销导入模板.xls&filePath=template/bat/PARTBATCANCELPAGE.xls')">[点击下载]</a></span>
+				</li>
+				<li jwcid="@Any" class="li">
+					<span class="label"><span class="e_required">导入文件：</span></span>
+					<span class="text">
+					<span jwcid="@Import" name="FILE_ID" 
+					ftpSite="personserv" fileSize="10" fileTypes="excel" serviceName="2318" 
+					config="import/bat/PARTBATCANCELPAGE.xml"
+					model="template/bat/部分号码批量返销导入模板.xls"
+					desc="导入文件" nullable="no" cond="TaskDataPart,TaskInfoPart" params="TEST_PARAM=1&TEST_PARAM2=2"/>
+					</span>
+				</li>	
+				<li class="li">
+				</li>
+				<li class="li">
+				</li>
+				<li class="li">
+				</li>		
+			</ul>
+	</div>
+
+</div></div>
+<!-- 提交 结束 -->
+
+
+	
+</body>
+
+</html>

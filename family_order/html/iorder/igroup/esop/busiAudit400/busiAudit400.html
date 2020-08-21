@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>400业务责任追究考核</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" src="iorder/igroup/esop/busiCheck400/script/busiCheck400.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">400业务责任追究考核</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-advance');"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+	<!-- 区域 开始 -->
+	<div jwcid="QueryPart@Part" class="l_query">
+		<!-- 表单 开始 -->
+		<div jwcid="QueryCondPart@Part" class="l_queryFn">
+			<div class="c_fn">
+			<span class="e_space"> </span>
+				<div class="left">
+					<span class="e_space"></span>
+					<button type="button" jwcid="@Export" name="myExport"
+						cond="popupData" taskId="201904221050"
+						configFile="export/querygroupinfo/BusiCheck400Export.xml"
+						ftpCode="eosdata" fileName="400业务管理信息.xls">
+						<span class="e_ico-export" /><span>导出</span>
+					</button>
+				</div>
+				<div class="right">
+					<div class="e_mix" ontap="showPopup('qryPopup','qryPopupItem',true)">
+						<input type="text" />
+						<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 表格 开始 -->
+		<div jwcid="QueryResultPart@Part">
+			<div jwcid="QueryListPart@Part" class="l_queryResult">
+				<table name="myTable" id="myTable" useScroller="true" jwcid="@Table">
+					<thead>
+						<tr>
+							<th class="e_center">市县</th>
+							<th class="e_center">流程业务类型</th>				
+							<th class="e_center">业务流水号</th>
+							<th class="e_center">集团客户编号</th>
+							<th class="e_center">集团客户名称</th>
+							<th class="e_center">客户经理工号</th>
+							<th class="e_center">客户经理</th>
+							<th class="e_center">流程创建者工号</th>
+							<th class="e_center">流程创建者</th>
+							<th class="e_center">流程创建时间</th>
+							<th class="e_center">查看详情</th>
+						</tr>
+					</thead>
+					<tbody id="tableBody">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td class="e_center"><span jwcid="@Insert"  value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('EOP_CUST_CITY_CODE', info.CITY_CODE)" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.TEMPLET_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.IBSYSID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.CUST_MANAGER_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.GROUP_MGR_CUST_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_STAFF_ID" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="false"/></td>
+						<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME" raw="false"/></td>
+						<td data-title="查看详情" class="fn e_center" ontap='querybusiAudit(this)' jwcid="@Any"
+                                    IBSYSID="ognl:info.IBSYSID" 
+                                    BPM_TEMPLET_ID="ognl:info.BPM_TEMPLET_ID"
+                                    FLAG="AUDIT"
+									value="查看详情">
+                                    <span class="e_ico-search"></span>
+                                </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 表格 结束 -->
+			<div class="l_queryPage">
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="olcomnav" id="olcomnav"
+					listener="queryBusiInfos" pageSize="10" cond="popupData"
+					part="QueryResultPart" count="ognl:infosCount" />
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+	</div>
+	<!-- 区域 结束 -->
+	<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+	  <div class="c_popupGroup">
+		<div class="c_popupItem" id="qryPopupItem">
+			<div class="c_header">
+				<div class="back" onclick="hidePopup(this);"></div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header" jwcid="popupData@Part">
+				<div class="c_scrollContent l_padding" >
+					<div class="c_list c_list-form" >
+						<ul> 					
+							<li >
+								<div class="label">所属区县：</div>
+								<div class="value">
+								<span style="width:10em;" jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE" 
+								source="ognl:pageutil.getStaticList('EOP_CUST_CITY_CODE')"  textField="DATA_NAME" valueField="DATA_ID" 
+								 desc="所属区县"/>
+								</div>
+							</li> 
+							<li>
+								<div class="label">业务流水号：</div>
+							 	<div class="value">
+							 		<input type="text" jwcid="@TextField" name="cond_IBSYSID" id="cond_IBSYSID" 
+									value="" desc="工单号" datatype="numeric" />
+								</div>
+							</li> 
+							<li >
+								<div class="label">集团客户名称：</div>
+								<div class="value">
+								 <input type="text" jwcid="@TextField" name="cond_CUST_NAME" id="cond_CUST_NAME" 
+									value="" desc="集团客户名称" datatype="numeric" />
+								</div>
+							</li> 				
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full"><button class="e_button-l e_button-r e_button-blue"  type="button" id="qryButton1" onclick="queryBusiInfos(this);">查询</button></div>
+				</div>			 
+			</div>
+		</div>
+      </div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/saleactive/QrySaleGrpBizAuditInfo.js"></script>
+<title>集团营销活动附件查询</title>
+</head>
+
+<body jwcid="@Body">
+
+<div class="m_wrapper">
+	<div class="m_wrapper2">
+			<!-- 开始查询区域 -->
+		    <div class="c_box">
+			    <div class="c_title">
+				     <div class="text">查询条件</div>
+			    </div>
+			    <div jwcid="ConditionPart@Part">
+			        <div class="c_form c_form-col-4 c_form-label-6">
+					    <ul class="ul">
+					    	<li class="li">
+								<span class="label">业务区：</span>
+								<span class="e_select"><span><span>
+									<select jwcid="CITY_CODE@Select" name="CITY_CODE" source="ognl:cityList" 
+									value="ognl:condition.CITY_CODE" valueField="AREA_CODE" 
+									textField="AREA_NAME" nullable="yes" desc="分公司"></select>
+								</span></span></span>
+							</li>
+                            <li class="li">
+								<span class="label"><span>稽核单号：</span></span>
+								<span class="e_input e_input-left"><span>
+				 					 <input type="text" id="AUDIT_ID" name="AUDIT_ID" jwcid="@TextField"  
+										value="ognl:condition.AUDIT_ID" datatype="text" nullable="yes" desc="稽核单号"/>
+								</span></span>
+							</li>
+					    	<li class="li">
+								<span class="label"><span>集团客户编码：</span></span>
+								<span class="e_input e_input-left"><span>
+				 					 <input type="text" id="GROUP_ID" name="GROUP_ID" jwcid="@TextField"  
+										value="ognl:condition.GROUP_ID" datatype="text" nullable="yes" desc="集团客户编码"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>集团客户名称：</span></span>
+								<span class="e_input e_input-left"><span>
+									<input type="text" id="CUST_NAME" name="CUST_NAME" jwcid="@TextField"  
+										value="ognl:condition.CUST_NAME" datatype="text" nullable="yes" desc="集团客户名称"/>
+								</span></span>
+							</li>
+                            <li class="li">
+								<span class="label"><span>稽核状态：</span></span>
+								<span class="e_select"><span>
+									<select jwcid="@Select" 	
+										name="STATE" id="STATE"	
+										source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('GROUP_BIZ_ORDERSTATE')" 
+										valueField="DATA_ID"	textField="DATA_NAME"
+										value="ognl:condition.STATE"
+										addDefault="true"
+										desc="稽核状态" />
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>开始时间：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@DateField" name="START_DATE" id="START_DATE" minName="START_DATE" format="yyyy-MM-dd" time="true"
+									 nullable="yes" readOnly="true" value="ognl:condition.START_DATE" desc="开始时间"/>
+								</span></span>
+							</li>
+							<li class="li">
+								<span class="label"><span>结束时间：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@DateField" name="END_DATE" id="END_DATE" minName="START_DATE" format="yyyy-MM-dd" time="true"
+									 nullable="yes" readOnly="true" value="ognl:condition.END_DATE" desc="结束时间"/>
+								</span></span>
+							</li>
+					    </ul>
+					    <div class="submitPlace"></div>
+						<div class="submit">
+							<button id="queryBtn" name="queryBtn" class="e_button-form" onclick="return queryGrpAuditInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+						</div>
+			         </div>
+			    </div>
+		  </div>
+		  <!-- 结束查询区域 -->
+		  
+		  <!-- 列表显示区域开始 -->
+		  <div class="c_box" jwcid="QueryListPart@Part" element="div">
+		    <div class="c_title">
+			   <div class="text">查询结果</div>
+			   <div class="fn"> 
+               </div>
+		    </div>
+		    
+		    <!-- 表格 开始 -->
+			<div>
+				<div class="c_scroll c_scroll-x c_scroll-table-10">
+				<div class="c_table">
+					<table jwcid="@Table" name="UnfinishTrade">
+						<thead>
+							<tr>
+								<th col="LOG_DETAIL">稽核轨迹</th>
+                                <th col="AUDIT_ID">业务流水/批次号</th>
+                                <th col="BIZ_TYPE_NAME">是否批量</th>
+                                <th col="TRADE_TYPE_CODE">业务类型</th>
+								<th col="GROUP_ID">集团客户编码</th>
+								<th col="CUST_NAME">集团客户名称</th>
+                                <th col="GRP_SN">集团产品编码</th>
+                                <th col="CONTRACT_ID">合同编号</th>
+                                <th col="VOUCHER_FILE_LIST">凭证附件</th>
+                                <th col="ADD_DISCNTS">新增优惠</th>
+                                <th col="DEL_DISCNTS">删除优惠</th>
+                                <th col="MOD_DISCNTS">变更优惠</th>
+                                <th col="STATE">状态</th>
+                                <th col="IN_DATE">业务办理时间</th>
+                                <th col="IN_STAFF_ID">业务办理工号</th>
+                                <th col="AUDIT_DATE">稽核时间</th>
+                                <th col="AUDIT_STAFF_ID">稽核工号</th>
+                                <th col="AUDIT_DESC">稽核意见</th>
+                                <th col="REAUDIT_DESC">整改意见</th>
+							</tr>
+						</thead>
+						<tbody jwcid="@Any" name="UnfinishTrade_Body" id="UnfinishTrade_Body">
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+                                <td>
+                                    <a jwcid="@Redirect" value="稽核轨迹>>" auditId="ognl:info.AUDIT_ID"
+			                         		onclick="$.popupPage('group.querygroupinfo.GrpBizAuditLogDetail', 'queryAuditLogDetail', '&cond_AUDIT_ID=' + $(this).attr('auditId'),'稽核轨迹信息','680','480')"/>
+                                </td>					
+								<td><span jwcid="@Insert" value="ognl:info.AUDIT_ID" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.BIZ_TYPE_NAME" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE_DESC" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.GRP_SN" raw="false"/></td>
+                                <td>
+                                    <span jwcid="@Conditional" condition='ognl:info.CONTRACT_ID != null && info.CONTRACT_ID != ""'>
+			                        	<a jwcid="@Redirect" value="ognl:info.CONTRACT_ID" contractId="ognl:info.CONTRACT_ID"
+			                         		onclick="$.popupPage('group.querygroupinfo.GrpBizAuditFileDetail', 'queryContractFileList', '&cond_CONTRACT_ID=' + $(this).attr('contractId'),'合同协议附件信息','680','480')"/>
+			                         </span>
+				                </td>
+                                <td>
+                                    <span jwcid="@Conditional" condition='ognl:info.VOUCHER_FILE_LIST != null && info.VOUCHER_FILE_LIST != ""'>
+			                        	<a jwcid="@Redirect" value="ognl:'凭证文件信息'" fileList="ognl:info.VOUCHER_FILE_LIST"
+			                         		onclick="$.popupPage('group.querygroupinfo.GrpBizAuditFileDetail', 'queryVoucherFileList', '&cond_VOUCHER_FILE_LIST=' + $(this).attr('fileList'),'凭证文件信息','680','480')"/>
+			                         </span>
+				                </td>
+                                <td class="wrap"><span jwcid="@Insert" value="ognl:info.ADD_DISCNTS_DESC" raw="false"/></td>
+                                <td class="wrap"><span jwcid="@Insert" value="ognl:info.DEL_DISCNTS_DESC" raw="false"/></td>
+                                <td class="wrap"><span jwcid="@Insert" value="ognl:info.MOD_DISCNTS_DESC" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.STATE_DESC" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.IN_DATE" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.IN_STAFF_ID" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.AUDIT_DATE" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.AUDIT_STAFF_ID" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.AUDIT_DESC" raw="false"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.REAUDIT_DESC" raw="false"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+				<!-- 分页 开始 -->
+				<div jwcid="@NavBar" name="LogNav" id="LogNav" cond="ConditionPart" part="QueryListPart" listener="queryGrpAuditInfos" pageSize="15" count="ognl:logCount"></div>
+				<!-- 分页 结束 -->
+			</div>
+							
+		</div>
+		<!-- 列表显示区域结束 -->	 
+		
+		<!-- 隐藏区域 开始 -->
+	    <div jwcid="hiddenPart@Part">
+		    <input type=hidden jwcid="ENABLE_FLAG@TextField" name="ENABLE_FLAG"  value="ognl:condition.ENABLE_FLAG" />
+	    </div>
+		<!-- 隐藏区域 结束 -->
+	
+	</div>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		init();
+	});
+</script>
+
+</body>
+
+</html>

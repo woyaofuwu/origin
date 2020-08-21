@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>垃圾短信查询----</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/prosecution/scripts/QueryProsecution.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+		<!-- 提示区域 开始 -->
+			<div class="c_box" style="display: none">
+				<!-- 提示 开始 -->
+				<div class="c_tip" name="prompting" id="prompting">获取垃圾短信信息无数据！</div>
+				<!-- 提示 结束 -->
+			</div>
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">垃圾短信查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"  id="sn"><span class="label">举报号码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+									value="ognl:cond.cond_SERIAL_NUMBER" desc="举报号码" datatype="mbphone" /></span></span>
+						</li>
+					    <li class="li"  id="sn"><span class="label">被举报号码：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_PROSECUTEENUM" id="cond_PROSECUTEENUM"
+									value="ognl:cond.cond_PROSECUTEENUM" desc="被举报号码" datatype="mbphone" /></span></span>
+						</li>
+					    <li class="li">
+							<span class="label">举报方式：</span>
+							<span class="e_select"><span><span>
+							        <select jwcid="@Select" name="cond_PROSECUTION_WAY" id="cond_PROSECUTION_WAY" source="ognl:pageutil.getStaticList('COPLAIN_TRADE_WORSION')"
+				                                    addDefault="true" value="ognl:cond.cond_PROSECUTION_WAY" disabled="false" desc="被举方式"  
+				                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" defaultText="--请选择--"/>
+							</span></span></span>
+						</li>
+						<li class="li"><span class="label">开始日期：</span> <span
+							class="e_elements">
+								<!-- 替换为页面组件 -->
+								 <span class="e_input"><span><input
+										jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"
+										value="ognl:cond.cond_START_DATE" desc="开始日期"
+										format="yyyy-MM-dd" /></span></span>
+						</span></li>
+						<li class="li"><span class="label">结束日期：</span> <span
+							class="e_elements">
+								<!-- 替换为页面组件 -->
+								 <span class="e_input "><span><input
+										jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"
+										value="ognl:cond.cond_END_DATE" desc="举报结束时间"
+										format="yyyy-MM-dd" /></span></span>
+						</span></li>
+						<li class="li"  id="sn"><span class="label">标记：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_EXPORT_TAG" id="cond_EXPORT_TAG"
+									value="ognl:cond.cond_EXPORT_TAG" desc="标记"/></span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="return queryProsecution(this);">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+						<button type="button" class="e_button-form"  onclick="resetCondition()"><i class="e_ico-search"></i><span>重 置</span></button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+					 <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      <span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100995"
+								  config="export/sundryquery/other/QueryProsecution.xml" fileName="垃圾短信举报受理" cond=QueryCondPart/>
+								<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<i class="e_ico-print"></i><span>打印</span>
+							    </button>
+						  </div>
+				     </div>
+		  	     </div>	  	     
+		  	     <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th id="col_X_TAG" style="display:none">TAG</th>		  				
+			  				<th id="col_PARA_CODE1">流水号</th>
+							<th id="col_PARA_CODE2">举报号码</th>
+							<th id="col_PARA_CODE3">举报人名称</th>
+							<th id="col_PARA_CODE4">举报人地市</th>
+							<th id="col_PARA_CODE23">举报人家庭地址</th>
+							<th id="col_PARA_CODE10">举报方式</th>
+							<th id="col_PARA_CODE6">被举报号码</th>
+							<th id="col_PARA_CODE24">垃圾短信内容</th>
+							<th id="col_PARA_CODE21">录入时间</th>	
+							<th id="col_PARA_CODE8">录入员工</th>
+							<th id="col_PARA_CODE9">录入部门</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td style="display:none"></td>						
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE1" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE2" raw="true"/></td>									
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE3" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE4" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE23" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE10" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE6" raw="true"/></td>							
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE24" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE21" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.PARA_CODE8" raw="true"/></td>	
+							<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.PARA_CODE9)" raw="true"/></td>					
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryProsecution" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

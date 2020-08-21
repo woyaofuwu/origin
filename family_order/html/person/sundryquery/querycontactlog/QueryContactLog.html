@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>接触信息维护日志查询</title>
+<script jwcid="@Script" src="person/sundryquery/querycontactlog/scripts/queryContactLog.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	
+	
+<div class="c_box">
+	<!-- 查询条件 start -->
+	<div class="c_title">
+		<div class="text">接触信息维护日志查询</div>
+		<!-- <div class="fn">
+			<button type="button" name="QUERY_BTN" id="QUERY_BTN" onclick="exportTradeData()"><i class="e_ico-export"></i><span>导出</span></button>
+ 		</div> -->
+ 		<div class="fn">
+				<span jwcid="@Export" name="contactLogExport" serviceName="1282" cond="QueryCondPart"
+				config="export/other/ContactLog.xml" fileName="接触信息维护日志查询" ftpSite="personserv" fileType="{'.xls':'.xls'}"/>
+		</div>
+	</div>
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="QueryCondPart@Part">
+			<ul class="ul">
+				<li class="li">
+				<span class="label"><span class="e_required">查询方式:</span></span>
+				<span class="e_select"><span><span>
+					<input type="text"  jwcid="@Select" name="QUERY_TYPE" id="QUERY_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+					nullable="no"  source = "ognl:pageutil.getStaticList('CONTACTLOGINFO_QUERY_MODE')"  desc="查询方式"  onclick="changeType()"   />
+				</span></span></span>
+				</li>
+				<li class="li"  id="CUST_CONTACT_ID_LI">
+					<span class="label"><span class="e_required">客户接触标识：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="CUST_CONTACT_ID" id="CUST_CONTACT_ID" value="" nullable="no" desc="客户接触标识"
+							    />
+					</span></span>
+				</li>
+				<li class="li"   id="STAFF_ID_LI">
+					<span class="label"><span class="e_required">员工工号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="STAFF_ID" id="STAFF_ID" value="ognl:condition.cond_STAFF_ID" nullable="no" desc="员工工号"
+							onkeyup="inputCtrlForStaff(this)"    />
+					</span></span>
+				</li>
+				<li class="li"   id="START_DATE_LI">
+					<span class="label"><span class="e_required">开始时间：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@DateField" name="START_DATE" id="START_DATE" nullable="no" value="" desc="开始时间"/>
+						</span></span>
+				</li>
+				<li class="li"   id="END_DATE_LI">
+					<span class="label"><span class="e_required">结束时间：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@DateField" name="END_DATE" id="END_DATE" nullable="no" value="" desc="结束时间"/>
+						</span></span>
+				</li>
+				
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryContactLogs();"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+	</div>
+	<!-- 查询条件 end -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x c_scroll-table-10">
+		<div class="c_table">
+			<table jwcid="@Table" name="UnfinishTradeTable">
+				<thead>
+					<tr>
+						<th id="col_DEPART_ID">客户接触标识</th>
+						<th id="col_DEPART_ID1">修改原因</th>
+						<th id="col_DEPART_ID2">员工工号</th>
+						<th id="col_DEPART_ID3">更新时间</th>
+					</tr>
+				</thead>
+				<tbody  jwcid="@Any" name="UnfinishTradeValues" id="UnfinishTradeValues">
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+						<td><a jwcid="@Insert" value="ognl:info.CUST_CONTACT_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.MODIFY_DESC" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="false"/></td>
+						<td> <span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)" raw="true" /> </td>
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="LogNav" id="LogNav" cond="QueryCondPart" part="QueryListPart" listener="queryContactLogs" pageSize="10" count="ognl:logCount"></div>
+		<!-- 分页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+
+</div></div>
+<!-- ECL 组件X（某些浮动组件要放在这个位置） -->
+</body>
+
+</html>

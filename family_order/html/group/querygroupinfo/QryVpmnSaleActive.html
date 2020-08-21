@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" src="scripts/group/querygroupinfo/QryVpmnSaleActive.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 提示区 --> 
+<div class="c_box" jwcid="refreshHintBar@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box" id="pageForm">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团V网营销活动查询</div> 
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+	<div class="c_form">
+		<ul class="ul"> 
+			<li class="li">
+			    <span class="label"><span class="e_required">活动类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_ACTIVE_TYPE"
+							id="cond_ACTIVE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('VPMN_ACTIVE_TYPE')" 
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_ACTIVE_TYPE" desc="活动类型" nullable="no" 
+							/>
+				</span></span></span>
+			</li> 
+			<li class="li">
+				<span class="label"><span class="e_required">推荐号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="cond_SERIAL_NUMBER@TextField"  
+						value="ognl:condition.cond_SERIAL_NUMBER" datatype="numeric" desc="推荐号码" nullable="no"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return queryAll(this);" listener="ognl:listeners.queryInfos"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	</div>
+	<!--信息展示区-->
+	<div jwcid="export@Part"> 
+	<div class="fctTop e_clear">
+		<div align="right" class="fctLeft">
+			<div class="button">
+				<ul>
+				 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="9017" 
+					config="export/querygroupinfo/QryVpmnSaleActive.xml"
+					fileName="集团V网营销活动信息" cond="QueryCondPart"
+					ftpSite="groupserv" beforeAction="" action="" /> 
+				</ul>
+			</div>
+		</div> 
+	</div> 
+	</div>
+	<div jwcid="RefreshPart@Part">
+	<!-- 表格 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table>
+			<thead>
+				<tr> 
+					<th>被推荐号码</th>
+					<th>VPMN编码</th>
+					<th>VPMN集团名称</th> 
+					<th>加入V网时间</th> 
+					<th>是否已赠送话费</th> 
+					<th>赠送话费时间</th> 
+					<th>受理工号</th> 
+					<th>受理部门</th> 
+				</tr>
+			</thead>  
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_DATE2" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.GIVE_TAG" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.GIVE_DATE" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.UPDATE_STAFF_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.UPDATE_DEPART_ID)" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div> 
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+    <div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCondPart" part="RefreshPart" listener="queryInfos"  pageSize="20" needCoun="false" count="ognl:pageCounts"/>
+	<!-- 翻页 结束 -->
+	<!-- 信息汇总区域 开始 --> 
+	<div class="c_scroll c_scroll-x c_scroll-table-3"><div class="c_form">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">被推荐用户总数：</span>
+				<span class="e_input"><span>
+					<input type="text" id="TOTAL" name="TOTAL" jwcid="TOTAL@TextField" value="ognl:saleInfo.TOTAL" disabled="true" />
+				</span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">已赠送的话费：</span>
+				<span class="e_input"><span>
+					<input type="text" id="MONEY" name="MONEY" jwcid="MONEY@TextField" value="ognl:saleInfo.MONEY" disabled="true" />
+				</span></span>
+			</li>
+		</ul>
+	</div></div>
+	<!-- 信息汇总区域 结束 --> 
+	</div>
+	<!--信息展示区 结束-->
+</div>
+<!-- 区域 结束 -->
+</div></div>
+<script></script>
+</body>
+</html>

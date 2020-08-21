@@ -1,0 +1,2 @@
+DELETE FROM tf_b_resapply_detail
+ WHERE APPLY_DETAIL_NO = :APPLY_DETAIL_NO

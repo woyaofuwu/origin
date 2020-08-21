@@ -1,0 +1,1 @@
+insert into TF_BH_PRE_TRADE select * from TF_B_PRE_TRADE where TRADE_ID = :TRADE_ID

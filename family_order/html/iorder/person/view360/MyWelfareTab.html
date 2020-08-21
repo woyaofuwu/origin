@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="iorder/person/view360/scripts/mywelfaretab.js"></script>
+    <script jwcid="@Script" src="iorder/person/view360/scripts/tabqueryutil.js"></script>
+    <title>我的业务历史</title>
+</head>
+<body jwcid="@Body">
+    <!-- 标题栏 开始 -->
+    <div class="c_header e_show-phone">
+        <div class="text">我的权益</div>
+        <div class="fn">
+            <span class="e_ico-user" ontap="tapUserIcon();"></span>
+            <span class="e_ico-search" ontap="tapSearchIcon();"></span>
+            <span class="e_ico-menu" ontap="tapMenuIcon();"></span>
+        </div>
+    </div>
+    <!-- 标题栏 结束 -->
+    <div name="welfareHisScroller" jwcid="@Scroller" checkDOMChanges="true"
+         class="c_scroll c_scroll-float c_scroll-phone-header c_scroll-white">
+        <div class="l_padding-3 l_padding-phone-1 l_padding-u">
+            <div class="c_space-2 c_space-phone-1"></div>
+            <!-- 标题 开始 -->
+            <div class="c_title c_title-nopadding e_hide-phone">
+                <div class="text e_size-xl e_black">我的权益历史</div>
+            </div>
+            <!-- 标题 结束 -->
+            <div name="welfareHisTab" jwcid="@Tabset" class="c_tab c_tab-sp"
+                 slidable="false">
+                 <div class="fn">
+                    <button id="tableViewButton" ontap="tableViewButton()" type="button"
+                            class="e_button-r e_hide-phone" style="display:none">
+                        <span class="e_ico-back"></span><span>返回表格视图</span>
+                    </button>
+                </div>
+                <div class="content" title="最近">
+                    <!-- 参数 开始 -->
+                    <div jwcid="initParamPart@Part"
+                         class="c_form c_form-col-3 c_form-phone-col-1 c_form-submit c_form-border">
+                        <div class="submit">
+                            <button ontap="welfareHisQueryButton()" type="button"
+                                    class="e_button-blue">
+                                <span class="e_ico-search"></span>
+                                <span>查询</span>
+                            </button>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="label"> 起始日期：</div>
+                                <div class="value">
+                                    <input name="START_DATE" jwcid="@DateField"
+                                           dropDown="true"
+                                           value="ognl:init.START_DATE"
+                                           format="yyyy-MM-dd" datatype="date"
+                                           desc="起始日期"/>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label">终止日期：</div>
+                                <div class="value">
+                                    <input name="END_DATE" jwcid="@DateField"
+                                           dropDown="true"
+                                           value="ognl:init.END_DATE"
+                                           format="yyyy-MM-dd" datatype="date"
+                                           desc="终止日期"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 参数 结束 -->
+                    <div class="c_space-c"></div>
+                    <!-- 表格 开始 -->
+                    <div jwcid="welfareHisTablePart@Part" class="e_hide-phone">
+                        <table name="welfareHisTable" jwcid="@Table"
+                               class="c_table c_table-min-5 c_table-hover c_table-lite c_table-border">
+                            <thead>
+                                <tr>
+                                    <th>受理时间</th>
+                                    <th>受理工号</th>
+                                    <th>订单编码</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:infos"
+                                    value="ognl:info" element="tr"
+                                    orderId="ognl:info.ORDER_ID"
+                                    ontap="selectTradeFromTable(this);">
+                                    <td data-title="受理时间">
+                                        <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.ACCEPT_DATE)"></span></td>
+                                    <td data-title="受理工号" class="key">
+                                        <span jwcid="@Insert" value="ognl:info.STAFF_ID"></span></td>
+                                    <td data-title="订单编码" class="key">
+                                        <span jwcid="@Insert" value="ognl:info.ORDER_ID"></span></td>
+                                        
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="c_space-c"></div>
+                        <!-- 表格分页 开始 -->
+                        <!-- 表格分页 结束 -->
+                    </div>
+                    <!-- 表格 结束 -->
+                    <!-- 分列 开始 -->
+                   <div id="tradeHisListPart"
+                         class="c_box c_box-gray c_box-border e_show-phone">
+                        <div class="l_col l_col-phone-split-2 l_col-cur-1 l_col-line">
+                            <div class="l_colContent">
+                                <div class="l_colItem">
+                                    <!-- 标题栏 开始 -->
+                                    <div class="c_header c_header-white e_show-phone">
+                                        <div class="back"
+                                             ontap="backToListViewForPhone(tradeHisTab.activeIdx);">返回列表</div>
+                                    </div>
+                                    <!-- 标题栏 结束 -->
+                                    <div class="c_box c_box-gray l_padding">
+                                        <!-- 主台账信息 开始 -->
+                                        <div jwcid="mainTradeContent@Part"
+                                             style="">
+                                            <!-- 列表 开始 -->
+                                            <div class="c_list c_list-border c_list-gray">
+                                                <ul>
+                                                    <li>
+                                                        <div class="sub" style="">
+                                                            <div class="main">
+                                                                <!-- 参数 开始 -->
+                                                                <div class="c_param c_param-col-2 c_param-phone-col-1 c_param-label-6">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <span class="label">定单id：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ID"></span></span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">订单状态：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ORDER_STATUS"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">下单渠道：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.CHAN_ID"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">订单总金额：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ORDER_SUM"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">订单优惠金额：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ORDER_PREFERENTIAL_SUM"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">订单支付金额：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.ORDER_PAY_SUM"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">地区编码：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.AREA_CODE"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <span class="label">地区名称：</span>
+                                                                            <span class="value"><span jwcid="@Insert" value="ognl:mainTrade.AREA_NAME"></span>
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <!-- 参数 结束 -->
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="c_space-c"></div>
+                                        </div>
+                                        <div jwcid="welfareSubTrade@Part">
+                                            <div>
+                                                <!-- 标题 开始 -->
+                                                <div class="c_title">
+                                                    <div class="text">权益详情</div>
+                                                </div>
+                                                <!-- 标题 结束 -->
+                                                <!-- 列表 开始 -->
+                                                <div class="c_list c_list-line c_list-col-2 c_list-phone-col-1 c_list-border">
+                                                    <ul>
+                                                        <li jwcid="@Foreach"
+                                                            source="ognl:subTrades"
+                                                            value="ognl:subTrade"
+                                                            element="li">
+                                                            <div class="main">
+                                                                <div jwcid="@Any" class="title e_size-s" title="ognl:subTrade.RIGHT_NAME">
+                                                                    <span jwcid="@Insert" value="ognl:subTrade.RIGHT_CODE + ' | ' + subTrade.RIGHT_NAME"></span>
+                                                                </div>
+                                                                <div class="content">
+                                                                    <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',subTrade.ORDER_SUB_TIME)"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div jwcid="@Any" class="side e_size-m e_blue">
+                                                                <span jwcid="@Insert" value=""></span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

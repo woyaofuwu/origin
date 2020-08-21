@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>基础服务维护</title>
+    <script jwcid="@Script" src="iorder/person/serviceMaintain/script/serviceMaintain.js"></script>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll c_scroll-float" checkDOMChanges="true">
+    <div class="l_padding">
+        <div class="c_list c_list-col-2 c_list-s c_list-line c_list-border">
+            <ul>
+                <li>
+                    <div class="label">基础功能服务：</div>
+                    <div class="value">
+						<span jwcid="@Select"
+                              id="baseService"
+                              name="baseService"
+                              source="ognl:services"
+                              textField="DATA_NAME"
+                              valueField="DATA_ID"
+                              titleField="DATA_NAME"
+                              addDefault="true"
+                              fileSize="1"
+                              nullable="no"
+                              desc="--请选择--"
+                        ></span>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">操作：</div>
+                    <div class="fn">
+                        <input type="radio" name="operate" VALUE="0" checked="checked"/>
+                    </div>
+                    <div>开通</div>
+                    <div class="fn">
+                        <input type="radio" name="operate" VALUE="1"/>
+                    </div>
+                    <div>退订</div>
+                </li>
+                <li>
+                    <!--批量导入组建 开始-->
+                    <div class="label">批量导入：</div>
+                    <div class="value">
+						<span jwcid="@SimpleUpload"
+                              name="FILE_ID"
+                              taskId="9189999"
+                              configFile="import/serviceMaintain/serial_number.xml"
+                              ftpCode="personserv"
+                              fileTypes=".xls;.xlsx"
+                              desc="批量导入"
+                        />
+                    </div>
+                    <!--批量导入组建 结束-->
+                </li>
+                <li>
+                    <div class="label">
+                        <a jwcid="@Any"
+                           id="A_SERIAL_NUMBER_XLS"
+                           name="A_SERIAL_NUMBER_XLS"
+                           href="ognl:encodeUrl('attach?action=downloadweb&realName=serial_number.xls&filePath=template/person/serviceMaintain/serial_number.xls')">
+                            <span jwcid="@Insert" value="[下载模板]"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <button type="button"
+                                class="e_button-blue"
+                                name="IMPORT_BTN"
+                                id="IMPORT_BTN"
+                                ontap="importExcel();"><span class="e_ico-import"></span>导入</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--&lt;!&ndash; Submit组件开始 &ndash;&gt;-->
+        <!--<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" isReset="true" disabledBtn="false" listener="onTradeSubmit" area="param" element="div" />-->
+        <!--&lt;!&ndash; Submit组件结束 &ndash;&gt;-->
+        <div class="c_space"></div>
+
+        <div class="c_title">
+            <div class="text">查询基础功能服务信息</div>
+        </div>
+        <!--输入查询条件列表 开始-->
+        <div id="QueryCond" jwcid="QueryCond@Part" class="c_list c_list-col-4 c_list-s  c_list-line c_list-border">
+            <ul class="ul">
+                <li>
+                    <div class="label">手机号码</div>
+                    <div class="value">
+                        <input jwcid="@TextField" name="phoneNumber" id="phoneNumber" value="" desc="手机号"/>
+                    </div>
+                </li>
+                <li>
+                    <div class="value">
+                        <span class="e_mix">
+                            <button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="queryServiceStateInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--输入查询条件列表 结束-->
+        <div class="c_space"></div>
+        <!--查询结果表格 开始-->
+        <div id="QueryList" jwcid="QueryList@Part" element="div">
+            <div jwcid="table4Print@Part">
+                <table name="serviceStateList" class="c_table c_table-lite" jwcid="@Table">
+                    <thead>
+                    <tr>
+                        <th >序号</th>
+                        <th col="">手机号码</th>
+                        <th col="">基础功能服务</th>
+                        <th col="">操作类型</th>
+                        <th col="">状态</th>
+                        <th col="">入表时间</th>
+                        <th col="">工单生成时间</th>
+                        <th col="">订单编号</th>
+                        <th col="">备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'" element="tr">
+                            <td>
+                                <a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.BASE_SERVICE" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.OPERATE_TYPE == 0 ? '开通' : '退订'" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.STATE " raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.IN_DATE" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.FINISH_DATE" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.ORDER_ID" raw="true" />
+                            </td>
+                            <td>
+                                <a jwcid="@Insert" value="ognl:info.REMARK" raw="true" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 翻页（替换为页面组件） 开始 -->
+            <span jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryCond" listener="queryBaseService" pageSize="10"  part="QueryList" count="ognl:count"/>
+            <!-- 翻页 结束 -->
+        </div>
+        <!--查询结果列表 结束-->
+        <!--隐藏域-->
+        <div jwcid="param@Part" element="div">
+            <input jwcid="@Hidden" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:tradeInfo.TRADE_TYPE_CODE"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

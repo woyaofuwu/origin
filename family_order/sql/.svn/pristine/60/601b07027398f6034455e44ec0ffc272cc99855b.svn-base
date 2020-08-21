@@ -1,0 +1,2 @@
+INSERT INTO tf_a_departprintlog(depart_id,depart_log_time,trans_money,report_money,trans_count,print_time,print_eparchy_code,print_city_code,print_depart_id,print_staff_id,print_times,print_type,print_info1,print_number1)
+ VALUES(:DEPART_ID,TO_DATE(:DEPART_LOG_TIME,'YYYYMMDD'),TO_NUMBER(:TRANS_MONEY),TO_NUMBER(:REPORT_MONEY),TO_NUMBER(:TRANS_COUNT),TO_DATE(:PRINT_TIME,'YYYY-MM-DD HH24:MI:SS'),:PRINT_EPARCHY_CODE,:PRINT_CITY_CODE,:PRINT_DEPART_ID,:PRINT_STAFF_ID,:PRINT_TIMES,:PRINT_TYPE,:PRINT_INFO1,TO_NUMBER(:PRINT_NUMBER1))

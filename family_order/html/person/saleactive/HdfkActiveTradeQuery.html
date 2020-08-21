@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: CustContactMgr.html,v 1.5 2013/04/22 07:09:17 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>终端预售订单查询</title>
+
+<script jwcid="@Script"  src="person/saleactive/scripts/hdfkactivetradequery.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">终端预售订单查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 查询条件 开始 -->
+	<div class="c_form c_form-label-5 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+			   <span class="label">服务号码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="" 
+					desc="服务号码"/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="START_DATE" id="START_DATE" value="" 
+					desc="起始时间" format="yyyy-MM-dd"  maxName="END_DATE"/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="END_DATE" id="END_DATE" desc="结束时间" value="" 
+					format="yyyy-MM-dd" afterAction="checkQryDate()"  minName="START_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label">订单流水：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="TRADE_ID" id="TRADE_ID" value=""/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label">提交工号：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="QUERY_STAFF_ID" id="QUERY_STAFF_ID" value=""/>
+				</span></span>
+			</li>
+			<li class="li">
+			   <span class="label">订单状态：</span>
+				<span class="e_select"><span><span>
+					 <select jwcid="@Select" name="DEAL_STATE_CODE" id="DEAL_STATE_CODE"
+						source="ognl:page.pageutil.getStaticList('HDFK_DEAL_STATE_CODE')"
+						textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+	                />
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="query_BTN" id="query_BTN" class="e_button-form" onclick="return queryTrade();"><i class="e_ico-search"></i><span>查询</span></button>
+			<span class="fn">	 
+			    <span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201408272311"
+						 config="export/sundryquery/specqry/HdfkActiveTrade.xml" fileName="终端预售订单信息" beforeAction="" cond="QueryCondPart" />
+			</span>
+		</div>
+	</div>
+	<!--  查询条件 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+			<table jwcid="@Table" id="SaleActiveTable">
+				<thead>
+					<tr>
+						<th col="RELATION_TRADE_ID">订单流水</th>
+						<th col="SERIAL_NUMBER">手机号码</th>
+						<th>活动产品</th>
+						<th>活动包</th>
+						<th>终端串号</th>
+						<th>终端品牌型号</th>
+						<th>受理工号</th>
+						<th>受理时间</th>
+						<th>订单状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+	              	<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+	              		<td><span jwcid="@Insert" value="ognl:info.RELATION_TRADE_ID"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.RES_CODE"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.DEVICE_MODEL_CODE"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID"/></td>
+	              		<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE"/></td>
+	              		<td jwcid="@Any" id="ognl:'DEAL_STATE_CODE_' + rowIndex"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HDFK_DEAL_STATE_CODE', info.DEAL_STATE_CODE)"/></td>
+	              		<td jwcid="@Any" id="ognl:'OPER_TD_' + rowIndex">
+	              			<div jwcid="@Conditional" condition="ognl:0 == info.DEAL_STATE_CODE" element="div">
+		              			<span jwcid="@Redirect" index="ognl:rowIndex" value="签收" onclick="dealHdfkActiveTrade($(this).attr('index'), '2')"/>&nbsp;
+		              			<span jwcid="@Redirect" index="ognl:rowIndex" value="撤销" onclick="dealHdfkActiveTrade($(this).attr('index'), '1')"/>
+	              			</div>
+	              		</td>
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		
+		<!-- 分页 开始 -->
+		<div jwcid="@NavBar" name="nav" id="nav" cond="QueryCondPart" part="QueryListPart" listener="queryTrade" pageSize="10" count="ognl:count"></div>
+		<!-- 分页 结束 -->
+	</div>
+<!-- 区域 结束 -->
+</div></div></div>
+</body>
+</html>

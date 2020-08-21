@@ -1,0 +1,109 @@
+<div jwcid="@Popup" class="c_popup c_popup-fixed" name="staffPicker" >
+	<!-- 弹窗第一层  开始-->
+	<div class="c_popupGroup">
+		<div id="staffPickerHome" class="c_popupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this);">员工选择</div>
+			<div class="fn">
+					<button type="button" ontap="forwardPopup(this,'staffPickerSearch')" class="e_button-blue"><span>高级查询</span></button>
+				</div> 
+			</div>
+			<!-- 使用 Frame 组件 嵌入其它界面 -->
+			<iframe name="staffSelFrame" jwcid="@Frame" page="components.org.StaffSelect" listener="initStaffSelect" params="ognl:params" init="true"></iframe>
+		</div>
+	</div>
+ 	<div class="c_popupGroup">
+		<div class="c_popupItem" id="staffPickerSearch">
+			<div class="c_header">
+				<div class="back" ontap="backPopup(this);">高级查询</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div class="l_padding">
+					<div class="c_list c_list-line c_list-border" jwcid="QueryCond@Part">
+						<ul>
+							<li class="link required">
+								<span class="label">业务区</span>
+								<div class="value">
+									<input name="POP_cond_AREA_CODE" id="POP_cond_AREA_CODE" type="text" readonly="readOnly" value="HAIN|海南省" fieldname="cond_AREA_CODE" textname="cond_AREA_CODE">
+									<input name="cond_AREA_CODE" id="cond_AREA_CODE" type="hidden" value="HNNO" textname="POP_cond_AREA_CODE">
+								</div>
+								<div class="fn">
+									<span class="e_ico-check" id="POP_WRAP_cond_AREA_CODE" onclick="javascript:forwardPopup(this,'选择区域','components.org.AreaTree','initAreaTree','&amp;showcheckbox=true&amp;checkboxtype=radio&amp;firstlevel=false&amp;field_name=cond_AREA_CODE&amp;' + this.getAttribute('parameters'),null, null);" href="#nogo" parameters=""></span>
+								</div>								
+							</li>
+							<li class="link" style="display: none">
+								<div class="label">归属部门</div>
+								<div class="value">
+									<span class="e_mix e_mix-r">
+										<input name="cond_DEPART_ID" jwcid="@DeptField" />
+									</span>
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">员工名称</div>
+								<div class="value">
+									<input type="text" name="cond_STAFF_NAME" jwcid="@TextField" value="" onenterAction="$.org.queryStaffs();" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">性别</div>
+								<div class="value">
+									<span name="cond_SEX" jwcid="@Select" source="ognl:getPageUtil().getStaticList('STAFF_SEX')" textField="DATA_NAME" valueField="DATA_ID" value="" desc="性别" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">服务号码</div>
+								<div class="value">
+									<input type="text" name="cond_SERIAL_NUMBER" jwcid="@TextField" value="" enterAction="$.org.queryStaffs();"/>
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">员工工号</div>
+								<div class="value">
+									<input type="text" name="cond_STAFF_ID" jwcid="@TextField" value="" enterAction="$.org.queryStaffs();" />
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="c_space"></div>
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-navy" ontap="backPopup(this);">取消</button>
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="staffPopup.searchStaffs()">查询</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+<script>
+	if(typeof(StaffPopup)=="undefined"){
+		window["StaffPopup"]=function(){
+		};
+		var staffPopup = new StaffPopup();
+	}
+	(function(){
+		$.extend(StaffPopup.prototype,{
+			searchStaffs:function(){
+				
+				var cond_AREA_CODE = $("#cond_AREA_CODE").val();
+				if(cond_AREA_CODE==""){
+					return MessageBox.alert("请选择业务区！");
+				}
+				var cond_DEPART_ID = $("#cond_DEPART_ID").val();
+				var cond_STAFF_NAME = $("#cond_STAFF_NAME").val();
+				var cond_SEX = $("#cond_SEX").val();
+				var cond_SERIAL_NUMBER = $("#cond_SERIAL_NUMBER").val();
+				var cond_STAFF_ID = $("#cond_STAFF_ID").val();
+				var condData = new $.DataMap();
+				condData.put("cond_AREA_CODE",cond_AREA_CODE);
+				condData.put("cond_DEPART_ID",cond_DEPART_ID);
+				condData.put("cond_STAFF_NAME",cond_STAFF_NAME);
+				condData.put("cond_SEX",cond_SEX);
+				condData.put("cond_SERIAL_NUMBER",cond_SERIAL_NUMBER);
+				condData.put("cond_STAFF_ID",cond_STAFF_ID);
+				fillStaffsParam(condData);
+			}
+		});
+	}
+	)();
+</script>

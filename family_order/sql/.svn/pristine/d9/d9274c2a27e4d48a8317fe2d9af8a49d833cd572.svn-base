@@ -1,0 +1,2 @@
+INSERT INTO tf_o_hastenlog(staff_id,user_id,hasten_time,hasten_mode_id,hasten_result_id,remark,update_time,update_staff_id,update_depart_id)
+ VALUES(:STAFF_ID,TO_NUMBER(:USER_ID),TO_DATE(:HASTEN_TIME,'YYYY-MM-DD HH24:MI:SS'),:HASTEN_MODE_ID,:HASTEN_RESULT_ID,:REMARK,TO_DATE(:UPDATE_TIME,'YYYY-MM-DD HH24:MI:SS'),:UPDATE_STAFF_ID,:UPDATE_DEPART_ID)

@@ -1,0 +1,1 @@
+DELETE FROM ti_o_deductdata WHERE serial_number=TO_NUMBER(:SERIAL_NUMBER)

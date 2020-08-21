@@ -1,0 +1,7 @@
+UPDATE tf_a_consigninfolog
+   SET charge_id=TO_NUMBER(:CHARGE_ID) ,
+ ALL_MONEY = TO_NUMBER(:ALL_MONEY) ,
+ALL_NEW_MONEY = TO_NUMBER(:ALL_NEW_MONEY),
+COMMIT_TAG='1' 
+ WHERE mconsign_id=TO_NUMBER(:MCONSIGN_ID)
+   AND commit_tag='0'

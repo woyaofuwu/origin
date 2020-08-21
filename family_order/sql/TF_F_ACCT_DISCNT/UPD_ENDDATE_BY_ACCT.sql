@@ -1,0 +1,4 @@
+UPDATE TF_F_ACCT_DISCNT T
+ SET END_DATE = to_date(:END_DATE,'yyyy-mm-dd hh24:mi:ss')
+ WHERE ACCT_ID = :ACCT_ID
+ AND END_DATE > SYSDATE

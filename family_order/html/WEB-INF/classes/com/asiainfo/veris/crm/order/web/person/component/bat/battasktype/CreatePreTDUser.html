@@ -1,0 +1,195 @@
+<div class="c_box" jwcid="MustInfoPart@Part">
+	<input jwcid="@Hidden" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:eparchyCode"/>
+	<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value=""/>
+	<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+	<input jwcid="@Hidden" name="PRE_FLAG" id="PRE_FLAG" value="ognl:editInfo.PRE_FLAG"/>
+	
+	<div class="c_title">
+		<div class="text">产品</div>
+		<div class="fn">
+			
+			<button class="l_ml" jwcid="@Button" name="productSelectBtn" id="productSelectBtn" onclick="checkBeforeProduct()">
+				<i class="e_ico-menu"></i><span>产品目录</span>
+			</button>
+		</div>
+	</div>
+
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="ProductTypePart@Part">
+		<ul class="ul">
+			<li class="li"><span class="label"><span
+					class="e_required">品牌：</span></span> <span class="e_input"><span>
+						<input jwcid="@TextField" name="BRAND" id="BRAND"
+						value="ognl:editInfo.BRAND_NAME" disabled="true" desc="当前品牌" />
+				</span></span></li>
+			<li class="li"><span class="label"><span
+					class="e_required">产品类型：</span></span> <span class="e_select"><span><span>
+							<select jwcid="@Select" name="PRODUCT_TYPE_CODE"
+							id="PRODUCT_TYPE_CODE" source="ognl:productTypeList"
+							textField="PRODUCT_TYPE_NAME"
+							valueField="PRODUCT_TYPE_CODE"
+							value="ognl:editInfo.PRODUCT_TYPE_CODE"
+							onchange="productTypeChange()" addDefault="false" desc="当前产品" />
+					</span></span></span></li>
+			<li class="li">
+				<span class="label"><span class="e_required">产品：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PRODUCT_NAME" id="PRODUCT_NAME" value="ognl:editInfo.PRODUCT_NAME" disabled="true"/>
+					</span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+
+<div class="l_col">
+		<!-- 第 1 栏 开始 -->
+		<div class="l_left" style="width:49%;" id ="preChoosePart">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+                <div class="c_title">
+					<div class="text">待选区</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 分栏 开始 -->
+				<div class="l_col l_col-close">
+					<div jwcid="offerList@csserv:OfferList" 
+                           element="div" 
+                           categoryId="100000000114,100000000008"></div>
+				</div>
+				<!-- 分栏 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	    <div class="l_auto">
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">已选区</div>
+				</div>
+                <div jwcid="selectedElements@csserv:SelectedElements" 
+                    renderCallSvc="CS.SelectedElementSVC.getUserOpenElements" 
+                    callAddElementSvc="CS.SelectedElementSVC.dealSelectedElementsForChg" 
+                    afterRenderAction="disableElements(data)"
+                    basicStartDateControlId="NEW_PRODUCT_START_DATE"
+                    tradeTypeCode="10"
+                    element="div"></div>
+				<!-- 表格 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	<!-- 第 2 栏 结束 -->
+	 <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+</div>
+
+<div jwcid="productTree@csserv:ProductSelect" productTypeCode="0000" returnValueId="NEW_PRODUCT_ID" afterAction="afterChangeProduct(productId,productName,brandCode,brandName)" element="div"></div>
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">附加信息</div>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span class="e_required">客户名称：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="CUST_NAME" name="CUST_NAME" value="ognl:info.CUST_NAME" nullable="no" rows="1" desc="客户名称"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span class="e_required">证件号码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="PSPT_ID" name="PSPT_ID" value="ognl:info.PSPT_ID" nullable="no" rows="1" desc="证件号码"/>
+				</span></span>
+			</li>
+			<li class="li col-2">
+				<span class="label"><span>通讯地址：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="ADDRESS" name="ADDRESS" value="海南移动" desc="通讯地址"/>
+				</span></span>
+			</li>
+
+			<li class="li col-1">
+				<span class="label"><span>邮政编码：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="POST_CODE" name="POST_CODE" value="410000" datatype="numeric" equsize="6" desc="邮政编码"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span>联系电话：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="LINK_PHONE" name="LINK_PHONE" value="10086" datatype="numeric" maxLength="12" desc="联系电话"/>
+				</span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span class="e_required">用户类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="USER_TYPE_CODE" id="USER_TYPE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_B_USERTYPE','USER_TYPE_CODE','USER_TYPE',new java.lang.String[]{'EPARCHY_CODE','USER_ATTR'},new java.lang.String[]{getVisit().getLoginEparchyCode(),'0'})"
+							textField="USER_TYPE" valueField="USER_TYPE_CODE" value="0"
+							desc="用户类型" nullable="no"/>
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul class="ul">
+			<li class="li col-1">
+				<span class="label"><span class="e_required">出账标示：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="ACCT_TAG" id="ACCT_TAG"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ACCT_TAG')"
+							textField="DATA_NAME" valueField="DATA_ID" value="0"
+							desc="出账标示" nullable="no"/>
+				</span></span></span>
+			</li>
+			<li class="li col-1">
+				<span class="label"><span class="e_required">付费方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="PAY_MODE_CODE" id="PAY_MODE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_S_PAYMODE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.PAY_MODE_CODE"
+							desc="付费方式" nullable="no" addDefault="false" onchange="batprecreateuser.checkPaymode()"/>
+				</span></span></span>
+			</li>
+
+			<li class="li col-1">
+				<span class="label"><span id="sname">上级银行：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="SUPER_BANK_CODE" name="SUPER_BANK_CODE" source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')"
+					valueField="SUPER_BANK_CODE" textField="SUPER_BANK" value="ognl:info.SUPER_BANK_CODE"
+					titleField="SUPER_BANK" desc="上级银行"/>
+				</span></span></span>
+			</li>
+
+			<li class="li">
+				<div jwcid="BankCodePart@Part">
+				<span class="label"><span id="bname">银行名称：</span></span>
+	            	<span class="e_elements">
+						<button type="button" class="e_button-right" id="btBatchTask" onclick="batprecreateuser.queryBanks()">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value="ognl:info.BANK_CODE" 
+						text="ognl:info.BANK" 
+						name="BANK_CODE" id="BANK_CODE" 
+						afterAction=""
+						desc="银行名称" disabled="true" />
+						</span></span>
+					</span>
+	            </div>
+			</li>
+			
+			<li class="li col-1">
+				<span class="label"><span id="baname">银行帐号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid=@TextField id="BANK_ACCT_NO" name="BANK_ACCT_NO" value="ognl:info.BANK_ACCT_NO" desc="银行帐号"/>
+				</span></span>
+			</li>
+			
+			<li class="li col-1"></li>
+		</ul>
+	</div>
+</div>

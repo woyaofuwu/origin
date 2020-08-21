@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>集团下发营销活动激活</title>
+<script language="JavaScript" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/saleactive/scripts/saleactiveactivate.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">营销活动查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7" jwcid="conditionPart@Part">
+		<ul class="ul">
+		    
+			<li class="li">
+				<span class="label"><span class="e_required">开始日期：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="START_TIME@DateField" nullable="no" name="START_TIME"  desc="开始日期"  maxName="cond_END_TIME" value="ognl:condition.START_TIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束日期：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="END_TIME@DateField" nullable="no" name="END_TIME"  desc="结束日期" value="ognl:condition.END_TIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">用户号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="MOBILENO@TextField" name="MOBILENO"  datatype="mbphone" desc="用户号码" value="ognl:condition.MOBILENO"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">终端类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select"  id="TERMINAL_TYPE" name="TERMINAL_TYPE" 
+					            source="ognl:pageutil.getStaticList('SALE_ACTIVE_MATERIEL_TYPE')"
+					            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+	                			value="ognl:condition.TERMINAL_TYPE"  desc="终端类型"/>
+				</span></span></span> 
+			</li>
+			<li class="li">
+				<span class="label">手机串号：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="IMEI@TextField" name="IMEI"  desc="手机串号"	 value="ognl:condition.IMEI"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">优惠方案：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" source="ognl:activePackages" id="PACKAGECODE" name="PACKAGECODE" 
+								textField="PARAM_NAME" valueField="PARAM_CODE" titleField="PARAM_NAME"
+	                			value="ognl:condition.PARAM_CODE"
+	                			nullable="yes" desc="优惠方案"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">处理标识：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="DEALFLAG@Select" id="DEALFLAG" name="DEALFLAG" 
+					            source="ognl:pageutil.getStaticList('SALE_ACTIVE_DEALFLAG')"
+					            textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+	                			value="ognl:condition.DEALFLAG" nullable="yes" desc="处理标识"/>
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="query" name="query" onclick="$.SaleActiveActivate.loadGroupActivateActives();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+   </div>
+	
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">营销活动激活</div>
+	</div>
+	<div class="c_submit">
+		<div class="left">
+			<button type="button" id="unchecked" name="unchecked" onclick="return checkedOther('saleActiveCheckBox')"><i class="e_ico-unselect"></i><span>反选</span></button>
+			<button type="button" id="delBtn" name="delBtn" onclick="$.SaleActiveActivate.activateActives();"><i class="e_ico-ok"></i><span>激活</span></button>
+		</div>
+	</div>
+    <!-- 表格 开始 -->
+	<div jwcid="activatePart@Part">
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table" id="activeInfoTable" name="activeInfoTable">
+			<thead>
+				<tr>
+					 <th col="CHECK_TAG" style="width:5px;"><input jwcid="@Any" type="checkbox" onclick="checkedAll('saleActiveCheckBox', checked)" /></th>
+					 <th col="SERIAL_NUMBER">手机号码</th>
+                     <th col="IMEI">手机串号</th>
+                     <th col="MATERIELCODE">物料编码</th>
+                     <th col="PACKAGECODE">优惠方案编码</th>
+                     <th col="PACKAGE_NAME">营销包名称</th>
+                     <th col="ACTIVEDATE">激活时间</th>
+                     <th col="TERMINAL_TYPE">终端类型</th>
+                     <th col="DEALFLAG">处理标记</th>
+                     <th col="PRODUCT_ID" style="display:none">产品编码</th>
+					 <th col="PACKAGE_ID" style="display:none">包编码</th>
+					 <th col="RECORDID" style="display:none">接口表序列</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td class="e_center">
+						<input type="checkbox" jwcid="@Checkbox"  id="saleActiveCheckBox" name="saleActiveCheckBox" value="ognl:info.DEALFLAG" disabled="ognl:info.DEALFLAG == 1"  />
+					</td>
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.IMEI" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:info.MATERIELCODE" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:info.PACKAGECODE" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss', info.ACTIVEDATE)" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALE_ACTIVE_MATERIEL_TYPE', info.TERMINAL_TYPE)" raw="false"></span></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('SALE_ACTIVE_DEALFLAG', info.DEALFLAG)" raw="false"></span></td>
+				    <td style="display:none"><span jwcid="@Insert" value="ognl:info.PRODUCT_ID" raw="false"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.PACKAGE_ID" raw="false"></span></td>
+					<td style="display:none"><span jwcid="@Insert" value="ognl:info.RECORDID" raw="false"></span></td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+		<!-- 翻页 开始 -->
+		<div jwcid="@NavBar" name="queryNav" id="queryNav" cond="conditionPart" part="activatePart" listener="queryActives" pageSize="10" count="ognl:info.xxx"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+  </div>
+<!-- 区域 结束 -->
+
+</div>
+</body>
+</html>

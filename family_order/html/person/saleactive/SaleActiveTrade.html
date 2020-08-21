@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: SaleActiveTrade.html,v 1.6 2013/04/10 08:33:42 anwx Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>营销活动受理</title>
+<script jwcid="@Script" language="JavaScript" src="person/saleactive/scripts/saleactivetrade.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper" id="bodyScroll"><div class="m_wrapper2">
+<div class="c_box">
+	<div jwcid="myTips@Tips" content="提示：用户只能办理蓝色字体的营销包！" showLink="false" showClose="false"/>
+	<div class="c_title">
+        <div class="text">客户查询</div>
+        <div class="fn">
+			<a href="#nogo" class="e_button"
+				onclick="$.SaleActiveTrade.displaySwitch(this,'custInfoPart')"><i
+				class="e_ico-unfold"></i><span>展示客户信息</span>
+			</a>
+		</div>
+    </div>
+	<!-- 认证 开始 -->
+    <div jwcid="AuthPart@csserv:Auth" element="div" authType="ognl:info.authType" tradeTypeCode="ognl:info.TRADE_TYPE_CODE" tradeAction="$.SaleActiveTrade.checkSaleBook(data)"></div>
+	<!-- 认证 结束 -->
+    <div id="custInfoPart" jwcid="custInfoPart@Part" style="display:none">
+        <div jwcid="UCAViewPart@Part">
+			<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+			<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div>
+    </div>
+</div>
+<div class="l_col">
+    <div jwcid="saleactive@csserv:SaleActive"
+    	element="div"
+    	needCheck="true"
+    	needUserId="true"
+    	eparchyCodeCompId="custinfo_EPARCHY_CODE"/>
+</div>
+
+<div class="c_box" id="AuthCodeBtn"  style="display:none">
+	<div class="submit" style="text-align:center">
+				<button jwcid="@Any" name="AUTHCODE_BTN" id="AUTHCODE_BTN" class="e_button-page-ok" onclick="$.SaleActiveTrade.redPackPlaceOrderCall()"><i class="e_ico-ok"></i><span>提交（Y）</span></button>
+				<input type="hidden" id="RED_PACK_PARAMS" name="RED_PACK_PARAMS" value="" afterAction="$.SaleActiveTrade.afterRedPackCall()" desc="弹出认证验证框关闭以后触发动作"/> 
+	</div>
+</div>
+<div class="c_box" id="submitDiv" style="display:''">
+	<div class="c_submit">
+		<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="$.SaleActiveTrade.onTradeSubmit()" orderTypeCode="ognl:info.TRADE_TYPE_CODE" isRender="false" params="" listener="" refreshPart="" area="AuthPart" element="div"/>
+	</div>
+</div>
+<div class="c_box" id="checkSMSBtn"  style="display:none">
+	<div class="submit" style="text-align:center">
+				<button jwcid="@Any" name="CHECKBTN" id="CHECKBTN" class="e_button-page-ok" onclick="$.SaleActiveTrade.checkSMSBotton()"><span>验证码</span></button> 
+	</div>
+</div>
+<input jwcid="@Hidden" id="custinfo_EPARCHY_CODE" name="custinfo_EPARCHY_CODE" value="0898" desc="用户地州"/>
+<input jwcid="@Hidden" id="LABEL_ID" name="LABEL_ID" value="ognl:info.LABEL_ID" desc="活动标签"/>
+<input jwcid="@Hidden" id="NET_ORDER_ID" name="NET_ORDER_ID" value="" desc="商城预约订单编码"/>
+<input jwcid="@Hidden" id="CHECK_SMS_VERICODE" name="CHECK_SMS_VERICODE" value="" desc="验证码"/>
+<input jwcid="@Hidden" id="LIMIT_COUNT" name="LIMIT_COUNT" value="" desc="验证码限制次数"/>
+<input jwcid="@Hidden" id="NOTICE_CONTENT" name="NOTICE_CONTENT" value="" desc="提示信息"/>
+<input jwcid="@Hidden" id="SMS_VERI_SUCCESS" name="SMS_VERI_SUCCESS" value="" desc="提交后需要动态验证码验证的营销活动办理，验证成功标记：1-成功"/>
+</div></div>
+</body>
+</html>

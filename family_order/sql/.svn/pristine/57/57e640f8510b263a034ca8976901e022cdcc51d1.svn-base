@@ -1,0 +1,2 @@
+INSERT INTO td_m_resvalue(eparchy_code,res_type_code,value_code,value_price,update_time,update_staff_id,update_depart_id,remark)
+ VALUES(:EPARCHY_CODE,:RES_TYPE_CODE,:VALUE_CODE,TO_NUMBER(:VALUE_PRICE),SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:REMARK)

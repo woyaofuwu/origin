@@ -1,0 +1,4 @@
+SELECT to_char(user_id) user_id,serial_number,character_type,cust_aim,title,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,rsrv_str11,rsrv_str12,rsrv_str13,rsrv_str14,rsrv_str15,state_code,to_char(in_date,'yyyy-mm-dd hh24:mi:ss') in_date,in_staff_id,in_depart_id,city_code,in_eparchy_code,to_char(auditing_time,'yyyy-mm-dd hh24:mi:ss') auditing_time,auditing_staff_id,auditing_depart_id,approv_info,remark 
+  FROM tf_f_user_behavior
+ WHERE in_date between TO_DATE(:START_DATE, 'YYYY-MM-DD HH24:MI:SS') and  TO_DATE(:END_DATE, 'YYYY-MM-DD HH24:MI:SS')
+   AND (state_code=:STATE_CODE OR :STATE_CODE = 'Z')

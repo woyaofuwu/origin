@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IP直通车无绑定</title>
+<script jwcid="@Script"  language="JavaScript" src="person/ipexpressnobind/scripts/ipexpressnobind.js"></script>
+<script jwcid="@Script"  src="scripts/csserv/common/validate/custvalidate.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域（替换成业务组件） 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="261" userCanBeNull="true"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+<div class="c_box">
+<div jwcid="mytab@Tabset">
+<div jwcid="@TabsetContent" title="基本信息">
+	<div jwcid="custInfoPart@Part">
+		<div class="c_form c_form-col-3 c_form-label-7" id="CustPart" name="CustPart" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">客户名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" value="ognl:custInfo.CUST_NAME" maxsize="48" maxLength="48" disabled='true'
+	                                   nullable="no" desc="客户名称" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">客户性别：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_SEX" id="custInfo_SEX" source="ognl:pageutil.getStaticList('SEX')"
+	                                    value="ognl:custInfo.SEX" disabled="true" desc="客户性别" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')"
+	                        textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.PSPT_TYPE_CODE" desc="证件类型"  disabled="true" nullable="no" onchange="judgePspt()"/>
+					</span></span></span>
+				</li>
+				<li class="li col-2" id="psptDIV">
+					<span class="label"><span class="e_required">证件号码：</span></span>
+					<span class="e_elements">
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" value="ognl:custInfo.PSPT_ID" datatype="pspt" maxsize="20" maxLength="20"
+                         desc="证件号码" nullable="no" disabled="true"  onchange="isPsptUsed()" /></span></span>
+                    </span>
+				</li>
+				<li class="li">
+					<span class="label">证件有效期：</span>
+					<span class="e_input"><span><input type="text" jwcid="@DateField" name="custInfo_PSPT_END_DATE" id="custInfo_PSPT_END_DATE" value="ognl:custInfo.PSPT_END_DATE"
+	                                 desc="证件有效期" disabled="true"  /></span></span>
+				</li>
+				<li class="li col-2" id="psptAddrDIV">
+					<span class="label">证件地址：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" value="ognl:custInfo.PSPT_ADDR" maxsize="128"
+	                                                                   onchange="checkAddr()" maxLength="128"    disabled="true"   desc="证件地址"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">用户类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_USER_TYPE_CODE" id="custInfo_USER_TYPE_CODE"
+							source="ognl:pageutil.getList('TD_B_USERTYPE','USER_TYPE_CODE','USER_TYPE','EPARCHY_CODE',getVisit().getStaffEparchyCode())"
+							textField="USER_TYPE" valueField="USER_TYPE_CODE" value="ognl:custInfo.USER_TYPE_CODE"
+							desc="用户类型" nullable="no" titleField="USER_TYPE" disabled="true"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系电话：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_PHONE" id="custInfo_PHONE" value="ognl:custInfo.PHONE" nullable="no" disabled="true" desc="联系电话"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">联系人姓名：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_CONTACT" id="custInfo_CONTACT" value="ognl:custInfo.CONTACT" disabled="true" desc="联系人"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">联系人电话：</span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_CONTACT_PHONE" id="custInfo_CONTACT_PHONE" value="ognl:custInfo.CONTACT_PHONE" disabled="true" desc="联系人电话"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">客户业务区：</span></span>
+						<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_CITY_CODE" id="custInfo_CITY_CODE"
+							    source="ognl:pageutil.getList('TD_M_AREA','AREA_CODE','AREA_NAME',new java.lang.String[]{'AREA_LEVEL','PARENT_AREA_CODE'},new java.lang.String[]{'30','0898'})"
+								textField="AREA_NAME" valueField="AREA_CODE"  value="ognl:custInfo.CITY_CODE"
+								desc="客户业务区" nullable="no" disabled="true"/>
+					   </span></span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">通信地址：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_POST_ADDRESS" id="custInfo_POST_ADDRESS" value="ognl:custInfo.POST_ADDRESS" nullable="no" disabled="true" desc="通信地址"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>通信邮编：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_POST_CODE" id="custInfo_POST_CODE" value="ognl:custInfo.POST_CODE" disabled="true" desc="通信邮编"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div jwcid="acctInfoPart@Part">
+		<div class="c_form c_form-col-3 c_form-label-7" id="AcctPart" name="AcctPart" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">账户名称：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="PAY_NAME" id="PAY_NAME" value="ognl:acctInfo.PAY_NAME" desc="账户名称" disabled="true" nullable="no"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">账户类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PAY_MODE_CODE" id="PAY_MODE_CODE" source="ognl:pageutil.getStaticList('TD_S_PAYMODE')" addDefault="false"
+						 textField="DATA_NAME" valueField="DATA_ID" value="ognl:acctInfo.PAY_MODE_CODE==null ? acctInfo.DEFAULT_PAY_MODE : acctInfo.PAY_MODE_CODE"
+						 desc="账户类型" nullable="no" onchange="checkPayModeCode();" disabled="true" />
+					</span></span></span>
+				</li> 
+				<li class="li">
+					<span class="label"><span id="span_SUPER_BANK_CODE">上级银行：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="SUPER_BANK_CODE" id="SUPER_BANK_CODE"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')"
+								textField="SUPER_BANK" valueField="SUPER_BANK_CODE" value="ognl:acctInfo.SUPER_BANK_CODE"
+								desc="上级银行" disabled="true"
+								onchange="checkSuperBankCode();" />
+					</span></span></span>
+				</li>
+				<li class="li" jwcid="BankCodePart@Part" element="li">
+					<span class="label"><span id="span_BANK_CODE">银行名称：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="BANK_CODE" id="BANK_CODE"
+								source="ognl:bankCodeList"
+								textField="BANK" valueField="BANK_CODE" value="ognl:acctInfo.BANK_CODE"
+								desc="银行名称" disabled="true" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_BANK_ACCT_NO">银行帐号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="BANK_ACCT_NO" id="BANK_ACCT_NO" value="ognl:acctInfo.BANK_ACCT_NO" 
+								desc="银行帐号" disabled="true"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div jwcid="@TabsetContent" title="IP电话信息">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">已开通号码</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="IPExpressInfos@Part">
+	<div class="c_table c_table-row-3">
+		 <table jwcid="@Table" id="DeptTable" name="DeptTable" rowClick="tableRowClick">
+		   <thead>
+				 <tr>
+				    <th col="col_cond_CAUSE"  style="display:none">IP电话号码类型</th>
+				    <th col="col_SERIAL_NUMBER_G" ><span class="">IP电话号码</span></th>	
+					<th col="col_OPEN_DATE" >开户时间</th>
+					<th col="col_CONDITIONM" >处理状态</th>										
+					<th col="col_PRODUCT_ID"  style="display:none">IP直通车产品代码</th>
+					<th col="col_BRAND_CODE"  style="display:none"><span class="">IP直通车品牌代码</span></th>
+					<th col="col_TEMP_PWD"  style="display:none">密码</th>										
+					<th col="col_IPServiceText"  style="display:none">IP直通车服务</th>
+					<th col="col_OLD_BRAND_CODE" style="display:none" >旧品牌</th>	
+					<th col="col_OLD_PRODUCT_ID"  style="display:none">旧产品</th>	
+					<th col="col_OLD_IPServiceText"  style="display:none">旧服务</th>	
+					<th col="col_OLD_SERIALNUMBER"  style="display:none">旧IP电话号码</th>
+					<th col="col_M_DEAL_TAG"  style="display:none">处理标记</th>
+					<th col="col_USER_ID_B"  style="display:none"><span class="">用户ID</span></th>
+					<th col="col_OLD_PWD"  style="display:none">旧密码</th>
+					<th col="col_PACKAGESVC"  style="display:none">包</th>												
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:bindIpPhoneInfos" value="ognl:bindIpPhoneInfo" element="tr">
+					<td  style="display:none"></td>								
+					<td ><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_SERIALNUMBER" raw="true"/></td>
+					<td ><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OPEN_DATE" raw="true" /></td>	
+					<td ><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.CONDITIONM" raw="true"/></td>										
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_PRODUCT_ID" raw="true"/></td> 
+				    <td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_BRAND_CODE" raw="true"/></td>
+				    <td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.TEMP_PWD" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.IPServiceText" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_BRAND_CODE" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_PRODUCT_ID" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_IPServiceText" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_SERIALNUMBER" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.M_DEAL_TAG" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.USER_ID_B" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.OLD_PWD" raw="true"/></td>
+					<td  style="display:none"><span jwcid="@Insert" value="ognl:bindIpPhoneInfo.PACKAGESVC" raw="true"/></td>									
+				</tr> 								
+			</tbody>
+		</table>				
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	
+	<div jwcid="IPExpressEdit@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-7" id="EditPart" name="EditPart" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">IP电话号码类型：</span></span>
+					<span class="e_select" ><span><span>
+								<select jwcid="@Select"  name="col_cond_CAUSE" id="col_cond_CAUSE" 
+								source="ognl:ipSnType"
+								textField="PARAM_NAME" valueField="PARAM_CODE" value=""
+								desc="IP电话号码类型"  onchange="onCauseChange(this);" disabled="true" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">固定号码：</span></span>
+					<span class="e_elements">
+						<span class="e_label e_label-left"><span>
+						   <!-- 仅用来显示 -->
+						    <span id="col_SERIAL_NUMBER_F" name="col_SERIAL_NUMBER_F" desc="固定号码区号" disabled="true"><span jwcid="@Insert"  value="" ></span></span> 
+						    <input style="display:none;" jwcid="@TextField" id="col_SERIAL_NUMBER_F" name="col_SERIAL_NUMBER_F" value="" desc="固定号码区号"  disabled="true"/>
+						</span></span>
+						<span class="e_input e_input-right"><span>
+							<input  jwcid="@TextField" id="col_SERIAL_NUMBER_G" name="col_SERIAL_NUMBER_G" value="" onblur="checkPhoneNumberM();" maxLength="8" desc="固定号码"   disabled="true"/>
+						</span></span>
+					</span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">品牌：</span></span>
+					<span class="e_select" ><span><span>
+								<select jwcid="@Select"  name="col_BRAND_CODE" id="col_BRAND_CODE" 
+								source="ognl:pageutil.getStaticList('IPEXPRESS_BRAND')"
+								textField="DATA_NAME" valueField="DATA_ID" value=""
+								desc="品牌"  disabled="true" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">IP直通车产品：</span></span>
+					<span class="e_select" ><span><span>
+								<select jwcid="@Select"  name="col_PRODUCT_ID" id="col_PRODUCT_ID" 
+								source="ognl:ipProduct"
+								textField="PRODUCT_NAME" valueField="PRODUCT_ID" value=""
+								desc="IP直通车产品"  onchange="onProductChange(this);" disabled="true" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li" id="col_CHANGE_PASSWD">
+					<span class="label">密码：</span>
+					<button type="button" onclick="$('#popup-pwd').css('display','')"><i class="e_ico-config"></i><span>设置</span></button>
+				</li>
+				<li class="li">
+					<span class="label">IP直通车服务：</span>
+						<button type="button" class="e_button-right" onclick="popupService()"><i class="e_ico-check"></i><span></span></button>
+						<!-- <span class="e_input e_input-left"><span><input type="text"/></span></span> -->
+				</li>
+				
+				
+				<textarea style="display:none" jwcid="@TextField" id="col_CONDITIONM" name="col_CONDITIONM" value="" />	
+		        <input    style="display:none" jwcid="@TextField" id="col_OPEN_DATE" name="col_OPEN_DATE" value="" />       
+				<input    style="display:none" jwcid="@TextField" id="col_PRODUCT_ID_HIDDEN" name="col_PRODUCT_ID_HIDDEN" value="" />        
+				<input    style="display:none" jwcid="@TextField" id="col_PACKAGESVC" name="col_PACKAGESVC" value="" />               
+				<input    style="display:none" jwcid="@TextField" id="col_OLCOM_TAG" name="col_OLCOM_TAG" value="" />                
+				<input    style="display:none" jwcid="@TextField" id="col_M_DEAL_TAG" name="col_M_DEAL_TAG" value="" />							  
+				<input    style="display:none" jwcid="@TextField" id="col_USER_ID_B" name="col_USER_ID_B" value="" />                
+				<input    style="display:none" jwcid="@TextField" id="col_OLD_USER_ID_B" name="col_OLD_USER_ID_B" value="" />            
+				<input    style="display:none" jwcid="@TextField" id="col_OLD_PWD" name="col_OLD_PWD" value="" />               
+				<input    style="display:none" jwcid="@TextField" id="col_TEMP_PWD" name="col_TEMP_PWD" value="" />              
+				<input    style="display:none" jwcid="@TextField" id="col_IPServiceText" name="col_IPServiceText" value="" />	
+			</ul>
+			
+			
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" onclick="return createDept(this);"><i class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" onclick="return updateDept(this);"><i class="e_ico-edit"></i><span>修改</span></button>
+				<button type="button" class="e_button-form" onclick="return deleteDept(this);"><i class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+</div>
+</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-1">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">备注：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent"><textarea></textarea></span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+
+    <!-- 提交 开始 -->
+    <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitDepts()" area="AuthPart,hiddenPart,custInfoPart,acctInfoPart"  element="div"/>
+	<!-- 提交 结束 --> 
+</div>
+<!-- 区域 结束 -->
+</div>
+   <!-- 隐藏区域 开始 -->
+   <div jwcid="hiddenPart@Part">
+   		<input jwcid="@TextField" id="CUST_ID" name="CUST_ID" value="ognl:custInfo.CUST_ID" 　style="display:none" />
+	    <input type="hidden" jwcid="@Any" id="SERIAL_NUMBER_HIDDEN" name="SERIAL_NUMBER_HIDDEN" value="ognl:commInfo.SERIAL_NUMBER_F"  />
+		<input jwcid="@TextField" id="LIMITNUM" name="LIMITNUM" value="ognl:commInfo.IPPHONECOUNTLIMIT" 　style="display:none" />
+		<input jwcid="@TextField" id="PHONELENTH" name="PHONELENTH" value="ognl:commInfo.PHONELENTH" 　style="display:none" />
+		<input jwcid="@TextField" id="DEFALTIPPASSWD" name="DEFALTIPPASSWD" value="ognl:commInfo.DEFALTIPPASSWD" style="display:none" />
+		<input jwcid="@TextField" id="ISDEFALTIPPASSWD" name="ISDEFALTIPPASSWD" value="ognl:commInfo.ISDEFALTIPPASSWD" style="display:none" />
+		<input jwcid="@TextField" id="PHONETYPE" name="PHONETYPE" value="ognl:commInfo.PHONETYPE" style="display:none" />
+		<input    style="display:none" type="hidden" id="X_CODING_STR" name="X_CODING_STR"/> 	
+   </div>
+   <!-- 隐藏区域 结束 -->
+</div></div>
+<!-- 弹窗 开始 -->
+<div class="c_popup" id ="popup-pwd" style="display:none;">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:300px;">
+			<div class="c_popupTitle">
+				<div class="text">密码设置</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="$('#popup-pwd').css('display','none')"></a>
+				</div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-1 c_form-label-5">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">新密码：</span>
+							<span class="e_input"><span>
+							<input id='newpassword' name="newpassword" type='password' datatype="pinteger" 
+									nullable="no" equsize="6"  onchange="checkPassword1()" desc="新密码"/>   
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">确认新密码：</span>
+							<span class="e_input"><span>
+							<input id='newpasswordagain' name="newpasswordagain" datatype="pinteger" type='password' 
+							 	nullable="no" equsize="6"   desc="确认新密码"/>  
+							</span></span>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" onclick="checkPassword();"><i></i><span>确定</span></button>
+					<button class="e_button-page-cancel" onclick="$('#popup-pwd').css('display','none')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 弹窗 结束 -->
+<!-- 弹窗 开始 -->
+<div jwcid="popupServicePart@Part">
+	<div class="c_popup" id="popup-service"  style="display:none;">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox">
+			<div class="c_popupTitle">
+				<div class="text">选择IP直通车服务</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="$('#popup-service').css('display','none')"></a>
+				</div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表格 开始 -->
+				<div class="c_table c_table-row-10">
+					<table>
+		      			<thead>
+				  			<tr>
+			      				<th>选择</th>
+								<th>服务编码</th>
+								<th>服务名称</th>
+								<th>必选</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:serviceInfos" value="ognl:serviceInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><input type="checkbox" id="ipservices" name="ipservices" jwcid="@Checkbox" disabled="ognl:serviceInfo.FORCE_TAG == 1"  checked="ognl:serviceInfo.X_TAG == 'true'" value="ognl:serviceInfo.SERVICE_ID" text="ognl:serviceInfo.FORCE_TAG" package="ognl:serviceInfo.PACKAGE_ID" /></td>		
+								<td><span  jwcid="@Insert" id="service_id" name="service_id" value="ognl:serviceInfo.SERVICE_ID" raw="true"/></td>
+								<td><span  jwcid="@Insert" id="service_name" name="service_name"  value="ognl:serviceInfo.SERVICE_NAME" raw="true"/></td>
+								<td><input jwcid="@Any" type="checkbox" id="ipservice" name="ipservice"  value="ognl:serviceInfo.FORCE_TAG"   checked="ognl:serviceInfo.FORCE_TAG == '1'" disabled="true"/></td>								
+							</tr>
+							<tr style="display:none">
+							<td><input jwcid="@TextField"  id="SERVICE_ID_HIDDEN" name="SERVICE_ID_HIDDEN" value="ognl:serviceCondition.SERVICE_STR" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 表格 结束 -->
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" onclick="changeQueryType()"><i></i><span>确定</span></button>
+					<button class="e_button-page-cancel" onclick="$('#popup-service').css('display','none')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+</div>
+<!-- 弹窗 结束 -->
+</body>
+</html>

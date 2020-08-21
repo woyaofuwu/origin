@@ -1,0 +1,3 @@
+SELECT partition_id,to_char(user_id_a) user_id_a,serial_number_a,to_char(user_id_b) user_id_b,serial_number_b,relation_type_code,role_code_a,role_code_b,orderno,short_code,to_char(a.start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(a.end_date,'yyyy-mm-dd hh24:mi:ss') end_date 
+  FROM tf_f_relation_uu a,tf_f_vpmn_group_member b
+ WHERE a.user_id_b=b.member_user_id AND a.user_id_a=b.user_id AND a.relation_type_code='20' AND SYSDATE BETWEEN a.start_date AND a.end_date AND a.short_code=:SHORT_CODE AND b.vpmn_group_id=:VPMN_GROUP_ID AND SYSDATE BETWEEN b.start_date AND b.end_date AND b.user_id=to_number(:USER_ID)

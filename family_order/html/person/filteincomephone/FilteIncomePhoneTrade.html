@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>来电拒接</title>
+<script language="JavaScript"
+	src="person/filteincomephone/scripts/FilteIncomePhoneTrade.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" jwcid="allPart@Part"><div class="m_wrapper2">
+<div class="c_tip" jwcid="TipBar@Part" style="display:none;">
+	<span id="tipSpan"></span>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">资料查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="1301" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+		<div jwcid="UCAViewPart@Part">
+				<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+				<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div> 
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">来电拒接号码</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-5" jwcid="filterSnPart@Part">
+				<table jwcid="@Table" id="phoneTable" name="phoneTable" rowClick="tableRowClick" >
+					<thead>
+						<tr>
+							<th col="REJECT_SN">拒接号码</th>
+							<th col="REMARK">备注</th>
+							<th col="START_DATE">办理时间</th>
+						</tr>
+					</thead>
+					<tbody name="DeptTableValues" id="DeptTableValues">
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.START_DATE" raw="false"/></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6"  jwcid="EditPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">拒接号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@Any"  id="REJECT_SN" name="REJECT_SN" value="ognl:commInfo.REJECT_SN" nullable="no" desc="拒接号码"/>
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label">开通短信提醒：</span>
+					<label>
+					<input jwcid="@Checkbox" class="e_checkbox"
+					id="OPEN_SMS" name="OPEN_SMS" value='ognl:"1".equals(commInfo.SENDSMS_TAG)?"1":"0"'
+					onclick="operationSMS(this);"  checked='ognl:"1".equals(commInfo.SENDSMS_TAG)''/>
+					</label>
+				</li>
+				<li class="li">
+					<span class="label">拒接号码总数：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="PHONE_SIZE" name="PHONE_SIZE" value="ognl:commInfo.PHONE_SIZE" readonly="true" />
+					<input type="hidden" jwcid="@Any"  id="PRE_PHONE_SIZE" name="PRE_PHONE_SIZE" value="ognl:commInfo.PHONE_SIZE" readonly="true" />
+					<input type="hidden" jwcid="@Any"  id="OPER_TYPE" name="OPER_TYPE" value="ognl:commInfo.OPER_TYPE" readonly="true" />
+					<input type="hidden" jwcid="@Any"  id="JWTONG_TAG" name="JWTONG_TAG" value="ognl:commInfo.JWTONG_TAG" readonly="true" />
+					<input type="hidden" jwcid="@Any"  id="SENDSMS_TAG" name="SENDSMS_TAG" value="ognl:commInfo.SENDSMS_TAG" readonly="true" />
+					</span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label">备注：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@Any"  id="REMARK" name="REMARK" value="ognl:commInfo.REMARK"/>
+					</span></span>
+				</li>
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="bcreate" name="bcreate" onclick="return createPhone(this);"><i id="ibcreate" name="ibcreate" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="bupdate" name="bupdate" onclick="return updatePhone(this);"><i id="ibcreate" name="ibcreate" class="e_ico-edit"></i><span>修改</span></button>
+				<button type="button" class="e_button-form" id="bdelete" name="bdelete" onclick="return deletePhone(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>删除</span></button>
+				<button type="button" class="e_button-form" id="bdeleteall" name="bdeleteall" onclick="return deleteAllPhone(this)"><i  id="ibcreate" name="ibcreate" class="e_ico-delete"></i><span>全删</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitTrade()" area="AuthPart,filterSnPart,EditPart"  element="div"/>
+</div>
+</div>
+</div>
+</body>
+</html>

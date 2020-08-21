@@ -1,0 +1,1 @@
+SELECT * FROM tf_f_user_sale_active A WHERE A.USER_ID = :USER_ID AND PARTITION_ID = MOD(:USER_ID, 10000)

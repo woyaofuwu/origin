@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head"></head>
+<script jwcid="@Script" language="JavaScript" src="person/countryreceipt/receiptzf/scripts/receiptzf.js"></script>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">发票查询</div>
+	</div>
+			<!-- 条件开始 -->
+				<div class="c_form c_form-col-3" jwcid="submit_part@Part" >
+						<ul class="ul">
+							<li class="li">
+								<span class="label"  >服务号码：</span>
+									<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" value="ognl:condition.cond_SERIAL_NUMBER"  name = "cond_SERIAL_NUMBER" 
+									desc="服务号码" nullable="yes" datatype="mbphone"/>
+								</span></span>
+							</li>
+							<li class="li "  >
+								<span class="label"  >业务流水号：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField"  name = "cond_TRADE_ID" 
+									value="ognl:condition.cond_TRADE_ID" desc="业务流水号" nullable="yes"/>
+								</span></span>
+							</li>
+							<li class="li"  >
+								<span class="label">打印时间：</span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@DateField"  name = "cond_ACCEPT_TIME" 
+									value="ognl:condition.cond_ACCEPT_TIME" desc="打印时间" format="yyyy-MM" nullable="yes"/>
+								</span></span>
+							</li>
+							<li class="li"  >
+								<span class="label">发票号：&nbsp;&nbsp;&nbsp; </span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="cond_TICKET_ID@TextField"  name = "cond_TICKET_ID" 
+									value="ognl:condition.cond_TICKET_ID" desc="发票号" nullable="yes" />
+								</span></span>
+							</li>
+							<li class="li "  >
+								<span class="label"  >员工工号：&nbsp;&nbsp;&nbsp; </span>
+								<span class="e_input"><span>
+									<input type="text" jwcid="@TextField"  name = "cond_TRADE_STAFF_ID" 
+									value="ognl:condition.cond_TRADE_STAFF_ID" desc="员工工号" nullable="yes"/>
+								</span></span>
+							</li>
+						</ul>
+
+						<div class="submitPlace"></div>
+						<div class="submit e_right"  >
+							<button class="e_button-form"  onclick="return queryZFReceipt();"><i class="e_ico-search"></i><span>查询</span></button>
+						</div>
+				</div>
+				<!-- 条件结束 -->
+				
+				<div class="c_title">
+					<div class="text">查询结果
+					</div>
+				</div>
+				<div  jwcid="result_Table@Part" optimize="true">
+			    <div id="exportarea"  class="c_scroll c_scroll-x style='height:auto'">
+							<div class="c_table">
+							<!-- 表格开始 -->
+							<table jwcid="@Table" name="PrintTable" id="PrintTable"  sort="true">
+							<thead>
+						  			<tr>
+										<th>作废</th>
+										<th>服务号码</th>
+										<th>业务名称</th>
+										<th>业务流水号</th>
+										<th>费用总额</th>
+										<th>发票号</th>
+										<th>打印时间</th>
+										<th>受理员工</th>
+										<th>受理部门</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+												<td class="e_center"><input name="checkvalue" jwcid="checkvalue@Radio" value="ognl:info.PRINT_ID"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE',info.TRADE_TYPE_CODE)"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:info.TRADE_ID"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:info.FEE/100"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:info.TICKET_ID"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:info.ACCEPT_TIME"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.TRADE_STAFF_ID)"/></td>
+												<td class="e_center"><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.TRADE_DEPART_ID)"/></td>
+										</tr>
+									</tbody>
+							</table>
+							<!-- 表格结束 -->
+							</div>
+				</div>
+				</div>	
+				
+				<!-- 提交开始 -->
+				<div class="submitPlace"></div>
+				<div class="submit e_right"  >
+					<button class="e_button-form"  onclick="return cancelreceipt();"><i class="e_ico-search"></i><span>发票作废</span></button>
+				</div>
+					<!-- 提交结束 -->					
+</div>
+</div></div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

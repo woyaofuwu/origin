@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<script jwcid="@Script" src="iorder/igroup/esop/workformQuery/proxy/script/proxyList.js"></script>
+	<style type="text/css">
+		.c_table table td input[type="text"] {
+			width: 30%
+		}
+	</style>
+</head>
+<body jwcid="@Body">
+    <div class="l_float e_phone-infoTop">
+		<!-- 查询模版 开始 -->
+		<div class="l_query">
+			<div class="l_queryFn">
+				<!-- 功能 开始 -->
+				<div class="c_fn">
+					<div class="right">
+						<div class="text">代理设置</div>
+					</div>
+					<div class="left">
+						<button type="button" ontap="showPopup('qryPopup','qryPopupItem',true)"><span class="e_ico-add"></span><span>新增</span></button>
+						<!-- <button type="button"><span class="e_ico-add" ontap="showPopup('qryPopup','qryPopupItem',true)"></span><span>新增</span></button> -->
+						<button type="button" ontap="deleteProxy();"><span class="e_ico-delete"></span><span>删除</span></button>
+						<button type="button" ontap="queryProxy();"><span class="e_ico-search"></span><span>查询</span></button>
+						<button type="button" ontap="queryProxyhistory();"><span class="e_ico-skip"></span><span>历史</span></button>
+					</div>
+				</div>
+				<!-- 功能 结束 -->
+			</div>
+			<div jwcid="QueryListPart@Part" class="l_queryResult">
+			<div class="c_table" jwcid="QryResultPart@Part" element="div">
+				<table name="myTable" id="myTable" class="c_table c_table-checkbox" jwcid="@Table">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="checkbox" name="checkbox" ontap="checkedAll('TRADES', this.checked)" class="e_checkbox"/></th>					  
+				  				<th>代理人工号</th>
+				  				<th>代理人名称</th>
+								<th>代理方式</th>
+								<th>代理角色</th>
+								<th>生效时间</th>
+								<th>终止时间</th>
+								<th>修改时间</th>
+								<th>代理流程</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+								<div jwcid="@Conditional" condition="ognl:info.AVAILABLE == 'true'">
+									<td><input id="TRADES" name="TRADES" type="checkbox" jwcid="@Any" value="ognl:info.PROXY_ID"/></td>
+								</div>
+								<div jwcid="@Conditional" condition="ognl:info.AVAILABLE == 'false'">
+								<td></td>
+								</div>
+								<!-- <td>
+			   					 <td class="e_center" ><input type="checkbox"  id="TRADES" name="TRADES" jwcid="@Any"/></td>	
+								</td> -->
+								<td><span jwcid="@Insert" value="ognl:info.STAFF_ID_A" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME_A" /></td>	
+								<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'PROXY_TYPE',info.PROXY_TYPE})" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.ROLE_ID" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.START_DATE" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.END_DATE" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" /></td>	
+								<td data-title="查看详情" class="fn e_center" value="查看详情">
+                                    <span class="e_ico-search" ontap='queryProxyList(this)' jwcid="@Any" PROXY_ID="ognl:info.PROXY_ID" ></span>
+                                </td>
+									
+							</tr>
+						</tbody>
+					</table>
+					<div class="l_queryPage">
+						<!-- 分页 开始 -->
+						<div class="c_page c_page-border"
+			            	jwcid="@NavBar"
+			                 name="myNavbar"
+			                 id="myNavbar" 
+			                 cond="QryResultPart"
+			                 count="ognl:count"
+			                 listener="queryProxy"
+			                 part="QryResultPart"
+			                 pageSize="20">
+						</div>
+						<!-- 分页 结束 -->
+					</div>
+				</div>
+			</div>
+		<!-- 查询模版 结束 -->
+	</div>
+
+
+<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryPopup" id="qryPopup">
+					<div class="c_popupGroup">
+						<div class="c_popupItem" id="qryPopupItem">
+							<div class="c_header">
+								<div class="back" onclick="hidePopup(this);">新增代理</div>
+							</div>
+							<div jwcid="@Scroller" name="ftth"  class="c_scroll c_scroll-float c_scroll-header">
+										<div class="l_padding" jwcid="queryForm@Part">
+											<div class="c_list c_list-line c_list-border" jwcid="roleForm@Part">
+												<ul>
+													<li class="link required">
+														<div class="label">角色</div>
+														<div class="value">
+															<span jwcid="@Select" name="ROLE_ID" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BOSS_ROLE-BPM_ROLE')" value="ognl:info.ROLE_ID" nullable="no" textField="DATA_NAME" valueField="DATA_ID" onchange="changeRole(this.value);"></span>
+														</div>
+													</li>
+													<li class="link required">
+														<div class="label">代理方式</div>
+														<div class="value"><input jwcid="@Select"  id="PROXY_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PROXY_TYPE')" name="PROXY_TYPE" value="" nullable="no" textField="DATA_NAME" valueField="DATA_ID" onchange="changeProxyType(this.value);"/></div>
+													</li>
+													<li class="link" style="display:none;"  id="bpmletId" name="bpmletId" ontap="showPopup('qrytablePopup','qrytablePopupItem',true)">
+														<div class="label">修改流程列表</div>
+													</li>
+												</ul>
+											</div>
+											<div class="c_list c_list-line c_list-border" jwcid="departForm@Part">
+												<ul>
+													<li class="link" >
+														<div class="label">部门</div>
+														<div class="value"><input jwcid="@Select"  id="DEPART_ID"  name="DEPART_ID" source="ognl:departlist" valueField="DEPART_ID" textField="DEPART_NAME" value="" staffList="ognl:stafflist" onchange="reloadStaff(this)"/></div>
+													</li>
+													<li class="link required">
+														<div class="label">员工</div>
+														<div class="value"><input jwcid="@Select"  id="STAFF_ID_A"  name="STAFF_ID_A" source="ognl:stafflist" valueField="STAFF_ID" textField="STAFF_NAME" value="" nullable="no" /></div>
+													</li>
+												</ul>
+												
+											</div>
+											<div class="c_list c_list-line c_list-border">
+												<ul>
+													<li class="link required">
+														<div class="label">生效时间</div>
+														<div class="value">
+															<input jwcid="START_DATE@DateField" now="true" dropDown="true" format="yyyy-MM-dd HH:mm:ss"  name="START_DATE" value="" nullable="no" desc="生效时间"/>
+														</div>
+													</li>
+													<li class="link required">
+														<div class="label">终止时间</div>
+														<div class="value">
+															<input jwcid="END_DATE@DateField" now="true" dropDown="true" format="yyyy-MM-dd HH:mm:ss"  name="END_DATE" value="" nullable="no" desc="终止时间"/>
+														</div>
+													</li>
+													<li class="link">
+														<div class="label">备注</div>
+														<div class="value"><textarea class="e_textarea-row-2" jwcid="@TextArea" id="REMARK" name="REMARK" value="ognl:info.REMARK" desc="备注"></textarea></div>
+													</li>
+												</ul>
+											</div>
+											<div class="e_space"></div>
+											<div class="c_submit c_submit-full">
+												<button class="e_button-l e_button-r e_button-blue" onclick="LayoutWorkForm();hidePopup('qryPopup')"><span class="e_ico-search"></span><span>提交</span></button>
+											</div>
+										</div>
+							</div>
+		</div>
+		</div>
+		
+	</div>
+	<!-- 弹窗 结束 -->
+	
+	
+	
+<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qrytablePopup" id="qrytablePopup" class="c_popup c_popup-half">
+					<div class="c_popupGroup">
+						<div class="c_popupItem" id="qrytablePopupItem">
+							<div class="c_header">
+								<div class="back" onclick="hidePopup(this);">流程列表</div>
+							</div>
+							<div jwcid="@Scroller" name="qrytable" class="c_scroll c_scroll-float c_scroll-header">
+									<div class="c_table" jwcid="tablePart@Part" element="div">
+										<table name="templteTable" id="templteTable" class="c_table c_table-checkbox" jwcid="@Table">
+												<thead>
+													<tr>
+														<th col="TRADE_ID_SUB">
+											 				 <th class="e_center" ><input type="checkbox" id="checkbox" name="checkbox" ontap="checkedAll('MYTRADES', this.checked)" class="e_checkbox"/></th>					  
+														</th>
+														<th >流程列表</th>
+										  			</tr>
+												</thead>
+												<tbody>
+													<tr jwcid="@Foreach" source="ognl:templteList" value="ognl:templte" index="ognl:rowIndex" element="tr">
+														<td>
+									   					 <td class="e_center" ><input type="checkbox"  id="MYTRADES" name="MYTRADES" jwcid="@Any" value="ognl:templte.BPM_TEMPLET_ID"/></td>	
+														</td>
+														<td class="e_center"><span jwcid="@Insert" value="ognl:templte.TEMPLET_NAME" /></td>
+													</tr>
+												</tbody>
+										</table>
+									</div>
+							</div>
+					</div>
+			</div>
+	</div>
+	<!-- 弹窗 结束 -->
+	
+<!-- 弹窗 开始 -->
+	<div jwcid="@Popup" name="qryOldtablePopup" id="qryOldtablePopup" class="c_popup c_popup-half">
+					<div class="c_popupGroup">
+						<div class="c_popupItem" id="qryOldtablePopupItem">
+							<div class="c_header">
+								<div class="back" onclick="hidePopup(this);">流程列表</div>
+							</div>
+							<div jwcid="@Scroller" name="qryOldtable" class="c_scroll c_scroll-float c_scroll-header">
+									<div class="c_table" jwcid="oldTablePart@Part" element="div">
+										<table name="oldTemplteTable" id="oldTemplteTable" class="c_table c_table-checkbox" jwcid="myTable@Table">
+												<thead>
+													<tr>
+														<th >流程列表</th>
+										  			</tr>
+												</thead>
+												<tbody>
+													<tr jwcid="@Foreach" source="ognl:oldTemplteList" value="ognl:templte" index="ognl:rowIndex" element="tr">
+														<td class="e_center"><span jwcid="@Insert" value="ognl:templte.TEMPLET_NAME" /></td>
+													</tr>
+												</tbody>
+										</table>
+									</div>
+							</div>
+					</div>
+			</div>
+	</div>
+	<!-- 弹窗 结束 -->
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>企业互联网电视终端申领</title> 
+	<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="scripts/group/enterpriseinternettv/EnterpriseInternetTV.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2"> 
+<!-- 区域 开始 -->
+<div id="previewInfoPart">
+<div class="c_box" id="QueryCondPart">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团成员查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="queryproductForm@Part">
+		<ul class="ul">
+			<li class="li"> 
+				<span class="label"><span class="e_required">集团产品编码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" name="cond_SERIAL_NUMBER" jwcid="cond_SERIAL_NUMBER@TextField" value="ognl:condition.cond_SERIAL_NUMBER" enterAction="qryGrpUser()" nullable="no" maxsize="16" desc="集团产品编码"/>
+						<input jwcid="@Any" type="text" id="cond_USER_ID_A" name="cond_USER_ID_A" value="ognl:condition.cond_USER_ID_A"/>
+					</span></span>
+			</li> 
+		</ul> 
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="bquery" onclick="return qryGrpUser()" ><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">成员订购详细信息</div>
+	</div>
+    <!-- 标题 结束 -->	 
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+	  <div jwcid="acctArea@Part" optimize="true">	    
+		<table id='acctInfos'>
+			<thead>
+				<tr>
+				    <th col="ROWINDEX" style="display:none">行计数器</th>
+				    <th col="X_SELECTED">选择</th>
+					<th>机顶盒成员</th>	
+					<th>申领宽带号码</th>	
+					<th>申领状态</th>
+				</tr>
+			</thead> 
+			<tbody id="myTBody">
+                 <tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+                 	<td style="display:none"><span jwcid="@Insert" value="ognl:rowIndex" raw="false"></span></td>
+					<td class="e_center">
+						<input jwcid="@Radio" onclick="selectActive(this);"  disabled="ognl:info.CATFLAG==0 ? 'false' : 'true'"  rowIndex="ognl:rowIndex" type="radio" id="saleactive" name="saleactive" />
+					</td>
+					<td class="e_center">
+				     	<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B"/>
+				     	<input jwcid="@Any" type="hidden" id="RES_ID_NUM" name="RES_ID_NUM" value="ognl:info.SERIAL_NUMBER_B"/>
+				     	
+				    </td>
+				    
+				    <td class="e_center">
+				     	<span jwcid="@Insert" value="ognl:info.RSRV_STR1"/>				     	
+				    </td>
+					
+				    <td class="e_center"> 
+						 <span jwcid="@Insert" value="ognl:info.CATFLAG==0 ? '未申领' : '已申领' "/>
+					</td>	 
+				</tr>
+			</tbody>
+		</table>
+		
+		
+		<div jwcid="@NavBar" id="pageNav" name="pageNav" cond="queryproductForm" part="acctArea" listener="qryGrpUser" pageSize="10" count="ognl:infoCount"></div>
+	  </div>
+	</div></div>
+	<!-- 表格 结束 --> 
+</div>
+
+<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">机顶盒申领</div>
+				</div>
+				<!-- 标题 结束 -->
+
+				<!-- 刷新区域 开始 -->
+				<div jwcid="topSetBoxInfoPart@Part" class="c_form c_form-text c_form-label-6 c_form-col-3">
+					<!-- 表单 开始 -->
+					<div jwcid="terminalPart@Part">
+						<ul class="ul">			
+							<li class="li">
+								<span class="label"><span class="e_required">终端编号：</span></span>
+								<span class="e_elements" id="RES_ID_INPUT">
+									<button type="button" class="e_button-right" onclick="checkTerminal()"><i class="e_ico-check"></i><span>校验</span></button>
+									<span class="e_input e_input-left"><span>
+										<input jwcid="@TextField"   name="RES_ID" id="RES_ID" value="ognl:resInfo.RES_ID"
+										desc="终端编号" nullable="no" readonly="true"/>
+									</span></span>
+								</span>
+							</li>
+							<li class="li">
+								<span class="label">终端品牌：</span>
+								<span class="e_input"><span>
+									<input jwcid="@Any" type="hidden" id="RES_NO" name="RES_NO" value="ognl:resInfo.RES_NO"/>
+									<input jwcid="@Any" type="hidden" id="RES_TYPE_CODE" name="RES_TYPE_CODE" value="ognl:resInfo.RES_TYPE_CODE"/>
+									<input jwcid="@Any" type="hidden" id="RES_BRAND_CODE" name="RES_BRAND_CODE" value="ognl:resInfo.RES_BRAND_CODE"/>					
+									<input jwcid="RES_BRAND_NAME@TextField" name="RES_BRAND_NAME" value="ognl:resInfo.RES_BRAND_NAME"  readonly="true"/>
+								</span></span>
+							</li> 
+							<li class="li">
+								<span class="label">终端型号：</span>
+								<span class="e_input"><span>
+									<input jwcid="@Any" type="hidden" id="RES_KIND_CODE" name="RES_KIND_CODE" value="ognl:resInfo.RES_KIND_CODE"/>					
+									<input jwcid="RES_KIND_NAME@TextField" name="RES_KIND_NAME" value="ognl:resInfo.RES_KIND_NAME"  readonly="true"/>
+								</span></span>
+							</li> 			
+					   </ul>
+					   <ul class="ul">			
+							<li class="li">
+								<span class="label">终端状态：</span> 
+								<span class="e_input"><span>
+									<input jwcid="@Any" type="hidden" id="RES_STATE_CODE" name="RES_STATE_CODE" value="ognl:resInfo.RES_STATE_CODE"/>					
+									<input jwcid="RES_STATE_NAME@TextField" name="RES_STATE_NAME" value="ognl:resInfo.RES_STATE_NAME" readonly="true"/>
+								</span></span>	
+							</li>	
+							<li class="li">
+								<span class="label">终端供应商：</span> 
+								<span class="e_input"><span>
+									<input jwcid="RES_SUPPLY_COOPID@TextField" name="RES_SUPPLY_COOPID" value="ognl:resInfo.RES_SUPPLY_COOPID"  readonly="true" />
+								</span></span>	
+							</li>		
+							<li class="li">
+								<span class="label">终端价格(元)：</span> 
+								<span class="e_input"><span>
+									<input jwcid="RES_FEE@TextField" name="RES_FEE" value="ognl:resInfo.RES_FEE/100" readonly="true" />
+									<input jwcid="@Any" type="hidden" id="DEVICE_COST" name="DEVICE_COST" value="ognl:resInfo.DEVICE_COST"/>
+								</span></span>	
+							</li>							
+					   </ul>
+				   </div>
+
+				   <ul class="ul">			
+						<li class="li">
+							<span class="label"><span class="e_required">上门标识：</span></span>
+							<span class="e_select"><span><span>
+								<select id="Artificial_services" name="Artificial_services" disabled="disabled">
+									<!-- <option selected="selected" value="">未选择</option>
+									<option value="0">否</option>	 -->
+									<option value="1">是</option>
+								</select>
+							</span></span></span>
+						</li>	
+						<li class="li col-2">
+							<span class="label">备注：</span> 
+							<span class="e_input"><span>
+								<input jwcid="REMARK@TextField" name="REMARK" value="ognl:resInfo.REMARK"/>
+							</span></span>	
+						</li>							
+				   </ul>
+				<!-- 表单 结束 -->
+				</div>
+				<!-- 刷新区域 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+	<!-- 区域 结束 --> 
+	
+	
+	<div class="c_box"> 
+	<!-- 标题 开始 -->
+	<div class="c_title" jwcid="curMemberCountPart@Part">
+		<div class="text">宽带号码</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div>
+		<!-- 表格 开始 -->
+		<div class="c_table c_table-row-3" jwcid="memberSnPart@Part">
+				<table jwcid="@Table" id="memberTable" name="memberTable">
+					<thead>
+						<tr>
+							<th col="KD_NUMBER">宽带号码</th>
+							<th col="KD_USERID" style="display:none">宽带号码USERID</th>
+							<th col="CUST_NAME">联系人</th>
+							<th col="KD_PHONE">联系电话</th> 
+							<th col="KD_ADDR">宽带地址</th>
+							<th col="KD_RES_ID">终端编号</th>
+							<th col="KD_RES_BRAND_NAME" style="display:none">终端品牌</th>
+							<th col="KD_RES_TYPE_CODE" style="display:none">终端类型编码</th>
+							<th col="KD_RES_BRAND_CODE" style="display:none">终端品牌编码</th>
+							<th col="KD_RES_KIND_NAME" style="display:none">终端型号</th>
+							<th col="KD_RES_KIND_CODE" style="display:none">终端型号编码</th>
+							<th col="KD_RES_STATE_NAME" style="display:none">终端状态</th>
+							<th col="KD_RES_STATE_CODE" style="display:none">终端状态编码</th>
+							<th col="KD_RES_SUPPLY_COOPID" style="display:none">终端供应商</th>
+							<th col="KD_RES_FEE" style="display:none">终端价格(元)</th>
+							<th col="KD_DEVICE_COST" style="display:none">终端价格</th>
+							<th col="KD_ARTIFICIAL_SERVICES" style="display:none">上门标识</th>
+							<th col="KD_REMARK" style="display:none">备注</th>
+						</tr>
+					</thead>
+					<tbody id='fmymembers'>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"> 
+							<td><span jwcid="@Insert" value="ognl:info.KD_NUMBER" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_USERID" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.KD_PHONE" raw="false"/></td> 
+							<td><span jwcid="@Insert" value="ognl:info.KD_ADDR" raw="false"/></td>
+							
+							<td><span jwcid="@Insert" value="ognl:info.KD_RES_ID" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_BRAND_NAME" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_TYPE_CODE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_BRAND_CODE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_KIND_NAME" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_KIND_CODE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_STATE_NAME" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_STATE_CODE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_SUPPLY_COOPID" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_RES_FEE" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_DEVICE_COST" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_ARTIFICIAL_SERVICES" raw="false"/></td>
+							<td style="display:none"><span jwcid="@Insert" value="ognl:info.KD_REMARK" raw="false"/></td>
+							 
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<!-- 表单 开始 -->
+		<div class="c_form e_dis"  jwcid="EditPart@Part" disabled="true">
+			<ul class="ul">
+				<li class="li col-2">
+					<span class="label"><span class="e_required">宽带号码:</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@Any"  id="KD_NUMBER" name="KD_NUMBER" value="" nullable="no" desc=""/> 
+					</span></span>
+				</li>  
+				<li style="display:none;">
+					<span class="e_input">
+						<input type="text" jwcid="@Any"  id="CUST_ID" name="CUST_ID" value=""  desc=""/>
+					</span>
+				</li>
+			</ul>
+			<div class="submit">
+				<button type="button" class="e_button-form" id="addbtn" name="addbtn" disabled="true" onclick="addItem();"><i id="ibcreate" name="addbtn" class="e_ico-add"></i><span>新增</span></button>
+				<button type="button" class="e_button-form" id="delbtn" name="delbtn" disabled="true" onclick="delItem();"><i  id="ibcreate" name="delbtn" class="e_ico-delete"></i><span>删除</span></button>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+</div>
+	
+	<div class="c_box">
+		<!-- 提交 开始 -->
+		<div jwcid="SubmitPart@saleserv:CSSubmit" area="previewInfoPart" listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+		<!-- 提交 结束 -->
+	</div>
+</div>
+
+
+</div></div>
+<script language="javascript">
+	init();  
+</script>
+</body>
+</html>  

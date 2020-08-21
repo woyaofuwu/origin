@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>亲亲网业务办理</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/familytradeoptimal/scripts/FamilyBusiManageNew.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/iorder/icsserv/component/person/usercheck/UserCheck.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<!-- 认证 开始 -->
+		    <div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="283" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+			<!-- 认证 结束 -->
+			<div class="c_space"></div>
+			<div jwcid="FamilyInfoPart@Part">
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-10 c_list-phone-col-1" id="MAIN_NUM_INFO">
+					<ul class="ul">
+						<li class="link required merge-3">
+							<div class="label">主卡产品</div>
+							<div class="value">
+								<select jwcid="@Select" name="FMY_PRODUCT_ID" id="FMY_PRODUCT_ID" source="ognl:productList"
+									textField="PRODUCT_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" value="ognl:fmyParam.PRODUCT_ID" desc="主卡产品" 
+									disabled="ognl:'true'.equals(fmyParam.CREATE_FLAG)" nullable="no"/>
+							</div>
+						</li>
+						<li class="link required merge-4">
+							<div class="label">主卡优惠</div>
+							<div class="value">
+								<select jwcid="@Select" name="FMY_DISCNT_CODE" id="FMY_DISCNT_CODE" source="ognl:discntList"
+									textField="DISCNT_NAME" valueField="DISCNT_CODE" titleField="DISCNT_NAME" value="ognl:fmyParam.DISCNT_CODE" desc="主卡优惠" 
+									disabled="ognl:'true'.equals(fmyParam.CREATE_FLAG)" nullable="no"/>
+							</div>
+						</li>
+						<li class="link required merge-3">
+							<div class="label">主卡短号</div>
+							<div class="value">
+								<span class="e_mix">
+									<select jwcid="@Select" name="FMY_SHORT_CODE" id="FMY_SHORT_CODE" source="ognl:'true'.equals(fmyParam.CREATE_FLAG) ? fmyParam.MAIN_SHORT_CODES : pageutil.getStaticList('FAMILY_SHORT')"
+										textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:fmyParam.SHORT_CODE" desc="主号短号" 
+										onchange="changeMainShortCode(this);"
+										disabled="ognl:fmyParam.ISJWT_FLAG" nullable="no"/>
+										<input jwcid="@Hidden" name="OLD_FMY_SHORT_CODE" id="OLD_FMY_SHORT_CODE" value="ognl:fmyParam.SHORT_CODE"/>
+										<input jwcid="@Hidden" name="ORG_FMY_SHORT_CODE" id="ORG_FMY_SHORT_CODE" value="ognl:fmyParam.SHORT_CODE"/>
+										<button type="button" name="Destroy" id="Destroy" onclick="onDesTradeSubmit()" class="e_button-red"><i class="e_ico-cancel"></i><span>注销</span></button>
+								</span>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">主号可选包</div>
+							<div calss="value">
+								<select jwcid="@Select" name="FMY_APP_DISCNT_CODE" id="FMY_APP_DISCNT_CODE" source="ognl:appDiscntList"
+									textField="DISCNT_NAME" valueField="DISCNT_CODE" titleField="DISCNT_NAME" value="ognl:fmyParam.APP_DISCNT_CODE" desc="主号可选包" 
+									disabled="ognl:'true'.equals(fmyParam.CREATE_FLAG)"/>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">开始时间</div>
+							<div class="value">
+								<input jwcid="@TextField" name="FMY_START_DATE" 
+									id="FMY_START_DATE" value="ognl:fmyParam.START_DATE" desc="开始时间"
+									disabled="true"/>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">结束时间</div>
+							<div class="value">
+								<input jwcid="@TextField" name="FMY_END_DATE" 
+									id="FMY_END_DATE" value="ognl:fmyParam.END_DATE" desc="结束时间"
+									disabled="true"/>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">家庭电话</div>
+							<div class="value">
+								<input jwcid="@TextField" name="FMY_HOME_PHONE" 
+									id="FMY_HOME_PHONE" value="ognl:fmyParam.HOME_PHONE" desc="家庭电话"
+									disabled="ognl:'true'.equals(fmyParam.CREATE_FLAG)"/>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">家庭昵称</div>
+							<div class="value">
+								<input jwcid="@TextField" name="FMY_HOME_NAME" 
+									id="FMY_HOME_NAME" value="ognl:fmyParam.HOME_NAME" desc="家庭昵称"
+									disabled="ognl:'true'.equals(fmyParam.CREATE_FLAG)"/>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">家庭住址</div>
+							<div class="value">
+								<input jwcid="@TextField" name="FMY_HOME_ADDRESS" 
+									id="FMY_HOME_ADDRESS" value="ognl:fmyParam.HOME_ADDRESS"
+									disabled="ognl:'true'.equals(fmyParam.CREATE_FLAG)"/>
+							</div>
+						</li>
+						<li class="link required" style="display:none">
+							<div class="label">优惠名称</div>
+							<div class="value">
+								<select jwcid="@Select" name="VICE_DISCNT_CODE" id="VICE_DISCNT_CODE" source="ognl:viceDiscntList"
+									textField="DISCNT_NAME" valueField="DISCNT_CODE" titleField="DISCNT_NAME" value="ognl:fmyParam.VICE_DISCNT_CODE" desc="优惠名称" nullable="no"/>
+							</div>
+						</li>
+						<li class="link" style="display:none">
+							<div class="label">副号可选包</div>
+							<div class="value">
+								<select jwcid="@Select" name="VICE_APP_DISCNT_CODE" id="VICE_APP_DISCNT_CODE" source="ognl:appDiscntList"
+									textField="DISCNT_NAME" valueField="DISCNT_CODE" titleField="DISCNT_NAME" value="" desc="副号可选包" />
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 标题 开始 -->
+			<div jwcid="batAddVicePartTitle@Part" class="c_title">
+				<div class="text">
+					批量新增副卡<span class="e_black">（以空格分开多个号码）</span>
+				</div>
+				<div class="fn">
+					<ul>
+						<li><span class="e_black">还可以添加 <span
+								class="e_red e_strong" jwcid="@Insert" name="USEABLE_MEMBER_NUMBER" id="USEABLE_MEMBER_NUMBER" value="ognl:fmyParam.USEABLE_MEMBER_NUMBER"></span>
+								个成员号码</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			<div jwcid="batAddVicePart@Part">
+				<!-- 表单 开始 -->
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-1 c_list-phone-col-1">
+					<ul>
+						<li class="link required">
+							<div class="label">成员号码</div>
+							<div class="value">
+								<span class="e_mix">
+									<input jwcid="@TextField"
+										   class="e_left" id="VICE_SERIAL_NUMBER" name="VICE_SERIAL_NUMBER"
+										   onenterAction="addMeb();" nullable="no" placeholder="请输入新增副卡号码（多个号码以空格分隔）"
+										   desc="成员号码"/>
+									<!-- 后期会加个校验前的事件 -->
+									<button class="e_button-blue" ontap="addMeb();">
+										<span class="e_ico-add"></span>
+									</button>
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+			</div>
+			<div jwcid="OperInfoPart@Part" style="display:none">
+				<div class="c_title">
+					<span class="text">操作信息</span>
+				</div>
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-3 c_list-phone-col-1">
+					<ul class="ul">
+						<li class="link" id="VALID_MEMBER_NUMBER_AREA">
+							<div class="label">当前生效成员数</div>
+							<div class="value">
+								<input jwcid="@TextField" name="VALID_MEMBER_NUMBER" id="VALID_MEMBER_NUMBER" value="0" desc="当前生效成员数"
+								disabled="true" />
+							</div>
+						</li>
+						<li class="link">
+							<div class="label">本次新增成员数</div>
+							<div class="value">
+								<input jwcid="@TextField" name="ADD_MEMBER_NUMBER" id="ADD_MEMBER_NUMBER" value="0" desc="本次新增成员数"
+								disabled="true" />
+							</div>
+						</li>
+						<li class="link">
+							<div class="label">本次操作的业务</div>
+							<div class="value">
+								<input jwcid="@TextField" name="TRADE_OPTION" id="TRADE_OPTION" value="NULL" desc="本次操作的业务"
+								disabled="true" />
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 标题 开始 -->
+			<div jwcid="viceInfoPartTitle@Part" class="c_title">
+				<div class="text">
+					已绑定成员号码（<span jwcid="@Insert" name="USED_MEMBER_NUMBER"
+						id="USED_MEMBER_NUMBER" value="ognl:fmyParam.USED_MEMBER_NUMBER"></span>）
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 列表 开始 -->
+			<div jwcid="@Part" id="viceInfoPart" class="c_list c_list-s c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li jwcid="@Foreach" class="viceList" id="ognl:'viceList_' + rowIndex" name="viceList" source="ognl:viceInfos" value="ognl:viceInfo" index="ognl:rowIndex" idx="ognl:rowIndex" element="li" style="ognl:'display:' + viceInfo.DISPLAY">
+						<div jwcid="@Any" id="ognl:'viceValue_' + rowIndex" class="main viceValue">
+							<div class="title"><span id="ognl:'SERIAL_NUMBER_B_T_' + rowIndex" jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER_B"/></div>
+							<div class="content"><span id="ognl:'START_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', viceInfo.START_DATE)"/> ~ <span id="ognl:'END_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', viceInfo.END_DATE)"/></div>
+							<input jwcid="@Hidden" name="INST_ID_B" id="ognl:'INST_ID_B_' + rowIndex" value="ognl:viceInfo.U_INST_ID"/>
+							<input jwcid="@Hidden" name="SERIAL_NUMBER_B" id="ognl:'SERIAL_NUMBER_B_' + rowIndex" value="ognl:viceInfo.SERIAL_NUMBER_B" desc="副号码" />
+							<input jwcid="@Hidden" name="DISCNT_CODE_B" id="ognl:'DISCNT_CODE_B_' + rowIndex" value="ognl:viceInfo.DISCNT_CODE"/>
+							<input jwcid="@Hidden" name="DISCNT_NAME_B" id="ognl:'DISCNT_NAME_B_' + rowIndex" value="ognl:viceInfo.DISCNT_NAME"/>
+							<input jwcid="@Hidden" name="SHORT_CODE_B" id="ognl:'SHORT_CODE_B_' + rowIndex" value="ognl:viceInfo.SHORT_CODE"/>
+							<input jwcid="@Hidden" name="ORG_SHORT_CODE_B" id="ognl:'ORG_SHORT_CODE_B_' + rowIndex" value="ognl:viceInfo.SHORT_CODE"/>
+							<input jwcid="@Hidden" name="START_DATE" id="ognl:'START_DATE_' + rowIndex" value="ognl:viceInfo.START_DATE"/>
+							<input jwcid="@Hidden" name="END_DATE" id="ognl:'END_DATE_' + rowIndex" value="ognl:viceInfo.END_DATE"/>
+							<input jwcid="@Hidden" name="ORG_END_DATE" id="ognl:'ORG_END_DATE_' + rowIndex" value="ognl:viceInfo.END_DATE" />
+							<input jwcid="@Hidden" name="APP_DISCNT_CODE_B" id="ognl:'APP_DISCNT_CODE_B_' + rowIndex" value="ognl:viceInfo.APP_DISCNT_CODE_B"/>
+							<input jwcid="@Hidden" name="APP_DISCNT_NAME_B" id="ognl:'APP_DISCNT_NAME_B_' + rowIndex" value="ognl:viceInfo.APP_DISCNT_NAME_B"/>
+							<input jwcid="@Hidden" name="MEMBER_ROLE_B" id="ognl:'MEMBER_ROLE_B_' + rowIndex" value="ognl:viceInfo.MEMBER_ROLE_B"/>
+							<input jwcid="@Hidden" name="NICK_NAME_B" id="ognl:'NICK_NAME_B_' + rowIndex" value="ognl:viceInfo.NICK_NAME_B"/>
+							<input jwcid="@Hidden" name="MEMBER_KIND_B" id="ognl:'MEMBER_KIND_B_' + rowIndex" value="ognl:viceInfo.MEMBER_KIND_B"/>
+							<input jwcid="@Hidden" name="MEB_VERIFY_MODE" id="ognl:'MEB_VERIFY_MODE_' + rowIndex" />
+							<input jwcid="@Hidden" name="tag" id="ognl:'tag_' + rowIndex" />
+							<input jwcid="@Hidden" name="checkTag" id="ognl:'checkTag_' + rowIndex" />
+						</div>
+						<div class="side" jwcid="@Any" id="ognl:'viceShortCode_' + rowIndex">
+							<select jwcid="@Select" name="NEW_SHORT_CODE"
+								id="ognl:'NEW_SHORT_CODE_' + rowIndex" idx="ognl:rowIndex"
+								class="e_select e_select-r e_select-s"
+								source="ognl:viceInfo.USEABLE_SHORT_CODES" addDefault="false"
+								textField="DATA_NAME" valueField="DATA_ID"
+								titleField="DATA_NAME" value="ognl:viceInfo.SHORT_CODE" optionWidth="6"
+								desc="成员新短号" nullable="no" onchange="changeShortCode(this)" disabled="ognl:viceInfo.DISABLED"/>
+						</div>
+					 	<div jwcid="@Any" class="fn" name="delMebBt" id="ognl:'delMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="delMeb(this);" tip="删除"><span class="e_ico-delete"></span></div>
+					 	<div style="display:none" jwcid="@Any" class="fn" name="resetMebBt" id="ognl:'resetMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="resetMeb(this);" tip="恢复"><span class="e_ico-reset"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 列表 结束 -->
+			<div class="c_space"></div>
+			<div jwcid="remarkPart@Part">
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-1 c_list-phone-col-1">
+				    <ul class="ul">
+						<li class="link">
+							<div class="label">备注</div>
+							<div class="value">
+								<input jwcid="REMARK@TextField" class="e_left" id="REMARK"
+									name="REMARK" value="" desc="备注" disabled="" />
+							</div>
+						</li>
+				    </ul>
+			    </div>
+		    </div>
+			<div class="c_space"></div>
+			<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="onTradeSubmit()"  params="" listener="" refreshPart="" area="AuthPart,FamilyInfoPart,viceInfoPart,batAddVicePart,remarkPart" element="div"/>
+			<div jwcid="HiddenPart@Part" style="display:none">
+				<input jwcid="@Hidden" name="POP_FIELD_NAME" id="POP_FIELD_NAME" value=""/>
+				<input jwcid="@Hidden" name="AUTH_MAIN_FLAG" id="AUTH_MAIN_FLAG" value=""/>
+				<input jwcid="@Hidden" name="FMY_CREATE_FLAG" id="FMY_CREATE_FLAG" value="ognl:fmyParam.CREATE_FLAG" desc="是否已组建亲亲网标记"/>
+				<input jwcid="@Hidden" name="MAIN_INST_ID_B" id="MAIN_INST_ID_B" value="ognl:mainInfo.INST_ID"/>
+				<input jwcid="@Hidden" name="MAIN_START_DATE" id="MAIN_START_DATE" value="ognl:mainInfo.START_DATE"/>
+				<input jwcid="@Hidden" name="MAIN_END_DATE" id="MAIN_END_DATE" value="ognl:mainInfo.END_DATE"/>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

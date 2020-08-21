@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网上预约处理</title>
+<script jwcid="@Script" src="person/tradenetbookdeal/scripts/TradeNetBookDeal.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">手机号码：</span>
+				<span class="e_input" ><span>
+					<input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" 
+					       value=""  desc="手机号码" 
+					       maxLength="11" datatype="mbphone" />
+				</span></span>
+			</li>
+			<li class="li">
+					<span class="label">开始时间：</span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"   format="yyyy-MM-dd HH:mm:ss"
+									value="ognl:condition.cond_START_DATE" desc="开始时间" maxName="cond_END_DATE" time="true"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label">结束时间：</span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  format="yyyy-MM-dd HH:mm:ss"
+										value="ognl:condition.cond_END_DATE" desc="结束时间" mixName="cond_START_DATE" time="true"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label">预约单编号：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_BOOK_ID" id="cond_BOOK_ID" value="ognl:condition.cond_BOOK_ID" />
+					</span></span>
+			</li>
+			<li class="li">
+				<span class="label">工单状态：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_BOOK_STATUS" id="cond_BOOK_STATUS"
+							source="ognl:pageutil.getStaticList('NET_BOOK_STATUS')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_BOOK_STATUS"
+							desc="工单状态" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">预约业务类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_BOOK_TYPE_CODE" id="cond_BOOK_TYPE_CODE"
+							source="ognl:pageutil.getList('TD_S_COMMPARA','PARA_CODE1','PARA_CODE2',new java.lang.String[]{'PARAM_ATTR','PARAM_CODE'},new java.lang.String[]{'195','TRADE_TYPE'})"
+							textField="PARA_CODE2" valueField="PARA_CODE1" value="ognl:condition.cond_BOOK_TYPE_CODE"
+							desc="预约业务类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>预约订单来源：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_IN_MOD_CODE" id="cond_IN_MOD_CODE"
+							source="ognl:pageutil.getStaticList('TRADENETBOOK_ORDER_SOURCE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.cond_IN_MOD_CODE"
+							desc="预约业务类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">地市信息：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_CITY_CODE" id="cond_CITY_CODE"
+							source="ognl:bookAreas"
+							textField="AREA_NAME" valueField="AREA_CODE" value="ognl:condition.cond_CITY_CODE"
+							desc="地市信息"  />
+				</span></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryNetBookInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">查询结果</div>	
+         <!-- 导出-->
+		<div class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="201607201208"
+					 config="export/tradenetbook/TradeNetBookDetailed.xml" fileName="网厅预约业务处理"   cond="QueryCondPart" />
+		</div>	
+	</div>
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x style="height:242px"">
+		<div class="c_table c_table-row-10">
+			<table>
+				<thead>
+					<tr>
+						  <th>预约单号</th>
+	                      <th>手机号码</th>
+	                      <!-- REQ201808060016关于“线上无手机宽带”预约及后台订单展示的需求 wuhao5 180925-->
+	                      <th>姓名 </th>
+	                      <th>身份证 </th>
+	                      <!-- REQ201808060016关于“线上无手机宽带”预约及后台订单展示的需求 wuhao5 180925-->
+	                      <th>预约订单来源</th> 
+	                      <th>有无资源</th> 
+                          <th>预约业务类型</th>	
+	                      <th>预约受理部门</th>
+	                      <th>地市信息</th>
+	                      <th>工单状态</th>
+						  <th>处理工号</th>
+	                      <th>处理员工姓名</th>
+	                      <th>首次处理时间</th>
+	                      <!-- REQ201911280007  关于优化“NGBOSS-网厅预约业务处理界面”的需求 liwei29 191203-->
+	                      <th>渠道工号</th>
+	                      <th>联系号码</th>
+	                      <!--  <th>受理时间</th>-->
+	                      <th>开户时间</th>
+	                      <th>竣工状态 </th>
+	                      <th>竣工时间 </th>
+						  <th>宽带开户号码 </th>
+						  <th>魔百和开户号码 </th>
+	                      <th>宽带开户工单号</th>
+	                      <!-- REQ201911280007  关于优化“NGBOSS-网厅预约业务处理界面”的需求 liwei29 191203-->
+	                      <!-- <th>受理时间</th> -->
+	                      <th>预约开始时间</th>
+	                      <th>预约结束时间</th>
+	                      <th>预约信息说明</th>
+	                      <th>处理意见</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+						TRADE_ID="ognl:info.TRADE_ID" ondblclick="initNetBookDetail($(this).attr('TRADE_ID'))">
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<!-- REQ201808060016  关于“线上无手机宽带”预约及后台订单展示的需求 wuhao5 0926 -->
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR9" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="true"/></td>
+						<!-- REQ201808060016  关于“线上无手机宽带”预约及后台订单展示的需求 wuhao5 0926 -->
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC', new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'TRADENETBOOK_ORDER_SOURCE',info.IN_MOD_CODE})" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC', new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'TRADENETBOOK_IS_RESOURCES',info.RSRV_STR4})" raw="true"/></td>						
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_COMMPARA', new java.lang.String[]{'PARAM_ATTR','PARAM_CODE','PARA_CODE1'}, 'PARA_CODE2', new java.lang.String[]{'195','TRADE_TYPE',info.BOOK_TYPE_CODE})" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.TRADE_DEPART_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',info.RSRV_STR1)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('NET_BOOK_STATUS',info.BOOK_STATUS)"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.TRADE_STAFF_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEAL_DATE" raw="true"/></td>
+						<!-- REQ201911280007  关于优化“NGBOSS-网厅预约业务处理界面”的需求 liwei29 191203 -->
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR8" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR11" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BOOK_END_STATUS',info.RSRV_TAG2)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_DATE3" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR13" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR14" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR12" raw="true"/></td>
+						<!-- REQ201911280007  关于优化“NGBOSS-网厅预约业务处理界面”的需求 liwei29 191203  end-->
+						<td><span jwcid="@Insert" value="ognl:info.BOOK_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.BOOK_END_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 表格 结束 -->
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart" part="QueryListPart" 
+		      listener="qryNetBookInfos" pageSize="10" count="ognl:pageCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+<!--  -->
+<div class="c_popup" id="popup" style="display:none;">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox">
+			<div class="c_popupTitle">
+				<div class="text">网上预约单处理</div>
+				<div class="fn"><a href="#nogo" class="close" onclick="$('#popup').css('display','none')")></a></div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-6 c_form-col-2" jwcid="bookDealPart@Part">
+					<ul class="ul">
+						<li class="li">
+								<span class="label"><span class="e_required">预约单号：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_TRADE_ID" name="cond_TRADE_ID" value="ognl:info.TRADE_ID" desc="预约单号" nullable="no" readonly="true"/>
+									<input type="hidden" jwcid="@Any" id="cur_BOOK_STATUS" name="cur_BOOK_STATUS" value="ognl:info.CUR_BOOK_STATUS" />
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">手机号码：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" value="ognl:info.SERIAL_NUMBER" desc="手机号码"  readonly="true"/>
+								</span></span>
+						</li>
+						<!-- REQ201808060016  关于“线上无手机宽带”预约及后台订单展示的需求 wuhao5 0926 -->
+						<!-- 
+						<li class="li">
+								<span class="label"><span class="e_required">姓名：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_RSRV_STR9" name="cond_RSRV_STR9" value="ognl:info.RSRV_STR9" desc="姓名"  readonly="true"/>
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">身份证：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_PSPT_ID" name="cond_PSPT_ID" value="ognl:info.PSPT_ID" desc="身份证"  readonly="true"/>
+								</span></span>
+						</li>
+						 -->
+						<!-- REQ201808060016  关于“线上无手机宽带”预约及后台订单展示的需求 wuhao5 0926 -->
+						<li class="li">
+								<span class="label"><span class="e_required">预约业务类型：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_BOOK_TYPE_CODE" name="cond_BOOK_TYPE_CODE" 
+									value="ognl:pageutil.getStaticValue('TD_S_COMMPARA', new java.lang.String[]{'PARAM_ATTR','PARAM_CODE','PARA_CODE1'}, 'PARA_CODE2', new java.lang.String[]{'195','TRADE_TYPE',info.BOOK_TYPE_CODE})" desc="手预约业务类型"  readonly="true"/>
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">预约受理部门：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_TRADE_DEPART_ID" name="cond_TRADE_DEPART_ID" 
+									value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.TRADE_DEPART_ID)" desc="预约受理部门" nullable="no" readonly="true"/>
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">预约时间：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@DateField" name="cond_BOOK_DATE" id="cond_BOOK_DATE"  readonly="true" format="yyyy-MM-dd HH:mm:ss"
+									value="ognl:info.BOOK_DATE" desc="预约时间"/>
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">预约结束时间：</span></span>
+									<span class="e_input"><span>
+										<input jwcid="@DateField" name="cond_BOOK_END_DATE" id="cond_BOOK_END_DATE" nullable="no" readonly="true"
+										value="ognl:info.BOOK_END_DATE" desc="预约结束时间" format="yyyy-MM-dd HH:mm:ss"/>
+									</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">工单状态：</span></span>
+						<!-- 		<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_PARA_CODE1" name="cond_PARA_CODE1" value="ognl:pageutil.getStaticValue('NET_BOOK_STATUS',info.BOOK_STATUS)" desc="工单状态" maxsize="60"  readonly="true"/>
+									<input jwcid="@TextField" style="display:none;" id="cond_PARA_CODE1_VALUE" name="cond_PARA_CODE1_VALUE" value="ognl:info.BOOK_STATUS" desc="工单状态" maxsize="60"  readonly="true"/>
+								</span></span> -->
+								<span class="e_select"><span><span>
+							<select jwcid="@Select" name="cond_PARA_CODE1" id="cond_PARA_CODE1"
+								source="ognl:pageutil.getStaticList('NET_BOOK_STATUS')"
+								textField="DATA_NAME" valueField="DATA_ID" value="ognl:info.cond_BOOK_STATUS"
+								desc="工单状态" />
+				</span></span></span>
+						</li>	
+						<li class="li">
+								<span class="label"><span class="e_required">处理工号：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_TRADE_STAFF_ID" name="cond_TRADE_STAFF_ID" value="ognl:info.TRADE_STAFF_ID" desc="处理工号" maxsize="50" readonly="true" datatype="text" />
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">处理员工姓名：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_STAFF_NAME" name="cond_STAFF_NAME" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.TRADE_STAFF_ID)"  maxsize="50" readonly="true" datatype="text" />
+								</span></span>
+						</li>
+						<li class="li">
+								<span class="label"><span class="e_required">首次处理时间：</span></span>
+								<span class="e_input"><span>
+									<input jwcid="@TextField" id="cond_DEAL_DATE" name="cond_DEAL_DATE" value="ognl:info.DEAL_DATE" readonly="true" datatype="text" />
+								</span></span>
+						</li>
+						<li class="li col-2">
+								<span class="label"><span class="e_required">预约说明：</span></span>
+<!-- 								<span class="e_textarea"><span>
+									<input jwcid="@TextArea" id="cond_REMARK" name="cond_REMARK" value="ognl:info.REMARK"  readonly="true" datatype="text" />
+								</span></span> -->
+								
+								<span class="e_textarea">
+									<span class="e_textareaTop"><span></span></span>
+									<span class="e_textareaContent">
+										<textarea jwcid="@TextArea" style="height: 100px;"
+											name="cond_REMARK"  rows="3" maxsize="400" desc="预约说明"  value="ognl:info.REMARK"  readonly="true" ></textarea></span>
+									<span class="e_textareaBottom"><span></span></span>
+								</span>
+						</li>
+                        <li class="li col-2">
+                                <span class="label"><span>处理意见：</span></span>	 	 
+                                <span class="e_textarea">	 	 
+                                    <span class="e_textareaTop"><span></span></span>	 	 
+                                    <span class="e_textareaContent">	 	 
+                                        <textarea jwcid="@TextArea" style="height: 100px;"	 	 
+                                            name="cond_RSRV_STR5" id="cond_RSRV_STR5"  rows="3" maxsize="50" desc="处理意见"  value="ognl:info.RSRV_STR5" ></textarea></span>	 	 
+                                    <span class="e_textareaBottom"><span></span></span>	 	 
+                                </span>	 	 
+                        </li> 						
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button type="button" class="e_button-form" id="submitButton" onclick="return dealNetBook();"><i></i><span>提交</span></button>
+					<button type="button" class="e_button-form" id="submitButton" onclick="return openPush();"><i></i><span>宽带开户</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!--  -->
+</html>

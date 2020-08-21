@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/changecustowner/scripts/changetdcustowner.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+	<!-- box 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">用户查询</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 认证 开始 -->
+		<div class="c_context" style="position:relative">
+			<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="100" element="div" style="float:left"/>
+			<div style="display:inline-block;float:left;position: absolute;top:25%;">
+				<button type="button" class="e_button-right"  id="FORM_SCAN_PSPT" name="ReadCardButton" style="display:none;line-height:20px;"><i class="e_ico-check"></i><span>原客户扫描</span></button>
+				<button type="button" class="e_button-right"  id="FORM_SHOT_IMG" name="ReadCardButton"  style="display:none;line-height:20px;"><i class="e_ico-check"></i><span>原客户摄像</span></button>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+	    <!-- 过户受理tab页 开始 -->
+		 <div jwcid="ChangeCustOwnerTabset@Tabset">
+		 		<div jwcid="@TabsetContent" title="原客户资料">
+		 				<div class="c_form c_form-label-5 c_form-col-3 c_form-text" jwcid="OldInfoPart@Part">
+							<ul class="ul">
+								<li class="li">
+									<span class="label">原客户名称：</span>
+					                <span class="text"  jwcid="@Insert" name="OLD_CUST_NAME" id="OLD_CUST_NAME" value="ognl:custInfo.CUST_NAME"  desc="原客户名称"></span>
+									<input jwcid="@Hidden" id="OLD_CUST_NAME_VALUE" name="OLD_CUST_NAME_VALUE" value="ognl:custInfo.CUST_NAME" desc="原客户名称"/>					                
+								</li>
+								<li class="li">
+									<span class="label">用户类型：</span>
+									<span class="text" jwcid="@Insert" name="OLD_USER_TYPE_CODE" id="OLD_USER_TYPE_CODE" value= "ognl:pageutil.getStaticValue('TD_B_USERTYPE', new java.lang.String[]{'USER_TYPE_CODE','EPARCHY_CODE'}, 'USER_TYPE', new java.lang.String[]{userInfo.USER_TYPE_CODE,getVisit().getStaffEparchyCode()})" desc="用户类型"></span>											    
+								</li>
+								<li class="li">
+									<span class="label">原证件类型：</span>
+									<span class="text" jwcid="@Insert" name="OLD_PSPT_TYPE_CODE" id="OLD_PSPT_TYPE_CODE" value= "ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', custInfo.PSPT_TYPE_CODE)" desc="原证件类型" ></span>		
+								    <input jwcid="@Hidden" id="OLD_PSPT_TYPE_CODE_NUM" name="OLD_PSPT_TYPE_CODE_NUM"  value="ognl:custInfo.PSPT_TYPE_CODE" desc="原证件类型"/>														
+								    </li>
+								<li class="li">
+									<span class="label">原证件号码：</span>
+									<span class="text" jwcid="@Insert" name="OLD_PSPT_ID" id="OLD_PSPT_ID" value="ognl:custInfo.PSPT_ID"></span>
+									<input jwcid="@Hidden" id="OLD_PSPT_ID_NUM" name="OLD_PSPT_ID_NUM" value="ognl:custInfo.PSPT_ID" desc="原证件号码"/>								
+									</li>
+								<li class="li">
+									<span class="label">开户时间：</span>
+									<span class="text" jwcid="@Insert" name="OLD_IN_DATE" id="OLD_IN_DATE" value="ognl:userInfo.IN_DATE"  desc="开户时间"></span>
+								</li>
+								<li class="li">
+									<span class="label">品牌：</span>
+									<input jwcid="@Any" type="hidden"  id="OLD_BRAND_CODE" name="OLD_BRAND_CODE" value="ognl:userInfo.BRAND_CODE" />
+									<span class="text" jwcid="@Insert" name="OLD_BRAND_NAME" id="OLD_BRAND_NAME" value= "ognl:userInfo.BRAND_NAME" desc="品牌" ></span>
+								</li>
+								<li class="li">
+									<span class="label">产品：</span>
+									<input jwcid="@Any" type="hidden"  id="OLD_PRODUCT_ID" name="OLD_PRODUCT_ID" value="ognl:userInfo.PRODUCT_ID" />
+									<span class="text" jwcid="@Insert" name="OLD_PRODUCT_NAME" id="OLD_PRODUCT_NAME" value= "ognl:userInfo.PRODUCT_NAME" desc="产品"></span>
+								</li>
+							</ul>
+						</div>
+		 		</div>
+		 		<!-- 过户受理tab页 开始 -->
+		 
+		 		<!-- 优惠信息tab页 开始 -->
+				<div jwcid="@TabsetContent" title="优惠信息">
+					<div  jwcid="UserDiscntInfoPart@Part" element="div">
+						<div class="c_scroll c_scroll-x c_scroll-table-10">
+							<div class="c_table">
+								<table jwcid="@Table" name="UserDiscntInfoTable">
+									<thead>
+										<tr>
+											<th>资费编码</th>
+											<th>资费名称</th>
+											<th>开始时间</th>
+											<th>结束时间</th>
+											<th>资费标记</th>
+										</tr>
+									</thead>
+									<tbody >
+										<tr jwcid="@Foreach" source="ognl:discntInfos" value="ognl:discntInfo" index="ognl:rowIndex" element="tr">
+											 <td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_CODE"></span></td>
+											 <td><span jwcid="@Insert" value="ognl:discntInfo.DISCNT_NAME"></span></td>
+<!-- 									     <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_DISCNT','DISCNT_CODE','DISCNT_NAME',discntInfo.DISCNT_CODE)"></span></td>-->											 
+											 <td><span jwcid="@Insert" value="ognl:discntInfo.START_DATE"></span></td>
+											 <td><span jwcid="@Insert" value="ognl:discntInfo.END_DATE"></span></td>
+											 <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('USER_SPECTAG',discntInfo.SPEC_TAG)"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 优惠信息tab页 结束 -->
+				
+				<!-- 服务信息tab页 开始 -->
+				<div jwcid="@TabsetContent" title="服务信息">
+					<div  jwcid="UserSvcInfoPart@Part" element="div">
+						<div class="c_scroll c_scroll-x c_scroll-table-10">
+							<div class="c_table">
+								<table jwcid="@Table" name="UserSvcInfoTable">
+									<thead>
+										<tr>
+											<th>服务名称</th>
+											<th>主体服务</th>
+											<th>开始时间</th>
+											<th>结束时间</th>
+										</tr>
+									</thead>
+									<tbody >
+										<tr jwcid="@Foreach" source="ognl:svcInfos" value="ognl:svcInfo" index="ognl:rowIndex" element="tr">
+<!-- 											 <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_B_SERVICE','SERVICE_ID','SERVICE_NAME',svcInfo.SERVICE_ID)"></span></td>
+ -->		
+                                             <td><span jwcid="@Insert" value="ognl:svcInfo.SERVICE_NAME"></span></td>									 
+                                             <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('YesOrNo2',svcInfo.MAIN_TAG)"></span></td>
+											 <td><span jwcid="@Insert" value="ognl:svcInfo.START_DATE"></span></td>
+											 <td><span jwcid="@Insert" value="ognl:svcInfo.END_DATE"></span></td>
+										</tr>
+									</tbody>
+								</table>
+						</div>
+					</div>
+				</div>
+				<!-- 服务信息tab页 开始 -->
+		</div>
+	</div>
+	<!-- 原客户资料 box 结束 -->
+	
+	
+	<!-- 新客户资料 box 开始-->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">新资料</div>
+		</div>
+		<!-- 标题 结束 -->
+		
+			<!-- 客户资料 开始 -->
+				<div jwcid="newCustPart@csserv:CustInfoField" element="div" blackTradeType="100"  requiredField="PSPT_TYPE_CODE,PSPT_ID,CUST_NAME,PSPT_ADDR,BIRTHDAY,AGENT_PIC_ID"	isRealName="true"></div>
+			<!-- 客户资料 结束 -->
+			
+			<div jwcId="newAcctPart@Part">
+			<!-- 账户资料 开始 -->
+				<div jwcid="@csserv:AcctInfoField" acctInfo="ognl:acctInfo"></div>
+				
+				<div class="body" style="display:none;" id="ACCT_CONTRACT_NO_BODY">
+					<li class="li" id="conteactNoLi" >
+					<span class="label"><span id="span_CONTRACT_NO">合同号：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" id="CONTRACT_NO" name="CONTRACT_NO" value="ognl:acctInfo.CONTRACT_NO" desc="合同号" />
+					</span></span>
+				</li>
+				</div>
+			</div>	
+			<!-- 账户资料 结束 -->
+			
+			<!-- 担保资料 开始 -->
+				<!--<div jwcid="newAssurePart@csserv:AssureInfoField" element="div"></div>-->
+			<!-- 担保资料 结束 -->
+		<div jwcid="OtherInfoPart@Part">	
+			<div class="c_title">
+			 <div class="text">其它信息</div>
+		    </div>
+			<div class="c_form c_form-col-3 c_form-label-6">
+				<ul class="ul">
+					<li class="li">
+						<span class="label">密码设置：</span>
+		  				<div jwcid="PasswordSetPart@csserv:PasswordSet" beforeAction="beforeEvent()" afterAction="afterEvent(data)" element="div"/>
+					    <input jwcid="@Any"  type="hidden" id="NEW_PASSWD" name="NEW_PASSWD"/>
+					</li>
+					<li class="li">
+						<span class="label">单方特殊过户：</span>
+						<span><span>
+							<input type="checkbox" jwcid="@Checkbox" id="SPECIAL_CHANGE_CUST" name="SPECIAL_CHANGE_CUST" /> 
+						</span></span>
+					</li>
+					<li class="li col-2">
+						<span class="label">备注：</span>
+						<span class="e_input"><span><textarea  jwcid="@TextField" name="REMARK" id="REMARK" value="" rows="1" disabled = "false" maxsize="100" desc="备注"/></span></span>
+					</li>
+				</ul>
+		   </div>
+		</div>
+	
+	
+		<!-- 提交 开始 -->
+			<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeCheck()" isReset="true" area="AuthPart,newCustPart,newAcctPart,OtherInfoPart,HiddenPart" element="div"/>
+		<!-- 提交 结束 -->
+	</div>
+	<!-- 新客户资料box 结束 -->
+	
+	<div jwcid="HiddenPart@Part">
+	    <input jwcid="@Any" type="hidden"  id="IS_REAL_NAME" name="IS_REAL_NAME" value="" />
+	    <input jwcid="@Any" type="hidden"  id="WIDENET_DEAL" name="WIDENET_DEAL" value="" />
+        <input jwcid="@Hidden" name="checkGlobalMorePsptIdFlag" id="checkGlobalMorePsptIdFlag" value="true" desc="是否进行全国1证5号校验"/>	    
+	</div>
+
+</div></div>
+</body>
+</html>

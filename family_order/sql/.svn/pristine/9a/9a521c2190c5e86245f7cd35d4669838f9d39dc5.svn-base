@@ -1,0 +1,21 @@
+SELECT NPSYSID,
+       SERVICE_TYPE,
+       NPCODE_LIST,
+       MESSAGE_ID,
+       FLOW_ID,
+       RESPONSE_CODE,
+       ERROR_MESSAGE,
+       RESULT_CODE,
+       RESULT_MESSAGE,
+       TO_CHAR(CREATE_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       TO_CHAR(UPDATE_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       TO_CHAR(LAST_SEND_TIME, 'yyyy-mm-dd hh24:mi:ss'),
+       SEND_TIMES,
+       CANCEL_TAG,
+       STATE,
+       REMARK,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3
+  FROM TF_B_NP_AUDIT
+ WHERE NPSYSID = :NPSYSID

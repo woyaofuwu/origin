@@ -1,0 +1,75 @@
+INSERT INTO TF_F_USER_PLATSVC_BOOK
+  (USER_ID,
+   SERVICE_ID,
+   SERIAL_NUMBER,
+   SP_CODE,
+   BIZ_CODE,
+   BIZ_TYPE_CODE,
+   BIZ_STATE_CODE,
+   ORG_DOMAIN,
+   OPER_CODE,
+   OPR_SOURCE,
+   START_DATE,
+   END_DATE,
+   BOOK_STATE,
+   UPDATE_TIME,
+   UPDATE_STAFF_ID,
+   UPDATE_DEPART_ID,
+   REMARK,
+   RSRV_NUM1,
+   RSRV_NUM2,
+   RSRV_NUM3,
+   RSRV_NUM4,
+   RSRV_NUM5,
+   RSRV_STR1,
+   RSRV_STR2,
+   RSRV_STR3,
+   RSRV_STR4,
+   RSRV_STR5,
+   RSRV_DATE1,
+   RSRV_TAG1,
+   RSRV_TAG2,
+   RSRV_TAG3)
+  SELECT A.USER_ID,
+         A.SERVICE_ID,
+         A.SERIAL_NUMBER,
+         A.SP_CODE,
+         A.BIZ_CODE,
+         A.BIZ_TYPE_CODE,
+         A.BIZ_STATE_CODE,
+         A.ORG_DOMAIN,
+         A.OPER_CODE,
+         A.OPR_SOURCE,
+         A.START_DATE,
+         A.END_DATE,
+         '0',
+         SYSDATE,
+         A.UPDATE_STAFF_ID,
+         A.UPDATE_DEPART_ID,
+         A.REMARK,
+         A.RSRV_NUM1,
+         A.RSRV_NUM2,
+         A.RSRV_NUM3,
+         A.RSRV_NUM4,
+         A.RSRV_NUM5,
+         A.RSRV_STR1,
+         A.RSRV_STR2,
+         A.RSRV_STR3,
+         A.RSRV_STR4,
+         A.RSRV_STR5,
+         A.RSRV_DATE1,
+         A.RSRV_TAG1,
+         A.RSRV_TAG2,
+         A.RSRV_TAG3
+    FROM TF_B_TRADE_PLATSVC A
+   WHERE A.TRADE_ID = :TRADE_ID
+     AND A.USER_ID = :USER_ID
+     AND A.SERVICE_ID = :SERVICE_ID
+     AND A.OPER_CODE = :OPER_CODE
+     AND EXISTS
+   (SELECT 1
+            FROM TD_B_PLATSVCBOOK_CONFIG B
+           WHERE B.SERVICE_ID = :SERVICE_ID
+             AND B.OPER_CODE = :OPER_CODE
+             AND (B.OPR_SOURCE = 'ZZ' OR B.OPR_SOURCE = :OPR_SOURCE)
+             AND B.BOOK_TAG = '0')

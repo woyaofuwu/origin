@@ -1,0 +1,26 @@
+SELECT B.MOBILE,
+       A.STATE,
+       B.S_R_NAME,
+       C.ADDR,
+       C.MOBILE SERIAL_NUMBER,
+       A.EMPTY_CARD_ID,
+       to_char(A.START_TIME, 'yyyy-MM-dd') START_TIME,
+       A.ORDER_ID,
+       A.RSRV_STR1,
+       A.ICCID,
+       A.LOGISTICS_NUMBER,
+       A.LOGISTICS_COMPANY,
+       B.NUMCARD_TYPE
+  FROM TF_B_ORDER_DETAIL A, TF_B_ORDER_ITEM B, TF_B_DELIVERY_INFO C
+ WHERE 1 = 1
+   AND A.ORDER_ID = B.ORDER_ID
+   AND A.ORDER_ID = C.ORDER_ID
+   AND B.MOBILE = :MOBILE
+   AND A.STATE = :STATE
+   AND A.START_TIME >= to_date(:START_DATE, 'yyyy-MM-dd')
+   AND A.START_TIME <= to_date(:END_DATE, 'yyyy-MM-dd')
+
+   
+   
+   
+   

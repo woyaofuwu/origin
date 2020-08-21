@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/score/integralscoremanage/scripts/integralacctref.js" ></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" >
+<div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户资料信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="350"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>  
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="refreshParts2@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">关联账户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="QueryPart@Part">
+		<ul class="ul" id="query_value_part">
+			<li class="li">
+				<span class="label"><span class="e_required">查询条件：</span></span>
+					<span class="e_select"><span><span>
+						 <select jwcid="@Select" name="COND_QUERY_LIMIT" id="COND_QUERY_LIMIT" value="ognl:cond.QUERY_LIMIT"  nullable="no"    disabled="true" 
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('INTEGRAL_SEL_TYPE')"  desc="查询类型"/>
+					</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">查询值：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="COND_QUERY_VALUE" id="COND_QUERY_VALUE" value="ognl:cond.QUERY_VALUE" disabled="true"  desc="查询条件值"/></span></span>
+			</li>
+		</ul>
+		<ul class="ul" style="display:none" id="customer_part">
+			<li class="li">
+				<span class="label"><span class="e_required">商户名称：</span></span>
+					<span class="e_select"><span><span>
+						 <select jwcid="@Select" name="COND_CUSTOMER_ID" id="COND_CUSTOMER_ID" disabled="true"  value="ognl:cond.COND_CUSTOMER_ID"  nullable="no"     
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('INTEGRAL_SEL_TYPE')"  desc="商户名称"/>
+					</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">VIP卡号：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="COND_VIP_NO" id="COND_VIP_NO" value="ognl:cond.VIP_NO" disabled="true"  desc="vip卡号"/></span></span>
+			</li>
+		</ul>	
+				<div class="submitPlace"></div>
+			<div class="submit">
+			<button type="button" id="qryBtn" class="e_button-form"  onclick="queryIntegralAccts()" disabled="true" ><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+			
+	</div>	
+	<!-- 表单 结束 -->
+	<div jwcid="AcctTablePart@Part">
+	<!-- 表格 开始 -->
+	<div class="c_table c_table-row-5">
+		<table  jwcid="@Table" id="DeptTable">
+			<thead>
+				<tr>
+						<th col="tabCheck">选择</th>
+		  				<th col="INTEGRAL_ACCT_ID">积分账户标识</th>
+						<th col="INTEGRAL_ACCOUNT_TYPE">积分帐户类型</th>
+						<th col="NAME">积分帐户名称</th>
+						<th col="CONTRACT_PHONE">关联手机号码</th>
+						<th col="EMAIL">Email</th>
+						<th col="PSPT_TYPE_CODE">证件类型</th>
+						<th col="PSPT_ID">证件号码</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr" rowIndex="ognl:rowIndex" >
+						<td><span jwcid="@Radio" name="RELATES" id="RELATES" onclick="saveAcctId(this);" acctId="ognl:info.INTEGRAL_ACCT_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" name="INTEGRAL_ACCT_ID" id="INTEGRAL_ACCT_ID" value="ognl:info.INTEGRAL_ACCT_ID" raw="true"/></td>					
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('INTEGRAL_ACCOUNT_TYPE', info.INTEGRAL_ACCOUNT_TYPE)" raw="false"/></td>	
+						<td><span jwcid="@Insert" name="NAME" id="NAME" value="ognl:info.NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" name="CONTRACT_PHONE" id="CONTRACT_PHONE" value="ognl:info.CONTRACT_PHONE" raw="true"/></td>
+						<td><span jwcid="@Insert" name="EMAIL" id="EMAIL" value="ognl:info.EMAIL" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', info.PSPT_TYPE_CODE)" raw="false"/></td>	
+						<td><span jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:info.PSPT_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" name="START_DATE" id="START_DATE" value="ognl:info.START_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" name="END_DATE" id="END_DATE" value="ognl:info.END_DATE" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar"  name="acctRef" id="acctRef" listener="queryScoreAcctList" pageSize="10" cond="QueryPart" part="AcctTablePart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域开始 -->
+<div class="c_box">
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmit(this)" isReset="true" area="AcctTablePart,refreshParts2" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 隐藏区域 开始 -->
+  <div jwcid="hide@Part">
+   <input type="text" jwcid="@TextField" name="USER_INTEGRAL_ACCT_ID" id="USER_INTEGRAL_ACCT_ID" value="ognl:commInfo.USER_INTEGRAL_ACCT_ID" style="display:none" />
+   <input type="text" jwcid="@TextField" name="REF_INTEGRAL_ACCT_ID" id="REF_INTEGRAL_ACCT_ID" value="ognl:commInfo.TRADE_TYPE_CODE" style="display:none" />
+   </div>
+<!-- 隐藏区域 结束 -->
+</div>
+</div>
+</body>
+</html>

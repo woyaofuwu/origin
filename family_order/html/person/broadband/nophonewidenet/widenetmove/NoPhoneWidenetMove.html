@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无手机宽带移机</title>
+<script jwcid="@Script" src="person/broadband/nophonewidenet/widenetmove/scripts/widenetmove.js"></script>
+<script jwcid="@Script" src="person/broadband/nophonewidenet/widenetmove/scripts/changewidenetproduct.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">客户查询</div>
+		<div class="fn">
+			<a href="#nogo" class="e_button" onclick="changeWidenetProduct.displaySwitch(this,'UCAViewPart')">
+				<i class="e_ico-unfold"></i>
+				<span>展示客户基本信息</span>
+			</a>
+		</div>
+	</div>
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" authType="04" tradeTypeCode="ognl:wideInfo.TRADE_TYPE_CODE" tradeAction="refreshPartAtferAuth(data);" element="div"></div>
+	<!-- 认证 结束 -->
+	
+	<div jwcid="UCAViewPart@Part" style="display:none">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		<div jwcid="@csserv:AcctInfoView" acctInfoView="ognl:acctInfoView" />
+	</div>
+</div>
+
+
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">当前产品</div>
+	</div>
+
+	<div class="c_form c_form-text c_form-col-3" jwcid="userProdInfoShow@Part">
+		<ul class="ul">
+			<span jwcid="curactivePart@Part">
+				<li class="li"  >
+					<span class="label">宽带产品：</span>
+					<span class="text" jwcid="@Insert" name="USER_PRODUCT_NAME" id="USER_PRODUCT_NAME" value="ognl:userProdInfo.USER_PRODUCT_NAME" desc="">  
+					</span>
+				</li>
+			</span>
+		</ul>
+	</div>
+</div>
+
+
+<div jwcid="mytab@Tabset" switchAction="myTabSwitchAction('移机信息','产品变更信息');" tabStyle="c_tab" >
+	<div jwcid="wideNetMoveArea@TabsetContent" title="移机信息">
+		<!-- 区域 开始 -->
+		<div class="c_box" >
+			<div class="c_title">
+				<div class="text">原宽带资料</div>
+			</div>
+			
+			<div class="c_form c_form-label-7 c_form-col-2 c_form-text" jwcid="wideInfoPart@Part">
+				<ul class="ul">
+				    <li class="li col-2">
+						<span class="label">原标准地址：</span>
+						<span class="text"><span>
+							<input jwcid="@Insert" name="OLD_STAND_ADDRESS" id="OLD_STAND_ADDRESS" value="ognl:wideInfo.STAND_ADDRESS" desc="原标准地址"/>
+						</span></span>
+					</li>	
+				   <li class="li col-2">
+						<span class="label">原详细地址：</span>
+						<span class="text"><span>
+							<input jwcid="@Insert" name="OLD_DETAIL_ADDRESS" id="OLD_DETAIL_ADDRESS" value="ognl:wideInfo.DETAIL_ADDRESS" desc="原详细地址"/>
+						</span></span>
+					</li>
+			    </ul>
+			    <input jwcid="@Hidden" name="RSRV_STR2" id="RSRV_STR2" value="ognl:wideInfo.RSRV_STR2"/><!-- 老宽带的productMode -->
+			</div>
+		</div>
+		<!-- 区域 结束 -->
+		
+		<!-- 区域 开始 -->
+		<div class="c_box" >
+			<div class="c_title">
+				<div class="text">新宽带资料</div>
+			</div>
+			
+			<div class="c_form c_form-label-7 c_form-col-2" jwcid="newWideInfoPart@Part">
+			  <ul class="ul">
+				  <li class="li col-2">
+						<span class="label"><span class="e_required">标准地址：</span></span>
+						<span class="e_elements">
+							<button class="e_button-right" id="POP_BTN_ADDR_ID" type="button" 
+								onclick="$.popupPage('res.popup.AddressQry','init','&TREE_TYPE=0&OPEN_TYPE=GPON','标准地址','800','340','STAND_ADDRESS','',subsys_cfg.pbossintf)" 
+								desc="标准地址">
+							<i class="e_ico-search"></i><span>地址查询</span></button>
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="STAND_ADDRESS" id="STAND_ADDRESS" value="ognl:wideInfo.NEW_STAND_ADDRESS" nullable="no" 
+									desc="标准地址" afterAction="changeWidenetProduct.selectProductModeA()" disabled="true"/>
+							</span></span>
+							<input jwcid="@TextField" id="STAND_ADDRESS_CODE" name="STAND_ADDRESS_CODE" 
+								value="ognl:wideInfo.NEW_STAND_ADDRESS_CODE" style="display:none" desc="标准地址CODE"/>
+							<input jwcid="@TextField" id="DEVICE_ID" name="DEVICE_ID" value="ognl:wideInfo.NEW_STAND_ADDRESS_CODE" style="display:none"/>
+							<input jwcid="@TextField" id="OPEN_TYPE" name="OPEN_TYPE" value="" style="display:none"/>
+						</span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">地区：</span></span>
+						<span class="e_select"><span><span>
+							<select jwcid="@Select" name="AREA_CODE" id="AREA_CODE" value="ognl:wideInfo.AREA_CODE" nullable="no" 
+								textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" source="ognl:pageutil.getStaticList('COP_AREA_CODE')" desc="地区"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">详细地址：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="DETAIL_ADDRESS_1" id="DETAIL_ADDRESS_1" value="ognl:wideInfo.DETAIL_ADDRESS_1" nullable="no" desc="详细地址"/>
+							<input jwcid="@TextField" name="DETAIL_ADDRESS" id="DETAIL_ADDRESS" value="ognl:wideInfo.NEW_DETAIL_ADDRESS" style="display:none" desc="详细地址"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">楼层和房号：</span></span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="ADDRESS_BUILDING_NUM" id="ADDRESS_BUILDING_NUM" value="ognl:wideInfo.ADDRESS_BUILDING_NUM" nullable="no"
+								onblur="$('#DETAIL_ADDRESS').val($('#DETAIL_ADDRESS_1').val()+'，'+$('#ADDRESS_BUILDING_NUM').val());" desc="楼层"/>
+							<!--楼层和房号   标识  -->
+					       <input jwcid="@Hidden" name="FLOOR_AND_ROOM_NUM_FLAG" id="FLOOR_AND_ROOM_NUM_FLAG" value="0"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">联系电话：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="NEW_PHONE" id="NEW_PHONE" value="ognl:wideInfo.PHONE" maxsize="100" desc="联系电话"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">联系人：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="NEW_CONTACT" id="NEW_CONTACT" value="ognl:wideInfo.NEW_CONTACT" maxsize="100" desc="联系人"/>
+						</span></span>
+					</li>
+		
+		            <li class="li">
+						<span class="label">联系人电话：</span>
+						<span class="e_input"><span>
+							<input jwcid="@TextField" name="NEW_CONTACT_PHONE" id="NEW_CONTACT_PHONE" value="ognl:wideInfo.CONTACT_PHONE" maxsize="100" desc="联系人电话"/>
+						</span></span>
+					</li>
+				</ul>	
+			</div>
+			
+			<div class="c_form c_form-label-7 c_form-col-2" jwcid="ModelModePart@Part">
+			  <ul class="ul">
+				<span  jwcid="@Conditional" condition='ognl:"1".equals(modelInfo.IS_FTTH)'>
+						<li class="li" element="li">
+							<span class="label">光猫模式：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="MODEL_MODE" id="MODEL_MODE" value="ognl:wideInfo.MODEL_MODE"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+									source="ognl:pageutil.getStaticList('WIDE_MODEM_STYLE')"  onchange="selectModelMode()" desc="光猫模式"/>
+							</span></span></span>
+							<input jwcid="@Hidden" name="FIRST_RENT" id="FIRST_RENT" value="ognl:modelInfo.FIRST_RENT"/>
+							<input jwcid="@Hidden" name="DEPOSIT_MONEY" id="DEPOSIT_MONEY" value="ognl:modelInfo.FIRST_RENT"/>
+							<input jwcid="@Hidden" name="PURCHASE_MONEY" id="PURCHASE_MONEY" value="ognl:modelInfo.PURCHASE_MONEY"/>
+							<input jwcid="@Hidden" name="MOVE_FTTH_MONEY" id="MOVE_FTTH_MONEY" value="ognl:modelInfo.MOVE_FTTH_MONEY"/>
+						</li>
+					  	<li class="li">
+							<span class="label"><span>押金金额：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="MODEM_DEPOSIT" id="MODEM_DEPOSIT" value="ognl:modelInfo.MODEM_DEPOSIT"  disabled="true" desc="押金金额"/>
+							</span></span>
+					  	</li>
+					</span>
+				</ul>	
+			</div>
+		</div>
+		<!-- 区域 结束 -->
+		
+	</div>
+	
+	<div jwcid="prodChgArea@TabsetContent" title="产品变更信息">
+	
+		<!-- 作用未知 -->
+		<div class="c_form c_form-text c_form-col-2" jwcid="UCAViewPart1@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME"  value="ognl:custInfoView.CUST_NAME" desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">开户时间：</span>
+					<span class="text" jwcid="@Insert" name="OPEN_DATE" id="OPEN_DATE" value="ognl:userInfoView.OPEN_DATE" desc="开户时间"/>
+				</li>
+				<li class="li">
+					<span class="label">新产品：</span>
+					<span class="text" id="NEXT_PRODUCT_NAME1"></span>
+				</li>
+			</ul>
+		</div>
+
+		<div class="c_form c_form-label-7 c_form-col-2" jwcid="ProdShowArea@Part">
+		    <div class="c_box">	
+				<div class="c_title">
+					<div class="text">宽带产品</div>
+				</div>
+				
+				<div class="c_form c_form-label-4 c_form-col-3">
+					<ul class="ul">
+						<li class="li" jwcid="productModePart@Part" element="li">
+							<span class="label">宽带类型：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="NEW_PRODUCT_MODE" id="NEW_PRODUCT_MODE" source="ognl:productModeList"
+			                        	textField="PARA_CODE1" valueField="PARA_CODE13" titleField="PARA_CODE1" desc="宽带类型"
+			                        	value="ognl:modelInfo.PRODUCT_MODE" disabled="true"/>
+								</span></span></span>
+						</li>
+							
+						<li class="li col-2" jwcid="productTypePart@Part" element="li">
+							<span class="label">宽带产品：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="CHG_PRODUCT_ID" id="CHG_PRODUCT_ID" source="ognl:productList"
+			                        	textField="PRODUCT_NAME" valueField="PRODUCT_ID" titleField="PRODUCT_NAME" desc="产品类型"
+			                        	onchange="changeWidenetProduct.afterChangeProduct()" 
+			                        	value="ognl:modelInfo.NEW_PRODUCT_ID_VALUE" disabled="true"/>
+							</span></span></span>
+						</li>
+					</ul>
+
+					<!-- 不知道这里是否用到，待删除 -->
+					<div class="c_form c_form-text c_form-col-2" jwcid="UCAViewPart2@Part" style="display:none">
+						<ul class="ul">
+							<li class="li">
+								<span class="label">原产品：</span>
+								<span class="text" id="USER_PRODUCT_NAME"></span>
+							</li>
+							<li class="li">
+								<span class="label">新产品：</span>
+								<span class="text" id="NEXT_PRODUCT_NAME"></span>
+							</li>
+						</ul>
+					</div>
+					<!-- 不知道这里是否用到，待删除 -->
+					
+				</div>
+
+
+			    <div class="l_col s_iframe-lower">
+					<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width:49%;">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+			                <div class="c_title">
+								<div class="text">待选区</div>
+								<div class="fn">
+								</div>
+							</div>
+							<!-- 标题 结束 -->
+							<!-- 分栏 开始 -->
+							<div class="l_col l_col-close">
+								<div jwcid="offerList@csserv:OfferList" 
+			                           element="div" 
+			                           categoryId="100000000114,88888888"></div>
+							</div>
+							<!-- 分栏 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+					
+				    <div class="l_auto">
+						<div class="c_title">
+							<div class="text">已选区</div>
+						</div>
+			        	<div jwcid="selectedElements@csserv:SelectedElements" 
+			                   renderCallSvc="CS.SelectedElementSVC.getUserElements" 
+			                   callAddElementSvc="CS.SelectedElementSVC.dealWidenetSelectedElementsForChg" 
+			                   afterRenderAction="changeWidenetProduct.afterRenderSelectedElements(data);"
+			                   basicStartDateControlId="NEW_PRODUCT_START_DATE"
+			                   basicCancelDateControlId="OLD_PRODUCT_END_DATE"
+			                   eparchyCodeComponentId="USER_EPARCHY_CODE"
+			                   tradeTypeCode="ognl:wideInfo.TRADE_TYPE_CODE"
+			                   element="div"></div>
+					</div>
+				</div>
+			    <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="onTradeSubmitNew()" 
+		area="AuthPart,newWideInfoPart,SaleShowArea,ProdShowArea,baseInDataMove,ModelModePart" listener="onTradeSubmit"  isReset="true" element="div"/>
+
+</div>
+</div></div>
+
+<div class="c_form c_form-label-7 c_form-col-2" jwcid="info_hide@Part">
+	<input jwcid="@Hidden" name="OLD_WIDE_TYPE" id="OLD_WIDE_TYPE" value="ognl:wideInfo.OLD_WIDE_TYPE"/>
+	<input jwcid="@Hidden" name="WIDE_TYPE" id="WIDE_TYPE" value="ognl:wideInfo.WIDE_TYPE"/><!-- 移机前老宽带类型 1-移动FTTB 2-铁通ADSL 3-移动FTTH 5-铁通FTTH 6-铁通FTTB -->
+	<input jwcid="@Hidden" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:wideInfo.TRADE_TYPE_CODE"/><!-- 业务类型 -->
+	<input jwcid="@Hidden" name="WIDENETMOVE_FIRST" id="WIDENETMOVE_FIRST" value="ognl:wideInfo.WIDENETMOVE_FIRST"/><!-- 是否允许移机 -->
+</div>
+
+<div class="c_form c_form-label-7 c_form-col-2 c_form-text" jwcid="baseInDataMove@Part">
+	<!-- refreshPartAtferAuth js内，由认证信息赋值-->
+	<input jwcid="@Hidden" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:wideInfo.EPARCHY_CODE"/>
+	<input jwcid="@Hidden" name="USER_EPARCHY_CODE" id="USER_EPARCHY_CODE" value=""/>
+	<input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+	<input jwcid="@Hidden" name="INFO_USER_ID" id="INFO_USER_ID" value="ognl:wideInfo.USER_ID"/>
+	<input jwcid="@Hidden" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value=""/>
+	<input jwcid="@Hidden" name="USER_PRODUCT_ID" id="USER_PRODUCT_ID" value=""/><!-- 用户移机前的宽带主产品 -->
+	<input jwcid="@Hidden" name="OLD_PROD_ID" id="OLD_PROD_ID" value="ognl:userInfoView.PRODUCT_ID"/><!-- 用户移机前的宽带主产品ID -->
+	<!-- end -->
+	
+	<input jwcid="@Hidden" name="IS_NEED_CHG_PROD" id="IS_NEED_CHG_PROD" value="0" desc="是否必须变更产品"/><!-- 宽带PRODUCT_MODE类型是否变更 连带宽带产品是否需要变更 0-否 1-是 -->
+	<input jwcid="@Hidden" name="IS_NEED_MODEL" id="IS_NEED_MODEL" value="0" desc="是否需要选择光猫"/>
+	<input jwcid="@Hidden" name="IS_EXCHANGE_MODEL" id="IS_EXCHANGE_MODEL" value=""/><!-- 是否需要更换光猫 -->
+	<input jwcid="@Hidden" name="NEW_WIDE_TYPE" id="NEW_WIDE_TYPE" value=""/><!-- 移机后的新宽带类型 -->
+	
+	<!-- 新产品相关 -->
+	<input jwcid="@Hidden" name="NEW_PRODUCT_ID" id="NEW_PRODUCT_ID" value=""/><!-- 移机后的新宽带主产品ID -->
+	<input jwcid="@Hidden" name="IS_CHG_PROD" id="IS_CHG_PROD" value="ognl:wideInfo.IS_CHG_PROD"/><!-- 移机后是否真的变更了主产品 TRUE-是 -->
+	<input jwcid="@Hidden" name="NEXT_PRODUCT_ID" id="NEXT_PRODUCT_ID" value=""/>
+	<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE" id="NEW_PRODUCT_START_DATE" value=""/>
+	<input jwcid="@Hidden" name="OLD_PRODUCT_END_DATE" id="OLD_PRODUCT_END_DATE" value=""/>
+	<input jwcid="@Hidden" name="FIRST_DAY_NEXT_MONTH" id="FIRST_DAY_NEXT_MONTH" value=""/><!-- 下月1日，作为元素开始时间 -->
+</div>
+
+
+</body>
+</html>

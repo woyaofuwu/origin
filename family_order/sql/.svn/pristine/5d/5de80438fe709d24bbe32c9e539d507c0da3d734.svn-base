@@ -1,0 +1,2 @@
+INSERT INTO tf_f_user_score_new(user_id,partition_id,brand_code,bcyc_id,score_type_code,score,score_value,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5)
+ VALUES(TO_NUMBER(:USER_ID),:PARTITION_ID,:BRAND_CODE,:BCYC_ID,:SCORE_TYPE_CODE,TO_NUMBER(:SCORE),TO_NUMBER(:SCORE_VALUE),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5)

@@ -1,0 +1,5 @@
+SELECT 
+       A.SERIAL_NUMBER
+       
+  FROM TF_F_USER A
+ WHERE  A.USER_ID =:USER_ID

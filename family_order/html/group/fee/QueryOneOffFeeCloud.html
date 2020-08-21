@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团一次性费用查询</title>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/fee/QueryOneOffFeeCloud.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box">
+
+	<div class="c_title">
+		<div class="text">集团客户编码</div>
+	</div>
+	
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+			</li>
+			<li class="li">
+				<span class="label">客户经理：</span>
+				<span>
+					<input jwcid="@biz:StaffField" type="text" id="cond_CUST_MANAGER_ID" name="cond_CUST_MANAGER_ID" value="ognl:condition.cond_CUST_MANAGER_ID" desc="客户经理"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="e_input"><span>
+					<input datatype="date" format="yyyy-MM-dd hh:mm:ss" jwcid="@DateField" name="cond_START_DATE" value="ognl:condition.cond_START_DATE" desc="开始时间"/>
+				</span></span>
+			</li>
+			<li class="li">
+	            <span class="label">结束时间：</span>
+				<span class="e_input"><span>
+					<input datatype="date" format="yyyy-MM-dd hh:mm:ss" jwcid="@DateField" name="cond_END_DATE" value="ognl:condition.cond_END_DATE" desc="结束时间"/>
+				</span></span>		
+			</li>
+		</ul>
+		
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return queryFeeList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+		
+	</div>
+	
+	<!-- 集团客户基本信息 开始 -->
+	<input type="text" jwcid="@saleserv:GroupCustInfo"/>
+	<!-- 集团客户基本信息 结束 -->
+	
+	<!-- 费用信息开始 -->
+	<div jwcid="feePart@Part">
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-x c_scroll-table-15"><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th>集团编码</th>
+						<th>集团名称</th>
+						<th>项目名称</th>
+						<th>业务流水号</th>
+						<th>费用类别</th>
+						<th>费用金额(元)</th>
+                        <th>税率(%)</th>
+						<th>受理时间</th>
+						<th>客户经理</th>
+						<th>客户经理电话</th> 
+					</tr>
+				</thead>
+				<tbody>
+			  		<tr jwcid="@Foreach" source="ognl:feeList" value="ognl:fee" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:fee.GROUP_ID" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.CUST_NAME" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.RSRV_STR1" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.FLOWID" /></td>
+						<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('ONE_OFF_CFEE_TYPE_CODE', fee.FEE_TYPE_CODE)" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.FEE" /></td>
+                        <td><span jwcid="@Insert" value="ognl:fee.RSRV_STR6" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.ACCEPT_TIME" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.CUST_MANAGER_NAME" /></td>
+						<td><span jwcid="@Insert" value="ognl:fee.SERIAL_NUMBER" /></td>
+					</tr>		  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		<span jwcid="@NavBar" name="pageNavFee" cond="queryForm" listener="qryOneFeeList" part="feePart" count="ognl:feeCount"/>	 
+	</div>
+	<!-- 费用信息 结束 -->
+	
+</div>
+	
+</div></div>
+</body>
+
+</html>

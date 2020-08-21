@@ -1,0 +1,1 @@
+delete TF_B_SHOPPING_CART t where t.shopping_cart_id = :SHOPPING_CART_ID

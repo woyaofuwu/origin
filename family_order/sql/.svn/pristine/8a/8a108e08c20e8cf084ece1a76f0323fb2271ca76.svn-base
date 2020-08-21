@@ -1,0 +1,2 @@
+INSERT INTO tf_b_trade_purchase(trade_id,purchase_attr,purchase_desc,purchase_mode,purchase_info,rpay_mpfee,rpay_foregift,foregift_code,rpay_deposit,rpay_deposit_code,discnt_emode)
+ VALUES(TO_NUMBER(:TRADE_ID),:PURCHASE_ATTR,:PURCHASE_DESC,:PURCHASE_MODE,:PURCHASE_INFO,TO_NUMBER(:RPAY_MPFEE),TO_NUMBER(:RPAY_FOREGIFT),:FOREGIFT_CODE,TO_NUMBER(:RPAY_DEPOSIT),:RPAY_DEPOSIT_CODE,:DISCNT_EMODE)

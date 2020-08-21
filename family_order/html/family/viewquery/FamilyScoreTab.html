@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <script jwcid="@Script" src="family/viewquery/scripts/familyscoretab.js"></script>
+    <script jwcid="@Script" src="family/viewquery/scripts/familytabqueryutil.js"></script>
+    <title>家庭积分</title>
+</head>
+<body jwcid="@Body">
+    <!-- 标题栏 开始 -->
+    <div class="c_header e_show-phone">
+        <div class="text">家庭积分</div>
+    </div>
+    <!-- 标题栏 结束 -->
+
+    <div name="scoreScroller" jwcid="@Scroller" checkDOMChanges="true"
+         class="c_scroll c_scroll-white c_scroll-float c_scroll-phone-header">
+        <div class="l_padding-3 l_padding-side l_padding-phone-1">
+            <div class="c_space-2 c_space-phone-0"></div>
+            <!-- 标题 开始 -->
+            <div class="c_title c_title-nopadding e_hide-phone">
+                <div class="text e_size-xl e_black">我的积分</div>
+            </div>
+            <!-- 标题 结束 -->
+            <div class="c_param c_param-label-6">
+                <ul>
+                    <li>
+                        <span class="label">当前可用积分：</span>
+                        <span class="value" id="validScore"></span>
+                    </li>
+                </ul>
+            </div>
+            <div name="scoreInfoTab" jwcid="@Tabset" class="c_tab c_tab-sp"
+                 slidable="false">
+                <!-- 积分业务情况 开始 -->
+                <div class="content" title="积分业务情况">
+                    <!-- 查询参数 开始 -->
+                    <div jwcid="scoreTradeParam@Part"
+                         class="c_form c_form-col-2 c_form-submit-h c_form-border c_form-phone-col-1">
+                        <input jwcid="@Hidden" name="SERIAL_NUMBER"
+                               value="ognl:init.SERIAL_NUMBER"/>
+                        <div class="submit">
+                            <button type="button" id="scoreTradeQueryBtn"
+                                    class="e_button-blue">
+                                <span class="e_ico-search"></span><span>查询</span>
+                            </button>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="label">开始时间：</div>
+                                <div class="value">
+                                    <input name="ACCEPT_START" jwcid="@DateField"
+                                           value="ognl:init.ACCEPT_START"
+                                           dropDown="true" format="yyyy-MM-dd"
+                                           maxName="ACCEPT_END" desc="开始时间"/>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label">结束时间：</div>
+                                <div class="value">
+                                    <input name="ACCEPT_END" jwcid="@DateField"
+                                           value="ognl:init.ACCEPT_END"
+                                           dropDown="true" format="yyyy-MM-dd"
+                                           minName="ACCEPT_START" desc="结束时间"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 查询参数 结束 -->
+                    <div class="c_space-c"></div>
+                    <!-- 查询结果 开始 -->
+                    <div jwcid="scoreTradePart@Part">
+                        <!-- 表格 开始 -->
+                        <table name="scoreTradeHisTable" jwcid="@Table"
+                               editMode="false"
+                               class="c_table c_table-min-5 c_table-lite c_table-border">
+                            <thead>
+                                <tr>
+                                    <th>业务流水号</th>
+                                    <th>手机号码</th>
+                                    <th>业务编码</th>
+                                    <th>业务类型</th>
+                                    <th>原分值</th>
+                                    <th>积分变化值</th>
+                                    <th>价值（元）</th>
+                                    <th>备注</th>
+                                    <th>业务手机号码</th>
+                                    <th>客户名称</th>
+                                    <th>受赠号码</th>
+                                    <th>受理时间</th>
+                                    <th>受理员工</th>
+                                    <th>返销状态</th>
+                                    <th>返销时间</th>
+                                    <th>返销员工</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:infos"
+                                    value="ognl:info" index="ognl:rowIndex"
+                                    element="tr">
+                                    <td data-title="业务流水号">
+                                        <span jwcid="@Insert" value="ognl:info.TRADE_ID"></span>
+                                    </td>
+                                    <td data-title="手机号码">
+                                        <span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span>
+                                    </td>
+                                    <td data-title="业务编码">
+                                        <span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE"></span>
+                                    </td>
+                                    <td data-title="业务类型" class="key">
+                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE',info.TRADE_TYPE_CODE)"></span>
+                                    </td>
+                                    <td data-title="原分值">
+                                        <span jwcid="@Insert" value="ognl:info.SCORE"></span>
+                                    </td>
+                                    <td data-title="积分变化值">
+                                        <span jwcid="@Insert" value="ognl:info.SCORE_CHANGED"></span>
+                                    </td>
+                                    <td data-title="价值（元）">
+                                        <span jwcid="@Insert" value="ognl:formatDecimal('0.00',info.VALUE_CHANGED)"></span>
+                                    </td>
+                                    <td data-title="备注">
+                                        <span jwcid="@Insert" value="ognl:info.REMARK"></span>
+                                    </td>
+                                    <td data-title="业务手机号码">
+                                        <span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B"></span>
+                                    </td>
+                                    <td data-title="客户名称">
+                                        <span jwcid="@Insert" value="ognl:info.CUST_NAME"></span>
+                                    </td>
+                                    <td data-title="受赠号码">
+                                        <span jwcid="@Insert" value="ognl:info.RSRV_STR10"></span>
+                                    </td>
+                                    <td data-title="受理时间">
+                                        <span jwcid="@Insert" value="ognl:info.ACCEPT_DATE == null ? '' : formatDate('yyyy-MM-dd hh:mm:ss',info.ACCEPT_DATE)"></span>
+                                    </td>
+                                    <td data-title="受理员工">
+                                        <span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID"></span>
+                                    </td>
+                                    <td data-title="返销状态">
+                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CHNL_ACCT_CANCELTAG', info.CANCEL_TAG)"></span>
+                                    </td>
+                                    <td data-title="返销时间">
+                                        <span jwcid="@Insert" value="ognl:info.CANCEL_DATE == null ? '' : formatDate('yyyy-MM-dd hh:mm:ss',info.CANCEL_DATE)"></span>
+                                    </td>
+                                    <td data-title="返销员工">
+                                        <span jwcid="@Insert" value="ognl:info.CANCEL_STAFF_ID"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- 表格 结束 -->
+                        <!-- 翻页 开始 -->
+                        <div class="c_space-c"></div>
+                        <div name="scoreTradeHisTableNavBar" jwcid="@NavBar"
+                             class="c_page c_page-border" cond="scoreTradeParam"
+                             count="ognl:infoCount" part="scoreTradePart"
+                             listener="queryScoreTradeHistory" pageSize="10"></div>
+                        <!-- 翻页 结束 -->
+                    </div>
+                    <!-- 查询结果 结束 -->
+                </div>
+                <!-- 积分业务情况 结束 -->
+                <!-- 积分发放查询 开始 -->
+                <div class="content" title="积分发放查询">
+                    <input jwcid="@Hidden" name="INIT_ISSUE_FLAG" value="0"/>
+                    <!-- 查询参数 开始 -->
+                    <div jwcid="scoreIssueParam@Part"
+                         class="c_form c_form-col-2 c_form-submit-h c_form-border c_form-phone-col-1">
+                        <div class="submit">
+                            <button type="button" id="scoreIssueQueryBtn"
+                                    class="e_button-blue">
+                                <span class="e_ico-search"></span><span>查询</span>
+                            </button>
+                        </div>
+                        <ul>
+                            <li class="required">
+                                <div class="label">开始时间：</div>
+                                <div class="value">
+                                    <input name="START_CYCLE_ID"
+                                           jwcid="@DateField"
+                                           value="ognl:init.START_CYCLE_ID"
+                                           dropDown="true" format="yyyy-MM"
+                                           desc="开始时间"/>
+                                </div>
+                            </li>
+                            <li class="required">
+                                <div class="label">结束时间：</div>
+                                <div class="value">
+                                    <input name="END_CYCLE_ID"
+                                           jwcid="@DateField"
+                                           value="ognl:init.END_CYCLE_ID"
+                                           dropDown="true" format="yyyy-MM"
+                                           desc="结束时间"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 查询参数 结束 -->
+                    <div class="c_space-c"></div>
+                    <!-- 查询结果 开始 -->
+                    <div jwcid="scoreIssuePart@Part">
+                        <!-- 表格 开始 -->
+                        <table name="scoreIssueTable" jwcid="@Table"
+                               editMode="false"
+                               class="c_table c_table-min-5 c_table-lite c_table-border">
+                            <thead>
+                                <tr>
+                                    <th>发放时间</th>
+                                    <th>积分类型编码</th>
+                                    <th>积分类型</th>
+                                    <th>发放积分</th>
+                                    <th>到期日</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:infos"
+                                    value="ognl:info" index="ognl:rowIndex"
+                                    element="tr">
+                                    <td data-title="发放时间">
+                                        <span jwcid="@Insert" value="ognl:info.OPERATE_TIME"></span>
+                                    </td>
+                                    <td data-title="积分类型编码">
+                                        <span jwcid="@Insert" value="ognl:info.INTEGRAL_TYPE_CODE"></span>
+                                    </td>
+                                    <td data-title="积分类型" class="key">
+                                        <span jwcid="@Insert" value="ognl:info.INTEGRAL_TYPE_NAME"></span>
+                                    </td>
+                                    <td data-title="发放积分">
+                                        <span jwcid="@Insert" value="ognl:info.SCORE_VALUE"></span>
+                                    </td>
+                                    <td data-title="到期日">
+                                        <span jwcid="@Insert" value="ognl:info.END_DATE"></span>
+                                    </td>
+                                    <td data-title="备注">
+                                        <span jwcid="@Insert" value="ognl:info.REMARK"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- 表格 结束 -->
+                    </div>
+                    <!-- 查询结果 结束 -->
+                </div>
+                <!-- 积分发放查询 结束 -->
+                <!-- 累计积分情况 开始 -->
+                <div class="content" title="累计积分情况">
+                    <input jwcid="@Hidden" name="INIT_ACCUMULATE_FLAG" value="0"/>
+                    <!-- 查询参数 开始 -->
+                    <div jwcid="scoreAccumulateParam@Part"
+                         class="c_form c_form-col-2 c_form-submit-h c_form-border c_form-phone-col-1">
+                        <div class="submit">
+                            <button type="button" id="scoreAccumulateQueryBtn"
+                                    class="e_button-blue">
+                                <span class="e_ico-search"></span><span>查询</span>
+                            </button>
+                        </div>
+                        <ul>
+                            <li class="required">
+                                <div class="label">开始时间：</div>
+                                <div class="value">
+                                    <input name="START_CYCLE_ID2"
+                                           jwcid="@DateField"
+                                           value="ognl:init.START_CYCLE_ID2"
+                                           dropDown="true" format="yyyy-MM"
+                                           desc="开始时间"/>
+                                </div>
+                            </li>
+                            <li class="required">
+                                <div class="label">结束时间：</div>
+                                <div class="value">
+                                    <input name="END_CYCLE_ID2"
+                                           jwcid="@DateField"
+                                           value="ognl:init.END_CYCLE_ID2"
+                                           dropDown="true" format="yyyy-MM"
+                                           desc="结束时间"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 查询参数 结束 -->
+                    <div class="c_space-c"></div>
+                    <!-- 查询结果 开始 -->
+                    <div jwcid="scoreAccumulatePart@Part">
+                        <!-- 表格 开始 -->
+                        <table name="scoreAccumulateTable" jwcid="@Table"
+                               editMode="false"
+                               class="c_table c_table-min-5 c_table-lite c_table-border">
+                            <thead>
+                                <tr>
+                                    <th>开始月份</th>
+                                    <th>截止月份</th>
+                                    <th>积分类型编码</th>
+                                    <th>积分类型</th>
+                                    <th>积分</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:infos"
+                                    value="ognl:info" index="ognl:rowIndex"
+                                    element="tr">
+                                    <td data-title="开始月份">
+                                        <span jwcid="@Insert" value="ognl:info.START_CYCLE_ID"></span>
+                                    </td>
+                                    <td data-title="截止月份">
+                                        <span jwcid="@Insert" value="ognl:info.END_CYCLE_ID"></span>
+                                    </td>
+                                    <td data-title="积分类型编码">
+                                        <span jwcid="@Insert" value="ognl:info.INTEGRAL_TYPE_CODE"></span>
+                                    </td>
+                                    <td data-title="积分类型" class="key">
+                                        <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_SCORETYPE','SCORE_TYPE_CODE','SCORE_TYPE_NAME',info.INTEGRAL_TYPE_CODE)"></span>
+                                    </td>
+                                    <td data-title="积分">
+                                        <span jwcid="@Insert" value="ognl:info.SCORE_CHANGED"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- 表格 结束 -->
+                        <div class="c_space-c"></div>
+                        <div class="c_box c_box-border">
+                            <div class="l_padding">合计：<span jwcid="@Insert" value="ognl:yearSum"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 查询结果 结束 -->
+                </div>
+                <!-- 累计积分情况 结束 -->
+                <!-- 可兑换积分查询 开始 -->
+                <div class="content" title="可兑换积分查询">
+                    <input jwcid="@Hidden" name="QUERY_EXCHANGE_FLAG" value="0"/>
+                    <!-- 查询结果 开始 -->
+                    <div jwcid="scoreExchangePart@Part">
+                        <!-- 表格 开始 -->
+                        <table name="scoreExchangeTable" jwcid="@Table"
+                               editMode="false"
+                               class="c_table c_table-min-5 c_table-lite c_table-border">
+                            <thead>
+                                <tr>
+                                    <th>年度</th>
+                                    <th>积分类型编码</th>
+                                    <th>积分类型</th>
+                                    <th>积分值</th>
+                                    <th>到期日</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr jwcid="@Foreach" source="ognl:infos"
+                                    value="ognl:info" index="ognl:rowIndex"
+                                    element="tr">
+                                    <td data-title="年度">
+                                        <span jwcid="@Insert" value="ognl:info.YEAR_ID"></span>
+                                    </td>
+                                    <td data-title="积分类型编码">
+                                        <span jwcid="@Insert" value="ognl:info.INTEGRAL_TYPE_CODE"></span>
+                                    </td>
+                                    <td data-title="积分类型" class="key">
+                                        <span jwcid="@Insert" value="ognl:info.INTEGRAL_TYPE_NAME"></span>
+                                    </td>
+                                    <td data-title="积分值">
+                                        <span jwcid="@Insert" value="ognl:info.SCORE_VALUE"></span>
+                                    </td>
+                                    <td data-title="到期日">
+                                        <span jwcid="@Insert" value="ognl:info.END_DATE"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- 表格 结束 -->
+                    </div>
+                    <!-- 查询结果 结束 -->
+                </div>
+                <!-- 可兑换积分查询 结束 -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

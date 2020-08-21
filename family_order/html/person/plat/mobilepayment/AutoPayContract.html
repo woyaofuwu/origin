@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: FamilySpeStopTrade.html,v 1.5 2013/04/01 08:13:13 lijm3 Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手机支付自动交费管理</title>
+<script jwcid="@Script" language="JavaScript" src="person/plat/mobilepayment/scripts/autopaycontract.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<div id="timeTip" class="c_tip" style="display:none">
+		触发值范围1-28 (日)
+	</div>
+	<div id="moneyTip" class="c_tip" style="display:none">
+		触发值范围10(元)
+	</div>
+	<div id="quotaTip" class="c_tip" style="display:none">
+		额度值范围1-9999(元)
+	</div>
+</div>
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" element="div" tradeTypeCode="3700" tradeAction="afterSubmitSerialNumber(data)"></div>
+		<!-- 认证 结束 -->
+	</div>
+
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div class="c_form c_form-label-4 c_form-col-3 c_form-text" jwcid="UCAViewPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户名称：</span>
+				<span ><input jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME" maskType="start" maskPosition="1" 
+									maskLength="100" desc="客户名称" disabled="true"  /></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">证件号码：</span>
+				<span ><input jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" maskType="mid" maskPosition="6" 
+									
+									desc="证件号码" disabled="true"  /></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">证件类型：</span>
+				<span >
+				<span jwcid="@Insert"  value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)" raw="false">
+				</span>
+				</span>
+			</li>
+			
+			<li class="li col-3">
+				<span class="label">证件地址：</span>
+				<span ><input jwcid="@Insert" name="PSPT_ADDR" id="PSPT_ADDR" value="ognl:custInfoView.PSPT_ADDR" maskType="mid" maskPosition="6" 
+									
+									desc="居住地址" disabled="true"  /></span>
+			</li>
+			
+		</ul>
+	
+</div>
+
+<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">业务受理</div>
+				</div>
+				<!-- 表格 开始 -->
+			<div class="c_form c_form-label-6 c_form-col-3 c_form-text" jwcid="BizInfoPart@Part">
+				<ul class="ul">
+					<li class="li">
+						<span class="label">选择操作：</span>
+						<span class="e_select"><span><span>
+							 <select name="cond_PAYOPR" jwcid="cond_PAYOPR@Select"
+									source="ognl:pageutil.getStaticList('AUTOPAY_OPR_CODE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="ognl:info.cond_PAYOPR" desc="操作类型"
+									 nullable="no"
+									 onchange="changOperType();"
+									addDefault="yes"/>
+						</span></span></span>
+					</li>
+					<li class="li">
+						<span class="label">支付触发条件：</span>
+						<span class="e_select"><span><span>
+							 <select name="cond_PAYTYPE" jwcid="cond_PAYTYPE@Select"
+									source="ognl:pageutil.getStaticList('AUTOPAY_PAY_TYPE')"
+									valueField="DATA_ID" textField="DATA_NAME"
+									value="ognl:info.cond_PAYOPR" desc="触发条件"
+									onchange="changPayType();"
+									 nullable="no"
+									addDefault="yes"/>
+						</span></span>
+						</span>
+					</li>
+				 </ul>	
+				 <ul class="ul">
+				 		<li class="li">
+						<span class="label">触发值：</span>
+						<span class="e_input"><span>
+							   <input type="text" jwcid="cond_ACCOUNTPERIOD@TextField" name='cond_ACCOUNTPERIOD' maxsize="3"
+                                    desc="触发值" datatype="numeric"  value="10" readonly="true"/>
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label">支付额度：</span>
+						<span class="e_input"><span>
+							  <input type="text" jwcid="cond_PAYQUOTA@TextField" name= "cond_PAYQUOTA"
+                                           value="ognl:info.AUTOPAY_QUOTA" datatype="pinteger"
+                                           maxsize="4" desc="支付额度"  />
+						</span></span>
+					</li>
+				 </ul>
+			</div>		
+			
+			<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeAction()"  area="AuthPart,BizInfoPart"
+			 isReset="true"  affirmAction="afterClickAffirm()" params="" listener="submitTrade" refreshPart="RefreshTable"   element="div"/>
+                 
+</div>
+
+
+<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">查询结果</div>
+					<div class="fn">
+					</div>
+				</div>
+				<!-- 表格 开始 -->
+		
+				<div  jwcid="RefreshTable@Part" id = "RefreshTable" element="div">
+                 <div class="c_scroll c_scroll-table-5"><div class="c_table">
+						<table>
+							<thead>
+							<tr>
+                                <th>签约号码</th>
+                                <th>签约状态</th>
+                                <th>触发类型</th>
+                                <th>触发值</th>
+                                <th>支付额度</th>
+                            </tr>
+							</thead>
+							<tbody jwcid="@Any" name="queryinfos" id="queryinfos">
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr"
+                                    index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                                 <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+                                 <td><span jwcid="@Insert" value="ognl:info.CONTRACTSTATE" raw="true"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.PAY_TYPE" raw="true"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.PAY_TIME" raw="true"/></td>
+                                <td><span jwcid="@Insert" value="ognl:info.PAYBNUM" raw="true"/></td>
+                            </tr>
+							</tbody>
+							<tbody>
+							</tbody>
+						</table>
+				    </div></div>
+					
+					
+				</div>
+				<!-- 表格 结束 -->
+</div>
+ <input jwcid="@Hidden" name="USER_ID" id="USER_ID" value=""/>
+ <input jwcid="@Hidden" name="ROUTE_EPARCHY_CODE" id="ROUTE_EPARCHY_CODE" value=""/>
+ <input jwcid="@Hidden" name="PRODUCT_ID" id="PRODUCT_ID" value=""/>
+</div></div></body>
+</html>
+

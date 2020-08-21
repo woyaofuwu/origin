@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script"
+	src="scripts/group/vpmnmanagermgr/VpmnManagerList.js"></script>
+<script jwcid="@Script" type="text/javascript"
+	src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<!-- 提示区 -->
+			<div class="c_box" jwcid="refreshHintBar@Part">
+				<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+			</div>
+			<!-- 区域 开始 -->
+			<div class="c_box" id="pageForm">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">VPMN客户经理维护</div>
+				</div>
+				<!-- 标题 结束 -->   
+				<!-- 表单 开始 -->
+				<div id="QueryCondPart" jwcid="QueryCondPart@Part" optimize="true">
+					<div class="c_form c_form-col-4 c_form_lable-7">
+						<ul class="ul">	
+							<li class="li"><span class="label"><span
+									class="e_required">员工编码：</span></span> <span class="e_elements">
+									<button type="button" class="e_button-right"
+										onclick="$.popupPageExternal('group.vpmnmanagermgr.StaffQry4VpmnManager','initStaffSelect','&button_flag=0','VPMN集团用户查询',720,480,'')">
+										<i class="e_ico-check"></i><span></span>
+									</button> <span class="e_input e_input-left"><span> <input
+											type="text" jwcid="cond_STAFF_ID@Popup"
+									    id="cond_STAFF_ID" name="cond_STAFF_ID" 
+										value="ognl:staffData.cond_STAFF_ID"
+										text="ognl:staffData.cond_STAFF_ID" nullable="no"
+											readOnly="true" />
+									</span></span>
+							</span></li>	
+							<li class="li"><span class="label"><span>集团产品编码：</span></span>
+								<span class="e_input"><span> <input type="text"
+										id="cond_USER_PRODUCT_CODE" name="cond_USER_PRODUCT_CODE"
+										jwcid="cond_USER_PRODUCT_CODE@TextField"
+										value="ognl:condition.cond_USER_PRODUCT_CODE" datatype="text"
+										nullable="no" />
+								</span></span></li>
+							<li class="li"><span class="l_ml"> <label
+									for="searchByNum"><input id="searchByNum"
+										name="byNumber" type="checkbox" class="e_radio"
+										onclick="sele()" />只用集团产品编码查询</label></span></li>
+						</ul>
+						<ul class="ul">
+							<li class="li">
+								<div class="submitPlace"></div>
+								<div class="submit">
+									<button class="e_button-form"
+										onclick="return qryManagerRightsList();"
+										listener="ognl:listeners.qryManagerRightsList">
+										<i class="e_ico-search"></i><span>查询</span>
+									</button>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!--信息展示区-->
+				<div jwcid="RefreshPart@Part">
+					<div class="fctTop e_clear">
+						<div align="right">
+							<div class="fn">
+								<span jwcid="@Export" id="exportFile" name="exportFile"
+									serviceName="9018"
+									config="export/vpmnmanagermgr/VpmnManagerlist.xml"
+									fileName="VPMN客户经理维护记录" cond="QueryCondPart"
+									ftpSite="groupserv" beforeAction="" action="" />
+							</div>
+						</div>
+					</div>
+					<!-- 表格 开始 -->
+					<div class="c_scroll c_scroll-x c_scroll-table-10">
+						<div class="c_table">
+							<table>
+								<thead>
+									<tr>
+										<th>员工编码</th>
+										<th>员工姓名</th>
+										<th>VPMN编码</th>
+										<th>VPMN权限</th>
+										<th>联系电话</th>
+										<th>业务区</th>
+										<th>开始时间</th>
+										<th>结束时间</th>
+										<th>更新员工</th>
+										<th>更新部门</th>
+										<th>更新时间</th>
+										<th>备注</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+										element="tr" index="ognl:rowIndex">
+										<td><a jwcid="@Redirect" source="ognl:info"
+											areacode="ognl:info.AREA_CODE" staffId="ognl:info.STAFF_ID"
+											userProductCode="ognl:info.USER_PRODUCT_CODE"
+											rightCode="ognl:info.RIGHT_CODE"
+											linkPhone="ognl:info.LINK_PHONE"
+											startDate="ognl:info.START_DATE" endDate="ognl:info.END_DATE"
+											remark="ognl:info.REMARK" value="ognl:info.STAFF_ID"
+											onclick="redirectToEdit(this);" raw="true" /></td>
+
+										<td><span jwcid="@Insert"
+											value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.STAFF_ID)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:info.USER_PRODUCT_CODE" raw="true" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('VPN_MEMBER_STAFFRIGHT',info.RIGHT_CODE)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert" value="ognl:info.LINK_PHONE"
+											raw="false" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_AREA','AREA_CODE','AREA_NAME',info.AREA_CODE)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.START_DATE)"
+											raw="false" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.END_DATE)"
+											raw="false" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:info.UPDATE_STAFF_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_STAFF','STAFF_ID','STAFF_NAME',info.UPDATE_STAFF_ID)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:info.UPDATE_DEPART_ID==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.UPDATE_DEPART_ID)"
+											raw="true" /></td>
+										<td><span jwcid="@Insert"
+											value="ognl:info.UPDATE_TIME==null?'':@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)"
+											raw="false" /></td>
+										<td><span jwcid="@Insert" value="ognl:info.REMARK"
+											raw="true" /></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- 表格 结束 -->
+					<!-- 翻页 开始 -->
+					<div jwcid="@NavBar" name="pageNav" id="pageNav"
+						cond="QueryCondPart" part="RefreshPart"
+						listener="qryManagerRightsList" pageSize="20" needCount="false"
+						count="ognl:pageCounts" />
+					<!-- 翻页 结束 -->
+				</div>
+				<!--信息展示区 结束-->
+				<!--信息提交区域 开始 -->
+				<div class="c_form" jwcid="MgrInfoPart@Part">
+					<div class="c_form c_form-col-3 c_form-label-7">
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">员工编码：</span></span> <span class="e_elements">
+									<button type="button" class="e_button-right"
+										onclick="$.popupPageExternal('group.vpmnmanagermgr.StaffQry4VpmnManager','initStaffSelect','&button_flag=1','VPMN集团用户查询',720,480,'')">
+										<i class="e_ico-check"></i><span></span>
+									</button> <span class="e_input e_input-left"><span> <input
+											type="text" jwcid="con_STAFF_ID@Popup"
+											name="staffId" id="staffId"
+											value="ognl:staffData.con_STAFF_ID"
+											text="ognl:staffData.con_STAFF_ID" nullable="no"
+											readOnly="true" />
+									</span></span>
+							</span></li>	
+								
+								
+								
+						</ul>
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">集团产品编码：</span></span> <span class="e_elements">
+									<button type="button" class="e_button-right"
+										onclick="$.popupPageExternal('group.vpmnmanagermgr.VpmnGroupQuery','initial',null,'VPMN集团用户查询',720,480,'')">
+										<i class="e_ico-check"></i><span></span>
+									</button> <span class="e_input e_input-left"><span> <input
+											type="text" jwcid="con_USER_PRODUCT_CODE@Popup"
+											name="USER_PRODUCT_CODE" id="USER_PRODUCT_CODE"
+											value="ognl:staffData.USER_PRODUCT_CODE"
+											text="ognl:staffData.USER_PRODUCT_CODE" nullable="no"
+											readOnly="true" />
+									</span></span>
+							</span></li>
+						</ul>
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">权限编码：</span></span> <span class="e_select"><span><span>
+											<select jwcid="@Select" name="con_RIGHT_CODE"
+											id="con_RIGHT_CODE"
+											source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('VPN_MEMBER_STAFFRIGHT')"
+											textField="DATA_NAME" valueField="DATA_ID"
+											value="ognl:staffData.RIGHT_CODE" nullable="no" />
+									</span></span></span></li>
+						</ul>
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">开始时间：</span></span> <span class="e_input"><span>
+										<input type="text" jwcid="con_START_DATE@DateField"
+										name="con_START_DATE" value="ognl:staffData.START_DATE"
+										format="yyyy-MM-dd HH:mm:ss" />
+								</span></span></li>
+						</ul>
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">结束时间：</span></span> <span class="e_input"><span>
+										<input type="text" jwcid="con_END_DATE@DateField"
+										name="con_END_DATE" value="ognl:staffData.END_DATE"
+										format="yyyy-MM-dd HH:mm:ss" />
+								</span></span></li>
+						</ul>
+						<ul class="ul">
+							<li class="li"><span class="label"><span>备注：</span></span> <span
+								class="e_input"><span> <input type="text"
+										id="con_REMARK" name="con_REMARK" jwcid="con_REMARK@TextField"
+										value="ognl:staffData.REMARK" datatype="text" nullable="no" />
+								</span></span></li>
+						</ul>
+						<input type="hidden" jwcid="con_AREA_CODE@TextField"
+							id="con_AREA_CODE" name="con_AREA_CODE"
+							value="ognl:staffData.AREA_CODE" desc="业务区" />
+					</div>
+
+					<div class="c_submit">
+						<button class="e_button-form" id="addBtn" onclick="doDispatch()">
+							<i class="e_ico-add"></i><span>新增</span>
+						</button>
+						<button class="e_button-form" id="delBtn"
+							onclick="delStaffVpmnRight()">
+							<i class="e_ico-delete"></i><span>删除</span>
+						</button>
+					</div>
+				</div>
+				<!--信息提交区域 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+		</div>
+	</div>
+	<script></script>
+</body>
+</html>

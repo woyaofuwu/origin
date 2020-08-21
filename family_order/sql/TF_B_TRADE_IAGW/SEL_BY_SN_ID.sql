@@ -1,0 +1,4 @@
+SELECT trade_id,to_char(user_id) user_id,serial_number,sp_id,sp_name,biz_code,biz_desc,to_char(book_date,'yyyy-mm-dd hh24:mi:ss') book_date,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date,contract_id,price,billing_type,eparchy_code,staff_id,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time,subscribe_id,to_char(expect_time,'yyyy-mm-dd hh24:mi:ss') expect_time,err_code,oper_type_code,in_mode,deal_tag,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10,rsrv_str11,rsrv_str12,rsrv_str13,rsrv_str14,rsrv_str15,rsrv_str16,rsrv_str17,rsrv_str18,rsrv_str19,rsrv_str20 
+  FROM tf_b_trade_iagw
+ WHERE serial_number=:SERIAL_NUMBER
+   AND subscribe_id=:SUBSCRIBE_ID

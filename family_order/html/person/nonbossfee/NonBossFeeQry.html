@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>出账业务查询及发票管理</title>
+<script jwcid="@Script" src="person/nonbossfee/scripts/nonbossfee.js"></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/print/PrintMgr.js"></script> 
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	<!-- 【返销 / 打印发票】 操作区域 -->
+	<div class="c_title">
+		<div class="text">【返销 / 打印发票】</div>
+	</div>
+	<div jwcid="NonBossFeeCondPart@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">项目名称：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_FEE_NAME" id="cond_FEE_NAME"
+							source="ognl:feetype" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.FEE_NAME" 
+							desc="项目名称" nullable="no"  />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">成本中心：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_COST_CENTER" id="cond_COST_CENTER"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('COST_CENTER')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.FEE_NAME" 
+							desc="成本中心" nullable="no" />
+				</span></span></span>
+			</li>
+			<li class="li" id="taxList" style="display:''">
+					<span class="label">应税类型：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_TAX_TYPE" id="cond_TAX_TYPE" source="ognl:taxtype"
+	                                    addDefault="true" value="ognl:fee.TAX_TYPE" disabled="false" desc="应税类型" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+					
+					</span></span></span> 
+			</li>
+			<li class="li">
+				<span class="label">用户类型：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_PAY_NAME" id="cond_PAY_NAME"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('PAY_USER_NAME')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.PAY_NAME" 
+							desc="用户类型" nullable="no"  />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">发票打印：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_INVOICE_PRINT" id="cond_INVOICE_PRINT"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('INVOICE_PRINT')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.PAY_NAME" 
+							desc="发票打印" nullable="no"  />
+				</span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span>开始时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" value="ognl:cond.START_DATE" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>结束时间：</span></span>
+                   <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="cond_END_DATE"  id="cond_END_DATE" value="ognl:cond.END_DATE" />
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">模糊查询条件：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_FUZZY_QUERY" id="cond_FUZZY_QUERY"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('FUZZY_QUERY')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:fee.FUZZY_QUERY" 
+							desc="模糊查询条件" nullable="no"  />
+				</span></span></span>
+			</li>
+			<li class="li">
+					<span class="label">模糊查询：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_FUZZY_COMMENT" id="cond_FUZZY_COMMENT" value="ognl:fee.FUZZY_COMMENT" desc="模糊查询"  />
+					</span></span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_submit e_right">
+		<button type="button" class="e_button-form" id="SearchBtn"><i class="e_ico-search"></i><span>查询</span></button>
+		<button type="button" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+	</div>
+	 
+	<div class="submit e_left">
+		<span class="e_select"><span><span>
+			<select jwcid="@Select" name="INVOICE_TYPE" id="INVOICE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('INVOICE_TYPE')"
+	                                    addDefault="true" value="1" disabled="false" desc="发票种类" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  />
+	    </span></span></span>
+		<button type="button" class="e_button" id="PrintTicketBtn"><i class="e_ico-print"></i><span>打印</span></button>
+		<button type="button" class="e_button" id="CencelTicketBtn" name="CencelTicketBtn" onclick="cencelInvoice('ZF')"><i class="e_ico-delete"></i><span>作废</span></button>
+		<button type="button" class="e_button" id="CencelTicketBtn2" name="CencelTicketBtn2" onclick="cencelInvoiceCH('CH')"><i class="e_ico-send"></i><span>冲红</span></button>
+		<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="8899" 
+					 config="export/nonbossfee/queryNonBossFeeLog.xml" fileName="非出账业务收款补录信息" beforeAction="checkExport" cond="NonBossFeeCondPart" />
+		</span>
+		<button type="button" class="e_button" id="CancelBtn"><i class="e_ico-cancel"></i><span>返销</span></button>
+	</div> 
+	
+	<div jwcid="NonBossFeeResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="sortedTable">
+	     		<thead>
+		  			<tr>
+		  				<th >操作</th>
+						<th col="FEE_NAME" >编码</th>
+			      		<th col="FEE_NAME_DESC" >项目名称</th>
+			      		<th col="PAY_NAME" >用户类型</th>
+			      		<th col="OPER_FEE" >金额</th>
+	                    <th col="NOTAX_FEE" >不含税价款</th>
+			      		<th col="TAX_FEE" >税款</th>
+			      		<th col="RSRV_STR3" >应税类型</th>
+			      		<th col="TAX_RATE" >税率(%)</th>
+			      		<th col="RSRV_STR2" >发票项目</th>		
+			      		<th col="IF_PRINT" >发票打印</th>		
+			      		<th col="ONLY_PRINT" >仅打印发票</th>	
+			      		<th col="PAY_NAME_REMARK" >用户全称</th>		
+			      		<th col="FEE_DESC" >补充说明</th> 
+			      		<th col="IF_CENCER" >是否返销</th>
+			      		<th col="REFUND_DATE" >返销（录入）时间</th>
+			      		<th col="REMARK" >备注</th>
+			      		<th col="OPER_DATE" >操作时间</th>
+			      		<th col="PRINT_DATE" >打印日期</th>
+			      		<th col="CEN_INVOICE_DATE" >作废/冲红日期</th>
+			      		<th col="CH_PRINT_DATE" >冲红打印日期</th>
+			      		<th col="TICKET_TYPE" >发票类型</th>
+			      		<th col="TICKET_ID" >发票号</th>
+			      		<th col="PAY_MODE" >付款方式</th>
+			      		<th col="TRADE_STAFF_ID" >录入工号</th>
+			      		<th col="TRADE_DEPART_ID" >录入部门</th>
+			      		<th col="LOG_ID" >流水号</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><input type="checkbox" name="CHECKBOX_LIST" id="CHECKBOX_LIST"  jwcid="@Checkbox" value="ognl:info.LOG_ID" tradeId="ognl:info.TRADE_ID" printTag="ognl:info.RSRV_STR6" payName="ognl:info.PAY_NAME_REMARK" taxRate="ognl:info.TAX_RATE" payNameDes="ognl:pageutil.getStaticValue('TD_S_NONBOSSPARA',new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'PAY_USER_NAME_ALL',info.PAY_NAME_REMARK})" staffId="ognl:info.TRADE_STAFF_ID" refundTag="ognl:info.REFUND_TAG" printTime="ognl:info.RSRV_STR7" operDate="ognl:info.OPER_DATE" operMon="ognl:info.OPER_MONTH" ticketId="ognl:info.TICKET_ID" ticketType="ognl:info.TICKET_TYPE"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.FEE_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_NONBOSSPARA',new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'NONBOSS_FEE_ITEM',info.FEE_NAME})" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('PAY_USER_NAME', info.PAY_NAME)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.OPER_FEE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.NOTAX_FEE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TAX_FEE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_NONBOSSPARA',new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'ADDED_TAX_TYPE',info.RSRV_STR3})" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TAX_RATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_NONBOSSPARA',new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'INVOICE_TYPE',info.RSRV_STR2})" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('INVOICE_PRINT',info.RSRV_STR6)" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR4" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_NONBOSSPARA',new java.lang.String[]{'TYPE_ID','DATA_ID'}, 'DATA_NAME', new java.lang.String[]{'PAY_USER_NAME_ALL',info.PAY_NAME_REMARK})" raw="false"/></td> 
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CLUB_YESORNO', info.IF_CENCER)" raw="false"/></td> 
+						<td><span jwcid="@Insert" value="ognl:info.RSRV_STR8" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td> 
+		                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.OPER_DATE)" raw="false"></span></td>   
+		                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.RSRV_STR7)" raw="false"></span></td> 
+		                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.RSRV_STR9)" raw="false"></span></td>
+		                <td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.RSRV_STR10)" raw="false"></span></td>  
+		                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('INVOICE_TYPE', info.TICKET_TYPE)" raw="false"/></td>    
+		                <td><span jwcid="@Insert" value="ognl:info.TICKET_ID" raw="false"/></td> 
+		                <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('HAND_GATHER_PAY_MODE',info.PAY_MODE)" raw="false"/></td>
+		                <td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="false"/></td>
+		                <td><span jwcid="@Insert" value="ognl:info.TRADE_DEPART_ID" raw="false"/></td>		
+		                <td><span jwcid="@Insert" value="ognl:info.LOG_ID" raw="false"/></td>                
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="NonBossFeeCondPart,NonBossFeeResultPart" part="NonBossFeeResultPart" 
+	      listener="queryNonBossFeeLog" pageSize="10" count="ognl:recordCount"></div>
+	      <div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeCheck()" disabledBtn="false" area="NonBossFeeResultPart" element="div" style="display:none"/>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

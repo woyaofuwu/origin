@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>短信下发以及回复信息查询</title>
+<script jwcid="@Script" src="person/bat/batreplysmsquery/scripts/batreplysmsquery.js"></script>
+
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+		
+			<!-- 提示区域 结束 -->
+            <!-- 查询区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">批量短信下发以及回复信息查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+					
+						<li class="li">
+				<span class="label"><span class="e_required">导入时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_START_DATE" desc="导入时间"/>
+					</span></span>
+				</span>
+			</li>
+		
+				<li class="li">
+				<span class="label"><span class="e_required">回复时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_REPLY_DATE" id="cond_REPLY_DATE" nullable="no" value="ognl:condition.cond_REPLY_DATE" maxName="cond_REPLY_DATE" desc="客户回复时间"/>
+					</span></span>
+				</span>
+			</li>
+				<li class="li">
+				<span class="label"><span class="e_required">手机号码：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@TextField"
+									name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"
+									value="ognl:condition.cond_SERIAL_NUMBER" desc="手机号码" autoComplete="Off" /></span></span>
+				</span>
+			</li>
+						   <li class="li"><span class="label">回复结果：</span> <span
+							class="e_input"><span><input jwcid="@TextField"
+									name="cond_REPLY_CONTENT" id="cond_REPLY_CONTENT"
+									value="ognl:condition.cond_REPLY_CONTENT" desc="客户回复结果" autoComplete="Off" /></span></span>
+						</li>
+					</ul>
+			
+			
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+							class="e_button-form"  onclick="getBatReplySmsQuery();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				
+
+				<!-- 表格 开始 -->
+				<div jwcid="QueryListPart@Part" element="div">
+				
+                <div class="c_title">
+				 <div class="text">查询结果</div>
+	                <div class="fn">
+					      <div class="button" jwcid="@Conditional" condition="ognl:infos.size > 0">
+						      	<span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100468"
+								  config="export/bat/BatReplySmsQuery.xml" fileName="批量短信下发以及回复信息查询信资料" cond=QueryCondPart/>
+						  </div>
+				     </div>
+		  	     </div>	  
+
+		  	     
+		  	    <div jwcid="table4Print@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+					<table jwcid="@Table" name="printTable" id="printTable">
+						<thead>
+						<tr>
+							<th>下发端口号</th>
+							<th>客户号码</th>
+							<th>业务区</th>
+							<th>项目名称</th>
+							<th>下发短信内容</th>
+							<th>下发请求时间</th>
+							<th>下发受理时间</th>
+							<th>客户回复结果</th>
+							<th>客户回复时间</th>
+							<th>导入员工工号</th>
+							<th>导入员工姓名</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					    <td><span jwcid="@Insert" value="ognl:info.SEND_OBJECT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERVICE_AREA" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PROJECT_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.NOTICE_CONTENT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.INSERT_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.INSERT_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REQ_CODE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RECEIVE_TIME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_NAME" raw="true"/></td>
+						<!-- <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info10086.PARA_CODE11)" raw="true"/></td> -->
+						
+						</tr>                                               
+						</tbody>
+					</table>
+
+				</div>
+				<!-- 表格 结束 -->
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="batreplysmsquery" pageSize="10" count="ognl:count"></div>		
+				<!-- 翻页 结束 -->
+				
+	</div>
+	</div>
+<!-- 区域 结束 -->
+</div></div>
+</body>
+</html>

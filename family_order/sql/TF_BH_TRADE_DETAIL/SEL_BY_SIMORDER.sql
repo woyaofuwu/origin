@@ -1,0 +1,7 @@
+SELECT to_char(a.trade_id) trade_id,a.accept_month,to_char(a.open_date,'yyyy-mm-dd hh24:mi:ss') open_date,to_char(b.sale_time,'yyyy-mm-dd hh24:mi:ss') develop_date,b.sale_staff_id develop_staff_id,b.stock_id develop_depart_id,a.remove_reason_code,a.develop_no,a.user_type_code,a.user_passwd,to_char(b.product_id_a) assure_cust_id,a.assure_type_code,to_char(a.assure_date,'yyyy-mm-dd') assure_date,a.assure_name,a.assure_pspt_type_code,a.assure_pspt_id,a.assure_contact,a.cust_passwd,a.open_limit,a.pspt_type_code,a.pspt_id,a.pspt_addr,to_char(a.pspt_end_date,'yyyy-mm-dd') pspt_end_date,a.sex,to_char(a.birthday,'yyyy-mm-dd') birthday,a.nationality_code,a.local_native_code,a.population,a.language_code,a.folk_code,a.phone,a.post_code,a.post_address,a.fax_nbr,a.email,a.contact,a.contact_phone,a.home_address,a.work_name,a.work_depart,a.job,a.job_type_code,a.educate_degree_code,a.religion_code,a.revenue_level_code,a.marriage,a.character_type_code,a.webuser_id,a.web_passwd,a.contact_type_code,a.community_id,a.pay_name,a.pay_mode_code,a.bank_acct_no,a.bank_code,a.contract_no 
+  FROM tf_bh_trade_detail a,tf_r_simcardorder b
+ WHERE a.trade_id=TO_NUMBER(:TRADE_ID)
+   AND a.accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))
+   AND b.serial_number=:SERIAL_NUMBER
+   AND (:FEE_TAG IS NULL OR b.fee_tag=:FEE_TAG)
+   AND (:BACK_TAG IS NULL OR b.back_tag=:BACK_TAG)

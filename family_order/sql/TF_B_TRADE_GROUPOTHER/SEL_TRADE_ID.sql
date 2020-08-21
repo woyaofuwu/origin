@@ -1,0 +1,3 @@
+SELECT to_char(trade_id) trade_id,gvalue_code,gvalue_name,gcvalue1,gcvalue2,gcvalue3,gcvalue4,gcvalue5,gcvalue6,gcvalue7,gcvalue8,gcvalue9,gcvalue10,gcvalue11,gcvalue12,gcvalue13,gcvalue14,gcvalue15,gcvalue16,gcvalue17,gcvalue18,gcvalue19,gcvalue20,gcvalue21,gcvalue22,gcvalue23,gcvalue24,gcvalue25,to_char(gnvalue1) gnvalue1,to_char(gnvalue2) gnvalue2,to_char(gnvalue3) gnvalue3,to_char(gnvalue4) gnvalue4,to_char(gnvalue5) gnvalue5,to_char(gdvalue1,'yyyy-mm-dd hh24:mi:ss') gdvalue1,to_char(gdvalue2,'yyyy-mm-dd hh24:mi:ss') gdvalue2,to_char(gdvalue3,'yyyy-mm-dd hh24:mi:ss') gdvalue3,to_char(gdvalue4,'yyyy-mm-dd hh24:mi:ss') gdvalue4,remark 
+  FROM tf_b_trade_groupother
+ WHERE trade_id=TO_NUMBER(:TRADE_ID)

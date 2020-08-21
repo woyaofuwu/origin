@@ -1,0 +1,369 @@
+<div class="c_scroll c_scroll-float c_scroll-submit c_scroll-header">
+<div name="BbossTabSet" jwcid="@Tabset" class='c_tab c_tab-sub c_tab-avg c_tab-full' slidable="false">
+
+<div jwcid="@Conditional" condition="ognl:compInfo.isFeedBack==false">
+	<div jwcid="@Conditional" condition="ognl:compInfo.OPER_CODE != 'DstUs'">
+	<!-- 标题1 开始 -->
+	<div title="属性规格明细" class="content">
+	<!-- 标题1 结束 -->
+	<!-- 表单 开始 -->
+	<div class="l_padding">
+		<div class="c_list c_list-form" id="e_offerGeneralParam">
+		<ul>
+			<li class="link required">
+				<div class="label">商品操作类型</div>
+				<div class="value">
+					<span jwcid="@Select" name="OPERTYPE" source="ognl:compInfo.OFFER_OPER_CODE_SEL_LIST" 
+						textField="OPER_NAME" valueField="OPER_VALUE" value="ognl:compInfo.OPER_VALUE"
+						  class="e_select"
+						  nullable="no" desc="商品操作类型">
+					</span> 
+				</div>
+			</li>
+			<div jwcid="@Conditional" condition="ognl:compInfo.OPER_CODE == 'CrtUs'">
+			<li class="link required">
+				<div class="label">业务开展模式</div>
+				<div class="value">
+					<span jwcid="@Select" name="BIZ_MODE" source="ognl:compInfo.BIZ_MODE_SEL_LIST"
+						textField="MODE_NAME" valueField="BIZ_MODE" value="ognl:compInfo.BIZ_MODE_VALUE"
+						  class="e_select"
+						  nullable="no" desc="业务开展模式">
+					</span>
+				</div>
+			</li>
+ 			</div>
+			<div jwcid = "@Conditional"
+			     condition = "ognl:(compInfo.OPER_CODE == 'ChgMb' ||compInfo.OPER_CODE == 'CrtMb')">
+				<li class = "link required">
+					<div class = "label">成员类型</div>
+					<div class="value">
+						<span jwcid = "@Select" name = "MEB_TYPE" source = "ognl:compInfo.MEB_TYPE_LIST"
+						      textField = "NAME" value = "ognl:compInfo.MEB_TYPE"
+						      valueField = "VALUE" class = "e_select" nullable = "no" desc =
+								      "成员类型">
+						</span>
+					</div>
+				</li>
+			</div>
+ 			<div jwcid="@Conditional"
+		         condition="ognl:(compInfo.OPER_CODE != 'ChgMb' && compInfo.OPER_CODE != 'CrtMb' && compInfo.OPER_CODE != 'DstMb')">
+				<li class="link required">
+					<div class="label">套餐生效方式</div>
+					<div class="value">
+						<span jwcid="@Select" name="PAY_MODE" source="ognl:compInfo.DISCNT_EFFECT_SEL_LIST" 
+							textField="ATTR_NAME" valueField="ATTR_VALUE" value="ognl:compInfo.DISCNT_EFFECT_VALUE"
+							  class="e_select"
+							  nullable="no" desc="套餐生效方式">
+						</span>
+						<!--<input id="PAY_MODE" name="PAY_MODE" jwcid="@TextField"  value="立即生效"  />  -->
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">业务保障等级</div>
+					<div class="value">
+						<span jwcid="@Select" name="BUS_NEED_DEGREE" source="ognl:compInfo.bboss_BUS_NEED_DEGREE" textField="DATA_NAME" valueField="DATA_ID" 
+						value="ognl:compInfo.BUS_NEED_DEGREE_VALUE" desc="业务保障等级">
+						</span>  
+					</div>
+				</li>
+			</div>
+		</ul>
+	</div>
+	</div>
+	<!-- 表单 结束 -->
+	</div>
+  </div>
+</div>
+
+	<div jwcid="@Conditional"
+	     condition="ognl:(compInfo.OPER_CODE != 'ChgMb' && compInfo.OPER_CODE != 'CrtMb' && compInfo.OPER_CODE != 'DstMb')">
+		<div title="联系人信息" class="content">
+		<div class = "c_tip c_tip-red">
+			<div class = "content">客户经理和订单提交人必须填写</div>
+		</div>
+		<div class="l_padding-side">
+			<div class="c_title">
+				<div class="text">联系人信息</div>
+				<div class="fn">
+					<ul>
+						<li ontap="showFloatDetailInfo('addContact');"><span
+							class="e_ico-add" style="height: 3.57em;"></span>新增</li>
+					</ul>
+				</div>
+			</div>
+			<div class="c_float" id = "addContact_float" style = "width: 28.57em; right:0.71em; top:12.71em;">
+				<div class="c_form c_form-padding" id="addContact">
+					<ul>
+						<li class="link" name="type">
+							<div class="label">类型：</div>
+							<div class="value">
+								<span jwcid="@Select" name="CONTACTOR_TYPE_CODE"
+									source="ognl:compInfo.CONTACT_SEL_LIST" textField="DATA_NAME"
+									valueField="DATA_ID"
+									nullable="no"></span>
+								<!--<input type="text" id="CONTACTOR_TYPE_CODE" name="CONTACTOR_TYPE_CODE"  jwcid="@TextField"  value="ognl:addContactorInfo.CONTACTOR_NAME" />  -->
+	
+							</div>
+						</li>
+						<li name="name">
+							<div class="label">姓名：</div>
+							<div class="value">
+								<span class="e_mix">
+								
+									<input type="text" id="POP_CONTACTOR_ID" name="POP_CONTACTOR_ID" 
+										   jwcid="@TextField" value="" readOnly = "true"/>
+									<input type="hidden" id="CONTACTOR_ID" name="CONTACTOR_ID" value=""/> 
+									
+								<button class="e_button-blue" ontap="openStaffPopup('CONTACTOR_ID');">
+									<span class="e_ico-search"></span>
+								</button>
+								
+								<span class="e_space"></span>
+								</span>
+							</div>
+	
+						</li>
+						<li name="phone">
+							<div class="label">电话：</div>
+							<div class="value">
+								<input type="text" id="CONTACTOR_ID_SN" name="CONTACTOR_ID_SN" readOnly = "true"
+									jwcid="@TextField" value="ognl:addContactorInfo.CONTACTOR_PHONE"
+									tip="联系人电话"/>
+							</div>
+						</li>
+						<li name="staffNumberArea" style="display:none;">
+							<div class="label">总部用户名</div>
+							<div class="value">
+								<input type="text" id="STAFF_NUMBER" name="STAFF_NUMBER"
+									value="ognl:addContactorInfo.STAFF_NUMBER" jwcid="@TextField"
+									desc="总部用户名" />
+							</div>
+						</li>
+					</ul>
+					<div class="submit">
+						<button type="button" ontap="hideFloatDetailInfo('addContact');"
+							class="e_button-l e_button-r e_button-navy">取消</button>
+						<button type="button" ontap="addContact(this);"
+							class="e_button-l e_button-r e_button-blue">确定</button>
+					</div>
+					<!-- 表单 结束 -->
+				</div>
+			</div>
+			<div id="contactList" class="c_list c_list-line c_list-border" style="display: none">
+				<ul>
+					
+				</ul>
+			</div>
+			<div class="c_space"></div>
+		</div>
+	</div>
+		
+		<div title = "合同信息" class = "content">
+			<div jwcid = "@Conditional" condition =
+					"ognl:((compInfo.OPER_CODE == 'CrtUs' && compInfo.IS_PRE != 'true'))">
+				<div class = "c_tip c_tip-red">
+					<div class = "content">合同附件必须填写</div>
+				</div>
+			</div>
+			<div class="l_padding-side">
+				<div class = "c_title">
+					<div class = "text">
+						附件
+					</div>
+					<div class = "fn">
+						<ul>
+							<li ontap = "showFloatDetailInfo('addEnclosure');"><span
+									class = "e_ico-add" style="height: 3.57em;"></span>新增</li>
+						</ul>
+					</div>
+				</div>
+				<div class="c_float" id = "addEnclosure_float" style = "width: 28.57em; right:0.71em; top:12.71em;">
+					<div class="c_form c_form-padding c_form-col-1 c_form-label-7" id="addEnclosure">
+						<ul>
+							<li class="link">
+								<div class="label">附件类型：</div>
+								<div class="value">
+									<span jwcid="@Select" id="ATT_TYPE_CODE" name="ATT_TYPE_CODE"
+										source="ognl:compInfo.ATT_TYPE_SEL_LIST" textField="DATA_NAME"
+										valueField="DATA_ID" nullable="no" value="1" > </span>
+									<!--<input id="ATT_TYPE_CODE" name="ATT_TYPE_CODE" jwcid="@TextField"  value="ognl:addAttInfo.ATT_NAME"  />  -->
+								</div>
+							</li>
+							<li>
+								<div class="label">附件名称：</div>
+								<div class="value">
+									<span name="ATT_NAME" jwcid="@SimpleUpload" title="BBOSS附件上传"
+										ftpCode="groupserv" filePath="BBOSS"
+										fileTypes=".doc;.docx;.jpg;.png;.pdf;.zip;.rar" needSuffix ="true"/>
+								</div>
+								<!--<div class="value">
+									<input type="text" name="ATT_NAME" jwcid="@TextField"
+										   value="" desc="合同编码" />
+								</div>-->
+							</li>
+						</ul>
+<!-- 						<ul id="e_contractInputfild">
+							<li>
+								<div class="label">合同编码：</div>
+								<div class="value">
+									<input type="text" name="ATT_CODE" jwcid="@TextField"
+										value="" desc="合同编码" />
+								</div>
+							</li>
+							<li>
+								<div class="label">合同名称：</div>
+								<div class="value">
+									<input type="text" name="CONT_NAME" jwcid="@TextField"
+										value="" desc="合同名称" />
+								</div>
+							</li>
+							<li name="time">
+								<div class="label">合同开始日期：</div>
+								<div class="value">
+									<input name="ContEffdate" jwcid="@DateField" readonly="readonly" dropDown="true" value="" format ="yyyyMMdd"/>
+								</div>
+							</li>
+							<li name="time">
+								<div class="label">合同结束日期：</div>
+								<div class="value">
+									<input name="ContExpdate" jwcid="@DateField" readonly="readonly" dropDown="true" value="" format ="yyyyMMdd"/>
+								</div>
+							</li>
+							<li>
+								<div class="label">签约资费：</div>
+								<div class="value">
+									<input type="text" name="ContFee" jwcid="@TextField"
+										value="" desc="签约资费" />
+								</div>
+							</li> 
+							<li>
+								<div class="label">优惠方案：</div>
+								<div class="value">
+									<input type="text" name="PerferPlan" jwcid="@TextField"
+										value="" desc="优惠方案" />
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">是否自动续约：</div>
+								<div class="value">
+									<span jwcid="@Select" id="IsAutoRecont" name="IsAutoRecont"
+										source="ognl:compInfo.IsAutoRecont_SEL_LIST" textField="DATA_NAME"
+										valueField="DATA_ID" nullable="no" onchange="checkIsAutoRecont(this);"> </span>
+								</div>
+							</li>
+							<li class="link" id="RecontCyc">
+								<div class="label">自动续约周期：</div>
+								<div class="value">
+									<span jwcid="@Select" id="AutoRecontCyc" name="AutoRecontCyc"
+										source="ognl:compInfo.AutoRecontCyc_SEL_LIST" textField="DATA_NAME"
+										valueField="DATA_ID" nullable="no" value="1"> </span>
+								</div>
+							</li>
+							<li name="time" id="RecontTime">
+								<div class="label">续约后到期时间：</div>
+								<div class="value">
+									<input name="RecontExpdate" jwcid="@DateField" readonly="readonly" dropDown="true" value="" format ="yyyyMMdd"/>
+								</div>
+							</li>
+							<li class="link">
+								<div class="label">是否为续签合同：</div>
+								<div class="value">
+									<span jwcid="@Select" id="IsRecont" name="IsRecont"
+										source="ognl:compInfo.IsRecont_SEL_LIST" textField="DATA_NAME"
+										valueField="DATA_ID" nullable="no" value="1"> </span>
+								</div>
+							</li>
+						</ul> -->
+						<div class="submit">
+							<button type="button" ontap="hideFloatDetailInfo('addEnclosure');"
+								class="e_button-l e_button-r e_button-navy">取消</button>
+							<button type="button" ontap="addEnclosure(this);"
+								class="e_button-l e_button-r e_button-blue">确定</button>
+								<!-- ontap="if(checkContExpdate){addEnclosure(this);}" -->
+						</div>
+					</div>
+				</div>
+				<!-- 表单 结束 -->
+				<div id="enclosureList" class="c_list c_list-line c_list-border" style="display: none">
+					<ul>
+				
+					</ul>
+				</div>
+				<div class="c_space"></div>
+			</div>
+		</div>
+		
+		<div title="审批信息" class="content">
+			<div class="l_padding-side">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">审批信息</div>
+					<div class="fn">
+						<ul>
+							<li ontap="showFloatDetailInfo('addApprove');"><span
+								class="e_ico-add" style="height: 3.57em;"></span>新增</li>
+						</ul>
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+				<div class="c_float" id = "addApprove_float" style = "width: 28.57em; top:10.71em; right:0.71em;">
+					<div class="c_form c_form-padding c_form-col-1 c_form-label-4" id="addApprove">
+						<ul>
+							<li class="link" name="name">
+								<div class="label">审批人：</div>
+								<div class="value">
+									<input type="text" name="AUDITOR" jwcid="@TextField"
+										value="ognl:addAuditorInfo.AUDITOR" desc="审批人姓名" />
+								</div>
+							</li>
+							<li name="time">
+								<div class="label">审批时间：</div>
+								<div class="value">
+									<input name="AUDITOR_TIME" jwcid="@DateField" readonly="readonly" dropDown="true" value="" format="yyyyMMddhhmmss" />
+								</div>
+							</li>
+							<li name="remark">
+								<div class="label">审批意见：</div>
+								<div class="value">
+									<input type="text" name="AUDITOR_DESC" jwcid="@TextField"
+										value="ognl:addAuditorInfo.AUDITOR_DESC" desc="审批意见"/>
+								</div>
+							</li>
+						</ul>
+						<!-- 提交 开始 -->
+						<div class="submit">
+							<button type="button" ontap="hideFloatDetailInfo('addApprove');"
+								class="e_button-l e_button-r e_button-navy">取消</button>
+							<button type="button" ontap="addApprove(this);hideFloatDetailInfo('addApprove');"
+								class="e_button-l e_button-r e_button-blue">确定</button>
+						</div>
+						<!-- 提交 结束 -->
+					</div>
+					<!-- 表单 结束 -->
+				</div>
+				<div id="approveList" class="c_timeline c_timeline-border" style="display: none; width: 28.57em;">
+					<ul>
+			
+					</ul>
+				</div>
+				<div class="c_space"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+ <div class="l_bottom">
+	<div class="c_submit c_submit-full">
+		<button class="e_button-l e_button-blue" type="button" ontap="merchInfoSubmit(this)">确定</button>
+	</div>
+ </div>
+
+<!-- ==================== 子层弹出框部分 结束==================== -->
+<!-- 隐藏域开始 -->
+	<input type="hidden" jwcid="@Any" name="IS_PRE" id="IS_PRE" value="ognl:compInfo.IS_PRE"/>  
+	<input type="hidden" jwcid="@Any" name="TEST_CONFIG" id="TEST_CONFIG" value="ognl:compInfo.SPEC_INFO.TEST_DIS"/>
+	<input type="hidden" jwcid="@Any" name="ATT_INFOS" id="ATT_INFOS" value='ognl:attInfos'/>
+    <input type="hidden" jwcid="@Any" name="AUDITOR_INFOS" id="AUDITOR_INFOS" value='ognl:auditorInfos'/>
+    <input type="hidden" jwcid="@Any" name="CONTACTOR_INFOS" id="CONTACTOR_INFOS" value='ognl:contactorInfos'/>
+    <input style="display: none" jwcid="@TextArea" name="OLD_CONTRACT_INFO" id="OLD_CONTRACT_INFO" value='ognl:addAttInfo'/>
+ <!-- 隐藏域结束 -->

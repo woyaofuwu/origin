@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选号列表</title>
+	<script language="javascript"><!--
+	function followMsisdnReturnValues(chooseSerialNumber){
+		var followMsisdnS = $("#FOLLOW_MSISDN_S").val();
+		setPopupReturnValue(this,['SERIAL_NUMBER_B',chooseSerialNumber,'FOLLOW_MSISDN_S',followMsisdnS],true);
+	}
+	// --></script>
+	<script language="javascript">
+	//副号码搜索
+	function qrySerial(){
+		$.beginPageLoading("正在查询数据...");
+		ajaxSubmit('PhonePart','getSerialNumber','','queryPart',function(date){
+            $.endPageLoading();
+			},function() {
+			    $.endPageLoading();
+			    MessageBox.alert("告警提示", "操作超时!", function(btn) {
+			    });
+			  });
+	}
+	
+	function pageUp(){
+		$.beginPageLoading("正在查询数据...");
+		ajaxSubmit('PhonePart','getSerialNumber','','queryPart',function(date){
+            $.endPageLoading();
+			},function() {
+			    $.endPageLoading();
+			    MessageBox.alert("告警提示", "操作超时!", function(btn) {
+			    });
+			  });
+		
+	}
+		
+	</script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div jwcid="PhonePart@Part" id="PhonePart">
+		<div class="c_space"></div>
+		<div style="background-color:#FFFFFF" class="c_form c_form-label-5 c_form-col-6 c_form-phone-col-1 c_form-submit e_groupRight">
+			<ul class="ul" >
+				<li>
+					<div class="label">副号选号：</div>
+					<div class="value">
+					<input jwcid="@TextField" name="START_NUM" id="START_NUM" value="" desc="手机号码" width="20%"/>
+					</div>
+				</li>
+				<li>
+					<button class="e_button-blue" id="queryBtn" name="queryBtn" ontap="qrySerial()">
+					<span class="e_ico-search"></span>
+					<span>搜索</span>
+					</button>
+				</li>
+			</ul>
+		</div>
+		<div class="c_space"></div>
+			<div class="c_list c_list-phone-col-2 c_list-col-3 c_list-space c_list-l c_list-line c_lists-border" jwcid="queryPart@Part" id="queryPart">
+				<ul class="ul" >
+					<li class="li" jwcid="@Foreach" source="ognl:phoneList" value="ognl:phoneData" index="ognl:rowIndex" element="li">
+						<a href="#nogo" jwcid="@Any" id="ognl:phoneData.ACCESS_NUMBER"  value="ognl:phoneData.ACCESS_NUMBER" class="text" CHOOSE_SERIAL_NUMBER="ognl:phoneData.ACCESS_NUMBER" onclick="followMsisdnReturnValues(getAttribute('CHOOSE_SERIAL_NUMBER'));">
+							<span jwcid="@Insert" value="ognl:phoneData.ACCESS_NUMBER" raw="true" />
+						</a>
+					</li>
+					<li class="li" style="display:none">
+						<textarea jwcid="@TextArea" name="FOLLOW_MSISDN_S" type="text" value="ognl:phoneList" title="" raw="true"></textarea>
+					</li>
+				</ul>
+		</div>
+		<div class="c_space-2"></div>
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<!-- <div class="c_space-c"></div>
+		<div class="c_page c_page-border" jwcid="@NavBar" name="recordNav" id="recordNav" cond="PhonePart" part="PhonePart" listener="getSerialNumber" pageSize="20" count="ognl:count"></div> -->
+		<!-- 翻页 结束 -->
+		<button class="e_button-l e_button-r" id="pageUp" name="pageUp" ontap="pageUp()">
+		<span></span>
+		<span>下一页</span>
+		</button>
+	</div>	
+	<div class="c_space-2"></div>
+	<div class="c_submit c_submit_center">
+		<button class="e_button-l e_button-r e_button-navy" id="bcancel" name="bcancel" onclick="setPopupReturnValue(this,['FOLLOW_MSISDN_S',$('#FOLLOW_MSISDN_S').val()],true);"><i></i><span>取消</span></button>
+	</div>
+</div>
+</body>
+</html>

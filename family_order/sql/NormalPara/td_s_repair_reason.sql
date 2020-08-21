@@ -1,0 +1,5 @@
+--IS_CACHE=Y
+SELECT data_id paracode,data_name paraname 
+  FROM adm_static
+ WHERE type_id='REPAIR_POST_INFO_REASON'
+ AND (:TRADE_EPARCHY_CODE IS NOT NULL OR :TRADE_EPARCHY_CODE IS NULL)

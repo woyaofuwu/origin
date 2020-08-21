@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--$Id: QueryUserDiscnt.html,v 1.4 2013/04/17 08:35:53 xiekl Exp $-->
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>礼品未领取号码清单</title>
+<script jwcid="@Script" language="JavaScript" src="person/sundryquery/ungotgift/scripts/ungotgiftquery.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		获取信息无数据!
+	</div>
+</div>
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">礼品未领取号码清单</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-8 c_form-col-2" jwcid="cond@Part" name="cond" id="cond" element="div">
+		<ul class="ul">
+			 <li class="li">
+				<span class="label"><span class="e_required">业务区：</span></span>
+				<span class="e_select"><span><span>
+				  <select name="cond_TRADE_CITY_CODE" id="cond_TRADE_CITY_CODE" 
+				  		jwcid="cond_TRADE_CITY_CODE@Select"
+						source="ognl:areas"
+						valueField="AREA_CODE" textField="AREA_NAME"
+						value="ognl:cond.cond_TRADE_CITY_CODE" nullable="no" desc="业务区"
+						addDefault="false"/>
+				</span></span></span>
+			</li>	
+			 <li class="li">
+				<span class="label"><span class="e_required">营业网点编码：</span></span>
+				<span class="e_input"><span>
+				  	<input type="text" jwcid="@TextField" id="cond_TRADE_DEPART_ID" name="cond_TRADE_DEPART_ID" value="ognl:cond.cond_TRADE_DEPART_ID" nullable="no"  desc="营业网点编码" />
+				</span></span>
+			</li>
+			 <li class="li">
+				<span class="label"><span class="e_required">活动名称：</span></span>
+				<span class="e_select"><span><span>
+				 <select name="cond_PRODUCT_ID" jwcid="cond_PRODUCT_ID@Select"
+						source="ognl:actives"
+						valueField="PARAM_CODE" textField="PARAM_NAME"
+						value="ognl:cond.cond_PRODUCT_ID" nullable="no" desc="活动名称" 
+						addDefault="false"/>
+				</span></span></span>
+			</li>	
+			 <li class="li">
+				<span class="label"><span class="e_required">礼品名称：</span></span>
+				<span class="e_select"><span><span>
+				  <select name="cond_PACKAGE_ID" id="cond_PACKAGE_ID" 
+				  		jwcid="cond_PACKAGE_ID@Select"
+						source="ognl:packages"
+						valueField="PARA_CODE1" textField="PARA_CODE3"
+						value="ognl:cond.cond_PACKAGE_ID" nullable="no" desc="礼品名称"
+						addDefault="true"/>
+				</span></span></span>
+			</li>	
+		    <li class="li">
+				<span class="label">起始工号：</span>
+				<span class="e_input"><span>
+				  <input type="text" jwcid="@TextField" 
+				  	id="cond_TRADE_STAFF_ID_S" name="cond_TRADE_STAFF_ID_S" 
+				  	value="ognl:cond.cond_TRADE_STAFF_ID_S" 
+				  	nullable="yes"
+				  	onKeyUp="UngotGiftQuery.checkStaffIdLength(this)" onBlur="UngotGiftQuery.putStaffId();"
+				  	desc="起始工号"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">终止工号：</span>
+				<span class="e_input"><span>
+				  <input type="text" jwcid="@TextField" 
+				  	id="cond_TRADE_STAFF_ID_E" name="cond_TRADE_STAFF_ID_E" 
+				  	value="ognl:cond.cond_TRADE_STAFF_ID_E" 
+				  	nullable="yes"  
+				  	onKeyUp="UngotGiftQuery.checkStaffIdLength(this)"
+				  	desc="终止工号"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">起始日期：</span></span> 
+				<span class="e_elements">
+					<!-- 替换为页面组件 -->
+					 <span class="e_input"><span><input
+							jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"
+							value="ognl:cond.cond_START_DATE" nullable="no" desc="起始日期"
+							format="yyyy-MM-dd" /></span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">终止日期：</span></span> 
+				<span class="e_elements">
+					<!-- 替换为页面组件 -->
+					 <span class="e_input"><span><input
+							jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"
+							value="ognl:cond.cond_END_DATE" nullable="no" desc="终止日期"
+							format="yyyy-MM-dd" /></span></span>
+				</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="querybtn" id="querybtn" class="e_button-form" onclick="UngotGiftQuery.queryUngotGiftList();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="ungotList@Part" id="ungotList"  element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10">
+	<div class="c_table">
+		<table name="ungotGiftTable">
+			<thead>
+				<tr>
+				  	<th>客户姓名</th>
+                  	<th>手机号码</th>
+                  	<th>活动名称</th>	
+                  	<th>预定礼品</th>
+                  	<th>受理日期</th>
+                  	<th>工号</th>
+                  	<th>员工姓名</th>
+                  	<th>营业网点</th>
+                  	<th>业务区</th>	
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="true"/></td>	
+						<td><span jwcid="@Insert" value="ognl:info.PACKAGE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', info.TRADE_STAFF_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.TRADE_DEPART_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.TRADE_CITY_CODE)" raw="false"/></td>			
+					</tr>
+			</tbody>
+		</table>
+	</div></div>
+	
+	<div jwcid="pagin@NavBar" name="pagin" cond="cond"
+			count="ognl:paginCount"  listener="queryUngotGiftList"
+			pageSize = "10"
+			part="ungotList" />
+			
+	<!-- 表格 结束 -->
+	</div>
+<!-- 区域 结束 -->
+	</div>
+</div></div>
+</body>
+</html>

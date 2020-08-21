@@ -1,0 +1,57 @@
+SELECT '' SUBSYS_CODE,
+       0 PARAM_ATTR,
+       '' PARAM_CODE,
+       '' PARAM_NAME,
+       B.USER_ID PARA_CODE1,
+       B.SERIAL_NUMBER PARA_CODE2,
+       '' PARA_CODE3,
+       '' PARA_CODE4,
+       '' PARA_CODE5,
+       '' PARA_CODE6,
+       '' PARA_CODE7,
+       '' PARA_CODE8,
+       '' PARA_CODE9,
+       '' PARA_CODE10,
+       '' PARA_CODE11,
+       '' PARA_CODE12,
+       '' PARA_CODE13,
+       '' PARA_CODE14,
+       '' PARA_CODE15,
+       '' PARA_CODE16,
+       '' PARA_CODE17,
+       '' PARA_CODE18,
+       '' PARA_CODE19,
+       '' PARA_CODE20,
+       '' PARA_CODE21,
+       '' PARA_CODE22,
+       '' PARA_CODE23,
+       '' PARA_CODE24,
+       '' PARA_CODE25,
+       '' PARA_CODE26,
+       '' PARA_CODE27,
+       '' PARA_CODE28,
+       '' PARA_CODE29,
+       '' PARA_CODE30,
+       '' START_DATE,
+       '' END_DATE,
+       '' EPARCHY_CODE,
+       '' REMARK,
+       '' UPDATE_STAFF_ID,
+       '' UPDATE_DEPART_ID,
+       '' UPDATE_TIME
+  FROM CHNL_ACCESS_PHONE A, TF_F_USER B
+ WHERE A.PHONE_NBR = B.USER_ID
+   AND A.STATE = '0'
+   AND A.CHANNEL_ID = :PARA_CODE1
+   AND B.REMOVE_TAG = '0'
+   AND A.SKYPAY_RIGHT = '1'
+   AND A.END_DATE>SYSDATE
+   AND (:PARA_CODE2 = '' OR :PARA_CODE2 IS NULL)
+   AND (:PARA_CODE3 = '' OR :PARA_CODE3 IS NULL)
+   AND (:PARA_CODE4 = '' OR :PARA_CODE4 IS NULL)
+   AND (:PARA_CODE5 = '' OR :PARA_CODE5 IS NULL)
+   AND (:PARA_CODE6 = '' OR :PARA_CODE6 IS NULL)
+   AND (:PARA_CODE7 = '' OR :PARA_CODE7 IS NULL)
+   AND (:PARA_CODE8 = '' OR :PARA_CODE8 IS NULL)
+   AND (:PARA_CODE9 = '' OR :PARA_CODE9 IS NULL)
+   AND (:PARA_CODE10 = '' OR :PARA_CODE10 IS NULL)

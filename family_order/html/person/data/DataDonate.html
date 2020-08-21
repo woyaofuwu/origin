@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script" type="text/javascript" src="person/data/scripts/datadonate.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="463" element="div"/>
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">用户已有流量包</div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 刷新区域 开始 -->
+	<div jwcid="dataInfoTablePart@Part" class="c_form c_form-text c_form-label-6 c_form-col-3">
+		<!-- 表单 开始 -->
+		<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-5">
+			<table jwcid="@Table" id="dataInfoTable" name="dataInfoTable">
+				<thead>
+					<tr>
+						<th>选择</th>
+						<th col="COMM_ID">套餐编码</th>
+						<th col="COMM_ID">套餐名称</th>
+						<th col="DATA_TYPE_NAME">流量类型</th>
+						<th col="COMM_ID">资产实例ID</th>
+						<th col="BALANCE">流量余额(MB)</th>
+						<th col="EFFECTIVE_DATE">生效时间</th>
+						<th col="EXPIRE_DATE">失效时间</th>
+						<th col="DATA_TYPE" style="display:none"></th>
+						<th col="DISCNT_CODE" style="display:none"></th>
+					</tr>
+				</thead>
+				<tbody id="dataInfoTable_Body">
+					<tr jwcid="@Foreach" source="ognl:dataInfos" value="ognl:dataInfo" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><input type="radio" id = "idList" name="idList" jwcid="@Any" value="ognl:dataInfo.FM_BALANCE_ID"  
+						raw="true" class="e_radio" onclick="DealMark($(this));"/></td>
+						<td><span jwcid="@Insert" value="ognl:dataInfo.DISCNT_CODE" raw="false"/></td> 
+						<td><span jwcid="@Insert" value="ognl:dataInfo.DISCNT_NAME" raw="false"/></td>   
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('DATA_TYPE',dataInfo.FLOW_TYPE)" raw="false"/></td>		
+						<td><span jwcid="@Insert" value="ognl:dataInfo.INS_ID" raw="false"/></td>
+		                <td><span jwcid="@Insert" value='ognl:formatDecimal("0.000", dataInfo.BALANCE/1024)' raw="false"/></td>
+		                <td><span jwcid="@Insert" value="ognl:dataInfo.EFFECTIVE_DATE" raw="false"/></td>
+		                <td><span jwcid="@Insert" value="ognl:dataInfo.EXPIRE_DATE" raw="false"/></td>
+		                <td style="display:none"><span jwcid="@Insert" value="ognl:dataInfo.FLOW_TYPE" raw="false"/></td>
+		                <td style="display:none"><span jwcid="@Insert" value="ognl:dataInfo.DISCNT_CODE" raw="false"/></td>									  
+		             </tr>
+				</tbody>
+			</table>
+	   	</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<!-- 刷新区域 结束 -->
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box" jwcid="changeData@Part">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">转赠</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-7">
+		<ul>
+
+			<li class="li">
+				<span class="label"><span class="e_required">目标号码：</span></span>
+					<span class="e_elements" id="SERIAL_NUMBER_INPUT">
+						<button type="button" class="e_button-right" onclick="checkSerialNumber();"><i class="e_ico-check"></i><span>校验</span></button>
+						<span class="e_input e_input-left"><span>
+							<input jwcid="@TextField"   name="objinfo_OBJ_SERIAL_NUMBER" id="objinfo_OBJ_SERIAL_NUMBER" value="ognl:info.OBJ_SERIAL_NUMBER" 
+							desc="目标号码" nullable="no" maxLength="ognl:info.MAX_LENGTH" datatype="mbphone" />
+						</span></span>
+					</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">转赠流量(MB)：</span></span>
+				<span class="e_input"><span><input jwcid="@TextField" name="comminfo_DONATE_DATA" id="comminfo_DONATE_DATA" value="ognl:userInfo.DONATE_DATA" datatype="numeric" disabled="true" min="0" nullable="no" max="ognl:commInfo.DATA" desc="转赠流量" onblur="checkData()"/></span></span>
+			</li>
+			<li class="li col-3">
+				<span class="label"><span class="">备注：</span></span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent"><textarea style="height:50px;" jwcid="@TextArea" value="ognl:info.REMARK" name="comminfo_REMARK" id="comminfo_REMARK" maxsize="200" nullable="yes" disabled="true" desc="备注"></textarea></span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	
+</div>
+<!-- 区域 结束 -->
+<div class="c_box">
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checksubmit()" isReset="true" area="AuthPart,changeData,hidePart" element="div"/>
+</div>
+<!-- 隐藏域 开始 -->
+<div style="display:none" jwcid="hidePart@Part">
+	<input type="text" jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:userInfo.USER_ID" style="display:none" encode="false"/>
+	<input type="text" jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:userInfo.EPARCHY_CODE" style="display:none" encode="false"/>
+	<input type="text" jwcid="@TextField" name="INIT_USER_SCORE" id="INIT_USER_SCORE" value="ognl:commInfo.SCORE" style="display:none" encode="false"/>
+	<input type="text" jwcid="@TextField" name="BRAND_CODE" id="BRAND_CODE" value="ognl:userInfo.BRAND_CODE" style="display:none" encode="false"/>
+	<input type="text" jwcid="@TextField" name="OPEN_MODE" id="OPEN_MODE" value="ognl:userInfo.OPEN_MODE" style="display:none" encode="false"/>
+	<input type="text" jwcid="@TextField" name="USER_STATE_CODESET" id="USER_STATE_CODESET" value="ognl:userInfo.USER_STATE_CODESET" style="display:none" encode="false"/>	
+	<input type="text" jwcid="@TextField" name="MIN" id="MIN" value="ognl:objUserInfo.MIN" style="display:none" encode="false"/>	
+	<input type="text" jwcid="@TextField" name="MAX" id="MAX" value="ognl:objUserInfo.MAX" style="display:none" encode="false"/>	
+	<!-- 隐藏域 开始 -->
+</div>
+
+</div></div></body>
+</html>

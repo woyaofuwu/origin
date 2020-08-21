@@ -1,0 +1,1 @@
+DELETE TI_B_DM_BUSISUB WHERE operate_id1=:OPERATE_ID1 AND length(paramcode)>2

@@ -1,0 +1,1 @@
+select t.* from TF_B_TRADE T where T.SERIAL_NUMBER=:SERIAL_NUMBER

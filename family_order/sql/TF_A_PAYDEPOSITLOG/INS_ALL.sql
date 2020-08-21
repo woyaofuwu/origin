@@ -1,0 +1,2 @@
+INSERT INTO tf_a_paydepositlog(charge_id,partition_id,eparchy_code,acct_id,deposit_code,money,cancel_tag)
+ VALUES(TO_NUMBER(:CHARGE_ID),:PARTITION_ID,:EPARCHY_CODE,TO_NUMBER(:ACCT_ID),:DEPOSIT_CODE,TO_NUMBER(:MONEY),:CANCEL_TAG)

@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/group/imsmanage/closegrpmgr/closegrpmgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 查询区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">集团客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form" jwcid="QueryCondition@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">集团产品编码：</span></span>
+				<span class="e_input"><span>
+                <input type="text" jwcid="@TextField" id="cond_QueryCondition" name="cond_QueryCondition" value="ognl:condition.QueryCondition"  enterAction="queryGrpCustInfo()" desc="集团产品编码" nullable="no" />
+                </span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="queryGrpCustInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="grpcustRefreshPart@Part" >
+		<input type="text" jwcid="@TextField" id="hiddenstartdate" name="hiddenstartdate" value="ognl:grpcustinfo.START_DATE" style="display:none" />
+		<input type="text" jwcid="@TextField" id="hiddenenddate" name="hiddenenddate" value="ognl:grpcustinfo.END_DATE" style="display:none" />
+		<input type="text" jwcid="@TextField" id="phone_user_id" name="phone_user_id" value="ognl:grpuserinfo.USER_ID" style="display:none" />
+		<input type="text" jwcid="@TextField" id="GRP_USER_EPARCHY_CODE" name="GRP_USER_EPARCHY_CODE" value="ognl:grpuserinfo.EPARCHY_CODE" style="display:none" /> 
+		<input type="text" jwcid="@TextField" id="ctl_type" name="ctl_type" value="ognl:ctl_type" style="display:none" />	
+		<span jwcid="@saleserv:GroupCustInfo" hasTitle="false" groupUserInfo="ognl:grpcustinfo"/>
+	    <span jwcid="@saleserv:GroupUserInfo" hasTitle="false" groupUserInfo="ognl:grpuserinfo"/> 
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 查询区域 结束 -->
+
+<!-- 管理区域 开始 -->
+<div class="c_box">
+	<!-- 分页标签（替换为页面组件） 开始 -->
+	<div class="c_tab">
+		<ul>
+			<li id="JTli1" class="on"><a href="#nogo" id= "contrl1" onclick="fn_ctl_type('GRP');return queryGrpOutinfo();">集团闭合群业务</a></li>
+			<li id="XHli2"><a href="#nogo" id= "contrl3" onclick="fn_ctl_type('XUNHU');return xunhuFresh();">集团寻呼组业务</a></li>
+			<li id="DDli3"><a href="#nogo" id= "contrl4" onclick="fn_ctl_type('DAIDA');return daidaFresh();">集团代答组业务</a></li>
+			<li id="CYli4"><a href="#nogo" id= "contrl2" onclick="fn_ctl_type('MEM');return memFresh();">成员闭合群业务</a></li>
+		</ul>
+	</div>
+	<!-- 分页标签 结束 -->
+	
+	<!-- 集团闭合业务群 开始 -->
+	<div jwcid="closegrppart@Part" >
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">集团闭合群业务列表</div>
+			<div class="fn">
+				<button type="button" id="bdelete2" onclick="if(!confirmBox(this, 'outgrplist'))return false;fn_ctl_type('GRP');return delConfirm();"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="l_ml" id="badd2" type="button" onclick="fn_ctl_type('GRP');showLayer('popup')"><i class="e_ico-add"></i><span>新增</span></button>
+			</div> 
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="outgrpinfopart@Part" ><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th>闭合群标识</th>
+						<th>闭合群名称</th>
+						<th>最大用户数</th>
+						<th>优惠编码</th>
+						<th>优惠名称</th>
+						<th>生效时间</th>
+						<th>失效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+				     <tr jwcid="@Foreach" source="ognl:outgrpInfoList" value="ognl:outgrpinfoIdata"   index="ognl:rowIndex"   element="tr">
+						<td><input id="outgrplist"  name="outgrplist" jwcid="@Radio"   value="ognl:outgrpinfoIdata.USER_ID_A+'_'+outgrpinfoIdata.USER_ID_B+'_'+outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.USER_ID_B" raw="true"/></td>
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.RSRV_STR1" raw="true"/></td>
+			        	<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.RSRV_STR2" raw="true"/></td>
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.RSRV_STR3" raw="true"/></td> 
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.RSRV_STR3==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_B_DISCNT','DISCNT_CODE','DISCNT_NAME',outgrpinfoIdata.RSRV_STR3)" /></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.START_DATE" raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.END_DATE" raw="true"/></td>
+				     </tr>
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+			
+	   	<div jwcid="@Conditional" condition="'0'.equals(ognl:condition.CTL_TYPE)">
+			<!-- 分页 开始 -->
+	    	<div jwcid="@NavBar" name="ActiveNav" id="ActiveNav" cond="grpcustRefreshPart" part="closegrppart" listener="getGrpOutinfo" pageSize="10"  count="ognl:infosCount" />		
+			<!--分页 结束 -->
+		</div>
+	</div>
+	<!-- 集团闭合业务群 结束 -->
+	
+	<!-- 集团寻呼组业务 开始 -->
+	<div jwcid="xunhupart@Part" style="display:none;">
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">集团寻呼组业务列表</div>
+			<div class="fn">
+				<button type="button" onclick="if(!confirmBox(this, 'xunhugrplist'))return false;fn_ctl_type('XUNHU');return delConfirm();"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="l_ml" type="button" onclick="fn_ctl_type('XUNHU');showLayer('popup2')"><i class="e_ico-add"></i><span>新增</span></button>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="outgrpinfopart1@Part" ><div class="c_table">
+			<table>
+				<thead>
+					<tr>
+						<th class="sign" id="_col_X_TAG" style="padding-left:8px; padding-right:8px"></th>
+						<th>寻呼组标识</th>
+						<th>寻呼组类型</th>
+						<th>生效时间</th>
+						<th>失效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+				     <tr jwcid="@Foreach" source="ognl:outgrpInfoList" value="ognl:outgrpinfoIdata"   index="ognl:rowIndex"   element="tr">
+						<td><input id="xunhugrplist"  name="xunhugrplist" jwcid="@Radio" value="ognl:outgrpinfoIdata.USER_ID_A+'_'+outgrpinfoIdata.USER_ID_B+'_'+outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.USER_ID_B" raw="true"/></td> 
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.RSRV_STR1==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue('Hunting_Team_Type',outgrpinfoIdata.RSRV_STR1)" /></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.START_DATE" raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.END_DATE" raw="true"/></td>
+				     </tr> 
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 --> 
+		<div jwcid="@Conditional" condition="'2'.equals(ognl:condition.CTL_TYPE)">		
+		    <div jwcid="@NavBar" name="ActiveNav2" id="ActiveNav2" cond="grpcustRefreshPart" part="xunhupart" listener="getXunhuinfo" pageSize="10"  count="ognl:infosCount" />				    
+	   	</div>
+	</div>
+	<!-- 集团寻呼组业务 结束 -->
+	
+	<!-- 集团代答组业务 开始 -->
+	<div jwcid="daidapart@Part" style="display:none;">
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">集团代答组业务列表</div>
+			<div class="fn">
+				<button type="button" onclick="if(!confirmBox(this, 'daidagrplist'))return false;fn_ctl_type('DAIDA');return delConfirm();"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="l_ml" type="button" onclick="fn_ctl_type('DAIDA');showLayer('popup3')"><i class="e_ico-add"></i><span>新增</span></button>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="outgrpinfopart2@Part"><div class="c_table">
+			<table id="TfSb">
+				<thead>
+					<tr>
+                        <th class="sign" id="_col_X_TAG" style="padding-left:8px; padding-right:8px"></th>
+						<th>代答组标识</th>
+						<th>代答接入码</th>
+						<th>生效时间</th>
+						<th>失效时间</th>
+					</tr>
+				</thead>
+				<tbody>
+				     <tr jwcid="@Foreach" source="ognl:outgrpInfoList" value="ognl:outgrpinfoIdata"   index="ognl:rowIndex"   element="tr">
+						<td><input id="daidagrplist"  name="daidagrplist" jwcid="@Radio" value="ognl:outgrpinfoIdata.USER_ID_A+'_'+outgrpinfoIdata.USER_ID_B+'_'+outgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.USER_ID_B" raw="true"/></td> 
+				        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.RSRV_STR1" /></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.START_DATE" raw="true"/></td>
+                        <td><span jwcid="@Insert" value="ognl:outgrpinfoIdata.END_DATE" raw="true"/></td>
+				     </tr>  
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		
+		<div jwcid="@Conditional" condition="'3'.equals(ognl:condition.CTL_TYPE)">	
+		    <div jwcid="@NavBar" name="ActiveNav3" id="ActiveNav3" cond="grpcustRefreshPart" part="daidapart" listener="getDaiDainfo" pageSize="10" needCoun="false" count="ognl:infosCount"></div>
+	   	</div>
+	</div>
+	<!-- 集团代答组业务 结束 -->
+	
+	<!-- 成员闭合群业务 开始 -->
+	<div jwcid="mem_part@Part" style="display:none;">
+		<!-- 表单 开始 -->
+		<div class="c_form"  jwcid="memRefreshPart@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">成员服务号码：</span></span>
+					<span class="e_input"><span>  
+						<input type="text" jwcid="@TextField" id="cond_mem_sn" name="cond_mem_sn" value="ognl:condition.cond_mem_serial" desc="集团成员号码"  nullable="no"  datatype="numeric" minsize="11" maxsize="11" />
+                    </span></span>
+				</li>
+				
+				<input type="text" jwcid="@TextField" id="MEB_USER_EPARCHY_CODE" name="MEB_USER_EPARCHY_CODE" value="ognl:meminfo.EPARCHY_CODE" style="display:none" /> 
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form"  onclick="queryMemInfo()"><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+			<ul class="ul">
+				<li class="li">
+					<span class="label">请选择闭合群：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="cond_CLOSEGRPLIST" id="cond_CLOSEGRPLIST" 
+							source="ognl:closegrplist" textField="USER_ID_B" valueField="USER_ID_B" value="" desc="选择加入的闭合群" />
+					</span></span></span>
+				</li>
+			</ul>
+			<input type="text" jwcid="@TextField" id="mem_user_id" name="mem_user_id"  value="ognl:meminfo.USER_ID" style="display:none" />
+			<input type="text" jwcid="@TextField" id="mem_eparchy_code" name="mem_eparchy_code"  value="ognl:meminfo.EPARCHY_CODE" style="display:none" />
+		</div>
+		<!-- 表单 结束 --> 
+		
+		<!-- 标题 开始 -->
+		<div class="c_title c_title-2">
+			<div class="text">成员闭合群业务列表</div>
+			<div class="fn">
+				<button type="button" onclick="if(!confirmBox(this, 'memclosegrplist'))return false;fn_ctl_type('MEM');return delConfirm();"><i class="e_ico-delete"></i><span>删除</span></button>
+				<button class="l_ml" type="button" onclick="fn_ctl_type('MEM');submitAddCloseGrp();"><i class="e_ico-add"></i><span>新增</span></button>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		
+		<!-- 表格 开始 -->
+		<div class="c_scroll c_scroll-table-10" jwcid="closegrpmempart@Part"><div class="c_table" id="editgrpmemclosepart">
+			<table>
+				<thead>
+					<tr>
+						<th class="sign" id="_col_X_TAG" style="padding-left:8px; padding-right:8px"></th>
+						<th>闭合群标识</th>
+                        <th>成员用户标识</th>
+                        <th>成员服务号码</th>
+                        <th>成员客户名称</th>
+                        <th>生效时间</th>
+                        <th>失效时间</th>
+                        <th>优惠编码</th>
+                        <th>优惠名称</th>
+					</tr>
+				</thead>
+				<tbody>
+				 <tr jwcid="@Foreach" source="ognl:memclosegrpInfoList" value="ognl:closememgrpinfoIdata"   index="ognl:rowIndex"   element="tr">
+					<td><input id="memclosegrplist"  name="memclosegrplist" jwcid="@Radio"   value="ognl:closememgrpinfoIdata.USER_ID_A+'_'+closememgrpinfoIdata.USER_ID_B+'_'+closememgrpinfoIdata.SERIAL_NUMBER_A+'_'+closememgrpinfoIdata.RSRV_STR3+'_'+closememgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.USER_ID_A" raw="true"/></td>
+			        <td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.USER_ID_B" raw="true"/></td>
+		        	<td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.SERIAL_NUMBER_B" raw="true"/></td>
+			        <td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.MEM_CUST_NAME" raw="true"/></td> 
+			        <td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.START_DATE" raw="true"/></td>
+                    <td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.END_DATE" raw="true"/></td>
+                    <td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.RSRV_STR3" raw="true"/></td>
+			        <td><span jwcid="@Insert" value="ognl:closememgrpinfoIdata.RSRV_STR3==null?'':@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(),'TD_B_DISCNT','DISCNT_CODE','DISCNT_NAME',closememgrpinfoIdata.RSRV_STR3)" /></td>
+			     </tr>
+			     
+				</tbody>
+			</table>
+		</div></div>
+		<!-- 表格 结束 -->
+		
+		<div jwcid="@Conditional" condition="'1'.equals(ognl:condition.CTL_TYPE)">	
+		    <div jwcid="@NavBar" name="ActiveNav1" id="ActiveNav1" cond="grpcustRefreshPart" part="mem_part" listener="getMemInfo" pageSize="10" count="ognl:infosCount"></div>
+	   	</div>
+	</div>
+	<!-- 集团闭合群业务 结束 -->
+</div>
+<!-- 管理区域 结束 --> 
+
+</div></div>
+
+<!-- 新增集团闭合业务群 弹窗（替换为页面组件） 开始 -->
+<div class="c_popup" id="popup" style="display:none;">
+	<div class="c_popupWrapper" jwcid="createOutgrp@Part">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:300px;">
+			<div class="c_popupTitle">
+				<div class="text">新增集团闭合业务群</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="hideLayer('popup')"></a>
+				</div>
+			</div>
+			
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-6 c_form-col-1">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">闭合群名称：</span></span>
+							<span class="e_input"><span>
+                            	<input type="text" jwcid="@TextField" id="close_grp_name" name="close_grp_name" value="ognl:outPhoneInfo.OUT_PHONE" desc="闭合群名称"/>
+                            </span></span>
+						</li>						 
+						<li class="li">
+							<span class="label"><span class="e_required">优惠编码：</span></span>
+							<span class="e_select"><span><span>
+							<select jwcid="@Select" id="discnt_code" name="discnt_code" source="ognl:discntlist" textField="DISCNT_NAME" valueField="DISCNT_CODE" 
+								    value="ognl:condition.discnt_code" desc="优惠编码" nullable="no" />
+							</span></span></span>
+						</li> 
+						<li class="li">
+							<span class="label">最大用户数：</span>
+							<span class="e_input"><span>
+							<input type="text" jwcid="@TextField" id="max_users" name="max_users" datatype="numeric" value="ognl:initmaxusers.MAX_USERS" desc="最大用户数" />
+							</span></span>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" onclick="hideLayer('popup');return submitAddCloseGrp();"><i></i><span>确定</span></button>
+					<button class="e_button-page-cancel" onclick="hideLayer('popup')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 新增集团闭合业务群 弹窗 结束 -->
+<!-- 新增集团寻呼组业务 弹窗（替换为页面组件） 开始 -->
+<div class="c_popup" id="popup2" style="display:none;">
+	<div class="c_popupWrapper" jwcid="createOutgrp1@Part">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:300px;">
+			<div class="c_popupTitle">
+				<div class="text">新增集团寻呼组业务</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="hideLayer('popup2')"></a>
+				</div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-6 c_form-col-1">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">寻呼组类型：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="hunting_team_type"  id="hunting_team_type"  
+										source="ognl:pageutil.getStaticList('Hunting_Team_Type')" nullable="no"
+										value="ognl:outPhoneInfo.OUT_PHONE" textField=DATA_NAME valueField="DATA_ID" desc="寻呼组类型"/> 
+							</span></span></span>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" onclick="hideLayer('popup2');return submitAddCloseGrp();"><i></i><span>确定</span></button>
+					<button class="e_button-page-cancel" onclick="hideLayer('popup2')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 新增集团寻呼组业务 弹窗 结束 -->
+<!-- 新增集团代答组业务 弹窗（替换为页面组件） 开始 -->
+<div class="c_popup" id="popup3" style="display:none;">
+	<div class="c_popupWrapper" jwcid="createOutgrp2@Part">
+	<div class="c_popupWrapper">
+		<div class="c_popupHeight"></div>
+		<div class="c_popupBox" style="width:300px;">
+			<div class="c_popupTitle">
+				<div class="text">新增集团代答组业务</div>
+				<div class="fn">
+					<a class="close" href="#nogo" onclick="hideLayer('popup3')"></a>
+				</div>
+			</div>
+			<div class="c_popupContent"><div class="c_popupContentWrapper">
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-6 c_form-col-1">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">代答接入码：</span></span>
+							<span class="e_input"><span> 
+								<input type="text" jwcid="@TextField" id="access_code" name="access_code" value="ognl:outPhoneInfo.OUT_PHONE" desc="代答接入码" nullable="no" />
+							</span></span>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+				
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" onclick="hideLayer('popup3');return submitAddCloseGrp();"><i></i><span>确定</span></button>
+					<button class="e_button-page-cancel" onclick="hideLayer('popup3')"><i></i><span>取消</span></button>
+				</div>
+				<!-- 提交 结束 -->
+			</div></div>
+			<div class="c_popupBottom"><div></div></div>
+			<div class="c_popupShadow"></div>
+		</div>
+	</div>
+	</div>
+	<iframe class="c_popupFrame"></iframe>
+	<div class="c_popupCover"></div>
+</div>
+<!-- 新增集团代答组业务 弹窗 结束 -->
+ 
+	<!-- 引用组件  不显示   -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit"  listener="onSubmitBaseTrade"  isGrp="true" disabledBtn="false" style="display:none" element="div"/>
+</body>
+</html>

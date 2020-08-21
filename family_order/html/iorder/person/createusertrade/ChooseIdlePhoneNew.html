@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <script jwcid="@Script" src="iorder/person/createusertrade/scripts/chooseidlephone.js"/>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js"/>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/person/baseinfofield/BaseInfoField.js"/>
+    <script jwcid="@Script" src="scripts/iorder/icsserv/component/person/custinfofield/CustInfoField.js"/>
+    <title>选号列表</title>
+</head>
+<body jwcid="@Body">
+    <div class="c_header">
+        <div class="back" ontap="backPopup(this)">选择号码</div>
+    </div>
+    <!-- 表单 开始 -->
+    <div jwcid="QueryPhonePart@Part"
+         class="c_form c_form-col-2 c_form-submit c_form-label-5">
+        <ul>
+            <li>
+                <div class="label">身份证号码：</div>
+                <div class="value">
+                    <span class="e_mix">
+                        <input name="NETCHOOSE_PSPT_ID" jwcid="@TextField"
+                               value="ognl:condition.NETCHOOSE_PSPT_ID"
+                               onenterAction="querySerialMobile()" nullable="no"
+                               desc="身份证号码"/>
+                        <span id="SCAN_PSPT" class="e_ico-scan e_hide-phone"></span>
+                    </span>
+                </div>
+            </li>
+            <li class="required">
+                <div class="label">选号来源：</div>
+                <div class="value">
+                    <span name="NETCHOOSE_TYPE" jwcid="@Select"
+                          source="ognl:pageutil.getStaticList('NETCHOOSE_TYPE')"
+                          textField="DATA_NAME" valueField="DATA_ID"
+                          value="ognl:condition.NETCHOOSE_TYPE"
+                          addDefault="false" nullable="no" desc="选号来源"></span>
+                </div>
+            </li>
+        </ul>
+        <div class="submit">
+            <button type="button" class="e_button-blue"
+                    ontap="querySerialMobile()">
+                <span class="e_ico-search"></span><span>查询</span></button>
+        </div>
+    </div>
+    <!-- 表单 结束 -->
+    <div class="c_line"></div>
+    <!-- 滚动 开始 -->
+    <div class="c_scroll c_scroll-float c_scroll-header" style="top:11.8em;">
+        <!-- 信息提示 开始 -->
+        <div class="c_msg c_msg-full" id="chooseNumListMsg">
+            <div class="wrapper">
+                <div class="emote"></div>
+                <div class="info">
+                    <div class="text">
+                        <div class="title">暂无数据</div>
+                        <div class="content">请查询</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 信息提示 结束 -->
+        <!-- 列表 开始 -->
+        <div jwcid="PhonePart@Part" style="display: none;"
+             class="c_list c_list-s c_list-line c_list-col-3 c_list-phone-col-2">
+            <ul>
+                <li class="link" jwcid="@Foreach" source="ognl:phoneList"
+                    value="ognl:phone" index="ognl:rowIndex" element="li"
+                    ontap="setNewPhone(this)" resNo="ognl:phone.RES_NO"
+                    randomNo="ognl:phone.RANDOM_NO" occupyTypeCode="ognl:phone.OCCUPY_TYPE_CODE" >
+                    <div class="main">
+                        <div class="title"><span jwcid="@Insert" value="ognl:phone.RES_NO"></span></div>
+                        <div class="content">身份证：<span class="e_red" jwcid="@Insert" value="ognl:phone.RANDOM_NO"></span></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 列表 结束 -->
+        <div class="c_line"></div>
+    </div>
+    <!-- 滚动 结束 -->
+    <div style="display:none">
+        <object id="makeActiveX" classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+    </div>
+    <input jwcid="@Hidden" name="NETCHOOSE_PSPT_TYPE_CODE" value="0" desc="只允许扫描身份证"/>
+    <input jwcid="@Hidden" name="CUST_NAME" desc="扫描客户姓名"/>
+    <input jwcid="@Hidden" name="SEX" desc="扫描性别"/>
+    <input jwcid="@Hidden" name="FOLK_CODE" desc="扫描名族"/>
+    <input jwcid="@Hidden" name="BIRTHDAY" desc="扫描生日日期"/>
+    <input jwcid="@Hidden" name="PSPT_ADDR" desc="扫描证件地址"/>
+    <input jwcid="@Hidden" name="PSPT_END_DATE" desc="扫描证件有效期"/>
+</body>
+</html>

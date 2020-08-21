@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- $Id: QueryUserPurchase.html,v 1.3 2012/08/30 06:45:18 hef Exp $ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>禁查清单</title>
+<script language="JavaScript" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/specialtrademgr/scripts/ForbidenInfo.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+    
+<!-- 查询区域 开始 -->
+<div class="c_box">
+    <div class="c_title">
+		<div class="text">禁查清单查询</div> 
+	</div>
+	<div class="c_form" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">服务号码：</span></span>
+				<span class="e_input"><span>
+					<input id="cond_SERIAL_NUMBER" name="cond_SERIAL_NUMBER" jwcid="@TextField"
+					 value="ognl:condition.cond_SERIAL_NUMBER"  desc="服务号码" nullable="no" datatype="mbphone" />
+				</span></span>
+			</li>
+            <li class="li">
+				<span class="label">号码状态：</span>
+                <span class="e_select"><span><span>
+               		<select jwcid="@Select" name="cond_REMOVE_TAG" id="cond_REMOVE_TAG"
+							source="ognl:pageutil.getStaticList('USER_REMOVETAG')"
+							textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME"
+                			value="ognl:condition.cond_USER_REMOVETAG"
+							desc="查询选择"
+                       />
+                </span></span></span>
+            </li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" id="bquery" name="bquery" onclick="return queryForbidenInfoActive();" ><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<div class="c_form c_form-label-4 c_form-col-3 c_form-text" jwcid="QueryListPart@Part">
+		<ul class="ul">
+			<li class="li"> 
+				<span class="label">号码：</span>
+				<span class="text" jwcid="@Insert" name="custinfo_SERIAL_NUMBER" id="custinfo_SERIAL_NUMBER"
+							value="ognl:editInfo.SERIAL_NUMBER"></span> 
+			</li>
+			<li class="li">
+				<span class="label">付费名称：</span>
+				<span class="text" jwcid="@Insert" name="custinfo_PAY_NAME" id="custinfo_PAY_NAME"
+							value="ognl:editInfo.PAY_NAME"></span>  
+			</li>
+			<li class="li">
+				<span class="label">开通状态：</span>
+				<span class="text" jwcid="@Insert" name="custinfo_USER_STATE_CODESET" id="custinfo_USER_STATE_CODESET"
+							value="ognl:pageutil.getStaticValue('USER_STATE_CODESET', editInfo.USER_STATE_CODESET)"></span>   
+			</li>
+			<li class="li">
+				<span class="label">归属市县：</span>
+				<span class="text" jwcid="@Insert" name="custinfo_CITY_NAME" id="custinfo_CITY_NAME"
+							value="ognl:pageutil.getStaticValue('TD_M_CUSTCITY','CITY_CODE','CITY_NAME',editInfo.CITY_CODE)"></span>   
+			</li>
+			<li class="li">
+				<span class="label">付费类型：</span>
+				<span class="text" jwcid="@Insert" name="custinfo_PAY_TYPE" id="custinfo_PAY_TYPE"
+							value="ognl:pageutil.getStaticValue('TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE',editInfo.PAY_MODE_CODE)"></span>  
+			</li>
+			<li class="li">
+				<span class="label">当前产品：</span>
+				<span class="text" jwcid="@Insert" name="custinfo_PRODUCT_NAME" id="custinfo_PRODUCT_NAME"
+							value="ognl:editInfo.PRODUCT_NAME"></span>  
+			</li>
+		</ul> 
+	<!-- 表单 结束 -->
+	
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 区域 开始 -->
+	<div jwcid="QueryForbidenInfoPart@Part" id="QueryForbidenInfoPart" style="display:none;">
+	<div class="c_tip">
+	<span class="text" name="info_MSG" id="info_MSG" ></span> 
+	
+	<button class="l_ml" type="button" id="bcancel" name="bcancel" onclick="deleteForbidenInfoActive(); ">
+	<i class="e_ico-delete"></i><span>移除</span></button>
+	
+	<button class="l_ml" type="button" id="binsert" name="binsert" onclick="addForbidenInfoActive();">
+	<i class="e_ico-delete"></i><span>添加</span></button>
+	
+	</div>
+	<div jwcid="QueryForbidenInfoPartTwo@Part" id="QueryForbidenInfoPartTwo" class="c_form c_form-text c_form-label-4 c_form-col-2" style="display:none;">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">号码：</span>
+				<span class="text" jwcid="@Insert" name="info_SERIAL_NUMBER" id="info_SERIAL_NUMBER" 
+						value="ognl:info.SERIAL_NUMBER"></span> 
+			</li>
+			<li class="li">
+				<span class="label">开始时间：</span>
+				<span class="text" jwcid="@Insert" name="info_START_DATE" id="info_START_DATE" 
+						 value="ognl:info.START_DATE"></span> 
+			</li>
+			<li class="li">
+				<span class="label">结束时间：</span>
+				<span class="text" jwcid="@Insert" name="info_END_DATE" id="info_END_DATE" 
+						 value="ognl:info.END_DATE"></span> 
+			</li>
+			<li class="li">
+				<span class="label">受理员工：</span>
+				<span  jwcid="@Insert" name="info_STAFF_ID" id="info_STAFF_ID" 
+						 value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.STAFF_ID)"></span> 
+			</li>
+		</ul> 
+	</div>
+	</div>
+	
+	<!-- 表单 结束 -->
+    <div jwcid="ForbidenInfoPart@Part" id="ForbidenInfoPart">
+	<input  id="hidden_IS_FORBIDENED" name="hidden_IS_FORBIDENED" jwcid="@Hidden" value="ognl:userInfo.IS_FORBIDENED" desc="是否禁查标志"/>
+	<input id="hidden_USER_ID" name="hidden_USER_ID" jwcid="@Hidden" value="ognl:userInfo.USER_ID" desc="客户"/>
+	<input  id="hidden_DEPART_ID" name="hidden_DEPART_ID" jwcid="@Hidden" value="ognl:userInfo.DEPART_ID" desc="部门"/>
+	<input id="hidden_STAFF_ID" name="hidden_STAFF_ID" jwcid="@Hidden" value="ognl:userInfo.STAFF_ID" desc="用户"/>
+	<input  id="hidden_START_DATE" name="hidden_START_DATE" jwcid="@Hidden" value="ognl:userInfo.START_DATE" desc="禁查起始日期"/>
+	<input  id="hidden_SERIAL_NUMBER" name="hidden_SERIAL_NUMBER" jwcid="@Hidden" value="ognl:userInfo.SERIAL_NUMBER" desc="手机号码"/>
+	</div>
+	 
+</div>
+
+</div></div></body>
+</html>

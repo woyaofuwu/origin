@@ -1,0 +1,18 @@
+ SELECT INTF_ID,
+        MONTH,
+        SUBSTR(A.SERIAL_NUMBER, 3) SERIAL_NUMBER,
+        A.START_DATE,
+        A.END_DATE,
+        A.X_CALL_EDMPHONECODE,
+        A.REASON_CODE,
+        A.PROCESS_TAG,
+        A.TRADE_NUMBER,
+        A.AUDIT_STAFF_ID,
+        A.AUDIT_DEPART_ID,
+        A.RSRV_STR1,
+        A.RSRV_STR2,
+        A.RSRV_STR3,
+        A.REMARK
+   FROM TL_B_HARASSPHONE A
+  WHERE A.PROCESS_TAG = 'B'
+    AND INTF_ID = :INTF_ID

@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="s_iframe s_iframe-close">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="../../../js/jcl.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/offer/offerdefine.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/bat/batchangem2mmeb/BatChangeM2MDiscnt.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_scroll c_scroll-mix" style="ognl:'height:' + condition.LISTBOX_HEIGHT" jwcid="scrollPart@Part">
+	<!-- 非ESOP系统链接 开始-->
+	<div jwcid="@Conditional" condition="ognl:condition.ESOP_TAG != 'ESOP'">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">集团查询</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 表单 开始 -->
+		<div jwcid="CondGroupPart@Part" element="div">
+			<div class="c_form">
+				<ul class="ul">
+					<li class="li">
+						<span jwcid="@saleserv:SelectGroup" refreshPart="GroupInfoPart" afterAction="refreshProductInfoArea(data)" afterErrorAction="errorAction();"/>
+						<input jwcid="@TextField" id="IS_NEED_SHOW_CYJS" name="IS_NEED_SHOW_CYJS" value="ognl:condition.IS_NEED_SHOW_CYJS" style="display:none" />
+						<input jwcid="@TextField" id="IS_NEED_SHOW_BGFS" name="IS_NEED_SHOW_BGFS" value="ognl:condition.IS_NEED_SHOW_BGFS" style="display:none" />
+						<input jwcid="@TextField" id="IS_NEED_SHOW_LDXS" name="IS_NEED_SHOW_LDXS" value="ognl:condition.IS_NEED_SHOW_LDXS" style="display:none" />
+						<input jwcid="@TextField" id="IS_NEED_SHOW_JRXYJT" name="IS_NEED_SHOW_JRXYJT" value="ognl:condition.IS_NEED_SHOW_JRXYJT" style="display:none" />
+						<input jwcid="@TextField" id="IS_NEED_SHOW_FFFS" name="IS_NEED_SHOW_FFFS" value="ognl:condition.IS_NEED_SHOW_FFFS" style="display:none" />
+						<input jwcid="@TextField" id="BATCH_OPER_TYPE" name="BATCH_OPER_TYPE" value="ognl:condition.BATCH_OPER_TYPE" style="display:none" />
+						<input jwcid="@TextField" id="IS_NEED_RULE_CHECK" name="IS_NEED_RULE_CHECK" value="ognl:condition.IS_NEED_RULE_CHECK" style="display:none" />
+						<input jwcid="@TextField" id="IS_SHOW_APPLY_TYPE" name="IS_SHOW_APPLY_TYPE" value="ognl:condition.IS_SHOW_APPLY_TYPE" style="display:none" />
+						<input jwcid="@TextField" id="MEB_FILE_SHOW" name="MEB_FILE_SHOW" value="ognl:condition.MEB_FILE_SHOW" style="display:none" />
+					</li>
+		  		</ul>
+			</div>
+		</div>
+		<!-- 表单 结束 -->
+	</div>
+	<!-- 非ESOP系统链接 结束-->	
+
+	<!-- 参数列表 开始 -->
+	<div jwcid="GroupInfoPart@Part">
+		<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:custInfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">已订购产品用户</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3" jwcid="productInfoArea@Part">
+		<ul class="ul">
+			<li class="li col-2">
+				<span class="label"><span class="e_required">产品类型：</span></span>
+				<span class="e_select"><span><span><!-- 替换为页面组件 -->
+					<select jwcid="@Select" name="userProductInfo" source="ognl:orderProductList" valueField="USER_ID" nullable="no"
+							textField="PRODUCT_NAME" titleField="PRODUCT_ID" value="ognl:info.USER_ID" style="width: 100%;" 
+							onchange="selectedElements.selectedEls = new $.DatasetList();refreshProduct();" disabled="ognl:info.disabled" desc="产品类型"/>
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+    
+    <!-- 凭证信息开始  -->
+    <div class="c_box" jwcid="@Conditional" condition='ognl:condition.MEB_VOUCHER_FILE_SHOW != null && condition.MEB_VOUCHER_FILE_SHOW == "true"'>
+		<div class="c_title">
+			<div class="text">凭证信息</div>
+		</div>
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li col-3">				
+					<span class="label"><span class="e_required">凭证上传：</span></span>
+					<div jwcid="VoucherFilePart@Part">
+						<span class="e_elements">
+						<input jwcid="@Upload"
+								name="MEB_VOUCHER_FILE_LIST"
+								id="MEB_VOUCHER_FILE_LIST"
+								ftpSite="groupserv"
+								filePath="upload/mebattach"
+								fileSize="20"
+								fileTypes="*.*"
+                        		desc="凭证信息" 
+                        		nullable="no"
+							/>
+						</span>
+				    </div>
+				</li>
+                <li class="li">
+	                <span class="label"><span class="e_required">稽核人员：</span></span> 
+	                <span class="e_elements">
+						<button type="button" class="e_button-right"
+							onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+							<i class="e_ico-check"></i><span></span>
+						</button> 
+	                    <span class="e_input e_input-left"><span> <input
+								type="text" jwcid="@TextField"
+								name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+								value=""
+								text="" nullable="no"
+								readonly="true"/>
+						</span></span>
+					</span>
+	            </li>
+			</ul>
+		</div>
+	</div>
+    <!-- 凭证信息结束  -->
+    
+</div>
+<!-- 区域 结束 -->
+
+
+
+<!-- 提交 开始 -->
+<div class="c_submit" style="border-top:1px solid #979797; margin-top:-1px;">
+	<button type="button" class="e_button-page-ok" onclick="if(!setData(this)) return false;"><i></i><span>确定</span></button>
+	<button type="button" class="e_button-page-cancel" onclick="parent.hiddenPopupPageGrp();"><i></i><span>取消</span></button>
+</div>
+<!-- 提交 结束 -->
+
+	<!-- 隐藏域 开始 -->
+<div jwcid="GroupUserPart@Part" element="div">
+	<input jwcid="@Any" id="GRP_SN" name="GRP_SN" value="ognl:userInfo.SERIAL_NUMBER" style="display:none" encode="false" />
+	<input jwcid="@Any" id="GRP_USER_ID" name="GRP_USER_ID" value="ognl:userInfo.USER_ID" style="display:none"  encode="false" />
+	<input jwcid="@Any" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:userInfo.PRODUCT_ID" style="display:none"  encode="false" />
+	<input jwcid="@Any" id="USER_EPARCHY_CODE" name="USER_EPARCHY_CODE" value="ognl:userInfo.USER_EPARCHY_CODE" style="display:none"  encode="false" />
+	<input jwcid="@Any" id="GRP_PRODUCT_NAME" name="GRP_PRODUCT_NAME" style="display:none"  value="ognl:userInfo.PRODUCT_NAME"  encode="false" />
+	<input jwcid="@Any" name="MEB_EPARCHY_CODE" id="MEB_EPARCHY_CODE" value="ognl:userInfo.EPARCHY_CODE" style="display:none"/>
+	<input jwcid="@Any" name="isNeedOutProDiscnt" id="isNeedOutProDiscnt" value="ognl:userInfo.isNeedOutProDiscnt" style="display:none"/>
+    <input type="hidden" name="SELECTED_ELEMENTS" id="SELECTED_ELEMENTS" value=""/>
+  	
+</div>
+<!-- 隐藏域 结束 -->
+	
+
+</div></div>
+</body>
+</html>

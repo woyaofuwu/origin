@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html size="s"> 
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>多人约消组网</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/multipersonconsumption/scripts/MultiPersonConsumption.js"></script>
+	<script jwcid="@Script" language="JavaScript" src="scripts/iorder/icsserv/component/person/usercheck/UserCheck.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="c_scroll c_scroll-float">
+		<div class="l_padding">
+			<!-- 认证 开始 -->
+		    <div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="383" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+			<!-- 认证 结束 -->
+			<div class="c_space"></div>
+			<!-- 标题 开始 -->
+			<div jwcid="batAddVicePartTitle@Part" class="c_title">
+				<div class="text">
+					新增成员
+				</div>
+				<div class="fn">
+					<ul>
+						<li><span class="e_black">还可以添加 <span
+								class="e_red e_strong" jwcid="@Insert" name="USEABLE_MEMBER_NUMBER" id="USEABLE_MEMBER_NUMBER" value="ognl:fmyParam.USEABLE_MEMBER_NUMBER"></span>
+								个成员号码</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			<div jwcid="batAddVicePart@Part">
+				<!-- 表单 开始 -->
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-1 c_list-phone-col-1">
+					<ul>
+						<li class="link required">
+							<div class="label">成员号码</div>
+							<div class="value">
+								<span class="e_mix">
+									<input jwcid="@TextField"
+										   class="e_left" id="VICE_SERIAL_NUMBER" name="VICE_SERIAL_NUMBER"
+										   onenterAction="addMeb();" nullable="no" placeholder="请输入新增成员号码"
+										   desc="成员号码"/>
+									<!-- 后期会加个校验前的事件 -->
+									<button class="e_button-blue" ontap="addMeb();">
+										<span class="e_ico-add"></span>
+									</button>
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单 结束 -->
+			</div>
+			<!-- 标题 开始 -->
+			<div jwcid="viceInfoPartTitle@Part" class="c_title">
+				<div class="text">
+					已绑定成员号码（<span jwcid="@Insert" name="USED_MEMBER_NUMBER"
+						id="USED_MEMBER_NUMBER" value="ognl:fmyParam.USED_MEMBER_NUMBER"></span>）
+				</div>
+			</div>
+			<!-- 标题 结束 -->
+			<!-- 列表 开始 -->
+			<div jwcid="@Part" id="viceInfoPart" class="c_list c_list-s c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+				<ul>
+					<li jwcid="@Foreach" class="viceList" id="ognl:'viceList_' + rowIndex" name="viceList" source="ognl:viceInfos" value="ognl:viceInfo" index="ognl:rowIndex" idx="ognl:rowIndex" element="li" style="ognl:'display:' + viceInfo.DISPLAY">
+						<div jwcid="@Any" id="ognl:'viceValue_' + rowIndex" class="main viceValue">
+							<div class="title"><span id="ognl:'SERIAL_NUMBER_B_T_' + rowIndex" jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER_B"/></div>
+							<div class="content"><span id="ognl:'START_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', viceInfo.START_DATE)"/> ~ <span id="ognl:'END_DATE_T_' + rowIndex" jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', viceInfo.END_DATE)"/></div>
+							<input jwcid="@Hidden" name="INST_ID_B" id="ognl:'INST_ID_B_' + rowIndex" value="ognl:viceInfo.U_INST_ID"/>
+							<input jwcid="@Hidden" name="SERIAL_NUMBER_B" id="ognl:'SERIAL_NUMBER_B_' + rowIndex" value="ognl:viceInfo.SERIAL_NUMBER_B" desc="副号码" />
+							<input jwcid="@Hidden" name="DISCNT_CODE_B" id="ognl:'DISCNT_CODE_B_' + rowIndex" value="ognl:viceInfo.DISCNT_CODE"/>
+							<input jwcid="@Hidden" name="DISCNT_NAME_B" id="ognl:'DISCNT_NAME_B_' + rowIndex" value="ognl:viceInfo.DISCNT_NAME"/>
+							<input jwcid="@Hidden" name="SHORT_CODE_B" id="ognl:'SHORT_CODE_B_' + rowIndex" value="ognl:viceInfo.SHORT_CODE"/>
+							<input jwcid="@Hidden" name="ORG_SHORT_CODE_B" id="ognl:'ORG_SHORT_CODE_B_' + rowIndex" value="ognl:viceInfo.SHORT_CODE"/>
+							<input jwcid="@Hidden" name="START_DATE" id="ognl:'START_DATE_' + rowIndex" value="ognl:viceInfo.START_DATE"/>
+							<input jwcid="@Hidden" name="END_DATE" id="ognl:'END_DATE_' + rowIndex" value="ognl:viceInfo.END_DATE"/>
+							<input jwcid="@Hidden" name="ORG_END_DATE" id="ognl:'ORG_END_DATE_' + rowIndex" value="ognl:viceInfo.END_DATE" />
+							<input jwcid="@Hidden" name="APP_DISCNT_CODE_B" id="ognl:'APP_DISCNT_CODE_B_' + rowIndex" value="ognl:viceInfo.APP_DISCNT_CODE_B"/>
+							<input jwcid="@Hidden" name="APP_DISCNT_NAME_B" id="ognl:'APP_DISCNT_NAME_B_' + rowIndex" value="ognl:viceInfo.APP_DISCNT_NAME_B"/>
+							<input jwcid="@Hidden" name="MEMBER_ROLE_B" id="ognl:'MEMBER_ROLE_B_' + rowIndex" value="ognl:viceInfo.MEMBER_ROLE_B"/>
+							<input jwcid="@Hidden" name="NICK_NAME_B" id="ognl:'NICK_NAME_B_' + rowIndex" value="ognl:viceInfo.NICK_NAME_B"/>
+							<input jwcid="@Hidden" name="MEMBER_KIND_B" id="ognl:'MEMBER_KIND_B_' + rowIndex" value="ognl:viceInfo.MEMBER_KIND_B"/>
+							<input jwcid="@Hidden" name="MEB_VERIFY_MODE" id="ognl:'MEB_VERIFY_MODE_' + rowIndex" />
+							<input jwcid="@Hidden" name="tag" id="ognl:'tag_' + rowIndex" />
+							<input jwcid="@Hidden" name="checkTag" id="ognl:'checkTag_' + rowIndex" />
+						</div>
+					 	<div jwcid="@Any" class="fn" name="delMebBt" id="ognl:'delMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="delMeb(this);" tip="删除"><span class="e_ico-delete"></span></div>
+					 	<div style="display:none" jwcid="@Any" class="fn" name="resetMebBt" id="ognl:'resetMebBt_' + rowIndex" idx="ognl:rowIndex" onclick="resetMeb(this);" tip="恢复"><span class="e_ico-reset"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 列表 结束 -->
+			<div class="c_space"></div>
+			<div jwcid="remarkPart@Part">
+				<div class="c_list c_list-s c_list-border c_list-line c_list-col-1 c_list-phone-col-1">
+				    <ul class="ul">
+						<li class="link">
+							<div class="label">备注</div>
+							<div class="value">
+								<input jwcid="REMARK@TextField" class="e_left" id="REMARK"
+									name="REMARK" value="" desc="备注" disabled="" />
+							</div>
+						</li>
+				    </ul>
+			    </div>
+		    </div>
+			<div class="c_space"></div>
+			<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="onTradeSubmit()"  params="" listener="" refreshPart="" area="AuthPart,viceInfoPart,batAddVicePart,remarkPart" element="div"/>
+			<div jwcid="HiddenPart@Part" style="display:none">
+				<input jwcid="@Hidden" name="POP_FIELD_NAME" id="POP_FIELD_NAME" value=""/>
+				<input jwcid="@Hidden" name="AUTH_MAIN_FLAG" id="AUTH_MAIN_FLAG" value=""/>
+				<input jwcid="@Hidden" name="MAIN_INST_ID_B" id="MAIN_INST_ID_B" value="ognl:mainInfo.INST_ID"/>
+				<input jwcid="@Hidden" name="MAIN_START_DATE" id="MAIN_START_DATE" value="ognl:mainInfo.START_DATE"/>
+				<input jwcid="@Hidden" name="MAIN_END_DATE" id="MAIN_END_DATE" value="ognl:mainInfo.END_DATE"/>
+				<input jwcid="@Hidden" name="CHECK_ADD_MEB" id="CHECK_ADD_MEB" value="" desc="校验标识" /> 
+			</div>
+		</div>
+	</div>
+</body>
+</html>

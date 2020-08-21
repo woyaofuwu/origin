@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnettradeinfoquery/scripts/ctttradeinfoquery.js" ></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">订单查询(铁通)</div>
+	</div>
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-6" jwcid="QueryPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">业务订单编号：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="TRADE_ID" id="TRADE_ID" value="ognl:condition.TRADE_ID" desc="业务订单编号"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">服务号码：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER" desc="服务号码"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">受理员工：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="STAFF_ID" id="STAFF_ID" value="ognl:condition.STAFF_ID" desc="受理员工"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">受理部门：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="DEPART_ID" id="DEPART_ID" value="ognl:condition.DEPART_ID" desc="受理部门"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="START_DATE" id="START_DATE" value="ognl:condition.START_DATE" desc="起始时间"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label">终止时间：</span>
+				<span class="e_input"><span>
+				<input jwcid="@DateField" name="END_DATE" id="END_DATE" value="ognl:condition.END_DATE" desc="终止时间"/></span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button type="button" class="e_button-form"  onclick="return queryInfos()";><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="TradePart@Part">
+	<div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>业务流水号</th>
+					<th>服务号码</th>
+					<th>业务类别</th>
+					<th>工单状态</th>
+					<th>返销情况</th>
+					<th>受理时间</th>
+					<th>员工</th>
+					<th>部门</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" rowIndex="ognl:rowIndex" index="ognl:rowIndex" >
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_ID"/></td>
+                   	<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>						
+					<td ><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE', 'TRADE_TYPE_CODE', 'TRADE_TYPE', info.TRADE_TYPE_CODE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_STATE" raw="true"/></td>
+					<td ><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', info.CANCEL_TAG)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+					<td ><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.TRADE_DEPART_ID)" raw="true"/></td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页 开始 -->
+		<div jwcid="@NavBar"  name="pagin" id="pagin" listener="getTradeInfo" pageSize="5" cond="QueryPart" part="TradePart" count="ognl:count"/>
+		<!-- 翻页 结束 -->
+		</div>
+</div>
+</div></div>
+</body>
+</html>

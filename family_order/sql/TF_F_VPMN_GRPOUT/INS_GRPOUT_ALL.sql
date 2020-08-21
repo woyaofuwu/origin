@@ -1,0 +1,2 @@
+INSERT INTO tf_f_vpmn_grpout(user_id,out_group_id,serial_number,short_code,start_date,end_date,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(TO_NUMBER(:USER_ID),:OUT_GROUP_ID,:SERIAL_NUMBER,:SHORT_CODE,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/querygroupinfo/ADCInfoQuery.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 提示区 -->
+<div class="c_box" jwcid="hintPart@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+    <div class="c_title">
+		<div class="text">ADC成员信息查询</div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 查询 开始 -->
+	<div class="c_form" jwcid="queryForm@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label" id="ConditionLabel"><span class="e_required">集团产品编码：</span></span>
+				<span class="e_input" style="width:120px;">
+					<span><input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER"  name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER"  nullable="no" desc="集团产品编码"/></span>
+				</span>
+			</li>
+<!-- 			<li class="li"> -->
+<!-- 				<span class="label" id="ConditionLabel">集团编码：</span> -->
+<!-- 				<span class="e_input" style="width:120px;"> -->
+<!-- 					<span><input type="text" jwcid="@TextField" id="cond_GROUP_ID" name="cond_GROUP_ID" value="ognl:condition.cond_GROUP_ID" desc="集团编码"/></span> -->
+<!-- 				</span> -->
+<!-- 			</li> -->
+		</ul>
+	 
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return query()"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 查询结束-->
+
+	<!-- refreshtable数据区开始 -->
+	
+	<div class="c_table l_mt">
+		<div class="c_title c_title-2">
+		    <span class="text">ADC成员信息查询</span>
+			<span class="fn">
+				 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="96320" 
+					config="export/querygroupinfo/ADCMemberQuery.xml"
+					fileName="ADC成员信息查询" cond="queryForm"
+					ftpSite="groupserv" beforeAction="" action="" /> 
+			</span> 
+		</div>
+		<div id="refreshtable" jwcid="refreshtable@Part" optimize="true">
+		<div class="table"><div class="wrapper" style="height:auto;"><div class="wrapper2">
+			<table id="dataList">							
+      			<thead>	
+		  			<tr>
+		  				<th>集团客户编码</th>
+						<th>集团名称</th>
+						<th>业务类型</th>
+						<th>集团产品编码</th>
+						<th>业务名称</th>
+						<th>服务代码</th>
+						<th>成员号码</th>
+<!-- 						<th>成员名称</th> -->
+						<th>加入时间</th>
+                	
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="tr_0" jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                        <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+                        <td>
+                        	<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('GRP_PLAT_BIZ_TYPE_CODE',info.BIZ_TYPE_CODE)"  raw="false"/>
+                        </td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.BIZ_NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERV_CODE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td> 
+<!--                         <td><span jwcid="@Insert" value="ognl:info.CUST_NAME_B" raw="false"/></td>  -->
+                        <td>
+                        	<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.START_DATE)" raw="false" />
+                        </td> 
+                                
+                     </tr>
+				</tbody>
+			</table>
+		</div></div></div>
+		<div class="fctBottom e_clear">
+		<div jwcid="@NavBar" name="PageNav" id="PageNav" cond="queryForm" part="refreshtable" listener="queryInfos" pageSize="20" count="ognl:infoCount" ></div>
+		</div>
+	</div>
+    </div>
+	<!-- refreshtable数据区结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

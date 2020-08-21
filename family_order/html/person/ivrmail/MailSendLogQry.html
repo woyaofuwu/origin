@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IVR139邮箱已发送日志查询</title>
+<script jwcid="@Script"  src="person/ivrmail/scripts/mailcustmanage.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2" jwcid="MailCustManageALLPart@Part">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">IVR139邮箱已发送日志查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 --><!-- 查询框 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="MailSendLogCondPart@Part">
+	<ul class="ul">
+		<li class="li" id="sn">
+			   <span class="label">客户号码：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" 
+				desc="客户号码" nullable="no"/>
+				</span></span>
+		</li>
+		
+		<li class="li" id="sectionid">
+			    <span class="label">IVR节点：</span>
+				   <span class="e_select"><span><span>
+					<select jwcid="@Select" 
+					name="SECTION_ID" id="SECTION_ID"
+					source="ognl:pageutil.getStaticList('IVR_139MAIL_CUST_SECTIONLIST')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					addDefault="true" 
+					defaultText="--全部节点--"
+				 />
+				</span></span></span>
+		</li>
+		
+		<li class="li" id="sdate">			
+			    <span class="label">发送起始时间：</span>
+				   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="START_DATE" id ="START_DATE" value="ognl:cond.START_DATE" desc="起始日期" format="yyyy-MM-dd HH:mm:ss" time="true"/>
+				   </span></span>
+		</li>
+		
+		<li class="li" id="edate">			
+				 <span class="label">发送结束时间：</span>  
+					<span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="END_DATE" id ="END_DATE" value="ognl:cond.END_DATE"   desc="结束时间" format="yyyy-MM-dd HH:mm:ss" time="true"/>
+				 </span></span>
+		</li>
+		</ul>
+		
+	  	
+		<div class="submitPlace"></div>
+		
+		<div class="button">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" serviceName="102997"
+							  config="export/ivrmail/ExportSendLog.xml" fileName="查询结果导出" cond=MailSendLogCondPart/> 
+		</div>
+		
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="querySendLog();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+
+	<!-- 表格 开始 -->
+	<div jwcid="MailSendLogListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x c_scroll-table-10"><div class="c_table">
+		<table  jwcid="@Table" id="DeptTable"  name="DeptTable" rowClick="mailCustTableClick" >
+      			<thead>
+		  			<tr>
+						<th>客户号码</th>
+						<th>节点</th>
+						<th>已发送次数</th>
+						<th>上一次发送时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">		
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SECTION_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SEND_COUNT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.LAST_SEND_TIME" raw="true" /></td>
+					</tr>
+				</tbody>
+			</table>
+	</div></div>
+	<div jwcid="@NavBar" name="page" id="page" cond="MailSendLogCondPart"  part="MailSendLogListPart" listener="queryList" pageSize="10" count="ognl:listCount"></div>	
+	</div>
+	<!-- 表格 结束 -->
+
+	
+</div>
+
+
+</div></div></body>
+</html>

@@ -1,0 +1,2 @@
+SELECT vpmn_group_id,serial_number,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date
+FROM tf_f_vpmn_group_member WHERE vpmn_group_id=:VPMN_GROUP_ID AND SYSDATE BETWEEN start_date AND end_date

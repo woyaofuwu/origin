@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>协助处理请求日志查询</title>
+<script language="javascript">
+<!--
+function queryRecord()
+{
+	//查询条件校验
+	if(!$.validate.verifyAll("QueryCondPart"))
+	{
+		return false;
+	}
+	$.beginPageLoading("正在查询数据...");
+	//播记录查询
+	$.ajax.submit('QueryCondPart,navt', 'queryAssistRecordLog', null, 'QueryListPart', function(data)
+	{
+		$.endPageLoading();
+	},
+	function(error_code,error_info)
+	{
+		$.endPageLoading();
+		alert(error_info);
+    });
+}
+function openDetileWindow(rowIndex)
+{
+	var selTable = $.table.get("ResultTable");
+	var rowValue = selTable.getRowData(null,rowIndex);
+	var INDICTSEQ = rowValue.get("INDICTSEQ");
+	var param ='&INDICTSEQ='+INDICTSEQ;
+	$.popupPage('assistReqProcess.AssistReqDetile', 'queryAssistRecord', '&BUSYTAG=RECORD'+param, '协助处理请求查询', '800', '400');
+}
+function openHastenWindow(rowIndex)
+{
+	var selTable = $.table.get("ResultTable");
+	var rowValue = selTable.getRowData(null,rowIndex);
+	var INDICTSEQ = rowValue.get("INDICTSEQ");
+	var SERVICE_TYPE = rowValue.get("SERVICE_TYPE");
+	var ASSISTREQ_TITLE =rowValue.get("ASSISTREQ_TITLE");
+	
+	var param = '&ASSISTREQ_TITLE='+encodeURI(encodeURI(ASSISTREQ_TITLE))+'&INDICTSEQ='+INDICTSEQ+'&SERVICE_TYPE='+encodeURI(encodeURI(SERVICE_TYPE));
+	
+	$.popupPage('assistReqProcess.AssistReqDetile', 'queryAssistRecord', '&BUSYTAG=HASTEN'+param, '协助处理请求催办', '800', '600');
+}
+function openArchivalWindow(rowIndex)
+{
+	var selTable = $.table.get("ResultTable");
+	var rowValue = selTable.getRowData(null,rowIndex);
+	var INDICTSEQ = rowValue.get("INDICTSEQ");
+	var SERVICE_TYPE = rowValue.get("SERVICE_TYPE");
+	var ASSISTREQ_TITLE =rowValue.get("ASSISTREQ_TITLE");
+	
+	var param = '&ASSISTREQ_TITLE='+encodeURI(encodeURI(ASSISTREQ_TITLE))+'&INDICTSEQ='+INDICTSEQ+'&SERVICE_TYPE='+encodeURI(encodeURI(SERVICE_TYPE));
+	
+	$.popupPage('assistReqProcess.AssistReqDetile', 'queryAssistRecord', '&BUSYTAG=ARCHIVAL'+param, '协助处理请求归档', '800', '600');
+}
+function downFile(attch,vedio,statu){
+	if(statu==3||statu==4){
+		if(attch!=''||vedio!=''){
+			
+			$.ajax.submit('downFilePart', 'downFile', '&attch='+attch+'&vedio='+vedio, 'downFilePart', null);
+		}
+	}else{
+		   $.ajax.submit('downFilePart', null, null, 'downFilePart', null);
+	}
+}
+-->
+</script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">协助处理请求查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-5" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>服务请求标识：</span></span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" name="cond_INDICTSEQ" id="cond_INDICTSEQ" value="ognl:cond.INDICTSEQ"  desc="服务请求标识" nullable="yes" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>业务类别：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_SERVICE_TYPE" id="cond_SERVICE_TYPE" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('CSERVICE_CHANNEL_TYPE')" value="ognl:cond.SERVICE_TYPE" desc="业务类别" nullable="yes"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span>状态：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_ASSISTREQ_STATUS" id="cond_ASSISTREQ_STATUS" textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+					source="ognl:pageutil.getStaticList('CSERVICE_ASSISTREQ_STATUS')" value="ognl:cond.ASSISTREQ_STATUS" desc="状态" nullable="yes"/>
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+</div>	
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">协助处理请求</div>
+	<!-- 控制区 -->
+	<div class="fn">
+		<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryRecord();"><i class="e_ico-search"></i><span>查询</span></button>
+	</div>
+	</div>
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x">
+		<div class="c_table c_table-row-10">
+		<table jwcid="@Table" id="ResultTable" name="ResultTable">
+      			<thead>
+      			<!--  、协助处理请求状态、当前环节、处理部门、处理人、处理人联系电话-->
+		  			<tr>
+						<th col="INDICTSEQ">服务请求标识</th>
+						<th col="SERVICE_TYPE">业务类别</th>
+						<th col="ASSISTREQ_TITLE">协助处理请求简述</th>
+						<th>请求提交员工</th>
+						<th>紧急程度</th>	
+						<th>回复员工</th>	
+						<th>回复人联系电话</th>	
+						<th>协助处理请求状态</th>	
+						<!-- <th> 附件 </th>
+						<th> 录音 </th> -->
+						<th> 操  作 </th>						
+					</tr>
+				</thead> 			
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'" ondblclick="">
+						<td><span jwcid="@Insert" value="ognl:info.INDICTSEQ" raw="true"/> </td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CSERVICE_CHANNEL_TYPE',info.SERVICE_TYPE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ASSISTREQ_TITLE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ASSISTREQ_STAFF" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('ASSISTREQ_PROCESS_LEVEL',info.URGENT_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REPLY_STAFF" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REPLY_PHONE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('CSERVICE_ASSISTREQ_STATUS',info.ASSISTREQ_STATUS)" raw="true"/></td>
+						<td>
+						 <span jwcid="@Conditional" condition="ognl:info.ASSISTREQ_STATUS==2">
+						 	<a jwcid="@Redirect"  onclick="openDetileWindow(this.parentNode.parentNode.rowIndex);">&nbsp;&nbsp;[工单查询]&nbsp;&nbsp;</a>
+						 	<a jwcid="@Redirect"  onclick="openHastenWindow(this.parentNode.parentNode.rowIndex);">[工单催办]</a>
+						 </span>
+						 <span jwcid="@Conditional" condition="ognl:info.ASSISTREQ_STATUS==3">
+						 	<a jwcid="@Redirect" onclick="openArchivalWindow(this.parentNode.parentNode.rowIndex);">&nbsp;&nbsp;[工单归档]&nbsp;&nbsp;</a>
+						 	<!--<a jwcid="@Redirect" statu="ognl:info.ASSISTREQ_STATUS" attch="ognl:info.REQUEST_FILEATTACH" vedio="ognl:info.REQUEST_VEDIOATTACH" onclick="downFile(this.attch,this.vedio,this.statu);">[下载附件]</a>-->
+						 </span>
+						  <span jwcid="@Conditional" condition="ognl:info.ASSISTREQ_STATUS==4">
+						 	<!--<a jwcid="@Redirect" statu="ognl:info.ASSISTREQ_STATUS" attch="ognl:info.REQUEST_FILEATTACH" vedio="ognl:info.REQUEST_VEDIOATTACH" onclick="downFile(this.attch,this.vedio,this.statu);">&nbsp;&nbsp;[下载附件]</a>-->
+						 </span>
+						</td>
+					</tr>
+				</tbody>
+		</table>
+	</div>
+	</div>
+	 <!-- 翻页（替换为页面组件） 开始 -->
+    <div jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryAssistRecordLog" pageSize="10" count="ognl:count"></div>		
+	<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+<!-- 区域 结束 -->
+</div>
+</div></div>
+</body>
+</html>

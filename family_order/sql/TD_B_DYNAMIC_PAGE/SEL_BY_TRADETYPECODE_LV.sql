@@ -1,0 +1,21 @@
+--IS_CACHE=Y
+select T.TRADE_TYPE_CODE,
+       LEVEL,
+       T.ID,
+       T.PARENT_ID,
+       T.TAG,
+       T.JWCID,
+       T.CLASS,
+       T.STYLE,
+       T.ORDER_NO,
+       T.INNER_HTML,
+       T.OUTTER_HTML,
+       T.PARAM,
+       T.CONDITION,
+       T.BINDING_VALUE,
+       T.STATE
+  FROM (select * from TD_B_DYNAMIC_PAGE WHERE state = 1 and TRADE_TYPE_CODE=:TRADE_TYPE_CODE) T
+CONNECT BY PRIOR T.ID = T.PARENT_ID
+ START WITH TRADE_TYPE_CODE = :TRADE_TYPE_CODE
+        AND T.LV =  to_number(:LV)
+ ORDER SIBLINGS BY ORDER_NO

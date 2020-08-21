@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>积分礼品领取</title>
+<script jwcid="@Script" language="JavaScript" src="person/goodsapply/scripts/GoodsApply.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<!--
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="240"  tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	-->
+	<!-- 认证 结束 -->
+	<!--
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+	</div>
+	-->
+	
+	<!-- 区域 开始 -->
+
+
+		<div class="c_form" jwcid="AuthPart@Part">
+			<ul class="ul">
+				<li class="li"> 
+					<span class="label"><span class="e_required">服务号码：</span></span>
+						<span class="e_input"><span>
+							<input type="text" name="SERIAL_NUMBER" jwcid="SERIAL_NUMBER@TextField" value="ognl:commInfo.SERIAL_NUMBER" enterAction="refreshPartAtferAuth()" nullable="no" maxsize="40" desc="服务号码"/>
+						</span></span>
+				</li> 
+			</ul> 
+			<div class="submitPlace"></div>
+			<div class="submit">
+				<button class="e_button-form" id="bquery" onclick="return refreshPartAtferAuth()" ><i class="e_ico-search"></i><span>查询</span></button>
+			</div>
+		</div>
+
+	<!-- 区域 结束 -->
+	
+	
+	<div jwcid="HiddenInfoPart@Part" style="display:none">
+		<input jwcid="@Hidden" name="HID_SERIAL_NUM" id="HID_SERIAL_NUM" value="" desc="HID_SERIAL_NUM"/>
+	</div>
+	
+	
+	<!-- 参数列表 结束 -->
+</div>
+ 
+<div class="c_box"> 
+	<div class="submit e_left">
+		<button type="button" class="e_button" id="CancelBtn" onclick="getGift()"><i class="e_ico-ok"></i><span>领取</span></button>
+		<button type="button" class="e_button" id="CancelBtn" onclick="resendSMS()"><i class="e_ico-send"></i><span>短信重发</span></button>
+	</div> 
+	<div jwcid="ResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table jwcid="@Table"  id="sortedTable" rowClick="tableRowClick" >
+	     		<thead>
+		  			<tr>
+		  				<th >操作</th>
+		  				<th >序号</th>
+						<th col="RULE_ID" >礼品ID</th>
+			      		<th col="RULE_NAME" >礼品名称</th>
+			      		<th col="SERIAL_NUMBER" >手机号</th>
+			      		<th col="SCORE" >积分</th>
+			      		<th col="REMAIN_NUM" >未领数量</th>
+			      		<th col="GET_NUM" >已领数量</th>
+			      		<th col="GET_QUANCODE" >已领券码</th>
+	                    <th col="GOODS_STATE" >状态</th>
+			      		<th col="DATE_LIMIT" >到期时间</th>
+			      		<th col="DATE_STATE_DESC" >期限状态</th>
+			      		<th col="GET_DATE" >领取时间</th>
+			      		<th col="EXCHANGE_STAFF_ID" >受理工号</th>
+			      		<th col="EXCHANGE_STAFF_ID" >受理部门</th>
+			      		<th col="DATE_STATE" style="display:none">DATE_STATE</th>
+			      		<th col="TRADE_ID" style="display:none">TRADE_ID</th>
+			      		<th col="USER_ID" style="display:none">USER_ID</th>
+			      		<th col="ACCEPT_MONTH" style="display:none">ACCEPT_MONTH</th>
+			      		<th col="GET_DATE" style="display:none">GET_DATE</th>
+			      		<th col="STATE" style="display:none">STATE</th>
+			      		<th col="QUANCODE" style="display:none">QUANCODE</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><input type="radio" name="RADIO_LIST" id="RADIO_LIST"  jwcid="@Radio" value="ognl:info.RULE_ID" quancode="ognl:info.QUANCODE" dateState="ognl:info.DATE_STATE" state="ognl:info.STATE"  tradeId="ognl:info.TRADE_ID" serialNum="ognl:info.SERIAL_NUMBER" userId="ognl:info.USER_ID" acceptMon="ognl:info.ACCEPT_MONTH" ruleID="ognl:info.RULE_ID" ruleName="ognl:info.RULE_NAME" remainNum="ognl:info.REMAIN_NUM" getNum="ognl:info.GET_NUM" getQuan="ognl:info.GET_QUANCODE"/></td>
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SCORE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.REMAIN_NUM" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GET_NUM" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GET_QUANCODE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GOODS_STATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DATE_LIMIT" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DATE_STATE_DESC" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.GET_DATE" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.EXCHANGE_STAFF_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.EXCHANGE_DEPART_ID)" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.DATE_STATE" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.TRADE_ID" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.USER_ID" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" /></td>  
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.GET_DATE" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.STATE" /></td>   
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.QUANCODE" /></td>        
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="HiddenInfoPart" part="ResultPart"  listener="queryUserScoreGoodsList"  pageSize="20"  count="ognl:recordCount"></div>
+	</div>
+</div>
+<!--受理信息结束-->
+</div></div></body>
+</html>

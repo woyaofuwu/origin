@@ -1,0 +1,2 @@
+INSERT INTO tf_f_receipts(receipts_id,receipts_code,receipts_type,receipts_count,start_date,end_date,stock_id,depart_id,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,receipts_time,remove_tag)
+ VALUES(TO_NUMBER(:RECEIPTS_ID),:RECEIPTS_CODE,:RECEIPTS_TYPE,:RECEIPTS_COUNT,TO_DATE(:START_DATE,'YYYY-MM-DD HH24:MI:SS'),TO_DATE(:END_DATE,'YYYY-MM-DD HH24:MI:SS'),:STOCK_ID,:DEPART_ID,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3,:RSRV_STR4,:RSRV_STR5,TO_DATE(:RECEIPTS_TIME,'YYYY-MM-DD HH24:MI:SS'),:REMOVE_TAG)

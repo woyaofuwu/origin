@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>积分兑奖汇总小计</title>
+<script jwcid="@Script" src="person/sundryquery/score/scripts/queryscorerewardsum.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域开始 -->
+<div class="c_box">
+	<div class="c_title">
+		<div class="text">积分兑奖汇总小计</div>
+	</div>
+	<!-- 条件区开始 -->
+	<div id="QueryCondPartParent">
+	<div class="c_form c_form-col-3 c_form-label-10" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+	        <li class="li">
+				<span class="label"><span class="e_required">查询模式：</span></span>
+				<div class="c_fn">
+					<ul>
+						<li><label><input	jwcid="@Radio"	name="qry_tag" id="qry_tag" value="a"   onclick="showarea()" checked="true"/>查询用户兑奖情况</label></li>
+						<li><label><input	jwcid="@Radio"	name="qry_tag2" id="qry_tag2" value="b"  onclick="showarea2()" />查询市县兑奖情况</label></li>
+					</ul>
+				</div>
+			</li>
+	        <li class="li">
+				<span class="label"><span class="e_required">开始时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" value="ognl:condition.cond_START_DATE" maxName="cond_END_DATE" desc="开始时间"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_elements">
+					<span class="e_input e_input-left"><span>
+						<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE" nullable="no" value="ognl:condition.cond_END_DATE" minName="cond_START_DATE" desc="结束时间" />
+					</span></span>
+				</span>
+			</li>
+			<li class="li" id="TRADE_DEPART_ID">
+				<span class="label">部门编码：</span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_TRADE_DEPART_ID" id="cond_TRADE_DEPART_ID" value="ognl:condition.cond_TRADE_DEPART_ID" 
+						 desc="部门编码"/>
+				</span></span>
+			</li>
+			<li class="li" id="RULE_ID" style="display:none">
+				<span class="label">奖项编码：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_RULE_ID"  id="cond_RULE_ID" 
+						source="ognl:rules" textField="RULE_NAME" valueField="RULE_ID"
+						value="ognl:condition.cond_RULE_ID" desc="奖项编码"  nullable="yes" />
+					</span></span></span>
+			</li>
+			<li class="li" id="TRADE_STAFF_ID_S">
+				<span class="label"><span class="e_required">起始工号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_TRADE_STAFF_ID_S" id="cond_TRADE_STAFF_ID_S" value="ognl:condition.cond_TRADE_STAFF_ID_S" 
+						 onKeyUp="checkstaffidlength(this)" onBlur=putstaffid();  desc="起始工号"  nullable="no" />
+				</span></span>
+			</li>
+			<li class="li" id="TRADE_STAFF_ID_E">
+				<span class="label"><span class="e_required">终止工号：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_TRADE_STAFF_ID_E" id="cond_TRADE_STAFF_ID_E" value="ognl:condition.cond_TRADE_STAFF_ID_E" 
+						 onKeyUp="checkstaffidlength(this)" desc="终止工号"  nullable="no" />
+				</span></span>
+			</li>
+			<li class="li" id="TRADE_CITY_CODE" style="display:none">
+				<span class="label"><span class="e_required">业务区：</span></span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_TRADE_CITY_CODE"  id="cond_TRADE_CITY_CODE" 
+						source="ognl:areas" textField="AREA_NAME" valueField="AREA_CODE"
+						value="ognl:condition.cond_TRADE_CITY_CODE" desc="业务区"  nullable="no" />
+					</span></span></span>
+			</li>
+			<li class="li" id="DEPART_KIND_CODE" style="display:none">
+				<span class="label">部门类型：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_DEPART_KIND_CODE"  id="cond_DEPART_KIND_CODE" 
+						source="ognl:departKinds" textField="DEPART_KIND" valueField="DEPART_KIND_CODE"
+						value="ognl:condition.cond_DEPART_KIND_CODE" desc="部门类型"  nullable="yes" />
+					</span></span></span>
+			</li>
+			<li class="li"  id="SCORESUM_BIZINFO">
+				<span class="label">业务状况：</span>
+				<span class="e_select"><span><span>
+				        <select jwcid="@Select" name="cond_TRADE" id="cond_TRADE" source="ognl:pageutil.getStaticList('SCORESUM_BIZINFO')"
+	                                    addDefault="false" value="ognl:condition.cond_TRADE" disabled="false" desc="业务状况" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+				</span></span></span>
+			</li>
+	    </ul>
+        <div class="submitPlace"></div>
+		<div class="submit" id="USER_SUBMIT">
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryUserScoreRewardSum();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form"  onclick="resetCondition()"><i class="e_ico-search"></i><span>重 置</span></button>
+			<button type="button" class="e_button-form"  onclick="closeNavFrameByLocation()"><i class="e_ico-search"></i><span>取 消</span></button>
+		</div>
+		<div class="submit" id="CITY_SUBMIT" style="display:none">	
+			<button type="button" class="e_button-form" name="QUERY_BTN" id="QUERY_BTN" onclick="return queryCityScoreRewardSum();"><i class="e_ico-search"></i><span>查询</span></button>
+			<button type="button" class="e_button-form"  onclick="resetCondition()"><i class="e_ico-search"></i><span>重 置</span></button>
+			<button type="button" class="e_button-form"  onclick="closeNavFrameByLocation()"><i class="e_ico-search"></i><span>取 消</span></button>
+		</div>
+	</div>
+	</div>
+	<!-- 条件区结束 -->
+	
+	<!-- 表格区开始-->
+	<div class="c_title c_title-2" id="UserPart2" jwcid="UserPart2@Part">
+		<div class="text">查询结果</div>
+		<div class="fn">
+			<span jwcid="@Export" name="exportFileUserPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100996"
+				config="export/sundryquery/other/QueryUserScoreRewardSum.xml" fileName="积分兑奖汇总小计(用户)" cond=QueryCondPart/>
+			<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print1','打印预览','60%')">
+				<i class="e_ico-print"></i><span>打印</span>
+			</button>
+		</div>
+	</div>
+	<div id="UserPart" jwcid="UserPart@Part" optimize="true">
+	   
+	        
+	  	     <div jwcid="table4Print1@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+				<table jwcid="@Table" name="printTable" id="printTable">
+					<thead>
+					<tr>
+						<th datatype="string">服务号码</th>
+						<th datatype="string">业务类型</th>
+	      				<th datatype="string">兑奖编码</th>
+						<th datatype="string">兑奖名称</th>
+						<th datatype="string">兑奖数量</th>
+						<th datatype="string">扣减积分</th>
+						<th datatype="string">受理时间</th>
+						<th datatype="string">受理员工</th>
+						<th datatype="string">员工名称</th>
+						<th datatype="string">受理部门</th>
+						<th datatype="string">部门名称</th>
+						<th datatype="string">是否返销</th>
+						<th datatype="string">返销员工</th>
+						<th datatype="string">兑奖时间</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACTION_COUNT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SCORE_CHANGED" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.TRADE_STAFF_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_CODE', info.TRADE_DEPART_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.TRADE_DEPART_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CANCEL_TAG" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME', info.CANCEL_STAFF_ID)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CANCEL_DATE" raw="true"/></td>
+					</tr>                                               
+					</tbody>
+				</table>
+			</div>
+		</div>
+		 	<!-- 翻页 开始 -->
+<!--  	<div jwcid="@NavBar"  name="pageinfo" id="pageinfo" listener="queryUserScoreExchange" pageSize="20" cond="QueryCondPartParent" part="UserPart" count="ognl:count"/>-->
+	<!-- 翻页 结束 -->
+	  </div>
+	  <!-- 表格区结束 -->
+
+	
+	
+	<!-- 表格2区开始-->
+	<div class="c_title c_title-2" id="CityPart2" jwcid="CityPart2@Part" optimize="true"  style="display:none">
+		<div class="text">查询结果</div>
+		<div class="fn">
+			<span jwcid="@Export" name="exportFileCityPart" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="100996"
+				config="export/sundryquery/other/QueryCityScoreRewardSum.xml" fileName="积分兑奖汇总小计(市县)" cond=QueryCondPart/>
+			<button type="button" class="l_ml" onclick="javascript:$.printArea('table4Print2','打印预览','60%')">
+				<i class="e_ico-print"></i><span>打印</span>
+			</button>
+		</div>
+	</div>
+	<div id="CityPart" jwcid="CityPart@Part" optimize="true"  style="display:none">
+	   
+	        
+	  	     <div jwcid="table4Print2@Part" optimize="true">
+	            <div class="c_table c_table-row-10">
+				<table jwcid="@Table" name="printTable" id="printTable">
+					<thead>
+					<tr>
+						<th>兑奖编码</th>
+						<th>兑奖名称</th>
+						<th>兑奖数量</th>
+						<th>兑奖价值(元)</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:info.RULE_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.RULE_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.ACTION_COUNT" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.VALUE_CHANGED" raw="true"/></td>
+					</tr>                                               
+					</tbody>
+				</table>
+			</div>
+		</div>
+			<!-- 翻页 开始 -->
+	 <div jwcid="@NavBar"  name="cityinfo" id="cityinfo" listener="queryCityScoreExchange" pageSize="20" cond="QueryCondPart" part="CityPart" count="ognl:count"/>
+	<!-- 翻页 结束 -->
+	  </div>
+	
+	
+	<!-- 表格2区结束 -->
+  </div>
+    <!-- 区域结束 -->
+  </div></div>
+ </body>
+</html>

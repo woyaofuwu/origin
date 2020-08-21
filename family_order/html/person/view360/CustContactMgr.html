@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: CustContactMgr.html,v 1.5 2013/04/22 07:09:17 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 - 接触信息</title>
+<script jwcid="@Script" src="person/view360/scripts/custcontactmgr.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title c_title-2">
+		<div class="text">接触信息查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:cond.EPARCHY_CODE"/>
+	</div>
+	
+	<!-- 隐藏域 结束 -->
+	
+	<!-- 查询条件 开始 -->
+	<div class="c_form " jwcid="QueryCondPart2@Part">
+		<ul class="ul">
+			 <li class="li">
+			 <span class="label">起始日期：</span>
+				<span class="e_elements"> 
+					
+					<span class="e_input e_input-left"><span>
+					<input type="text" value="ognl:cond.START_DATE" name="START_DATE" id="START_DATE"
+									   jwcid="@DateField" format="yyyy-MM-dd"
+									   desc="开始日期" datatype="date"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">终止日期：</span>
+				<span class="e_elements"> 
+					
+					<span class="e_input e_input-left"><span>
+					<input type="text" value="ognl:cond.END_DATE" name="END_DATE" id="END_DATE"
+									   jwcid="@DateField" format="yyyy-MM-dd"
+									   desc="结束日期" datatype="date"/> 
+					</span></span>
+				</span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			    
+			<button jwcid="@Any" name="query_BTN" id="query_BTN" class="e_button-form" onclick="return query();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!--  查询条件 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-5">
+		<table>
+			<thead>
+				<tr>
+					<th>接触信息标识</th>
+					<th>接触时间</th>
+				</tr>
+			</thead>
+			<tbody>
+              	<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+              		<td>
+              		<a jwcid="@Redirect"  parameters="ognl:'&TOUCH_ID='+info.TOUCH_ID+'&TOUCH_DAY='+info.TOUCH_DAY" value="ognl:info.TOUCH_ID"discnt_name = "ognl:info.DISCNT_NAME"
+						cols="40" onclick="showMore($(this).attr('parameters'))" />
+					</td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.TOUCH_TIME)" raw="false"/></td>
+                     
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	
+	<!-- 分页 开始 -->
+	<div jwcid="@NavBar" name="CustContactNav" id="CustContactNav" cond="QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="5" count="ognl:infosCount"></div>
+	<!-- 分页 结束 -->
+</div>
+
+<!-- 表格 结束 -->
+	<div class="c_title c_title-2">
+		<div class="text">接触信息明细</div>
+	</div>
+<!-- 表格 开始 -->
+	<div jwcid="QueryListPart2@Part">
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table ">
+		<table>
+			<thead>
+				<tr>
+				<!-- 
+					<th>受理月份</th>
+					<th>接触信息标识</th>
+					<th>客户标识</th>
+					<th>客户名称</th>
+					<th>电话号码</th>
+					<th>产品</th>
+					<th>归属地市</th>
+					<th>归属业务区</th>
+					<th>接触类型</th>
+					<th>接入类型</th>
+					<th>接入媒体类型</th>
+					<th>接入渠道标识</th>
+					<th>员工编号</th>
+					<th>接触开始时间</th>
+					<th>接触结束时间</th>
+					<th>接触状态</th> -->
+					<th>接触信息标识</th>
+					<th>接触时间</th>
+					<th>接入类型</th>
+					<th>接触类型</th>
+					<th>员工编号（接触员工）</th>
+					<th>归属业务区</th>
+				</tr>
+			</thead>
+			<tbody>
+              	<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.TOUCH_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.common.util.Utility@decodeTimestamp('yyyy-MM-dd HH:mm:ss',info.TOUCH_TIME)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getVisit(), 'TD_S_INMODE', 'IN_MODE_CODE','IN_MODE',info.IN_MODE_CODE)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue( 'CRM_SVC_TOUCH', info.SVC_NAME)" raw="false"/></td>
+                    <td><span jwcid="@Insert" value="ognl:info.STAFF_ID+'('+pageutil.getStaticValue('TD_M_STAFF','STAFF_ID', 'STAFF_NAME', info.STAFF_ID)+')'" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID', 'DEPART_NAME', info.DEPART_ID)" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	
+	<!-- 分页 开始 -->
+	<!-- 
+	<div jwcid="@NavBar" name="CustContactNav2" id="CustContactNav2" cond="QueryCondPart" part="QueryListPart" listener="qryContactTrac" pageSize="10" count="ognl:infosCount"></div>
+	 -->
+	<!-- 分页 结束 -->
+</div>
+
+<!-- 表格 结束 -->
+</div>
+</div>
+</div>
+<!-- 区域 结束 -->
+</body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onQueryCustContactInfo();
+	});
+</script>
+</html>

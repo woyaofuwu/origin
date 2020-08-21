@@ -1,0 +1,2 @@
+INSERT INTO td_m_moffice(eparchy_code,moffice_id,switch_id,serialnumber_s,serialnumber_e,imsi_s,imsi_e,update_time,update_staff_id,update_depart_id,rsrv_str1,rsrv_str2)
+ VALUES(:EPARCHY_CODE,:MOFFICE_ID,:SWITCH_ID,:SERIALNUMBER_S,:SERIALNUMBER_E,:IMSI_S,:IMSI_E,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:RSRV_STR1,:RSRV_STR2)

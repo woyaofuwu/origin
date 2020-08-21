@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>高价值客户回流信息录入</title>
+<script jwcid="@Script"  src="iorder/person/highvalueuser/scripts/HighValueUserEntryNew.js?v=20181027"></script>
+<script jwcid="@Script" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 标题栏 开始 -->
+<div class="c_header e_show-phone">
+	<div class="back" ontap="closeNav();">高价值客户回流信息录入</div>
+	<div class="fn">
+		<span class="e_ico-search" ontap=""></span>
+	</div>
+</div>
+<!-- 标题栏 结束 -->
+
+<!-- 滚动（替换为 java 组件） 开始 -->
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+			<!-- 页面提示开始! -->
+			<span class="e_size-xl e_red">*单个信息录入请填入号码后使用提交按钮! 修改请先查询并选择一条记录进行修改后使用修改按钮! 查询工号留空则查询日期区间内所有数据!</span>
+			<!-- 页面提示结束! -->
+			<div class = "c_space"></div>
+			<!-- 输入信息 开始 -->
+			<div jwcid="AddListPart@Part" class="c_list c_list-s c_list-col-2 c_list-line c_list-border">
+					<ul>
+					<li class="required">
+						<div class="label">异网手机号码</div>
+						<div class="value">
+						<span class="e_mix">
+							<input jwcid="@TextField" name="cond_SERIAL_NUMBER_B" id="cond_SERIAL_NUMBER_B" nullable="no"  maxlength="15" datatype="numeric" value="" desc="异网手机号码"/>
+						</span>
+						</div>					
+					</li>
+					<li class="required">
+						<div class="label">新入网手机号码</div>
+						<div class="value">
+						<span class="e_mix">
+							<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" nullable="no"  maxlength="15" datatype="numeric" value="" desc="新入网手机号码"/>
+							<button type="button" name="UPDATE_BTN" id="UPDATE_BTN" class="e_button-blue" disabled="disabled" ontap="updateHighValueUser()"><i class="e_ico-edit"></i><span>修改</span></button>
+						</span>
+						</div>					
+					</li>
+				</ul>
+			</div>	
+			<!-- 输入信息结束 -->	
+			<div class = "c_space"></div>
+			<!-- 批量导入 开始!-->
+			<div class="c_list c_list-col-2 c_list-s  c_list-line c_list-border">
+				<ul>
+					<li>
+						<div class="label">批量导入</div>
+						<div class="value">
+						<span 
+							jwcid="@SimpleImport"
+							name="simpleImport" 
+							taskId="189999"
+							ftpCode="personserv"
+							configFile="import/highvalueuser/HighValueUserImport.xml"
+							desc="批量导入"
+							templateFile="ognl:'template/person/highvalueuser/HighValueUserImportTemplet.xls'" 
+						/>	
+						</div>					
+					</li>
+				</ul>
+			</div>
+			<!-- 批量导入 结束! -->					
+			<!-- 查询输入区域开始-->
+			<div class="c_title">
+				<div class="text">查询已登记的信息</div>
+				<!-- 导出开始 -->
+				<div class = "fn">				
+	            <span jwcid="@Export" name="exportFile"
+	                  fileTypes="{'.xls':'.xlsx'}" taskId="189998"
+	                  ftpCode="personserv"
+	                  configFile="export/highvalueuser/HighValueUserExport.xml"
+	                  fileName="HighValueUserInfo" cond="ParamsPart">
+	            </span>
+	            </div>	
+	            <!-- 导出结束 -->					
+			</div>
+			<div jwcid="ParamsPart@Part" class="c_list c_list-col-4 c_list-s  c_list-line c_list-border">
+				<ul class="ul">
+					<li>
+						<div class="label">登录工号归属市县</div>
+						<div class="value">
+							<input jwcid="@TextField" name="cond_TRADE_CITY_CODE" id="cond_TRADE_CITY_CODE" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',condition.cond_TRADE_CITY_CODE)" desc="渠道归属市县" disabled="true"/>
+						</div>
+					</li> 					
+					<li>
+						<div class="label">起始时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" readonly="true" value="ognl:condition.cond_START_DATE" maxName="cond_FINISH_DATE" dropDown="true" desc="起始时间" />
+						</div>
+					</li>
+					<li>
+						<div class="label">终止时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_FINISH_DATE" id="cond_FINISH_DATE" nullable="no" readonly="true" value="ognl:condition.cond_FINISH_DATE" minName="cond_START_DATE" dropDown="true" desc="终止时间" />
+						</div>
+					</li>				
+					<li class="required">
+						<div class="label">工号</div>
+						<div class="value">
+						<span class = "e_mix">
+						<input jwcid="@TextField" name="cond_TRADE_STAFF_ID" id="cond_TRADE_STAFF_ID" nullable="yes"  maxlength="15" value="ognl:condition.cond_TRADE_STAFF_ID"" desc="工号"/>
+						<button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="queryHighValueUser()"><i class="e_ico-search"></i><span>查询</span></button>
+						</span>
+						</div>
+					</li>									
+				</ul>
+			</div>
+			<!-- 查询输入区域结束 -->
+			<div class = "c_space"></div>	
+			<!-- 查询结果显示区域开始 -->
+			<div jwcid="QueryListPart@Part">
+			<div jwcid="table4Print@Part" optimize="true">
+				<table jwcid="@Table" name="printTable" id="printTable" class="c_table c_table-row-8 c_table-border c_table-lite c_table-hover" editMode="false">
+					<thead>                                            
+						<tr>
+		  					<th >选择</th>
+		  					<th >序号</th>
+							<th col="TRADE_STAFF_ID" >操作工号</th>
+							<th col="SERIAL_NUMBER_B" >异网手机号码</th>
+							<th col="SERIAL_NUMBER" >新入网手机号码</th> 
+							<th col="TRADE_DEPART_ID" >操作工号所属渠道</th>
+							<th col="TRADE_CITY_CODE" >渠道归属市县</th>
+							<th col="ACCEPT_MONTH" >录入月份 </th>
+		      				<th col="IN_DATE" >录入时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td>
+								<input type="radio" name="RADIO_LIST" id="RADIO_LIST"  jwcid="@Radio" value="ognl:info.TICKET_CODE" in_date="ognl:info.IN_DATE" 
+								serial_number_b="ognl:info.SERIAL_NUMBER_B" serial_number="ognl:info.SERIAL_NUMBER" trade_staff_id="ognl:info.TRADE_STAFF_ID" 
+								trade_depart_id="ognl:info.TRADE_DEPART_ID" trade_city_code="ognl:info.TRADE_CITY_CODE" 
+								accept_month="ognl:info.ACCEPT_MONTH" onclick = "changeInfo(this)"/>
+							</td>		
+							<td>
+								<a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" />
+							</td>			
+							<td>
+								<span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', info.TRADE_DEPART_ID)" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.TRADE_CITY_CODE" raw="true" />
+							</td>								
+							<td>
+								<span jwcid="@Insert" value="ognl:info.ACCEPT_MONTH" raw="true" />
+							</td>
+							<td>
+								<span jwcid="@Insert" value="ognl:info.IN_DATE" raw="true" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div class="c_space-c"></div>
+			<div class="c_page c_page-border" jwcid="@NavBar" name="recordNav" id="recordNav" cond="ParamsPart" part="QueryListPart" listener="queryHighValueUser" pageSize="10" count="ognl:count"></div>
+			<!-- 翻页 结束 -->
+			</div>
+			<!-- 查询结果显示区域结束 -->
+			<!-- 提交 开始 -->
+			<div class="c_space"></div>
+			<div class="c_submit c_submit-center" jwcid="SubmitPart@icsserv:CSSubmit" isReset="true" disabledBtn="false" listener="onTradeSubmit" beforeAction="submitBeforeCheck()" area="AddListPart" element="div" />
+			<!-- 提交 结束 -->			
+			
+	</div>	
+</div>
+</body>
+</html>

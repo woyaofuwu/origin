@@ -1,0 +1,3 @@
+UPDATE TF_F_USER_INFO_CLASS T
+SET T.START_DATE = TO_DATE(:START_DATE, 'yyyy-mm-dd hh24:mi:ss') ,T.END_DATE = TO_DATE(:END_DATE, 'yyyy-mm-dd hh24:mi:ss') 
+WHERE ROWID = :ROWID

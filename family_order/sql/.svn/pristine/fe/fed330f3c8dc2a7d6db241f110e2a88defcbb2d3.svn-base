@@ -1,0 +1,1 @@
+UPDATE TF_B_CMIOT_NUMCARD t SET t.user_status =:USER_STATUS,t.last_time =to_date(:LAST_TIME,'yyyy-mm-dd hh24-mi-ss')  ,t.update_time =to_date(:UPDATE_TIME,'yyyy-mm-dd hh24-mi-ss'), t.update_order_id =:ORDER_ID, t.update_operator_id =:OPERATOR_ID  WHERE t.user_id =:USER_ID and t.msisdn =:MSISDN

@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'CityName'  KEY, CITY_CODE VALUE1,'-1' VALUE2,CITY_NAME VRESULT
+  FROM td_m_custcity
+ WHERE 'CityName' = :KEY

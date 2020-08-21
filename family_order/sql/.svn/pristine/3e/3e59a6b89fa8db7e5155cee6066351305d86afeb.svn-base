@@ -1,0 +1,9 @@
+UPDATE TF_B_CTRM_ORDER
+   SET ORDER_STATUS     = :ORDER_STATUS,
+       UPDATE_TIME      = to_date(:UPDATE_TIME, 'yyyy-MM-dd hh24:mi:ss'),
+       UPDATE_STAFF_ID  = :UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID = :UPDATE_DEPART_ID,
+	   RSRV_STR1        = :RSRV_STR1,	
+	   RSRV_STR2	    = :RSRV_STR2
+ WHERE OID = :OID
+   AND TID = :TID

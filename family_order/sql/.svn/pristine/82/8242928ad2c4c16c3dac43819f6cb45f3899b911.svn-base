@@ -1,0 +1,1 @@
+Update td_m_spfactory set  sp_status='N' where sp_id=:SP_ID

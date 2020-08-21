@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/removegroupmember/removegroupmember.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+</head>
+
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	
+	<!-- 提示区 --> 
+	<div class="c_box" jwcid="refreshHintBar@Part">
+		<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+	</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	
+	<!-- 表单 开始 -->
+	<div class="c_form">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">用户服务号码：</span></span>
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" id="SERIAL_NUMBER" name="SERIAL_NUMBER" value="ognl:userInfo.SERIAL_NUMBER"   enterAction="queryMemberInfo();" nullable="no" desc="用户服务号码"/>  
+						<input type="text" jwcid="@TextField" id="IF_GRPUSER" name="IF_GRPUSER" value="ognl:info.IF_GRPUSER" style="display:none" desc="是否集团用户"/>
+					</span></span>					
+			</li>
+			<li class="li">
+				<span class="label">归属地州：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="EPARCHY_CODE" name="EPARCHY_CODE" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',getVisit().getStaffEparchyCode())" disabled="disabled"  desc="归属地州" />  
+				</span></span>
+			</li>
+		</ul>		
+		<div class="submitPlace"></div>
+		<div class="submit"><button class="e_button-form" id="bquery" onclick="queryMemberInfo();"><i class="e_ico-search"></i><span>查询</span></button></div>
+	</div> 
+	<!-- 表单 结束 -->
+	 
+	<!-- 成员客户信息开始 -->
+	<div jwcid="memCustInfo@Part">
+		<span jwcid="@saleserv:MemberCustInfo" custInfo="ognl:custInfo"/> 
+	</div>
+	<!-- 成员客户信息 结束 -->
+	 
+	<!-- 成员用户信息 开始 -->
+	<div jwcid="memUserInfo@Part">
+		<span jwcid="@saleserv:MemberUserInfo" userInfo="ognl:userInfo"/> 
+		<input type="text" jwcid="@TextField" id="SERIAL_NUMBER_BAK" name="SERIAL_NUMBER_BAK" value="ognl:userInfo.SERIAL_NUMBER" style="display:none;"/>
+		<input type="text" jwcid="@TextField" id="USER_EPARCHY_CODE" name="USER_EPARCHY_CODE" value="ognl:userInfo.EPARCHY_CODE" style="display:none;"/>
+	</div>
+	<!-- 成员用户信息结束 -->
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">成员帐户信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 参数列表 开始 -->
+	<div jwcid="memAcctInfo@Part" class="c_form c_form-label-6 c_form-col-3 c_form-text">
+		<ul class="ul">
+		    
+		    <li class="li">
+				<span class="label">账户名称：</span>
+				<span class="text" id="PAY_NAME" name="PAY_NAME">
+					<span jwcid="@Insert" value="ognl:acctInfo.PAY_NAME" raw="true"/>
+				</span>
+			</li>
+		    <li class="li">
+				<span class="label">账户类别：</span>
+				<span class="text" id="PAY_MODE_CODE" name="PAY_MODE_CODE">
+					<span jwcid="@Insert" value="ognl:acctInfo.PAY_MODE_NAME" raw="true"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">银行名称：</span>
+				<span class="text" id="BANK_CODE" name="BANK_CODE">
+					<span jwcid="@Insert" value="ognl:acctInfo.BANK" raw="true"/>
+				</span>
+			</li>		
+			<li class="li">
+				<span class="label">银行账号：</span>
+				<span class="text" id="BANK_ACCT_NO" name="BANK_ACCT_NO">
+					<span jwcid="@Insert" value="ognl:acctInfo.BANK_ACCT_NO" raw="true"/>
+				</span>
+			</li>	    
+			<li class="li">
+				<span class="label">欠费信息(元)：</span>
+				<span class="text" id="OWE_FEE" name="OWE_FEE">
+					<span jwcid="@Insert" value="ognl:oweInfo.LAST_OWE_FEE" raw="true"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">账户余额(元)：</span>
+				<span class="text" id="LEFT_MONEY" name="LEFT_MONEY">
+					<span jwcid="@Insert" value="ognl:oweInfo.REAL_FEE" raw="true"/>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label">押金余额(元)：</span>
+				<span class="text" id="FOREGIFT" name="FOREGIFT">
+					<span jwcid="@Insert" value="ognl:oweInfo.ACCT_BALANCE" raw="true"/>
+				</span>
+			</li>	
+			<li>
+				<span>
+					<input jwcid="@TextField"  id="IBSYSID" name="IBSYSID" value="ognl:condition.IBSYSID"  style="display:none"/>
+					<input jwcid="@TextField"  id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:condition.PRODUCT_ID"  style="display:none"/>
+					<input jwcid="@TextField"  id="ESOP_TAG" name="ESOP_TAG" value="ognl:condition.ESOP_TAG"  style="display:none"/>
+				</span>
+			</li>	
+		</ul>
+	</div>
+	<!-- 参数列表 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">注销信息填写</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-5" jwcid="removeInfo@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">销号原因：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" id="REMOVE_REASON_CODE" name="REMOVE_REASON_CODE"  
+					 source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('TD_B_REMOVE_REASON_GROUP')"
+					 value="ognl:basecomminfo.REMOVE_REASON_CODE"  nullable="no" 
+					 valueField="DATA_ID" textField="DATA_NAME" 
+					 class="e_select" desc="销号原因" onchange="reasonChange(this);"/>
+					<input type="text" jwcid="@TextField" id="REMOVE_REASON" name="REMOVE_REASON" value="ognl:basecomminfo.REMOVE_REASON" style="display:none"/>
+				</span></span></span>
+			</li>
+			 
+			<li class="li col-2">
+				<span class="label">备注：</span>
+				<span class="e_textarea">
+					<span class="e_textareaTop"><span></span></span>
+					<span class="e_textareaContent">
+						<textarea jwcid="@TextArea" id="REMARK" name="REMARK" value="ognl:basecomminfo.REMARK" rows="2" cols="80"   desc="备注" />
+					</span>
+					<span class="e_textareaBottom"><span></span></span>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" listener="submit" beforeAction="onSubmitBaseTradeCheck()" isGrp="true" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

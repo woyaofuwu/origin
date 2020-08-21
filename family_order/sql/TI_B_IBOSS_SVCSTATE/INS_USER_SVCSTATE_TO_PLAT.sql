@@ -1,0 +1,61 @@
+INSERT INTO TI_B_IBOSS_SVCSTATE
+  (IBSYSID,
+   PARTITION_ID,
+   USER_ID,
+   TRADE_ID,
+   MCAS_COUNT,
+   IBOSS_STATE_CODE,
+   NEW_IBOSS_STATE_CODE,
+   SERIAL_NUMBER,
+   NEW_SERAIL_NUMBER,
+   OLD_BRAND_CODE,
+   NEW_BRAND_CODE,
+   ORG_DOMAIN_LIST,
+   INFO_CODE,
+   INFO_VALUE,
+   START_DATE,
+   END_DATE,
+   TYPE_CODE,
+   TAG,
+   INSERT_TIME,
+   REMARK,
+   PREVALUE1,
+   PREVALUE2,
+   PREVALUE3,
+   PREVALUE4,
+   PREVALUE5)
+  SELECT :EPARCHY_CODE || TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') ||
+         LPAD(SEQ_SVCSTATE_MCAS.NEXTVAL, 8, '0'),
+         MOD(:USER_ID, 10000),
+         TO_NUMBER(:USER_ID),
+         TO_NUMBER(:TRADE_ID),
+         :MCAS_COUNT,
+         :IBOSS_STATE_CODE,
+         DECODE(:PREVALUE5, '131', '03', '138', '03', '7305', '03', '136', '03', '7311', '03', '7101', '01', '7110', '01', '7210', '01', '7312', '03', '7316', '03', '7260', '01', '132', '02', '7220', '01','7301','11','7317','11','133','13', '126','13','127','13','128','13', '129','13', '7303','13', '7304','13','7313','13', '497','13', '496','13', ''),
+         :SERIAL_NUMBER,
+         :NEW_SERAIL_NUMBER,
+         :OLD_BRAND_CODE,
+         :NEW_BRAND_CODE,
+         :ORG_DOMAIN_LIST,
+         '170',
+         A.IMSI,
+         TO_DATE(:START_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+         TO_DATE(:END_DATE, 'yyyy-mm-dd hh24:mi:ss'),
+         :TYPE_CODE,
+         :TAG,
+         SYSDATE,
+         :REMARK,
+         :PREVALUE1,
+         :PREVALUE2,
+         :PREVALUE3,
+         :PREVALUE4,
+         :PREVALUE5
+    FROM TF_F_USER_RES A
+  
+   WHERE A.PARTITION_ID = MOD(:USER_ID, 10000)
+     AND A.USER_ID = :USER_ID
+     AND A.RES_TYPE_CODE = '1'        
+     AND A.END_DATE = (SELECT MAX(B.END_DATE) FROM TF_F_USER_RES B 
+     WHERE B.PARTITION_ID = MOD(:USER_ID, 10000)
+     AND B.USER_ID = :USER_ID
+     AND B.RES_TYPE_CODE='1')

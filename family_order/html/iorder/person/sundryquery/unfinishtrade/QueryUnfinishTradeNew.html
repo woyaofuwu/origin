@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html size="s">
+
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>未完工工单查询</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/sundryquery/unfinishtrade/scripts/QueryUnfinishTradeNew.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">未完工工单查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">
+			<div jwcid="QueryCondPart@Part" class="c_form c_form-border c_form-label-4 c_form-col-3 c_form-phone-col-1 c_form-submit">
+				<ul>
+					<li>
+						<div class="label">服务号码：</div>
+						<div class="value">
+							<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER" desc="服务号码" autoComplete="Off" />
+						</div>
+					</li>
+					<li>
+						<div class="label">起始时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE" nullable="no" readonly="true" value="ognl:condition.cond_START_DATE" maxName="cond_FINISH_DATE" dropDown="true" desc="起始时间" />
+						</div>
+					</li>
+					<li>
+						<div class="label">终止时间：</div>
+						<div class="value">
+							<input jwcid="@DateField" name="cond_FINISH_DATE" id="cond_FINISH_DATE" nullable="no" readonly="true" value="ognl:condition.cond_FINISH_DATE" minName="cond_START_DATE" dropDown="true" desc="终止时间" />
+						</div>
+					</li>
+					<li>
+						<div class="label">员工工号：</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" name="cond_TRADE_STAFF_ID" id="cond_TRADE_STAFF_ID" value="ognl:condition.cond_TRADE_STAFF_ID" autoComplete="Off" onKeyUp="inputCtrlForStaff(this)" maxLength="8" desc="员工工号" />
+						</div>
+					</li>
+					<li>
+						<div class="label">部门编码：</div>
+						<div class="value">
+							<input jwcid="@TextField" name="cond_TRADE_DEPART_ID" id="cond_TRADE_DEPART_ID" value="ognl:condition.cond_TRADE_DEPART_ID" desc="部门编码" />
+						</div>
+					</li>
+				</ul>
+				<div class="submit">
+					<button type="button" class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN" ontap="getUnfinishTrade(this);">
+						<span class="e_ico-search"></span>
+						<span>查询</span>
+					</button>
+				</div>
+			</div>
+			<div jwcid="QueryListPart@Part">
+				<div class="c_title">
+					<div class="text">查询结果</div>
+					<div class="fn">
+						<ul>
+							<li jwcid="@Conditional" condition="ognl:infos.size > 0">
+								<span jwcid="@Export" name="exportFileUserPart" ftpCode="personserv" taskId="100968" configFile="export/sundryquery/other/QueryUnfinishTrade.xml" fileName="未完工工单资料" cond=QueryCondPart />
+							</li>
+							<li>
+								<button type="button" onclick="javascript:$.printArea('table4Print','打印预览','60%')">
+									<span class="e_ico-print"></span>
+									<span>打印</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div jwcid="table4Print@Part" optimize="true">
+					<table jwcid="@Table" name="printTable" id="printTable" class="c_table c_table-row-8 c_table-border c_table-lite">
+						<thead>
+							<tr>
+								<th style="display:none" col="ORDER_ID">订单标识</th>
+								<th col="TRADE_ID">业务流水号</th>
+								<th col="SERIAL_NUMBER">服务号码</th>
+								<th col="TRADE_TYPE_CODE">业务类型</th>
+								<th>当前工单状态</th>
+								<th>后续工单状态</th>
+								<th>返销情况</th>
+								<th>受理时间</th>
+								<th>员工</th>
+								<th>部门</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td style="display:none">
+									<span jwcid="@Insert" value="ognl:info.ORDER_ID" raw="true" />
+								</td>
+								<td>
+									<a href="#nogo" jwcid="@Any" orderid="ognl:info.ORDER_ID" tradeid="ognl:info.TRADE_ID" serialnumber="ognl:info.SERIAL_NUMBER" tradetypecode="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)" onclick="displayLayer(this);showPopup('UI-popup','UI-details',true);">
+										<span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true" />
+									</a>
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_TRADETYPE','TRADE_TYPE_CODE','TRADE_TYPE', info.TRADE_TYPE_CODE)" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_SUBSCRIBE_STATE', info.SUBSCRIBE_STATE)" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_NEXTDEAL', info.NEXT_DEAL_TAG)" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TRADE_CANCELTAG', info.CANCEL_TAG)" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.ACCEPT_DATE" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:info.TRADE_STAFF_ID" raw="true" />
+								</td>
+								<td>
+									<span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME', info.TRADE_DEPART_ID)" raw="true" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 翻页（替换为页面组件） 开始 -->
+				<div class="c_space-c"></div>
+				<div class="c_page c_page-border" jwcid="@NavBar" name="navt" id="navt" cond="QueryCondPart" part="QueryListPart" listener="queryUnfinishTrade" pageSize="10" count="ognl:count"></div>
+				<!-- 翻页 结束 -->
+			</div>
+		</div>
+	</div>
+
+	<!-- 弹窗 开始 -->
+	<div id="UI-popup" name="UI-popup" jwcid="PopupPart@Popup" class="c_popup c_popup-full">
+		<div class="c_popupGroup">
+			<div class="c_popupItem" id="UI-details">
+				<div class="c_header">
+					<div class="back" ontap="backPopup('UI-popup');">工单轨迹</div>
+				</div>
+				<!-- 标题 开始 -->
+				<!-- 滚动（替换为 java 组件） 开始 -->
+				<div class="c_scroll c_scroll-float c_scroll-header">
+					<div class="l_padding l_padding-u">
+						<div class="c_title">
+							<div class="text">台账轨迹</div>
+						</div>
+						<div jwcid="table4TradeTrace@Part" optimize="true">
+							<table jwcid="@Table" class="c_table c_table-lite c_table-border c_table-min-3" name="tradeTrace" id="tradeTrace">
+								<thead>
+									<tr>
+										<th>业务流水号</th>
+										<th>服务号码</th>
+										<th>业务类型</th>
+										<th>执行代码</th>
+										<th>执行时间</th>
+										<th>执行结果</th>
+										<th style="width:100px">执行结果详情</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:tradeTraceInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.ACTIVE_CODE" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRACE_TIME" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.RESULT_CODE" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.RESULT_INFO" raw="true" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">服开轨迹</div>
+						</div>
+						<div jwcid="table4PFTrace@Part" optimize="true">
+							<table jwcid="@Table" class="c_table c_table-lite c_table-border c_table-min-3" name="PFTrace" id="PFTrace">
+								<thead>
+									<tr>
+										<th>业务流水号</th>
+										<th>服务号码</th>
+										<th>业务类型</th>
+										<th>工单类型</th>
+										<th>指令状态</th>
+										<th style="width:100px">失败信息描述</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr jwcid="@Foreach" source="ognl:PFTraceInfos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRADE_ID" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.ORDER_TYPE" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.STATUS" raw="true" />
+										</td>
+										<td>
+											<span jwcid="@Insert" value="ognl:info.DESC" raw="true" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- 滚动 结束 -->
+			</div>
+		</div>
+	</div>
+	<!-- 弹窗 结束 -->
+</body>
+
+</html>

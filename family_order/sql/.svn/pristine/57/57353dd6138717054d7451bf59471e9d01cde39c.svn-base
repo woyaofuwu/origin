@@ -1,0 +1,2 @@
+INSERT INTO ti_bi_mo_feecash(serial_number,user_id,pay_money,sp_code,sp_name,channel_trade_id,rechannel_trade_id,comp_time,req_time,sp_desc,rsrv_str1,rsrv_str2,rsrv_str3)
+ VALUES(:SERIAL_NUMBER,:USER_ID,:PAY_MONEY,:SP_CODE,:SP_NAME,:CHANNEL_TRADE_ID,:RECHANNEL_TRADE_ID,:COMP_TIME,:REQ_TIME,:SP_DESC,:RSRV_STR1,:RSRV_STR2,:RSRV_STR3)

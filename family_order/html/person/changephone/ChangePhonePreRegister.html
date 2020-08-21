@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>改号业务预申请登记</title>
+<script jwcid="@Script"  src="person/changephone/scripts/changephonepreregister.js"></script>
+<script jwcid="@Script"  src="scripts/csserv/common/validate/custvalidate.js" ></script>
+<script jwcid="@Script" language="JavaScript" src="scripts/csserv/component/person/eform/CommonEForm.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+
+<!-- 区域 开始 -->
+<div class="c_box">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户资料</div>
+	</div>
+	
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"   tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="799" element="div"></div>
+	
+	<!-- 认证 结束 -->
+	<div jwcid="UCAViewPart@Part">
+		<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		
+	</div>
+	<!-- 参数列表 开始 -->
+	<div class="c_title">
+		<div class="text">改号资料</div>
+		<div class="fn">
+			<ul>
+				<li>
+                	<button type="button" class="e_button-right"  id="SCAN_PSPT" name="ReadCardButton" onclick="clickScanPspt()"><i class="e_ico-check"></i><span>扫描</span></button>                        
+					<button type="button" class="e_button-right"  id="SHOT_IMG" name="ReadCardButton"   onclick="identification('PIC_ID','PIC_STREAM')"><i class="e_ico-check"></i><span>客户摄像</span></button>                                                	 
+				</li>
+			</ul>
+		</div>
+		</div>
+	<div class="c_form c_form-text c_form-label-8 c_form-col-3" jwcid="userInfoPart@Part">
+	
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">原号码：</span></span>
+				<input type="text" jwcid="@TextField" name="OLD_SN" id="OLD_SN"   value="ognl:userInfo.OLD_SN" datatype="mbhone" nullable="no" desc="原号码"/>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="e_required">新号码：</span></span>
+				<input  type="text" jwcid="@TextField" name="NEW_SN" id="NEW_SN"   value="ognl:userInfo.SERIAL_NUMBER" datatype="mbhone" nullable="no" desc="新号码"/>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span>外省服务密码：</span></span>
+				<input name="USER_PASSWD" id="USER_PASSWD" jwcid="@Password"  maxLength="6"  type="password" value="ognl:userInfo.USER_PASSWD" desc="外省服务密码"/>
+			</li>
+			
+			
+			<li class="li">
+				<span class="label"><span class="e_required">证件类型：</span></span>
+				<span class="e_elements"><span>
+				<select jwcid="@Select" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+	                        textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.PSPT_TYPE_CODE" desc="证件类型"  
+	                        disabled="false" nullable="no"/>
+						
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label"><span class="e_required">证件号码：</span></span>
+				
+				<span class="e_elements">
+                         
+				<span>
+				<input type="text" jwcid="@TextField" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" value=""   maxsize="20" maxLength="20"
+                         desc="证件号码" nullable="no" disabled="false"
+                        onblur="$.custValidate.validatePsptId('custInfo_PSPT_TYPE_CODE','custInfo_PSPT_ID');" /> 
+                </span>
+                        
+                </span>
+    
+                                          
+			</li>
+			
+			<li class="li">
+				<span class="label">飞信好友合并：</span>
+				<input  jwcid="@Checkbox" name="custInfo_SEL_BUSI_IMPS" id="custInfo_SEL_BUSI_IMPS"   value="02" desc="是否进行飞信好友合并"/>
+			</li>
+			
+			<li class="li">
+				<span class="label">139邮箱转移：</span>
+				<input  jwcid="@Checkbox" name="custInfo_SEL_BUSI_M139" id="custInfo_SEL_BUSI_M139"   value="01" desc="139邮箱转移"/>
+			</li>
+		</ul>
+	</div>
+	
+</div>
+			<div style="display: none">
+				<input jwcid="@Hidden" id="PIC_ID" name="PIC_ID" value=""
+					desc="客户照片ID" /> <input jwcid="@Hidden" id="PIC_STREAM"
+					name="PIC_STREAM" value="" desc="客户人像照片流" /> <input jwcid="@Hidden"
+					id="BACKBASE64" name="BACKBASE64" value="" desc="身份证背面照" /> <input
+					jwcid="@Hidden" id="custInfo_FRONTBASE64" name="custInfo_FRONTBASE64" value=""
+					desc="身份证正面照" /> <input jwcid="@Hidden" id="SCAN_TAG"
+					name="SCAN_TAG" value="1" desc="客户扫描标志" />
+			</div>
+			<div style="display: none">
+				<object id="makeActiveX"
+					classid="clsid:1114a5b7-b206-4e79-8ee2-9df3973d0012"></object>
+			</div>
+			<input class="e_input" type="hidden" id="custinfo_PhoneFlag"
+				name="custinfo_PhoneFlag" value="0" desc="身份证件扫描和人像比对是否通过" /> 
+			<input class="e_input" type="hidden" id="custinfo_RemoteVerifyFlag"
+				name="custinfo_RemoteVerifyFlag" value="1" desc="远程身份证和界面身份证件是否一致" /> 
+			<input class="e_input" type="hidden" id="custinfo_CheckPhone"
+				name="custinfo_CheckPhone" value="" desc="" />
+			<!-- 区域 结束 -->
+
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit" jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" isRender="false"  params=""  area="AuthPart,userInfoPart" element="div"/>
+	
+	<!-- 提交 结束 -->
+
+<!-- 区域 结束 -->
+
+
+
+</div></div></body>
+</html>

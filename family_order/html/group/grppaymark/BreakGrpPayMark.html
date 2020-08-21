@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grppaymark/BreakGrpPayMark.js"></script>
+</head>
+<body jwcid="@Body">
+
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" id="pageForm4">
+	<!-- tab 页面开始-->
+	<div jwcid="mytab@Tabset">
+		
+		<!-- 优惠tab页开始 -->
+		<div jwcid="@TabsetContent" id ="AddPart" title="欠费不截止代付关系新增">
+			<!-- 表格 开始 --> 
+			<div class="c_box" jwcid="queryFrom@Part">
+				
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">集团客户查询</div>
+				</div>
+				<!-- 标题 结束 -->
+				
+				<!-- 表单 开始 -->
+				<div class="c_form">
+					<ul class="ul">
+						<li class="li">
+							<span jwcid="@saleserv:SelectGroup" refreshPart="TradeListPart,BackPart,GroupInfoPart" selectGroupListener="getGroupBaseInfo" />
+						</li>
+			  		</ul>
+				</div>
+				<!-- 表单 结束 -->
+				
+				<div jwcid="GroupInfoPart@Part">
+					<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:info"/>
+				</div>
+				
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">工单信息</div>
+				</div>
+				<!-- 标题 结束 -->
+				
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-col-7" jwcid="TradeListPart@Part">
+					<ul class="ul">
+							<li class="li col-7">
+							<span class="label"><span class="e_required">集团产品选择：</span></span>
+							  <span class="e_selec">
+								<select jwcid="@Select" name="USER_ID" id="USER_ID" desc="集团产品选择"
+			        	                source="ognl:infos"	textField="PRODUCT_NAME" valueField="USER_ID" 
+								        value="ognl:condition.USER_ID" />
+							</span>
+						</li>
+					</ul>		
+				</div>
+				<!-- 表单 结束 -->
+				
+				<div class="c_form c_form-col-3 c_form-label-7" jwcid="BackPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">起始时间：</span></span>
+							<span class="e_input"><span>
+								<input type="text" id="START_DATES" name="START_DATES" nullable="no" jwcid="@DateField" value="ognl:condition.START_DATES" 
+									format="yyyy-MM-dd HH:mm:ss" datatype="date" minName="START_DATES" maxName="END_DATES" desc="起始时间"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span class="e_required">截止时间：</span></span>
+							<span class="e_input"><span>
+								<input type="text" id="END_DATES" name="END_DATES" nullable="no" jwcid="@DateField" value="2050-12-31 23:59:59" 
+									format="yyyy-MM-dd HH:mm:ss" datatype="date" minName="START_DATES" maxName="END_DATES" desc="截止时间"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span><span>
+								<span class="e_required">欠费不截止代付</span><input type="checkbox" checked="true" 
+								onclick="checkSelectMesInfo(this)" id="MARK_FLAG" name="MARK_FLAG" jwcid="@Checkbox" value="1"/>
+							</span></span></span>
+						</li>
+					</ul>
+					<ul>
+						<li class="li col-3">
+							<span class="label">备注：</span>
+							<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent">
+									<textarea type="text" jwcid="@TextArea" id="REMARK_OTHER" name="REMARK_OTHER" value="ognl:condition.REMARK_OTHER" nullable="yes" rows="3" maxsize="100" desc="备注" />
+								</span>
+								<span class="e_textareaBottom"><span></span></span>
+							</span>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<div jwcid="SubmitPart@saleserv:CSSubmit" area="GroupInfoPart,TradeListPart,BackPart" 
+						listener="onSubmitBaseTrade" beforeAction="onSubmitBaseTradeCheck()" 
+						isGrp="true" disabledBtn="false" element="div"/>
+				</div>
+				<!-- 提交 结束 -->
+				
+			</div>
+			<!-- 表格 结束 -->
+		</div>
+		<!-- 优惠tab页结束 -->
+	
+		<!-- 查询欠费不截止代付关系tab页开始 -->
+		<div jwcid="@TabsetContent" id ="QryPart" title="欠费不截止代付关系查询">
+			
+			<!-- 标题 开始 -->
+			<div class="c_title">
+				<div class="text">欠费不截止代付关系查询</div> 
+			</div>
+			<!-- 标题 结束 -->
+					
+		    <div jwcid="QueryCondPart@Part" element="div">
+			<!-- 表单 开始 -->
+			<div id="QueryCondPart2" jwcid="QueryCondPart2@Part" optimize="true">
+				<div class="c_form c_form-col-3 c_form-label-7">
+					<ul class="ul">
+						<li class="li">
+							<span class="label">集团产品编码：</span>
+							<span class="e_input"><span>
+								<input type="text" id="SERIAL_NUM_GRP" name="SERIAL_NUM_GRP" jwcid="@TextField" 
+									value="ognl:condition.SERIAL_NUM_GRP" datatype="text" nullable="no"/>
+							</span></span>
+						</li>
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button class="e_button-form" onclick="queryAllPayMark()" listener="ognl:listeners.qryBreakGrpPayMarkInfo"><i class="e_ico-search"></i><span>查询</span></button>
+					</div>
+				</div>
+			</div>
+			<!-- 表单结束 -->
+			<div class="c_title c_title-2">
+				<span class="text">欠费不截止代付关系查询导出</span>
+				<span class="fn"> 
+				    <span jwcid="@Export"
+				    	id="exportFile"
+						name="exportFile" 
+						serviceName="96208" 
+						config="export/querygroupinfo/BreakGrpPayMark.xml"
+						fileName="欠费不截止代付关系导出导出"
+						cond="QueryCondPart2"
+						ftpSite="groupserv"
+						beforeAction=""
+						action="">
+					</span> 
+				</span>
+			</div>
+			
+			<!-- 数据显示区域开始 -->
+			<div jwcid="ratioPart@Part" element="div">
+				<!-- 表格 开始 -->
+				<div class="c_scroll c_scroll-table-10"><div class="c_table">
+					<table jwcid="@Table" name="ratioTable"  rowClick="tableRatioClick"  scroll="true">
+						<thead>
+							<tr>
+								<th col="USER_ID">集团产品编码标识</th>
+								<th col="GROUP_ID">集团客户编码</th>
+								<th col="CUST_NAME">集团客户名称</th>
+								<th col="SERIAL_NUMBER">集团产品编码</th>
+								<th col="START_DATE">欠费不截止代付关系开始时间</th>
+								<th col="END_DATE">欠费不截止代付关系结束时间</th>
+							</tr>
+						</thead>
+						<tbody>
+					  		<tr id="tr_0" jwcid="@Foreach" source="ognl:markInfos" value="ognl:markInfo" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					  			<td><span jwcid="@Insert" value="ognl:markInfo.USER_ID" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:markInfo.GROUP_ID" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:markInfo.CUST_NAME" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:markInfo.SERIAL_NUMBER" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:markInfo.START_DATE" raw="false"/></td>
+								<td><span jwcid="@Insert" value="ognl:markInfo.END_DATE" raw="false"/></td>
+							</tr>		  
+						</tbody>
+					</table>
+				</div></div>
+				<!-- 表格 结束 -->
+				<div jwcid="@NavBar" id="ratioNavBar"  name="ratioNavBar"  cond="QueryCondPart" 
+					 part="QueryCondPart,ratioPart,editForm"  listener="qryBreakGrpPayMarkInfo"  needCount="true" pageSize="12"  count="ognl:infosCount">
+				</div>
+			</div>
+			<!-- 数据显示区域结束 -->
+			</div>
+			
+			<!-- 编辑资料 开始-->
+			<div class="c_box" jwcid="editForm@Part">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">编辑集团产品欠费不截止代付关系资料</div>
+				</div>
+				<!-- 标题 结束 -->
+				
+				<div class="c_form c_form-label-12 c_form-col-3" jwcid="EditPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span>集团产品编码标识：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="E_USER_ID@TextField" value="" name="E_USER_ID" type="text" 
+									nullable="no" maxsize="16" desc="集团产品编码标识" disabled="true"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span>集团客户编码：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="E_GROUP_ID@TextField" value="" name="E_GROUP_ID" type="text" 
+									nullable="no" desc="集团客户编码" disabled="true"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span>集团客户名称：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="E_CUST_NAME@TextField" value="" name="E_CUST_NAME" type="text" 
+									nullable="no" desc=" 集团客户名称" disabled="true"/>
+							</span></span>
+						</li>
+					</ul>
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span>集团产品编码：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="E_SERIAL_NUMBER@TextField" value="" name="E_SERIAL_NUMBER" type="text" 
+									nullable="no" desc="集团产品编码" disabled="true"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span>欠费不截止代付关系开始时间：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="E_START_DATE@TextField" value="" name="E_START_DATE" type="text" 
+									nullable="no" desc="欠费不截止代付关系开始时间" disabled="true"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label"><span>欠费不截止代付关系结束时间：</span></span>
+							<span class="e_input"><span>
+								<input jwcid="E_END_DATE@TextField" value="" name="E_END_DATE" type="text" 
+									nullable="no" desc=" 欠费不截止代付关系结束时间" disabled="true"/>
+							</span></span>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- 提交 -->
+				<div class="c_submit">
+					<button type="button" id="btdelete" name="btdelete" onclick="delGrpPayMark()">
+						<i class="e_ico-delete"></i><span>截止欠费不截止代付关系</span>
+					</button>
+					<button type="button" id="btclear" name="btclear" onclick="clearGrpPayMark()">
+						<i class="e_ico-delete"></i><span>清除</span>
+					</button>
+				</div>
+			</div>
+			<!-- 编辑资料 结束-->
+			
+		</div>
+		<!-- 查询欠费不截止代付关系tab页结束 -->
+		
+	</div>
+	<!-- tab 页面结束-->
+</div>
+	
+</div></div>
+
+</body>

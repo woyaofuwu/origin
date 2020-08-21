@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" size="s">
+<head jwcid="@Head">
+    <meta charset="utf-8"/>
+    <title>预留信息删除</title>
+    <script jwcid="@Script" src="iorder/person/reserveinfo/scripts/DelCustomerReserveInfo.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 start -->
+    <div class="c_header e_show-phone">
+        <div class="back" ontap="closeNav()">预留信息删除</div>
+    </div>
+    <!-- 标题栏 end -->
+    <div class="c_space c_space-phone-0"></div>
+    <!-- 查询条件 start -->
+    <div jwcid="QueryCondPart@Part"
+         class="c_list c_list-s c_list-col-2 c_list-line c_list-border">
+        <ul>
+            <li class="required">
+                <div class="label">服务号码</div>
+                <div class="value">
+                    <span class="e_mix">
+                        <input name="cond_SERIAL_NUMBER"
+                               jwcid="@TextField"
+                               value="ognl:condition.cond_SERIAL_NUMBER"
+                               nullable="no" desc="服务号码"
+                               id="SERIAL_NUMBER"/>
+                        <button name="QUERY_BTN" type="button"
+                                class="e_button-blue"
+                                ontap="queryCustomerReserveInfo();">
+                            <span class="e_ico-search"></span>
+                            <span>查询</span>
+                        </button>
+                    </span>
+                </div>
+            </li>                    
+        </ul>
+    </div>           
+	<!-- 查询条件 end -->           
+    <div class="c_space"></div> 
+    <!-- 展示区域 start -->
+    <divs
+        jwcid="resultsPart@Part"
+        name="resultsPart">
+        <!-- 表格区域 start -->
+        <table
+            name="airLineTable"
+            class="c_table"
+            jwcid="@Table">
+            <thead>
+                <tr>
+                    <th class="e_center" col="SERIAL_NUMBER">服务号码</th>
+                    <th class="e_center" col="PSPT_TYPE_CODE">证件类型</th>
+                    <th class="e_center" col="PSPT_ID">证件号码</th>
+                    <th class="e_center" col="POST_ADDR">邮寄地址</th>
+                    <th class="e_center" col="CUST_NAME">客户姓名</th>
+                    <th class="e_center" col="STATE">开户状态</th>
+                    <th class="e_center" col="ACCEPT_DATE">下单时间</th>
+                    <th class="e_center" col="END_DATE">失效时间</th>
+                    <th class="e_center" col="RESERMARK">备注</th>
+                    <th class="fn">删除</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    jwcid="@Foreach"
+                    source="ognl:customerInfos"
+                    value="ognl:info"
+                    element="tr"
+                    index="ognl:rowIndex"
+                    class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.SERIAL_NUMBER"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE', info.PSPT_TYPE_CODE)"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.PSPT_ID"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.POST_ADDR"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.CUST_NAME"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:pageutil.getStaticValue('TD_B_POSTCARD_INFO_STATE', info.STATE)"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.ACCEPT_DATE"
+                        raw="false"/></td>    
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.END_DATE"
+                        raw="false"/></td>
+                    <td class="e_center"><span
+                        jwcid="@Insert"
+                        value="ognl:info.RESERMARK"
+                        raw="false"/></td>    
+                    <td class="fn">
+                        <span
+                            jwcid="@Redirect"
+                            serialNumber="ognl:info.SERIAL_NUMBER"
+                            onclick="deleteCustomerReserveInfo($(this).attr('serialNumber'));"
+                            class="e_ico-delete"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 表格区域 end -->
+
+        <!-- 分页区域 start -->
+        <div
+            jwcid="@NavBar"
+            name="pagin"
+            cond="QueryCondPart"
+            part="resultsPart"
+            listener="queryCustomerReserveInfo"
+            count="ognl:count"
+            pageSize="10"></div>
+        <!-- 分页区域 end -->
+    </divs>
+    <!-- 展示区域 end -->
+</body>
+</html>

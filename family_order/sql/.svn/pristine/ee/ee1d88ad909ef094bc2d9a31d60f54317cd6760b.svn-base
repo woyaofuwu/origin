@@ -1,0 +1,39 @@
+
+
+SELECT CARD_CODE,
+       CARD_PASS_WORD,
+       ITEM_CODE,
+       ITEM_NAME,
+       GIFT_CODE,
+       GIFT_NAME,
+       TERMINAL_CODE,
+       RSRV_NUM1,
+       RSRV_NUM2,
+       RSRV_NUM3,
+       RSRV_STR1,
+       RSRV_STR2,
+       RSRV_STR3,
+       RSRV_STR4,
+       RSRV_STR5,
+       RSRV_DATE1,
+       RSRV_DATE2,
+       RSRV_DATE3,
+       RSRV_TAG1,
+       RSRV_TAG2,
+       RSRV_TAG3,
+       PROCESS_TAG,
+       STAFF_ID,
+       DEPART_ID,
+       TRADE_ID,
+       START_DATE,
+       END_DATE,
+       UPDATE_TIME,
+       UPDATE_STAFF_ID,
+       UPDATE_DEPART_ID,
+       REMARK
+  FROM TF_R_GGCARD
+  WHERE CARD_CODE=:CARD_CODE
+  AND CARD_PASS_WORD=:CARD_PASS_WORD
+  AND nvl(PROCESS_TAG,'0')=:PROCESS_TAG
+  AND SYSDATE>START_DATE
+  AND SYSDATE<END_DATE

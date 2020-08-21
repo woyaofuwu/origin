@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<title>车联网折扣审批</title>
+<script jwcid="@Script" type="text/javascript"
+	src="scripts/group/cargroup/CarGroupRateInfo.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+
+			<!-- 提示区域  开始 -->
+			<!-- 暂时屏蔽
+		<div class="c_box" jwcid="refreshHintBar@Part">
+			<div jwcid="@csserv:HintBar" hintInfo="ognl:hintInfo"/>
+		</div>
+		-->
+			<!-- 提示区域  结束 -->
+
+
+			<!-- 查询  开始 -->
+			<div class="c_box">
+				<div class="c_title">
+					<div class="text">查询条件</div>
+				</div>
+				<div class="c_form" jwcid="QueryCondPart@Part">
+					<ul class="ul">
+						<li class="li"><span class="label"><span
+								class="label">集团产品编码：</span> </span> <span class="e_input"><span><input
+									type="text" jwcid="@TextField" name="COND_EC_ID" datatype="numchar" 
+									id="COND_EC_ID" value="ognl:condition.EC_ID" desc="集团产品编码" />
+							</span> </span></li>
+						<li class="li"><span class="label">开始时间：</span> <span
+							class="e_input"><span><input datatype="date"
+									format="yyyy-MM-dd" jwcid="@DateField" name="COND_START_DATE"
+									id="COND_START_DATE" value="ognl:condition.START_DATE"
+									desc="开始时间" /> </span> </span>
+						</li>
+						<li class="li "><span class="label">结束时间：</span> <span
+							class="e_input"><span><input datatype="date"
+									format="yyyy-MM-dd" jwcid="@DateField" name="COND_END_DATE"
+									id="COND_END_DATE" value="ognl:condition.END_DATE" desc="结束时间" />
+							</span> </span>
+						</li>
+						<li class="li">
+					</ul>
+					<div class="submitPlace"></div>
+					<div class="submit">
+						<button class="e_button-form" onclick="return $.CarMgr.queryInfo();">
+							<i class="e_ico-search"></i><span>查询</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- 查询  结束 -->
+			<div class="c_box" jwcid="QueryListPart@Part" element="div">
+				<div class="c_title c_title-1">
+					<div class="text">查询结果</div>
+					<div class="fn" style="display: black">
+						<button class="e_button" onclick="return $.CarMgr.showAddDiv();">
+							<i class="e_ico-add"></i><span>新增</span>
+						</button>
+					</div>
+				</div>
+				<div class="c_scroll c_scroll-x c_scroll-table-10">
+					<div class="c_table">
+						<table jwcid="@Table" name="BadnessTradeTable">
+							<thead>
+								<tr>
+									<th col="IN_CHECK_ID"><input type="checkbox" id="check"
+										name="check" onclick="checkedAll('chkbox',checked)" value="" />
+									</th>
+									<th col="EC_ID">集团客户订购标识</th>
+									<th col="DISCNT_RATE">折扣率</th>
+									<th col="CARD_BIND">是否机卡绑定</th>
+									<th col="UPDATE_TIME">更新时间</th>
+									<th col="APPROVAL_NO">审批文号</th>
+									<th col="APPROVAL_RSLT">审批结果</th>
+									<th col="APPROVAL_DOC">审批附件</th>
+								</tr>
+							</thead>
+							<tbody jwcid="@Any" name="managePrizeBody" id="managePrizeBody">
+								<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+									index="ognl:rowIndex" element="tr">
+									<td align="center"><input type="checkbox" name="chkbox"
+										id='"checkbox"+ rowIndex' jwcid="@Any" value="ognl:info.EC_ID" />
+									</td>
+									<td align="center"><span jwcid="@Insert"
+										value="ognl:info.EC_ID" raw="true"></span></td>
+									<td align="center"><span jwcid="@Insert"
+										value="ognl:info.DISCNT_RATE" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert"
+										value="ognl:pageutil.getStaticValue('TF_O_DISCNT_APPROVAL',info.CARD_BIND)"></span>
+									</td>
+									<td align="center"><span jwcid="@Insert"
+										value="ognl:info.UPDATE_TIME" raw="false"></span></td>
+									<td align="center"><span jwcid="@Insert"
+										value="ognl:info.APPROVAL_NO" raw="false"></span>
+										<td align="center"><span jwcid="@Insert"
+											value="ognl:pageutil.getStaticValue('TF_O_DISCNT_APPROVAL_RSLT',info.APPROVAL_RSLT) "
+											raw="false"></span></td>
+										<td align="center"><a jwcid="@Any" href="ognl:info.URL"
+											target="_blank"> <span class="text" jwcid="@Insert"
+												value="ognl:info.APPROVAL_DOC"></span> </a>
+									</td> <!--  ognl:pageutil.getStaticValue('TD_M_DEPART','DEPART_ID','DEPART_NAME',info.IN_DEPART_ID)-->
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- 分页 开始 -->
+				<div jwcid="NavBarPart@NavBar" name="NavBarPart" id="NavBarPart" cond="QueryCondPart" part="QueryListPart" listener="queryByECID" pageSize="10" count="ognl:totalCount" desc="cond为查询条件DIV; part为显示结果集DIV; listener为监听方法; count为java类传入集合个数参数"></div>
+					<!-- 分页 结束 -->
+			</div>
+			<!-- 查询结果区域  结束 -->
+
+
+			<!-- 编辑区域 开始 -->
+			<div class="c_box" jwcid="editInfoPart@Part" element="div"
+				style="display: none;">
+				<div class="c_title">
+					<div class="text" id="editInfoPartTitle" name="editInfoPartTitle">编辑</div>
+				</div>
+				<div class="c_form c_form-col-3 c_form-label-8">
+					<ul class="ul">
+						<li class="li" id="li_SERIAL_NUMBER"><span class="label"><span
+								class="e_required">集团产品编码：</span> </span> <span class="e_input"><span>
+									<input type="text" jwcid="@TextField" id="EC_ID" name="EC_ID"
+									desc="集团产品编码" value="ognl:editInfo.EC_ID" nullable="no" datatype="numchar"
+									
+									maxLength="15" /> </span> </span>
+						</li>
+						<li class="li" id="li_SERIAL_NUMBER"><span class="label"><span
+								class="e_required">折扣率：</span> </span> <span class="e_input"><span>
+									<input type="text" jwcid="@TextField" id="DISCNT_RATE"
+									name="DISCNT_RATE" desc="折扣率" value="ognl:editInfo.DISCNT_RATE"
+									nullable="no" maxLength="2" /> </span> </span>
+						</li>
+						<li class="li"><span class="label"><span
+								class="e_required">是否机卡绑定：</span> </span> <span class="e_select"><span><span>
+										<select jwcid="@Select" name="CARD_BIND" id="CARD_BIND"
+										desc="是否机卡绑定" nullable="no"
+										source="ognl:pageutil.getStaticList('TF_O_DISCNT_APPROVAL')"
+										value="ognl:editInfo.TYPE_ID" textField="DATA_NAME"
+										valueField="DATA_ID" titleField="DATA_NAME"
+										onchange="$.CarMgr.CardBind()" /> </span> </span> </span>
+						</li>
+
+						<li class="li col-1"><span class="label">证明材料：</span> <span
+							class="e_elements"> <input id="PROV_DOC" name="PROV_DOC"
+								jwcid="@SimpleUpload" value="" needSuffix="true" desc="证明材料"
+								fileTypes="*.*" fileTotal="2" filePath="PROVDOC" ftpSite="groupserv" /> </span>
+						</li>
+						<li class="li"><span class="label"><span
+								class="e_required">折扣申请类别： </span></span> <span class="e_select"><span><span>
+										<select jwcid="@Select" name="APPLY_TYPE" id="APPLY_TYPE"
+										desc="折扣申请类别" nullable="no"
+										source="ognl:pageutil.getStaticList('RATE_TYPE')"
+										value="ognl:editInfo.TYPE_ID" textField="DATA_NAME"
+										valueField="DATA_ID" titleField="DATA_NAME" /> </span> </span> </span>
+						</li>
+						<li class="li"><span class="label"><span class="e_required">申请人：</span></span> 
+						<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" id="APPLICANT"
+									name="APPLICANT" desc="申请人" value="ognl:editInfo.APPLICANT"
+									nullable="no" /> </span> </span>
+						</li>
+						<li class="li"><span class="label"><span class="e_required">申请人联系号码：</span></span> 
+						<span class="e_input"><span>
+									<input type="text" jwcid="@TextField" id="APPLICANT_PHONE"
+									name="APPLICANT_PHONE" desc="申请人联系号码" value="ognl:editInfo.APPLICANT_PHONE"
+									nullable="no" datatype="pinteger"  /> </span> </span>
+						</li>
+						<li class="li col-2"><span class="label"><span class="e_required">申请原因：</span></span> 
+						<span class="e_textarea">
+						       <span class="e_textareaTop"><span></span></span>
+						       <span class="e_textareaContent"><textarea type="text" jwcid="@TextArea" id="APPLY_REASON" name="APPLY_REASON" 
+									value="ognl:editInfo.APPLY_REASON" nullable="no" rows="4" 
+									maxsize="10000" style="height:50px;" desc="申请原因" /> </span>
+						       <span class="e_textareaBottom"><span></span></span>
+						</span>
+						</li>
+					</ul>
+				</div>
+				<div class="c_submit">
+					<button class="e_button-page-ok" id="bupdate" name="bupdate"
+						onclick="return $.CarMgr.EditDiv.submit();">
+						<i></i><span>提交</span>
+					</button>
+					<button class="e_button-page-ok" id="bclose" name="bclose"
+						onclick="return $.CarMgr.EditDiv.hid();">
+						<i></i><span>取消</span>
+					</button>
+				</div>
+			</div>
+			<!-- 编辑区域 结束 -->
+
+		</div>
+	</div>
+
+</body>
+</html>

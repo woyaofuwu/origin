@@ -1,0 +1,4 @@
+--IS_CACHE=Y
+SELECT 'RemoveReason'  KEY, REMOVE_REASON_CODE VALUE1,'-1' VALUE2,REMOVE_REASON VRESULT
+  FROM td_b_remove_reason
+ WHERE 'RemoveReason' = :KEY

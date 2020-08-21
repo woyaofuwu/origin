@@ -1,0 +1,1 @@
+SELECT 1 FROM TF_R_CEN_TERMINAL_DIS B WHERE  A.res_no=B.terminal_id

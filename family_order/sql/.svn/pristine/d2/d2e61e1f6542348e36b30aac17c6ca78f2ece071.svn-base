@@ -1,0 +1,1 @@
+select t.* from TL_B_USER_END_ACTIVE t where t.accept_month=:ACCEPT_MONTH AND T.STATUS=to_number(:STATUS)

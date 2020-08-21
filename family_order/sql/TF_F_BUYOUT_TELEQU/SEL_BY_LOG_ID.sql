@@ -1,0 +1,28 @@
+select t.log_id,
+       t.telequ_price,
+       t.telequ_count,
+       t.telequ_fee_totle,
+       t.chnl_id,
+       t.reg_date,
+       t.reg_staff_id,
+       t.reg_depart_id,
+       t.update_time,
+       t.update_staff_id,
+       t.update_depart_id,
+       t.remark,
+       t.rsrv_num1,
+       t.rsrv_num2,
+       t.rsrv_num3,
+       t.rsrv_str1,
+       t.rsrv_str2,
+       t.rsrv_str3,
+       t.rsrv_date1,
+       t.rsrv_date2,
+       t.rsrv_date3,
+       t.rsrv_tag1,
+       t.rsrv_tag2,
+       t.rsrv_tag3,
+       chl.chnl_name
+  from TF_F_BUYOUT_TELEQU t, tf_chl_channel chl
+  where t.log_Id=:LOG_ID
+  and t.chnl_id = chl.chnl_id

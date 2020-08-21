@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>银行缴费解约与变更</title>
+<script language="JavaScript"	src="person/bankpaymentmanage/scripts/cancelchangecontract.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper" jwcid="cancelChgALLPart@Part"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">资料查询</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="1391" tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+	<!-- 认证 结束 -->
+		<div jwcid="UCAViewPart@Part">
+				<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+				<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+		</div> 
+</div>
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">签约信息</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="busiInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">操作方式：</span>
+				<div class="c_fn">
+					<ul>
+						<li><label><input jwcid="@Radio"	
+	                     name="OPER_RADIO" id="OPER_RADIO" value="1" 
+	                     onclick="checkRadio('OPER_RADIO');"
+	                     checked="true"/>变更</label></li>
+						                     
+						<li><label><input	jwcid="@Radio"	
+		                     name="OPER_RADIO" id="OPER_RADIO1" value="0" 	
+		                     onclick="checkRadio('OPER_RADIO1');" 
+		                     checked="false"/>解约</label></li>
+					</ul>
+				</div>
+			</li>
+			<li class="li">
+			</li>
+			<li class="li">
+			</li>
+		</ul>
+	</div>
+	<div class="c_form c_form-label-6 c_form-col-3" jwcid="busiInfoPart2@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">银行名称：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="BANK_ID" id="BANK_ID" 
+							source="ognl:pageutil.getStaticList('SIGN_BANK')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.BANK_ID" disabled="true"
+							desc="银行名称" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">银行卡类型：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="BANK_ACCT_TYPE" id="BANK_ACCT_TYPE" 
+							source="ognl:pageutil.getStaticList('BANK_CARD_TYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.BANK_ACCT_TYPE" disabled="true"
+							desc="银行卡类型" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">银行卡号：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="BANK_ACCT_ID" maxlength="25"  disabled="true"
+								id ="BANK_ACCT_ID" value="ognl:condition.BANK_ACCT_ID" desc="客户名称" />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">付费方式：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PREPAY_TAG" id="PREPAY_TAG" 
+							source="ognl:pageutil.getStaticList('USER_PREPAYTAG')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.PREPAY_TAG" nullable="no" disabled="true"
+							desc="付费方式" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">缴费方式：</span></span>
+				<span class="e_select"><span><span>
+						<select jwcid="@Select" name="PAY_TYPE" id="PAY_TYPE" 
+							source="ognl:pageutil.getStaticList('BANK_SIGN_PAY_TYPE')"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.PAY_TYPE" onchange=payTypeChange(this.value) nullable="no"
+							desc="缴费方式" />
+						<input style="display:none" type="text" jwcid="@TextField" name="OLD_PAY_TYPE" maxlength="25" 
+								id ="OLD_PAY_TYPE" value="ognl:condition.PAY_TYPE" desc="充值阀值" />
+				</span></span></span>
+			</li>
+			<li class="li" id="autoFZ" style="display:none">
+				<span class="label"><span class="e_required">充值阀值：</span></span>
+				<span class="e_elements">
+					<span class="e_label e_label-right"><span>分</span></span>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" name="RECH_THRESHOLD" maxlength="25" 
+									id ="RECH_THRESHOLD" value="ognl:condition.RECH_THRESHOLD" desc="充值阀值" />
+						<input style="display:none" type="text" jwcid="@TextField" name="OLD_RECH_THRESHOLD" maxlength="6" 
+									id ="OLD_RECH_THRESHOLD" value="ognl:condition.RECH_THRESHOLD" desc="充值阀值" />
+					</span></span>
+				</span>
+			</li>
+			<li class="li" id="autoED" style="display:none">
+				<span class="label"><span class="e_required">充值额度：</span></span>
+				<span class="e_elements">
+					<span class="e_label e_label-right"><span>分</span></span>
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" name="RECH_AMOUNT" maxlength="25" 
+									id ="RECH_AMOUNT" value="ognl:condition.RECH_AMOUNT" desc="充值额度" />
+						<input style="display:none" type="text" jwcid="@TextField" name="OLD_RECH_AMOUNT" maxlength="6" 
+									id ="OLD_RECH_AMOUNT" value="ognl:condition.RECH_AMOUNT"/>
+					</span></span>
+				</span>
+			</li>
+			<li class="li col-2">
+				<span class="label">备注：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="REMARK" maxlength="100" 
+								id ="REMARK" value="ognl:condition.RECH_AMOUNT" desc="备注" />
+				</span></span>
+			</li>
+		</ul>
+	</div>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" isReset="true" area="cancelChgALLPart"  element="div"/>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO td_o_credit_usergroup(user_group_id,name,remark,update_time,update_staff_id,update_depart_id,eparchy_code)
+ VALUES(:USER_GROUP_ID,:NAME,:REMARK,SYSDATE,:UPDATE_STAFF_ID,:UPDATE_DEPART_ID,:EPARCHY_CODE)

@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>黑名单日志查询 </title>
+<script jwcid="@Script" src="person/blackusermanager/scripts/BlackUserQryLog.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+
+<div class="c_box">
+	 
+	<div jwcid="CondPart@Part" class="c_form c_form-col-3 c_form-label-6 l_mt" element="div">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">客户号码：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_SERIAL_NUMBER" name ="cond_SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER" desc="客户号码"  />
+					</span></span>
+			</li>
+			
+			<li class="li">
+					<span class="label">客户证件号：</span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="cond_PSPT_ID" name ="cond_PSPT_ID" value="ognl:cond.PSPT_ID" desc="客户证件号"  />
+					</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">起始日期：</span>
+						<span class="e_elements">
+							<span class="e_input e_input-left"><span>
+									<input type="text" jwcid="@DateField" name="cond_STARTDATE" id="cond_STARTDATE"  value="ognl:cond.STARTDATE" desc="开始日期"/>
+									</span>
+							</span></span>
+			</li>
+			<li class="li">
+				<span class="label">终止日期：</span>
+					<span class="e_elements">
+							<span class="e_input e_input-left"><span>
+									<input type="text" jwcid="@DateField" name="cond_ENDDATE" id="cond_ENDDATE"  value="ognl:cond.ENDDATE" desc="结束日期"/>
+							</span></span>
+				</span>
+			</li>
+			<li class="li">
+					<span class="label">业务类型：</span>
+					<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_TRADE_TYPE_CODE" id="cond_TRADE_TYPE_CODE"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BLACK_TRADE_TYPE')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="info.TRADE_TYPE_CODE" 
+							desc="分公司" />
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	<div class="c_submit e_right">
+		<button type="button" class="e_button-form" id="SearchBtn" onclick="queryGoodsList();"><i class="e_ico-search"></i><span>查询</span></button>
+		<button type="button" class="e_button-form" onclick="return reset();" ><i class="e_ico-reset"></i><span>清空</span></button>
+	</div>
+	 
+	<div class="submit e_left" >
+		<!-- span jwcid="@Conditional" condition="ognl:expTag != 0"-->
+		<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="9931"  beforeAction="exportBeforeAction"
+					 config="export/blackuser/BlackUserLog.xml" fileName="黑名单日志清单"   cond="CondPart" />
+		</span>
+		 
+	</div> 
+	
+	<div jwcid="ResultPart@Part">
+		<!-- 执行查询结果 -->
+		<div class="c_scroll c_scroll-x">		
+		<div class="c_table c_table-row-10">
+			<table id="sortedTable">
+	     		<thead>
+		  			<tr>
+		  				<th >序号</th>
+		  				<th col="IN_MODE_CODE" style="display:none">办理渠道ID</th>
+						<th col="IN_MODE_CODE_CHN" >办理渠道</th>
+						<th col="UPDATE_STAFF_ID" style="display:none">业务名称ID</th>
+			      		<th col="STAFF_ID_CHN" >办理工号</th>
+			      		<th col="UPDATE_TIME" >办理时间</th>
+			      		<th col="TRADE_TYPE_CODE" style="display:none">业务名称ID</th>
+			      		<th col="TRADE_TYPE_CODE_CHN" >业务名称</th>
+	                    <th col="PSPT_ID" >证件号</th>
+			      		<th col="USER_ID" >客户标识码</th>
+			      		<th col="SERIAL_NUMBER">客户号码</th>
+			      		<th col="FEE" >欠费金额</th> 
+			      		<th col="OTHER_FEE" >其他欠费</th> 
+			      		<th col="UPDATE_DEPART_ID" style="display:none">办理部门ID</th>
+			      		<th col="DEPART_ID_CHN" style="display:none">办理部门</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.IN_MODE_CODE" /></td> 	 
+						<td><span jwcid="@Insert" value="ognl:info.IN_MODE_CODE_CHN" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" /></td> 	 
+						<td><span jwcid="@Insert" value="ognl:info.STAFF_ID_CHN" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_TIME" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE" /></td> 
+						<td><span jwcid="@Insert" value="ognl:info.TRADE_TYPE_CODE_CHN" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.USER_ID" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>  
+						<td><span jwcid="@Insert" value="ognl:info.FEE" raw="false"/></td>						
+						<td><span jwcid="@Insert" value="ognl:info.OTHER_FEE" raw="false"/></td>
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.UPDATE_DEPART_ID" /></td> 
+						<td style="display:none"><span jwcid="@Insert" value="ognl:info.DEPART_ID_CHN" /></td> 	 
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="CondPart" part="ResultPart" 
+	      listener="qryBlackUserLog" pageSize="10" count="ognl:recordCount"></div>
+	</div>
+</div>
+
+</div></div>
+</body>
+</html>

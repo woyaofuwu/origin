@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>举报人黑白名单</title>
+<script language="JavaScript" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/badness/sundryquery/reportblack/scripts/badnessreporterblack.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		按条件获取黑名单无数据!
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">举报人黑白名单</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="editInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">举报手机号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_REPORT_SERIAL_NUMBER" id="cond_REPORT_SERIAL_NUMBER" datatype="mbphone" desc="举报手机号码"	 value="ognl:editInfo.REPORT_SERIAL_NUMBER"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">用户类型：</span>
+				<span class="e_select"><span><span>
+					<select id="cond_IS_BLACK" name="cond_IS_BLACK" desc="用户类型">
+						<option value="" default>不限制</option>
+                        <option value="1">黑名单</option>
+                        <option value="0">白名单</option>
+					</select>
+				</span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">加入开始时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="cond_REPORT_START_TIME" id="cond_REPORT_START_TIME" desc="举报开始时间"	 value="ognl:editInfo.REPORT_START_TIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">加入结束时间：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="cond_REPORT_END_TIME" id="cond_REPORT_END_TIME" desc="举报结束时间"	 value="ognl:editInfo.REPORT_END_TIME"/>
+				</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="query" name="query" onclick="return queryReporterBlack();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="infoTablePart@Part">
+	<div class="c_table c_table-row-5">
+		<table jwcid="@Table" name="infoTable" id="infoTable" scroll="true">
+			<thead>
+				<tr>
+				    <th col="SERIAL_NUMBER">手机号码</th>
+					<th col="IS_BLACK">用户类型</th>
+					<th col="IN_TIME">加入时间</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="TableInfos" id="TableInfos">
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" id="infos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER"></span></td>
+					<td><span jwcid="@Insert" value="ognl:info.IS_BLACK"></span></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.IN_TIME)"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">新增黑白名单</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div class="c_form c_form-col-2 c_form-label-7" jwcid="dealBlackPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">新增手机号码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="cond_NEW_SERIAL_NUMBER" id="cond_NEW_SERIAL_NUMBER" nullable="no" datatype="mbphone" desc="手机号码" value="ognl:editInfo.NEW_SERIAL_NUMBER"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">用户类型：</span>
+				<span class="e_select"><span><span>
+					<select id="cond_BLACK_TYPE" name="cond_BLACK_TYPE" desc="用户类型" nullable="no">
+						<option value="1" default>黑名单</option>
+                        <option value="0">白名单</option>
+					</select>
+				</span></span></span>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="c_submit">
+	<div>
+		<button class="e_button-page-ok" id="query" name="query" onclick="return doAction('addBlack');"><i class="e_ico-add"></i><span>新增</span></button>
+		<button class="e_button-page" id="query" name="query" onclick="return doAction('updBlack');"><i class="e_ico-refresh"></i><span>更新</span></button>
+		<button class="e_button-page-cancel" id="query" name="query" onclick="return doAction('delBlack');"><i class="e_ico-delete"></i><span>删除</span></button>
+	</div>
+	</div>
+</div>
+</div>
+</body>
+</html>

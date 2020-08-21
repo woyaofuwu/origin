@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>业务信息查询</title>
+<script jwcid="@Script" src="person/taskalarm/managetask/scripts/ManageTask.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryPopuCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">业务编号：</span>
+				<span class="e_input"><span><input jwcid="@TextField" name="cond_TRADE_TYPE_CODE" id="cond_TRADE_TYPE_CODE" value="ognl:condition.TRADE_TYPE_CODE" datatype="numeric" nullable="yes" desc="业务编码"/></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">业务名称：</span>
+				<span class="e_input"><span><input jwcid="@TextField" name="cond_TRADE_TYPE" id="cond_TRADE_TYPE" value="ognl:condition.TRADE_TYPE" nullable="yes" desc="业务名称"/></span></span>
+			</li>		
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return queryTaskByCon();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+</div>
+	
+	<!-- 表单 结束 -->
+	<div class="c_box">
+	<div class="c_title">
+		<div class="text">业务列表</div>
+	
+	<!-- 控制区 -->
+	<div class="fn">
+		<button type="button" id="bdel" name="bdel"  onclick="selectTask();"><i class="e_ico-ok"></i><span>选中业务</span></button>		
+	</div>
+	</div>
+	<!-- 表格 开始 -->
+	<div   jwcid="RefreshPopuPart@Part">
+	<div class="c_scroll c_scroll-x c_scroll-table-10">
+		<div class="c_table">
+		<table jwcid="@Table" id ="auditTable" name="auditTable">
+			<thead>
+				<tr>
+		  			<th>选择</th>
+		  			<th onclick="Wade.dom.sortTable('ResultTable',0,'string')">业务编号</th>
+					<th onclick="Wade.dom.sortTable('ResultTable',1,'string')">业务名称</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:taskInfos" value="ognl:taskInfo" index="ognl:rowIndex" element="tr" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+					<td class="e_center"><input type="radio" name="task" jwcid="@Any" value="ognl:taskInfo.TRADE_TYPE_CODE+';'+taskInfo.TRADE_TYPE"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.TRADE_TYPE_CODE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.TRADE_TYPE" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="QueryPopuCondPart" part="RefreshPopuPart" listener="queryTaskByCon" pageSize="10" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	</div>
+<!-- 表格 结束 -->
+<!-- 区域 结束 -->
+</div>
+</div></div></body>
+</html>

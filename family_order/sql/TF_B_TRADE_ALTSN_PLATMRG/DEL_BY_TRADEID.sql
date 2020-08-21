@@ -1,0 +1,1 @@
+delete from TF_B_TRADE_ALTSN_PLATMRG where TRADE_ID = :TRADE_ID

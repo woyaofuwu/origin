@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>电子有价卡补发</title>
+<script jwcid="@Script"
+	src="person/evaluecard/scripts/ReissueEValueCard.js"></script>
+</head>
+
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<!-- 区域 开始 -->
+			<div class="c_box" jwcid="QueryCondPart@Part">
+				<div class="c_title">
+					<div class="text">客户查询</div>
+				</div>
+				<!-- 认证 开始 -->
+				<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="5333"
+					tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+				<!-- 认证 结束 -->
+				<!-- 参数列表 开始 -->
+				<div jwcid="UCAViewPart@Part">
+					<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+					<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+				</div>
+				<!-- 参数列表 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">购卡信息</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 提示 开始 -->
+				<div class="c_tip">
+					<span name="ALERT_INFO" id="ALERT_INFO">温馨提示：默认按电子有价卡卡号进行补发，点击复选框则按交易流水补发！
+					</span>
+				</div>
+				<!-- 提示 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form  c_form-col-3 c_form-label-5 e_dis"
+					jwcid="QueryRecordPart@Part">
+					<ul class="ul">
+						<span style="display:none;">
+
+							<li class="li"><input jwcid="@TextField" type="hidden"
+								id="OPER_TYPE" name="OPER_TYPE" value="1" /> <input
+								jwcid="@TextField" type="hidden" id="QRY_TYPE" name="QRY_TYPE"
+								value="2" />
+						</li> </span>
+						<li class="li"><span class="label"></span>
+							<div class="c_fn">
+								<ul>
+									<li><label><input jwcid="@Checkbox" id="qryFlag"
+											name="qryFlag" value="2" />按照购卡交易流水补发</label></li>
+								</ul>
+							</div>
+						</li>
+
+					</ul>
+					
+				</div>
+				<!-- 表单 结束 -->
+				<!-- 表格 开始 -->
+
+				<div jwcid="BasicInfosPart@Part" element="div">
+					<div class="c_scroll c_scroll-x c_scroll-table-10">
+						<div class="c_table">
+							<table jwcid="@Table" name="BadnessTradeTable">
+								<thead>
+									<tr>
+										<th col="IN_CHECK_ID"></th>
+										<th>原销售交易流水</th>
+										<th>卡号</th>
+										<th>面值</th>
+										<th>卡业务类型</th>
+										<th>操作时间</th>
+									</tr>
+								</thead>
+								<tbody jwcid="@Any" name="cancelECardPointBody"
+									id="cancelECardPointBody">
+									<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+										index="ognl:rowIndex" element="tr">
+										<td align="center"><input type="checkbox" name="chkbox"  
+											id='"checkbox"+ rowIndex' jwcid="@Any"
+											value="ognl:info.CARD_NO+';'+info.TRANSACTIONID+';'+info.ACTION_TIME+';'+info.CARD_TYPE"/>
+										</td>
+										<td align="center"><span jwcid="@Insert"  
+											value="ognl:info.TRANSACTIONID" raw="false" />
+										</td>
+										<td align="center"><span jwcid="@Insert"  
+											value="ognl:info.CARD_NO" raw="false" />
+										</td>
+
+
+										<td align="center"><span jwcid="@Insert"  
+											value="ognl:info.CARD_MONEY" raw="false" />
+										</td>
+										<td align="center"><span jwcid="@Insert"  
+											value="ognl:pageutil.getStaticValue('EVALUECARD_TYPE', info.CARD_TYPE)"
+											raw="false" />
+										</td>
+										<td align="center"><span jwcid="@Insert"  
+											value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.ACTION_TIME)" raw="false" />
+										</td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+					
+				</div>
+
+				<!-- 提交 开始 -->
+				<div class="c_submit">
+					<button class="e_button-page-ok" id="CancelECard"
+						name="CancelECard" onclick="return $.CrudMgr.onTradeSubmit();">
+						<i class="e_ico-ok"></i><span>提交</span>
+					</button>
+				</div>
+				<!-- 提交 结束 -->
+				<!-- 区域 结束 -->
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>有价卡赠送日志查询</title>
+<script jwcid="@Script" src="person/valuecard/scripts/QueryGiveCardLog.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">查询条件</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-label-7 c_form-col-3" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+					<span class="label">分公司：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="cond_CITY_CODE@Select" name="cond_CITY_CODE" source="ognl:cityList" 
+									value="ognl:getVisit().getCityCode()" valueField="AREA_CODE" textField="AREA_NAME" nullable="no" desc="分公司"></select>
+					</span></span></span>
+			</li>
+			<li class="li">
+					<span class="label">起始操作工号：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_BEGIN_STAFF_ID" id="cond_BEGIN_STAFF_ID" value="ognl:condition.cond_BEGIN_STAFF_ID" desc="起始操作工号"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label">截止操作工号：</span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="cond_END_STAFF_ID" id="cond_END_STAFF_ID" value="ognl:condition.cond_END_STAFF_ID" desc="截止操作工号"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label">操作起始日期：</span>
+					<span class="e_input"><span>
+						<input jwcid="@DateField" name="cond_START_DATE" id="cond_START_DATE"   format="yyyy-MM-dd"
+									value="ognl:condition.cond_START_DATE" desc="操作起始日期" maxName="cond_END_DATE"/>
+					</span></span>
+			</li>
+			<li class="li">
+					<span class="label">操作截止日期：</span>
+					<span class="e_input"><span>
+							<input jwcid="@DateField" name="cond_END_DATE" id="cond_END_DATE"  format="yyyy-MM-dd"
+										value="ognl:condition.cond_END_DATE" desc="操作截止日期" mixName="cond_START_DATE"/>
+					</span></span>
+			</li>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN" class="e_button-form" onclick="return qryGiveValueCardInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+			<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="8999" 
+					 config="export/querygivecardlog/QueryGiveCardLog.xml" fileName="有价卡赠送日志查询" beforeAction="" cond="QueryCondPart" />
+			</span>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+		<div class="c_scroll c_scroll-x style="height:242px"">
+		<div class="c_table c_table-row-10">
+			<table>
+				<thead>
+					<tr>
+						  <th>分公司</th><!--
+						  <th>审批员工</th>
+	                      --><th>审批工单号</th>
+                          <th>审批总金额(元)</th>	
+	                      <th>赠送金额(元)</th>
+	                      <th>赠送数量</th>
+						  <th>操作工号</th>
+	                      <th>操作日期</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'"
+						TRADE_ID="ognl:info.TRADE_ID">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',info.AREA_CODE)" raw="true"/></td>
+						<!--<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF','STAFF_ID','STAFF_NAME',info.TRADE_STAFF_ID)" raw="true"/></td>
+						--><td><span jwcid="@Insert" value="ognl:info.STAFF_ID" raw="true"/></td>
+						<td>
+	            			<span jwcid="@Conditional" condition="ognl:info.TOTAL_AMOUNT !=null">
+	            				<span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.TOTAL_AMOUNT/100)" raw="true"/>
+	            			</span>
+	            			<span jwcid="@Conditional" condition="ognl:info.TOTAL_AMOUNT ==null">
+	            				<span jwcid="@Insert" value="审批工单配置数据已删除" raw="true"/>
+	            			</span>
+            			</td>
+						
+						<td><span jwcid="@Insert" value="ognl:formatDecimal('#0.00',info.DEVICE_PRICE*info.DEVICE_NUM/100)" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.DEVICE_NUM" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.UPDATE_STAFF_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.UPDATE_TIME)" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		<!-- 表格 结束 -->
+		<!-- 翻页（替换为页面组件） 开始 -->
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="QueryCondPart" part="QueryListPart" 
+		      listener="getValueCardGiveInfo" pageSize="10" count="ognl:pageCount"></div>
+		<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+</div></div></body>
+</html>

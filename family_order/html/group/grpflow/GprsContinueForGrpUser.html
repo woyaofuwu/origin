@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>集团电子流量包延期</title>
+
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpflow/GprsContinueForGrpUser.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">信息查询</div>
+	</div>
+	<!-- 标题 结束 -->	
+	<!-- 表单 开始 -->
+	<div class="c_form">
+		<ul class="ul">
+			<li class="li">			
+			      <span jwcid="condPart@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+			</li>
+  		</ul>
+	</div>
+	<div jwcid="HiddenInfoPart@Part" style="display:none">
+		<input jwcid="@Hidden" name="CUST_ID" id="CUST_ID" value="" desc="CUST_ID"/>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表单 开始 -->
+	  <div jwcid="GroupInfoPart@Part" element="div">
+	<input type="text" jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo" hasTitle="false"/>
+	</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表单开始 -->
+	<div class="c_title">
+		<div class="text">已订购流量包</div>
+	</div>
+	<div class="c_scroll">
+		<div jwcid="PackageOrdered@Part" class="c_table c_table-row-5" >
+		<table>
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>订购流水</th>
+					<th>流量包大小(M)</th>
+					<th>流量包价格</th>
+					<th>折扣(%)</th>
+					<th>订购数量</th>
+					<th>订购时间</th>
+					<th>失效时间</th>
+					<th>使用数量</th>
+					<th>剩余数量</th>
+					<th>分配详情</th>						
+				</tr>
+			</thead>			
+			<tbody>				
+				<tr jwcid="@Foreach" source="ognl:lists" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'even'">
+					<td><input jwcid="@Checkbox" name="InstIdCheckBox" disabled="ognl:info.STOCK_COUNT==0" value="ognl:info.INST_ID"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR1"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATAPCK_VALUE"/></td> 
+					<td><span jwcid="@Insert" value="ognl:info.PRICE/100"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.RSRV_STR2"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATAPCK_COUNT"/></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.START_DATE)"/></td>
+					<td><span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd HH:mm:ss',info.END_DATE)"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.USE_COUNT"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.STOCK_COUNT"/></td>
+					<td>
+						<a jwcid="@Redirect" inst_id = "ognl:info.INST_ID" datapckId= "ognl:info.DATAPCK_ID" id= "ognl:info.ID" 
+						onclick="$.popupPageExternal('group.grpflow.DataPckOutStockPop','qryGroupFlowOrderDetail', '&RELA_INST_ID='+$(this).attr('inst_id')+'&ID='+$(this).attr('id')+'&DATAPCK_ID='+$(this).attr('datapckId'),'分配明细','700','480')">明细</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		 <div jwcid="@NavBar" name="ordnav" cond="HiddenInfoPart" part="PackageOrdered" listener="queryOrderedPackage" pageSize="20" count="ognl:PageCount"></div>
+		</div>				
+	</div>
+	<!-- 表单结束 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">流量包延期设置</div>
+		</div>
+		<!-- 标题 结束 -->
+		<div class="c_form c_form-col-3 c_form-label-10" jwcid="orderingPart@Part">
+			<ul class="ul">
+				<li class="li col-1">
+					<span class="label"><span class="e_required">流量包新失效时间：</span></span>
+					<span class="e_input"><span>
+					<input jwcid="@DateField" name="END_DATE" value="ognl:condition.END_DATE" format="yyyy-MM-dd" readonly="true" desc="流量包新失效时间"/>
+					</span></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div jwcid="refreashPart2@Part" id="refreashPart2" style="display:none;">
+		<!-- 隐藏域开始 -->
+		<input type="hidden" id="INST_ID_STRS" name="INST_ID_STRS" jwcid="@Any" value=""/>
+		<input jwcid="@Any" id="PACK_CUST_ID" name="PACK_CUST_ID" value="" style="display:none;"/>
+		<input jwcid="@Any" id="PRODUCT_ID" name="PRODUCT_ID" value="ognl:'5201'" style="display:none;"/>
+		<!-- 隐藏域 结束 -->
+	</div>
+	
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@saleserv:CSSubmit" area="orderingPart,refreashPart2" listener="onSubmitBaseTrade" isGrp="true" beforeAction="onSubmitBaseTradeCheck()" disabledBtn="false" element="div"/>
+	<!-- 提交 结束 -->
+
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

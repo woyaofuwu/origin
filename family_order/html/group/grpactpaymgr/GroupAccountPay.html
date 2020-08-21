@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/grpactpaymgr/GroupAccountPay.js"></script>
+
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+	<!-- 提示区 --> 
+	<div class="c_box" jwcid="refreshHintBar@Part">
+		<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo"/>
+	</div>
+
+	<div class="c_box">
+		<div class="c_title">
+		<div class="text">集团客户编码</div>
+		</div>
+	
+	<div class="c_form">
+		<ul class="ul">
+			<li class="li">
+				<span jwcid="@saleserv:SelectGroup" afterErrorAction="selectGroupErrorAfterAction();" afterAction="selectGroupAfterAction(data);"/>
+			</li>
+		</ul>
+	</div>
+	
+	<!-- 集团客户基本信息 开始 -->
+		<input type="text" jwcid="@saleserv:GroupCustInfo"/>
+	<!-- 集团客户基本信息 结束 -->
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">统付账户列表</div>
+	</div>
+	<!-- 标题 结束  -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10" jwcid="groupAccountInfo@Part">
+	<div class="c_table" >
+		<table jwcid="groupAccountTable@Table" name="groupAccountTable" >
+			<thead>
+				<tr>
+					<th><span class="">账户标识</span></th>
+					<th><span class="">账户名称</span></th>
+					<th><span class="">账户类型</span></th>	
+					<th><span class="">产品编码</span></th>
+					<th><span class="">产品名称</span></th>		
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:groupAccountList" value="ognl:groupAccount" element="tr" index="ognl:rowIndex" >
+					<td><a jwcid="@Redirect" value="ognl:groupAccount.ACCT_ID"  source="ognl:groupAccount" class="e_strong3" EPARCHY_CODE ="ognl:groupAccount.EPARCHY_CODE" ACCT_ID="ognl:groupAccount.ACCT_ID"
+						onclick="getRelationAA(this)"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:groupAccount.PAY_NAME" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE',groupAccount.PAY_MODE_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:groupAccount.PRODUCT_ID" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:groupAccount.PRODUCT_NAME" raw="false"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	
+	
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">已绑定代付账户</div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-table-10"jwcid="groupAccountPayInfo@Part">
+	<div class="c_table" >
+		<table jwcid="groupAccountPayTable@Table" name="groupAccountPayTable" >
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="relationAACheck" name="relationAACheck"  style="display:none"/></th>
+					<th><span class="">统付账户</span></th>
+					<th><span class="">被统付账户</span></th>
+					<th><span class="">账目项</span></th>
+					<th><span class="">限定类型</span></th>
+					<th><span class="">比例/金额</span></th>
+					<th><span class="">排序</span></th>		
+					<th><span class="">开始时间</span></th>	
+					<th><span class="">结束时间</span></th>		
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:payInfos" value="ognl:payInfo" element="tr">
+					<td><input type="checkbox" id="relationAA" name="relationAA" jwcid="@Any" value="ognl:payInfo.ACCT_ID_A+';'+payInfo.ACCT_ID_B"/></td>
+					<td><span jwcid="@Insert" value="ognl:payInfo.ACCT_ID_A" raw="false"/>
+					</td>
+				    <td><span jwcid="@Insert" value="ognl:payInfo.ACCT_ID_B" raw="false"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:payInfo.RSRV_STR1" raw="false"/>
+					</td>
+					<td><span jwcid="@Insert" value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue(getPage().getVisit(),'TD_S_STATIC','DATA_ID','DATA_NAME',payInfo.LIMIT_TYPE)" raw="false"/>
+					</td>
+				    <td><span jwcid="@Insert" value="ognl:payInfo.LIMIT_VALUE" raw="false"/>
+					</td>	
+					<td><span jwcid="@Insert" value="ognl:payInfo.ORDERNO" raw="false"/>
+					</td>		     
+				    <td><span jwcid=@Insert value="ognl:payInfo.START_DATE" raw="false"/>
+				    </td>	
+				    <td><span jwcid=@Insert value="ognl:payInfo.END_DATE" raw="false"/>
+				    </td>				     				     
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+		<!-- 提交 开始 -->
+	<div class="c_submit">
+		<button class="e_button-page" type="button" onclick=" return createRelationAA()" ><i class="e_ico-add"></i><span>新增</span></button>
+		<button class="e_button-page" type="button" onclick=" return delRelationAA()" ><i class="e_ico-delete"></i><span>删除</span></button>
+		<button class="e_button-page" type="button" onclick=" return refresh()" ><i class="e_ico-edit"></i><span>刷新</span></button>
+	</div>
+	<!-- 表格 结束 -->
+	<textarea jwcid="@TextArea" id="pam_NOTIN_ACCT_ID_A" name="pam_NOTIN_ACCT_ID_A" value="ognl:condition.ACCT_ID_A" style="display:none"></textarea>
+	<textarea jwcid="@TextArea" id="pam_NOTIN_EPARCHY_CODE_A" name="pam_NOTIN_EPARCHY_CODE_A" value="ognl:condition.EPARCHY_CODE_A" style="display:none"></textarea>
+	<textarea jwcid="@TextArea" id="pam_NOTIN_CUST_ID" name="pam_NOTIN_CUST_ID" value="" style="display:none"></textarea>
+	</div>
+	</div>
+</div>
+</body>
+</html>
+

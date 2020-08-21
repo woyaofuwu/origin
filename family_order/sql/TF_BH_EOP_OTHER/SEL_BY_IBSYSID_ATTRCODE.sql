@@ -1,0 +1,4 @@
+ SELECT * FROM TF_Bh_EOP_OTHER T 
+WHERE T.IBSYSID =:IBSYSID
+AND T.ATTR_CODE =:ATTR_CODE 
+order by t.sub_ibsysid desc

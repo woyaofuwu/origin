@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>代理商回缴营业款任务状态修改</title>
+<script jwcid="@Script" language="JavaScript" src="person/agent/scripts/AgentPayState.js"></script>
+</head>
+
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+	<div class="c_box" jwcid="SearchCondPart@Part" element="div">
+		<div class="c_form c_form-label-10 c_form-col-3">
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span>回缴账期(YYYYMMDD)：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="FEE_CYCLE" value="ognl:cond.FEE_CYCLE" desc="回缴账期" />
+					</span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span>代理商标识：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="AGENT_ID" value="ognl:cond.AGENT_ID" desc="代理商标识" />
+					</span></span>
+				</li>
+				
+				<li class="li">
+					<span class="label"><span>银行名称：</span></span>
+					<span class="e_input"><span>
+						<input jwcid="@TextField" name="BANK_NAME" value="ognl:cond.BANK_NAME" desc="银行名称" />
+					</span></span>
+				</li>
+				
+				<li class="li">
+					<span class="label"><span>处理状态：</span></span>
+					<span class="e_select"><span><span>					
+                    <select name="PROCESS_TAG" id="PROCESS_TAG" type="select-one" desc="处理状态">
+                    <option value="" title="请选择">请选择</option>
+                    <option value="0" title="没回缴文件">待处理</option>   
+                    <option value="1" title="没回缴文件">生成文件</option>                    
+                    <option value="2" title="没回缴文件">没回缴文件</option>
+                    <option value="3" title="未回缴完">未回缴完</option>
+                    <option value="8" title="全部回缴完成">全部回缴完成</option>
+                    
+                    </select>	
+                     
+                    </span></span></span> 
+				</li>
+				
+			</ul>
+			<div class="submitPlace"></div>
+			<div class="submit e_right">
+				<button type="button" name="queryBtn" class="e_button-form" onclick="chkSearchForm()"><i class="e_ico-search"></i><span>查询</span></button>
+			    <button type="button" name="unSelectBtn" class="e_button-form" onclick="chkSelect('UNALL')"><i class="e_ico-unselect"></i><span>反选</span></button>				
+			
+			</div>
+		</div>
+	</div>
+	
+	<div class="c_box" jwcid="SearchResultPart@Part"  element="div">
+		<div class="c_title">
+			<div class="text">查询信息</div>
+			<!-- 
+			<div class="fn">     
+				<button type="button" name="unSelectBtn" class="e_button" onclick="chkSelect('UNALL')"><i class="e_ico-unselect"></i><span>反选</span></button>				
+				<button type="button" name="delBtn" class="e_button" onclick="modAgentPayInfoState()"><i class="e_ico-delete"></i><span>修改状态</span></button>								
+			</div>
+			 -->
+		</div>
+		
+		<div class="c_scroll c_scroll-x">
+		<div class="c_table" style="height:auto;">
+			<table id="AgentPayInfoTable">
+      			<thead>
+		  			<tr>
+                    	<th class="sign"><input type="checkbox" name="selectAll" onclick="chkSelect('ALL')"/></th>                    	                    	
+                        <th>回缴账期</th>                        
+                        <th>手机号码</th>
+                        <th>代理商标识</th>
+                        <th>代理商名称</th>                         
+                        <th>回缴渠道</th> 
+                        
+                        <th>银行编码</th>
+                        <th>银行账号</th>                        
+                        <th>银行名称</th>    
+                                            
+                        <th>回缴总金额</th>
+                        <th>已回缴金额</th>
+                        <th>未回缴金额</th>    
+                                            
+                        <th>处理状态</th>                        
+                        <th>入库时间</th>
+                        <th>执行时间</th>
+                        <th>操作信息</th>
+                        <th>备注</th>
+					</tr>
+				</thead>
+				<tbody  jwcid="@Any" name="queryAgentPayInfos" id="queryAgentPayInfos">
+				    
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						
+						<td ><input type="checkbox" class="e_checkbox" name="RECORDROWID" jwcid="@Any" value="ognl:info.RECORDROWID+'~' + info.PROCESS_TAG_NUM "/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.FEE_CYCLE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.AGENT_ID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.AGENT_NAME" raw="false"/>
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('AGENT_PAYFOR_CHANNEL_INFO', info.ACCEPT_CHANNEL)" raw="false"/></td>
+                        
+                        <td><span jwcid="@Insert" value="ognl:info.BANK" raw="false"/></td>                        
+                        <td><span jwcid="@Insert" value="ognl:info.BANK_NO" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.BANK_NAME" raw="false"/></td>                        
+                        <td><span jwcid="@Insert" value="ognl:info.ALLFEE" raw="false"/></td>                        
+                        <td><span jwcid="@Insert" value="ognl:info.OLDFEE" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.REMAINFEE" raw="false"/></td>
+                        
+                        <td><span jwcid="@Insert" value="ognl:info.PROCESS_TAG" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd HH:mm:ss',info.IN_TIME)"   raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:getPage().formatDate('yyyy-MM-dd HH:mm:ss',info.EXEC_TIME)" raw="false"/></td>   
+                        <td><span jwcid="@Insert" value="ognl:info.RSRV_STR5" raw="false"/></td>                        
+                        <td><span jwcid="@Insert" value="ognl:info.REMARK" raw="false"/></td>
+                        
+					</tr>
+				</tbody>
+			</table>
+		</div></div>
+		
+		<div jwcid="@NavBar" name="recordNav" id="recordNav" cond="SearchCondPart" part="SearchResultPart" 
+	      listener="queryAgentPayInfos" pageSize="20" count="ognl:recordCount"></div>
+
+      
+	</div>
+	
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-1 c_form-label-20" id="EditPart" name="EditPart">
+			<ul class="ul">
+				<li class="li">
+				    <span class="label">备注：</span>
+					<span class="e_elements">
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Any" id="ALL_REMARK" name="ALL_REMARK" maxsize="45" maxLength="50" value="" desc="备注"  />
+						</span></span>
+					</span>
+				</li>
+			</ul>	
+		</div>	
+		
+			<div class="c_box" jwcid="SearchResultPart1@Part"  element="div">			
+		     <div class="c_submit">
+				<button type="button" name="delBtn" class="e_button-form" onclick="modAgentPayInfoState()"><i class="e_ico-delete"></i><span>修改状态</span></button>								
+		     </div>
+		    </div>
+		
+		<!-- 表单 结束 -->
+	    
+</div></div>
+</body>
+</html>

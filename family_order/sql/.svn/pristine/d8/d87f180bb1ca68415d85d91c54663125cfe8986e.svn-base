@@ -1,0 +1,9 @@
+select D.PRE_ID,
+       D.ACCEPT_MONTH,
+       D.REQUEST_ID,
+       D.ACCEPT_DATA1,
+       D.ACCEPT_DATA2
+  from TF_B_ORDER_PRE D
+ where D.PRE_ID = :PRE_ID
+ AND D.REPLY_STATE = '0'
+ AND D.END_DATE > SYSDATE 

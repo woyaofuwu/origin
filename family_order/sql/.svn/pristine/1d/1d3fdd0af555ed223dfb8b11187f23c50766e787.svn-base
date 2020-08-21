@@ -1,0 +1,46 @@
+
+SELECT 
+TRADE_ID,
+ACCEPT_MONTH,
+PARTITION_ID,
+USER_ID,
+USER_ID_A,
+PRODUCT_ID,
+PRODUCT_MODE,
+NVL(BRAND_CODE,'-1') BRAND_CODE,
+INST_ID,
+CAMPN_ID,
+to_char(START_DATE,'yyyy-MM-dd HH24:mi:ss') START_DATE,
+to_char(END_DATE,'yyyy-MM-dd HH24:mi:ss') END_DATE,
+to_char(UPDATE_TIME,'yyyy-MM-dd HH24:mi:ss') UPDATE_TIME,
+UPDATE_STAFF_ID,
+UPDATE_DEPART_ID,
+REMARK,
+RSRV_NUM1,
+RSRV_NUM2,
+RSRV_NUM3,
+RSRV_NUM4,
+RSRV_NUM5,
+RSRV_STR1,
+RSRV_STR2,
+RSRV_STR3,
+RSRV_STR4,
+RSRV_STR5,
+to_char(RSRV_DATE1,'yyyy-MM-dd HH24:mi:ss') RSRV_DATE1,
+to_char(RSRV_DATE2,'yyyy-MM-dd HH24:mi:ss') RSRV_DATE2,
+to_char(RSRV_DATE3,'yyyy-MM-dd HH24:mi:ss') RSRV_DATE3,
+RSRV_TAG1,
+RSRV_TAG2,
+RSRV_TAG3,
+MAIN_TAG 
+FROM TF_B_TRADE_PRODUCT_BAK a
+WHERE trade_id = TO_NUMBER(:TRADE_ID)
+  AND accept_month = TO_NUMBER(SUBSTR(:TRADE_ID,5,2))
+  AND end_date > SYSDATE
+  AND Not EXISTS (SELECT 1 FROM TD_S_COMMPARA b
+                WHERE b.SUBSYS_CODE ='CSM'
+                AND b.PARAM_ATTR = '6018' --复机不恢复的产品
+                AND b.PARAM_CODE = a.product_id   
+                AND (b.EPARCHY_CODE=:EPARCHY_CODE OR b.EPARCHY_CODE='ZZZZ')
+                AND b.END_DATE > sysdate
+                )

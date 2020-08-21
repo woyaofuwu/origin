@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html size="s">
+<head jwcid="@Head">
+    <meta charset="UTF-8"/>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <link jwcid="@Style" href="family/viewquery/css/family360view.css" rel="stylesheet" type="text/css" />
+    <script jwcid="@Script" src="family/viewquery/scripts/family360view.js"></script>
+    <script jwcid="@Script" src="v5/jcl/ui/component/base/segment.js"></script>
+    <title>家庭资料综合查询</title>
+</head>
+<body jwcid="@Body">
+    <!-- 隐藏区域 开始 -->
+    <div jwcid="hiddenPart@Part">
+   		<input jwcid="@Hidden" name="SERIAL_NUMBER" value="ognl:condition.SERIAL_NUMBER"/>
+		<input jwcid="@Hidden" name="IN_MODE_CODE" value="ognl:getVisit().getInModeCode()"/>
+		<input jwcid="@Hidden" name="FAMILY_USER_ID" value="ognl:condition.FAMILY_USER_ID"/>
+		<input jwcid="@Hidden" name="HEAD_CUST_ID" value="ognl:condition.HEAD_CUST_ID"/>
+		<input jwcid="@Hidden" name="EPARCHY_CODE" value="ognl:condition.EPARCHY_CODE"/>
+		<input jwcid="@Hidden" name="NORMAL_FAMILY" value="ognl:condition.NORMAL_FAMILY_CHECK"/>
+    </div>
+    <!-- 隐藏区域 结束 -->
+
+    <!--  家庭信息（Pc/Pad 版）start  -->
+    <div class="l_top e_hide-phone">
+        <!-- 分列 开始 -->
+        <div class="l_col" style="height:5em;">
+            <div class="l_colItem" jwcid="custInfoPart@Part" style="width:15em; z-index:2;">
+                <!-- 列表 开始 -->
+                <div class="c_list c_list-blue">
+                    <ul>
+                        <li>
+                            <div class="main">
+                                <div class="content">
+                               		<span jwcid="@Insert" value="ognl:familyInfo.HOME_NAME"></span><br>
+                               		<span jwcid="@Insert" value="ognl:familyInfo.SERIAL_NUMBER"></span>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <span class="e_tag e_tag-white e_blue">
+                                    <span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_AREA','AREA_CODE','AREA_NAME',familyInfo.CITY_CODE)"></span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 列表 结束 -->
+            </div>
+            <div class="l_colItem" jwcid="acctInfoPart@Part">
+                <div class="c_param c_param-v c_param-s c_param-nowrap c_param-avg">
+                    <div class="content">
+                        <ul class="familyInfo_ul">
+                            <li>
+                                <span class="label e_center">家庭等级</span>
+                                <span class="value e_center">
+                                	<span jwcid="@Conditional" condition="ognl:null != acctInfo.CREDIT_CLASS && '' != acctInfo.CREDIT_CLASS">
+										<span jwcid="@Star" name="FAMILY_LEVEL" value="ognl:acctInfo.CREDIT_CLASS" readonly="true"></span>
+									</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="label e_center">积分</span>
+                                <span class="value e_center"  id="FAMILY_SCORE">
+                                    <span jwcid="@Insert" value="ognl:acctInfo.SUM_SCORE" ></span>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="label e_center">实时话费</span>
+                                <span class="value e_center">
+                                    <span jwcid="@Insert" value="ognl:acctInfo.REAL_FEE / 100.0f" ></span>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="label e_center">实时结余</span>
+                                <span class="value e_center">
+                                    <span jwcid="@Insert" value="ognl:acctInfo.ACCT_BALANCE / 100.0f" ></span>
+                                </span>
+                            </li>
+                             <li>
+                                <span class="label e_center">往月欠费</span>
+                                <span class="value e_center">
+                                    <span jwcid="@Insert" value="ognl:acctInfo.LAST_OWE_FEE / 100.0f" ></span>
+                                </span>
+                            </li>
+                             <li>
+                                <span class="label e_center">近三月均消费</span>
+                                <span class="value e_center">
+                                    <span jwcid="@Insert" value="ognl:acctInfo.AVERAGE_FEE" ></span>
+                                </span>
+                            </li>
+						</ul>
+                    </div>
+                    <div class="side" style="width:15em;">
+                        <button type="button" class="e_button-s e_button-r"
+                                onmouseover="showFloatMoreInfo('CRMInfoPart')"
+                                onmouseout="hideFloatMoreInfo('CRMInfoPart')">
+                            <span class="e_ico-unfold"></span><span>更多</span>
+                        </button>
+                        <span class="e_space"></span>
+                        <button type="button"
+                                class="e_button-s e_button-blue e_button-r"
+                                ontap="refreshFamily360View()">
+                            <span class="e_ico-refresh"></span>
+                        </button>
+                        <span class="e_space"></span>
+                        <button type="button"
+                                class="e_button-s e_button-blue e_button-r"
+                                ontap="showPopup('queryPopup','queryPopup_item')">
+                            <span class="e_ico-change">更换</span>
+                        </button>
+                        <span class="e_space"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 分列 结束 -->
+        <div class="c_line"></div>
+    </div>
+        <div jwcid="CRMInfoPart@Part" class="c_float"
+         onmouseover="showFloatMoreInfo('CRMInfoPart')"
+         onmouseout="hideFloatMoreInfo('CRMInfoPart')"
+         style="width:20em; top:3.6em; right:6.6em;">
+        <div class="bg"></div>
+        <div class="content">
+            <div class="l_padding">
+                <div class="c_param">
+                    <ul>
+                        <li>
+                            <span class="label">家庭状态：</span>
+                            <span class="value">
+                            <span jwcid="@Insert" value="ognl:familyBaseInfo.STATE_NAME"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">创建时间：</span>
+                            <span class="value">
+                            <span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd', familyBaseInfo.OPEN_DATE)"></span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="label">当前套餐：</span>
+                            <span class="value">
+                            <span jwcid="@Insert" value="ognl:familyBaseInfo.PRODUCT_NAME"></span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  家庭信息（Pc/Pad 版）end  -->
+
+        <!-- 内容区域 开始 -->
+    <div class="l_float l_float-white l_float-phone-notop" style="top:5em;">
+        <div id="navFrame" class="l_col l_col-line l_col-full">
+			<div class="l_colItem" style="display: none">
+				<iframe name="homeFrame" jwcid="@Frame"
+					page="familyview.FamilyHomeTab"> </iframe>
+			</div>
+			<div class="l_colItem" style="display: none">
+				<iframe name="allowanceFrame" jwcid="@Frame"
+					page="am.vc.core.cdr.FamilyDiscntQuery" params="" listener="myInitialize"
+					subsys="/iacctmanm/iacctmanm"></iframe>
+			</div>
+			<div class="l_colItem" style="display: none">
+                <iframe name="billFrame" jwcid="@Frame"
+                        page="am.cs.core.payment.FamilyBill"
+                        params="" listener="myInitialize"
+                        subsys="/iacctmanm/iacctmanm"></iframe>
+            </div>
+            <div class="l_colItem" style="display: none">
+                <iframe name="saleActiveFrame" jwcid="@Frame"
+                        page="familyview.FamilySaleActiveTab"></iframe>
+            </div>
+			<div class="l_colItem" style="display: none">
+				<iframe name="productFrame" jwcid="@Frame"
+					page="familyview.FamilyProductTab"></iframe>
+			</div>
+            <div class="l_colItem" style="display: none">
+                <iframe name="scoreFrame" jwcid="@Frame"
+                        page="familyview.FamilyScoreTab"></iframe>
+            </div>
+            <div class="l_colItem" style="display: none">
+                <iframe name="tradeHistoryFrame" jwcid="@Frame"
+                        page="familyview.FamilyTradeHistoryTab"></iframe>
+            </div>
+
+			<div id="navListCol" class="l_colItem e_hide-phone"
+                 style="width:8.57em;display:none;">
+                <!-- 列表 开始 -->
+                <div class="c_list c_list-s c_list-narrow-2">
+                    <ul>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'homeFrame');">
+                            <div class="main">首页</div>
+                        </li>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'allowanceFrame');">
+                            <div class="main">家庭余量</div>
+                        </li>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'billFrame');">
+                            <div class="main">家庭消费</div>
+                        </li>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'saleActiveFrame');">
+                            <div class="main">家庭活动</div>
+                        </li>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'productFrame');">
+                            <div class="main">家庭业务</div>
+                        </li>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'scoreFrame');">
+                            <div class="main">家庭积分</div>
+                        </li>
+                        <li class="link"
+                            onclick="navTabSwitch(this, 'tradeHistoryFrame');">
+                            <div class="main">业务历史</div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 列表 结束 -->
+            </div>
+        </div>
+    </div>
+    <!-- 内容区域 结束 -->
+
+    <!-- 查询弹窗 开始 -->
+    <div jwcid="@Popup" name="queryPopup">
+        <div class="c_popupGroup">
+            <div id="queryPopup_item" class="c_popupItem">
+                <div class="c_header">
+                    <div class="back" ontap="backPopup(this)">家庭信息查询</div>
+                </div>
+                <div name="queryScroller" jwcid="@Scroller"
+                     class="c_scroll c_scroll-float c_scroll-header l_padding">
+                    <!-- 表单 开始 -->
+                    <div jwcid="queryCondPart@Part" class="c_list c_list-form">
+                        <ul>
+                            <li>
+                                <div class="label">家庭状态</div>
+                                <div class="value">
+                                    <span class="e_segment">
+                                        <span idx="0" val="0">未销户</span>
+                                        <span idx="1" val="1">已销户</span>
+                                        <input type="hidden"
+                                               name="userStateSegment"
+                                               id="userStateSegment"
+                                               nullable="no" desc="级别"/>
+                                    </span>
+                                </div>
+                                <input type="checkbox" id="NORMAL_FAMILY_CHECK"
+                                       name="NORMAL_FAMILY_CHECK" value="on"
+                                       checked="checked" style="display: none"/>
+                            </li>
+                            <li id="SERIAL_NUMBER_LI">
+                                <div class="label">服务号码</div>
+                                <div class="value">
+                                    <input name="SERIAL_NUMBER_INPUT"
+                                           jwcid="@TextField"
+                                           value="ognl:condition.SERIAL_NUMBER"
+                                           onenterAction="queryFamilyInfo()"
+                                           nullable="no" desc="服务号码"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 表单 结束 -->
+                    <div class="c_space"></div>
+                    <!-- 提交 开始 -->
+                    <div class="c_submit c_submit-full">
+                        <button type="button" id="QUERY_BTN"
+                                class="e_button-r e_button-l e_button-blue"
+                                ontap="queryFamilyInfo()">
+                            <span>查询</span>
+                        </button>
+                    </div>
+                    <!-- 提交 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查询弹窗 结束 -->
+
+</body>
+</html>

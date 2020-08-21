@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid=@Head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body jwcid=@Body><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<!-- 标题 结束 -->
+	<div class="c_form" jwcid="TaskInfoPart11@Part" id="TaskInfoPart11" style="display:none;">
+			<input jwcid="@TextField" type="text" id="BATCH_ID" name="BATCH_ID" value="ognl:condition.BATCH_ID" readOnly="true"/>
+	</div>
+	
+	<!-- 表格 开始 -->
+	<div jwcid="TaskDataPartInfo@Part" element="div">
+
+	<div class="c_scroll c_scroll-table-10">
+	<div class="c_table">
+		<table jwcid="@Table" name="QueryListTable" id="QueryListTable">
+			<thead>
+				<tr>
+					<th col="SERIAL_NUMBER">手机号码</th>
+					<th col="DATA1">导入字段1</th>
+					<th col="DATA2">导入字段2</th>
+					<th col="DATA3">导入字段3</th>
+					<th col="DATA4">导入字段4</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="true" /></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA1" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA2" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA3" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.DATA4" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="TaskInfoPart11"  part="TaskDataPartInfo" listener="queryBatDealByBatchId" pageSize="10" count="ognl:batchTaskListCount"></div>
+	<!-- 翻页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+
+
+</div></div>
+</body>
+<script language="javascript" type="text/javascript">
+	$(document).ready(function(){
+		$.beginPageLoading("努力加载明细中。。。");
+		$.ajax.submit('TaskInfoPart11', 'queryBatDealByBatchId', null, 'TaskDataPartInfo', function(data){
+			$.endPageLoading();
+		},
+		function(error_code,error_info){
+			$.endPageLoading();
+			alert(error_info);
+	    });
+	});
+</script>
+</html>

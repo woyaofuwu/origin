@@ -1,0 +1,4 @@
+insert into td_o_blackuser_sms
+  (black_type, init_serinum, start_scout_time, end_scout_time, called_serinum, out_reason, out_num, msgid, start_time, end_time, eparchy_code, msg_content, remark, update_time, upate_staff, update_depart, rsrv_str1, rsrv_str2, rsrv_str3)
+values
+  ('1', :INIT_SERINUM, to_date(:START_SCOUT_TIME,'yyyy-mm-dd hh24:mi:ss'), to_date(:END_SCOUT_TIME,'yyyy-mm-dd hh24:mi:ss'), :CALLED_SERINUM, :OUT_REASON, :OUT_NUM, :MSGID, to_date(:START_TIME,'yyyy-mm-dd hh24:mi:ss'), to_date(:END_TIME,'yyyy-mm-dd hh24:mi:ss'), :EPARCHY_CODE, :MSG_CONTENT, :REMARK, sysdate, :UPATE_STAFF, :UPDATE_DEPART, :RSRV_STR1, :RSRV_STR2, :RSRV_STR3)

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<title></title>
+
+<script jwcid="@Script" language="JavaScript" src="iorder/person/familytradeoptimal/scripts/familyallnetbusimanage.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 头部 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">全国家庭网业务办理</div>
+	</div>
+	<!-- 头部 结束 -->
+	<div class="c_scroll c_scroll-float c_scroll-phone-header">
+		<div class="l_padding">
+			<!-- 认证 开始 -->
+			<div jwcid="AuthPart@icsserv:Auth"
+				tradeAction="refreshPartAtferAuth(data)" tradeTypeCode="2582"
+				 element="div" />
+			<!-- 认证 结束 -->
+		<div jwcid="UCAViewPart@Part">
+		<div jwcid="@icsserv:CustInfoView" custInfoView="ognl:custInfoView" />
+		<div jwcid="@icsserv:UserInfoView" userInfoView="ognl:userInfoView" />
+	</div>
+	<div class="c_box">
+	<div jwcid="FamilyAddPart@Part" class="c_list c_list-col-3 c_list-phone-col-1 c_list-line c_list-border"  >
+					<ul>
+						<li class="link required">
+							<div class="label">产品类型</div> <span jwcid="@Select"
+							name="PRODUCT_TYPE" id="PRODUCT_TYPE"
+							source="ognl:verifyModeList" value=""
+							textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+							desc="产品类型"></span></li>
+						<li>
+							<div class="label">群组编码</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="POID_CODE"
+									id="POID_CODE" value="" desc="群组编码" maxLength="32" datatype="number"/>
+							</div>
+						</li>
+						<li>
+							<div class="label">群组标签</div>
+							<div class="value">
+								<input jwcid="@TextField" type="text" name="POID_LABLE"
+									id="POID_LABLE" value="" maxLength="32" desc="群组昵称" />
+							</div>
+						</li>
+
+					</ul>
+				</div>
+    </div>
+
+    <div>
+
+    <span>
+	<button type="button" class="e_button e_button-blue" name="Create" id="Create" onclick="onCreTradeSubmit()">
+	<i class="e_button-page-ok"></i><span>创建家庭网</span></button>
+	<span jwcid="ButtonPart@Part" style="display:none">
+	<button type="button" class="e_button e_button-blue" name="Destroy" id="Destroy" onclick="onDesTradeSubmit()" >
+	<i class="e_button-page-cancel"></i><span>注销家庭网</span></button>
+	<button type="button" class="e_button e_button-blue" name="bAdd" id="bAdd" onclick="onPopMeb()" >
+	<i class="e_button-page-cancel"></i><span>新增成员</span></button>
+	</span>
+	</span>
+	
+    <div class="c_box" jwcid="OperInfoPart@Part" style="display:none">
+	<div class="c_title">
+		<span class="text">操作信息</span>
+	</div>
+</div>
+<div class="c_box" jwcid="HideOutPart@Part" style="display:none">
+	<div class="c_title">
+		<span class="text">家庭网群组列表</span>
+	</div>
+	<div jwcid="viceInfopart@Part" id="viceInfopart">
+		<div class="c_scroll c_scroll-table-5 " style="height:200px;">
+			<div class="c_table">
+			
+				<table jwcid="viceInfoTable@Table" id="viceInfoTable" name="viceInfoTable" rowClick="clickRow">
+		      	<thead>
+				  	<tr>
+				  		<th col="CHOICE">选择</th>
+				  		<th col="MAIN_NUMBER">主号码</th>
+						<th col="PRODUCT_TYPE">产品类型</th>
+						<th col="POID_CODE">群组编码</th>
+						<th col="POID_LABLE">群组标签</th>
+						<th col="MEM_LABLE">成员标签</th>						
+						<th col="SERIAL_NUMBER_A">家庭网群号</th>
+						<th col="PRODUCT_OFFERING_ID">家庭网群组编码</th>
+					    <th col="SERIAL_NUMBER_B">操作号码</th>
+					    <th col="FAMILY_TAG">主副号标识</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+						<th col="MEMBER_UPDATE_B">操作</th>						
+					</tr>
+				</thead>
+				<tbody id="viceInfoTable_Body">
+					<tr jwcid="@Foreach" source="ognl:viceInfos" value="ognl:viceInfo" element="tr" index="ognl:rowIndex" >
+						<td align="center">
+						<input type="radio" name="radioselect" id='"radio"+ rowIndex'  jwcid="@Any" value="" 
+						PRODUCT_CODE="ognl:viceInfo.PRODUCT_CODE" SERIAL_NUMBER_A="ognl:viceInfo.SERIAL_NUMBER_A"  ROLE_CODE_B="ognl:viceInfo.ROLE_CODE_B" USER_ID_A="ognl:viceInfo.USER_ID_A"
+						PRODUCT_OFFERING_ID="ognl:viceInfo.RSRV_STR2"  SERIAL_NUMBER_B="ognl:viceInfo.SERIAL_NUMBER_B" VALID_MEM_COUNT="ognl:viceInfo.VALIATE_MEM_COUNT" onclick="loadMeb(this)"/>
+						</td>	
+						<td><span jwcid="@Insert" value="ognl:viceInfo.MAIN_NUMBER"></span></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.PRODUCT_CODE"></span></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.POID_CODE"></span></td>					
+						<td><span jwcid="@Insert" value="ognl:viceInfo.POID_LABLE"></span></td>	
+						<td><span jwcid="@Insert" value="ognl:viceInfo.MEM_LABLE"></span></td>																	
+						<td><span jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER_A"></span></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.RSRV_STR2" /></td>	
+						<td><span jwcid="@Insert" value="ognl:viceInfo.SERIAL_NUMBER_B"/></td>	
+						<td><span jwcid="@Insert" value="ognl:viceInfo.ROLE_CODE_B"/></td>				 				 
+						<td><span jwcid="@Insert" value="ognl:viceInfo.START_DATE"/></td>
+						<td><span jwcid="@Insert" value="ognl:viceInfo.END_DATE"/></td>	
+						<td><span><button type="button" name="bDel" onclick="updateMainGroup(this)"><span>主号群组信息变更</span></button></span></td>
+						
+					</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div jwcid="mebInfopart@Part" id="mebInfopart" style="display:none">
+	 <div class="c_title">
+		<span class="text">家庭网成员列表</span>
+	 </div>
+		<div class="c_scroll c_scroll-table-5 " style="height:200px;">
+			<div class="c_table">
+			
+				<table jwcid="mebInfopartTable@Table" id="mebInfopartTable" name="mebInfopartTable" rowClick="clickRow">
+		      	<thead>
+				  	<tr>
+				  		<th col="MAIN_NUMBER">主号</th>
+						<th col="SERIAL_NUMBER_A" style="display:none">家庭网群号</th>
+						<th col="PRODUCT_OFFERING_ID" style="display:none">家庭网群组编码</th>
+					    <th col="SERIAL_NUMBER_B">成员号码</th>
+					    <th col="MEM_LABLE">成员标签</th>				    
+					    <th col="FAMILY_TAG">主副号标识</th>
+						<th col="START_DATE">开始时间</th>
+						<th col="END_DATE">结束时间</th>
+						<th col="MEMBER_DELETE_B">操作</th>		
+						<th col="MEMBER_UPDATE_B">操作</th>						
+										
+					</tr>
+				</thead>
+				<tbody id="mebInfopartTable_Body">
+					<tr jwcid="@Foreach" source="ognl:mebInfos" value="ognl:mebInfo" element="tr" index="ognl:rowIndex" >
+						<td><span jwcid="@Insert" value="ognl:mebInfo.MAIN_NUMBER"/></td>						
+						<td style="display:none"><span jwcid="@Insert" value="ognl:mebInfo.SERIAL_NUMBER_A"/></td>	
+						<td style="display:none"><span jwcid="@Insert" value="ognl:mebInfo.RSRV_STR2"/></td>					 				 
+						<td><span jwcid="@Insert" value="ognl:mebInfo.SERIAL_NUMBER_B"></span></td>
+						<td><span jwcid="@Insert" value="ognl:mebInfo.MEM_LABLE"></span></td>
+						<td><span jwcid="@Insert" value="ognl:mebInfo.ROLE_CODE_B"/></td>					 										 
+						<td><span jwcid="@Insert" value="ognl:mebInfo.START_DATE"/></td>
+						<td><span jwcid="@Insert" value="ognl:mebInfo.END_DATE"/></td>	
+						<td><span><button type="button" name="bDel" onclick="deleteMeb(this)"><span>删除</span></button></span></td>
+						<td><span><button type="button" name="bUpdate" onclick="updateGroup(this)"><span>副号群组信息变更</span></button></span></td>
+					</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--隐藏区域开始 放群组表格数据-->
+	<div style="display:none" jwcid="hiddentableInfoPart@Part"> 
+	<input style="display:none" jwcid="@TextField" id="HID_PRODUCT_TYPE"  desc="产品编码" name="HID_PRODUCT_TYPE" value=""/>		
+	<input style="display:none" jwcid="@TextField" id="HID_SERIAL_NUMBER_A"  desc="群组号码" name="HID_SERIAL_NUMBER_A" value=""/>		
+	<input style="display:none" jwcid="@TextField" id="HID_PRODUCT_OFFERING_ID"  desc="群组编码" name="HID_PRODUCT_OFFERING_ID" value=""/>		
+	<input style="display:none" jwcid="@TextField" id="HID_SERIAL_NUMBER_B"  desc="操作号码" name="HID_SERIAL_NUMBER_B" value=""/>	
+	<input style="display:none" jwcid="@TextField" id="HID_USER_ID_A"  desc="虚拟id" name="HID_USER_ID_A" value=""/>		
+	<input style="display:none" jwcid="@TextField" id="HID_FAMILY_TAG"  desc="主副号标识" name="HID_FAMILY_TAG" value=""/>	
+	<input style="display:none" jwcid="@TextField" id="HID_POID_CODE"  desc="群组编码" name="HID_POID_CODE" value=""/>		
+	<input style="display:none" jwcid="@TextField" id="HID_MEM_COUNT"  desc="成员总量" name="HID_MEM_COUNT" value=""/>
+		<input style="display:none" jwcid="@TextField" id="HID_MEM_COUNT_BAK"  desc="成员总量备份" name="HID_MEM_COUNT_BAK" value=""/>
+		<input style="display:none" jwcid="@TextField" id="HID_POID_LABLE"  desc="群组标签" name="HID_POID_LABLE" value=""/>
+	</div>
+		<!--隐藏区域开始 放操作业务-->
+	<div style="display:none" jwcid="optionInfoPart@Part"> 
+	<input style="display:none" jwcid="@TextField" id="TRADE_OPTION"  desc="本次操作业务" name="TRADE_OPTION" value="NULL"/>			
+	</div>
+	
+	
+</div>
+	</div>
+	</div>
+	
+</body>
+</html>

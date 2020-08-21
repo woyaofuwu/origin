@@ -1,0 +1,1 @@
+UPDATE tf_b_tradefee_paymoney SET pay_money_code =:PAY_MONEY_CODE WHERE trade_id=TO_NUMBER(:TRADE_ID)

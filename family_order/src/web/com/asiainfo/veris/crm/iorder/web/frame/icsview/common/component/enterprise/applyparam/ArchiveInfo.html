@@ -1,0 +1,336 @@
+<!-- 标题 开始 -->
+<div class="c_title">
+	<div class="text">公共信息</div>
+</div>
+<!-- 标题 结束 -->
+<!-- 表单 开始 -->
+<div jwcid="CommonPart@Part" id="CommonPart" class="c_list c_list-line c_list-border c_list-col-3 c_list-phone-col-1">
+ 	 <div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINEOPEN' || info.TEMPLET_ID == 'DIRECTLINECHANGESIMPLE' || info.TEMPLET_ID == 'EDIRECTLINECHANGE'||info.TEMPLET_ID == 'MANUALSTOP'||info.TEMPLET_ID == 'MANUALBACK'">
+		<ul>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID != 'MANUALSTOP' && info.TEMPLET_ID != 'MANUALBACK'">
+			<li class="link required">
+				<div class="label">业务类型</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_BUSINESSTYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('APPLY_BUSINESSTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BUSINESSTYPE" nullable="no" desc="业务类型" onchange="changeBusinessType();"/>
+				</div>
+			</li>
+			<li class="link required" id="IF_NEW_PROJECTNAME" style="display:none">
+				<div class="label">项目名称是否新增</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_IF_NEW_PROJECTNAME" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IF_NEW_CONTRACT')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.IF_NEW_PROJECTNAME" addDefault="true" onchange="ifNewProjectName();" nullable="no" desc="项目名称是否新增" "/>
+				</div>
+			</li>
+			<li class="link required" id="PROJECTNAME_OLD" style="display:none">
+				<div class="label">已有项目名称</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_PROJECTNAME_OLD" source="ognl:info.PROJECTNAMES" textField="PROJECTNAME_OLD" valueField="PROJECTNAME_OLD" 
+					value="ognl:info.PROJECTNAME_OLD" nullable="yes" desc="已有项目名称" "/>
+				</div>
+			</li>
+			<li class="link required" id="PROJECTNAME" style="display:none">
+				<div class="label">项目名称</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_PROJECTNAME" value="ognl:info.PROJECTNAME" nullable="yes" desc="项目名称"/>
+				</div>
+			</li>
+			<li class="link required" id="CONTRACTREQUIREDATE" style="display:none">
+				<div class="label">合同要求工期</div>
+				<div class="value">
+					<input name="pattr_CONTRACTREQUIREDATE" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.CONTRACTREQUIREDATE" format="yyyy-MM-dd" nullable="yes" desc="合同要求工期"/>
+				</div>
+			</li>
+			</div>
+			
+			<!-- <li class="link required">
+				<div class="label">集客业务联系人电话</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_CUSTOMCONTACTPHONE" value="ognl:info.CUSTOMCONTACTPHONE" nullable="no" desc="集客业务联系人电话" "/>
+				</div>
+			</li> -->
+			<li class="link required">
+				<div class="label">业务范围</div>
+				<div class="value">
+					<div jwcid="@Conditional" condition="ognl:(info.PRODUCT_ID == '7012'||info.PRODUCT_ID == '70121'||info.PRODUCT_ID == '70122')">
+					<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BIZRANGE==null?'本地市':info.BIZRANGE" onchange="changeServicetype();" nullable="no" desc="业务范围" />
+					</div>
+					<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == '7011'||info.PRODUCT_ID == '7010'||info.PRODUCT_ID == '7016'||info.PRODUCT_ID == '70111'||info.PRODUCT_ID == '70112'">
+					<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BIZRANGE==null?'本地市':info.BIZRANGE" nullable="no" disabled="disabled" desc="业务范围"  onchange="defaultValueForBuildSetion();"/>
+					</div>
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">资管系统受理建设单位</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_BUILDINGSECTION" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BUILDING_SECTION')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BUILDINGSECTION" nullable="no" desc="资管系统受理建设单位" />
+				</div>
+			</li>
+	<!-- 	<li class="link required">
+				<div class="label">是否新增产品编码</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_IFCREATEUSER" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('IF_CHOOSE_CONFCRM')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.IFCREATEUSER" nullable="no" desc="是否新增产品编码" />
+				</div>
+			</li>
+	 -->	
+	 		<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID != 'MANUALSTOP' && info.TEMPLET_ID != 'MANUALBACK'">
+	 		<li class="link required" ontap="showAuditStaff();">
+				<div class="label">稽核员工</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="pattr_AUDITSTAFF" id="pattr_AUDITSTAFF" value="ognl:info.AUDITSTAFF" disabled="disabled" desc="稽核员工" nullable="no"/>
+					<span class="e_ico-check"></span>
+				</span></div>
+			</li>
+			<li class="link" >
+				<div class="label">稽核员工手机号码</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_AUDITPHONE" id="pattr_AUDITPHONE" value="ognl:info.AUDITPHONE" desc="稽核员工手机号码"/>
+				</div>
+			</li>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINECHANGE' || info.TEMPLET_ID == 'DIRECTLINECHANGESIMPLE'||info.TEMPLET_ID == 'MANUALSTOP'||info.TEMPLET_ID == 'MANUALBACK'">
+				<li class="link required">
+				<div class="label">业务调整场景</div>
+				<div class="value" jwcid="changeModePart@Part">
+					<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINECHANGE'">
+					<input jwcid="@Select" name="pattr_CHANGEMODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CHANGEMODE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.CHANGEMODE==null?'1':info.CHANGEMODE" nullable="no" desc="业务调整场景" onchange="EDirectLineChangeMode();changeChangeMode();"/>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'DIRECTLINECHANGESIMPLE'">
+					<input jwcid="@Select" name="pattr_CHANGEMODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('SIMPLECHANGEMODE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.CHANGEMODE" nullable="no" desc="业务调整场景" onchange="changeChangeMode();"/>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'MANUALSTOP'">
+					<input jwcid="@Select" name="pattr_CHANGEMODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MANUALSTOPCHANGEMODE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="停机" nullable="no" desc="业务调整场景" onchange="changeChangeMode();"/>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'MANUALBACK'">
+					<input jwcid="@Select" name="pattr_CHANGEMODE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('MANUALBACKCHANGEMODE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="复机" nullable="no" desc="业务调整场景" onchange="changeChangeMode();"/>
+					</div>
+				</div>
+				</li>
+				<input type="hidden" jwcid="@Any" id="pattr_HIDDEN_CHANGEMODE" value="" raw="false" />
+				<input type="hidden" jwcid="@Any" id="pattr_DATALINE_NUM" value="ognl:info.DATALINENUM" raw="false" />
+			</div>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'MANUALSTOP'">
+			<li class="link required">
+				<div class="label">复机时间</div>
+				<div class="value">
+					<input name="pattr_BACK_TIME" jwcid="@DateField" now="true" dropDown="true" value="ognl:info.BACK_TIME" format="yyyy-MM" nullable="no" desc="复机时间"/>
+				</div>
+			</li>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINEOPEN'&&info.PRODUCT_ID!=7010">
+			<li class="link required">
+				<div class="label">计费方式</div>
+				<div class="value">
+					<span class="e_select" tip="如果没有选项，请先选择业务类型">
+						<span>--请选择--</span>
+						<input type="hidden" id="pattr_ACCEPTTANCE_PERIOD" value="" nullable="no" onchange="changeAccepttancePeriod();" desc="计费方式" />
+					</span>
+				</div>
+				<input type="hidden" jwcid="@TextField" name="hidden_ACCEPTTANCE_PERIOD" value="ognl:info.ACCEPTTANCE_PERIOD"/>
+			</li>
+			<li class="link required" id="SPEAUDITFILE" style="display: none">
+				<div class="label">计费方式OA审批附件</div>
+				<div class="value"><span id="speauditfile" name="speauditfile" jwcid="@SimpleUpload" ftpCode="eosdata" filePath="EOP/other" value="ognl:info.SPEAUDIT_FILE_ID" nullable="yes"/></div>
+				<span style="display:none" id="speauditfileDate"><span jwcid="@Insert" value="ognl:info.SPEAUDIT_FILE_DATA"/></span>
+			</li>
+			<!-- <li class="link required" ontap="showSpeAuditStaff();" id="SPEAUDITSTAFF" style="display: none">
+				<div class="label">计费方式审核员工</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="pattr_SPECIAL_STAFF_ID" id="pattr_SPECIAL_STAFF_ID" value="ognl:info.SPECIAL_STAFF_ID" disabled="disabled" desc="计费方式审核员工"/>
+					<span class="e_ico-check"></span>
+				</span></div>
+			</li>
+			<li class="link" id="SPEAUDITPHONE" style="display: none">
+				<div class="label">计费方式审核员工手机号码</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_SPECIAL_STAFF_PHONE" id="pattr_SPECIAL_STAFF_PHONE" value="ognl:info.SPECIAL_STAFF_PHONE" desc="计费方式审核员工手机号码"/>
+				</div>
+			</li> -->
+			</div>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'MANUALSTOP'">
+			<li class="link required" id="CHANGHE_ACCEPTTANCE_PERIOD" style="display: none" tip="停机如果选择立即生效，则本月不收取专线费用。如果选择下账期生效，则本月收取专线费用！">
+				<div class="label">计费方式</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_ACCEPTTANCE_PERIOD" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CHANGEACCEPTANCELIST')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.ACCEPTTANCE_PERIOD" desc="计费方式" />
+				</div>
+			</li>
+			</div>
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINECHANGE'">
+			<li class="link required" id="CHANGHE_ACCEPTTANCE_PERIOD" style="display: none" tip="扩容如果选择立即生效，则本月按变更后资费收取专线费用。如果选择下账期生效，则本月按变更前资费收取专线费用！">
+				<div class="label">计费方式</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_ACCEPTTANCE_PERIOD" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CHANGEACCEPTANCELIST')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.ACCEPTTANCE_PERIOD" desc="计费方式" />
+				</div>
+			</li>
+			</div>
+			<div jwcid="@Conditional" condition="ognl: info.IS_READONLY != 'true'">
+			<div jwcid="@Conditional" condition="ognl: info.TEMPLET_ID == 'DIRECTLINECHANGESIMPLE' ||info.TEMPLET_ID == 'MANUALSTOP'||info.TEMPLET_ID == 'MANUALBACK'">
+				<li class="link" ontap="ChangeLines();">
+				<div class="label">查询集团专线信息</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="pattr_CHANGE_LINES" id="pattr_CHANGE_LINES" value="ognl:info.CHANGE_LINES" disabled="disabled"/>
+					<span class="e_ico-check"></span>
+				</span></div>
+				</li>
+			</div>
+			</div>
+			
+<!-- 			<div jwcid="@Conditional" condition="ognl:(info.PRODUCT_ID == '7011'||info.PRODUCT_ID == '7012')&&info.TEMPLET_ID == 'EDIRECTLINEOPEN'">
+				<li class="link required" id="LINE_TYPE_li"  >
+					<div class="label">专线类型</div>
+					<div class="value">
+						<input jwcid="@Select" name="pattr_LINE_TYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('LINETYPE_'+info.PRODUCT_ID)" textField="DATA_NAME" valueField="DATA_ID" 
+						value="ognl:info.LINE_TYPE==null?(info.PRODUCT_ID == '7011'?'84019250':info.PRODUCT_ID == '7012'?'84019251':''):info.LINE_TYPE" desc="专线类型" />
+					</div>
+					
+				</li>
+			</div> -->
+			
+		</ul>
+	</div>
+	<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'ERESOURCECONFIRMZHZG'|| info.TEMPLET_ID == 'ECHANGERESOURCECONFIRM'">
+		<ul>
+			<li class="link">
+				<div class="label">客户需求描述</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_BREQUIREMENTDESC" value="ognl:info.BREQUIREMENTDESC" nullable="yes" desc="客户需求描述" "/>
+				</div>
+			</li>
+	<!--	<li>
+				<div class="label">附件</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="ATTACH_FILE_NAME" value="" ontap="showPopup('popup01','attachPopupItem',true);" readonly="true"/>
+					<input jwcid="@Hidden" name="ATTACH_FILE_ID" value=""/>
+					<span style="display:none" id="ATTACH_FILE_LIST"></span>
+					<span class="e_ico-upload" ontap="showPopup('popup01','attachPopupItem',true);"></span>
+				</span></div>
+			</li>
+  	-->	
+			<li class="link required">
+				<div class="label">资管系统受理建设单位</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_BUILDINGSECTION" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BUILDING_SECTION')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BUILDINGSECTION" nullable="no" desc="资管系统受理建设单位" />
+				</div>
+			</li>
+			<li class="link" ontap="historyData();">
+				<div class="label">载入历史数据</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="pattr_IBSYSID_RES_RELE" id="pattr_IBSYSID_RES_RELE" value="ognl:info.IBSYSID_RES_RELE" disabled="disabled"/>
+					<span class="e_ico-check"></span>
+				</span></div>
+			</li>	
+			<li class="link required">
+				<div class="label">业务类型</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_BUSINESSTYPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('APPLY_BUSINESSTYPE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BUSINESSTYPE" nullable="no" desc="业务类型"/>
+				</div>
+			</li>	
+			<li class="link required">
+				<div class="label">业务范围</div>
+				<div class="value">
+						<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'ERESOURCECONFIRMZHZG'">
+						<div jwcid="@Conditional" condition="ognl:(info.PRODUCT_ID == '7012'||info.PRODUCT_ID == '70121'||info.PRODUCT_ID == '70122')">
+							<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+							value="ognl:info.BIZRANGE==null?'本地市':info.BIZRANGE" onchange="changeServicetype();" nullable="no" desc="业务范围" />
+						</div>
+						<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == '7011'||info.PRODUCT_ID == '7010'||info.PRODUCT_ID == '7016'||info.PRODUCT_ID == '70111'||info.PRODUCT_ID == '70112'">
+							<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+							value="ognl:info.BIZRANGE==null?'本地市':info.BIZRANGE" nullable="no" disabled="disabled" desc="业务范围" />
+						</div>
+					</div>
+					<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'ECHANGERESOURCECONFIRM'">
+					<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == '7012'||info.PRODUCT_ID == '70121'||info.PRODUCT_ID == '70122'">
+						<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+						value="ognl:info.BIZRANGE"  onchange="changeServicetype();changeChangeMode();" nullable="no" desc="业务范围" />
+					</div>
+					<div jwcid="@Conditional" condition="ognl:info.PRODUCT_ID == '7011'||info.PRODUCT_ID == '7010'||info.PRODUCT_ID == '7016'||info.PRODUCT_ID == '70111'||info.PRODUCT_ID == '70112'">
+						<input jwcid="@Select" name="pattr_BIZRANGE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BIZRANGE_LIST')" textField="DATA_NAME" valueField="DATA_ID" 
+						value="ognl:info.BIZRANGEE==null?'本地市':info.BIZRANGE"" nullable="no" disabled="disabled" desc="业务范围" />
+					</div>
+					</div>
+				</div>
+			</li>	
+			<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'ECHANGERESOURCECONFIRM'">
+				<li class="link" ontap="ChangeLines();">
+				<div class="label">查询集团专线信息</div>
+				<div class="value"><span class="e_mix">
+					<input jwcid="@TextField" name="pattr_CHANGE_LINES" id="pattr_CHANGE_LINES" value="ognl:info.CHANGE_LINES" disabled="disabled"/>
+					<span class="e_ico-check"></span>
+				</span></div>
+				</li>
+			</div>		
+		</ul>
+	</div>
+	<!-- 拆机 -->
+	<div jwcid="@Conditional" condition="ognl:info.TEMPLET_ID == 'EDIRECTLINECANCEL'">
+		<ul>
+			<li class="link required">
+				<div class="label">拆除原因</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_BACKOUTCAUSE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('CANCEL_RESULT')" textField="DATA_NAME" valueField="DATA_ID"
+						   value="ognl:info.BACKOUTCAUSE" nullable="no" desc="拆除原因" />
+				</div>
+			</li>
+			<li class="link required">
+				<div class="label">客户要求拆机时间</div>
+				<div class="value">
+					<input name="pattr_CANCELTIME" jwcid="CANCELTIME@DateField" value="ognl:info.CANCELTIME" now="true" dropDown="true" format="yyyy-MM-dd" nullable="no" desc="客户要求拆机时间"/>
+				</div>
+			</li>
+			<li class="link required" >
+				<div class="label">拆机联系人</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_CANCELPERSON" value="ognl:info.CANCELPERSON" nullable="no" desc="拆机联系人"/>
+				</div>
+			</li>	
+			<li class="link required">
+				<div class="label">拆机联系人电话</div>
+				<div class="value">
+					<input jwcid="@TextField" name="pattr_CANCELCONTACTPHONE" value="ognl:info.CANCELCONTACTPHONE" nullable="no" desc="拆机联系人"/>
+				</div>
+			</li>
+			<!-- 	
+			<li class="link required">
+				<div class="label">客户侧是否自备业务设备</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_ISCUSTOMERPE" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('ISCUSTOMERPE')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.ISCUSTOMERPE" nullable="no" desc="客户侧是否自备业务设备"/>
+				</div>
+			</li>	
+			 -->
+			<li class="link required">
+				<div class="label">资管系统受理建设单位</div>
+				<div class="value">
+					<input jwcid="@Select" name="pattr_BUILDINGSECTION" source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('BUILDING_SECTION')" textField="DATA_NAME" valueField="DATA_ID" 
+					value="ognl:info.BUILDINGSECTION" nullable="no" desc="资管系统受理建设单位" />
+				</div>
+			</li>
+			<li class="link" ontap="ChangeLines();">
+				<div class="label">查询集团专线信息</div>
+				<div class="value">
+					<span class="e_mix"> <input jwcid="@TextField"
+						name="pattr_CHANGE_LINES" id="pattr_CHANGE_LINES"
+						value="ognl:info.CHANGE_LINES" disabled="disabled" /> <span
+						class="e_ico-check"></span>
+					</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<input type="hidden" jwcid="@Any" id="pattr_HIDDEN_PRODUCTNO" value="" raw="false" />
+	<input type="hidden" jwcid="@Any" id="pattr_DATALINE_NUM" value="ognl:info.DATALINENUM" raw="false" />
+	<input type="hidden" id="pattr_CHANGE_DATALINE_NUM" value="0"/>
+</div>
+<!-- 表单 结束 -->

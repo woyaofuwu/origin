@@ -1,0 +1,706 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>家庭融合宽带用户开户</title>
+<script jwcid="@Script" type="text/javascript"
+	src="person/broadband/widenet/createwideuser/scripts/mergewideusercreate.js"></script>
+<script jwcid="@Script" type="text/javascript"
+	src="person/broadband/widenet/createwideuser/scripts/familywideusercreate.js"></script>
+<script jwcid="@Script" type="text/javascript"
+	src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" src="scripts/csserv/common/date/dateutils.js"></script>
+<script jwcid="@Script"
+	src="scripts/csserv/component/offer/offerdefine.js"></script>
+</head>
+<body jwcid="@Body">
+	<div class="m_wrapper">
+		<div class="m_wrapper2">
+			<div class="c_box">
+				<div class="c_tip">欢迎使用家庭融合宽带开户！</div>
+			</div>
+
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<div class="c_tip">根据信息安全管理工作要求，要求录入的报装地址要精准到门牌号和房号</div>
+			</div>
+			<!-- 区域 开始 -->
+			<div class="c_box">
+
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">基本信息</div>
+
+					<div class="fn">
+						<a href="#nogo" class="e_button"
+							onclick="$.mergewideusercreate.displaySwitch(this,'UCAViewPart')"><i
+							class="e_ico-unfold"></i><span>展示客户基本信息</span> </a>
+					</div>
+				</div>
+				<!-- 标题 结束 -->
+
+				<!-- 认证 开始 -->
+				<div id="authArea">
+					<div jwcid="AuthPart@csserv:Auth"
+						tradeAction="$.familywideusercreate.refreshPartAtferAuth(data);"
+						tradeTypeCode="ognl:info.TRADE_TYPE_CODE" element="div" />
+				</div>
+				<!-- 认证 结束 -->
+
+				<!-- 参数列表 开始 -->
+				<div jwcid="UCAViewPart@Part" style="display:none">
+					<div jwcid="@csserv:CustInfoView" custInfoView="ognl:custInfoView" />
+					<div jwcid="@csserv:UserInfoView" userInfoView="ognl:userInfoView" />
+					<div jwcid="@csserv:AcctInfoView" acctInfoView="ognl:acctInfoView" />
+				</div>
+				<!-- 参数列表 结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+
+			<!-- 区域 开始 -->
+			<div class="c_box">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">宽带信息</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-8 c_form-col-3"
+					jwcid="widePart@Part">
+					<ul class="ul">
+						<li class="li">
+							<div jwcid="wideMode@Part">
+								<span class="label"><span class="e_required">支付模式：</span>
+								</span> <span class="e_select"><span><span> <select
+											jwcid="@Select" name="WIDENET_PAY_MODE" id="WIDENET_PAY_MODE"
+											source="ognl:widenetPayModeList" textField="DATA_NAME"
+											valueField="DATA_ID" value="P" desc="支付模式" addDefault="false" />
+									</span>
+								</span>
+								</span>
+							</div></li>
+						<li class="li col-2"></li>
+						<li class="li col-3"><span class="label"><span
+								class="e_required">标准地址：</span>
+						</span> <span class="e_elements"> <!--  setAddressInfo()-->
+								<button class="e_button-right" id="five_address_select"
+									type="button" onclick="reginalField()">
+									<i class="e_ico-search"></i><span>地址建设规划查询</span>
+								</button>
+								
+								<button class="e_button-right" id="tree_address_select" type="button"		onclick="$.popupPage('broadband.widenet.createwideuser.WideCreateGisAddr','init','','GIS地址查询','1000','600','STAND_ADDRESS','',''); ">
+									<i class="e_ico-search"></i><span>GIS地址查询</span></button>
+
+							<button class="e_button-right" id="tree_address_select" type="button" onclick="addressTreeSelect()">
+													<i class="e_ico-search"></i><span>树状地址查询</span></button>
+
+								<button class="e_button-right" id="POP_BTN_ADDR_ID"
+									type="button" onclick="addressSelect()"
+									desc="标准地址">
+									<i class="e_ico-search"></i><span>地址查询</span>
+								</button> <span class="e_input"><span> <input
+										jwcid="@TextField" name="STAND_ADDRESS" id="STAND_ADDRESS"
+										value="ognl:info.STAND_ADDRESS" disabled="true" nullable="no"
+										desc="标准地址"
+										afterAction="$.mergewideusercreate.afterSetDetailAddress()" />
+								</span>
+							</span> <input jwcid="@TextField" id="STAND_ADDRESS_CODE"
+								name="STAND_ADDRESS_CODE" value="ognl:info.STAND_ADDRESS_CODE"
+								style="display:none" desc="标准地址CODE" /> <input
+								jwcid="@TextField" id="DEVICE_ID" name="DEVICE_ID"
+								value="ognl:info.DEVICE_ID" style="display:none" nullable="no"
+								desc="设备ID" /> <input jwcid="@TextField" id="OPEN_TYPE"
+								name="OPEN_TYPE" value="ognl:info.OPEN_TYPE"
+								style="display:none" nullable="yes" desc="宽带开户类型" /> </span></li>
+
+
+						<li class="li"><span class="label"><span
+								class="e_required">报装地址：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="DETAIL_ADDRESS" id="DETAIL_ADDRESS"
+									value="ognl:info.DETAIL_ADDRESS" nullable="no" desc="报装地址" /> </span>
+						</span></li>
+
+						<li class="li"><span class="label"><span
+								class="e_required">楼层和房号：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="FLOOR_AND_ROOM_NUM"
+									id="FLOOR_AND_ROOM_NUM" value="ognl:info.DETAIL_ADDRESS"
+									nullable="no" desc="楼层和房号" /> <!--楼层和房号   标识  --> <input
+									jwcid="@Hidden" name="FLOOR_AND_ROOM_NUM_FLAG"
+									id="FLOOR_AND_ROOM_NUM_FLAG" value="0" /> </span>
+						</span></li>
+
+						<li class="li"><span class="label"><span
+								class="e_required">联系人电话：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="CONTACT_PHONE" id="CONTACT_PHONE"
+									value="ognl:info.CONTACT_PHONE1" nullable="no" maxlength="15"
+									datatype="numeric" desc="联系人电话" onchange="checkContactPhone(this)" /> </span>
+						</span></li>
+						<li class="li"><span class="label"><span
+								class="e_required">联系人：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="CONTACT" id="CONTACT"
+									value="ognl:info.CONTACT" nullable="no" desc="联系人"
+									maxlength="30" /> </span>
+						</span></li>
+						<li class="li"><span class="label"><span
+								class="e_required">联系电话：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="PHONE" id="PHONE"
+									value="ognl:info.PHONE" nullable="no" maxlength="15"
+									datatype="numeric" desc="联系电话" /> </span>
+						</span></li>
+
+						<li class="li"><span class="label"><span
+								class="e_required">地区：</span>
+						</span> <span class="e_select"><span><span> <select
+										jwcid="@Select" name="AREA_CODE" id="AREA_CODE"
+										value="ognl:visit.getCityCode()" nullable="no"
+										textField="DATA_NAME" valueField="DATA_ID"
+										titleField="DATA_NAME"
+										source="ognl:pageutil.getStaticList('COP_AREA_CODE')"
+										disabled="true" desc="地区" /> </span>
+							</span>
+						</span></li>
+
+						<li class="li"><span class="label"><span>预约施工时间：</span>
+						</span> <span class="e_input"><span> <input type="text"
+									jwcid="@DateField" name="SUGGEST_DATE" id="SUGGEST_DATE"
+									value="ognl:info.SUGGEST_DATE" min="ognl:info.MIN" max="ognl:info.MAX"
+									format="yyyy-MM-dd HH:mm:ss" desc="预约受理时间" time="true"
+									afterAction="$.mergewideusercreate.afterSelSuggestDate(this);" />
+							</span>
+						</span></li>
+
+						<li class="li"><span class="label"><span
+								class="e_required">是否迁移客户：</span>
+						</span> <span class="e_select"><span><span> <select
+										jwcid="@Select" name="IS_WIDEBING" id="IS_WIDEBING" value="否"
+										nullable="no" textField="DATA_NAME" valueField="DATA_ID"
+										titleField="DATA_NAME" source="ognl:info.WideBing"
+										desc="是否迁移客户"
+										onchange="$.mergewideusercreate.changeIsWideBing();" /> </span>
+							</span>
+						</span></li>
+
+						<li class="li"><span class="label"><span
+								id="span_TTWIDENET">铁通原号码：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="TT_WIDENET" id="TT_WIDENET"
+									disabled="true" value="" maxlength="20" desc="铁通原号码"
+									onchange="$.mergewideusercreate.changeIsTTWideNet();" /> <input
+									jwcid="@Hidden" name="TT_USER_ID" id="TT_USER_ID" value="" /> </span>
+						</span></li>
+
+						<li class="li col-2"><span class="label"><span
+								class="e_required">办理业务：</span>
+						</span> <span class="e_box"><span><span>
+										<div class="c_fn">
+											<ul>
+												<li><label><input type="checkbox"
+														checked="true" disabled="true" class="e_checkbox" />宽带</label>
+												</li>
+												<li><label><input type="checkbox"
+														class="e_checkbox" id="topSetBoxInfoCheckBox"
+														onclick="$.familywideusercreate.infoPartDisplaySwitch(this,'topSetBoxInfoPart')" />魔百和</label>
+												</li>
+												<li><label><input type="checkbox"
+														class="e_checkbox" id="IMSCheckBox"
+														onclick="$.familywideusercreate.infoPartDisplaySwitch(this,'IMSPart')" />IMS固话</label>
+												</li>
+												<li><label><input type="checkbox"
+														class="e_checkbox" id="HeMuCheckBox"
+														onclick="$.familywideusercreate.infoPartDisplaySwitch(this,'HeMuPart')" />和目业务</label>
+												</li>
+												<li><a href="#nogo" class="e_button"
+													onclick="$.familywideusercreate.allPartDisplayShow()"><i
+														class="e_ico-select"></i><span>全部开启</span>
+												</a>
+												</li>
+											</ul>
+											</div>
+								</span>
+							</span>
+						</span></li>
+						
+						<li class="li col-2" style="display:none"><span class="label"><span
+								>高价值小区专项营销活动：</span>
+						</span> <span class="e_box"><span><span>
+										<div class="c_fn">
+											<ul>
+												<li><label><input type="checkbox"
+														class="e_checkbox" id="IS_HIGHTACTIVE"
+														onclick="$.mergewideusercreate.changeIsHightActive()" /></label>
+												</li>
+											</ul>
+										</div>
+								</span>
+							</span>
+						</span></li>
+
+						<li class="li col-2">
+							<span class="label"><span class=""></span>	</span>
+								<span class="e_box">
+									<div class="c_fn">
+										<ul>
+											<li><label><input type="checkbox"
+												  class="e_checkbox" id="IS_ZHANYI_ACTIVE" name="IS_ZHANYI_ACTIVE"
+												  onclick="$.mergewideusercreate.changeIsZhanYiActive()" />办理共同战疫宽带助力营销活动</label>
+											</li>
+										</ul>
+									</div>
+								</span>
+                        </li>
+                        <input jwcid="@Hidden" name="TIME_LIMIT_SALE_ACTIVE" id="TIME_LIMIT_SALE_ACTIVE" value="ZHANYI" desc="限时营销活动标识"/>
+					</ul>
+				</div>
+				<!-- 表单结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+
+			<!-- 区域 开始 -->
+			<div class="c_box">	
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">宽带产品</div>
+				</div>
+				<!-- 标题 结束 -->
+				
+				<!-- 参数列表 开始 -->
+				<div class="c_form c_form-label-8 c_form-col-3">
+					<ul class="ul">
+						<li class="li" jwcid="WideProductType@Part" element="li">
+							<span class="label"><span class="e_required">宽带产品类型：</span></span>
+							<span class="e_select"><span><span>
+								 <select jwcid="@Select" name="WIDE_PRODUCT_TYPE" id="WIDE_PRODUCT_TYPE"   value="ognl:info.WIDE_PRODUCT_TYPE"  nullable="no"  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" 
+								  source="ognl:pageutil.getStaticList('WIDE_PRODUCT_TYPE')"  onchange="$.mergewideusercreate.changeWideProductType();" desc="宽带产品类型"  disabled="true"/>
+							</span></span></span>
+						</li>
+						<li class="li" jwcid="productType@Part" element="li">
+							<span class="label">宽带产品：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="WIDE_PRODUCT_ID" id="WIDE_PRODUCT_ID"
+											source="ognl:productList"
+											textField="PRODUCT_NAME" valueField="PRODUCT_ID" value="ognl:info.PRODUCT_ID"
+											desc="当前产品" onchange="$.mergewideusercreate.changeProduct();"/>
+							</span></span></span>
+						</li>
+						<li class="li" jwcid="platSvcPackage@Part" element="li">
+							<div class="label">可选优惠包</div>
+							<div class="value" jwcid="PackagePart@Part">
+								<select jwcid="@Select" name="PLATSVC_PACKAGES2" id="PLATSVC_PACKAGES2" source="ognl:platSvcPackages2" textField="SERVICE_NAME" valueField="SERVICE_ID" value="" onchange="" addDefault="true"  desc="可选优惠包" nullable="no" />
+							</div>
+						</li>
+						<li class="li" jwcid="saleActivePart@Part" element="li">
+							<span class="label">宽带营销活动：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="SALE_ACTIVE_ID" id="SALE_ACTIVE_ID"
+											source="ognl:saleActiveList"
+											textField="PARA_CODE3" valueField="PARA_CODE2" value="ognl:info.SALE_ACTIVE_ID"
+											desc="当前产品" onchange="$.mergewideusercreate.changeSaleActive();"/>
+							</span></span></span>
+							
+							<input jwcid="@Hidden" name="SALE_ACTIVE_FEE" id="SALE_ACTIVE_FEE" value="ognl:info.SALE_ACTIVE_FEE"/>
+						</li>
+						
+						
+						<li class="li" jwcid="saleActivePartAttr@Part" element="li"  style="display: none">
+							<span class="label">宽带附加营销活动：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="SALE_ACTIVE_IDATTR" id="SALE_ACTIVE_IDATTR"
+											source="ognl:saleActiveListAttr"
+											textField="PARA_CODE12" valueField="PARA_CODE11" value="ognl:info.SALE_ACTIVE_IDATTR"
+											desc="当前产品" onchange="$.mergewideusercreate.changeSaleActiveAttr();"/>
+							</span></span></span>
+						</li>
+						
+						<li class="li col-3" id="saleActiveExplainPart">
+							<span class="label">营销活动详细描述：</span>
+							<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent">
+									<textarea id="SALE_ACTIVE_EXPLAIN" name="SALE_ACTIVE_EXPLAIN" jwcid="@TextArea" style="height:30px;" value="ognl:info.SALE_ACTIVE_EXPLAIN"  desc="营销活动详细描述" disabled="true" rows="5"/>
+								</span>
+								<span class="e_textareaBottom"><span></span></span>
+							</span>
+						</li>
+					</ul>
+				</div>
+				<!-- 参数列表 结束 -->
+				
+				<!-- 分栏 开始 -->
+				<div class="l_col s_iframe-lower" >
+					<!-- 第 1 栏 开始 -->
+					<div class="l_left" style="width:49%;">
+						<!-- 区域 开始 -->
+						<div class="c_box">
+							<!-- 标题 开始 -->
+			                <div class="c_title">
+								<div class="text">待选区</div>
+								<div class="fn">
+								</div>
+							</div>
+							<!-- 标题 结束 -->
+							<!-- 分栏 开始 -->
+							<div class="l_col l_col-close">
+								<div jwcid="offerList@csserv:OfferList" 
+			                           element="div" 
+			                           categoryId="100000000114,88888888"></div>
+							</div>
+							<!-- 分栏 结束 -->
+						</div>
+						<!-- 区域 结束 -->
+					</div>
+				    <div class="l_auto">
+						<!-- 标题 开始 -->
+						<div class="c_title">
+							<div class="text">已选区</div>
+						</div>
+			               <div jwcid="selectedElements@csserv:SelectedElements" 
+			                   renderCallSvc="CS.SelectedElementSVC.getWidenetUserOpenElements" 
+			                   callAddElementSvc="CS.SelectedElementSVC.dealWidenetSelectedElementsForChg" 
+			                   afterRenderAction="$.mergewideusercreate.afterRenderSelectedElements(data);"
+			                   basicStartDateControlId="NEW_PRODUCT_START_DATE"
+			                   elementExtendFiled="SALE_ACTIVE_ID"
+			                   elementExtendAction="$.mergewideusercreate.afterCheckBoxAction()"
+			                   tradeTypeCode="ognl:info.TRADE_TYPE_CODE"
+			                   element="div"></div>
+						<!-- 表格 结束 -->
+					</div>
+				</div>
+				<!-- 分栏 结束 -->
+				
+			    <div jwcid="elementAttr@csserv:ElementAttr" element="div"></div>
+				<!-- 提交 开始 -->
+				
+				
+				</div>
+				<!-- 区域 结束 -->	
+
+			<!-- 区域 开始 -->
+			<div class="c_box" id="modemDiv">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">光猫资料</div>
+
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-10 c_form-col-3"
+					jwcid="modemPart@Part">
+					<ul class="ul">
+					    <!-- 
+						<li class="li"><span class="label"><span
+								class="e_required">MODEM方式：</span>
+						</span> <span class="e_select"><span><span> <select
+										jwcid="@Select" name="MODEM_STYLE" id="MODEM_STYLE"
+										source="ognl:wideModemStyleList" textField="DATA_NAME"
+										valueField="DATA_ID" value="ognl:info.MODE_STYLE"
+										desc="MODEM方式"
+										onchange="$.mergewideusercreate.setModemNumeric();" /> </span>
+							</span>
+						</span></li>
+						<li class="li"><span class="label"><span>押金金额：</span>
+						</span> <span class="e_input"><span> <input
+									jwcid="@TextField" name="MODEM_DEPOSIT" id="MODEM_DEPOSIT"
+									value="ognl:info.MODEM_DEPOSIT" disabled="true" desc="押金金额" />
+							</span>
+						</span></li>
+                        -->
+						<li class="li" jwcid="saleActivePart2@Part" element="li">
+							<span class="label">调测费活动：</span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="SALE_ACTIVE_ID2" id="SALE_ACTIVE_ID2"
+											source="ognl:saleActiveList2"
+											textField="PARA_CODE3" valueField="PARA_CODE2" value="ognl:info.SALE_ACTIVE_ID"
+											desc="当前产品" onchange="$.mergewideusercreate.changeSaleActive2();"/>
+							</span></span></span>
+							<input jwcid="@Hidden" name="MODEM_STYLE" id="MODEM_STYLE" value=""/>
+					        <input jwcid="@Hidden" name="MODEM_DEPOSIT" id="MODEM_DEPOSIT" value="0"/>
+							<input jwcid="@Hidden" name="SALE_ACTIVE_FEE2" id="SALE_ACTIVE_FEE2" value="ognl:info.SALE_ACTIVE_FEE"/>
+						</li>
+						
+						<li class="li col-3" id="saleActiveExplainPart2">
+							<span class="label">调测费活动详细描述：</span>
+							<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent">
+									<textarea id="SALE_ACTIVE_EXPLAIN2" name="SALE_ACTIVE_EXPLAIN2" jwcid="@TextArea" style="height:30px;" value="ognl:info.SALE_ACTIVE_EXPLAIN"  desc="营销活动详细描述" disabled="true" rows="5"/>
+								</span>
+								<span class="e_textareaBottom"><span></span></span>
+							</span>
+						</li>
+					</ul>
+				</div>
+				<!-- 表单结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+
+			<!--  区域 开始-->
+			<div class="c_box" id="topSetBoxDiv">
+				<!-- 	标题 开始-->
+				<div class="c_title">
+					<div class="text">魔百和信息</div>
+				</div>
+				<!-- 标题 结束-->
+
+				<!-- 刷新区域 开始-->
+				<div jwcid="topSetBoxInfoPart@Part"
+					class="c_form c_form-text c_form-label-12 c_form-col-3"
+					style="display:none">
+					<!-- 表单 开始-->
+					<div jwcid="topSetBoxProductPart@Part">
+						<ul class="ul">
+							<li class="li"><span class="label"><span
+									class="e_required">魔百和产品：</span>
+							</span> <span class="e_select"><span><span> <select
+											jwcid="@Select" name="TOP_SET_BOX_PRODUCT_ID"
+											id="TOP_SET_BOX_PRODUCT_ID" source="ognl:topSetBoxProducts"
+											textField="PRODUCT_NAME" valueField="PRODUCT_ID"
+											value="ognl:info.PRODUCT_ID" nullable="no"
+											onchange="$.mergewideusercreate.queryTopSetBoxPackages();"
+											addDefault="true" desc="魔百和产品" /> </span>
+								</span>
+							</span></li>
+							<li class="li"><span jwcid="bPackagePart@Part"> <span
+									class="label"><span class="e_required">必选基础包：</span>
+								</span> <span class="e_select"><span><span> <select
+												jwcid="@Select" name="BASE_PACKAGES" id="BASE_PACKAGES"
+												source="ognl:basePackages" textField="SERVICE_NAME"
+												valueField="SERVICE_ID" value="ognl:resInfo.SERVICE_ID"
+												onchange="" addDefault="true" desc="必选基础优惠包" nullable="no" />
+										</span>
+									</span>
+								</span> </span></li>
+							<li class="li"><span jwcid="oPackagePart@Part"> <span
+									class="label">可选优惠包：</span> <span class="e_select"><span><span>
+												<select jwcid="@Select" name="OPTION_PACKAGES"
+												id="OPTION_PACKAGES" source="ognl:optionPackages"
+												textField="SERVICE_NAME" valueField="SERVICE_ID"
+												value="ognl:resInfo.SERVICE_ID" onchange=""
+												addDefault="true" desc="可选优惠包" /> </span>
+									</span>
+								</span> </span></li>
+							<li class="li">
+								<div class="label">必选优惠包</div>
+								<div class="value" jwcid="pPackagePart@Part">
+									<select jwcid="@Select" name="PLATSVC_PACKAGES" id="PLATSVC_PACKAGES" source="ognl:platSvcPackages" textField="SERVICE_NAME" valueField="SERVICE_ID" value="" onchange="" addDefault="true" desc="必选优惠包" nullable="no" />
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<ul class="ul">
+						<li class="li" jwcid="topSetBoxSaleActivePart@Part" element="li">
+							<span class="label">魔百和营销活动：</span> <span class="e_select"><span><span>
+										<select jwcid="@Select" name="TOP_SET_BOX_SALE_ACTIVE_ID"
+										id="TOP_SET_BOX_SALE_ACTIVE_ID"
+										source="ognl:topSetBoxSaleActiveList" textField="PARA_CODE3"
+										valueField="PARA_CODE2" value="ognl:info.SALE_ACTIVE_ID"
+										desc="当前产品"
+										onchange="$.mergewideusercreate.changeTopSetBoxSaleActive();" />
+								</span>
+							</span>
+						</span> <input jwcid="@Hidden" name="TOP_SET_BOX_SALE_ACTIVE_FEE"
+							id="TOP_SET_BOX_SALE_ACTIVE_FEE"
+							value="ognl:info.TOP_SET_BOX_SALE_ACTIVE_FEE" />
+							<!--默认申领一个 -->
+							<input jwcid="@Hidden" name="TOP_SET_BOX_NUM" id="TOP_SET_BOX_NUM" value="1"/>
+							</li>
+
+						<li class="li"></li>
+
+						<li class="li col-3"><span class="label">魔百和营销活动详细描述：</span>
+							<span class="e_textarea"> <span class="e_textareaTop"><span></span>
+							</span> <span class="e_textareaContent"> <textarea
+										id="TOP_SET_BOX_SALE_ACTIVE_EXPLAIN"
+										name="TOP_SET_BOX_SALE_ACTIVE_EXPLAIN" jwcid="@TextArea"
+										style="height:30px;" value="ognl:info.SALE_ACTIVE_EXPLAIN"
+										desc="营销活动详细描述" disabled="true" rows="5" /> </span> <span
+								class="e_textareaBottom"><span></span>
+							</span> </span></li>
+						
+					</ul>
+					
+					<ul class="ul">
+						<li class="li" jwcid="topSetBoxSaleActivePart2@Part" element="li">
+							<span class="label">魔百和调测费活动：</span> <span class="e_select"><span><span>
+										<select jwcid="@Select" name="TOP_SET_BOX_SALE_ACTIVE_ID2"
+										id="TOP_SET_BOX_SALE_ACTIVE_ID2"
+										source="ognl:topSetBoxSaleActiveList2" textField="PARA_CODE3"
+										valueField="PARA_CODE2" value="ognl:info.SALE_ACTIVE_ID"
+										desc="当前产品"
+										onchange="$.mergewideusercreate.changeTopSetBoxSaleActive2();" />
+								</span>
+							</span>
+						</span> 
+						<input jwcid="@Hidden" name="TOP_SET_BOX_SALE_ACTIVE_FEE2" id="TOP_SET_BOX_SALE_ACTIVE_FEE2" value="ognl:info.TOP_SET_BOX_SALE_ACTIVE_FEE2"/>
+						<input jwcid="@Hidden" name="TOP_SET_BOX_DEPOSIT" id="TOP_SET_BOX_DEPOSIT" value="0"/>
+				
+						</li>
+
+						<li class="li"></li>
+
+						<li class="li col-3"><span class="label">魔百和调测费活动详细描述：</span>
+							<span class="e_textarea"> <span class="e_textareaTop"><span></span>
+							</span> <span class="e_textareaContent"> <textarea
+										id="TOP_SET_BOX_SALE_ACTIVE_EXPLAIN2"
+										name="TOP_SET_BOX_SALE_ACTIVE_EXPLAIN2" jwcid="@TextArea"
+										style="height:30px;" value="ognl:info.SALE_ACTIVE_EXPLAIN2"
+										desc="营销活动详细描述" disabled="true" rows="5" /> </span> <span
+								class="e_textareaBottom"><span></span>
+							</span> </span></li>
+						
+					</ul>
+					<!-- 	表单 结束-->
+				</div>
+				<!-- 刷新区域 结束-->
+			</div>
+
+			<div id="IMSCustInfoPart" style="display: none;">
+			<div jwcid="CustInfoFieldPart@csserv:CustInfoField" isRealName="true" blackTradeType="600" 
+			element="div" requiredField="PSPT_TYPE_CODE,PSPT_ID,CUST_NAME,PSPT_ADDR,BIRTHDAY,AGENT_PIC_ID"/>		
+			</div>
+
+			<!-- 区域 开始 -->
+			<div class="c_box" id="IMSDiv">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">IMS固话</div>
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-10 c_form-col-3"
+					jwcid="IMSPart@Part" style="display:none">
+					<ul class="ul">
+						<li class="li" jwcid="FixPhonePart@Part" id="FixPhonePart">
+							<span class="label"><span class="e_required">固话号码：</span></span>
+							<span class="e_elements" id="FIX_PHONE_CHECK">
+								<button id='CHECK_BTN' name="CHECK_BTN" class="e_button-center e_button-form" onclick="$.familywideusercreate.checkFixPhone();"  disabled="true"><i class="e_ico-check"></i><span>校验</span></button>
+									<span class="e_input e_input-left"><span>
+										<input jwcid="@TextField" name="FIX_NUMBER" id="FIX_NUMBER" value="ognl:info.FIX_NUMBER" datatype="numeric" maxLength="8"
+												desc="固话号码" disabled="true" nullable="no"/>
+									    <span type="hidden" jwcid="@TextField" name="OLD_FIX_NUMBER" id="OLD_FIX_NUMBER" value="ognl:info.OLD_FIX_NUMBER" desc="校验通过后的固话号码"/>
+												
+									</span></span>
+							</span>		
+					   </li> 
+						
+						
+						<li class="li"><span class="label"><span
+								class="e_required">IMS固话产品类型：</span> </span> <span class="e_select"><span><span>
+										<select jwcid="@Select" name="IMS_PRODUCT_TYPE_CODE"
+										id="IMS_PRODUCT_TYPE_CODE" source="ognl:imsProductTypeList"
+										textField="PRODUCT_TYPE_NAME" valueField="PRODUCT_TYPE_CODE"
+										value="ognl:Info.IMS_PRODUCT_TYPE_CODE" nullable="no"
+										onchange="$.familywideusercreate.changeIMSProductType();"
+										addDefault="true" desc="IMS固话产品类型" /> </span> </span> </span></li>
+						<li class="li"><span jwcid="IMSProductListPart@Part">
+								<span class="label"><span class="e_required">IMS固话产品：</span>
+							</span> <span class="e_select"><span><span> <select
+											jwcid="@Select" name="IMS_PRODUCT_ID" id="IMS_PRODUCT_ID"
+											source="ognl:imsProductList" textField="OFFER_NAME" nullable="no"
+											valueField="OFFER_CODE" value="ognl:Info.IMS_PRODUCT_ID" onchange="$.familywideusercreate.changeIMSProduct();"
+											addDefault="true" desc="IMS固话产品" /> </span> </span> </span> </span></li>
+						<li class="li" element="li"><span jwcid="IMSSaleActivePart@Part"><span class="label">固话营销活动：</span>
+							<span class="e_select"><span><span> <select
+										jwcid="@Select" name="IMS_SALE_ACTIVE_ID"
+										id="IMS_SALE_ACTIVE_ID"
+										source="ognl:imsSaleActiveList" textField="PARA_CODE3"
+										valueField="PARA_CODE5" value="ognl:info.IMS_SALE_ACTIVE_ID"
+										desc="当前产品" onchange="$.familywideusercreate.changeIMSSaleActive()" /> </span>
+							</span>
+						</span> </span>
+						<input jwcid="@Hidden" name="IMS_SALE_ACTIVE_FEE" id="IMS_SALE_ACTIVE_FEE" value="ognl:info.IMS_SALE_ACTIVE_FEE"/>
+						<input jwcid="@Hidden" name="IMS_SALE_ACTIVE_PRODUCT_ID" id="IMS_SALE_ACTIVE_PRODUCT_ID" value="ognl:info.IMS_SALE_ACTIVE_PRODUCT_ID"/>
+						
+						</li>
+						<li class="li"><span class="label">是否铁通迁移固话：</span>
+							<label><input type="checkbox"
+										class="e_checkbox" id="is_TT_TRANSFER"
+										onclick="setTTtransferValue()" />
+							<input jwcid="@Hidden" name="TT_TRANSFER" id="TT_TRANSFER" value="0" desc="铁通迁移固话标识"/><!-- 铁通迁移固话标识 --></label>
+							
+						</li>
+					</ul>
+				</div>
+				<!-- 表单结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+			<!-- 区域 开始 -->
+			<div class="c_box" id="HeMuDiv">
+				<!-- 标题 开始 -->
+				<div class="c_title">
+					<div class="text">和目业务</div>
+
+				</div>
+				<!-- 标题 结束 -->
+				<!-- 表单 开始 -->
+				<div class="c_form c_form-label-10 c_form-col-3"
+					jwcid="HeMuPart@Part" style="display:none">
+					<ul class="ul">
+						
+						<li class="li" jwcid="HeMuSaleActivePart@Part" element="li"><span class="label"><span
+								class="e_required">和目营销活动：</span></span>
+							<span class="e_select"><span><span> <select
+										jwcid="@Select" name="HEMU_SALE_ACTIVE_ID"
+										id="HEMU_SALE_ACTIVE_ID"
+										source="ognl:heMuSaleActiveList" textField="PARA_CODE3"
+										valueField="PARA_CODE5" value="ognl:info.SALE_ACTIVE_ID"
+										desc="和目营销活动" nullable="no"
+										onchange="$.familywideusercreate.changeHeMuSaleActive();" />
+								</span>
+							</span></span>
+							<input jwcid="@Hidden" name="HEMU_SALE_ACTIVE_PRODUCT_ID" id="HEMU_SALE_ACTIVE_PRODUCT_ID" value="" />
+							</li>
+							<li class="li"><span class="label"><span
+								class="e_required">和目终端编号：</span>
+						</span> <span class="e_elements" id="HEMU_RES_ID_INPUT">
+								<button type="button" class="e_button-right"
+									onclick="$.familywideusercreate.checkHeMuTerminal()">
+									<i class="e_ico-check"></i><span>校验</span>
+								</button> <span class="e_input e_input-left"><span> <input
+										jwcid="@TextField" name="HEMU_RES_ID" id="HEMU_RES_ID"
+										value="ognl:info.HEMU_RES_ID" desc="和目终端编号" nullable="no" /> </span>
+							</span> </span></li>
+						 <input jwcid="@Hidden" name="OLD_HEMU_RES_ID" id="OLD_HEMU_RES_ID" value="ognl:info.OLD_HEMU_RES_ID" />
+						 <input jwcid="@Hidden" name="HEMU_SALE_ACTIVE_FEE" id="HEMU_SALE_ACTIVE_FEE" value="ognl:info.HEMU_SALE_ACTIVE_FEE" />
+					</ul>
+				</div>
+				<!-- 表单结束 -->
+			</div>
+			<!-- 区域 结束 -->
+
+
+			<div jwcid="hiddenPart@Part">
+				<input jwcid="@Hidden" name="NEW_PRODUCT_START_DATE"
+					id="NEW_PRODUCT_START_DATE" value="" /> <input jwcid="@Hidden"
+					name="IS_BUSINESS_WIDE" id="IS_BUSINESS_WIDE" value="" />
+					
+					<input jwcid="@Hidden" name="IS_FAMILY_WIDE_USER_CREATE"
+					id="IS_FAMILY_WIDE_USER_CREATE" value="Y" />
+					
+					<input jwcid="@Hidden" name="BEAUTIFUAL_TAG" id="BEAUTIFUAL_TAG" value="" desc="BEAUTIFUAL_TAG"/>
+					<input jwcid="@Hidden" name="DEVICE_ID_HIGHT" id="DEVICE_ID_HIGHT" value="0"/>
+					<input jwcid="@Hidden" name="RAT_HIGHT" id="RAT_HIGHT" value="0"/>
+			</div>
+			<input jwcid="@Hidden" name="checkGlobalMorePsptIdFlag" value="true" desc="是否进行全国1证5号校验"/>
+
+			<div jwcid="SubmitPart@csserv:CSSubmit"
+				beforeAction="$.familywideusercreate.onSubmit()" isReset="true"
+				area="AuthPart,CustInfoFieldPart,WideProductType,productType,widePart,modemPart,saleActivePart,topSetBoxInfoPart,saleActivePartAttr,IMSPart,HeMuPart,PackagePart"
+				element="div" />
+			<!-- 提交 结束 -->
+		</div>
+	</div>
+
+
+
+</body>
+</html>

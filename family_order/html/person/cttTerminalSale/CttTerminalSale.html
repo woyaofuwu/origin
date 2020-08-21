@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>铁通终端销售</title>
+<script jwcid="@Script" src="person/cttTerminalSale/scripts/cttTerminalSale.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 认证 开始 -->
+		<div jwcid="AuthPart@csserv:Auth" tradeTypeCode="9115" element="div" tradeAction="checkUser(data)"></div>
+		<!-- 认证 结束 -->
+	</div>
+
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">用户信息</div>
+			<div class="fn">
+				<a href="#nogo" class="e_button"
+					onclick="displaySwitch(this,'UCAViewPart')"><i
+					class="e_ico-unfold"></i><span>显示客户信息</span>
+				</a>
+			</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 参数列表 开始 -->
+		<div class="c_form c_form-col-4 c_form-text">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">当前品牌：</span>
+					<span class="text" id="USER_BRAND_NAME"></span>
+				</li>
+				<li class="li">
+					<span class="label">当前产品：</span>
+					<span class="text" id="USER_PRODUCT_NAME"></span>
+				</li>
+			</ul>
+		</div>
+		<div class="c_form c_form-col-4 c_form-text" jwcid="UCAViewPart@Part" style="display:none">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">客户名称：</span>
+					<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" value="ognl:custInfoView.CUST_NAME"
+							desc="客户名称"/>
+				</li>
+				<li class="li">
+					<span class="label">客户性别：</span>
+					<span class="text" jwcid="@Insert" name="SEX" id="SEX"  
+							value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('SEX',custInfoView.SEX)" desc="客户性别"/>
+				</li>
+				<li class="li">
+					<span class="label">证件类型：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_TYPE_CODE" id="PSPT_TYPE_CODE"
+					        value="ognl:@com.ailk.biz.util.StaticUtil@getStaticValue('TD_S_PASSPORTTYPE',custInfoView.PSPT_TYPE_CODE)"
+							desc="证件类型" />
+				</li>
+				<li class="li">
+					<span class="label">证件号码：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" value="ognl:custInfoView.PSPT_ID" 
+							desc="证件号码"/>
+				</li>
+				<li class="li">
+					<span class="label">证件有效期：</span>
+					<span class="text" jwcid="@Insert" name="PSPT_END_DATE" id ="PSPT_END_DATE" 
+							value="ognl:custInfoView.PSPT_END_DATE==null ? '' : getPage().formatDate('yyyy-MM-dd', custInfoView.PSPT_END_DATE)" 
+							desc="证件有效期"/>
+				</li>
+			</ul>
+		</div>
+		<!-- 参数列表 结束 -->
+	</div>
+	
+	<!-- 区域 开始 -->
+	<div class="c_box">
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">销售的终端信息</div>
+		</div>
+		<!-- 标题 结束 -->
+		<!-- 参数列表 开始 -->
+		
+		<div class="c_form c_form-col-2 c_form-label-6" jwcid="terminalInfoArea@Part">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">终端类型：</span>
+		            <span class="e_input"><span>
+		            <input jwcid="@TextField" name="TERMINAL_TYPE_NAME" id="TERMINAL_TYPE_NAME"
+		            			value="ognl:condition.TERMINAL_TYPE_NAME"
+								desc="终端类型" nullable="no"
+								disabled="true"
+	                			/>
+	                <input jwcid="@Hidden" id="TERMINAL_TYPE" name="TERMINAL_TYPE" 
+	                				value="ognl:condition.TERMINAL_TYPE" desc="终端类型"/>			
+		            </span></span>
+				</li>
+				
+				<li class="li">
+					<span class="label">终端型号：</span>
+		            <span class="e_input"><span><!-- ognl:info.SALE_STAFF_ID -->
+		            <input jwcid="@TextField" name="TERMINAL_CODE_NAME" id="TERMINAL_CODE_NAME"
+		            			value="ognl:condition.TERMINAL_CODE_NAME" nullable="no"
+								desc="终端型号"
+                    			disabled="true"
+	                			/>
+	                <input jwcid="@Hidden" id="TERMINAL_CODE" name="TERMINAL_CODE" 
+	                				value="ognl:condition.TERMINAL_CODE" desc="终端型号"/>	
+		            </span></span>
+				</li>
+				<li class="li">
+					<span class="label">终端单价：</span>
+		            <span class="e_input"><span><!-- ognl:info.NEW_IMEI -->
+		            <input jwcid="@TextField" name="TERMINAL_PRICE" id="TERMINAL_PRICE"
+		            			value="ognl:condition.TERMINAL_PRICE"
+                    			enterAction="saleactive.queryPackages()"
+                    			datatype="numeric" nullable="no"
+								desc="终端单价"
+                    			disabled="true"
+	                			/>
+		            </span></span>
+				</li>
+				<li class="li">
+					<span class="label">数量：</span>
+					<span class="e_input">
+						<span>
+							 <input jwcid="@TextField" name="TERMINAL_NUMBER" id="TERMINAL_NUMBER"
+		            			value="ognl:condition.TERMINAL_NUMBER"
+								desc="数量" nullable="no"
+								datatype="numeric"
+								onkeyup="calculatotalPrice();"
+								enterAction="calculatotalPrice();"
+	                			/>
+						</span>
+					</span>
+				</li>
+				
+	            <li class="li">
+					<span class="label">总价：</span>
+		            <span class="e_input"><span>
+		            <input jwcid="@TextField" name="TERMINAL_TOTAL_PRICE" id="TERMINAL_TOTAL_PRICE"
+		            			value="ognl:condition.TERMINAL_TOTAL_PRICE"
+								desc="总价" nullable="no"
+								datatype="numeric"
+                    			disabled="true"
+	                			/>
+		            </span></span>
+				</li>
+			</ul>
+			
+			<div class="submit">
+				<button jwcid="@Any" name="QUERY_BTN" id="QUERY_BTN"
+					class="e_button-form"  onclick="return qryTerminal();">
+					<span>查询终端</span>
+				</button>
+			</div>
+		</div>
+		<!-- 参数列表 开始 -->
+    </div>
+	
+	<!-- 分栏 结束 -->
+	<div class="c_box" >
+		<!-- 标题 开始 -->
+		<div class="c_title">
+			<div class="text">提交信息</div>
+		</div>
+		<div jwcid="MultiSNOneCardPart4@Part">
+			<div class="c_form c_form-col-1">
+				<ul class="ul">
+					<li class="li">
+						<span class="label">备注：</span>
+						<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" id="REMARK" name="REMARK" value="ognl:condition.REMARK"  desc="备注" class="e_input"/>
+						</span></span>
+					</li>
+				</ul>
+			</div>	
+		</div>
+			
+		<div jwcid="SubmitPart@csserv:CSSubmit" area="AuthPart,terminalInfoArea,MultiSNOneCardPart4" beforeAction="checkSubmitBefore();" isReset="true" element="div"/>
+	</div>
+
+</body>
+</html>

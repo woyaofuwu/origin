@@ -1,0 +1,7 @@
+SELECT inst_id,partition_id,to_char(user_id) user_id,service_id,main_tag,state_code,to_char(start_date,'yyyy-mm-dd hh24:mi:ss') start_date,to_char(end_date,'yyyy-mm-dd hh24:mi:ss') end_date
+  FROM tf_f_user_svcstate
+ WHERE partition_id=MOD(:USER_ID,10000)
+   AND user_id=TO_NUMBER(:USER_ID)
+   AND service_id=:SERVICE_ID
+   AND state_code=:STATE_CODE
+   AND sysdate BETWEEN start_date and end_date

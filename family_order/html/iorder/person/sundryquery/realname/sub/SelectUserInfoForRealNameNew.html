@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>选择用户信息</title>
+	<script jwcid="@Script" language="JavaScript" src="iorder/person/sundryquery/realname/scripts/SelectUserInfoForRealNameNew.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="hidePopup(this);">选择用户信息</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div class="l_query l_query-nofn l_query-submit">
+		<div class="l_queryResult">
+			<table jwcid="@Table" name="printTable" id="printTable" class="c_table c_table-lite c_table-min-3 c_table-hasGrid">
+				<thead>
+					<tr>
+						<th>选择</th>
+						<th>开户客户</th>
+						<th>用户ID</th>
+						<th>归属地州</th>
+						<th>归属业务区</th>
+						<th>状态标识</th>
+						<th>开户时间</th>
+						<th>注销时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+						element="tr" index="ognl:rowIndex">
+						<td><input type="radio" jwcid="@Any" name="userinfo"
+							value="ognl:info.USER_ID" />
+						</td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME"
+							raw="false" />
+						</td>
+						<td><span jwcid="@Insert" value="ognl:info.USER_ID"
+							raw="false" />
+						</td>
+						<td><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.EPARCHY_CODE)"
+							raw="false" />
+						</td>
+						<td><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('TD_M_AREA', 'AREA_CODE', 'AREA_NAME', info.CITY_CODE)"
+							raw="false" />
+						</td>
+						<td><span jwcid="@Insert"
+							value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'USER_REMOVETAG',info.REMOVE_TAG})"
+							raw="false" />
+						</td>
+						<td>
+							<div jwcid="@Conditional" condition='ognl:!"".equals(info.OPEN_DATE) && info.OPEN_DATE!=null'>
+								<span jwcid="@Insert"
+									value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.OPEN_DATE)"
+									raw="false" />
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"".equals(info.OPEN_DATE)'>
+								<span jwcid="@Insert" value="ognl:info.OPEN_DATE" raw="false" />
+							</div>
+						</td>
+						<td>
+							<div jwcid="@Conditional" condition='ognl:!"".equals(info.DESTROY_TIME) && info.DESTROY_TIME != null'>
+								<span jwcid="@Insert"
+									value="ognl:formatDate('yyyy-MM-dd HH:mm:ss', info.DESTROY_TIME)"
+									raw="false" />
+							</div>
+							<div jwcid="@Conditional" condition='ognl:"".equals(info.DESTROY_TIME)'>
+								<span jwcid="@Insert" value="ognl:info.DESTROY_TIME" raw="false" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="l_queryPage">
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div jwcid="@NavBar" name="navt" id="navt" cond="" part=""
+				listener="" pageSize="10" count="ognl:recordCount"></div>
+			<!-- 翻页 结束 -->
+		</div>
+        <div class="l_querySubmit">
+            <div class="c_submit c_submit-full">
+                <button class="e_button-navy e_button-r" id="cancelBtn"><i></i><span>取消</span></button>
+                <button class="e_button-blue e_button-r" id="submitBtn"><i></i><span>确定</span></button>
+            </div>
+        </div>
+	</div>
+</body>
+</html>

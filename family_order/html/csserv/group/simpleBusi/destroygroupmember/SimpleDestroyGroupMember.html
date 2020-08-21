@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head jwcid="@Head">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>集团产品成员退订</title>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/group/simpleBusi/destroygroupmember/SimpleDestroyGroupMember.js"></script>
+		<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/group/grprule/grprule.js"></script> 
+	</head>
+	<body jwcid="@Body">
+	
+	<span jwcid="@saleserv:PopupGrpSnList" infos="ognl:infos" hidden='ognl:hidden' busiType="DstMb" sucessJsMethod="popupGrpSnListAfterAction(data)" errorJsMethod="popupGrpSnListAfterErrAction();"/>
+	
+	<div class="m_wrapper"><div class="m_wrapper2">
+	<div id="destroyMebPart">	 
+		
+		<!-- 区域 开始 -->
+		<div class="c_box">
+		
+		  	<!-- 成员订购的集团信息列表  -->
+			<span jwcid="cond_SERIAL_NUMBER@saleserv:SelectMebOrderInfoAuth" cacheSn="true" relaCode="ognl:condition.RELA_CODE" limitType="ognl:condition.LIMIT_TYPE" limitProducts="ognl:condition.LIMIT_PRODUCTS" successJsMethod="selectMemberInfoAfterAction(data)" userCheckErrAction="userCheckErrAction(state,data);" errorJsMethod="selectMemberInfoErrAfterAction()"/>
+			
+			<!-- 集团客户信息  -->
+			<div jwcid="GroupInfoPart@Part">
+			
+				<span jwcid="@saleserv:GroupCustInfo" groupUserInfo="ognl:groupInfo" titleLev="2"/>
+				<span jwcid="@saleserv:GroupUserInfo" groupUserInfo="ognl:userInfo" titleLev="2"/>
+				<div style="display:none">
+					<span jwcid="@saleserv:ProductExplain" productInfo="ognl:productInfo"/>
+				</div>
+			</div>
+			 
+			<!-- 成员信息 -->
+			<div jwcid="PersonInfoPart@Part">
+				<span jwcid="@saleserv:MemberCustInfo" custInfo="ognl:info" titleLev="2"/>
+				<span jwcid="@saleserv:MemberUserInfo" userInfo="ognl:mebUseInfo" titleLev="2"/>
+			</div>
+	        <span jwcid="@saleserv:GroupBookingInfo" busiType="DstMb"/>
+		</div>
+		<!-- 区域 结束 -->
+		
+		<div jwcid="PRODUCTELEMNET_VIEW@saleserv:ProductElementView" initHead="true" model="ognl:useElementinfos" headText="用户元素信息"  showHeads="产品名,类型,编码,名称" showFields="PRODUCT_NAME,ELEMENT_TYPE_NAME,ELEMENT_ID,ELEMENT_NAME"/>
+		<div class="c_box">
+			
+			<span jwcid="@saleserv:ExitGrpMemberBox"/>
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-2 c_form-label-5">
+				<ul class="ul">
+					<li class="li col-2">
+						<span class="label"><span>备注：</span></span>
+						<span class="e_textarea">
+							<span class="e_textareaTop"><span></span></span>
+							<span class="e_textareaContent">
+							<textarea
+								jwcid="@TextArea" 
+								name="parm_REMARK" 
+								id="parm_REMARK"
+								type="text"
+								value=""
+								desc="备注"
+								raw="true" style="height:36px;"></textarea>
+							</span>
+							<span class="e_textareaBottom"><span></span></span>
+						</span>
+					</li>
+					
+				</ul>
+			</div>
+			<!-- 表单 结束 -->
+		
+		</div>
+		
+		<div class="c_box" jwcid="@Conditional" condition='ognl:condition.MEB_FILE_SHOW != null && condition.MEB_FILE_SHOW == "true"'>
+			<div class="c_title">
+				<div class="text">附件信息</div>
+			</div>
+			<div class="c_form c_form-col-3 c_form-label-6">
+				<ul class="ul">
+					<li class="li col-3">				
+						<span class="label"><span>附件上传：</span></span>
+						<div jwcid="MebFilePart@Part">
+						<span class="e_elements">
+							<input jwcid="@Upload"
+									name="MEB_FILE_LIST"
+									id="MEB_FILE_LIST"
+									ftpSite="groupserv"
+									filePath="upload/mebattach"
+									fileSize="20"
+									fileTypes="*.*"
+								/>
+							</span>
+					    </div>
+					</li>
+				</ul>
+			</div>
+		</div>
+        <!--
+        <div class="c_box" id="voucheInfoPart">
+            <div class="c_title">
+				<div class="text">凭证信息</div>
+			</div>
+            <div class="c_form c_form-col-3 c_form-label-6">
+				<ul class="ul">
+					<li class="li col-3">				
+						<span class="label"><span class="e_required">凭证上传：</span></span>
+						<div jwcid="VoucherFilePart@Part">
+							<span class="e_elements">
+							<input jwcid="@Upload"
+									name="MEB_VOUCHER_FILE_LIST"
+									id="MEB_VOUCHER_FILE_LIST"
+									ftpSite="groupserv"
+									filePath="upload/mebattach"
+									fileSize="20"
+									fileTypes="*.*"
+		                    		desc="凭证信息" 
+		                    		nullable="no"
+								/>
+							</span>
+					    </div>
+					</li>
+		            <li class="li">
+		                <span class="label"><span class="e_required">稽核人员：</span></span> 
+		                <span class="e_elements">
+							<button type="button" class="e_button-right"
+								onclick="$.popupPageExternal('csserv.group.common.query.QueryAuditStaff','initial',null,'稽核人员查询',720,480,'')">
+								<i class="e_ico-check"></i><span></span>
+							</button> 
+		                    <span class="e_input e_input-left"><span> <input
+									type="text" jwcid="@TextField"
+									name="AUDIT_STAFF_ID" id="AUDIT_STAFF_ID"
+									value=""
+									text="" nullable="no"
+									readonly="true" />
+							</span></span>
+						</span>
+		            </li>
+				</ul>
+			</div>
+        </div>
+         -->
+		
+		<input jwcid="@Any" name="MEB_FILE_SHOW" id="MEB_FILE_SHOW" value="ognl:condition.MEB_FILE_SHOW" style="display:none"/>
+		<input type="hidden" name="BUSI_TYPE" id="BUSI_TYPE" value="DstMb"/>
+			
+    	<div jwcid="SubmitPart@saleserv:CSSubmit" area="destroyMebPart" callBean="com.asiainfo.veris.crm.order.web.frame.csview.group.destroygroupmember.DestroyGrpMebFlowMainHttpHandler" listener="submit" isGrp="true" beforeAction="onSubmitBaseTradeCheck()"  disabledBtn="false" element="div"/>
+	
+	</div>
+		<!-- 产品详情 结束 -->
+	</div></div>
+
+	
+	</body>
+</html>

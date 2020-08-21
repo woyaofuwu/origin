@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手机维修电子优惠券录入</title>
+<script jwcid="@Script" src="person/coupons/scripts/CreateCouponsUser.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">优惠券录入</div>
+	</div>
+	<!-- 标题 结束 -->
+	<form jwcid="@Form" id="Form0">
+	<div jwcid="AddListPart@Part" class="c_form c_form-col-3 c_form-label-6" element="div">
+		<ul class="ul">  
+			
+			<li class="li">
+				<span class="label"><span class="e_required">赠予手机号：</span></span>
+				<span class="e_input" jwcid="mbphonePart@Part"><span>
+					<input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER"  value="" desc="手机号码 " datatype="numeric" minsize="11" nullable="no" onchange="checkSn();"/>
+				</span></span>			
+			</li> 
+			<li class="li">
+				<span class="label"><span class="e_required">优惠券金额：</span></span>
+				<span class="e_input"><span>
+					<input jwcid="@TextField" name="cond_TICKET_VALUE" id="cond_TICKET_VALUE" value="" desc="优惠券金额"  datatype="numeric" nullable="no"/>
+					<input jwcid="@TextField" type="hidden" name="TTICKET_VALUE" id="TTICKET_VALUE" value="ognl:info.TTICKET_VALUE" desc="优惠券金额"  />
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">审批工单号：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_ORDER_ID" id="cond_ORDER_ID" value="" 
+							source="ognl:auditInfos" addDefault="false" 
+							 textField="AUDIT_ORDER_ID" valueField="BALANCE" onchange="showBalance(this);clearlist();"
+                            disabled="false" nullable="no" desc="审批工单号" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">审批余额：</span>
+				<span class="e_input"><span>
+				<input jwcid="@TextField" 
+					id="cond_BALANCE" name="cond_BALANCE"
+					disabled="true"
+					value="ognl:info.BALANCE"/>
+				</span></span>
+				<input jwcid="@Hidden" name="cond_SUM_VALUE" id="cond_SUM_VALUE" value="ognl:info.SUM_VALUE"/>
+				<input jwcid="@Hidden" name="cond_ROLLBACK_SUM_VALUE" id="cond_ROLLBACK_SUM_VALUE" value="ognl:info.SUM_VALUE"/>
+			</li>
+			<li class="li">
+				<button type="button" class="e_button-right"  id="addTicketBtn" onclick="addTicketList()"><i class="e_ico-add"></i><span>暂存</span></button>
+				<button type="reset" class="e_button-left"  id="resetBtn"><i class="e_ico-reset"></i><span>重置</span></button>			
+			</li>
+		</ul>
+	</div>
+	<div class="c_title l_mt">
+		<div class="text">优惠券赠送列表</div>
+		<div class="fn">
+			<a href="#nogo" class="e_button" id="clearListBtn" onclick="clearlist();"><i class="e_ico-delete"></i><span>清空列表</span></a>
+		</div>
+	</div>
+	<div class="c_scroll c_scroll-x c_scroll-table-11 ">
+	<div class="c_table c_table-row-10">
+		<table>
+			<thead id="data">
+				<tr>
+					<th>序号</th>
+					<th>优惠券金额</th>
+					<th>赠予手机号码</th>
+					<th>审批工单号</th>
+					<th>审批余额</th>
+				</tr>
+			</thead>
+			<tbody id="ListPart"></tbody>
+		</table>
+	</div>
+	</div>
+	</form>
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitBeforeCheck()" disabledBtn="false" area="AddListPart" element="div"/>
+</div>	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-1" jwcid="paramsPart@Part">
+		<ul class="ul">
+			<li class="li">		
+				<input jwcid="@TextField" type="hidden" id="cond_AUDIT_ORDER_ID" name="cond_AUDIT_ORDER_ID" value="ognl:info.AUDIT_ORDER_ID"/>				
+			</li>
+		</ul>
+	</div>
+	<!-- 表单 结束 -->
+</div></div>
+</body>
+</html>

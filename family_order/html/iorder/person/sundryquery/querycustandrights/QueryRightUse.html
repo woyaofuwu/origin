@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>权益使用情况查询</title>
+<script language="JavaScript"
+	src="iorder/person/sundryquery/querycustandrights/script/queryrightuse.js"></script>
+<script jwcid="@Script"
+	src="scripts/iorder/icsserv/component/person/eform/CommonEForm.js"></script>
+</head>
+<body jwcid="@Body">
+	<!-- 标题栏 开始 -->
+	<div class="c_header e_show-phone">
+		<div class="back" ontap="closeNav();">权益使用情况查询</div>
+		<div class="fn">
+			<span class="e_ico-search" ontap="showPopup('UI-popup','UI-search')"></span>
+			<span class="e_ico-menu" id="fnButton" ontap=""></span>
+		</div>
+	</div>
+	<!-- 标题栏 结束 -->
+
+	<div jwcid="QueryPart@Part" class="l_query l_query-nopage">
+		<div jwcid="psptPart@Part" class="l_queryFn">
+			<div class="c_fn">
+				<!--  <div class="right">
+					<span class="label">手机号码：</span> 
+					<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" desc="手机号码" value = "" enterAction="return queryRightDeal();" nullable="no" />
+					</span>
+					<button class="e_button-blue" name="QUERY_BTN" id="QUERY_BTN"
+						onclick="return queryRightUse();">
+						<i class="e_ico-search"></i><span>查询</span>
+					</button>
+				</div>-->
+				<!-- 认证 开始 -->
+				<div jwcid="AuthPart@icsserv:Auth" tradeTypeCode="712"
+					tradeAction="refreshPartAtferAuth(data)" element="div"></div>
+				<!-- 认证 结束 -->
+			</div>
+		</div>
+
+
+
+		<div jwcid="QueryListPart@Part" class="l_queryResult">
+		
+			<!-- 新增区域开始 -->
+			<div class="c_title">
+					<div class="text">权益信息</div>
+					<div class="fn">
+					</div>
+					</div>
+
+	
+			<div class="c_list c_list-s c_list-col-2 c_list-phone-col-1 c_list-line c_list-border">
+				<ul>
+					<li class="link required">
+						<div class="label">权益标识</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="custInfo_CT_NAME"
+								name="custInfo_CUST_NAME" value="ognl:info.REL_ID" maxsize="48"
+								maxLength="48" disabled="true" nullable="yes" readonly="yes"
+								desc="权益标识" />
+						</div></li>
+					<li class="link required">
+						<div class="label">可变更次数</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="custInfo_CUST_NAME"
+								name="custInfo_CUST_NAME" value="ognl:info.REMAIN_CHANGE_NUM" maxsize="48"
+								maxLength="48" disabled="true" nullable="no" readonly="yes"
+								desc="可变更次数" />
+						</div></li>
+					<li class="link required">
+						<div class="label">总使用次数</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="custInfo_T_NAME"
+								name="custInfo_CUST_NAME" value="ognl:info.RIGHT_OBJ" maxsize="48"
+								maxLength="48" disabled="true" nullable="no" readonly="yes"
+								desc="可使用次数" />
+						</div></li>
+					<li class="link required">
+						<div class="label">剩余使用次数</div>
+						<div class="value">
+							<input type="text" jwcid="@TextField" id="custInfoT_NAME"
+								name="custInfo_CUST_NAME" value="ognl:info.REMAIN_USE_NUM" maxsize="48"
+								maxLength="48" disabled="true" nullable="no" readonly="yes"
+								desc="剩余使用次数" />
+						</div></li>
+				</ul>
+			</div>
+			
+<!-- 结束 -->
+<div class="c_space"></div>
+			<table jwcid="@Table" name="UserPsptTable">
+				<thead>
+					<tr>
+						<th>手机号码</th>
+						<th>权益名称</th>
+						<th>权益编码</th>
+						<th>权益标识</th>
+						<th>权益开始使用时间</th>
+						<th>权益结束使用时间</th>
+						<th>权益使用次数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info"
+						element="tr" index="ognl:rowIndex"
+						class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td data-title="手机号码"><span jwcid="@Insert"
+							value="ognl:info.SERIAL_NUMBER" />
+						</td>
+						<td data-title="权益名称"><span jwcid="@Insert"
+							value="ognl:info.PARAM_NAME" />
+						</td>
+						<td data-title="权益编码"><span jwcid="@Insert"
+							value="ognl:info.PARAM_CODE" />
+						</td>
+						<td data-title="权益标识"><span jwcid="@Insert"
+							value="ognl:info.RSRV_STR3" />
+						</td>
+						<td data-title="权益开始时间"><span jwcid="@Insert"
+							value="ognl:info.START_DATE" />
+						</td>
+						<td data-title="权益结束时间"><span jwcid="@Insert"
+							value="ognl:info.RSRV_DATA1" />
+						</td>
+						<td data-title="权益使用次数"><span jwcid="@Insert"
+							value="ognl:info.RSRV_VALUE" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- 翻页（替换为页面组件） 开始 -->
+			<div jwcid="@NavBar" name="navt" id="navt" cond="psptPart"
+				part="QueryListPart" listener="queryRightUseInfo" pageSize="10"
+				count="ognl:count"></div> 
+			<!-- 翻页 结束 -->
+		</div>
+	</div>
+
+
+</body>
+</html>

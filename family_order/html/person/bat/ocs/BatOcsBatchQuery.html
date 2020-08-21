@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../../base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="scripts/person/bat/ocs/ocsbatchquery.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/offer/offerdefine.js"></script>
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">OCS导入处理结果查询</div>
+		<div class="fn">
+				<span jwcid="@Export"
+				name="exportFile" 
+				serviceName="2322" 
+				config="export/bat/BatOcsQuery.xml"
+				fileName="OCS导入处理结果信息"
+				cond=""
+				ftpSite="personserv"
+				beforeAction="exportBeforeAction"
+				action=""
+				fileType="{'.xls':'.xls'}"
+				></span>
+		</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-2 c_form-label-5" jwcid="QueryCondPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">起始时间：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="START_DATE" id="START_DATE" maxName="END_DATE" value="ognl:info.START_DATE" format="yyyy-MM-dd" desc="起始时间" min="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.util.SysDateMgr@getSysTime()" nullable="no"/></span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">结束时间：</span></span>
+				<span class="e_input e_input-left"><span>
+				<input type="text" jwcid="@DateField" name="END_DATE" id="END_DATE" mixName="START_DATE" value="ognl:info.END_DATE" format="yyyy-MM-dd" desc="结束时间" min="ognl:@com.asiainfo.veris.crm.order.pub.frame.bcf.util.SysDateMgr@getSysTime()" nullable="no"/></span></span>
+			</li>
+		</ul>
+		<ul class="ul">
+			<li class="li">
+				<span class="label">批次号：</span>
+				<span class="e_input"><span>
+				<input name="BATCH_ID" id="BATCH_ID" jwcid="@TextField" type="text" value="ognl:info.BATCH_ID" nullable="no"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">用户号码：</span>
+				<span class="e_input"><span>
+				<input name="SERIAL_NUMBER" id="SERIAL_NUMBER" jwcid="@TextField" type="text" value="ognl:info.SERIAL_NUMBER" nullable="no"/>
+				</span></span>
+			</li>
+			<!-- 
+			<li class="li">
+				<span class="label"><span>OCS类型：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="BIZ_TYPE" id="BIZ_TYPE" 
+						source="ognl:pageutil.getStaticList('BIZ_TYPE')" 
+						value="DATA_ID" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" nullable="no"/>
+				</span></span></span>
+			</li>
+			 -->
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" type="button" onclick="queryOcsDealInfo();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 表格 开始 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<div class="c_scroll c_scroll-table-10"><div class="c_table">
+		<table jwcid="@Table" name="QueryListTable">
+			<thead>
+				<tr>
+					<th col="BATCH_ID">批次号</th>
+					<th col="DEAL_ID">处理标识</th>
+					<th col="SERIAL_NUMBER">用户号码</th>
+					<th col="WRITE_TYPE">签约类型</th>
+					<th col="ENABLE_TAG">生效方式</th>
+					<th col="START_DATE">生效时间</th>
+					<th col="END_DATE">失效时间</th>
+					<th col="DEAL_STATE">处理标记</th>
+					<th col="DEAL_TIME">处理时间</th>
+					<th col="ACCEPT_DATE">受理时间</th>
+					<th col="STAFF_ID">受理员工</th>
+					<th col="DEPART_ID">受理部门</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:taskInfos" value="ognl:taskInfo" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:taskInfo.BATCH_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.DEAL_ID" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.SERIAL_NUMBER" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('OCSBATDEAL_WRITETYPE', taskInfo.WRITE_TYPE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('OCSBATDEAL_ENABLETAG', taskInfo.ENABLE_TAG)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.START_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.END_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('OCSBATDEAL_DEALSTATE', taskInfo.DEAL_STATE)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.DEAL_TIME" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:taskInfo.ACCEPT_DATE" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_STAFF', 'STAFF_ID', 'STAFF_NAME', taskInfo.ACCEPT_STAFF_ID)" raw="true"/></td>
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_M_DEPART', 'DEPART_ID', 'DEPART_NAME', taskInfo.ACCEPT_DEPART_ID)" raw="true"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div></div>
+	<!-- 表格 结束 -->
+	<!-- 翻页（替换为页面组件） 开始 -->
+	<div jwcid="@NavBar" name="taskNav" id="taskNav" cond="QueryCondPart" part="QueryListPart" listener="queryOcsDealInfo" pageSize="10" count="ognl:batchTaskListCount"></div>
+	</div>
+	<!-- 翻页 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

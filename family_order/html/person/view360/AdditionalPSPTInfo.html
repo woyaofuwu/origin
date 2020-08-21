@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--$Id: AccountInfo.html,v 1.7 2013/04/22 08:16:44 chenyt3 Exp $-->
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>客户资料综合查询 - 账户信息</title>
+<script jwcid="@Script" src="person/view360/scripts/checkselect.js"></script>
+<script jwcid="@Script" src="person/view360/scripts/page.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+<div class="c_box">
+	<!-- 隐藏域 开始 -->
+	<div jwcid="QueryCondPart@Part"  style="display:none">
+		<input jwcid="@TextField" name="SERIAL_NUMBER" id="SERIAL_NUMBER" value="ognl:cond.SERIAL_NUMBER"/>
+		<input jwcid="@TextField" name="USER_ID" id="USER_ID" value="ognl:cond.USER_ID"/>
+		<input jwcid="@TextField" name="EPARCHY_CODE" id="EPARCHY_CODE" value="ognl:cond.EPARCHY_CODE"/>
+	</div>
+	<!-- 隐藏域 结束 -->
+	<div jwcid="QueryListPart@Part" element="div">
+	<!-- 表格 开始 -->
+	<div class="c_scroll c_scroll-x"><div class="c_table c_table-row-10">
+		<table>
+			<thead>
+				<tr>
+					<th>客户类别</th>
+					<th>客户姓名</th>
+					<th>证件类型</th>
+					<th>证件号码</th>
+					<th>证件地址</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_COMMPARA', new java.lang.String[]{'SUBSYS_CODE','PARAM_ATTR','PARA_CODE1','PARAM_CODE'}, 'PARAM_NAME',new java.lang.String[]{'CSM','2017','0106',info.USER_TYPE})" raw="false"/></td>  
+					<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>  		
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_PASSPORTTYPE',info.PSPT_TYPE_CODE)" raw="false"/></td>
+					<td><span jwcid="@Insert" value="ognl:info.PSPT_ID" raw="false"/></td>   
+	                <td><span jwcid="@Insert" value="ognl:info.PSPT_ADDR" raw="false"/></td>  
+	              	</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 表格 结束 -->
+	<!-- 分页 开始 -->
+	<div jwcid="@NavBar" name="AcctInfoNav" id="AcctInfoNav" cond="QueryCondPart" part="QueryListPart" listener="queryInfo" pageSize="10" count="ognl:infosCount"></div>
+	<!-- 分页 结束 -->
+	</div>
+</div>
+<!-- 区域 结束 -->
+
+</div>
+</div>
+</body>
+<script language="JavaScript" type="text/javascript">
+	$(document).ready(function(){
+		onQueryAccountInfo();
+	});
+</script>
+</html>

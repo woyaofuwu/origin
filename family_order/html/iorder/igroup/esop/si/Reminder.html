@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html size="s" xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>SI催单[阶段通知]</title>
+	<script jwcid="@Script" type="text/javascript" src="scripts/iorder/icsserv/component/businesstip/businesstip.js"></script>
+	<script jwcid="@Script" type="text/javascript" src="iorder/igroup/esop/si/script/reminderforsi.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="l_query">
+	<div class="l_queryFn">
+		<!-- 功能 开始 -->
+		<div class="c_fn">
+			<div class="right">
+				<div class="e_mix" onclick="showPopup('popup','qryConditionPopupItem', true);">
+					<input type="text" />
+					<button class="e_button-blue" type="button"><span class="e_ico-search"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- 功能 结束 -->
+	</div>
+	<div class="l_queryResult" jwcid="qryPart@Part">
+		<!-- 表格 开始 -->
+		<div class="c_table">
+			<table jwcid="@Table" id="quickOpenLineAddrTable" name="quickOpenLineAddrTable">
+				<thead>
+					<tr>
+						<th col="TRANSFER_PARAM">业务类型</th>
+						<th col="PRODUCT_NAME">产品名称</th>
+						<th col="IBSYSID">业务流水号</th>
+						<th col="SERIALNO">SI工单号</th>
+						<th col="GROUP_ID">集团客户编号</th>
+						<th col="CUST_NAME">集团客户名称</th>
+						<th col="CUST_CLASS_ID">集团客户级别</th>
+						<th col="CUST_LINK_NAME">集团客户联系人</th>
+						<th col="CUST_LINK_PHONE">集团客户联系电话</th>
+						<th col="CUST_ADDR">集团客户地址</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+						<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('TD_S_STATIC',new java.lang.String[]{'TYPE_ID','DATA_ID'},'DATA_NAME',new java.lang.String[]{'EOP_SUBSCRIBE_TYPE',info.SHEETTYPE})" raw="false"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+						<td><a jwcid="@Redirect" ibsysid="ognl:info.IBSYSID" busiformId="ognl:info.BUSIFORM_ID" subIbsysid = "ognl:info.SUB_IBSYSID" recordNum="ognl:info.RECORD_NUM" serialNo="ognl:info.SERIALNO"
+						onclick="openNav('SI催单[阶段通知]','igroup.si.ProcessReminder','initPage','&IBSYSID='+$(this).attr('ibsysid') + '&BUSIFORM_ID='+$(this).attr('busiformId')+ '&SUB_IBSYSID='+$(this).attr('subIbsysid')+ '&RECORD_NUM='+$(this).attr('recordNum')+ '&SERIALNO='+$(this).attr('serialNo'))">
+						<span jwcid="@Insert" value="ognl:info.IBSYSID" raw="true"/></a></td>
+						<td><span jwcid="@Insert" value="ognl:info.SERIALNO" raw="true"/></td>
+						<td onclick="queryGroupInfos(this);"><span jwcid="@Insert" value="ognl:info.GROUP_ID" name="G_GROUP_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_CLASS_ID" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_LINK_NAME" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_LINK_PHONE" raw="true"/></td>
+						<td><span jwcid="@Insert" value="ognl:info.CUST_ADDR" raw="true"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div jwcid="@Popup" name="popup">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryConditionPopupItem">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">查询</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+				<div jwcid="CondPart@Part" class="l_padding">
+					<div class="c_list c_list-form">
+						<ul>
+							<li class="link required">
+								<div class="label">业务流水号：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_IBSYSID" value="ognl:condition.IBSYSID" nullable="no" desc="业务流水号" /></div>
+							</li>
+							<li class="link">
+								<div class="label">业务类型：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_BUSI_TYPE" value="ognl:condition.BUSI_TYPE" desc="业务类型" /></div>
+							</li>
+							<li class="link">
+								<div class="label">产品选择：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_PRODUCT_ID" value="ognl:condition.cond_PRODUCT_ID" desc="产品选择" /></div>
+							</li>
+							<li class="link">
+								<div class="label">集团客户编号：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_G_GROUP_ID" value="ognl:condition.GROUP_ID" desc="集团客户编号" /></div>
+							</li>
+							<li class="link">
+								<div class="label">集团客户名称：</div>
+								<div class="value"><input jwcid="@TextField" name="cond_G_CUST_NAME" value="ognl:condition.CUST_NAME" desc="集团客户名称" /></div>
+							</li>
+							<li class="link">
+								<div class="label">开始时间：</div>
+								<div class="value"><input jwcid="@DateField" name="cond_BEGIN_DATE" value="ognl:condition.cond_BEGIN_DATE" format="yyyy-MM-dd HH:mm:ss" dropDown="true" desc="开始时间" /></div>
+							</li>
+							<li class="link">
+								<div class="label">结束时间：</div>
+								<div class="value"><input jwcid="@DateField" name="cond_END_DATE" value="ognl:condition.cond_END_DATE" format="yyyy-MM-dd HH:mm:ss" dropDown="true" desc="结束时间" /></div>
+							</li>
+						</ul>
+					</div>
+					
+					<div class="c_space"></div>
+					<!-- 提交 开始 -->
+					<div class="c_submit c_submit-full">
+						<button type="button" class="e_button-r e_button-l e_button-blue" ontap="queryInfos(this);">查询</button>
+					</div>
+					<!-- 提交 结束 -->
+					<div class="c_space"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div jwcid="@Popup" name="groupPopup" class="c_popup c_popup-full">
+	<div class="c_popupGroup">
+		<div class="c_popupItem" id="qryGroupItem" name = "qryGroupItem"  jwcid="@Part">
+			<div class="c_header">
+				<div class="back" ontap="hidePopup(this)">集团信息</div>
+			</div>
+			<div class="c_scroll c_scroll-float c_scroll-header">
+			<div jwcid="@ecserv:GrpCustInfo" groupInfo="ognl:groupInfo" custMgrInfo="ognl:custMgrInfo" readonly="true"/>
+			</div>
+		</div>
+	</div>
+</div>
+</body>

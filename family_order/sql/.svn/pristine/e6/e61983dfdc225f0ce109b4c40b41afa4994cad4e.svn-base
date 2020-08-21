@@ -1,0 +1,5 @@
+SELECT check_no,res_no,oper_date_str,to_char(oper_time,'yyyy-mm-dd hh24:mi:ss') oper_time,res_type_code,oper_staff_id, check_result_tag,res_kind_code,capacity_type_code,eparchy_code,city_code,depart_id,staff_id,deal_tag,to_char(update_time,'yyyy-mm-dd hh24:mi:ss') update_time,update_staff_id,remark,rsrv_tag1,rsrv_tag2,rsrv_tag3,to_char(rsrv_date1,'yyyy-mm-dd hh24:mi:ss') rsrv_date1,to_char(rsrv_date2,'yyyy-mm-dd hh24:mi:ss') rsrv_date2,to_char(rsrv_date3,'yyyy-mm-dd hh24:mi:ss') rsrv_date3,
+rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,decode(CHECK_RESULT_TAG,'0','正常','1','盘盈','2','盘亏',CHECK_RESULT_TAG) rsrv_str6,decode(DEAL_TAG,'0','未处理','1','已入库','2','已出库',DEAL_TAG) rsrv_str7,rsrv_num1,rsrv_num2,rsrv_num3 
+  FROM tf_b_rescheck_profitloss
+ WHERE check_no = :CHECK_NO
+   AND (:DEAL_TAG is null or deal_tag = :DEAL_TAG)

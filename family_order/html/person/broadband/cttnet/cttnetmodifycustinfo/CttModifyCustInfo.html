@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<script jwcid="@Script"  src="person/broadband/cttnet/cttnetmodifycustinfo/scripts/cttmodifycustinfo.js" ></script>
+<script jwcid="@Script" src="scripts/csserv/common/validate/custvalidate.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/product/productdata.js"></script>
+<script jwcid="@Script" src="scripts/csserv/component/fee/FeeMgr.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/eform/CommonEForm.js" ></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/CommLib.js" ></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/person/baseinfofield/BaseInfoField.js"></script>
+<script jwcid="@Script" type="text/javascript" src="person/broadband/cttnet/cttnetmodifycustinfo/scripts/CTTCustInfoField.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 资料变更 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">客户资料变更</div>
+	</div>
+	<!-- 标题 结束 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@csserv:Auth"  AuthType="11" tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="9726" element="div"/>
+	<!-- 认证 结束 -->
+	<div jwcid="CustInfoPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6" >
+			<ul class="ul">
+				<li class="li">
+					<span class="label"><span class="e_required">客户名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_CUST_NAME" id="custInfo_CUST_NAME" value="ognl:custInfo.CUST_NAME" maxsize="48" maxLength="48" disabled="false"
+	                                   nullable="no" desc="客户名称" /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">客户性别：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_SEX" id="custInfo_SEX" source="ognl:pageutil.getStaticList('SEX')"
+	                                    value="ognl:custInfo.SEX" disabled="false" desc="客户性别" nullable="yes" 
+	                                    textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">实名制：</span>
+					<input name="custInfo_REAL_NAME" id="custInfo_REAL_NAME" jwcid="@Checkbox" type="checkbox"  checked="ognl:commInfo.REAL_NAME" 
+	                                     value="ognl:commInfo.REAL_NAME" onclick="chgRealname()"/>
+				</li>
+				<!-- REQ201710090024-关于铁通迁移固话用户办理界面优化及套餐开发的需求-NGBOSS-铁通模块-个人业务-其他业务-客户资料变更（铁通）
+					-是否收改号费，请业务支撑部收回是否收改号费选择，下线收费功能  @auth zhaohj3 @date 2017-12-8 11:50:22 -->
+				<!-- <li class="li">
+						<span class="label"><span class="e_required">是否收改号费：</span></span>
+							<span class="e_select"><span><span>
+								<select jwcid="@Select" name="custInfo_IS_RECFEE" id="custInfo_IS_RECFEE" source="ognl:pageutil.getStaticList('IS_RECFEE_MODINAME')"
+			                        textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.IS_RECFEE" desc="是否收改号费"  
+			                        disabled="false" nullable="no" onchange="ajaxModiCustName()" />
+							</span></span></span>
+				</li> -->
+				
+				<li class="li">
+					<span class="label"><span class="e_required">证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_PSPT_TYPE_CODE" id="custInfo_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE')"
+	                        textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.PSPT_TYPE_CODE" desc="证件类型"  disabled="false" nullable="no"/>
+					</span></span></span>
+				</li>
+				<li class="li col-2" id="psptDIV">
+					<span class="label"><span class="e_required">证件号码：</span></span>
+					<span class="e_elements">
+					<button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton"><i class="e_ico-check"></i><span>扫描</span></button>
+					<!-- <button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="readcardTime(5)"><i class="e_ico-check"></i><span>扫描</span></button> -->
+					<input  jwcid="@Any"  type="hidden" id="custinfo_ReadCardFlag" name="custinfo_ReadCardFlag" value="0" desc="二代证读取标志"/>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_PSPT_ID" id="custInfo_PSPT_ID" value="ognl:custInfo.PSPT_ID" datatype="pspt" maxsize="20" maxLength="20"
+                         desc="证件号码" nullable="no" disabled="false"/></span></span>
+                    </span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">证件有效期：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@DateField" name="custInfo_PSPT_END_DATE" id="custInfo_PSPT_END_DATE" value="ognl:custInfo.PSPT_END_DATE"
+	                                nullable="no"  desc="证件有效期"   /></span></span>
+				</li>
+				<li class="li col-2" id="psptAddrDIV">
+					<span class="label"><span class="e_required">证件地址：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_PSPT_ADDR" id="custInfo_PSPT_ADDR" value="ognl:custInfo.PSPT_ADDR" maxsize="128"
+	                                                                   maxLength="128"    disabled="false"  nullable="no"   desc="证件地址"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系电话：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_PHONE" id="custInfo_PHONE" value="ognl:custInfo.PHONE" mixsize="7" maxLength="32"   maxsize="32" desc="联系电话"
+	                                                                     nullable="no"   /></span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label">家庭地址：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_HOME_ADDRESS" id="custInfo_HOME_ADDRESS" value="ognl:custInfo.HOME_ADDRESS"
+	                                                                       nullable="yes"  maxLength="128"    maxsize="128" desc="家庭地址"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系人姓名：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_CONTACT" id="custInfo_CONTACT" value="ognl:custInfo.CONTACT" maxsize="48"
+	                                                               maxLength="48"  desc="联系人姓名"  /></span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">通信地址：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_POST_ADDRESS" id="custInfo_POST_ADDRESS" value="ognl:custInfo.POST_ADDRESS"
+	                                                                  maxLength="128"   maxsize="128" desc="通信地址"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span class="e_required">联系人电话：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_CONTACT_PHONE" id="custInfo_CONTACT_PHONE" value="ognl:custInfo.CONTACT_PHONE"
+	                                                                        mixsize="7"  maxsize="32" maxLength="32"   desc="联系人电话"  /></span></span>
+				</li>
+				<li class="li" >
+					<span class="label">邮政编码：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_POST_CODE" id="custInfo_POST_CODE" value="ognl:custInfo.POST_CODE" equsize="6" maxLength="6"
+	                                                                       datatype="numeric"     desc="邮政编码"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">优先联系方式：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_CONTACT_TYPE_CODE" id="custInfo_CONTACT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_CONTACTTYPE')"
+	                                textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.CONTACT_TYPE_CODE" desc="优先联系方式" />
+					</span></span></span>
+				</li>
+				<li class="li" >
+					<span class="label"><span id="span_AGENT_CUST_NAME">经办人名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_AGENT_CUST_NAME" id="custInfo_AGENT_CUST_NAME" value="ognl:custInfo.RSRV_STR7" 
+												 maxsize="48" maxLength="48" desc="经办人名称"/></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_TYPE_CODE">经办人证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_AGENT_PSPT_TYPE_CODE" id="custInfo_AGENT_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+	                       		textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.RSRV_STR8" 
+	                        	desc="经办人证件类型"  disabled="false"/>
+					</span></span></span>
+				</li>
+				<!--  li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_ID">经办人证件号码：</span></span>
+					<span class="e_input"><span>
+					     <input type="text" jwcid="@TextField" name="custInfo_AGENT_PSPT_ID" id="custInfo_AGENT_PSPT_ID" value="ognl:custInfo.RSRV_STR9" datatype="pspt" maxsize="20" maxLength="20"
+                         desc="经办人证件号码"  disabled="false"  onchange="checkPsptId('custInfo_AGENT_PSPT_ID')" />
+                         </span>
+                    </span>
+                   
+				</li-->
+				
+				<li class="li">
+					<span class="label"><span id="span_AGENT_PSPT_ID">经办人证件号码：</span></span>
+					<span class="e_elements">
+					<!--<button type="button" class="e_button-right" id="ReadCardButton" name="ReadCardButton" onclick="clickScanPspt2()"><i class="e_ico-check"></i><span>扫描</span></button>-->
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_AGENT_PSPT_ID" id="custInfo_AGENT_PSPT_ID" value="ognl:custInfo.RSRV_STR9" maxsize="20" maxLength="20"
+                         desc="经办人证件号码"  disabled="false" />
+					</span></span>
+                    </span>
+				</li>
+				
+				<li class="li" >
+					<span class="label"><span id="span_AGENT_PSPT_ADDR">经办人证件地址：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_AGENT_PSPT_ADDR" id="custInfo_AGENT_PSPT_ADDR" value="ognl:custInfo.RSRV_STR10" 
+													  maxLength="128"   maxsize="128"  desc="经办人证件地址"  /></span></span>
+				</li>
+				
+				
+				<!--REQ201908310001关于优化铁通模块客户资料变更界面的需求by liangdg3 start -->
+				<li class="li" >
+				</li>
+				<li class="li" >
+				</li>
+				<li class="li" >
+					<span class="label"><span id="span_RESP_CUST_NAME">责任人名称：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_RESP_CUST_NAME" id="custInfo_RESP_CUST_NAME" value="ognl:custInfo.RESP_CUST_NAME" 
+												 maxsize="48" maxLength="48" desc="责任人名称"/></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_RESP_PSPT_TYPE_CODE">责任人证件类型：</span></span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_RESP_PSPT_TYPE_CODE" id="custInfo_RESP_PSPT_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_PASSPORTTYPE2')"
+	                       		textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.RESP_PSPT_TYPE_CODE" 
+	                        	desc="责任人证件类型"  disabled="false"/>
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label"><span id="span_RESP_PSPT_ID">责任人证件号码：</span></span>
+					<span class="e_elements">
+					<span class="e_input"><span>
+						<input type="text" jwcid="@TextField" name="custInfo_RESP_PSPT_ID" id="custInfo_RESP_PSPT_ID" value="ognl:custInfo.RESP_PSPT_ID" maxsize="20" maxLength="20"
+                         desc="责任人证件号码"  disabled="false" />
+					</span></span>
+                    </span>
+				</li>
+				
+				<li class="li" >
+					<span class="label"><span id="span_RESP_PSPT_ADDR">责任人证件地址：</span></span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_RESP_PSPT_ADDR" id="custInfo_RESP_PSPT_ADDR" value="ognl:custInfo.RESP_PSPT_ADDR" 
+													  maxLength="128"   maxsize="128"  desc="责任人证件地址"  /></span></span>
+				</li>
+				<!--REQ201908310001关于优化铁通模块客户资料变更界面的需求by liangdg3 end -->
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+		<!-- 表单 开始 -->
+		<div class="c_form c_form-col-3 c_form-label-6">
+			<ul class="ul">
+				<li class="li">
+					<span class="label">工作单位：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_WORK_NAME" id="custInfo_WORK_NAME" value="ognl:custInfo.WORK_NAME" maxsize="200"
+																    desc="工作单位"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">工作部门：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_WORK_DEPART" id="custInfo_WORK_DEPART" value="ognl:custInfo.WORK_DEPART" maxsize="80"
+																    desc="工作部门"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">生日：</span>
+					<span class="e_input"><span><input type="text" jwcid="@DateField" name="custInfo_BIRTHDAY" id="custInfo_BIRTHDAY" value="ognl:custInfo.BIRTHDAY" maxsize="40"
+							 desc="生日"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">职业类型：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_JOB_TYPE_CODE" id="custInfo_JOB_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_JOBTYPE')"
+									  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.JOB_TYPE_CODE" desc="职业类型" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">职位：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_JOB" id="custInfo_JOB" value="ognl:custInfo.JOB" maxsize="40" desc="职位"
+																     /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">教育程度：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_EDUCATE_DEGREE_CODE" id="custInfo_EDUCATE_DEGREE_CODE" source="ognl:pageutil.getStaticList('CHNL_STAFF_EDU')"
+									 　textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.EDUCATE_DEGREE_CODE" desc="教育程度" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">电子邮件：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_EMAIL" id="custInfo_EMAIL" value="ognl:custInfo.EMAIL" maxsize="64" maxLength="64"   desc="电子邮件"
+									 datatype="email"   /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">传真号码：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_FAX_NBR" id="custInfo_FAX_NBR" value="ognl:custInfo.FAX_NBR" maxsize="32" maxLength="32" 
+									 datatype="numeric"  desc="传真号码"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">婚姻状况：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_MARRIAGE" id="custInfo_MARRIAGE" source="ognl:pageutil.getStaticList('CUSTPERSON_MARRIAGESTATE')"
+									  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.MARRIAGE" desc="婚姻状况" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">国籍：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_NATIONALITY_CODE" id="custInfo_NATIONALITY_CODE" source="ognl:pageutil.getStaticList('TD_S_NATIONALITY')"
+									  textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.NATIONALITY_CODE" desc="国籍" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">性格类型：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_CHARACTER_TYPE_CODE" id="custInfo_CHARACTER_TYPE_CODE" source="ognl:pageutil.getStaticList('TD_S_CHARACTERTYPE')"
+									 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:custInfo.CHARACTER_TYPE_CODE" desc="性格类型" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">网站注册名：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_WEBUSER_ID" id="custInfo_WEBUSER_ID" value="ognl:custInfo.WEBUSER_ID" maxsize="100"
+																    desc="网站注册名"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">语言：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_LANGUAGE_CODE" id="custInfo_LANGUAGE_CODE" source="ognl:pageutil.getStaticList('TD_S_LANGUAGE')"
+									 textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME" value="ognl:custInfo.LANGUAGE_CODE" desc="语言" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">籍贯：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_LOCAL_NATIVE_CODE" id="custInfo_LOCAL_NATIVE_CODE" source="ognl:pageutil.getStaticList('TD_S_LOCAL_NATIVE')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:custInfo.LOCAL_NATIVE_CODE" desc="籍贯" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">社会保障号：</span>
+					<span class="e_input"><span><input type="text" jwcid="@TextField" name="custInfo_COMMUNITY_ID" id="custInfo_COMMUNITY_ID" value="ognl:custInfo.COMMUNITY_ID"
+										 maxsize="40" desc="社会保障号"  /></span></span>
+				</li>
+				<li class="li">
+					<span class="label">信仰：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_RELIGION_CODE" id="custInfo_RELIGION_CODE" source="ognl:pageutil.getStaticList('TD_S_RELIGION')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:custInfo.RELIGION_CODE" desc="信仰" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">民族：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_FOLK_CODE" id="custInfo_FOLK_CODE" source="ognl:pageutil.getStaticList('TD_S_FOLK')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:custInfo.FOLK_CODE" desc="民族" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">收入等级：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_REVENUE_LEVEL_CODE" id="custInfo_REVENUE_LEVEL_CODE" source="ognl:pageutil.getStaticList('TD_S_REVENUE_LEVEL')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:custInfo.REVENUE_LEVEL_CODE" desc="收入等级" />
+					</span></span></span>
+				</li>
+				<li class="li">
+					<span class="label">地域：</span>
+					<span class="e_select"><span><span>
+						<select jwcid="@Select" name="custInfo_CITY_CODE_A" id="custInfo_CITY_CODE_A" source="ognl:pageutil.getStaticList('REAR_CODE_A')"
+									textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"  value="ognl:custInfo.CITY_CODE_A" desc="客户地域" />
+					</span></span></span>
+				</li>
+				<li class="li col-2">
+					<span class="label"><span class="e_required">备注：</span></span>
+					<span class="e_input"><span><input jwcid="@TextField" name="custInfo_REMARK" id="custInfo_REMARK" value="ognl:custInfo.REMARK" rows="1" maxsize="100" 
+									    nullable="no" desc="备注"/></span></span>
+				</li>
+			</ul>
+		</div>
+		<!-- 隐藏数据 -->
+	    <input jwcid="@Any" id="USER_ID" type="hidden" name="USER_ID" value="ognl:userInfo.USER_ID" />
+	    <input jwcid="@Any" id="CUST_ID" type="hidden" name="CUST_ID" value="ognl:custInfo.CUST_ID" />
+	    <input jwcid="@Any" id="ACCT_ID" type="hidden" name="ACCT_ID" value="ognl:userInfo.ACCT_ID" />
+	    <input jwcid="@Any" id="OLD_CUST_NAME" type="hidden" name="OLD_CUST_NAME" value="ognl:custInfo.CUST_NAME" />
+	    <input jwcid="@Any" id="OLD_PSPT_TYPE_CODE" type="hidden" name="OLD_PSPT_TYPE_CODE" value="ognl:custInfo.PSPT_TYPE_CODE" />
+	    <input jwcid="@Any" id="OLD_PSPT_ID" type="hidden" name="OLD_PSPT_ID" value="ognl:custInfo.PSPT_ID" />
+	    <input jwcid="@Any" id="OLD_PSPT_ADDR" type="hidden" name="OLD_PSPT_ADDR" value="ognl:custInfo.PSPT_ADDR" />
+	    
+	    <input jwcid="@Any" id="REAL_CUST_NAME" type="hidden" name="REAL_CUST_NAME" value="ognl:commInfo.REAL_CUST_NAME" />
+	    <input jwcid="@Any" id="REAL_PSPT_TYPE_CODE" type="hidden" name="REAL_PSPT_TYPE_CODE" value="ognl:commInfo.REAL_PSPT_TYPE_CODE" />
+	    <input jwcid="@Any" id="REAL_PSPT_ID" type="hidden" name="REAL_PSPT_ID" value="ognl:commInfo.REAL_PSPT_ID" />
+	    <input jwcid="@Any" id="REAL_PSPT_ADDR" type="hidden" name="REAL_PSPT_ADDR" value="ognl:commInfo.REAL_PSPT_ADDR" />
+	    <input jwcid="@Any" id="REAL_PHONE" type="hidden" name="REAL_PHONE" value="ognl:commInfo.REAL_PHONE" />
+	    
+	    <input jwcid="@Any" id="REAL_REG" type="hidden" name="REAL_REG" value="ognl:commInfo.REAL_REG" />
+	    <input jwcid="@Any" id="IS_IN_PURCHASE" type="hidden" name="IS_IN_PURCHASE" value="ognl:commInfo.IS_IN_PURCHASE" />
+	    <input jwcid="@Any" id="STAFF_SPECIAL_RIGTH" type="hidden" name="STAFF_SPECIAL_RIGTH" value="ognl:commInfo.STAFF_SPECIAL_RIGTH" />
+	    <input jwcid="@Any" type="hidden"  id="custInfo_IS_REAL_NAME"  name="custInfo_IS_REAL_NAME"/>
+	    <input jwcid="@Any" type="hidden"  id="FEE_MODE"  name="FEE_MODE"/>
+	    <input jwcid="@Any" type="hidden"  id="FEE"  name="FEE"/>
+	    <input jwcid="@Any" type="hidden"  id="FEE_TYPE_CODE"  name="FEE_TYPE_CODE"/>
+	    
+	    <input jwcid="@Any" id="NET_TYPE_CODE" type="hidden" name="NET_TYPE_CODE" value="ognl:userInfo.NET_TYPE_CODE" />
+	    
+	    <input jwcid="@Any" type="hidden" name="DEPART_KIND_CODE" id="DEPART_KIND_CODE" value="ognl:userInfo.DEPART_KIND_CODE"/>
+		<input jwcid="@Any" type="hidden" name="STAFF_ID" id="STAFF_ID" value="ognl:userInfo.LOGIN_STAFF_ID"/>
+	    <!--隐藏数据 结束-->
+	</div>
+	<!-- 表单 结束 -->
+	<!-- 提交 开始 -->
+	<div jwcid="SubmitPart@csserv:CSSubmit" beforeAction="submitCheck(this);" isReset="true" area="AuthPart,CustInfoPart" element="div"/>
+	<!-- 提交 结束 -->
+</div>
+<!-- 资料变更 结束 -->
+
+</div></div>
+</body>
+<script type="text/javascript" >
+disabledArea("CustInfoPart", "disabled");
+</script>
+</html>

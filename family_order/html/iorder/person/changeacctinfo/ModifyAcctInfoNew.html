@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<script jwcid="@Script" src="iorder/person/changeacctinfo/scripts/modifyacctinfoNew.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="c_scroll c_scroll-float c_scroll-phone-header">
+	<div class="l_padding">
+<!-- 区域 开始 -->
+	<!-- 认证 开始 -->
+	<div jwcid="AuthPart@icsserv:Auth"  tradeAction="refreshPartAtferAuth(data)"  tradeTypeCode="ognl:tradeTypeCode" authType="ognl:authType" element="div"></div>
+	<!-- 认证 结束 -->
+<!-- 区域 结束 -->
+<!-- 区域 开始 -->
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">业务受理</div>
+	</div>
+	<!-- 标题 结束 -->
+	<div jwcid="AcctInfoPart@Part">
+		<!-- 表单 开始 -->
+		<div class="c_list c_list-s c_list-line c_list-border c_list-phone-col-1 c_list-col-3">
+			<ul>
+				<li class="link required">
+					<div class="label">帐户名称</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="acctinfo_PAY_NAME" id="acctinfo_PAY_NAME" value="ognl:acctInfo.PAY_NAME" disabled = "true" desc="帐户名称" nullable="no"  />
+					</div>
+				</li>
+				<li class="link required">
+					<div class="label">帐户类别</div>
+					<div class="value">
+						<select jwcid="@Select" name="acctinfo_PAY_MODE_CODE" id="acctinfo_PAY_MODE_CODE" value="ognl:acctInfo.PAY_MODE_CODE" disabled = "true" nullable="no" onchange="checkPaymode()" filter = "true"
+								source="ognl:@com.ailk.biz.util.StaticUtil@getList(getVisit(),'TD_S_PAYMODE','PAY_MODE_CODE','PAY_MODE','REMARK','割接批量导入')" 
+								textField="PAY_MODE" valueField="PAY_MODE_CODE"  desc="帐户类别"/>
+					</div>
+				</li>
+				<li class="link" id="superBank">
+					<div class="label">上级银行</div>
+					<div class="value">
+						<select jwcid="@Select" name="comminfo_SUPERBANK_CODE" id="comminfo_SUPERBANK_CODE" value ='ognl:acctInfo.SUPER_BANK_CODE'
+								 source="ognl:pageutil.getList('TD_S_SUPERBANK','SUPER_BANK_CODE','SUPER_BANK')"
+								textField="SUPER_BANK" valueField="SUPER_BANK_CODE" titleField="SUPER_BANK" disabled="true"  desc="上级银行"   nullable="no" onchange="checkSuperBank()"/>
+					</div>
+				</li>
+				<li class="link" id="brand">
+					<div class="label">银行名称</div>
+					<div class="value">
+						<span class="e_mix">
+							<input type="text" jwcid="@Any" readOnly="readOnly" value="ognl:acctInfo.BANK" name="acctinfo_BANK" id="acctinfo_BANK" desc="银行名称"/>
+							<input type="hidden" jwcid="@Any"  value="" name="POP_acctinfo_BANK_CODE" id="POP_acctinfo_BANK_CODE" desc="银行名称"/>
+							<input type="hidden" jwcid="@Any"  value="" name="acctinfo_BANK_CODE" id="acctinfo_BANK_CODE" desc="银行编码"/>
+							<button type="button" class="e_button-blue" onclick="if(checkBank() == false) return false;javascript:popupPage('银行名称列表','changeacctinfo.ViewBankPageNew','queryBank','&multi=true&comminfo_SUPERBANK_CODE=' +$('#comminfo_SUPERBANK_CODE').val()+'&SERIAL_NUMBER='+$('#AUTH_SERIAL_NUMBER').val(),'','c_popup c_popup-half c_popup-half-hasBg','','')" 
+								id="bankFld" name="bankFld" tip="查询" disabled="true"><span class="e_ico-check"></span></button>
+						</span>
+					</div>
+				</li>
+				<li class="link" id="bankAcctNo">
+					<div class="label">银行帐号</div>
+					<div class="value">
+						<input type="text" id = "acctinfo_BANK_ACCT_NO" jwcid="@TextField" name="acctinfo_BANK_ACCT_NO"  value="ognl:acctInfo.BANK_ACCT_NO" 
+								   maxsize="30" nullable="no" disabled="true"  desc="银行帐号" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">合同号</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="acctinfo_CONTRACT_NO" id="acctinfo_CONTRACT_NO" disabled = "true" value="ognl:acctInfo.CONTRACT_NO" maxsize="20" desc="合同号" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">银行协议号</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="acctinfo_RSRV_STR6" id="acctinfo_RSRV_STR6" disabled = "true" value="ognl:acctInfo.RSRV_STR6" maxsize="30"  desc="银行协议号" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">邮寄邮编</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="acctinfo_POST_CODE" id="acctinfo_POST_CODE" disabled = "true" value="ognl:acctInfo.RSRV_STR3" desc="邮寄邮编" />
+					</div>
+				</li>
+				<li class="link">
+					<div class="label">邮寄地址</div>
+					<div class="value">
+						<input type="text" jwcid="@TextField" name="acctinfo_POST_ADDRESS" id="acctinfo_POST_ADDERSS" disabled = "true" value="ognl:acctInfo.RSRV_STR10"  desc="邮寄地址" />
+					</div>
+				</li>
+				<li class="link merge-3">
+					<div class="label">备注</div>
+					<div class="value">
+						<textarea  jwcid="@TextField" name="acctinfo_REMARK" id="acctinfo_REMARK" value="" rows="1" disabled = "false" maxsize="100" desc="备注"/>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- 表单 结束 -->
+	
+		<!-- 隐藏数据-->               
+			<input jwcid="@Any" id="ACCT_DAY_TAG" type="hidden" name="ACCT_DAY_TAG" value="ognl:acctDayInfo.ACCT_DAY_TAG" />
+			<input jwcid="@Any" id="NEXT_ACCT_DAY" type="hidden" name="NEXT_ACCT_DAY" value="ognl:acctDayInfo.NEXT_ACCT_DAY" />
+			<input jwcid="@Any" id="BOOK_ACCT_DAY" type="hidden" name="BOOK_ACCT_DAY" value="ognl:acctDayInfo.BOOK_ACCT_DAY" />
+		    <input jwcid="@Any" id="acctinfo_MAIN_TRADE_REMARK" type="hidden" name="acctinfo_MAIN_TRADE_REMARK"   />
+	    <!--隐藏数据 结束-->
+	</div>
+<!-- 区域 结束 -->
+	<div class="c_space"></div>
+	<!-- 提交区域 开始 -->
+	<div jwcid="SubmitPart@icsserv:CSSubmit" class="c_submit c_submit-center" beforeAction="onTradeSubmit()" isReset="true" area="AuthPart,AcctInfoPart" element="div"/>
+	<!-- 提交区域 结束 -->
+	</div>
+</div></body>
+</html>

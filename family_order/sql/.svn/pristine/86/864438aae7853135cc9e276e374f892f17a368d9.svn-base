@@ -1,0 +1,3 @@
+SELECT to_char(trade_id) trade_id,purchase_attr,purchase_desc,purchase_mode,purchase_info,to_char(rpay_mpfee) rpay_mpfee,feeitem_code,to_char(rpay_foregift) rpay_foregift,foregift_code,to_char(rpay_deposit) rpay_deposit,rpay_deposit_code,discnt_code,discnt_emode,device_type,imei,assure_no,months,rsrv_str1,rsrv_str2,rsrv_str3,rsrv_str4,rsrv_str5,rsrv_str6,rsrv_str7,rsrv_str8,rsrv_str9,rsrv_str10 
+  FROM tf_b_trade_purchase
+ WHERE trade_id=TO_NUMBER(:TRADE_ID)

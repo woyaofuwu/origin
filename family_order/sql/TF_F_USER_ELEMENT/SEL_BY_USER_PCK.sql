@@ -1,0 +1,6 @@
+select ELEMENT_ID,USER_ID,PRODUCT_ID,PACKAGE_ID,ELEMENT_TYPE_CODE,ELEMENT_TYPE_CODE,
+to_char(START_DATE, 'yyyy-mm-dd') START_DATE,
+to_char(END_DATE, 'yyyy-mm-dd') END_DATE
+from tf_f_user_element
+where PACKAGE_ID = :PACKAGE_ID
+and USER_ID = :USER_ID

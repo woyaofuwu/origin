@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script jwcid="@Script" type="text/javascript" src="scripts/csserv/component/businesstip/businesstip.js"></script>
+<script jwcid="@Script" type="text/javascript" src="scripts/group/querygroupinfo/GrpWideNetQry.js"></script>
+</head>
+
+<body><div class="m_wrapper"><div class="m_wrapper2">
+
+<!-- 提示区 -->
+<div class="c_box" jwcid="hintPart@Part">
+	<div jwcid="@saleserv:HintBar" hintInfo="ognl:hintInfo" />
+</div>
+
+<div class="c_box">
+	<!-- 标题 开始 -->
+    <div class="c_title">
+		<div class="text">商务宽带成员信息查询</div>
+	</div>
+	<!-- 标题 结束 -->
+
+	<!-- 查询 开始 -->
+	<div class="c_form" jwcid="QueryFormPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label" id="ConditionLabel"><span class="e_required">集团产品编码：</span></span>
+				<span class="e_input" style="width:120px;">
+					<span>
+					<input type="text" jwcid="@TextField" name="cond_SERIAL_NUMBER" value="ognl:condition.cond_SERIAL_NUMBER"  nullable="no" desc="集团产品编码"/>
+					</span>
+				</span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">是否完工：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="cond_FINISHTAG" id="cond_FINISHTAG"
+							source="ognl:@com.ailk.biz.util.StaticUtil@getStaticList('FINISH_TAG')" titleField="DATA_NAME"
+							textField="DATA_NAME" valueField="DATA_ID" value="ognl:condition.PAY_NAME" 
+							desc="是否完工"  nullable="no"/>
+				</span></span></span>
+			</li>
+		</ul>
+	 
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" onclick="return query();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 查询结束-->
+	
+	<!-- 参数列表 开始 -->
+	<div jwcid="grpcustRefreshPart@Part" >
+		<span jwcid="@saleserv:GroupCustInfo" hasTitle="false" groupUserInfo="ognl:grpcustinfo"/>
+		<span jwcid="@saleserv:GroupUserInfo" hasTitle="false" groupUserInfo="ognl:grpuserinfo"/>
+	</div>
+	<!-- 参数列表 结束 -->
+
+	<!-- refreshtable数据区开始 -->
+	<div id="refreshtable" jwcid="refreshtable@Part" optimize="true">
+	<div class="c_table l_mt">
+		<div class="c_title c_title-2">
+		    <span class="text">商务宽带成员信息查询</span>
+			<span class="fn">
+				<!--  
+				 <span jwcid="@Export" id="exportFile" name="exportFile" serviceName="96320" 
+					config="export/querygroupinfo/ADCMemberQuery.xml"
+					fileName="商务宽带成员信息查询" cond="QueryFormPart"
+					ftpSite="groupserv" beforeAction="" action="" /> -->
+			</span> 
+		</div>
+		<div class="table"><div class="wrapper" style="height:auto;"><div class="wrapper2">
+			<table id="dataList">							
+      			<thead>	
+		  			<tr>
+		  				<th>集团客户编码</th>
+						<th>集团名称</th>
+						<th>集团产品编码</th>
+                        <th>产品名称</th>
+						<th>成员号码</th>
+                        <th>施工地址</th>
+						<th>加入时间</th>
+                		<th>是否完工</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex">
+                        <td><span jwcid="@Insert" value="ognl:info.GROUP_ID" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.CUST_NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.PRODUCT_NAME" raw="false"/></td>
+                        <td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER_B" raw="false"/></td> 
+                        <td class="wrap"><span jwcid="@Insert" value="ognl:info.STAND_ADDRESS" raw="false"/></td>
+                        <td>
+                        	<span jwcid="@Insert" value="ognl:formatDate('yyyy-MM-dd hh:mm:ss',info.START_DATE)" raw="false" />
+                        </td> 
+                        <td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('FINISH_TAG', info.FINISHTAG)" raw="false"/></td>
+                    </tr>
+				</tbody>
+			</table>
+		</div></div></div>
+		
+		<div jwcid="@NavBar" name="pageNav" id="pageNav" cond="QueryFormPart" part="refreshtable" listener="queryInfos" pageSize="20" count="ognl:infoCount" />
+		
+	</div>
+    </div>
+	<!-- refreshtable数据区结束 -->
+
+</div>
+<!-- 区域 结束 -->
+
+</div></div></body>
+</html>

@@ -1,0 +1,17 @@
+  SELECT A.INFO_ID,
+         A.INFO_SIGN,
+         A.INFO_TOPIC,
+         A.INFO_TYPE,
+         A.INFO_STATUS,
+         A.INFO_LEVEL,
+         A.INFO_URL,
+         A.INFO_AUTH,
+         B.INST_ID,
+         B.RECE_OBJ,
+         B.RECE_OBJ_TYPE,
+         B.INST_STATUS
+    FROM TF_F_INFO A, TF_F_INFO_INSTANCE B
+    WHERE A.INFO_ID=B.INFO_ID
+    AND A.INFO_STATUS='1'
+    AND B.RECE_OBJ=:STAFF_ID
+    ORDER BY A.INFO_ID DESC

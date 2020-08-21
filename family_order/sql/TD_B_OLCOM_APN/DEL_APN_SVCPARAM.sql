@@ -1,0 +1,3 @@
+DELETE FROM TD_B_OLCOM_APN
+ WHERE para_code = :PARA_CODE
+   AND switch_type_code = :SWITCH_TYPE_CODE

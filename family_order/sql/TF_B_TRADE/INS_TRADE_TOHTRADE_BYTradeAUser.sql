@@ -1,0 +1,3 @@
+INSERT INTO TF_BH_TRADE
+(SELECT * FROM tf_b_trade 
+WHERE trade_id=:TRADE_ID)

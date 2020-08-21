@@ -1,0 +1,88 @@
+<div class="c_box" jwcid="MustInfoPart@Part">
+<input jwcid="@Hidden" name="SVC_FLAG" id="SVC_FLAG" value="ognl:editInfo.SVC_FLAG"/>
+    <div class="c_title">
+        <span class="text">批量条件</span>
+    </div>
+    <div class="c_form c_form-col-2 c_form-label-10" jwcid="QueryCondPart@Part">
+        <ul class="ul">
+	        <li class="li">
+	        	<div jwcid="SelectListA@Part">
+				<span class="label"><span class="e_required">服务：</span></span>
+	            	<span class="e_elements">
+						<button type="button" class="e_button-right" id="btBatchTask" onclick="javascript:popupPage('bat.battaskquery.ServicePopupQry','initPageServicePopup','&IS_POP=SERVICECHG','服务编码查询',700,430,'SERVICE_ID')">
+						<i class="e_ico-check"></i><span></span></button>
+						<span class="e_input e_input-left"><span>
+						<input type="text" jwcid="@Popup" readOnly="true" 
+						value=" " 
+						text="" 
+						name="SERVICE_ID" id="SERVICE_ID" 
+						afterAction="batservicechg.getElementAttr();"
+						desc="服务" nullable="no"/>
+						</span></span>
+					</span>
+	            </div>
+			</li>
+			<li class="li">
+				<div jwcid="SelectListB@Part">
+				<span class="label"><span class="e_required">操作类型：</span></span>
+	            <span class="e_select"><span><span>
+	            <select jwcid="@Select" name="MODIFY_TAG" id="MODIFY_TAG"
+					source="ognl:page.pageutil.getStaticList('BAT_ELEMENT_MODIFY_TAG')"
+					textField="DATA_NAME" valueField="DATA_ID" titleField="DATA_NAME"
+	    			value="ognl:info.MODIFY_TAG"
+					desc="操作类型"
+	    			nullable="no" onchange="batservicechg.diabledenddate()"
+	            />
+	            </span></span></span></div>
+			</li>
+        </ul>
+        
+        <ul class="ul" id="servicedate">
+	       <li class="li">
+	        	<div jwcid="SelectListE@Part" id="SD">
+				<span class="label"><span class="e_required">服务起始时间：</span></span>
+				<span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="START_DATE" id="START_DATE" maxName="END_DATE" value="ognl:info.START_DATE" format="yyyy-MM-dd" desc="开始时间"  min="ognl:page.pageutil.getSysDate()" startdate="ognl:page.pageutil.getSysDate()" disabled="true"/></span></span>
+	           	</div>
+	        </li>
+        
+			<li class="li">
+				<div jwcid="SelectListD@Part" id="ED">
+					<span class="label"><span class="e_required">服务结束时间：</span></span>
+					<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="END_DATE" id="END_DATE" minName="START_DATE" value="ognl:info.END_DATE" format="yyyy-MM-dd" desc="结束时间"  min="ognl:page.pageutil.getSysDate()" enddate="ognl:info.END_DATE" disabled="true"/></span></span>
+		      		</div>
+			</li>
+        </ul>
+	</div>
+	
+	<div jwcid="QueryListPart@Part" class="c_form c_form-col-8 c_form-label-10" element="div" index="ognl:rowIndex">
+			
+		<ul class="ul">
+			
+			<li jwcid="@Foreach" class="li" source="ognl:listD" value="ognl:info" element="ul">
+				<span class="label"><span jwcid="@Insert" value="ognl:info.ATTR_LABLE+'：'"  class='ognl:"0".equals(info.ATTR_CAN_NULL) ? "e_required":""' /></span>
+				<span jwcid="@Conditional" condition='ognl:"0".equals(info.ATTR_TYPE_CODE)' class="e_input">
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" id="ATTR_INIT_VALUE" name="ATTR_INIT_VALUE" value="ognl:info.ATTR_INIT_VALUE" desc="ognl:info.ATTR_LABLE" nullable='ognl:"0".equals(info.ATTR_CAN_NULL) ? "no":""' bat_element_type="text"/>
+				</span></span></span>
+				<span jwcid="@Conditional" condition='ognl:"2".equals(info.ATTR_TYPE_CODE)' class="e_input">
+					<input type="text" jwcid="@DateField" id="ATTR_INIT_VALUE" name="ATTR_INIT_VALUE" value="ognl:info.ATTR_INIT_VALUE" desc="ognl:info.ATTR_LABLE" nullable='ognl:"0".equals(info.ATTR_CAN_NULL) ? "no":""' bat_element_type="text" format="yyyy-mm-dd"/>
+				</span>
+				<span jwcid="@Conditional" condition='ognl:"3".equals(info.ATTR_TYPE_CODE)||"1".equals(info.ATTR_TYPE_CODE)' class="e_input">
+				<span class="e_input"><span>
+					<select jwcid="@Select" id="ATTR_FIELD" name="ATTR_FIELD"
+					 source="ognl:info.ATTRB" valueField="ATTR_FIELD_CODE" textField="ATTR_FIELD_NAME" value="ognl:info.ATTR_FIELD_CODE"
+					 nullable='ognl:"0".equals(info.ATTR_CAN_NULL) ? "no":""' bat_element_type="select" desc="ognl:info.ATTR_LABLE" />
+				</span></span></span>
+				<span jwcid="@Conditional" condition='ognl:"0".equals(info.ATTR_TYPE_CODE)' class="e_input" style="display:none">
+					<input type="text" jwcid="@TextField" id="ATTR_CODE" name="ATTR_CODE" value="ognl:info.ATTR_CODE" bat_element_type="text" style="display:none"/>
+				</span>
+				<span jwcid="@Insert" value='ognl:(rowIndex+1) % 1 == 0 ? "</ul><ul>" : "" ' raw="true"/>
+			</li>
+			
+		</ul>
+			
+	</div>
+	
+</div>

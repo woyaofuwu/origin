@@ -1,0 +1,1 @@
+select t.* from tf_f_user t where t.serial_number=:SERIAL_NUMBER and substr(t.user_tag_set,0,1) in ('4','8')

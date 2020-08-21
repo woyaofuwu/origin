@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html size="s">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>信用购机活动受理</title>
+<script jwcid="@Script" type="text/javascript" src="iorder/person/saleactive/scripts/creditPurchasesSaleActiveTrade.js"></script>
+</head>
+<body jwcid="@Body">
+<!-- 滚动（替换为 java 组件） 开始 -->
+<div class="c_scroll">
+	<div class="l_padding">
+		<!-- 认证 开始 -->
+		<div id="authArea">
+			<div jwcid="AuthPart@icsserv:Auth" tradeAction="$.creditPurchasesSaleActiveTrade.refreshPartAtferAuth(data);" tradeTypeCode="ognl:info.TRADE_TYPE_CODE"  element="div"/>
+		</div>
+		
+		<div class="c_title">
+			    <div class="text">营销活动1</div>
+			</div> 
+			<div class="c_list c_list-s c_list-col-2 c_list-line c_list-border c_list-phone-col-1" jwcid="saleActiveInfoPart@Part">
+			    <ul>
+			        <li class="link" >
+			            <div class="label">活动类型</div>
+			            <div class="value">
+			                <span jwcid="@Select" name="CAMPN_TYPE"
+			                      source="ognl:campnTypes" textField="LABEL_NAME"
+			                      valueField="LABEL_ID" nullable="yes" desc="活动类型"
+			                      disabled="true"
+			                      onchange="$.creditPurchasesSaleActiveTrade.changeCampnType(this);"
+			                      ></span>
+			            </div>
+			        </li>
+			        <li class="link required">
+			            <div class="label">营销方案</div>
+			            <div class="value" >
+			                <span jwcid="@Select" name="PRODUCT_ID"
+			                      source="ognl:products" textField="PRODUCT_NAME" titleField="PRODUCT_TITLE"
+			                      valueField="PRODUCT_ID" nullable="yes" desc="营销方案"
+			                      onchange="$.creditPurchasesSaleActiveTrade.cheackProduct(this);"></span>
+			            </div>
+			        </li>
+			        <li id="IMEIQueryPart">
+			            <div class="label">终端串码</div>
+			            <div class="value">
+			                <input jwcid="@TextField" name="SALEGOODS_IMEI" desc="终端串码"
+			                       onenterAction="$.creditPurchasesSaleActiveTrade.queryPackages(this);"
+			                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+			            </div>
+			        </li>
+			        <li class="link required" >
+			            <div class="label">营销包</div>
+				            <div class="value" jwcid="salePackageInfoPart@Part">
+				                <span jwcid="@Select" name="PACKAGE_ID"
+				                      source="ognl:packages" textField="PACKAGE_NAME" titleField="PACKAGE_TITLE"
+				                      valueField="PACKAGE_ID" nullable="yes" desc="营销包"
+				                      onchange="$.creditPurchasesSaleActiveTrade.configSaleActives(this);"></span>
+				            </div>
+			            <div class="more"></div>
+			        </li>
+			        <li id="GoodsInfoPart" style="display: none;">
+			            <div class="label">终端信息</div>
+			            <div class="value">
+			                <span class="text" id="GOODS_INFO"></span>
+			            </div>
+			        </li>
+			        <li class="link required" id ="CREDIT_PURCHASES_PART" style="display: none;">
+			            <div class="label">信用购机</div>
+			            <div class="value" >
+							<input  jwcid="@TextField"  name="CREDIT_PURCHASES" id="CREDIT_PURCHASES"  value="1" />
+			            </div>
+			        </li>
+			        <li class="link"  style="display: none;">
+			            <div class="label">页面渠道</div>
+			            <div class="value" >
+							<input  jwcid="@TextField"  name="CREDIT_PURCHASES_SOURCE" id="CREDIT_PURCHASES_SOURCE"  value="1" />
+			            </div>
+			        </li>
+			    </ul>
+			</div>
+			 <div class="c_title">
+			    <div class="text">营销活动2</div>
+			</div>
+			<div class="c_list c_list-s c_list-col-2 c_list-line c_list-border c_list-phone-col-1"jwcid="saleActiveInfoPart2@Part">
+			    <ul>
+			        <li class="link">
+			            <div class="label">活动类型</div>
+			            <div class="value">
+			                <span jwcid="@Select" name="CAMPN_TYPE2"
+			                      source="ognl:campnTypes" textField="LABEL_NAME"
+			                      valueField="LABEL_ID" nullable="yes" desc="活动类型"
+			                      disabled="true"
+			                      onchange="saleActive.queryProductByType(this);"></span>
+			            </div>
+			        </li>
+			        <li class="link required">
+			            <div class="label">营销方案</div>
+			            <div class="value" >
+			                <span jwcid="@Select" name="PRODUCT_ID2"
+			                      source="ognl:products" textField="PRODUCT_NAME" titleField="PRODUCT_TITLE"
+			                      valueField="PRODUCT_ID" nullable="yes" desc="营销方案"
+			                      onchange="$.creditPurchasesSaleActiveTrade.cheackProduct(this);"></span>
+			            </div>
+			        </li>
+			        <li id="IMEIQueryPart2">
+			            <div class="label">终端串码</div>
+			            <div class="value">
+			                <input jwcid="@TextField" name="SALEGOODS_IMEI2" desc="终端串码"
+			                       onenterAction="$.creditPurchasesSaleActiveTrade.queryPackages(this);"
+			                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+			            </div>
+			        </li>
+			        <li id="SalePackageBtn2" class="link required">
+			            <div class="label">营销包</div>
+				            <div class="value" jwcid="salePackageInfoPart2@Part">
+				                <span jwcid="@Select" name="PACKAGE_ID2"
+				                      source="ognl:packages" textField="PACKAGE_NAME" titleField="PACKAGE_TITLE"
+				                      valueField="PACKAGE_ID" nullable="yes" desc="营销包"
+				                     ></span>
+				            </div>
+			            <div class="more"></div>
+			        </li>
+			        <li id="GoodsInfoPart2" style="display: none;">
+			            <div class="label">终端信息</div>
+			            <div class="value">
+			                <span class="text" id="GOODS_INFO2"></span>
+			            </div>
+			        </li>
+			    </ul>
+			</div>
+			 <div class="c_title">
+			    <div class="text">营销活动3</div>
+			</div>
+			<div class="c_list c_list-s c_list-col-2 c_list-line c_list-border c_list-phone-col-1"jwcid="saleActiveInfoPart3@Part">
+			    <ul>
+			        <li class="link">
+			            <div class="label">活动类型</div>
+			            <div class="value">
+			                <span jwcid="@Select" name="CAMPN_TYPE3"
+			                      source="ognl:campnTypes" textField="LABEL_NAME"
+			                      valueField="LABEL_ID" nullable="yes" desc="活动类型"
+			                      disabled="true"
+			                      onchange="saleActive.queryProductByType(this);"></span>
+			            </div>
+			        </li>
+			         <li class="link required">
+			            <div class="label">营销方案</div>
+			            <div class="value" >
+			                <span jwcid="@Select" name="PRODUCT_ID3"
+			                      source="ognl:products" textField="PRODUCT_NAME" titleField="PRODUCT_TITLE"
+			                      valueField="PRODUCT_ID" nullable="yes" desc="营销方案"
+			                      onchange="$.creditPurchasesSaleActiveTrade.cheackProduct(this);"></span>
+			            </div>
+			        </li>
+			        <li id="IMEIQueryPart3">
+			            <div class="label">终端串码</div>
+			            <div class="value">
+			                <input jwcid="@TextField" name="SALEGOODS_IMEI3" desc="终端串码"
+			                       onenterAction="$.creditPurchasesSaleActiveTrade.queryPackages(this);"
+			                       disabled="ognl:'true'.equals(info.NEED_DISABLED)"/>
+			            </div>
+			        </li>
+			        <li id="SalePackageBtn3" class="link required">
+			            <div class="label">营销包</div>
+			            <div class="value" jwcid="salePackageInfoPart3@Part">
+			                 <span jwcid="@Select" name="PACKAGE_ID3"
+			                      source="ognl:packages" textField="PACKAGE_NAME" titleField="PACKAGE_TITLE"
+			                      valueField="PACKAGE_ID" nullable="yes" desc="营销包"
+			                      ></span>
+			            </div>
+			            <div class="more"></div>
+			        </li>
+			        <li id="GoodsInfoPart3" style="display: none;">
+			            <div class="label">终端信息</div>
+			            <div class="value">
+			                <span class="text" id="GOODS_INFO3"></span>
+			            </div>
+			        </li>
+			    </ul>
+			</div> 
+		
+	<!-- 隐藏参数 开始 -->	
+	<div jwcid="hiddenInfoPart@Part">
+	   <input jwcid="@Hidden" name="QUERY_VALID_SALE_FINISHED" value="0"/>
+	   <input jwcid="@Hidden" name="QUERY_HOT_RECOMM_SALE_FINISHED" value="0"/>  
+	   <input jwcid="@Hidden" name="SALEACTIVE_EPARCHY_CODE_COMPID" value="ognl:eparchyCodeCompId"/>
+	   <input jwcid="@Hidden" name="NET_ORDER_ID" value="" desc="商城预约订单编码"/>
+	   <input jwcid="@Hidden" name="SALEACTIVE_USER_ID" value="ognl:info.USER_ID"/>
+	   <input jwcid="@Hidden" name="SALEACTIVE_CUST_ID" value="ognl:info.CUST_ID"/>
+	   <input jwcid="@Hidden" name="PACKAGE2_FEE" id="PACKAGE2_FEE" value="0" />
+	   <input jwcid="@Hidden" name="PACKAGE3_FEE" id="PACKAGE3_FEE" value="0" />
+	   <input jwcid="@Hidden" name="DOWN_MONEY" value="0"/>
+	   <input jwcid="@Hidden" name="COMMPARA_PACKAGES" id="COMMPARA_PACKAGES" value="-1"/>
+    </div>
+	<!-- 隐藏参数 结束 -->
+	<div class="c_space"></div>
+	 <div class="c_submit c_submit-center"
+                 jwcid="SubmitPart@icsserv:CSSubmit"
+                  beforeAction="$.creditPurchasesSaleActiveTrade.checkSubmitBefore();"
+                 orderTypeCode="ognl:info.TRADE_TYPE_CODE"
+                 isRender="false" params="" listener="" refreshPart=""
+                 area="AuthPart,saleActiveInfoPart,saleActiveInfoPart2,saleActiveInfoPart3,hiddenInfoPart" element="div"></div>
+            <div class="c_submit c_submit-center">
+                <button type="button" id="AuthCodeBtn"
+                        class="e_button-l e_button-r e_button-green"
+                        ontap="$.creditPurchasesSaleActiveTrade.redPackPlaceOrderCall();" style="display: none;">
+                    <span class="e_ico-ok"></span><span>提交</span>
+                </button>
+            </div>
+	
+	<!-- 提交 结束 -->
+
+</div></div>
+
+</body>
+</html>

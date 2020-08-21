@@ -1,0 +1,1 @@
+delete TL_O_REALTIMEMARKETING where REQ_ID = :REQ_ID

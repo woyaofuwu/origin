@@ -1,0 +1,1 @@
+select t.*  from TD_B_WIDENET_ACCOUNT t where t.account_id=:ACCOUNT_ID AND SYSDATE < T.END_DATE

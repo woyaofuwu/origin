@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>代理商库存查询</title> 
+<script jwcid="@Script" language="JavaScript" src="person/agentcheck/scripts/AgentStorageCheck.js"></script> 
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+		<!-- 区域 开始 -->
+		<div class="c_box"> 
+			<div class="c_title"><div class="text">查询条件</div></div>
+			<!-- 表单 开始 -->
+			<div class="c_form c_form-col-3 c_form-label-7"   jwcid="QueryRecordPart@Part">
+				<ul class="ul"> 
+		    		<li class="li">
+					<span class="label"><span class="e_required">代理商：</span></span> 
+					<span class="e_elements">
+					<button type="button" class="e_button-center" onclick="popupPage('createusertrade.ChooseAgent', null, '', '代理商', '600', '500');"><i class="e_ico-check"></i><span>代理商</span></button>
+						<span class="e_input e_input-left"><span>				
+					    <input jwcid="@TextField"  value="ognl:info.AGENT_DEPART_ID1"  name="AGENT_DEPART_ID1"  id="AGENT_DEPART_ID1" desc="代理商码" disabled="true"  nullable="no" />
+					</span></span>
+					</span>  
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">开户开始时间：</span></span>
+		                   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="START_TIME" id="START_TIME" value="ognl:cond.START_TIME" />
+						</span></span>
+					</li>
+					<li class="li">
+						<span class="label"><span class="e_required">开户结束时间：</span></span>
+		                   <span class="e_input"><span>
+						<input type="text" jwcid="@DateField" name="END_TIME"  id="END_TIME" value="ognl:cond.END_TIME" />
+						</span></span>
+					</li>
+				</ul>
+			<div class="submitPlace"></div>
+		<div class="submit"  >
+				<button class="e_button-form"  name="QUERY_BTN" id="QUERY_BTN" onclick="queryInfos()"><i class="e_ico-search"></i><span>查询</span></button>
+		    	<button class="e_button-form" onclick="resetQry()" ><i class="e_ico-reset"></i><span>重置</span></button>
+		</div>
+		</div> 
+		
+		<div class="submit e_right">
+		<span class="fn">
+			<span jwcid="@Export" name="exportFile" ftpSite="personserv" fileTypes="{'.xls':'.xlsx'}" serviceName="8976" 
+					 config="export/agentcheck/AgentStorageInfo.xml" fileName="代理商号码卡库存信息"   cond="QueryRecordPart" />
+		</span>
+		
+		</div> 
+		<!-- 表格 开始 -->
+		<div jwcid="QueryListPart@Part" >
+			<div class="c_scroll c_scroll-x">		
+				<div class="c_table c_table-row-10"> 
+					<table  id="sortedTable"  >
+						<thead>
+							<tr>
+								<th col="ROW_NUM">序号</th> 
+								<th col="DEPART_CODE">代理商编码</th> 
+								<th col="SERIAL_NUMBER">号码</th>
+								<th col="SIM_CARDNO">卡号</th>
+								<th col="OPEN_DATE">开户日期</th> 
+							</tr>
+						</thead>
+						<tbody>
+							<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+								<td><a jwcid="@Insert" value="ognl:rowIndex + 1" raw="true" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.DEPART_CODE" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.SERIAL_NUMBER" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.SIM_CARDNO" /></td>
+								<td><span jwcid="@Insert" value="ognl:info.OPEN_DATE" /></td> 
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div> 
+			<div jwcid="@NavBar" name="listnav" id="listnav" cond="QueryRecordPart" part="QueryListPart" listener="queryCardStorage" pageSize="10" count="ognl:recordCount"></div>
+		</div>  
+	</div>
+
+</div></div>
+</body>
+</html>

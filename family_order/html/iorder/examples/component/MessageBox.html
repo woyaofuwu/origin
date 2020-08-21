@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head jwcid="@Head">
+<title>MessageBox</title>
+</head>
+<body jwcid="@Body">
+	
+<div class="l_padding">
+	<button type="button" ontap="test1()">MessageBox.alert</button>
+	<button type="button" ontap="test2()">MessageBox.error</button>
+	<button type="button" ontap="test3()">MessageBox.success</button>
+	<button type="button" ontap="test4()">MessageBox.success(自定义按钮)</button>
+	<button type="button" ontap="test5()">MessageBox.success(自定义按钮,校验后执行回调)</button>
+</div>
+
+<script language="javascript">
+//<!--
+function test1(){
+	MessageBox.alert("提示信息", "提示信息", function(btn){
+		alert(btn);
+	});
+}
+
+function test2(){
+	MessageBox.error("错误信息", "错误信息", function(btn){
+		alert(btn);
+	});
+}
+
+function test3(){
+	MessageBox.success("成功信息", "成功信息", function(btn){
+		alert(btn);
+	});
+}
+
+function test4(){
+	MessageBox.success("成功信息", "成功信息", function(btn){
+		if("ext1" == btn){
+			alert("打印");
+		}
+	}, {"ext1" : "打印", "ext2": "提交辅助信息"});
+}
+
+function test5(){
+	/*
+	$.ajax.submit("cond", "test", null, null,function(data){
+		alert(data);
+	}, function(code, info, errinfo){
+	
+		//alert("|" + code + "\n|" + info + "\n|" + errid + "\n|" + errinfo);
+		$.MessageBox.error("错误信息", info, function(btn){
+			alert(btn);
+			
+		},null, errinfo, false);
+	});	
+	*/
+	
+	MessageBox.show({
+		success : true,
+		title : "成功信息1",
+		content : "成功信息1",
+		buttons : {"ok" : "确认", "ext1" : "打印", "ext2" : "扩展按钮"},
+		fn : function(btn){
+			if("ext1" == btn){
+				alert("打印");
+			}
+		},
+		beforeHide : function(btn){
+			if("ext1" == btn) {
+				return window.confirm("是否设置校验成功？");
+			}
+		}
+	});
+}
+
+//-->
+</script>
+</body>
+</html>

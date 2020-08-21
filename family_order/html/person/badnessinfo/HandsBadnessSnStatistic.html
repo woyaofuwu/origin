@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>自有业务被举报号码统计</title>
+<script language="JavaScript" src="scripts/saleserv.js"></script>
+<script jwcid="@Script" language="JavaScript" src="person/badnessinfo/scripts/badnessinfo.js"></script>
+</head>
+<body jwcid="@Body">
+<div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="TipInfoPart@Part" style="display:none;">
+	<div class="c_tip">
+		获取信息无数据!
+	</div>
+</div>
+
+<!-- 区域 开始 -->
+<div class="c_box">
+	<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text"><a jwcid="@Insert" value="ognl:condition.TITLE" raw="false"/></div>
+	</div>
+	<!-- 标题 结束 -->
+	
+	<!-- 表单 开始 -->
+	<div class="c_form c_form-col-3 c_form-label-10" jwcid="badInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">举报开始时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="REPORT_START_TIME" id="REPORT_START_TIME" desc="举报开始时间"	 value="ognl:editInfo.REPORT_START_TIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label"><span class="e_required">举报结束时间：</span></span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@DateField" name="REPORT_END_TIME" id="REPORT_END_TIME" desc="举报结束时间"	 value="ognl:editInfo.REPORT_END_TIME"/>
+				</span></span>
+			</li>
+			<li class="li">
+				<span class="label">被举报自有业务代码：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="BADNESS_INFO" id="BADNESS_INFO" desc="被举报自有业务代码"	 value="ognl:editInfo.BADNESS_INFO"/>
+				</span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">举报对象类型：</span>
+				<span class="e_select"><span><span>
+					<select  name="REPORT_TYPE_CODE" id="REPORT_TYPE_CODE" onchange="changeReportType()">
+						<option value="">--请选择--</option>
+						<option value="01">垃圾短信</option>
+						<option value="03">垃圾彩信</option>
+					</select>
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">举报分类：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="REPORT_CODE" id="REPORT_CODE" 
+						source="ognl:reports" addDefault="false"
+						value="ognl:editInfo.REPORT_CODE" textField="DATA_NAME"   valueField="DATA_ID" desc="举报分类"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">内容分类：</span>
+				<span class="e_select"  jwcid="ServRequestTypePart@Part"><span><span>
+					<select jwcid="@Select" name="CONTENT_TYPE_CODE" id="CONTENT_TYPE_CODE" 
+						source="ognl:services" 
+						value="ognl:editInfo.CONTENT_TYPE_CODE" textField="DATA_NAME"   valueField="DATA_ID" desc="内容分类"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">被举报自有业务归属省：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="BADNESS_INFO_PROVINCE" id="BADNESS_INFO_PROVINCE" 
+						source="ognl:pageutil.getStaticList('COP_SI_PROV_CODE')" 
+						value="ognl:editInfo.BADNESS_INFO_PROVINCE" textField="DATA_NAME"   valueField="DATA_ID" desc="被举报自有业务归属省"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">接入方式：</span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="RECV_IN_TYPE" id="RECV_IN_TYPE" 
+						source="ognl:pageutil.getStaticList('BADNESSINFO_IN_MODE')" 
+						value="ognl:editInfo.RECV_IN_TYPE" textField="DATA_NAME"   valueField="DATA_ID" desc="接入方式"  titleField="DATA_NAME" />
+				</span></span></span>
+			</li>
+			<li class="li">
+				<span class="label">处理状态：</span>
+				<span class="e_select"><span><span>
+					<select name="STATE" id="STATE" desc="处理状态">
+						<option value="">--请选择--</option>
+						<option value="01">未处理</option>
+						<option value="02">已处理</option>
+					</select>
+				</span></span></span>
+			</li>
+			
+			<li class="li">
+				<span class="label">被举报总量(>=)：</span>
+				<span class="e_input"><span>
+					<input type="text" jwcid="@TextField" name="REPORT_SUM" id="REPORT_SUM" desc="被举报总量"	value="ognl:editInfo.REPORT_SUM"/>
+				</span></span>
+			</li>
+			<input jwcid="@Hidden" name="TRADE_TYPE_CODE" id="TRADE_TYPE_CODE" value="ognl:editInfo.TRADE_TYPE_CODE"/>
+		</ul>
+		<div class="submitPlace"></div>
+		<div class="submit">
+			<button class="e_button-form" id="query" name="query" onclick="return staticsBadnessInfos();"><i class="e_ico-search"></i><span>查询</span></button>
+		</div>
+	</div>
+	<!-- 表单 结束 -->
+	
+	<!-- 表格 开始 -->
+	<div jwcid="badInfoTablePart@Part">
+	<div class="c_scroll c_scroll-x">
+	<div class="c_table c_table-row-10">
+		<table jwcid="@Table" name="badTable" id="badTable" scroll="true">
+			<thead>
+	  			<tr>
+	  			    <th style="display:none"></th>
+					<th col="BADNESS_INFO_PROVINCE">被举报自有业务归属省</th>
+					<th col="BADNESS_INFO">被举报自有业务代码</th>
+					<th col="IN_MODE">接入方式(全网/本地)</th>
+					<th col="BADNESS_INFO_SUM">被举报总量</th>
+					<th col="NORMAL_SUM">正常用户举报总量</th>
+					<th col="BLACK_SUM">黑名单用户举报总量</th>
+				</tr>
+			</thead>
+			<tbody jwcid="@Any" name="BadnessTableInfos" id="BadnessTableInfos">
+				<tr jwcid="@Foreach" source="ognl:badInfos" value="ognl:badInfo" id="badInfos" index="ognl:rowIndex" element="tr">
+					<td><span jwcid="@Insert" value="ognl:pageutil.getStaticValue('BAD_PROVINCE_CODE', badInfo.BADNESS_INFO_PROVINCE)"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.BADNESS_INFO"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.IN_MODE"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.BADNESS_INFO_SUM"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.NORMAL_SUM"></span></td>
+					<td><span jwcid="@Insert" value="ognl:badInfo.BLACK_SUM"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+	<!-- 翻页 开始 -->
+	<div jwcid="@NavBar" name="badInfoNav" id="badInfoNav" cond="badInfoPart" part="badInfoTablePart" listener="staticsBadnessInfos" pageSize="10" count="ognl:count"></div>
+	<!-- 翻页 结束 -->
+	</div>
+	<!-- 表格 结束 -->
+</div>
+<!-- 区域 结束 -->
+
+</div>
+</body>
+</html>

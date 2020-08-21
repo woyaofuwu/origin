@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head jwcid="@Head"> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script jwcid="@Script"  src="person/electricBusiness/scripts/QueryReturnOrder.js" />
+  </head>
+  
+  <body jwcid="@Body">
+  	<div class="m_wrapper"><div class="m_wrapper2">
+    <div class="c_box">
+		<!-- 表格区开始-->
+		<div jwcid="results@Part" element="div">
+		        <div class="c_title c_title-2">
+				 <div class="text">子订单信息列表</div>
+		  	     </div>
+		            <div class="c_table c_table-row-5">
+					<table jwcid="@Table" name="resultsTable" id="resultsTable">
+						<thead>
+						<tr>
+							<th datatype="string" col="inforecvid"><input type="checkbox" id="badness_ctrl" name="badness_ctrl" onclick="checkedAll('inforecvid', checked)"/></th>
+							<th datatype="string" col="REFUND_ID">退款单编码</th>
+							<th datatype="string" col="TID">订单编码</th>
+							<th datatype="string" col="OID">子订单编码</th>
+			                <th datatype="string" col="RSP_TIME">反馈时间</th>
+							<th datatype="string" col="RSP_RESULT">审核结果</th>
+							<th datatype="string" col="REFUND_FEE">退款金额</th>
+							<th datatype="string" col="MEMO">审核意见</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr jwcid="@Foreach" source="ognl:infos" value="ognl:info" element="tr" index="ognl:rowIndex" class="ognl:rowIndex % 2 == 0 ? '' : 'odd'">
+							<td class="e_center"><input type="checkbox" id="inforecvid" name="inforecvid" jwcid="@Any" value="ognl:info.REFUND_ID+'_'+info.TID+'_'+info.OID"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REFUND_ID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.TID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.OID" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSP_TIME" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.RSP_RESULT" raw="true"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.REFUND_FEE"/></td>
+							<td><span jwcid="@Insert" value="ognl:info.MEMO"/></td>
+						</tr>                                               
+						</tbody>
+					</table>
+				</div>
+				<div class="c_form c_form-col-2 c_form-label-7" jwcid="subPart@Part">
+					<ul class="ul">
+						<li class="li">
+							<span class="label"><span class="e_required">审核结果：</span></span>
+								<span class="e_select"><span><span>
+								<select jwcid="@Select" name="RSP_RESULT"
+									source="ognl:pageutil.getStaticList('4G_CHECK_STATUS')" textField="DATA_NAME" valueField="DATA_ID"
+									value="ognl:condition.RSP_RESULT" desc="审核结果"  nullable="no" />
+								</span></span></span>
+						</li>
+						<li class="li">
+							<span class="label">退款金额：</span> 
+							<span class="e_input"><span>
+								<input jwcid="@TextField" name="REFUND_FEE"
+								value="ognl:condition.REFUND_FEE" datatype="numeric" maxlength="40" desc="退款金额"/>
+							</span></span>
+						</li>
+						<li class="li">
+							<span class="label">备注：</span> 
+							<span class="e_textarea">
+								<span class="e_textareaTop"><span></span></span>
+								<span class="e_textareaContent"><textarea jwcid="@TextArea" name="REMARK" raw="true"
+								value="ognl:condition.REMARK" rows="4"></textarea></span>
+								<span class="e_textareaBottom"><span></span></span>
+							</span>
+						</li>
+					</ul>
+				</div>
+		 	 <div>
+		  </div>
+		  <!-- 表格区结束 -->
+		  <input type="hidden" jwcid="@Any" id="CHANNEL_ID" name="CHANNEL_ID" value="ognl:condition.CHANNEL_ID"  />
+		  <input type="hidden" jwcid="@Any" id="REFUND_TYPE" name="REFUND_TYPE" value="ognl:condition.REFUND_TYPE"  />
+		  <div class="submit" align="center">
+			<button class="e_button e_button-form" id="hastensubmit" name="hastensubmit" onclick="checkBack()">
+				<i class="e_button"></i><span>反馈</span>
+			</button>
+		 </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head jwcid="@Head">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>一键停机人工鉴权</title>
+<script jwcid="@Script" src="person/onekeystopmobile/scripts/onekeystopmobile.js"></script>
+
+</head>
+<body jwcid="@Body"><div class="m_wrapper"><div class="m_wrapper2">
+
+<div class="c_box" jwcid="condPart@Part">
+	<div class="c_title">
+		<div class="text">拟停机号码</div>
+		<div class="fn">
+		<ul>
+			<li><font color="#FF0000">以下3个条件中的至少2个视为通过，方可为客户停机。</font></li>
+		</ul>
+	</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-8">
+	<ul>
+		<li class="li">
+			<span class="label"><span class="e_required">拟停机号码:</span></span>
+			<span class="e_input"><span>
+                <input jwcid="@TextField" name="cond_SERIAL_NUMBER" id="cond_SERIAL_NUMBER" nullable="no" value=""  desc="拟停机号码" maxsize="50" datatype="mbphone"/>
+            </span></span>
+    	</li>
+    	<li class="li">
+    		<button type="button" class="e_button-left"  id="CONF_BUTTON" name="CONF_BUTTON" onclick="queryCustInfo()"><i class="e_ico-check"></i><span>查询</span></button>
+    	</li>
+	</ul>
+	</div>
+		<div class="c_title c_title-2">
+			<div class="text">客户信息</div>
+		</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-8" jwcid="custInfoPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">客户姓名：</span>
+				<span class="text" jwcid="@Insert" name="CUST_NAME" id="CUST_NAME" desc="客户姓名" value="ognl:custInfo.CUST_NAME" />
+			</li>
+			<li class="li">
+				<span class="label">身份证号码：</span>
+				<span class="text" jwcid="@Insert" name="PSPT_ID" id="PSPT_ID" desc="身份证号码" value="ognl:custInfo.PSPT_ID" />
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart1@Part">
+	<div class="c_title">
+		<div class="text">身份信息验证</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>操作：</span></span>
+				<span><button id="IvrBtn" class="e_button" jwcid="@Any" onclick="chkIvrPasswd()"><i class="e_ico-check"></i><span>转IVR</span></button></span>
+				<span style="display:none" ><button class="e_button" jwcid="@Any" onclick="checkIdenFlag()"><i class="e_ico-check"></i><span>校验</span></button></span>
+			</li>
+			<li class="li">
+				<div class="e_center">
+					<span><label for="IDENFLAGT">
+						<input name="IDENFLAGT" id="IDENFLAGT" jwcid="@Checkbox" checked="false" disabled="true" />
+							 是
+					</label></span>&nbsp;&nbsp;
+					<span><label for="IDENFLAGF">
+						<input name="IDENFLAGF" id="IDENFLAGF" jwcid="@Checkbox" checked="false" disabled="true" />
+						否
+					</label></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart2@Part">
+	<div class="c_title">
+		<div class="text">通话记录验证</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">通话号码1：</span></span>
+				<span class="e_input"><span>
+                	<input jwcid="@TextField" name="cond_CALLED_NUMBER1" id="cond_CALLED_NUMBER1" nullable="no" value=""  desc="通话号码1" maxsize="50" datatype="mbphone"/>
+                </span></span>
+            </li>
+            <li class="li">
+				<span class="label"><span class="e_required">通话号码2：</span></span>
+				<span class="e_input"><span>
+                	<input jwcid="@TextField" name="cond_CALLED_NUMBER2" id="cond_CALLED_NUMBER2" nullable="no" value=""  desc="通话号码2" maxsize="50" datatype="mbphone"/>
+                </span></span>
+            </li>
+            <li class="li">
+				<span class="label"><span class="e_required">通话号码3：</span></span>
+				<span class="e_input"><span>
+                	<input jwcid="@TextField" name="cond_CALLED_NUMBER3" id="cond_CALLED_NUMBER3" nullable="no" value=""  desc="通话号码3" maxsize="50" datatype="mbphone"/>
+                </span></span>
+            </li>
+    	</ul>
+	</div>
+	<div class="c_form c_form-text c_form-col-4 c_form-label-8">
+		<ul class="ul">
+		 	<li class="li">
+            	<span class="label"><span>操作：</span></span>
+            	<span><button class="e_button" jwcid="@Any" onclick="queryCdrBil()"><i class="e_ico-check"></i><span>校验</span></button></span>
+            </li>
+            <li class="li">
+	            <div class="e_center">
+	            	<span><label for="CALLEDFLAGT">
+		            	<input name="CALLEDFLAGT" id="CALLEDFLAGT" jwcid="@Checkbox" checked="false" disabled="true" />
+		            	是
+					</label></span>&nbsp;&nbsp;
+					<span><label for="CALLEDFLAGF">
+						<input name="CALLEDFLAGF" id="CALLEDFLAGF" jwcid="@Checkbox" checked="false" disabled="true" />
+						否
+					</label></span>
+				</div>
+            </li>
+		</ul>
+	</div>
+</div>
+<div class="c_box" jwcid="authTypePart@Part">
+<!-- 标题 开始 -->
+	<div class="c_title">
+		<div class="text">其他认证信息</div>
+	</div>
+	<div class="c_form c_form-col-4 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">认证方式：</span></span>
+				<span class="e_select"><span><span>
+					<select jwcid="@Select" name="AUTHTYPE" id="AUTHTYPE" desc="认证方式" nullable="no" 
+        				source="ognl:pageutil.getStaticList('ONEKEYSTOPMOBILE_TYPE')" 
+        				value="" textField="DATA_NAME"  valueField="DATA_ID"  titleField="DATA_NAME" onchange="showAuthPart();"/>
+				</span></span></span>
+			</li>
+			<li class="li">
+            	<span class="label"><span>操作：</span></span>
+            	<span><button class="e_button" jwcid="@Any" onclick="checkOtherFlag()"><i class="e_ico-check"></i><span>确认</span></button></span>
+            </li>
+            <li class="li">
+	            <div class="e_center">
+	            	<span><label for="OTHERFLAGT">
+		            	<input name="OTHERFLAGT" id="OTHERFLAGT" jwcid="@Checkbox" checked="false" disabled="true" />
+		            	是
+					</label></span>&nbsp;&nbsp;
+					<span><label for="OTHERFLAGF">
+						<input name="OTHERFLAGF" id="OTHERFLAGF" jwcid="@Checkbox" checked="false" disabled="true" />
+						否
+					</label></span>
+				</div>
+            </li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart3@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">入网时间认证</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-4 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span class="e_required">入网时间：</span></span>
+                <span class="e_input"><span>
+				<input type="text" jwcid="@DateField" name="OPEN_DATE" id="OPEN_DATE" value="" disabled= "false"  desc="入网时间" format="yyyy-MM"/>
+				</span></span>
+			</li>
+			<li class="li">
+            	<span class="label"><span>操作：</span></span>
+            	<span><button class="e_button" jwcid="@Any" onclick="checkOpenDate()"><i class="e_ico-check"></i><span>校验</span></button></span>
+            </li>
+            <li class="li">
+	            <div class="e_center">
+	            	<span><label for="FLAG1">
+		            	<input name="FLAG1" id="FLAG1" jwcid="@Checkbox" disabled="true" />
+		            	是
+					</label></span>
+				</div>
+            </li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart4@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">近3个月消费认证</div>
+	</div>
+	<div jwcid="consumeInfopart@Part" element="div">
+		<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+		</div>
+	<div class="c_table c_table-row-10">
+	<table jwcid="@Table" id="consumeInfoTable" name="consumeInfoTable">
+      	<thead>
+		  	<tr>
+				<th col="CYCLE_ID">账期</th>
+				<th col="TOTAL_FEE">账单总金额</th>
+			</tr>
+		</thead>
+		<tbody id="consumeInfoTable_Body">
+				<tr jwcid="@Foreach" source="ognl:monFeeInfos" value="ognl:monFeeInfo" element="tr" >
+				<td><span jwcid="@Insert" value="ognl:monFeeInfo.CYCLE_ID"/></td>
+				<td><span jwcid="@Insert" value="ognl:monFeeInfo.TOTAL_FEE"/></td>
+			</tr>
+		</tbody>
+	</table>		
+	</div>
+	<!-- 分页 开始 -->
+	<div jwcid="consumeNavBarPart@NavBar" name="consumeNavBarPart" id="consumeNavBarPart" cond="condPart" part="consumeInfopart" listener="" pageSize="10" count="ognl:totalCount" desc="cond为查询条件DIV; part为显示结果集DIV; listener为监听方法; count为java类传入集合个数参数"></div>
+	<!-- 分页 结束 -->
+	</div>
+		<div class="c_form c_form-text c_form-col-4 c_form-label-8">
+		<ul>
+			<li class="li">
+				<span class="label"><span>操作：</span></span>
+				<span>人工审核</span>
+				<span><button class="e_button" jwcid="@Any" onclick="queryMonFeeInfos()"><i class="e_ico-check"></i><span>查询</span></button></span>
+			</li>
+			<li class="li">
+				<div class="e_center">
+					<span><label for="FLAG2">
+						<input name="FLAG2" id="FLAG2" jwcid="@Checkbox" checked="false" onclick="" disabled="true"/>
+							 是
+					</label></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart5@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">最后一次业务办理（半年内）认证</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-4 c_form-label-8" jwcid="tradeResultPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">业务办理时间：</span>
+				<span class="text" jwcid="@Insert" name="ACCEPT_DATE" id="ACCEPT_DATE" desc="业务办理时间" value="ognl:lastTrade.ACCEPT_DATE" />
+			</li>
+			<li class="li">
+				<span class="label">业务办理类型：</span>
+				<span class="text" jwcid="@Insert" name="TRADE_TYPE" id="TRADE_TYPE" desc="业务办理类型" value="ognl:lastTrade.TRADE_TYPE" />
+			</li>
+			<li class="li">
+				<span class="label">办理渠道：</span>
+				<span class="text" jwcid="@Insert" name="IN_MODE_CODE" id="IN_MODE_CODE" desc="办理渠道" value="ognl:pageutil.getStaticValue('TD_S_INMODE',lastTrade.IN_MODE_CODE)" />
+			</li>
+			<li class="li">
+				<span class="label">办理员工：</span>
+				<span class="text" jwcid="@Insert" name="TRADE_STAFF_ID" id="TRADE_STAFF_ID" desc="办理员工" value="ognl:lastTrade.TRADE_STAFF_ID" />
+			</li>
+		</ul>
+	</div>
+	<div class="c_form c_form-text c_form-col-4 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>操作：</span></span>
+				<span>人工审核</span>
+				<span><button class="e_button" jwcid="@Any" onclick="queryLastTrade()"><i class="e_ico-check"></i><span>查询</span></button></span>
+			</li>
+			<li class="li">
+				<div class="e_center">
+					<span><label for="FLAG3">
+						<input name="FLAG3" id="FLAG3" jwcid="@Checkbox" checked="false" onclick="" disabled="true"/>
+							 是
+					</label></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart6@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">最近一次缴费记录（半年内）认证</div>
+	</div>
+	<div class="c_form c_form-text c_form-col-3 c_form-label-8" jwcid="payResultPart@Part">
+		<ul class="ul">
+			<li class="li">
+				<span class="label">缴费时间：</span>
+				<span class="text" jwcid="@Insert" name="RECV_TIME" id="RECV_TIME" desc="缴费时间" value="ognl:lastPayLog.RECV_TIME" />
+			</li>
+			<li class="li">
+				<span class="label">缴费渠道：</span>
+				<span class="text" jwcid="@Insert" name="CHANNEL_ID" id="CHANNEL_ID" desc="缴费渠道" value="ognl:pageutil.getStaticValue('ACCT_CHANNEL_TYPE',lastPayLog.CHANNEL_ID)" />
+			</li>
+			<li class="li">
+				<span class="label">缴费金额：</span>
+				<span class="text" jwcid="@Insert" name="RECV_FEE" id="RECV_FEE" desc="缴费金额" value="ognl:lastPayLog.RECV_FEE" />
+			</li>
+		</ul>
+	</div>
+	<div class="c_form c_form-text c_form-col-4 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>操作：</span></span>
+				<span>人工审核</span>
+				<span><button class="e_button" jwcid="@Any" onclick="queryPayLog()"><i class="e_ico-check"></i><span>查询</span></button></span>
+			</li>
+			<li class="li">
+				<div class="e_center">
+					<span><label for="FLAG4">
+						<input name="FLAG4" id="FLAG4" jwcid="@Checkbox" checked="false" onclick="" disabled="true"/>
+							 是
+					</label></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="c_box" jwcid="authPart7@Part" style="display:none;">
+	<div class="c_title">
+		<div class="text">亲亲网号码认证</div>
+	</div>
+	<div jwcid="uuInfopart@Part" element="div">
+		<div class="c_title c_title-2">
+			<div class="text">查询结果</div>
+		</div>
+	<div class="c_table c_table-row-10">
+	<table jwcid="@Table" id="uuInfoTable" name="uuInfoTable">
+      	<thead>
+		  	<tr>
+				<th col="SERIAL_NUMBER_B">服务号码</th>
+				<th col="START_DATE">开始时间</th>
+				<th col="END_DATE">结束时间</th>
+			</tr>
+		</thead>
+		<tbody id="uuInfoTable_Body">
+			<tr jwcid="@Foreach" source="ognl:uuInfos" value="ognl:uuInfo" element="tr" >
+				<td><span jwcid="@Insert" value="ognl:uuInfo.SERIAL_NUMBER_B"/></td>
+				<td><span jwcid="@Insert" value="ognl:uuInfo.START_DATE"/></td>						 
+				<td><span jwcid="@Insert" value="ognl:uuInfo.END_DATE"/></td>	
+			</tr>
+		</tbody>
+	</table>		
+	</div>
+	<!-- 分页 开始 -->
+	<div jwcid="NavBarPart@NavBar" name="NavBarPart" id="NavBarPart" cond="condPart" part="uuInfopart" listener="queryUUInfos" pageSize="10" count="ognl:totalCount" desc="cond为查询条件DIV; part为显示结果集DIV; listener为监听方法; count为java类传入集合个数参数"></div>
+	<!-- 分页 结束 -->
+	</div>
+	
+	<div class="c_form c_form-text c_form-col-4 c_form-label-8">
+		<ul class="ul">
+			<li class="li">
+				<span class="label"><span>操作：</span></span>
+				<span>人工审核</span>
+				<span><button class="e_button" jwcid="@Any" onclick="queryUUInfos()"><i class="e_ico-check"></i><span>查询</span></button></span>
+			</li>
+			<li class="li">
+				<div class="e_center">
+					<span><label for="FLAG5">
+						<input name="FLAG5" id="FLAG5" jwcid="@Checkbox" checked="false" onclick="" disabled="true"/>
+							 是
+					</label></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<!-- 区域 结束 -->
+
+	
+	<!-- 提交 开始 -->
+	<div class="c_submit" jwcid="SubmitPart@csserv:CSSubmit" beforeAction="checkBeforeSubmit()" isRender="false" isReset="true" params=""  area="condPart,authPart1,authPart2,authPart3,authPart4,authPart5,authPart6,authPart7,authTypePart" element="div"/>	
+	<!-- 提交 结束 -->
+
+<!-- 区域 结束 -->
+
+</div></div>
+</body>
+</html>

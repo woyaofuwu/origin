@@ -1,0 +1,1 @@
+SELECT SERVICE_MODE paracode,SERVICE_INFO paraname FROM td_b_otherservice where :TRADE_EPARCHY_CODE = :TRADE_EPARCHY_CODE
