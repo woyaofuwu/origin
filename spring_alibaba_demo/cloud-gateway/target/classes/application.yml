@@ -1,0 +1,35 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    nacos:
+      discovery:
+        # 指定nacos server的地址
+        server-addr: 192.168.0.60:8848
+    gateway:
+      default-filters:
+        - AddRequestHeader=Y-Foo, Bar
+      discovery:
+        locator:
+          # 让gateway通过服务发现组件找到其他的微服务，从而自动转发请求，一般不推荐打开
+          enabled: true
+      routes:
+        - id: stock-service  # 路由的唯一标识，这种形式下通常是微服务名称
+          uri: lb://stock-service  # lb代表从注册中心获取服务
+          order: 9000
+          predicates:
+            # 指定具体的路径进行匹配
+            - Path=/stock/**
+        - id: order-service  # 路由的唯一标识，这种形式下通常是微服务名称
+          uri: lb://order-service  # lb代表从注册中心获取服务
+          order: 10000
+          predicates:
+            # 指定具体的路径进行匹配
+            - Path=/order/**
+          filters:
+            # Filter集合
+            # 为原始请求添加名为 X-Request-Foo ，值为 Bar 的请求头
+            - AddRequestHeader=X-Request-Foo, Bar
+
